@@ -1,0 +1,214 @@
+% \documentclass[a4paper,11pt]{article}
+
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{amssymb}
+\geometry{left=2.7cm,right=2.7cm, top=3cm,bottom=3.2cm}
+% \geometry{left=1.5cm,right=1.5cm,top=0.5cm,bottom=2.8cm}
+\usepackage[version=3]{mhchem} % Package for chemical equation typesetting
+\usepackage{siunitx} % Provides the \SI{}{} and \si{} command for typesetting SI units
+\usepackage{graphicx} % Required for the inclusion of images
+\usepackage[square,sort,comma,numbers]{natbib}
+ % Required to change bibliography style to APA
+\usepackage{amsmath} % Required for some math elements 
+\usepackage{datetime}
+\usepackage{amsthm}
+\usepackage{mathabx}
+\usepackage{amsfonts}
+\usepackage[colorlinks, allcolors = blue,]{hyperref}
+\usepackage{url}
+% \usepackage[numbers]{natbib}
+\usepackage[linesnumbered,ruled]{algorithm2e}
+\SetKwRepeat{Struct}{struct \{}{\}}%
+\newcommand{\Int}{\KwSty{int}}
+\newcommand{\Vector}{\KwSty{vector}}
+\usepackage[usenames, dvipsnames]{color}
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\def\ojoin{\setbox0=\hbox{$\bowtie$}%
+  \rule[-.02ex]{.25em}{.4pt}\llap{\rule[\ht0]{.25em}{.4pt}}}
+\def\leftouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie}}
+\def\rightouterjoin{\mathbin{\bowtie\mkern-5.8mu\ojoin}}
+\def\fullouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie\mkern-5.8mu\ojoin}}
+
+\title{\textbf{Essay for Qualifying Exam}}
+\author{
+Jiawen \textsc{Liu}\ \ \ \
+\texttt{BUID: jiawenl \ \ \ \ BUID \#: U19062967}
+}
+ \date{}
+\begin{document}
+
+\maketitle 
+
+\section{Short Summary}
+
+\cite{xi1999dependent} enriched the ML type system with a restricted form of dependent types by adding the type index objects. They presented the their dependent type system design and implementation, and showed how to apply it into the practical programming language design.
+They also exhibited the unobtrusiveness of their language through practical examples and proved the conservation over ML.
+
+\cite{dwork2006calibrating} presented an innovative way of protecting database privacy where they perturb the true answer of the query by adding random noise generated according to a carefully chosen distribution and calibrated to the query's sensitivity, requiring a specific privacy loss.
+The famous concept of $\epsilon$-differential privacy (i.e. $\epsilon$-indistinguishability) was proposed as a notion of privacy loss in statistical databases in this paper.
+
+
+\cite{dwork2015preserving} applied the differential privacy concept into guaranteeing validity in adaptive data analysis, by following the connection between privacy and generalization.
+They proposed the transfer theorem extending differential privacy into generalization guarantees and proved high probability bounds on the generalization errors.
+
+\cite{barthe2016proving} developed compositional methods for formally verifying the programs' differential privacy based on its connections with probabilistic coupling and lifting. Their methods are able to capture the proof of most differentially private mechanisms
+ % in current literature
+including Laplace mechanism, exponential mechanism, above threshold and the report noise-max mechanism.
+% The last 3 mechanisms cannot be handled in existing pen-and-paper proofs.
+
+\cite{smith2017information} made a survey on adaptive data analysis as well as recent works of guaranteeing the generalization error in both numeric and non-numeric adaptive data analysis.
+
+\cite{ye2017verified} formalized the functional specification of HMAC-DRBG and proved its security and correctness. The cryptographic security was proved in terms of pseudorandom by using hybrid game-based proof. The correctness was proved by adopting existing C compiler correctness proof, which is also able to give strong pseudorandom guarantee. They encoded their work into Coq proof-assistant, which provided the machine check for their proof.
+
+
+\cite{jung2019new} gave a new analysis of differential privacy's generalization guarantees by presenting a new elementary proof of the transfer theorem (proposed in \cite{dwork2015generalization}), and achieved tighter probability bounds on differential privacy's generalization guarantee.
+
+\cite{near2019duet} proposed an expressive higher-order language, linear type system and tool for automatically verifying differential privacy of general-purpose higher-order programs as well as some machine learning algorithms and common data analysis tasks. They presented the design of their language and type system, the complete proofs about privacy for well-typed programs as well as the applications on realistic machine learning programs and variants of differential privacy algorithms.
+
+
+
+
+\section{Importance, Relations and Considerations}
+
+To protect the individual privacy in database under the assumption of very strong adversaries, \cite{dwork2006calibrating} introduced an innovative way by adding random noise calibrated to query's sensitivity and proposed the concept of $\epsilon$-differential privacy (initially named $\epsilon$-indistinguishability) to limit the privacy loss in the data privacy protections.
+
+When proposed, this concept drawn large attention in statistic analysis area, privacy protection field etc. Then it achieved widespread applications in different research areas and inspired lots of following research works.
+
+In my understanding, there are two main reasons for its universal generalization. 1) First reason is that the $\epsilon$-differential privacy is completely general with little limitation on settings and adversaries; 2) Second reason is that the mathematical analysis presented in this paper and the following paper (\cite{dwork2014algorithmic}) built the solid mathematic foundation for differential privacy as well as following works developed based on it. These makes it easily extends beyond the purely statistically context, such as machine learning, AI, programming language, data analysis etc. 
+% making the application and extension of this concept to different research areas easier.
+
+\footnote{in this section, the bold texts are my considerations on their relations and importance, and the normal texts are the works from the paper.}
+\textbf{Based on this work, I firstly looked into two important research directions relevant to it: 1) One direction following the works by \cite{dwork2015preserving}, \cite{smith2017information}, \cite{jung2019new} etc. is guaranteeing the validity in adaptive data analysis.
+2) The other direction following the works by \cite{barthe2016proving}, \cite{near2019duet} etc. is formally verifying the differential privacy.
+In addition with another two papers by \cite{ye2017verified} and \cite{xi1999dependent} on formal verification and programming language design fields.
+Then based on my understanding of this two directions, I proposed my consideration on the further possible research directions.}
+
+\textbf{The first important application of the differential privacy concept started from the work by \cite{dwork2015preserving}}, which applied this concept into guaranteeing the generalization error of adaptive data analysis. 
+
+Previous works on reducing the risk of spurious scientific discoveries are under the assumption that a fixed collection of learning algorithms to be applied are selected non-adaptively before seeing the data. In contrast with them, they developed this work under the adaptive data analysis settings. They formalized the generalization error for adaptive data analysis and then presented their validation guarantees.
+Concretely, they proposed the famous transfer theorem.
+And based on this theorem, they proved high probabilistic bounds on the generalization error for $\epsilon$- and $(\epsilon,\delta)$-differentially private adaptive data analysis as well as adaptive analysis with statistic and non-statistic queries.
+These works connected the theory with the practice of data analysis, which in my perspective, is the most significant and interesting contribution of this paper. 
+
+% At the end, they presented the application of applying concrete differentially private techniques into adaptive data analysis.
+
+\textbf{This extension from differential privacy to adaptive data analysis made significant progress in reducing the overfitting risks in practical works (i.e. the data analysis in adaptive setting). Further works on improving these probabilistic bounds, guaranteeing the generalization error such as \cite{dwork2015generalization}, \cite{bassily2016algorithmic}, \cite{dwork2015reusable}, \cite{jung2019new} etc. are all influenced by this work.}
+
+\textbf{Following all previous works on preserving the statistical validity in adaptive data analysis, \cite{smith2017information} made a survey.}
+This survey started from giving formal and clear introduction to the concept of adaptive data analysis.
+ % by giving formal definitions of the concepts and clear representations and notations. 
+Then, it summarized the probability bounds on the generalization error w.r.t. the true population when applying different mechanisms in numeric adaptive data analysis.
+The mechanisms includes split data with adaptivity, adding Gaussian noise with specific standard derivation, adopting differentially private algorithms etc.
+Next, he extended the scope onto the non-numeric adaptive data analysis and presented the corresponding probabilistic bounds based on the information measures. 
+
+\textbf{This survey was developed in an easy-to-understand way and included a thorough knowledge on state-of-the-art works on adaptive data analysis, which helped me to sort out the results from existing works and relations between them.}
+
+% The most attractive idea for me is the final aims proposed in this paper, which is to design mechanisms with provable bounds on accuracy and to aim for not just specific mechanisms, but the \emph{universal} mechanisms in the sense that they can be used in any type of exploratory or adaptive workflow.
+% This ideal and unrealistic aim is actually being achieved step by step.
+
+\textbf{Following the same line of work, \cite{jung2019new} gave a new analysis on the role of differential privacy in adaptive data analysis.}
+They gave a substantially better probability bounds on differential privacy's generalization guarantee based on a new proof technique of the transfer theorem (initially from \cite{dwork2015generalization}). 
+
+The key point in their proof technique is looking into the posterior distributions, which is an insightful new perspective on proving the generalization error bound. This new perspective also brought a better understanding in the specific reason of analysis overfitting and the role of differential privacy in adaptive data analysis. This new technique I think will be fruitful in future work.
+%  based on my personal interests on the posterior distribution analysis
+% Another very meaningful structural insight inspired by this paper is the role of differential privacy and sample accuracy. This is pointed to the end of the paper that the sample accuracy serves to guarantee that the reported answers are close to their posterior means and differential privacy serves to guarantee that the posterior means are close to their true answers.
+
+There are also some interesting works on further improving the accuracy bound unresolved in this paper, such as replace the Markov-like dependence with a Chernoff-like dependence. I'm deeply interested in making contributions on it.
+
+\textbf{Based on all the excellent theory works on guaranteeing the statistical validity of adaptive data analysis, I started to think from the perspective of the programming language.}
+\textbf{Existing works on adaptive data analysis are trying to improve the probabilistic bounds for generalization error in terms of the adaptive and non-adaptive queries numbers and size of the data sample on pen-and-paper proofs.
+However, we still cannot guarantee implementations of the corresponding algorithms adhere to this generalization error bounds.
+Given an arbitrary data analysis program, we are unable to tell its generalization error. So in my consideration, verifying the programs' generalization error would be a possible interesting research direction. Furthermore, since the size of the data sample can be determined by the input or the users, then the most interesting and challenging point would be figuring out the program's adaptive query numbers. That's another reason I'm looking into the next research direction.}
+
+\textbf{The second well developed research direction relevant to the differential privacy concept lies in the programming language area, focusing on the formal verification of the differential privacy.} 
+
+The first paper I looked into is the work by \cite{barthe2016proving}, which developed compositional methods for formally verifying differential privacy and extended the existing relational program logic apRHL with more general rules for Laplace mechanisms.
+
+The foundations they built their methods and logics on are the most interesting part, i.e. the connection between the probabilistic coupling and differential privacy.
+They started from 1) the connection between probabilistic lifting and probabilistic couplings, then discovered 2) the connection between differential privacy and approximate lifting and finally 3) built their logic of proving the programs differential privacy property.
+Before this work, coupling was an established tool in probability theory but less familiar to computer science. However, this paper studied the connections between them and brought the approximate coupling into the area of formal verification. 
+
+% This work explored a clean and concise way on verifying the differential privacy based on coupling ideas, which avoid reasoning about probabilities.
+\textbf{This work gave a new inspiration of verifying programs' probabilistic properties, which can also be helpful in verifying the generalization error of differentially private adaptive data analysis programs
+% from \cite{dwork2015generalization}, \cite{smith2017information}, \cite{bassily2016algorithmic} etc's work
+in further researches.}
+
+
+\textbf{A newly proposed work by \cite{near2019duet} is another extension of differential privacy concept in the formal verification and programming language fields.} They based their language design on the type systems in previous literature (\cite{gaboardi2013linear}, \cite{reed2010distance} etc.), achieving the goal of formally and automatically verifying the programs' differential privacy property.
+
+The most interesting innovation in their design is that their type system consist of two mutually embedded languages. One is \emph{sensitivity language} with metric scaling extended from \emph{Fuzz} \cite{reed2010distance} to bound the program sensitivity.
+The other is \emph{privacy language} without metric scaling to compose differentially private computations, which is able encode more advanced variants of differential privacy in their language. By combining two languages, their system is able to encode more advanced variants of $\epsilon$(even $(\epsilon, \delta)$)-differential privacy.
+This furthermore makes their language design and type system able to handle the realistic machine leaning applications combined with variants of differentially private algorithms, which has never been achieved. 
+
+\textbf{In my consideration, this clean and correct automatic verification would be very useful in formally verifying the programs' properties relevant to differential privacy. Its capability of handling the advanced variants of differentially private algorithms makes things easier for me to develop the works on formal verification of the programs' generalization error when the data analysis programs contains variants of differentially private mechanisms.}
+% In addition, some experimental results from their type systems inferred privacy bounds which improve on best previously published manually-verified results.
+
+\textbf{In the area of formal verification, another interesting work by \cite{ye2017verified} in parallel with previous works is focused on verifying the security of cryptography algorithms.}
+Their works are modularized by proposing a functional specification and extending their hybrid game proof on any implementation satisfying this specification.
+This can be very useful in any pseudo-random and correctness verification works as a high-assurance reference, and portable to other implementation of HMAC-DRBG.
+
+The most important reason I looked into this work is that they developed their work in Coq, to formally and mechanically verified the security and correctness of the implementation of HMAC-DRBG.
+% This makes their work portable and adoptable by other researchers.
+\textbf{This can be very helpful in developing my own works and proofs also in Coq, because machine-checked proofs are always convincing and reliable. Also, the methods they used to verify the pseudo-randomness would also be an inspiration in my works when there are randomness in the programs.}
+
+% In addition, they created the first end-to-end formal security-and-correctness verification of a real-world random number generator, the first machine-checked proofs of HMAC-DRBG security and a correct implementation of HMAC-DRBG. 
+
+% Another importance of their work lies in the requirement of the NIST. Their machine checked proofs of cryptographic security should be in significant need by the NIST standardization process and would likely have detected serious generator flaws. And proving the HMAC-DRBG is able to help NIST clearly specify the security assumptions on HMAC required by Instantiate.
+
+
+\textbf{Again, in this direction, prior to all previous work on type systems and languages designing, formal verification and mechanical proof is another foundational work of dependent type system by \cite{xi1999dependent}.}
+They extended the entire core of ML with a restricted form of dependent types, yielding a DML language schema. They enriched existing type system for programming language onto dependent types with features including datatype declarations, higher-order functions, general recursions, let-ploymorphism, mutable references and exceptions.
+Compared to the traditional type systems, their dependent type system allows specification and inference of significantly more precise type information, facilitating program error detection and compiler optimization.
+
+The motivation of their work is simply allowing the programmer to express more program properties through types and thus catch more errors during the compiling time. This motivation is still meaningful nowadays in language design works specified to concrete scenarios. \textbf{And this work is also referred by many following works (\cite{near2019duet}, \cite{gaboardi2013linear}, \cite{reed2010distance} etc) related to the dependent type systems as well as possible further works.}
+
+% They made the foundation of the dependent type systems by implementing a prototype in which all the major features in the core of ML are available. Many following works (\cite{near2019duet}, \cite{gaboardi2013linear}, \cite{reed2010distance} etc) related to the dependent type systems are inspired by, based on or referred to in their works. 
+
+
+% \textbf{Considering the two directions, motivated by preserving the adaptive data analysis program's validity from the first research direction, adopting methods and tools of formal verification from the second direction, I'm developing a possible research--formal verification of the program's generalization error.}
+
+% \textbf{After studying the works in the first direction on guaranteeing statistical validity of adaptive data analysis, the challenge of verifying a program's generalization error lies in figuring out the program's adaptive query numbers, i.e. the program's adaptivity. So I plan to design the type system and language that is able to keep track of the program's adaptivity. By doing this, we can provide the programmer with the information of his data analysis program's generalization guarantee, which can furthermore be used to optimize his program to have a better generalization.}
+
+\textbf{Considering the two directions, I'm developing the possible researches:}
+
+\paragraph{Research Goals.}
+\begin{itemize}
+	\item formal verification of the program's statistical validity.
+
+	Guaranteeing that the implementations of adaptive data analysis preserving certain generalization error bounds is my motivation of this work.
+	By doing this, we can provide the programmers with the information of their data analysis programs' generalization guarantees,
+	which can furthermore be used to optimize their programs to have better generalizations.
+
+	The challenge of this research goal lies in figuring out the program's adaptive query numbers, i.e. the program's adaptivity.
+
+	\item formally verifying the differential privacy of the realistic implementations of differential private algorithms.
+
+	Motivated by that the realistic (i.e. floating point) implementations of $\epsilon$-differentially private algorithms are not $\epsilon$-differentially private \cite{Mironov2012on}, I think it is interesting and meaningful to verify the actual privacy loss for the realistic implementations of differential private algorithms.
+
+	The challenges of this research goal are 1) keep track of the floating point error and 2) find a way to generate the actual privacy loss given the total floating point error.
+
+\end{itemize}  
+
+\paragraph{Proposed Methodologies.}
+
+\begin{itemize}
+
+	\item Designing a dependent type system and language that is able to keep track of the program's adaptivity, by adopting the type system designs from \cite{xi1999dependent, near2019duet,reed2010distance, gaboardi2013linear}.
+
+	\item Designing a verification system which is able to tell the actual privacy loss for an implementation of differential private algorithm. I plan to build the system design based on the logic of probabilistic coupling from \cite{barthe2016proving} and adopt the proof technique of encoding randomness in Coq from \cite{ye2017verified}.
+
+\end{itemize}
+
+
+\newpage
+\bibliographystyle{amsalpha}
+\bibliography{main.bib}
+
+
+
+
+
+\end{document}

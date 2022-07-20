@@ -1,0 +1,180 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{amssymb}
+\geometry{left=1.0cm,right=1.0cm,top=0.5cm,bottom=2.8cm}
+\usepackage[version=3]{mhchem} % Package for chemical equation typesetting
+\usepackage{siunitx} % Provides the \SI{}{} and \si{} command for typesetting SI units
+\usepackage{graphicx} % Required for the inclusion of images
+\usepackage{natbib} % Required to change bibliography style to APA
+\usepackage{amsmath} % Required for some math elements 
+\usepackage{datetime}
+\usepackage{amsthm}
+\usepackage{mathabx}
+\usepackage{amsfonts}
+\usepackage[colorlinks, allcolors = blue,]{hyperref}
+
+\usepackage[linesnumbered,ruled]{algorithm2e}
+\SetKwRepeat{Struct}{struct \{}{\}}%
+\newcommand{\Int}{\KwSty{int}}
+\newcommand{\Vector}{\KwSty{vector}}
+\usepackage[usenames, dvipsnames]{color}
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\def\ojoin{\setbox0=\hbox{$\bowtie$}%
+  \rule[-.02ex]{.25em}{.4pt}\llap{\rule[\ht0]{.25em}{.4pt}}}
+\def\leftouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie}}
+\def\rightouterjoin{\mathbin{\bowtie\mkern-5.8mu\ojoin}}
+\def\fullouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie\mkern-5.8mu\ojoin}}
+
+\title{\textbf{Paper List for Qualifying Exam}
+%SAT 521 Intro to Theory of Statistics - notes}
+%CSE 305 Recitation \# 10}
+%EE 531 Prob \& Stochastic Process notes}\\
+% \begin{large}
+% \textbf{Probability Distributions and Bayesian Networks}% Title
+% \end{large}
+}
+\author{
+Jiawen \textsc{Liu}\\
+\texttt{BUID: jiawenl \ \ \ \ BUID \#: U19062967}
+}
+ \date{}
+\begin{document}
+
+\maketitle 
+
+\begin{itemize}
+	\item dp
+	\begin{itemize}
+		\item
+
+		\href{https://people.csail.mit.edu/asmith/PS/sensitivity-tcc-final.pdf}
+		%
+		{Calibrating Noise to Sensitivity in Private Data Analysis}
+
+		Dwork C, McSherry F, Nissim K, Smith A.
+
+		TCC, 2006
+	
+	\end{itemize}
+
+
+	\item dp in adaptive data analysis 
+
+	\begin{itemize}
+		\item 
+
+		\href
+		{https://arxiv.org/pdf/1411.2664.pdf}
+		%
+		{Preserving Statistical Validity in Adaptive Data Analysis}
+
+		Dwork C, Feldman V, Hardt M, Pitassi T, Reingold O, Roth AL. 
+
+		STOC, 2015
+
+
+		\item
+
+		\href
+		{https://arxiv.org/pdf/1706.00820.pdf}
+		%
+		{Information, Privacy and Stability in Adaptive Data Analysis}
+
+		Smith A.
+
+		arXiv:1706.00820
+
+		\item
+
+		\href
+		{https://arxiv.org/abs/1909.03577}
+		%
+		{A New Analysis of Differential Privacy's Generalization Guarantees}
+
+		Christopher Jung, Katrina Ligett, Seth Neel, Aaron Roth, Saeed Sharifi-Malvajerdi, Moshe Shenfeld
+
+	\end{itemize}
+
+	
+	\item type system for dp
+
+	\begin{itemize}
+
+		\item
+
+		\href
+		{http://david.darais.com/assets/papers/duet/duet.pdf}
+		%
+		{Duet: An Expressive Higher-order Language and Linear Type System for Statically Enforcing Differential Privacy}
+
+		Near JP, Darais D, Abuah C, Stevens T, Gaddamadugu P, Wang L, Somani N, Zhang M, Sharma N, Shan A, Song D. 
+
+		arXiv:1909.02481
+
+
+	\end{itemize}
+
+	\item verification of privacy and utility
+
+	\begin{itemize}
+
+		\item
+
+		\href
+		{https://arxiv.org/pdf/1601.05047.pdf}
+		%
+		{Proving Differential Privacy via Probabilistic Couplings}
+
+		Barthe G, Gaboardi M, Grégoire B, Hsu J, Strub PY.
+
+		LICS, 2016
+
+		% \item 
+
+		% \href
+		% {https://hal.inria.fr/inria-00431771/document}
+		% %
+		% {Proofs of randomized algorithms in Coq-HAL}
+
+		\item 
+
+		\href
+		{https://www.cs.cmu.edu/~kqy/resources/Verified-HMAC-DRBG.pdf}
+		%
+		{Verified Correctness and Security of mbedTLS HMAC-DRBG}
+
+		Ye KQ, Green M, Sanguansin N, Beringer L, Petcher A, Appel AW.
+
+		CCS, 2017
+
+
+	\end{itemize}
+
+
+	\item Linear \& Dependent Type 
+
+	\begin{itemize}
+
+		\item
+
+		\href
+		{https://www.cs.cmu.edu/~fp/papers/popl99.pdf}
+		%
+		{Dependent types in practical programming}
+
+		Xi H, Pfenning F.
+
+		POPL, 1999
+
+
+	\end{itemize}
+
+\end{itemize}
+
+
+
+
+
+\end{document}

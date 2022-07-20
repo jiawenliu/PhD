@@ -1,0 +1,550 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{amssymb}
+\geometry{left=1.0cm,right=1.0cm,top=0.5cm,bottom=2.8cm}
+\usepackage[version=3]{mhchem} % Package for chemical equation typesetting
+\usepackage{siunitx} % Provides the \SI{}{} and \si{} command for typesetting SI units
+\usepackage{graphicx} % Required for the inclusion of images
+\usepackage{natbib} % Required to change bibliography style to APA
+\usepackage{amsmath} % Required for some math elements 
+\usepackage{datetime}
+\usepackage{amsthm}
+\usepackage{mathabx}
+\usepackage{amsfonts}
+\usepackage[colorlinks, allcolors = blue,]{hyperref}
+
+\usepackage[linesnumbered,ruled]{algorithm2e}
+\SetKwRepeat{Struct}{struct \{}{\}}%
+\newcommand{\Int}{\KwSty{int}}
+\newcommand{\Vector}{\KwSty{vector}}
+\usepackage[usenames, dvipsnames]{color}
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\def\ojoin{\setbox0=\hbox{$\bowtie$}%
+  \rule[-.02ex]{.25em}{.4pt}\llap{\rule[\ht0]{.25em}{.4pt}}}
+\def\leftouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie}}
+\def\rightouterjoin{\mathbin{\bowtie\mkern-5.8mu\ojoin}}
+\def\fullouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie\mkern-5.8mu\ojoin}}
+
+\title{\textbf{Paper List for Qualifying Exam}
+%SAT 521 Intro to Theory of Statistics - notes}
+%CSE 305 Recitation \# 10}
+%EE 531 Prob \& Stochastic Process notes}\\
+% \begin{large}
+% \textbf{Probability Distributions and Bayesian Networks}% Title
+% \end{large}
+}
+\author{
+Jiawen \textsc{Liu}\\
+\texttt{BUID: jiawenl \ \ \ \ BUID \#: U19062967}
+}
+ \date{}
+\begin{document}
+
+\maketitle 
+
+\begin{itemize}
+	\item dp
+	\begin{itemize}
+		\item
+
+		\href{https://people.csail.mit.edu/asmith/PS/sensitivity-tcc-final.pdf}
+		%
+		{Calibrating Noise to Sensitivity in Private Data Analysis}
+
+		Dwork C, McSherry F, Nissim K, Smith A.
+
+		TCC, 2006
+
+		\item
+
+		\href{https://www.microsoft.com/en-us/research/wp-content/uploads/2011/01/dwork_cacm.pdf}
+		%
+		{A Firm Foundation for Private Data Analysis}
+
+		Dwork C.
+
+		Communications of the ACM, 2011
+
+		% \item 
+
+		% \href
+		% {https://arxiv.org/pdf/1109.6761.pdf}
+		% %
+		% {On the relation between Differential Privacy and Quantitative Information Flow}
+
+		% Alvim MS, Andr{\'e}s ME, Chatzikokolakis K, Palamidessi C.
+
+		% ICALP, 2011
+
+
+		% \item
+
+		% \href
+		% {https://personal.utdallas.edu/~mxk055100/courses/privacy08f_files/differential-privacy.pdf}
+		% %
+		% {Differential Privacy}
+
+	% \end{itemize}
+
+	% \item advance in dp
+
+	% \begin{itemize}
+		% \item 
+
+		% \href
+		% {https://pdfs.semanticscholar.org/bdb8/899424482f99a59f44500ea4eeb9e7ec6b2a.pdf}
+		% %
+		% {Differential Privacy without Sensitivity}
+
+		% (specific setting)
+
+		\item 
+
+		\href
+		{http://www.cse.psu.edu/~sxr48/pubs/smooth-sensitivity-stoc.pdf}
+		%
+		{Smooth Sensitivity and Sampling in Private Data Analysis}
+		% (smoo)
+
+		Nissim K, Raskhodnikova S, Smith A.
+
+		STOC, 2007
+
+		\item 
+
+		\href
+		{https://hal.inria.fr/hal-00767210/document}
+		%
+		{Broadening the Scope of Differential Privacy Using Metrics}
+
+		Chatzikokolakis K, Andrés ME, Bordenabe NE, Palamidessi C.
+
+		PETS, 2013
+
+		% (generalized the concept of dp)
+
+		\item 
+
+		 \href
+		 {https://arxiv.org/pdf/1605.02065.pdf}
+		 %
+		 {Concentrated Differential Privacy: Simplifications, Extensions, and Lower Bounds}
+
+		 Bun M, Steinke T. 
+
+		 TCC, 2016
+
+		% (new concept of dp)
+	
+	\end{itemize}
+
+
+	\item dp in Bayesian Inference
+
+	\begin{itemize}
+
+		\item 
+
+		\href
+		{http://www.cse.chalmers.se/~aikmitr/papers/ALT2014.pdf}
+		%
+		{Robust and Private Bayesian Inference}
+
+		Dimitrakakis C, Nelson B, Mitrokotsa A, Rubinstein B.
+
+		ALT, 2013
+
+
+		\item 
+
+		\href
+		{https://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/viewFile/12129/11885}
+		%
+		{On the Differential Privacy of Bayesian Inference}
+
+		Zhang Z, Rubinstein BI, Dimitrakakis C.
+
+		AAAI, 2016
+
+		% \item 
+
+		% \href
+		% {https://arxiv.org/pdf/1605.00283.pdf}
+		% %
+		% {Differentially Private Bayesian Programming}
+
+		% Barthe G, Farina GP, Gaboardi M, Arias EJ, Gordon A, Hsu J, Strub PY.
+
+		% CCS, 2016
+
+	\end{itemize}
+
+
+	\item dp in adaptive data analysis 
+
+	\begin{itemize}
+		\item 
+
+		\href
+		{https://arxiv.org/pdf/1411.2664.pdf}
+		%
+		{Preserving Statistical Validity in Adaptive Data Analysis}
+
+		Dwork C, Feldman V, Hardt M, Pitassi T, Reingold O, Roth AL. 
+
+		STOC, 2015
+
+		\item
+
+		\href
+		{https://arxiv.org/pdf/1506.02629.pdf}
+		%
+		{Generalization in Adaptive Data Analysis and Holdout Reuse}
+
+		Dwork C, Feldman V, Hardt M, Pitassi T, Reingold O, Roth A. 
+
+		NIPS, 2015
+
+
+		\item 
+
+		\href
+		{https://arxiv.org/pdf/1511.02513.pdf}
+		%
+		{Algorithmic stability for adaptive data analysis}
+
+		Bassily R, Nissim K, Smith A, Steinke T, Stemmer U, Ullman J. 
+
+		STOC, 2016
+
+		\item 
+
+		\href
+		{https://arxiv.org/pdf/1607.00133.pdf}
+		%
+		{Deep learning with differential privacy}
+
+		Abadi M, Chu A, Goodfellow I, McMahan HB, Mironov I, Talwar K, Zhang L.
+
+		CCS 2016
+
+		\item
+
+		\href
+		{https://arxiv.org/pdf/1706.00820.pdf}
+		%
+		{Information, Privacy and Stability in Adaptive Data Analysis}
+
+		Smith A.
+
+		arXiv:1706.00820
+
+
+	\end{itemize}
+
+	
+	\item type system for dp
+
+	\begin{itemize}
+		\item 
+
+		\href
+		{https://www.cri.ensmp.fr/people/gallego/papers/AGGHP13.pdf}
+		%
+		{Sensitivity Analysis Using Type-based Constraints}
+
+		d'Antoni L, Gaboardi M, Gallego Arias EJ, Haeberlen A, Pierce B.
+
+		FPCDSL , 2013
+
+		\item 
+
+		\href
+		{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6595834}
+		%
+		{Differential Privacy by Typing in Security Protocols}
+
+		Eigner F, Maffei M.
+
+		IEEE CSF, 2013
+
+		\item 
+
+		\href
+		{http://www.cis.upenn.edu/~bcpierce/papers/dp.pdf}
+		%
+		{Distance Makes the Types Grow Stronger: A calculus for differential privacy}
+
+		Reed J, Pierce BC.
+
+		ICFP, 2010
+
+		% \item 
+
+		% \href
+		% {https://www.cis.upenn.edu/~ahae/papers/fuzz-sec2011.pdf}
+		% %
+		% {Differential Privacy Under Fire}
+
+		% Haeberlen A, Pierce BC, Narayan A.
+
+		% USENIX Security, 2011
+
+		\item 
+
+		\href
+		{http://www.cis.upenn.edu/~ahae/papers/dfuzz-popl2013.pdf}
+		%
+		{Linear Dependent Types for Differential Privacy}
+
+		Gaboardi M, Haeberlen A, Hsu J, Narayan A, Pierce BC.
+
+		POPL, 2013
+
+		\item 
+
+		\href
+		{https://arxiv.org/pdf/1407.6845.pdf}
+		%
+		{Higher-order approximate relational refinement types for mechanism design and differential privacy}
+
+		Barthe G, Gaboardi M, Gallego Arias EJ, Hsu J, Roth A, Strub PY.
+
+		POPL, 2015
+
+		\item
+
+		\href
+		{http://david.darais.com/assets/papers/duet/duet.pdf}
+		%
+		{Duet: An Expressive Higher-order Language and Linear Type System for Statically Enforcing Differential Privacy}
+
+		Near JP, Darais D, Abuah C, Stevens T, Gaddamadugu P, Wang L, Somani N, Zhang M, Sharma N, Shan A, Song D. 
+
+		arXiv:1909.02481
+
+
+	\end{itemize}
+
+	\item verification of privacy and utility
+
+	\begin{itemize}
+
+		\item 
+
+		\href
+		{https://arxiv.org/pdf/1410.3735.pdf}
+		%
+		{The Foundational Cryptography Framework}
+
+		Petcher A, Morrisett G.
+
+		POST, 2015
+
+		\item 
+
+		\href
+		{https://arxiv.org/pdf/1407.2988.pdf}
+		%
+		{Proving differential privacy in hoare logic}
+
+		Barthe G, Gaboardi M, Arias EJ, Hsu J, Kunz C, Strub PY.
+
+		CSF, 2014
+
+		\item
+
+		\href
+		{https://arxiv.org/pdf/1601.05047.pdf}
+		%
+		{Proving Differential Privacy via Probabilistic Couplings}
+
+		Barthe G, Gaboardi M, Grégoire B, Hsu J, Strub PY.
+
+		LICS, 2016
+
+		% \item 
+
+		% \href
+		% {https://hal.inria.fr/inria-00431771/document}
+		% %
+		% {Proofs of randomized algorithms in Coq-HAL}
+
+		\item 
+
+		\href
+		{https://www.cs.cmu.edu/~kqy/resources/Verified-HMAC-DRBG.pdf}
+		%
+		{Verified Correctness and Security of mbedTLS HMAC-DRBG}
+
+		Ye KQ, Green M, Sanguansin N, Beringer L, Petcher A, Appel AW.
+
+		CCS, 2017
+
+		\item 
+
+		\href
+		{http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.220.4653&rep=rep1&type=pdf}
+		%
+		{Formal certification of code-based cryptographic proofs}
+
+		Barthe G, Grégoire B, Zanella Béguelin S.
+
+		POPL, 2019
+
+
+		% \item 
+
+		% \href
+		% {http://ace.cs.ohio.edu/~gstewart/papers/aaai19-bagnall.pdf}
+		% %
+		% {Certifying the True Error Machine Learning in Coq with Verified Generalization Guarantees}
+
+		% Bagnall A, Stewart G. 
+
+		% AAAI, 2019
+
+
+
+
+	\end{itemize}
+
+	\item dp with mechine floating point 
+
+	\begin{itemize}
+		\item
+
+		\href
+		{https://cs.nyu.edu/~dodis/ps/svdp.pdf}
+		%
+		{Differential privacy with imperfect randomness}
+
+		Dodis Y, L{\'o}pez-Alt A, Mironov I, Vadhan S.
+
+		CRYPTO, 2012
+
+		\item 
+
+		\href
+		{http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.366.5957&rep=rep1&type=pdf}
+		%
+		{On Significance of the Least Significant Bits For Differential Privacy}
+
+		Mironov I.
+
+		CCS, 2012
+
+		\item
+
+		\href
+		{https://arxiv.org/pdf/1202.0693.pdf}
+		%
+		{A non-local method for robustness analysis of floating point programs}
+
+		Gazeau I, Miller D, Palamidessi C.
+
+		EPTCS 85, workshop of QAPL 2012
+
+
+
+	\end{itemize}
+
+	\item type system on information flow
+
+	\begin{itemize}
+		\item 
+
+		\href
+		{https://people.mpi-sws.org/~dg/teaching/lis2014/modules/ifc-4-pottier02.pdf}
+		%
+		{Information Flow Inference for ML}
+
+		Pottier F, Simonet V. Information flow inference for ML.
+
+		TOPLAS, 2003
+
+		\item 
+
+		\href
+		{https://people.mpi-sws.org/~dg/teaching/lis2014/modules/ifc-2-hunt06.pdf}
+		%
+		{On Flow-Sensitive Security Types}
+
+		Hunt S, Sands D.
+
+		POPL, 2016
+
+	\end{itemize}
+
+	\item Linear \& Dependent Type 
+
+	\begin{itemize}
+
+		\item
+
+		\href
+		{https://www.cs.cmu.edu/~fp/papers/popl99.pdf}
+		%
+		{Dependent types in practical programming}
+
+		Xi H, Pfenning F.
+
+		POPL, 1999
+
+		% \item 
+
+		% \href
+		% {https://arxiv.org/pdf/1104.0193.pdf}
+		% %
+		% {Linear Dependent Types and Relative Completenes}
+
+		% Dal Lago U, Gaboardi M.
+
+		% LICS, 2011
+
+		\item 
+
+		\href
+		{https://lipn.univ-paris13.fr/~mazza/papers/CoreQuantCoeff.pdf}
+		%
+		{A Core Quantitative Coeffect Calculus}
+
+		Brunel A, Gaboardi M, Mazza D, Zdancewic S.
+
+		ESOP, 2014
+
+		% \item 
+
+		% \href
+		% {https://arxiv.org/pdf/1503.04522.pdf}
+		% %
+		% {Really Natural Linear Indexed Type Checking}
+
+		% De Amorim AA, Gaboardi M, Gallego Arias EJ, Hsu J.
+
+		% IFL, 2014
+
+
+	\end{itemize}
+
+	% \item Type Inference
+
+	% \begin{itemize}
+	% 	\item 
+
+	% 	\href
+	% 	{http://ulrichschoepp.de/Docs/intmlti.pdf}
+	% 	%
+	% 	{Type Inference for Sublinear Space Functional Programming}
+
+	% \end{itemize}
+
+\end{itemize}
+
+
+
+
+
+\end{document}
