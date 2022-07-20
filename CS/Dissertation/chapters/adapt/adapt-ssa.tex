@@ -1,0 +1,467 @@
+\chapter{The SSA Loop Language}
+\label{ch:adapt-ssa}
+
+ This chapter contains the SSA version of the loop language we use to express the data analysis algorithm. Also, the necessity of the transformation from the loop language to the SSA language is presented.
+
+\section{The Limitations of {Loop} Language for Static Analysis}
+\label{sec:adapt-limit}
+ The labeled {loop} language supports the notion of adaptivity semantically, through a query-based dependency graph. However, syntactically, it is not so suitable for program analysis. The reason is that it allows variables to be reassigned, making the decision on where used variables come from tricky, especially there are controlled branches. We use three examples in {loop} language to show the dilemma, assuming $q_1,q_2,q_3$ are three linear queries.
+%
+\[
+ s_1 = \begin{array}{l}
+      \clabel{ \assign{x}{q_1}}^{1} ; \\
+      \eif  [(x < 0 )]^{2} \\
+      \ethen \clabel{\assign{x}{q_2}}^{3}\\
+      \eelse \clabel{\eskip}^{4} ; \\
+      \clabel{\assign{y}{q(x+\chi[3])}}^{5}
+ \end{array}
+ ~~~~~
+  s_2 = \begin{array}{l}
+      \clabel{ \assign{x}{q_1}}^{1} ; \\
+      \eif  [(x < 0 )]^{2} \\
+      \ethen \clabel{\assign{x}{q_2}}^{3}\\
+      \eelse \clabel{\assign{x}{q_3}}^{4} ; \\
+      \clabel{\assign{y}{q(x+\chi[3])}}^{5}
+ \end{array}
+ ~~~~~~~~
+  s_3 = \begin{array}{l}
+      \clabel{ \assign{x}{q_1}}^{1} ; \\
+      \eif  [(x < 0 )]^{2} \\
+      \ethen \clabel{\assign{z}{q_2}}^{3}\\
+      \eelse \clabel{\eskip}^{4} ; \\
+      \clabel{\assign{y}{q(x+\chi[3]}}^{5}
+ \end{array}
+\]
+In these three examples, the variable $x$ used in the query $q(x+\chi[3])$ at line $5$ is implicit, when we statically analyze the statement $\clabel{\assign{y}{q(x+\chi[3])}}^{5}$. In program $s_1$, it refers to the either $x$ at line $1$, or $x$ at line $3$.  When we have a look at the other two programs $s_2$ and $s_3$, the query $q(x+\chi[3])$ may depend on either $q_2$($x$ at line $3$) or $q_3$($x$ at line $4$) in $s_2$, while it only depends on $q_1$ at line $1$ in program $s_3$. These structural similar three examples, however, have quite dissimilar dependencies between variables. It increases the challenge to track dependency in static analysis. Still look at the analysis on the statement $\clabel{\assign{y}{q(x+\chi[3])}}^{5}$, extra information is needed such as value of $x$ used in the statement may come from the result of $q_1$ or the answer to $q_2$ when this statement lies in $s_1$. Similarly, when in program $s_2$, the extra information that the value of $x$ used in the same statement relies on answers to queries $q_2$ or $q_3$ in both branches of the if statement starting from line $2$ is necessary for static analysis on dependency. Additionally, in program $s_2$, we also need to update the information that $x$ assigned at line $1$ is overwritten by both branches when analyzing the statement at line $5$.   
+
+To simplify the program analysis, we choose to conduct the static analysis on the SSA form of our target programs.   
+%
+%
+%
+%  \dg{I am failing to see the problem here. Definition 1 seems to work perfectly well on the above programs and it gives the intuitively correct dependencies. Why do we need SSA?}\wq{The reason to use ssa is to simplify the static analysis in section 5. in $s_2$, when we analyze the command $\assign{y}{q(x+\chi(3))}$, we want to track the information $y$ may depend on $x$, but on which $x$,  at line $3$ or $4$, or even at line $1$? ssa gives us a explicit variable $x_4$ here. }
+\[
+ s_1^{s} = \begin{array}{l}
+      \clabel{ \assign{{\ssa{x_1}}}{q_1}}^{1} ; \\
+      \eif  [({\ssa{x_1} }< 0 )]^{2}\\
+      ([], [{ \ssa{x_3, x_1,x_2} }], []) \\
+      \ethen \clabel{\assign{{\ssa{x_2}}}{q_2}}^{3}\\
+      \eelse \clabel{\eskip}^{4} ; \\
+      \clabel{\assign{{\ssa{y_1}}}{q({\ssa{x_3} + \chi[3]})}}^{5}
+ \end{array}
+ ~~~~~
+  s_2^{s} = \begin{array}{l}
+      \clabel{ \assign{{\ssa{x_1}}}{q_1}}^{1} ; \\
+      \eif  [({\ssa{x_1}} < 0 )]^{2} \\
+      ( [{\ssa{x_4, x_2,x_3}}], [], [] ) \\
+      \ethen \clabel{\assign{{\ssa{x_2}}}{q_2}}^{3}\\
+      \eelse \clabel{\assign{{\ssa{x_3}}}{q_3}}^{4} ; \\
+      \clabel{\assign{{\ssa{y_1}}}{q({\ssa{x_4}}+\chi[3])}}^{5}
+ \end{array}
+ ~~~~~~~~
+  s_3^{s} = \begin{array}{l}
+      \clabel{ \assign{{\ssa{x_1}}}{q_1}}^{1} ; \\
+      \eif  [({\ssa{x_1}} < 0 )]^{2} \\
+       ( [], [], [] ) \\
+      \ethen \clabel{\assign{{\ssa{z_1}}}{q_2}}^{3}\\
+      \eelse \clabel{\eskip}^{4} ; \\
+      \clabel{\assign{{\ssa{y_1}}}{q({\ssa{x_1}}+\chi[3])}}^{5}
+ \end{array}
+\]
+%
+To distinguish between the {loop} language and in SSA form, we denote the SSA variable ${\ssa{x}}$ in bold. As we can see, the reachability of assigned variables becomes explicit in the SSA form. In the SSA version $s_1^s$ of $s_1$, still looking at the statement at line $5$, which becomes $\clabel{\assign{{\ssa{y_1}}}{q({\ssa{x_1}}+\chi[3])}}^{5} $, we can syntactically figure out that the query may depend on the variable $\ssa{x_3}$, which may come from $\ssa{x_1}$ or $\ssa{x_2}$, without extra information like in $s_1$. This benefit also applies to the analysis over the same statement at line $5$ in $s_2^s$ and $s_3^s$.  
+
+
+
+\section{Syntax of the SSA Loop Language }
+\label{sec:adapt-syntax-ssa-loop}
+We present the syntax of the SSA loop language, a language based on the {loop} language, representing programs in the static single assignment form.
+% We omit the standard parts inherited from the {loop} language and only present the syntax relevant to ssa. 
+% \dg{In the earlier (non-SSA) language, lists were at the level of expressions; now they are at the level of arithmetic expressions. Is this intentional?}\wq{We just decide to change the syntax in the {loop} language, the ssa langauge will be the same, will modify it.}
+
+The expressions inherit from the {loop} language, except that the SSA arithmetic expressions $\ssa{\aexpr}$ now contain SSA variable $\ssa{x} \in \mathcal{SV}$. The boolean expressions in the SSA loop language are denoted as $\ssa{\bexpr}$. In the language, variables can also be annotated, denoted as $\mathcal{LV}$, in a similar way as the annotated queries in the {loop} language. For instance, $\ssa{x}^{(l,w)} \in  \mathcal{LV}$. The SSA memory now is a map from SSA variables to values.
+%
+
+The SSA labeled command $\ssa{c}$ inherits from the {loop} language, except that the expressions and variables in these commands are now in its SSA version as shown below. 
+\[
+\begin{array}{llll}
+%  \mbox{Arithmatic Operators} & \oplus_a & ::= & + ~|~ - ~|~ \times 
+% %
+% ~|~ \div \\  
+%   \mbox{Boolean Operators} & \oplus_b & ::= & \lor ~|~ \land ~|~ \neg\\
+%   %
+%   \mbox{Relational Operators} & \sim & ::= & < ~|~ \leq ~|~ == \\  
+%  \mbox{Label} & l & := & \mathbb{N} \\ 
+%  \mbox{While Map} & w & \in & \mbox{Label} \times \mathbb{N} \\
+% \mbox{SSA Arithmetic Expressions} & \ssa{\aexpr} & ::= & 
+% 	%
+% 	{n} ~|~ {\ssa{x}}  ~|~ \ssa{\aexpr} \oplus_a \ssa{\aexpr}  \\
+% % 	\sep \pi (l , \aexpr, \aexpr) \\
+%     %
+% \mbox{SSA Boolean Expressions} & \ssa{\bexpr} & ::= & 
+% 	%
+% 	\textrm{true} ~|~ \textrm{false}  ~|~ \neg \ssa{\bexpr}
+% 	 ~|~ \ssa{\bexpr} \oplus_b \ssa{\bexpr}
+% 	%
+% 	~|~ \ssa{\aexpr} \sim \ssa{\aexpr} \\
+% \mbox{SSA Expressions} & \ssa{\expr} & ::= & \ssa{\aexpr} \sep \ssa{\bexpr} \sep \chi\sep [] ~|~ [\ssa{\expr}, \dots, \ssa{\expr}] ~|~ \chi[\ssa{\aexpr}] ~|~ x[\ssa{\aexpr}]\\	
+ & \ssa{c} & ::= &   [\assign {\ssa{x}}{ \ssa{\expr}}]^{l} ~|~  [\assign {{\ssa{x}} } {q({\ssa{e_q}})}]^{l}
+%
+% ~|~ [\eswitch( \ssa{\expr}, \ssa{x}, \ssa{v_i} \to \ssa{ q_i})]^{l} 
+~|~  {{ifvar(\bar{\ssa{x}}, \bar{\ssa{x}}')}}  ~|~ [\eskip]^{l}  ~|~
+ \eloop ~ [{\ssa{\aexpr}}]^{l}, {n},  [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ~ \edo ~ {\ssa{c}}  ~|~ \\ &&& \ssa{c};\ssa{c}  ~|~  \eif([\ssa{\bexpr}]^{l}, ([\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] , [\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}],[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] ) , \ssa{c}, \ssa{c}) 	
+	\\
+% \mbox{SSA Memory} & \ssa{m} & ::= & \emptyset ~|~ { (\ssa{x} \to v) :: \ssa{m} } \\
+%
+% \mbox{Trace} & t & ::= & [] ~|~ \ssa{({q(v)^{(l, w) }) :: t}} \\
+% \mbox{Annotated Query} & \mathcal{AQ}  & ::= & \{ q(v)^{(l,w)}  \} \\
+% \mbox{SSA Variables} & \mathcal{SV}  & ::= & \{ \ssa{x} \} \\
+% \mbox{Annotated SSA Variables} & \mathcal{LV}  & ::= & \{ \ssa{x}^{(l,w)}  \}
+\end{array}
+\]
+% In the assignment $[\assign {\ssa{x}}{ \ssa{\expr}}]^{l}$,  query request $[\assign {{\ssa{x}} } {q({\ssa{e}})}]^{l}$, the expression ${\ssa{\expr}}$ contain ssa variables, similar for the $\ssa{\aexpr}$ in the loop and conditional $\ssa{\bexpr}$ in the if command. 
+The if command now contains the extra part $([\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] , [\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}],[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] )$, which helps to track the dependency of new assigned variables in both branches($[\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$), then branch $[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}]$, and else branch $[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] $. 
+The $\bar{\ssa{x}}$ is a list of SSA variables, in which every element $\ssa{x}$ may depend on the corresponding element(at same location), $\ssa{x_1}$ from $\bar{\ssa{x_1}}$ collected in the then branch or the corresponding element $\ssa{x_2}$ from $\bar{\ssa{x_2}}$ collected in the else branch. The size of these three lists are required to be the same.
+
+Every tuple $(\ssa{x,x_1,x_2 })$ from $[\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$ can be understood as $\ssa{x} = \phi(\ssa{x_1,x_2})$ in the normal SSA form. The previous example $s_2^{s}$ can be used for reference. The second part $[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}]$ focuses on the then branch. The list of SSA variables $\bar{\ssa{y_1}}$ stores the assigned SSA variables before the if statement, whose non-SSA version (variables in the {loop} language) will be modified only in the then branch. We can look at program $s_1$ as a reference, in which $x$ at line $1$ may be modified only in the then branch at line $3$. The list $\bar{\ssa{y_2}}$ tracks the SSA variables assigned only in the then branch. If the variables are assigned in both branches such as in the program $s_2$, they go into $[\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$. Then we think every SSA variable in $\bar{\ssa{y}}$ may come from the corresponding variable $\ssa{y_1}$ in $\bar{\ssa{y_1}}$ before the if command or $\ssa{y_2}$ in $\bar{\ssa{y_2}}$ in the then branch. In this sense, we can also regard every tuple $(\ssa{y,y_1,y_2 })$ from $[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}]$ as $\ssa{y} = \phi(\ssa{y_1,y_2})$.  The rest part $[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}]$ focus on the else branch and can be understood similarly.
+
+\wq{To better understand these $[\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$,  $[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}] $, $[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}]$ in the SSA if statement. Let us look at our previous example $s_1, s_2, s_3$. We can see in $s_1$, variable $x$ is only assigned in the then branch at line 3. So what is the value of variable $x$ at line 5 comes from, it is not clear. It may comes from line 1 or line 3. In its SSA version, we want to eliminate this unclear source of $x$. So If we look at $s_1^{s}$, $[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}] $ is instantiated with $[{\ssa{x_3}}, {\ssa{x_1}}, {\ssa{x_2}}]$. In this sense, we claim that $\ssa{x_3}$ used at line 5 will either comes from $\ssa{x_1}$ at line 1 or $\ssa{x_2}$ at line 3. These \ssa{y}s are specific for those variables that are assigned before the if statement, and only reassigned in the then branch. Similarly, $[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}]$ are for those variables that are assigned before the if statement, and only reassigned in the else branch. $[\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$ will be used for variables assigned in both branches, see $s_2$.     }
+
+Also, the loop command also has similar part $ [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$, focusing on the loop body. The new command ${{ifvar(\bar{\ssa{x}}, \bar{\ssa{x}}')}}$ does not have explicit label because it is only used for evaluation internally, we will discuss more about it when used in the operational semantics for the SSA loop language. 
+
+% We show the example of the complete version of two round algorithm $TRC^{ssa}$ in the ssa language in Figure~\ref{fig:tworound_complete}.
+
+\section{Trace-based Operational Semantics of the SSA loop Language}
+\label{sec:adapt-ssa-os}
+When switching to the SSA loop language, we show that we are still able to achieve what we can get in the loop language (Chapter~\ref{ch:adapt-definition}). The operational semantics of the SSA loop language mimics its counterpart, of the form $\config{\ssa{m}, \ssa{c}, t, w} \to \config{\ssa{m'}, \eskip, t', w'}$. The SSA memory $\ssa{m}$ is a map from SSA variable $\ssa{x}$ to values. It still uses a trace to track the query requests during the execution, starting from an SSA configuration with SSA memory $\ssa{m}$ and program in its SSA form $\ssa{c}$, which allows a similar construction of the query-based dependency graph in the SSA language as in the { loop} language.
+
+We show selected evaluation rules in Figure~\ref{fig:ssa_evaluation}. \wq{ The details can be found in Section~\ref{appendixC:ssaos}.} The key idea underneath the operational semantics is to have the trace and the execution path being constructed in a similar way as in the {loop} language. 
+
+Take the query request as an example, the argument $\ssa{e_q}$ which may contain SSA variables will be evaluated to a value $v_q$ first before the request is sent to the mechanism in rule $\textbf{SSA-query-arg}$. The trace expands in the rule $\textbf{SSA-query}$ likewise in the {loop} language. The query $q$, a primitive symbol representing the query , makes no difference in the two languages. 
+%
+{\footnotesize
+\begin{figure}
+    \begin{mathpar}
+\boxed{ \config{\ssa{ m, c}, t,w} \xrightarrow{} \config{\ssa{ m', c'},  t', w'} \; }
+\and
+\inferrule
+{
+{q(v_q) = v} 
+}
+{
+\config{ \ssa{m}, [\assign{{\ssa{x}}}{{q(v_q)}}]^l, t, w} \xrightarrow{} \config{\ssa{  m}[ v / \ssa{ x} ], \eskip,  t \mathrel{++} [q(v_q)^{(l,w )}],w  }
+}
+~\textbf{SSA-query}
+\and
+%
+\inferrule
+{
+}{
+ \config{ \ssa{m}, ifvar(\ssa{\bar{x}, \bar{x}'}),{ t,w }} \to \config{ \ssa{m [  m(\bar{x}')/ \bar{x}], \eskip , t,w }  }
+}~\textbf{SSA-ifvar}
+% %
+\and
+% \and
+\inferrule
+{
+ \config{\ssa{m, \expr_q} } \to \config{m, \ssa{\expr_q'}}
+}
+{
+\config{ \ssa{m}, [\assign{{\ssa{x}}}{{q(\ssa{\expr_q})}}]^l, t, w} \xrightarrow{} \config{ \ssa{m}, [\assign{{\ssa{x}}}{{q(\ssa{\expr_q'})}}]^l, t, w}
+}
+~\textbf{SSA-query-arg}
+%
+\and
+%
+%
+\inferrule
+{
+}
+{
+\config{\ssa{m, \eif([\etrue]^{l}, [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ,[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}] ,[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] , c_1, c_2)},t,w} 
+%
+\xrightarrow{} \\ \config{\ssa{m, c_1}; { \ ifvar(\bar{\ssa{x}},\bar{\ssa{x_1}}); ifvar(\bar{\ssa{y}},\bar{\ssa{y_2}});ifvar(\bar{\ssa{z}},\bar{\ssa{z_1}}) }  ,  t,w}
+}
+~\textbf{SSA-if-t}
+%
+\and
+%
+\inferrule
+{
+}
+{
+\config{\ssa{m, \eif([\efalse]^{l}, [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ,[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}] ,[\bar{\ssa{z}},\bar{\ssa{z_1}}, \bar{\ssa{z_2}}] , c_1, c_2)},t,w} 
+%
+\xrightarrow{} \\ \config{\ssa{m, c_2} ; { ifvar(\bar{\ssa{x}},\bar{\ssa{x_2}}); ifvar(\bar{\ssa{y}},\bar{\ssa{y_1}});ifvar(\bar{\ssa{z}},\bar{\ssa{z_2}}) },  t,w}
+}
+~\textbf{SSA-if-f}
+%
+\and
+%
+{\inferrule
+{
+ {{ \valr_N > 0} }\and 
+ { {n} = 0 \implies i =1 } \and
+ { {n} > 0 \implies i =2 }
+}
+{
+\config{ \ssa{m},  \eloop ~ [\valr_N]^{l}, n, [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ~ \edo ~ \ssa{c}   ,  t, w }
+\xrightarrow{} \\ \config{\ssa{ m, c[\bar{x_i} /  \bar{x}   ]};  \eloop ~ [(\valr_N-1)]^{l}, n+1, [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ~ \edo ~ \ssa{c} ,  t, (w + l)  }
+}
+~\textbf{SSA-loop}
+}
+%
+\and
+%
+{
+\inferrule
+{
+ \valr_N = 0 \and
+ { {n} = 0 \implies i =1 } \and
+ { {n} > 0 \implies i =2 }
+}
+{
+\config{\ssa{m},  \eloop ~ [\valr_N]^{l}, n, [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ~ \edo ~ \ssa{c}   ,  t, w }
+\xrightarrow{} \config{\ssa{ m[m(\bar{x_i})/\bar{x} ]}, [\eskip]^{l} ,  t, (w \setminus l)  }
+}
+~\textbf{SSA-loop-exit}
+}
+%
+\end{mathpar}
+    \vspace{-0.4cm}
+    \caption{Operational semantics for the ssa loop language.}
+    \label{fig:ssa_evaluation}
+    \vspace{-0.6cm}
+\end{figure}
+}
+%
+
+
+Since we add the extra part $[\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ,[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}] ,[\bar{\ssa{z}},\bar{\ssa{z_1}}, \bar{\ssa{z_2}}]  $ in the if statement compared to its counterpart in the {loop} language introduced before, the rules relevant to the if conditional ($\textbf{SSA-if-t}$ and $\textbf{SSA-if-f}$) use the extra command $ifvar(\ssa{\bar{x}, \bar{x}'})$ to update the SSA memory $\ssa{m}$ with the the mapping from all the new generated variable $\ssa{x}$ in the list $\bar{\ssa{x}}$ to the appropriate value $\ssa{m(x')}$. The SSA variable $\ssa{x'}$ is the corresponding variable with respect to $\ssa{x}$ in $\bar{\ssa{x'}}$. There is a one-on-one correspondence between the two SSA variable lists $\bar{\ssa{x}}$ and ${\bar{\ssa{x'}}}$, based on the position in the list, which requires the two lists of the same length.  
+The rule $\textbf{SSA-ifvar}$ reflects the usage of $ifvar(\ssa{\bar{x}, \bar{x}'})$. It is easier to understand the usage of $ifvar(\ssa{\bar{x}, \bar{x}'})$ in the rule $\textbf{SSA-if-t}$ when we think about how SSA works: in the SSA form, when a variable to be used may come from two sources (e.g. $\ssa{x_1}$ and $\ssa{x_2}$ in the rule), it generates a new SSA variable $\ssa{x}$, assigning it with $\phi(\ssa{x_1}, \ssa{x_2})$,  and replaces the variable to be used with this newly assigned $\ssa{x}$. We know that in the future program after this if statement, only the variables appeared in $\bar{\ssa{x}}$ will be available, instead of   $\bar{\ssa{x_1}}, \bar{\ssa{x_2}}$ from two branches. \wq{Let us look at the example $s_2$, when we transform $s_2$ to its SSA version $s_2^{s}$, what will the variable $x$ at line 5 in $s_2$ be replaced with in $s_2^{s}$? It is $\ssa{x_4}$. However, if we look at the evaluation rule of SSA if. Let us choose \textbf{SSA-if-t}, after the then branch is executed, in the resulting memory, there is no mapping from $\ssa{x_4}$ to some value. Instead, there is only a mapping from $\ssa{x_2}$ to some value. However, in $s_2^{s}$, at line 5, we have $\ssa{x_4}$ instead of $\ssa{x_2}$. This is the reason we use $ifvar(\ssa{x_4},\ssa{x_2})$ in the evaluation rule to modify the resulting memory. } For the evaluation of the program after this if statement, we need to tell the memory the exact value of the newly generated variable $\ssa{x}$, which is the value stored in $\ssa{x_1}$ when the conditional predicate $\ssa{b}$ is true, or the value in $\ssa{x_2}$ when $\ssa{b}$ is false. To this end, the internal command $ifvar(\ssa{\bar{x}, \bar{x}'})$ plays its role. For the if rule, we need to instantiate those variables from $\bar{\ssa{x}}$ whose values come from two branches, $\bar{\ssa{y}}$ whose values from then branch or assignment before the if command, and $\bar{\ssa{z}}$ whose values from else branch or before the if command. Correspondingly, we need to have three extra $ifvar$ commands.   
+
+The evaluation of loop depends on the loop counter $\ssa{\aexpr}$ in the rule $\textbf{SSA-loop}$, which will be evaluated to a value $v_N$. When $v_N$ is greater than 0, the loop is still executing, and all the variables $\ssa{x}$ in $\bar{\ssa{x}}$ of the loop body $\ssa{c}$ are replaced as the corresponding variables in $\bar{\ssa{x_1}}$ in the first iteration($n=0$), or $\bar{\ssa{x_2}}$ in other iterations($n > 0$). The loop turns to an exit described in the rule $\textbf{SSA-loop-exist}$ when $v_N > 0$, and the memory $\ssa{m}$ updates the mapping of variables in $\bar{\ssa{x}}$ with $\bar{\ssa{x_1}}$ if the iteration counter goes to zero($n=0$), which means the loop body is not executed once. When the loop enters the exit after executing the body a few times($n$), the variables in $\bar{\ssa{x}}$ is instantiated with the value from the body $\ssa{m}(\bar{\ssa{x_2}})$. 
+
+ The trace-based operational semantics of the SSA loop language allow us to provide our query-based dependency graph in the SSA version.
+
+\begin{defn}[Query may dependency in SSA ]
+One query ${q({v_q}_2)}$ \emph{may depend} on another query ${q({v_q}_1)}$ in a program $\ssa{c}$,  with a starting loop maps $w$, a starting memory $\ssa{m}$, hidden database $D$, denoted as \\
+ $\mathsf{DEP_{ssa}}({q({v_q}_1)}^{(l_1, w_1)}, {q({v_q}_2)}^{(l_2, w_2)}, \ssa{c},w, \ssa{m},D)$.
+ \[
+\begin{array}{l}
+\forall  t. \exists \ssa{m_1},\ssa{m_3},t_1,t_3,c_2.\\
+  \left (\begin{array}{l}   
+\config{\ssa{m}, c,  t,w} \rightarrow^{*} \config{\ssa{m_1}, [\assign{\ssa{x}}{q({v_q}_1)}]^{l_1} ; \ssa{c_2},
+  t_1,w_1} \rightarrow \\ \config{\ssa{m_1}[q({v_q}_1)(D)/\ssa{x}], \ssa{c_2},
+  t_1++[q({v_q}_1)^{(l_1, w_1)}], w_1} \rightarrow^{*} \config{\ssa{m_3}, \eskip,
+  t_3,w_3} \\  
+  \land \\
+\Big( q({v_q}_1)^{(l_1,w_1)} \in_{q} (t_3-t) \land q({v_q}_2)^{(l_2,w_2)} \in_{q} (t_3-t_1) \\ \implies  \exists v \in \codom(q({v_q}_1)), \ssa{m_3'}, t_3', w_3'.  \\
+ \config{\ssa{m_1}[v/\ssa{x}], \ssa{c_2}, t_1++[q({v_q}_1)^{(l_1,w_1)}], w_1} \rightarrow^{*} \config{\ssa{m_3'}, \eskip, t_3', w_3'} \\ \land (q({v_q}_2)^{(l_2,w_2)}) \not \in_{q} (t_3'-t_1)
+\Big)\\
+\land \\
+\Big(q({v_q}_1)^{(l_1,w_1)} \in_{q} (t_3-t) \land q({v_q}_2)^{(l_2,w_2)} \not\in_{q} (t_3-t_1) \\ \implies  \exists v \in \codom(q({v_q}_1)),  \ssa{m_3'}, t_3', w_3'. \\
+ \config{\ssa{m_1}[v/\ssa{x}], \ssa{c_2}, t_1++[q({v_q}_1)^{(l_1,w_1)}], w_1} \rightarrow^{*} \config{\ssa{m_3'}, \eskip, t_3', w_3'} \\ \land (q({v_q}_2)^{(l_2,w_2)})  \in_{q} (t_3'-t_1)
+\Big)
+\end{array} \right )
+\end{array}
+\]
+\end{defn}
+
+
+\begin{defn}
+[Dependency Graph in SSA].
+\\
+Given a program $\ssa{c}$, a database $D$, a starting memory $\ssa{m}$, an initial loop maps $w$, the dependency graph $G_{s}(\ssa{c},D,\ssa{m},w) = (V, E)$ is defined as: \\
+$V =\{q({v_q})^{l,w} \in \mathcal{AQ} \mid \forall t. \exists \ssa{m'},  w', t'.  \config{\ssa{m} ,\ssa{c}, t, w}  \to^{*}  \config{\ssa{m'} , \eskip, t', w' }  \land q({v_q})^{l,w} \in {(t'-t)}  \}$.
+\\
+$E = \left\{(q({v_q})^{(l,w)},q({v_q}')^{(l',w')}) \in \mathcal{AQ} \times \mathcal{AQ} 
+~ \left \vert ~ \begin{array}{l}
+  \mathsf{DEP_{ssa}}(q({v_q}')^{(l',w')},q({v_q})^{(l,w)}, \ssa{c},w,\ssa{m},D)     
+\end{array} \right. 
+\right\}$.
+\end{defn}
+
+
+\begin{defn}[Adaptivity in SSA]
+Given a program $\ssa{c}$, and a meory $\ssa{m}$, a database $D$, a starting loop maps $w$, the adaptivity of the dependency graph $G_s(\ssa{c}, D,\ssa{m},w) = (V, E)$ is the length of the longest path in this graph. We denote the path from $q({v_q})^{(l,w)}$ to $q({v_q}')^{(l',w')}$ as $p_s(q({v_q})^{(l,w)}, q({v_q}')^{(l',w')} )$. The adaptivity denoted as $A_s(\ssa{c}, D, \ssa{m}, w)$.
+%
+$$A_s(\ssa{c}, D, \ssa{m}, w) = \max\limits_{q({v_q})^{(l,w)},q({v_q}')^{(l',w')} \in V } |p_s(q({v_q})^{(l,w)}, q({v_q}')^{(l',w')} )| $$
+\end{defn}
+
+
+
+\section{Transformation }
+\label{sec:adapt-transformation}
+We build a bridge between the two languages through a transformation in spirit of the work \cite{VekrisCJ16}. The command transformation of the form $ \Sigma; \delta ; c  \hookrightarrow \ssa{c} ; \delta' ; \Sigma'$ translates the labelled command $c$ in the {loop} language to its counterpart in SSA loop language.  The SSA name environment $\Sigma$, a set of ssa variables already used before the transformation process, is used to generate a fresh SSA variable via a function $fresh(\Sigma)$. Additionally, translating variables read in the program in the {loop} language to its unique SSA variable requires a translation environment $\delta$, a map from variable $x \in \mathcal{VAR}$ to its SSA form $\ssa{x} \in \mathcal{SV}$. Also, the translation environment $\delta$ and the SSA name environment $\Sigma$ will be updated to $\delta'$ and $\Sigma'$ respectively, along the transformation of the target command. The transformation of the expression is much simpler, of the form $ \delta; \expr \hookrightarrow \ssa{\expr}$, which transforms the variables in $\expr$ to ssa variables stored in the translation environment $\delta$, shown in the rule $\textbf{s-var}$.
+
+We present selected transformation rules in Figure~\ref{fig:trans_rules}. The rules $\textbf{s-assn}$ as well as $\textbf{s-query}$ both use $fresh(\Sigma)$ to generate a new fresh SSA variable $\ssa{x}$ to guarantee the unique assignment of SSA variables. The translation environment is updated with the mapping from variable $x$ in {loop} language to the new generated SSA variable $\ssa{x}$ for reference to $x$ used in the future. The SSA name environment is also modified by recording $\ssa{x}$. The transformation of the sequence is standard, with both environments $\delta$ and $\Sigma$ updated during the transformation procedure.   
+
+We look at the rule $\textbf{s-if}$ by first introducing the binary operation $\bowtie$ on two translation environments $\delta_1$ and $\delta_2$. 
+\[ \delta_1 \bowtie \delta_2 = \{ ( x, {\ssa{x_1}, \ssa{x_2}} ) \in \mathcal{VAR} \times \mathcal{SV} \times \mathcal{SV} \mid x \mapsto {\ssa{x_1}} \in \delta_1 , x \mapsto {\ssa{x_2} } \in \delta_2, {\ssa{x_1} \not= {\ssa{x_2} }  }  \} \]
+\[ \delta_1 \bowtie \delta_2 / \bar{x} = \{ ( x, {\ssa{x_1}, \ssa{x_2}} ) \in \mathcal{VAR} \times \mathcal{SV} \times \mathcal{SV} \mid x \not\in \bar{x} \land x \mapsto {\ssa{x_1}} \in \delta_1 , x \mapsto {\ssa{x_2} } \in \delta_2, {\ssa{x_1} \not= {\ssa{x_2} }   }  \} \]
+This operation $\delta_1 \bowtie \delta_2$ combines two translation environments by only keeping the mappings of the same key in both environments. It returns a set of tuples with three elements $(x,\ssa{x_1}, \ssa{x_2})$ to show that a variable $x$ in the {loop} language may be translated to either $\ssa{x_1}$ or $\ssa{x_2}$, depending on the control flow. We use $\bar{x}$ to represent a list of variables $x$, in this sense, the results of  $\delta_1 \bowtie \delta_2$ is denoted as $ [\bar{x}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$ as follows.
+\[
+ [\bar{x}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] = \{ (x, x_1,x_2)  | \forall 0 \leq i < |\bar{x}|, x = \bar{x }[i] \land x_1 = \bar{x_1}[i] \land x_2 = \bar{x_2 }[i] \land |\bar{x}| = |\bar{x_1}| = |\bar{x_2}|   \}
+\]
+In the rule $\textbf{s-if}$, a variable $x$ in {loop} language may be translated to two possible SSA variables in three cases: (1) the variable $x$ is assigned in both two branches, whose mapping of $x$ is stored in $\delta_1$(then branch) and $\delta_2$(else branch). (2) the variable $x$ is assigned before the if statement (in $\delta$) and only assigned in the then branch $\delta_1$ (3) the variable $x$ is assigned before the if statement (in $\delta$) and only assigned in the else branch $\delta_2$. This corresponds to the aforementioned discussion of the if statement in SSA loop language. We leave these mappings explicitly in the if command of the SSA loop language syntactically. We also use the variant of $\delta \bowtie \delta_1$, $\delta \bowtie \delta_1 / \bar{x}$ to guarantee that the variables stored in $ [\bar{y}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}]$ only appear in the then branch, not in the else branch. Similarly for $ [\bar{z}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}]$. After the transformation, the variable in $\bar{x}, \bar{y}, \bar{z}$ is replaced with the fresh SSA variables stored in $\bar{\ssa{x}},\bar{\ssa{y}},\bar{\ssa{z}}$ and the translation environment is updated accordingly.    
+
+The loop transformation rule $\textbf{s-loop}$ deserves a further discussion. Besides the normal transformation of the loop counter $\aexpr$ to $\ssa{\aexpr}$, an additional iteration counter is added to its SSA form to support the evaluation, as we have seen in the rule $\textbf{SSA-loop}$ in Figure~\ref{fig:ssa_evaluation}, and is set to $0$.
+For the variables assigned in the loop body $c$, we leave $ [\bar{\ssa{x'}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$ in the transformed SSA loop command, which tracks variables in the loop body whose value may come from two sources: assignment before the loop($\delta$) or assignment in the loop body $\delta_1$. We have two transformations on the body $c$ using the same SSA name environment $\Sigma$ but different translation environments $\delta$ and $\delta_1$.
+The premise $\Sigma; \delta; c \hookrightarrow \ssa{c_1}; \delta_1 ; \Sigma_1 $ corresponds to the transformation of the loop body in the first iteration with the variables assigned before the loop execution. The second premise $\Sigma; \delta; c \hookrightarrow \ssa{c_2}; \delta_1 ; \Sigma_1 $ corresponds to the transformation in the later iteration with the assigned variables updated by previous execution of the body.
+Thanks to the extra part $ [\bar{\ssa{x'}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$ in the SSA loop command, we know that those variables used in the first iteration are stored in $\bar{\ssa{x_1}}$ and those updated by the loop body are stored in $\bar{\ssa{x_2}}$. To finish the SSA transformation, we get the fresh SSA variables $\bar{\ssa{x'}}$ to replace the appearance of $\bar{\ssa{x_1}}$ in  $\ssa{c_1}$ or $\bar{\ssa{x_2}}$ in $\ssa{c_2}$. We use $\ssa{c_1}[\bar{\ssa{x'}}/ \bar{\ssa{x_1}}]$ and $\ssa{c_2}[\bar{\ssa{x'}}/ \bar{\ssa{x_2}}]$ to represent the replacement, and only the read variables(except for the assigned variables) are replaced. 
+Finally, we get the loop body $\ssa{c}$ in its SSA form.
+% the intuition behind $\delta_1 \bowtie \delta_2 $ is  
+% We use a translation environment $\delta$, to map variables $x$ in the low level language to those $\ssa{x}$ in ssa-form language. We use a name environment denoted as $\Sigma$, a set of ssa variables so we can get a fresh variable by $fresh(\Sigma)$. We define $\delta_1 \bowtie \delta_2 $ in a similar way as \cite{VekrisCJ16}.
+% \[ \delta_1 \bowtie \delta_2 = \{ ( x, {\ssa{x_1}, \ssa{x_2}} ) \in \mathcal{VAR} \times \mathcal{SV} \times \mathcal{SV} \mid x \mapsto {\ssa{x_1}} \in \delta_1 , x \mapsto {\ssa{x_2} } \in \delta_2, {\ssa{x_1} \not= {\ssa{x_2} }  }  \} \]
+% \[ \delta_1 \bowtie \delta_2 / \bar{x} = \{ ( x, {\ssa{x_1}, \ssa{x_2}} ) \in \mathcal{VAR} \times \mathcal{SV} \times \mathcal{SV} \mid x \not\in \bar{x} \land x \mapsto {\ssa{x_1}} \in \delta_1 , x \mapsto {\ssa{x_2} } \in \delta_2, {\ssa{x_1} \not= {\ssa{x_2} }   }  \} \]
+% We call a list of variables $\bar{x}$.
+%
+{\footnotesize
+\begin{figure}
+\begin{mathpar}
+\boxed{ \delta ; e \hookrightarrow \ssa{e} }
+\and
+\inferrule{
+}{
+ \delta ; x \hookrightarrow \delta(x)
+}~{\textbf{ s-var}}
+\\
+\boxed{ \Sigma; \delta ; c  \hookrightarrow \ssa{c} ; \delta' ; \Sigma' }
+\and
+\inferrule{
+  { \delta ; \bexpr \hookrightarrow \ssa{\bexpr} }
+  \quad
+  { \Sigma; \delta ; c_1 \hookrightarrow \ssa{c_1} ; \delta_1;\Sigma_1 }
+  \quad
+  {\Sigma_1; \delta ; c_2 \hookrightarrow \ssa{c_2} ; \delta_2 ; \Sigma_2 }
+  \\\\
+  {[\bar{x}, \ssa{\bar{{x_1}}, \bar{{x_2}}}] = \delta_1 \bowtie \delta_2  }
+  \quad
+   {[\bar{y}, \ssa{\bar{{y_1}}, \bar{{y_2}}}] = \delta \bowtie \delta_1 / \bar{x} }
+  \\
+   {[\bar{z}, \ssa{\bar{{z_1}}, \bar{{z_2}}}] = \delta \bowtie \delta_2 / \bar{x} }
+  \and
+  { \delta' =\delta[\bar{x} \mapsto \ssa{\bar{{x}}'} ][\bar{y} \mapsto \ssa{\bar{{y}}'} ][\bar{z} \mapsto \ssa{\bar{{z}}'} ]}
+  \\\\ 
+  {\ssa{\bar{{x}}', \bar{y}', \bar{z}'} \ fresh(\Sigma_2)
+  }
+  \quad{\Sigma' = \Sigma_2 \cup \{ \ssa{ \bar{x}', \bar{y}', \bar{z}' } \} }
+}{
+ \Sigma; \delta ; [\eif(\bexpr, c_1, c_2)]^l  \hookrightarrow [\ssa{ \eif(\bexpr, [\bar{{x}}', \bar{{x_1}}, \bar{{x_2}}] ,[\bar{{y}}', \bar{{y_1}}, \bar{{y_2}}] ,[\bar{{z}}', \bar{{z_1}}, \bar{{z_2}}] , {c_1}, {c_2})}]^l; \delta';\Sigma'
+}~{\textbf{ s-if}}
+%
+\and
+%
+\inferrule{
+ {\delta ; \expr \hookrightarrow \ssa{\expr} }
+ \quad
+ {\delta' = \delta[x \mapsto \ssa{{x}} ]}
+ \quad
+ { \ssa{x} \ fresh(\Sigma) }
+ \quad
+ { \Sigma' = \Sigma \cup \{ \ssa{x} \} }
+}{
+ \Sigma;\delta ; [\assign x \expr]^{l} \hookrightarrow [\ssa{\assign {{x}}{ \expr}}]^{l} ; \delta'; \Sigma'
+}~{\textbf{ s-assn}}
+%
+\and
+%
+\inferrule{
+%  {\delta ; q \hookrightarrow \ssa{q}}
+%  \and
+ {\delta ; \expr_q \hookrightarrow \ssa{\expr_q}}
+ \quad
+ {\delta' = \delta[x \mapsto \ssa{x} ]}
+ \quad
+ { \ssa{x} \ fresh(\Sigma) }
+  \quad
+  { \Sigma' = \Sigma \cup \{ \ssa{x} \} }
+}{
+ \Sigma;\delta ; [\assign{x}{q(e_q)}]^{l} \hookrightarrow [\assign {\ssa{x}}{ {q(\ssa{\expr_q})}}]^{l} ; \delta';\Sigma'
+}~{\textbf{ s-query}}
+% %
+\and
+%
+\inferrule{
+    {\delta ; \aexpr \hookrightarrow \ssa{\aexpr} }
+    \and
+    { \Sigma; \delta ; c \hookrightarrow \ssa{c_1} ; \delta_1; \Sigma_1 }
+    \and 
+     { \Sigma; \delta_1 ; c \hookrightarrow \ssa{c_2} ; \delta_1; \Sigma_1 }
+     \\
+    { [ \bar{x}, \ssa{\bar{{x_1}}}, \ssa{\bar{{x_2}}} ] = \delta \bowtie \delta_1 }
+    \and {\delta' = \delta[\bar{x} \mapsto \ssa{\bar{{x}}'}]}
+    \\\\
+    {\ssa{\bar{{x}}'} \ fresh(\Sigma_1 )}
+    \and 
+    {\ssa{c'= c_1[\bar{x}'/ \bar{x_1}] 
+    \and
+    c'[ \bar{x_2} / \bar{x}'] = c_2 } }
+    % \and{ \delta' ; c \hookrightarrow \ssa{c'} ; \delta'' }
+  }{ 
+  \Sigma; \delta ;  [\eloop ~ \aexpr ~ \edo ~ c ]^{l} \hookrightarrow [\ssa{\eloop ~ \aexpr, 0, [\bar{{x}}', \bar{{x_1}}, \bar{{x_2}}] ~ \edo ~ {c'} }]^{l} ; \delta_1[\bar{x} \to \ssa{\bar{x}'}]; \Sigma \cup \{\ssa{\bar{x}'}  \}
+}~{\textbf{ s-loop}}
+%
+% \and
+% %
+% \inferrule{
+%  {\Sigma;\delta ; c_1 \hookrightarrow \ssa{c_1} ; \delta_1; \Sigma_1} 
+%  \and
+%  {\Sigma_1; \delta_1 ; c_2 \hookrightarrow \ssa{c_2} ; \delta'; \Sigma'} 
+% }{
+% \Sigma;\delta ; c_1 ; c_2 \hookrightarrow \ssa{c_1} ; \ssa{c_2} \ ; \delta';\Sigma'
+% }~{\textbf{S-SEQ}}
+\end{mathpar}
+    \vspace{-0.4cm}
+ \caption{Key transformation rules from loop language to ssa language.}
+    \label{fig:trans_rules}
+    \vspace{-0.4cm}
+\end{figure}
+}
+\section{The Soundness of Transformation}
+\label{sec:adapt-transformation-soundness}
+In this section, we show our transformation from the {loop} language to its SSA form is sound with respect to adaptivity. To be specific, a transformed program $\ssa{c}$ starting with appropriate configuration, generates the same trace as the program before the transformation $c$, in its corresponding configuration.
+
+We first define a well defined memory in the {loop} language $m$ or in the SSA loop language $\ssa{m}$ with respect to a translation environment $\delta$, denoted as $m \vDash \delta$ and $\ssa{m} \vDash \delta$ respectively. 
+
+\begin{defn}[Well defined memory] 
+\begin{enumerate}
+    % \item $m \vDash c \triangleq \forall x \in \fv{c}, \exists v, (x, v) \in m$.
+    \item $ m \vDash \delta  \triangleq \forall x \in \dom(\delta), \exists v, (x,v) \in m$.
+    % \item $\ssa{m} \vDash_{ssa} \ssa{c} \triangleq \forall \ssa{x} \in \fvssa{\ssa{c}}, \exists v, (\ssa{x}, v) \in \ssa{m}$.
+    \item $ \ssa{m} \vDash_{ssa} \delta  \triangleq \forall \ssa{x} \in \codom(\delta), \exists v, (\ssa{x},v) \in \ssa{m}$.
+\end{enumerate}
+\end{defn}
+   Part of the SSA memory $\ssa{m}$ can also be reverted to a corresponding part of the memory $m$ with an inverse of $\delta$.
+
+\begin{defn}[Inverse of trans env]
+ $m = \delta^{-1}(\ssa{m}) \triangleq \forall x \in \dom(\delta), (\delta(x), m(x)) \in \ssa{m} $.
+\end{defn}
+
+We also show that the expression $\expr$ in the {loop} language and its translated SSA version $\ssa{\expr}$ by some translation environment $\delta$ evaluates to the same value in Lemma~\ref{same_value}. 
+%
+\begin{lem}[Value remains the same during transformation]
+\label{same_value}
+Given $\delta; e \hookrightarrow \ssa{e}$,  $\forall m. m \vDash \delta. \forall \ssa{m}, \ssa{m} \vDash_{ssa} \delta \land m = \delta^{-1}(\ssa{m})$, then $\config{m, e} \to v $ and $\config{
+\ssa{m}, \ssa{e}} \to {v}$.  
+\end{lem}
+
+Finally, we show the soundness of the transformation. When a program $c$ is transformed to its SSA form $\ssa{c}$ through a transformation environment $\delta$, when executing these two programs with the corresponding configuration(memories are well-defined w.r.t the transformation environment $\delta$), the newly generated traces in the two languages will be the same and the resulting memory $m'$ and $\ssa{m'}$ will also be related. 
+
+\begin{thm}[Soundness of transformation]
+\label{thm:sound_trans}
+Given $\Sigma; \delta ; c \hookrightarrow \ssa{c} ; \delta';\Sigma' $, and $\forall m. m \vDash \delta. \\ \forall \ssa{m}, \ssa{m} \vDash_{ssa} \delta \land m = \delta^{-1}(\ssa{m})$, if there exist an execution of $c$ in the { loop} language, starting with a trace $t$ and loop maps $w$, $\config{m, c, t, w} \to^{*} \config{m', \eskip, t', w' } $,  then there also exists a corresponding execution of $\ssa{c}$ in the ssa language so that 
+  $\config{  {\ssa{m}}, \ssa{c}, t, w} \to^{*} \config{{  \ssa{m'}}, \eskip, t', w' } $ and $ m' = \delta'^{-1}(\ssa{m'}) $.
+\end{thm}
+\wq{The proof can be found in Appendix~\ref{AppC}, Section~\ref{ap:thm16}.} %Theorem~\ref{thm:sss_trans_sound} in .}
+
+Our dependency graph is constructed based on the trace, we give a lemma that says that the adaptivity remains the same during the transformation.
+\begin{lem}
+\label{lem:same_adapt}
+Given $\Sigma; \delta ; c \hookrightarrow \ssa{c} ; \delta';\Sigma' $, $\forall m. m \vDash \delta. \forall \ssa{m}, \ssa{m} \vDash_{ssa} \delta \land m = \delta^{-1}(\ssa{m})$, starting with a trace $t$ and loop maps $w$, then $A(c,D,m,w) = A_s(\ssa{c},D,\ssa{m},w) $.
+\end{lem}
+
+
+
+
+% \subsection{The analysis algorithm on ssa programs}

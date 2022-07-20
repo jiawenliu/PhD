@@ -1,0 +1,123 @@
+\chapter{Related Work of {\ADAPTSYSTEM}}
+\label{ch:adapt-relatedwork}
+% \dg{Please cite adaptive Fuzz, and explain how its adaptivity analysis differs from ours.}
+
+In terms of techniques, our work relies on ideas from both static analysis and dynamic analysis. We discuss closely related work in both areas.
+
+\section{Static Program Analysis} 
+\label{sec:adapt-rw-static}
+Our program analysis algorithm in Chapter~\ref{ch:adapt-algo} is influenced by many areas of static program analysis such as effect systems, control-flow analysis, and data-flow analysis~\cite{ryder1988incremental}. The idea of statically estimating a sound upper bound for the adaptivity from the semantics is indirectly inspired from prior work on cost analysis via effect systems~\cite{cciccek2017relational,radivcek2017monadic,qu2019relational}. The idea of using an adjacency matrix to reason about data flows as a resource has been also studied as an instance of graded Hoare logic~\cite{gaboardi2021graded}. 
+%
+One of the most important ingredients of our work is the estimation of the variable-based dependency graph. 
+There are many ways to construct a dependency graph statically.
+Some of the most related work focuses on the testing of graphical user interfaces (GUIs), using an event graph. For example, \citet{memon2007event} proposes an event-flow model using an algorithm to construct an event-flow graph, representing all the possible event interactions. This event-flow graph has a vertex for every GUI event such as click-to-paste and an edge between pairs of events that can be performed immediately one after the other. Our variable-based dependency graph uses the edge to track the may-dependence of one variable with respect to another variable. The main difference is in the way the graph is constructed. {\THESYSTEM} relies on the structure of the target program, while the event-flow model only considers the event type. Another work \cite{arlt2012lightweight} constructs a weighted event-dependency graph, capturing data dependencies between events by analyzing bytecode. Every weighted edge indicates a dependency between two events, meaning one event possibly reads data written by the other event, with the weight showing the intensity of the dependency (the quantity of data involved). Our approach of generating the variable-based dependency graph shares the idea of tracking data dependency via static analysis on the source code. However, because of the different domains, we care about assigned variables, and we use the weight in a different way.
+
+\section{Dynamic Program Analysis}
+\label{sec:adapt-rw-dynamic}
+Our framework constructs a dependency graph based on the execution trace of a program. We define semantic dependence on this graph by considering (intraprocedural) data and control dependency~\cite{bilardi1996framework,cytron1991efficiently,pollock1989incremental}.    
+One related work  
+\cite{austin1992dynamic} presents a methodology to construct a dynamic dependency graph (DDG) based on the dynamic execution of a program in an imperative language, where edges represent dependency between instructions. Data dependency, control dependency, storage dependency, and resource dependency between instructions are all considered. Our query-based dependency graph only needs data dependency and control dependency between query requests. Critical path length analysis on DDGs is useful for understanding the scope for parallelization, while we use the length of the longest path to define adaptivity.  
+%
+DDGs have been used in many other domains. \citet{nagar2018automated} use DDGs to find serializability violations. \citet{hammer2006dynamic} use similar \emph{program dependency graphs} \cite{ferrante1987program} for dynamic program slicing. They use a combination of  
+static and dynamic dependency graphs but in a manner that is different from how we use the two. Their slicing uses both static and dynamic dependency graphs, while we use the dynamic dependency graph as the basis of a definition, which is then soundly approximated by an analysis based on the static dependency graph.
+
+\section{Generalization in Adaptive Data Analysis}
+\label{sec:adapt-rw-ge}
+Starting from the works by \citet{DworkFHPRR15} and \citet{HardtU14}, several works have designed methods that ensure generalization for adaptive data analyses. Some examples are:~\cite{dwork2015reusable,dwork2015generalization,BassilyNSSSU16,UllmanSNSS18,FeldmanS17,jung2019new,SteinkeZ20,RogersRSSTW20}.
+Several of these works drew inspiration from the idea of using methods designed to ensure differential privacy, a notion of formal data privacy, to guarantee generalization for adaptive data analyses. By limiting the influence that an individual can have on the result of data analysis, even in adaptive settings, differential privacy can also be used to limit the influence that a specific data sample can have on the statistical validity of data analysis. This connection is actually in two directions, as discussed for example by \citet{YeomGFJ18}.
+
+Considering this connection between generalization and privacy, it is not surprising that some of the works on programming language techniques for privacy-preserving data analysis are related to our work. 
+Adaptive Fuzz~\cite{Winograd-CortHR17} is a programming framework for differential privacy that is designed around the concept of adaptivity. 
+This framework is based on a typed functional language that distinguishes between several forms of adaptive and non-adaptive composition theorem with the goal of achieving better upper bounds on the privacy cost. Adaptive Fuzz uses a type system and some partial evaluation to guarantee that the programs respect differential privacy. However, it does not include any technique to bound the number of rounds of adaptivity. 
+\citet{lobo2021programming} propose a language for differential privacy where one can reason about the accuracy of programs in terms of confidence intervals on the error that the use of differential privacy can generate. These are akin to bounds on the generalization error. This language is based on a static analysis which however cannot handle adaptivity. 
+%
+The way we formalize the access to the data mediated by a mechanism is a reminiscence of how the interaction with an oracle is modeled in the verification of security properties. As an example, the recent works by \citet{BarbosaBGKS21} and \citet{AguirreBGGKS21} use different techniques to track the number of accesses to an oracle. However, reasoning about the number of accesses is easier than estimating the adaptivity of these calls, as we do instead here.
+
+%\cite{SatoABGGH19}
+
+% together with guarantees on their accuracy? 
+% {The first important application of the differential privacy concept started from the work by \cite{DworkFHPRR15}}, which applied this concept into guaranteeing the generalization error of adaptive data analysis. 
+
+% Previous works on reducing the risk of spurious scientific discoveries are under the assumption that a fixed collection of learning algorithms to be applied are selected non-adaptively before seeing the data. In contrast with them, they developed this work under the adaptive data analysis settings. They formalized the generalization error for adaptive data analysis and then presented their validation guarantees.
+% Concretely, they proposed the famous transfer theorem.
+% And based on this theorem, they proved high probabilistic bounds on the generalization error for $\epsilon$- and $(\epsilon,\delta)$-differentially private adaptive data analysis as well as adaptive analysis with statistic and non-statistic queries.
+% These works connected the theory with the practice of data analysis, which in my perspective, is the most significant and interesting contribution of this paper. 
+% %
+% % At the end, they presented the application of applying concrete differentially private techniques into adaptive data analysis.
+
+% {This extension from differential privacy to adaptive data analysis made significant progress in reducing the overfitting risks in practical works (i.e. the data analysis in adaptive setting). Further works on improving these probabilistic bounds, guaranteeing the generalization error such as \cite{dwork2015generalization}, \cite{BassilyNSSSU16}, \cite{dwork2015reusable}, \cite{jung2019new} etc. are all influenced by this work.}
+
+% {Following all previous works on preserving the statistical validity in adaptive data analysis, \cite{smith2017information} made a survey.}
+% This survey started from giving formal and clear introduction to the concept of adaptive data analysis.
+%  % by giving formal definitions of the concepts and clear representations and notations. 
+% Then, it summarized the probability bounds on the generalization error w.r.t. the true population when applying different mechanisms in numeric adaptive data analysis.
+% The mechanisms includes split data with adaptivity, adding Gaussian noise with specific standard derivation, adopting differentially private algorithms etc.
+% Next, he extended the scope onto the non-numeric adaptive data analysis and presented the corresponding probabilistic bounds based on the information measures. 
+
+% {This survey was developed in an easy-to-understand way and included a thorough knowledge on state-of-the-art works on adaptive data analysis, which helped me to sort out the results from existing works and relations between them.}
+
+% {Following the same line of work, \cite{jung2019new} gave a new analysis on the role of differential privacy in adaptive data analysis.}
+% They gave a substantially better probability bounds on differential privacy's generalization guarantee based on a new proof technique of the transfer theorem (initially from \cite{dwork2015generalization}). 
+
+% The key point in their proof technique is looking into the posterior distributions, which is an insightful new perspective on proving the generalization error bound. This new perspective also brought a better understanding in the specific reason of analysis overfitting and the role of differential privacy in adaptive data analysis. This new technique I think will be fruitful in future work.
+% %  based on my personal interests on the posterior distribution analysis
+% % Another very meaningful structural insight inspired by this paper is the role of differential privacy and sample accuracy. This is pointed to the end of the paper that the sample accuracy serves to guarantee that the reported answers are close to their posterior means and differential privacy serves to guarantee that the posterior means are close to their true answers.
+
+% % There are also some interesting works on further improving the accuracy bound unresolved in this paper, such as replace the Markov-like dependence with a Chernoff-like dependence. I'm deeply interested in making contributions on it.
+
+% % {Based on all the excellent theory works on guaranteeing the statistical validity of adaptive data analysis, I started to think from the perspective of the programming language.}
+% {Existing works on adaptive data analysis are trying to improve the probabilistic bounds for generalization error in terms of the adaptive and non-adaptive queries numbers and size of the data sample on pen-and-paper proofs.
+% However, we still cannot guarantee implementations of the corresponding algorithms adhere to this generalization error bounds.
+% Given an arbitrary data analysis program, we are unable to tell its generalization error. So in my consideration, verifying the programs' generalization error would be a possible interesting research direction. Furthermore, since the size of the data sample can be determined by the input or the users, then the most interesting and challenging point would be figuring out the program's adaptive query numbers. 
+% This motivated us to look into the verification of algorithms' adaptivity, in order to formally verifiy their generalization error.}
+
+% \paragraph{Data analysis} There is a significant amount of work on programming for data analysis. Many popular platforms are based on the R language\cite{ihaka1996r, marcon2021orchestrating}. Jaql is a declarative scripting language for large-scale data analysis\cite{beyer2011jaql}. 
+
+
+% Program Analysis in terms of dependency graph:
+
+
+% \subsection{Dynamic Program Graph Analysis}
+
+% \cite{sinha2001interprocedural}: 
+% Support Interprocedural Control dependence analyzing, semantically.
+% \\
+% They identified the dependence information between the interactions of among procedures, specifically the control dependence between procedures.
+% Their analysis support the relationship of control and data dependence to semantics dependence.
+
+% % \cite{austin1992dynamic}: Dynamic Program Dependency Graph.
+% % \\
+% % They gave the dynamic analysis for the program's dependency, by producing 3 different kinds of graph, 
+% % including the data flow graph, storage dependence and control dependence graph from program's execution traces. 
+% % \\
+% % Then, they constructing dynamic execution graphs by adopting the 3 graph, aims to expose the parallization of the programs
+
+% \cite{hammer2006dynamic}: dynamic path conditions in dependence graphs.
+% They adopting the dynamic information from program trace to the path condition in dependency graph. Then based on these information, 
+% they present new approach combining dynamic slicing, which could reveal both dependences holding during program execution as well as why these dependences are holding. 
+% Aims to have a finer and preciser analysis of the program.
+
+% % \subsection{Utilization of the Dynamic Program Dependency}
+
+% % \cite{nagar2018automated}: Utilize dependency graph for finding serializability violation. 
+% % \\
+% % Combine with the dependency graph of serialization and abstract execution, to statically finding bounded serializability violation. 
+% % Then reduce the problem of serializability to satisfiability of a formula in FOL.
+% % Also reason about unbounded executions.
+
+% \subsection{Static Program Dependency}
+
+% \cite{mastroeni2008data}: They propose ways of constructing different kinds of program slices, by choose different program dependency. For example, in either syntactic or semantics sense.
+% This abstract dependency is based on properties rather than exact data.
+% Aims to give finer and smaller program slice. 
+
+% \subsection{Utilization Static Program Flow Graph}
+
+% \cite{arlt2012lightweight}: Lightweight Static Analysis for GUI Testing. They give the relevant event graph based on black and white Box.
+% To construct finer Event Sequence Graph, 
+% they propose new approach to select relevant event sequences among the event sequences generated by black box.
+% This new approach based on static analysis on bytecode of the applications, 
+% giving a precisely defined dependency between a fixed number of events in event sequence.
+% Then, they inferred a finer Event Dependency graph, aims to give a better lightweight static analysis on applications.
+
+
