@@ -1,0 +1,1035 @@
+
+%
+\subsection{Syntax and Semantics}
+\label{appendixC:loop-syntax}
+%
+\begin{figure*}
+\[
+\begin{array}{llll}
+ \mbox{Arithmetic Operators} & \oplus_a & ::= & + ~|~ - ~|~ \times 
+%
+~|~ \div \\  
+  \mbox{Boolean Operators} & \oplus_b & ::= & \lor ~|~ \land ~|~ \neg\\
+  %
+   \mbox{Relational Operators} & \sim & ::= & < ~|~ \leq ~|~ == \\  
+ \mbox{Label} & l & := & \mathbb{N} \\ 
+ \mbox{Loop Maps} & w & \in & \mbox{Label} \times \mathbb{N} \\
+\mbox{Arithmetic Expressions} & \aexpr & ::= & 
+	%
+	n ~|~ x ~|~ \aexpr \oplus_a \aexpr  \\
+% 	\sep \pi (l , \aexpr, \aexpr) \\
+    %
+\mbox{Boolean Expressions} & \bexpr & ::= & 
+	%
+	\etrue ~|~ \efalse  ~|~ \neg \bexpr
+	 ~|~ \bexpr \oplus_b \bexpr
+	%
+	~|~ \aexpr \sim \aexpr \\
+\mbox{Expressions} & \expr & ::= & \aexpr \sep \bexpr ~|~ [] ~|~ [\expr, \dots, \expr] \\	
+\mbox{Values} & v & ::= & n ~|~ \etrue ~|~ \efalse ~|~ [] ~|~ [v, \dots, v] \\
+\mbox{Query expressions} & \expr_q & ::= & \aexpr ~|~ \chi ~|~ \chi[\aexpr] ~|~ \expr_q \oplus_a \expr_q \\
+\mbox{Query Values} & v_q & ::= & n ~|~ \chi ~|~ \chi[n] ~|~ v_q \oplus_a  v_q \\
+\mbox{Labelled commands} & c & ::= & 
+[\assign x \expr]^{l} ~|~  [\assign x q(e_q)]^{l}
+ ~|~  \eloop ~ [\aexpr]^{l} ~ \edo ~ c  ~|~ c;c \\
+ & & & ~|~ \eif([\bexpr]^l, c, c) 	 ~|~ [\eskip]^{l} \\
+	%
+% \mbox{Binary Operation} & \bop & ::= & + ~|~ - ~|~ \times 
+% %
+% ~|~ \div ~|~ < ~|~ \leq ~|~ = \\
+% %
+% \mbox{Unary Operation} & \uop & ::= & \ln ~|~ - \\
+% %
+\mbox{Memory} & m & ::= & [] ~|~ m[x \to v] \\
+%
+\mbox{Trace} & t & ::= & [] ~|~ (q(v_q)^{(l, w) }) :: t \\
+\mbox{Annotated Query} & \mathcal{AQ}  & ::= & \{ q(v_q)^{(l,w)}  \}
+\end{array}
+\]
+\caption{Syntax of loop language}
+\label{appendixC:loop-syntax}
+\end{figure*}
+Expressions can be either arithmetic expressions or boolean expressions. 
+An arithmetic expression can be a  constant $n$ denoting integer, a variable $x$ from some countable set $Var$, the empty list $[]$, a list $[a_1,\ldots,a_k]$ of arithmetic expressions, 
+% and a function $\pi(l,a_1,a_2)$ denoting a primitive selection function which depending on the value of $l$ select either $a_1$ or $a_2$, this is used to guarantee SSA-like properties for programs with loops. 
+%
+A boolean expression can be as usual {\tt true} or {\tt false}, the negation of
+a boolean expression, or a combination of boolean expressions by means of an operation $\oplus_b$ or the result of a comparison $\sim$ between arithmetic expressions. 
+% 
+
+%
+Commands in the loop language are labelled  --- we assume that labels are unique and corresponds to the line of code where they appear, implicitly this gives us a control flow graph representation for the program. 
+A command can be either a labelled assignment $[\assign x \expr]^{l}$, or a labelled query request  $[\assign x q(e_q)]^{l}$, a labelled skip $[\eskip]^{l}$, the composition of two labelled commands $[c_1;c_2]^l$, a labelled if statement $\eif([\bexpr]^{l}, c_1, c_2)$, a labelled loop statement  $\eloop ~ [\aexpr]^{l}~ \edo ~ c $.
+
+A memory is a partial map from the labelled variables to values.
+
+A trace is a list which only tracks the queries called and the results of the queries.   
+
+For memory and traces we will use notation: we will write $++$ for concatenation of lists in traces, and we will use the standard notation $m[x \to v ]$ for the update of the memory.
+
+\wq{For the query request, we have $q(e_q)$ so that $e_q$ represents the actual query. The query expressions $e_q$ will be evaluated into the normal form, we call them query values $v_q$, which can be a natural number, the $\chi$, and its access $\chi[n]$ as well as arithmetic operations over query values.}
+
+\wq{We are working on the database $X^{n}$, where $X$ is the universe of the database. We define that two query expressions are the same in certain memory $m$ by $=_{q}^{m}$.\\
+$e_{q1} =_{q}^{m} e_{q2}$ iff $\forall k \in X. \exists v. \config{m,  e_{q1} [k/ \chi]} \xrightarrow{*} \config{m, v} \land \config{m,  e_{q1} [k/ \chi]} \xrightarrow{*} \config{m, v} $. \\
+When we compare two $v_q$, the memory $m$ can be empty. So we can define: $v_{q1} =_{q}^{[]} v_{q2} $. We use $=_{q}$ as the shorthand for $=_{q}^{[]}$.
+}
+
+\wq{We define the inclusion relation $\in_q$ of one annotated query $q(v_q)^{l, w} $in the trace $t$:\\
+$q(v_q)^{l, w} \in_{q} t $ iff $\exists q(v_q')^{l, w} \in t. (v_q) =_{q}^{[]} (v_q'). $ \\
+$q(v_q)^{l,w} \not\in_q t$ iff $ \forall q(v_q')^{l,w} \in t,  ((v_q) \not=_{q}^{[]} (v_q')$ }
+
+%
+\paragraph{Operational Semantics.}
+% \[\]
+% \newline
+\begin{figure*}
+\begin{mathpar}
+\boxed{ \config{m,\aexpr} \aarrow \config{m,\aexpr'}  }
+\\
+\inferrule{ 
+  n = m(x)
+}{
+ \config{m, x } \aarrow \config{m, n}
+}~\textsf{a-var}
+%
+\and
+%
+\inferrule{ 
+  \config{m, \aexpr_1} \aarrow  \config{m, \aexpr_1'}
+}{
+ \config{m,  \aexpr_1 \oplus_a \aexpr_2} \aarrow \config{m,  \aexpr_1' \oplus_a \aexpr_2}
+}~\textsf{a-aop1}
+%
+\and
+%
+\inferrule{ 
+  \config{m, \aexpr_2} \aarrow  \config{m, \aexpr_2'}
+}{
+ \config{m,  n_1 \oplus_a \aexpr_2} \aarrow \config{m,  n_1 \oplus_a \aexpr_2'}
+}~\textsf{a-aop2}
+%
+\and
+%
+\inferrule{ 
+  n = n_1 \oplus n_2
+}{
+ \config{m,  n_1 \oplus_a n_2} \aarrow \config{m,  n}
+}~\textsf{a-aop3}
+\\
+\boxed{ \config{m,\bexpr} \barrow \config{m,\bexpr'}  }
+\\
+\inferrule{ 
+ \config{m, \aexpr_1} \aarrow  \config{m, \aexpr_1'}
+}{
+ \config{m,  \aexpr_1 \sim \aexpr_2} \barrow  \config{m,  \aexpr_1' \sim \aexpr_2}
+}~\textsf{b-rop1}
+%
+\and
+%
+\inferrule{ 
+  \config{m, \aexpr_2} \aarrow  \config{m, \aexpr_2'}
+}{
+ \config{m,  n_1 \sim \aexpr_2} \barrow \config{m,  n_1 \sim \aexpr_2' }
+}~\textsf{b-rop2}
+%
+\and
+%
+\inferrule{ 
+  \etrue = n_1 \sim n_2
+}{
+ \config{m,  n_1 \sim n_2} \aarrow \config{m,  \etrue}
+}~\textsf{b-rop3}
+%
+\and
+%
+\inferrule{ 
+  \efalse = n_1 \sim n_2
+}{
+ \config{m,  n_1 \sim n_2} \aarrow \config{m,  \efalse}
+}~\textsf{b-rop4}
+\\
+\boxed{ \config{m,\expr_q} \qarrow \config{m,\expr_q'}  }
+\\
+\inferrule{ 
+ \config{m, \aexpr } \aarrow \config{m, \aexpr'}
+}{
+ \config{m, \aexpr } \qarrow \config{m, \aexpr'}
+}~\textsf{q-a}
+%
+\and
+%
+\inferrule{ 
+ \config{m, \aexpr } \aarrow \config{m, \aexpr'}
+}{
+ \config{m, \chi[\aexpr] } \qarrow \config{m, \chi[\aexpr']}
+}~\textsf{q-chi}
+%
+\and
+%
+\inferrule{ 
+  \config{m, {\expr_q}_1} \qarrow  \config{m, {\expr_q}_1'}
+}{
+ \config{m,  {\expr_q}_1 \oplus_a {\expr_q}_2} \qarrow \config{m,  {\expr_q}_1' \oplus_a {\expr_q}_2}
+}~\textsf{q-aop1}
+%
+\and
+%
+\inferrule{ 
+  \config{m, {\expr_q}_2} \aarrow  \config{m, {\expr_q}_2'}
+}{
+ \config{m,  {v_q}_1 \oplus_a {\expr_q}_2} \qarrow \config{m,  {v_q}_1 \oplus_a {\expr_q}_2'}
+}~\textsf{q-aop2}
+\end{mathpar}
+\caption{Operational semantics of loop language, part 1}
+\label{appendixC:loop-os1}
+\end{figure*}
+%
+% \and
+% %
+% \inferrule{
+%  w(l) >0
+% }{
+%  \config{m, w, f(l, \aexpr_1, \aexpr_2)} \aarrow \aexpr_2
+% }
+% %
+% \and
+% %
+% \inferrule{
+%   \config{m, \aexpr_1 } \aarrow \aexpr_1'
+% }{
+%  \config{m, \aexpr_1 *_a \aexpr_2 } \aarrow \expr_1' *_a \aexpr_2
+% }
+% %
+% \and
+% %
+% \inferrule{
+%   \config{m, \aexpr_2 } \aarrow \aexpr_2'
+% }{
+%  \config{m, n_1 *_a \aexpr_2 } \aarrow n_1 *_a \aexpr_2'
+% }
+% %
+% \and
+% %
+% \inferrule{
+% n_3 = n_1 *_a n_2
+% }{
+%  \config{m, n_1 *_a n_2 } \aarrow n_3
+% }
+% \end{mathpar}
+% % \vfill \pagebreak
+
+% %
+\begin{figure*}
+\begin{mathpar}
+% \inferrule{
+% }{
+%  \config{m, \etrue} \barrow \etrue
+% }
+% %
+% \and
+% %
+% \inferrule{
+% }{
+%  \config{m, \efalse} \barrow \efalse
+% }
+% %
+% \and
+% %
+% \inferrule{
+%   \config{m, \aexpr_1 } \aarrow \aexpr_1'
+% }{
+%  \config{m, \aexpr_1 *_r \aexpr_2 } \barrow \expr_1' *_r \aexpr_2
+% }
+% %
+% \and
+% %
+% \inferrule{
+%   \config{m, \aexpr_2 } \aarrow \aexpr_2'
+% }{
+%  \config{m, n_1 *_r \aexpr_2 } \barrow n_1 *_r \aexpr_2'
+% }
+% %
+% \and
+% %
+% \inferrule{
+% b_3 = n_1 *_r n_2
+% }{
+%  \config{m, n_1 *_r n_2 } \barrow b_3
+% }
+% %
+% \and
+% %
+% \inferrule{
+%  \config{m, \bexpr_1  } \barrow \bexpr_1' 
+% }{
+%  \config{m, \bexpr_1 *_b \bexpr_2 } \barrow \bexpr_1' *_b \bexpr_2
+% }
+% %
+% \and
+% %
+% \inferrule{
+%  \config{m, \bexpr_2  } \barrow \bexpr_2' 
+% }{
+%  \config{m, \etrue *_b \bexpr_2 } \barrow \etrue *_b \bexpr_2'
+% }
+% %
+% \and
+% %
+% \inferrule{
+%  \config{m, \bexpr_2  } \barrow \bexpr_2' 
+% }{
+%  \config{m, \efalse *_b \bexpr_2 } \barrow \efalse *_b \bexpr_2'
+% }
+% %
+% \and
+% %
+% \inferrule{
+%  \config{m, \bexpr  } \barrow \bexpr' 
+% }{
+%  \config{m, \neg \bexpr } \barrow \neg \bexpr'
+% }
+\end{mathpar}
+%
+\begin{mathpar}
+\boxed{ \config{m, c, t,w} \xrightarrow{} \config{m', c',  t', w'} \; }
+% \inferrule
+% {
+% q(D) = v 
+% }
+% {
+% \config{m, [\assign{x}{q}]^l, t, w} \xrightarrow{} \config{m[ v/ x], \eskip,  t \mathrel{++} [q^{(l,w )}],w }
+% }
+% ~\textbf{l-query}
+%
+%
+% \inferrule
+% {
+% q(D) = v \and v \neq v'
+% }
+% {
+% \config{m, \assign x q^*, D} \Rightarrow^{[(q, v')]} \config{m[x \to v'], \eskip, D}
+% }
+% ~\textbf{query}^*
+% %
+% \and
+% %
+% \inferrule
+% {
+% m, \expr \Rightarrow \expr'
+% }
+% {
+% \config{m, [\assign{x}{ \expr}]^{l}, t,w} \xrightarrow{} \config{m, [\assign{x}{ \expr'}]^{l} , t,w}
+% }
+% ~\textbf{assn1}
+%
+\inferrule
+{
+ \config{m, \expr } \xrightarrow{}  \config{m, \expr' }
+}
+{
+\config{m, [\assign x \expr]^{l},  t,w} \xrightarrow{} \config{m, [\assign x \expr']^{l}, t,w}
+}
+~\textbf{l-assn1}
+\and
+%
+\inferrule
+{
+}
+{
+\config{m, [\assign x v]^{l},  t,w} \xrightarrow{} \config{m[v/x], [\eskip]^{l}, t,w}
+}
+~\textbf{l-assn2}
+%
+\and
+%
+% \inferrule
+% {
+% \config{m, c_1,  t,w} \xrightarrow{} \config{m', c_1',  t',w'}
+% }
+% {
+% \config{m, c_1; c_2,  t,w} \xrightarrow{} \config{m', c_1'; c_2, t',w'}
+% }
+% ~\textbf{l-seq1}
+% %
+% \and
+% %
+% \inferrule
+% {
+% }
+% {
+% \config{m, [\eskip]^{l} ; c_2,  t,w} \xrightarrow{} \config{m, c_2,  t,w}
+% }
+% ~\textbf{l-seq2}
+% %
+% \and
+% %
+% \inferrule
+% {
+% \config{ m, \bexpr} \barrow \bexpr'
+% }
+% {
+% \config{m, [\eif(\bexpr, c_1, c_2)]^{l},  t,w} 
+% \xrightarrow{} \config{m,  [\eif(\bexpr', c_1, c_2)]^{l},  t,w}
+% }
+% ~\textbf{l-if}
+% %
+% \and
+% %
+% \inferrule
+% {
+% }
+% {
+% \config{m, [\eif(\etrue, c_1, c_2)]^{l},t,w} 
+% \xrightarrow{} \config{m, c_1,  t,w}
+% }
+% ~\textbf{l-if-t}
+% %
+% ~~~~~~~~~~
+% %
+% \inferrule
+% {
+% }
+% {
+% \config{m, [ \eif(\efalse, c_1, c_2)]^{l},  t,w} 
+% \xrightarrow{} \config{m, c_2,  t,w}
+% }
+% ~\textbf{l-if-f}
+% % %
+% % \and
+% % %
+% % {\inferrule
+% % {
+% % }
+% % {
+% % \config{m, \ewhile([\bexpr]^l, c),  t,w} 
+% % \xrightarrow{} \config{m,  \eunfold{[\bexpr^{l}] }{\ewhile([\bexpr]^l,   c)} ,  t,w}
+% % }
+% % ~\textbf{while} }
+% % %
+% % \and
+% % %
+% % {\inferrule
+% % {
+% % \config{m, \bexpr} \rightarrow \bexpr'
+% % }
+% % {
+% % \config{m, \eunfold{[\bexpr]^l}{ c}, D, t,w} 
+% % \xrightarrow{} \config{m, \eunfold{[\bexpr']^l}{ c}, D, t,  w  }
+% % }
+% % ~\textbf{unfold}}
+% % %
+% % \and
+% % %
+% % {\inferrule
+% % {
+% % }
+% % {
+% % \config{m, \eunfold{[\efalse]^l}{c}, D, t,w} 
+% % \xrightarrow{} \config{m, [\eskip]^{l}, D, t,  (w \setminus l) }
+% % }
+% % ~\textbf{unfold-f}}
+
+% % \and
+% % %
+% % {\inferrule
+% % {
+% % }
+% % {
+% % \config{m, \eunfold{[\etrue]^l}{ c}, D, t,w} 
+% % \xrightarrow{} \config{m, c, D, t, (w+l) }
+% % }
+% % ~\textbf{unfold-t} }
+% % %
+% % \and
+% % %
+% % {
+% % \inferrule
+% % {
+% %   \config{m, \expr } \xrightarrow{} \expr'
+% % }
+% % {
+% % \config{m, [\eswitch(\expr, x, (v_i \to q_i))]^{l},  t,w} 
+% % \xrightarrow{} \config{m, [ \eswitch(\expr',x, (v_i \to q_i))]^{l},  t, w }
+% % }
+% % ~\textbf{switch}
+% % }
+% % \and
+% % %
+% % {
+% % \inferrule
+% % {
+% % \empty
+% % }
+% % {
+% % \config{m, [ \eswitch(v_k,x, (v_i \to q_i))]^{l},  t,w} 
+% % \xrightarrow{} \config{m,  [\assign x q_k]^{l},  t, w }
+% % }
+% % ~\textbf{l-switch-v}
+% % }
+% % %
+% % \and
+% % %
+% % {\inferrule
+% % {
+% % \config{m, \expr_N \xrightarrow{} \expr_N'  }
+% % }
+% % {
+% % \config{m,  \eloop ~ [\expr_N]^{l} ~ (f) ~ \edo ~ c ,  t, w }
+% % \xrightarrow{} \config{m, [ \eloop ~ [\expr_N]^{l} ~ (f) ~ \edo ~ c]^{l} ,  t, w }
+% % }
+% % ~\textbf{loop}
+% % }
+% %
+% \and
+% %
+% {\inferrule
+% {
+%  \valr_N > 0
+% }
+% {
+% \config{m, [\eloop ~ \valr_N  ~ \edo ~ c]^{l} ,  t, w }
+% \xrightarrow{} \config{m, c ;  [\eloop ~ (\valr_N-1) ~ \edo ~ c ]^{l},  t, (w + l) }
+% }
+% ~\textbf{l-loop}
+% }
+% %
+% \and
+% %
+% {
+% \inferrule
+% {
+%  \valr_N = 0
+% }
+% {
+% \config{m,  [\eloop ~ \valr_N ~ \edo ~ c ]^{l} ,  t, w }
+% \xrightarrow{} \config{m, [\eskip]^{l} ,  t, (w \setminus l) }
+% }
+% ~\textbf{l-loop-exit}
+% }
+%
+{\inferrule
+{
+ \config{m, \aexpr} \aarrow \config{m, \aexpr'}
+}
+{
+\config{m, \eloop ~ [\aexpr]^{l}  ~ \edo ~ c ,  t, w }
+\xrightarrow{} \config{m, \eloop ~ [\aexpr']^{l} ~ \edo ~ c ,  t, (w + l) }
+}
+~\textbf{l-loop-a}
+}
+%
+\and
+%
+{\inferrule
+{
+ \valr_N > 0
+}
+{
+\config{m, \eloop ~ [\valr_N]^{l}  ~ \edo ~ c ,  t, w }
+\xrightarrow{} \config{m, c ;  \eloop ~ [(\valr_N-1)]^{l} ~ \edo ~ c ,  t, (w + l) }
+}
+~\textbf{l-loop}
+}
+%
+\and
+%
+{
+\inferrule
+{
+ \valr_N = 0
+}
+{
+\config{m,  \eloop ~ [\valr_N]^{l} ~ \edo ~ c  ,  t, w }
+\xrightarrow{} \config{m, [\eskip]^{l} ,  t, (w \setminus l) }
+}
+~\textbf{l-loop-exit}
+}
+%
+\and
+% {  Memory \times Com  \times Trace \times WhileMap \Rightarrow^{} Memory \times Com  \times Trace \times WhileMap}
+\inferrule
+{
+\config{m,\expr_q} \qarrow \config{m,\expr_q'}
+}
+{
+\config{m, [\assign{x}{q(\expr_q)}]^l, t, w} \xrightarrow{}  \config{m, [\assign{x}{q(\expr_q')}]^l, t, w}
+}
+~\textbf{l-query-e}
+\and
+\inferrule
+{
+q(v_q) = v
+}
+{
+\config{m, [\assign{x}{q(v_q)}]^l, t, w} \xrightarrow{} \config{m[ v/ x], \eskip,  t \mathrel{++} [q(v_q)^{(l,w )}],w }
+}
+~\textbf{l-query-v}
+%
+\and
+%
+%
+\inferrule
+{
+\config{m, c_1,  t,w} \xrightarrow{} \config{m', c_1',  t',w'}
+}
+{
+\config{m, c_1; c_2,  t,w} \xrightarrow{} \config{m', c_1'; c_2, t',w'}
+}
+~\textbf{l-seq1}
+%
+\and
+%
+\inferrule
+{
+}
+{
+\config{m, [\eskip]^{l} ; c_2,  t,w} \xrightarrow{} \config{m, c_2,  t,w}
+}
+~\textbf{l-seq2}
+%
+% \inferrule
+% {
+% }
+% {
+% \config{m, [\assign x v]^{l},  t,w} \xrightarrow{} \config{m[v/x], [\eskip]^{l}, t,w}
+% }
+% ~\textbf{l-assn}
+%
+%
+%
+\and
+%
+\inferrule
+{
+\config{ m, \bexpr} \barrow \bexpr'
+}
+{
+\config{m, \eif([\bexpr]^{l}, c_1, c_2),  t,w} 
+\xrightarrow{} \config{m,  \eif([\bexpr']^{l}, c_1, c_2),  t,w}
+}
+~\textbf{l-if}
+%
+\and
+%
+\inferrule
+{
+}
+{
+\config{m, \eif([\etrue]^{l}, c_1, c_2),t,w} 
+\xrightarrow{} \config{m, c_1,  t,w}
+}
+~\textbf{l-if-t}
+\and
+%
+\inferrule
+{
+}
+{
+\config{m,  \eif([\efalse]^{l}, c_1, c_2),  t,w} 
+\xrightarrow{} \config{m, c_2,  t,w}
+}
+~\textbf{l-if-f}
+\end{mathpar}
+\caption{Operational semantics of loop language, part 2}
+\label{appendixC:loop-os2}
+\end{figure*}
+%
+We define the operations on the loop ma $w$,
+where $w_l$ refers to a map $w$ without the key $l$.
+\[
+\begin{array}{ccc}
+w \setminus l     & = w  & l \not\in Keys(w)   \\
+     & = w_l & Otherwise \\
+w + l & = w[l \to 0] & l \not \in Keys(w) \\   
+     & w_l [l \to w(l)+1] & Otherwise
+\end{array}
+\]
+
+
+
+
+
+
+\clearpage
+\subsection{Adaptivity of Programs in Loop Language}
+%
+%
+\begin{defn}[Label Order]
+$<_w and =_w$.\\
+\[
+  \begin{array}{lll}
+     w_1 =_w w_2  &  \triangleq &  Keys(w_1) = Keys(w_2) \land \forall k \in Keys(w_1). w_1(k) = w_2(k) \\
+     \emptyset =_w \emptyset & &   \\
+  \end{array}
+\] 
+$mk(w_i) =MinKey(w_i) $ 
+\[
+\begin{array}{lllr}
+     w_1 <_w w_2 & \triangleq & & w_1 = \emptyset \\
+     & \triangleq  & mk(w_1) < mk(w_2) & w_1,w_2 != \emptyset  \\
+     & \triangleq & w_1(mk(w_1)) < w_2(mk(w_2))   & mk(w_1) = mk(w_2) \\
+     & \triangleq & (w_1 \setminus mk(w_1) ) <_w (w_2 \setminus mk(w_2)) & Otherwise
+\end{array}
+\]
+\end{defn}
+%
+% \begin{defn}[Query Direction]
+% Direction between two queries.
+% \\
+% $\forall q_1,q_2, l_1, l_2, w_1, w_2 $.
+% the execution of query $q_1$ appears before query $q_2$, denoted as\\
+% \[\mathsf{To}(q_1^{l_1, w_1}, q_2^{(l_2,w_2)})= (q_1^{(l_1, w_1)}) <_q (q_2^{(l_2, w_2)})  \]
+% where \\
+% \[
+% (q_1^{(l_1, w_1)}) <_q (q_2^{(l_2, w_2)}) \triangleq \begin{array}{ll}
+%     l_1 < l_2  & w_1=\emptyset \lor w_2 = \emptyset \lor w_1 =_w w_2   \\
+%     w_1 <_w w_2    & \mathsf{Otherwise}
+% \end{array}  
+% \]
+% \end{defn}
+%
+% \paragraph{Independence between two queries in Low level language}
+% %
+% When two queries $q_1,q_2$ are independent in a program $c$, suppose the choice of $q_1$ appears before the choice of $q_2$ in the program $c$, we think the choice of the later query $q_2$ should be fixed no matter the change of the result of $q_1$.\\
+%
+% \begin{defn}[Query Independence]
+% Two queries $q_i$ and $q_j$ in a program $c$ are independent
+% \[
+% \mathsf{IND_s}(q^{(l_1,w_1)}_i, q^{(l_2,w_2)}_j, c,w) \triangleq \begin{array}{l}
+%      \forall m,m', D,t,t'. 
+% \config{m, c, t,w} \rightarrow^{*} \config{m', \eskip, t', w'} \\  
+%   \land 
+% \Big((q^{(l_1,w_1)}_i) \in (t'-t) \land (q^{(l_2,w_2)}_j) \in (t'-t) \implies \\ \forall v \in \codom(q_i(D)). 
+%  \config{m, \green{c[v/q_i]_{l_1}}, t, w} \rightarrow^{*} \config{m'', \eskip, t'', w''} \land (q^{(l_2,w_2)}_j) \in (t''-t)
+% \Big)\\
+% \land 
+% \Big( (q^{(l_1,w_1)}_i) \in (t'-t) \land (q^{(l_2,w_2)}_j) \notin (t'-t)  \implies \\ \forall v\in \codom(q_i(D)). 
+%  \config{m, c[v/q_i]_{l_1}, t, w} \rightarrow^{*} \config{m'', \eskip, t'',w''} \land (q^{(l_2,w_2)}_j) \notin (t''-t)
+% \Big)\\
+% \end{array}
+% \]
+% $c[v/q_i]_{l_i}$ replaces $q_i$ with $v$ only at line $l_i$.
+
+% % $\land 
+% % \left((q^{l_1}_i, v_i) \in (t'-t) \land (q^{l_2}_j, v_j) \in (t'-t) \implies \forall v \in \codom(q^{l_1}_i). 
+% % \left( \config{m, c[v/q_i], D, []} \rightarrow^{*} \config{m', \eskip, D, t'} \land (q^{l_2}_j, v_j) \in t'
+% % \right)
+% % \right)$
+% % \\
+% % $
+% % \land 
+% % \left( (q^{l_1}_i, v_i) \in t \land (q^{l_2}_j, v_j) \notin t  \implies \forall v\in codomain(q^{l_1}_i). 
+% % \left( \config{m, c[v/q_i], D, []} \rightarrow^{*} \config{m', \eskip, D, t'} \land (q^{l_2}_j, v_j) \notin t'
+% % \right)
+% % \right)
+% % \Big ) $.
+% \end{defn}
+%
+% \begin{defn}[Query Independence with loop]
+% Two queries $q_i$ and $q_j$ in a program $c$ are independent,
+% $\mathsf{IND}(q^{(l_1, w_1)}_i, q^{(l_2, w_2)}_j, c,w)$ is defined as. 
+% \[
+% \mathsf{IND}(q^{(l_1,w_1)}_i, q^{(l_2,w_2)}_j, c,w) \triangleq \begin{array}{l}
+%      \forall m,m_1,m_3, D,t,t_1,t_3. 
+% \config{m, c,  t,w} \rightarrow^{*} \config{m_1, [\assign{x}{q_i}]^{l_1} ; c_2,
+%   t_1,w_1} \rightarrow \\ \config{m_1[v_i/x], c_2,
+%   t_1++[(q^{(l_1, w_1)}_i, v_i)], w_1} \rightarrow^{*} \config{m_3, \eskip,
+%   t_3,w_3} \\  
+%   \land 
+% \Big((q^{(l_1,w_1)}_i, v_i) \in (t_3-t) \land (q^{(l_2,w_2)}_j, v_j) \in (t_3-t) \implies  \forall v \in \codom(q_i(D)). \\
+%  \config{m_1[v/x], {c_2}, t_1++[(q_i^{(l_1,w_1)},v)], w_1} \rightarrow^{*} \config{m_3', \eskip, t_3', w_3'} \land (q^{(l_2,w_2)}_j, v_j) \in (t_3'-t)
+% \Big)\\
+% \land 
+% \Big((q^{(l_1,w_1)}_i, v_i) \in (t_3-t) \land (q^{(l_2,w_2)}_j, v_j) \not\in (t_3-t) \implies  \forall v \in \codom(q_i(D)). \\
+%  \config{m_1[v/x], {c_2}, t_1++[(q_i^{(l_1,w_1)},v)], w_1} \rightarrow^{*} \config{m_3', \eskip, t_3', w_3'} \land (q^{(l_2,w_2)}_j, v_j) \not\in (t_3'-t)
+% \Big)\\
+% % \land 
+% % \Big( (q^{(l_1,w_1)}_i, v_i) \in (t'-t) \land (q^{(l_2,w_2)}_j, v_j) \notin (t'-t)  \implies \\ \forall v\in \codom(q_i(D)). 
+% %  \config{m, c[v/q_i]_{l_1}, t, w} \rightarrow^{*} \config{m'', \eskip, t'',w''} \land (q^{(l_2,w_2)}_j, v_j) \notin (t''-t)
+% % \Big)\\
+% \end{array}
+% \]
+
+
+% % $ \forall m, D,t. \config{m, c,  t,w} \rightarrow^{*} \config{m_1, [\assign{x}{q_i}]^{l_1} ; c_2,
+% %   t_1,w_1} \rightarrow \config{m_1[v_i/x], c_2,
+% %   t_1++[(q^{(l_1, w_1)}_i, v_i)], w_1} \rightarrow^{*} \config{m_3, \eskip,
+% %   t_3,w_3}  \land $\\
+% % $w_1 = \emptyset \implies  \Big (
+% % $\\
+% % $ 
+% % \left((q^{(l_1, w_1)}_i, v_i) \in t_3 \land (q^{(l_2, w_2)}_j, v_j) \in t_3  \implies \forall v \in codomain(q^{l_1}_i). 
+% % \left( \config{m, c[v/q_i],  []} \rightarrow^* \config{m', \eskip,  t'} \land (q^{l_2}_j, v_j) \in t'
+% % \right)
+% % \right)$ \\
+% % $ \land
+% % \left( (q^{l_1}_i, v_i) \in t_3 \land (q^{l_2}_j, v_j) \notin t_3  \implies \forall v\in codomain(q^{l_1}_i). 
+% % \left( \config{m, c[v/q_i],  []} \rightarrow^{*} \config{m', \eskip,  t'} \land (q^{l_2}_j, v_j) \notin t'
+% % \right)
+% % \right)
+% % \Big ) $ \\
+% % $\begin{array}{l}
+% % \land {w_1} \not = \emptyset \implies  \Big (  \\
+% %  ( (q^{(l_1, w_1)}_i, v_i) \in t_3 \land (q^{(l_2, w_2)}_j, v_j)
+% %   \in t_3  \implies \\
+% % \forall v \in codomain(q^{l_1}_i). 
+% % \left( \config{m_2[v/x], c_2, t_1++[(q^{(l_1, w_1)}_i, v_i)] } \rightarrow^{*} \config{m', \eskip,  t'}   \land (q^{l_2}_j, v_j) \in t'
+% % \right )
+% %  ) \\
+% %  \land
+% % ( (q^{l_1}_i, v_i) \in t \land (q^{l_2}_j, v_j) \notin t
+% %   \implies  \\
+% %  \forall v\in codomain(q^{l_1}_i). 
+% % \left( \config{m_2[v/x], c_2, t_1++[(q^{(l_1, w_1)}_i, v_i)] } \rightarrow^{*} \config{m', \eskip,  t'} \land (q^{l_2}_j, v_j) \notin t'
+% %  )
+% % \right )
+% % \Big ).
+% % \end{array}
+% % $
+% \end{defn}
+% %
+
+\begin{defn}[Query may dependency ]
+One query $q({v_q}_1)$ may depend on another query $q({v_q}_2)$ in a program $c$, with a starting loop maps $w$, a starting memory $m$, hidden database $D$, denoted as \\
+$\mathsf{DEP}(q({v_q}_1)^{(l_1, w_1)}, q({v_q}_2)^{(l_2, w_2)}, c,w, m ,D)$ is defined as below. 
+\[
+\begin{array}{l}
+\forall  t. \exists m_1,m_3,t_1,t_3,c_2.\\
+  \left (\begin{array}{l}   
+\config{m, c,  t,w} \rightarrow^{*} \config{m_1, [\assign{x}{q({v_q}_1)}]^{l_1} ; c_2,
+  t_1,w_1} \rightarrow \\ \config{m_1[q({v_q}_1)(D)/x], c_2,
+  t_1++[q({v_q}_1)^{(l_1, w_1)}], w_1} \rightarrow^{*} \config{m_3, \eskip,
+  t_3,w_3} \\  
+  \land \\
+\Big( q({v_q}_1)^{(l_1,w_1)} \in_{q} (t_3-t) \land q({v_q}_2)^{(l_2,w_2)} \in_{q} (t_3-t_1) \\ \implies  \exists v \in \codom(q({v_q}_1)), m_3', t_3', w_3'.  \\
+ \config{m_1[v/x], {c_2}, t_1++[q({v_q}_1)^{(l_1,w_1)}], w_1} \rightarrow^{*} \config{m_3', \eskip, t_3', w_3'} \\ \land (q({v_q}_2)^{(l_2,w_2)}) \not \in_{q} (t_3'-t_1)
+\Big)\\
+\land \\
+\Big(q({v_q}_1)^{(l_1,w_1)} \in_{q} (t_3-t) \land q({v_q}_2)^{(l_2,w_2)} \not\in_{q} (t_3-t_1) \\ \implies  \exists v \in \codom(q({v_q}_1)),  m_3', t_3', w_3'. \\
+ \config{m_1[v/x], {c_2}, t_1++[q({v_q}_1)^{(l_1,w_1)}], w_1} \rightarrow^{*} \config{m_3', \eskip, t_3', w_3'} \\ \land (q({v_q}_2)^{(l_2,w_2)})  \in_{q} (t_3'-t_1)
+\Big)
+\end{array} \right )
+\end{array}
+\]
+\end{defn}
+
+\begin{defn}[Query-based Dependency Graph]
+Given a program $c$, a database $D$, a starting memory $m$, an initial loop maps $w$, the query-based dependency graph $G(c,D,m,w) = (V, E)$ is defined as: \\
+$V =\{q(v_q)^{l,w} \in \mathcal{AQ} \mid \forall t. \exists m',  w', t'.  \config{m ,c, t, w}  \to^{*}  \config{m' , \eskip, t', w' }  \land q(v_q)^{l,w} \in {(t'-t)}  \}$.
+\\
+$E = \left\{(q(v_q)^{(l,w)},q(v_q')^{(l',w')}) \in \mathcal{AQ} \times \mathcal{AQ} 
+~ \left \vert ~ \mathsf{DEP}(q(v_q')^{(l',w')},q(v_q)^{(l,w)}, c,w,m,D)
+ \right.\right\}$.
+\end{defn}
+
+% \begin{defn}
+% Dependency Graph.
+% \\
+% Given a program $c$, a database $D$, a starting memory $m$, an initial loop map $w$, the dependency graph $G_{low}(c,D,m,w) = (V, E)$ is defined as: \\
+% $V =\{q(v)^{l,w} \in \mathcal{AQ} \mid \forall t. \exists m',  w', t'.  \config{m ,c, t, w}  \to^{*}  \config{m' , \eskip, t', w' }  \land q(v)^{l,w} \in {(t'-t)}  \}$.
+% \\
+% $E = \left\{(q(v)^{(l,w)},q'(v')^{(l',w')}) \in \mathcal{AQ} \times \mathcal{AQ} 
+% ~ \left \vert ~ \mathsf{DEP}(q(v)^{(l,w)},q'(v')^{(l',w')}, c,w,m,D)
+% \\ \land \mathsf{To}(q(v)^{(l,w)}, q(v')^{(l',w')} \right.\right\}$.
+% \end{defn}
+%
+%
+%
+% \begin{defn}
+% Two queries $q_i$ and $q_j$ in a program $c$ are independent, $\mathsf{IND}(q^{l_1}_i, q^{l_2}_j, P)$.
+
+% $\forall m, D. \Big( 
+% \lrr{ P }{} (\sigma, \mu , \jl{t, w} , D)  \triangleq  (\sigma' , \mu' , t', w' , D) 
+% $\\
+% $\land 
+% \left((q^{l_1}_i, v_i) \in t' \land (q^{l_2}_j, v_j) \in t'  \implies \forall v \in \textsf{Codom}(q^{l_1}_i). 
+% \left( \lrr{ P[v/q_i] }{} (\sigma, \mu , \jl{t, w }, D)  \triangleq  (\sigma' , \mu' , t'', w' , D)  \land (q^{l_2}_j, v_j) \in t''
+% \right)
+% \right)$
+% \\
+% $
+% \land 
+% \left( (q^{l_1}_i, v_i) \in t \land (q^{l_2}_j, v_j) \notin t  \implies \forall v \in \textsf{Codom}(q^{l_1}_i). 
+% \left( \lrr{ P[v/q_i] }{} (\sigma, \mu , \jl{t,w },  D)  \triangleq  (\sigma' , \mu' , t'', w' , D)  \land (q^{l_2}_j, v_j) \notin t''
+% \right)
+% \right)
+% \Big ) $.
+% \end{defn}
+%
+%
+% \begin{defn}
+% Adaptivity from a dependency graph.
+% \\
+% Given a program $c$, and a meory $m$, a database $D$, the adaptivity of the dependency graph $G_{low}(c, D,m,w) = (V, E)$ is the length of the longest path in the graph. We denote the path from $q_i^{(l,w)}$ to $q_j^{(l',w')}$ as $p(q_i^{(l,w)}, q_j^{(l',w')} )$. 
+% %
+% $$A^*(c, D, m ,w) = \max\limits_{q_i^{(l,w)},q_j^{(l',w')} \in V }\{ |p(q_i^{(l,w)},q_j^{(l',w')})| \}$$
+% \end{defn}
+
+\begin{defn}[Adaptivity in {loop} language]
+Given a program $c$, and a memory $m$, a database $D$, a starting loop maps $w$, the adaptivity of the dependency graph $G(c, D,m,w) = (V, E)$ is the length of the longest path in this graph. We denote the path from $q(v_q)^{(l,w)}$ to $q(v_q')^{(l',w')}$ as $p(q(v_q)^{(l,w)}, q(v_q')^{(l',w')} )$. The adaptivity denoted as $A(c, D, m, w)$.
+%
+$$A(c, D, m, w) = \max\limits_{q(v_q)^{(l,w)},q(v_q')^{(l',w')} \in V } |p(q(v_q)^{(l,w)}, q(v_q')^{(l',w')} )| $$
+\end{defn}
+
+
+
+
+% \noindent
+% In following examples:
+% \[
+% c_1 \triangleq
+% \begin{array}{l}
+%      \left[x \leftarrow q_1 \right]^1; \\
+%      \eif \; (x ==0)^{2} \; \\
+%     \mathsf{then} \; \left[y \leftarrow q_2 \right]^3\; \\
+%     \mathsf{else} \; \left[y \leftarrow 0 \right]^4 ; \\
+%     \eif \; (x == 1 )^5\; \\
+%     \mathsf{then} \; \left[ y \leftarrow 0 \right]^6\; \\
+%     \mathsf{else} \; \left[y \leftarrow q_2 \right]^7\\
+% \end{array}
+% %
+% %
+% \hspace{20pt}
+% %
+% c_2 \triangleq
+% \begin{array}{l}
+%   \left[ x \leftarrow q_1 \right]^1; \\
+%   \left[y \leftarrow q_2\right]^2 ; \\
+%     \eif \;( x + y == 5 )^3\; \\
+%     \mathsf{then} \;\left[ z \leftarrow q_3\right]^4 \; \\
+%     \mathsf{else} \;\left[ \eskip\right]^5 ; \\
+%   \left[ w \leftarrow q_4 \right]^6; \\
+% \end{array}
+% \hspace{20pt}
+% %
+% c_3 \triangleq
+% \begin{array}{l}
+%      \left[x \leftarrow q_1 \right]^1 ; \\
+%     \eloop ~ [100]^{2} ~ \edo
+%     \\
+%     ~ \Big( 
+%     \left[y \leftarrow q_2 \right]^3; \\
+%     \left[z \leftarrow q_3 \right]^4; \\
+%     \left[x \leftarrow y_1 + z_1 + x_2 \right]^5
+%     \Big) ;
+% \end{array}
+% %
+% \hspace{20pt}
+% %
+% \]
+% % \[
+% % c_4 \triangleq
+% % \begin{array}{l}
+% %      \left[x_1 \leftarrow q_1 \right]^1 ; \\
+% %   \eloop ~ [100]^{2} ~\\
+% %     ( ) ~ \edo
+% %     \\
+% %     \left[y_1 \leftarrow q_2 + x_1 \right]^3; \\
+% %     \eloop ~ [50]^{4} ~\\
+% %     ( x_2 = f(x_1,x_3) ; y_2 = f(y_1, y_3) ) ~ \edo  \bigg( 
+% %       \\
+% %     \left[z_1 \leftarrow q_3 \right]^5; \\
+% %     \left[y_3 \leftarrow y_2 + z_1 \right]^6;
+% %     \\
+% %     \left[x_3 \leftarrow y_3 + x_2 \right]^7
+% %     \Big ) 
+% % \end{array}
+% % \]
+% We have the dependency as:
+% \\
+% In program $c_1$:
+% $\mathsf{IND}(q_2^3, q_2^7, c_1)$, 
+% \\
+% In program $c_2$:
+% $\mathsf{IND}(q_1^1, q_2^2, c_2)$,
+% $\mathsf{IND}(q_3^3, q_4^4, c_2)$,
+% $\mathsf{IND}(q_1^1, q_4^4, c_2)$,
+% $\mathsf{IND}(q_2^2, q_4^4, c_2)$,
+% \\
+% In program $c_3$: $ \mathsf{IND}(q_1^{(1,\emptyset)}), q_2^{(3, l)} , c_3 ),  
+% \mathsf{IND}(q_1^{(1,\emptyset)}), q_3^{(4, l)} , c_3 ), 
+% \mathsf{IND}(q_2^{(3, l)}, q_3^{(4, l)}, c_3)$ for all $l$.
+% \\
+% In program $c_4$: No independent queries.
+%
+
+%
+% \paragraph{Dependency between multiple queries }
+% %
+% \begin{defn}[Dependency Graph]
+% A dependency graph over a program $P$ is defined as $G(P) = (V, E, \vend )$, where $V$ is set of verticals and $E$ is the set of directed edges:
+% \\
+% %
+%     $V = \{q_1, q_2, \cdots, q_n \}$, where $q_1, q_2, \cdots, q_n$ are reachable queries in the program $P$.
+%     %
+% \\
+% %
+% E = $\{  (q_{i}, q_{j}) | \exists m. \mathsf{Dep}(q_i, q_{j}, P, m)  \} $ , in the program $P$.
+% %
+% \\
+% %
+% $\vend = \{q_{e_1}, \cdots, q_{e_l}\}$ be the set of queries related to the return value.
+% \end{defn}
+% %
+% \begin{defn}[Reachable Query].
+% A query $q$ in program $P$ is reachable iff $q$ may be executed.
+% \end{defn}
+% %
+% %
+% %
+% \begin{defn}[Adaptivity]
+% Given a program $P$ and its dependency graph $G(P) = (V, E, \vend)$, the adaptivity of the program is defined as $A(P)$, s.t.:
+% for every $q_i \in \vend$, let $p_i$ be the longest path starting from $q_i$ with length $l_i$,
+% %
+% $$A(P) = \max\limits_{q_i \in \vend}\{l_i ~|~ l_i = |p_i| \}$$
+% \end{defn}
+%
+%
+%
+% \begin{example}
+% \textbf{Dependency graphs for programs containing 3 atomic queries}
+% \\
+% Let $q_1 \triangleq \lambda D. D_1 * D_j$, 
+% $q_2  \triangleq \lambda D. D_3 * D_4  $ and $q_3 \triangleq \lambda D. D_3 * D_2 $. 
+% in program $c_1$ and $c_2$ as follows:\\
+% %
+% \[
+% c_1 \triangleq
+% \begin{array}{l}
+%       \left[\assign{w}{100} \right]^0 ; \\
+%       \left[\assign{x}{q_1} \right]^1 ; \\
+%   \eif( \left[w > 1 \right]^2)\\
+%   \ethen \left[ \assign{y}{q_2} \right]^3 ; \\
+%      \eelse \left[\assign{z}{q_3} \right]^4
+% \end{array}
+% \hspace{2cm}
+% c_2 \triangleq
+% \begin{array}{l}
+%       \left[\assign{x}{q_1} \right]^1 ; \\
+%   \eif( \left[x > 1 \right]^2)\\
+%   \ethen \left[ \assign{y}{q_2} \right]^3 ; \\
+%      \eelse \left[\assign{z}{10} \right]^4
+% \end{array}
+% \]
+% % \\
+% \begin{center}
+% %
+% \begin{tikzpicture}
+% \filldraw[black] (10, 2) circle (2pt) node[anchor=south]{$q_2^3$};
+% \filldraw[black] (12, 2) circle (2pt) node[anchor=south]{$q_1^1$};
+% \filldraw[black] (12, 0) circle (2pt) node[anchor=north]{$q_3^4$} ;
+% \end{tikzpicture}
+% %
+% \hspace{2cm}
+% \begin{tikzpicture}
+% \filldraw[black] (27, 0) circle (2pt);
+% \filldraw[black] (30, 2) circle (2pt);
+% \draw[very thick,->] (27, 0)node[anchor=north]{$q_2^3$}  -- (30, 2) node[anchor=south]{$q_1^1$};
+% \draw[very thick, red, ->, dashed] (27, 0.2) -- (29.8, 2);
+% \end{tikzpicture}
+% \end{center}
+% %
+% \end{example}
+%
+%
+%

@@ -1,0 +1,213 @@
+\subsection{Syntax and Semantics}
+
+% \begin{figure}
+% \[
+% \begin{array}{llll}
+% %  \mbox{Arithmatic Operators} & \oplus_a & ::= & + ~|~ - ~|~ \times 
+% % %
+% % ~|~ \div \\  
+% %   \mbox{Boolean Operators} & \oplus_b & ::= & \lor ~|~ \land ~|~ \neg\\
+% %   %
+% %   \mbox{Relational Operators} & \sim & ::= & < ~|~ \leq ~|~ == \\  
+% %  \mbox{Label} & l & := & \mathbb{N} \\ 
+% %  \mbox{While Map} & w & \in & \mbox{Label} \times \mathbb{N} \\
+% \mbox{Arithmetic Expressions} & \aexpr & ::= & 
+% 	%
+% 	n ~|~ x ~|~ \aexpr \oplus_a \aexpr ~|~ \\
+% % \sep \pi (l , \aexpr, \aexpr) \\
+%     %
+% \mbox{Boolean Expressions} & \bexpr & ::= & 
+% 	%
+% 	\etrue ~|~ \efalse  ~|~ \neg \bexpr
+% 	 ~|~ \bexpr \oplus_b \bexpr
+% 	%
+% 	~|~ \aexpr \sim \aexpr \\
+% \mbox{Expressions } & \expr & ::= & \aexpr \sep \bexpr \sep \chi\sep [] ~|~ [\expr, \dots, \expr] ~|~ \chi[\aexpr] ~|~ x[\aexpr]\\
+% \mbox{Values } & v & ::= & n \sep \etrue \sep \efalse \sep \chi \sep [] ~|~ [v, \dots, v] ~|~ \chi[v] \\
+% \mbox{Commands} & c & ::= &  \eskip  ~|~  \assign x \expr ~|~  \assign{x}{ q(e)}
+% %
+% ~|~ \eloop ~ \aexpr  ~ \edo ~ c  ~|~ c;c  ~|~ \eif(\bexpr, c, c) 
+% 	\\
+% 	  \mbox{Labeled commands} & c & ::= &   [\assign x \expr]^{l} ~|~  [\assign x q(e)]^{l}
+%  ~|~  \eloop ~ [\aexpr]^{l} ~ \edo ~ c  ~|~ c;c \\
+%  & & & ~|~ \eif([\bexpr]^l, c, c) 	 ~|~ [\eskip]^{l} \\
+% %\mbox{Variables} & \mathcal{VAR}  & ::= & \{ {x} \} \\
+% %
+% % \mbox{Trace} & t & ::= & [] ~|~ [(q, v)^{(l, w) }] ~|~ t ++ t
+% \end{array}
+% \]
+%  \caption{Syntax of loop language.}
+%     \label{fig:syntax_loop}
+% \end{figure}
+
+%
+% \[
+% \begin{array}{llll}
+%  \mbox{Arithmatic Operators} & \oplus_a & ::= & + ~|~ - ~|~ \times 
+% %
+% ~|~ \div \\  
+%   \mbox{Boolean Operators} & \oplus_b & ::= & \lor ~|~ \land ~|~ \neg\\
+%   %
+%   \mbox{Relational Operators} & \sim & ::= & < ~|~ \leq ~|~ == \\  
+% %  \mbox{Label} & l & := & \mathbb{N} \\ 
+% %  \mbox{loop maps} & w & \in & \mbox{Label} \times \mathbb{N} \\
+% \mbox{Arithmetic Expressions} & \aexpr & ::= & 
+% 	%
+% 	n ~|~ x ~|~ \aexpr \oplus_a \aexpr ~|~ \\
+% % \sep \pi (l , \aexpr, \aexpr) \\
+%     %
+% \mbox{Boolean Expressions} & \bexpr & ::= & 
+% 	%
+% 	\etrue ~|~ \efalse  ~|~ \neg \bexpr
+% 	 ~|~ \bexpr \oplus_b \bexpr
+% 	%
+% 	~|~ \aexpr \sim \aexpr \\
+% \mbox{Expressions } & \expr & ::= & \aexpr \sep \bexpr \sep \chi\sep [] ~|~ [\expr, \dots, \expr] ~|~ \chi[\aexpr] ~|~ x[\aexpr]\\
+% \mbox{Values } & v & ::= & n \sep \etrue \sep \efalse \sep \chi \sep [] ~|~ [v, \dots, v] ~|~ \chi[v] \\
+% \mbox{commands} & c & ::= &   \assign x \expr ~|~  \assign{x}{ q(e)}
+% %
+% ~|~ \\ 
+% &&& \eloop ~ \aexpr  ~ \edo ~ c  ~|~ c;c  ~|~ \eif(\bexpr, c, c) 	 ~|~ \eskip 
+% 	\\
+% \mbox{Memory} & m & ::= & [] ~|~ m[x \to v] \\
+% %
+% % \mbox{Trace} & t & ::= & [] ~|~ [(q, v)^{(l, w) }] ~|~ t ++ t
+% \end{array}
+% \]
+% \subsection{Rewriting from High Level Program into Low Level Program}
+% %
+% The transformation $\ts{e^h} = e^l$ transfers the expression $e^h$ in the high level language to an expression $e_l$ in the low language. 
+% Let us look at the special cases: the query.
+% \\
+% In the first transition, if a query in high level language isn't atomic, i.e., 
+% $q(e)$ depends on $e$ with free variables, then it will be rewrite into a switch command. 
+% This rewriting will switch on the possible values $v_i$ of $e$ and convert the $q(e)$ into a series of atomic queries $q_i$.
+% \\
+% In the second transition, if a query in high level language is atomic, $q()$ only depends on data base $D$ and some constant values,
+% then it will be rewrite into identity in our low level language.
+% \\
+% Another special case is the sampling command in high level language. To exclude the dependency caused by the randomness, we will rewrite the sampling into an assignment command in low level language. This will assign a constant value to the corresponding variable.
+% \\
+% The resting commands will be rewrote identically.
+% %
+% %
+% \[
+% \begin{array}{lll}
+% \ts{ [\assign x q(e)]^{l}}
+%         & \Rightarrow &
+%         \left[
+%         \begin{array}{l}
+%              \eswitch ~ \Bigg(\expr, x, 
+%             \left(\begin{array}{l}
+%           v_1 \to q_1, \\
+%             \cdots, \\
+%             v_m \to q_m
+%             \end{array}\right) 
+%             \Bigg) \\
+%         \end{array}
+%         \right]^{l}\\
+%     \ts{\assign{x}{q()}} & \Rightarrow & \assign{x}{q}\\
+% %   \ts{[\assign{x}{\uniform} ]^{l}}   &   \Rightarrow & \left[
+% % \assign x c_{u}
+% % \right]^{l} \\
+%  \ts{[\assign{x}{\expr} ]^{l}}   &   \Rightarrow & \left[ \assign x \expr \right]^{l} \\
+%  \ts{ c_1 ; c_2 }     & \Rightarrow  & \ts{c_1} ; \ts{c_2} \\
+%   \ts{\eif([\bexpr]^{l}, c_1, c_2)}  &  \Rightarrow & \eif([\bexpr]^{l}, \ts{c_1}, \ts{c_2}) \\
+%  \ts{  \eloop ~ [\valr_N]^{l} ~ (c_1) ~ \edo ~ c_2  } & \Rightarrow & \eloop ~ [\valr_N]^{l} ~ (\ts{c_1}) ~ \edo ~ \ts{c_2}  \\
+% \end{array}
+% \]
+% % \begin{example}[Two Round Algorithm]
+% % \[
+% % TwoRound^H(k) \triangleq
+% % {
+% % \begin{array}{l}
+% %     % \left[j \leftarrow 0 \right]^1 ; \\
+% %     a_1 \leftarrow [] ; \\
+% %     \eloop ~ [k] ~ \\
+% %     ~ \edo ~ 
+% %     \Big(
+% %      x_1 \leftarrow q()  ; \\
+% %     a_3 \leftarrow x_1 :: a_2      \Big);\\
+% %     l \leftarrow q_{k + 1}(a_3)\\
+% % \end{array}
+% % }
+% % \]
+% % \end{example}
+
+% % \begin{example}[Multi-Round Algorithm]
+% % \[
+% % MultiRound^H(k) \triangleq
+% % \begin{array}{l}
+% %     %  \left[j \leftarrow 0 \right]^1 ; \\
+% %   I_2 \leftarrow [] ; \\
+% %     \eloop ~ [k]  \\ 
+% %     \ ~ \edo ~  \Big(
+% %     p_1 \leftarrow c ; \\
+% %     a_1 \leftarrow q(p_1, I_2) ; \\
+% %     I_3 \leftarrow \eupdt( {I_2}, (a_1, p_1)) 
+% %     \Big) 
+% % \end{array}
+% % \]
+% % \end{example}
+% % %
+
+
+% %
+% %
+% % \begin{example}
+% % \textbf{Dependency graphs for high level programs containing  non-atomic queries}
+% % \\
+% % Let $q_1 = \lambda D. D_i * D_j$, \\ 
+% % Let $q_2 (x_1) = \lambda D. D_i * D_j + x_1  $.\\
+% % Let $q_3 (x_1 - x_2) = \lambda D. D_i * D_j + x_1 - x_2 $, 
+% % $q_4 (x_2) = \lambda D. D_i * D_j + x_2 $, 
+% % and $q_5(x_1) = \lambda D. D_i * D_j + x_1$ .\\
+% % in program $c_1$, $c_2$ and $c_3$ as following:
+% % \[
+% % c_1 \triangleq
+% % \begin{array}{c}
+% %       \left[\assign{x_1}{q_1} \right]^1; \\
+% %   \left[\assign{x_2}{q_2} \right]^2 ; \\
+% %      \left[\assign{x_3}{q_3} \right]^3
+% % \end{array}
+% % \hspace{2cm}
+% % c_2 \triangleq
+% % \begin{array}{c}
+% %       \left[\assign{x_1}{q_1} \right]^1; \\
+% %   \left[\assign{x_2}{q_2} \right]^2 ; \\
+% %      \left[\assign{x_3}{q_4} \right]^3
+% % \end{array}
+% % \hspace{2cm}
+% % c_3 \triangleq
+% % \begin{array}{c}
+% %       \left[\assign{x_1}{q_1} \right]^1; \\
+% %   \left[\assign{x_2}{q_2} \right]^2 ; \\
+% %      \left[\assign{x_3}{q_5} \right]^3
+% % \end{array}
+% % \]
+% % %
+% % \begin{center}
+% % \begin{tikzpicture}
+% % \draw[very thick,->] (8, 0)node[anchor=north]{$q_3^3$} -- (6, 2) node[anchor=south]{$q_2^2$};
+% % \draw[very thick,->] (8, 0)  -- (10, 2) node[anchor=south]{$q_1^1$};
+% % \draw[very thick,->] (6.2, 2) -- (9.8, 2);
+% % %%%%%draw the longest path
+% % \draw[rounded corners=8mm, very thick, red, dashed, ->] (8, 0.2) -- (6.4, 1.8) -- (9.6, 1.8);
+% % \end{tikzpicture}
+% % %
+% % \begin{tikzpicture}
+% % \draw[very thick,->] (18, 0)node[anchor=north]{$q_4^3$} -- (16, 2) node[anchor=south]{$q_2^2$};
+% % \draw[very thick,->] (16.2, 2) -- (19.8, 2)node[anchor=south]{$q_1^1$};
+% % \draw[rounded corners=8mm, very thick, red, dashed, ->] (18, 0.2) -- (16.4, 1.8) -- (19.6, 1.8);
+% % \end{tikzpicture}
+% % %
+% % \begin{tikzpicture}
+% % \draw[very thick,->] (26, 2) node[anchor=south]{$q_2^2$} -- (29.9, 2);
+% % \draw[very thick,->] (28, 0)node[anchor=north]{$q_5^3$}  -- (30, 2) node[anchor=south]{$q_1^1$};
+% % % \draw[very thick, red, ->, dashed] (26.4, 1.8) -- (29.6, 1.8);
+% % \draw[very thick, red, ->, dashed] (28, 0.2) -- (29.6, 1.8);
+% % \end{tikzpicture}
+% % \end{center}
+% % %
+% % \end{example}
+% %
