@@ -1,0 +1,357 @@
+\documentclass[12pt, letterpaper]{report}   % Single-sided printing for the library
+
+% TOGGLE ON TO SEE PAGE MARGINS -- useful to check that your figures and tables don't go over the specified margins - HG 2018
+% \usepackage[showframe]{geometry}
+
+\usepackage[bf]{caption} % Make nice captions with bold "Figure..." and "Table..."
+\setcaptionmargin{0.5in}
+%package for the bu thesis format -- most commonly-used packages added in the style file by HG 2018
+\usepackage{bu_math_thesis}
+
+% \usepackage{titletoc}
+% \usepackage{capt-of}
+\usepackage{tocloft}
+\usepackage{xpatch}
+
+% \usepackage{hyperref}
+
+% Just in case we're not using hyperref
+% \providecommand{\phantomsection}{}
+
+% Generate the separate list of commands for appendix figures and tables
+\newcommand{\listofappendixfiguresname}{List of Figures in Appendices}
+\newlistof{appendixfigures}{apf}{\listofappendixfiguresname}
+\newcommand{\listofappendixtablesname}{List of Tables in Appendix}
+\newlistof{appendixtables}{apt}{\listofappendixtablesname}
+
+\renewcommand{\cftafterapftitle}{\addcontentsline{toc}{chapter}{\listofappendixfiguresname}}
+\renewcommand{\cftafterapttitle}{\phantomsection\addcontentsline{toc}{chapter}{\listofappendixtablesname}}
+
+\xpretocmd{\listofappendixfigures}{\clearpage}{}{}
+\xpretocmd{\listofappendixtables}{\clearpage}{}{}
+
+
+\makeatletter
+\xapptocmd{\appendix}{%
+  \write\@auxout{%
+    \string\let\string\latex@tf@lof\string\tf@lof% Store the original `\tf@lof` file handle
+    \string\let\string\tf@lof\string\tf@apf% 
+    \string\let\string\latex@tf@lof\string\tf@lot% Store the original `\tf@lot` file handle
+    \string\let\string\tf@lot\string\tf@apt% 
+  }%
+}{}{}
+\makeatother
+
+
+\graphicspath{{figures/}{tables/}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%define the frequent formulas shorthands for typing -- note that these do not appear as the function in "Rich Text" format in Overleaf, but rather as the "\shorthand"
+\include{prelude}
+\usepackage{xargs}
+\usepackage{cleveref}
+\newif\ifextra
+\extratrue 
+
+
+\newcommand{\lagin}{\ensuremath{\lambda_{1}}}
+\newcommand{\lagout}{\ensuremath{\lambda_{2}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Setup commands for the bu thesis style file
+
+\title{Program-based Analysis for Quantitative Properties}
+\author{Jiawen Liu}
+
+% Type of document prepared for this degree:
+%   2 = Doctor of Philosophy dissertation.
+%   4 = Doctoral Dissertation Prospectus
+\degree=2
+
+% List your bachelors degree before your masters - HG 2018
+\prevdegrees{
+B.A. in Department of Information Science, Central University of Economics and Finance, 2017\\ 
+% MS in Computer Science, University at Buffalo, 2016
+}
+\department{Department of Computer Science}
+\university{Boston University}
+\faculty{Graduate School of Arts and Sciences}
+
+% Degree year is the year the diploma is expected, and defense year is the year the dissertation is written up and defended. Often, these will be the same, except for January graduation, when your defense will be in the fall of year X, and your graduation will be in January of year X+1
+\defenseyear{2023}
+\degreeyear{2023}
+
+% For each reader, specify appropriate label {First, second, third}, then name, then title. Warning: If you have more than five readers you are out of luck, because it will overflow to a new page. Sometimes you may wish to put part of the title in with the name
+% Do NOT put the chair on your approval page - HG 2018
+\reader{First}{Marco Gaboardi, Ph.D.}{Associate Professor, Computer Science}
+\reader{Second}{ }{}
+\reader{Third}{Assaf Kfoury, Ph.D.}{Professor, Computer Science}
+\reader{Fourth}{ }{}
+% \reader{Fifth}{Deepak Garg, Ph.D.}{Associate Professor, MPI-SWS}
+% The Major Professor is the same as the first reader, but must be specified again for the abstract page
+% Just copy and paste the same information
+\majorprof{Marco Gaboardi}{Associate Professor of Computer Science}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% other set up commands which are a good idea
+
+%the bottom margins should be "as close as possible" to 1 inch, so allowdisplaybreaks is a good idea for theses with a lot of equations
+\allowdisplaybreaks
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                       PRELIMINARY PAGES
+% According to the BU guide the preliminary pages consist of: title, copyright (optional), approval,  acknowledgments (opt.), abstract, preface (opt.), Table of contents, List of tables (if any), List of illustrations (if any). The \tableofcontents, \listoffigures, and \listoftables commands can be used in the appropriate places. For other things like preface, do it manually with something like \newpage\section*{Preface}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is an additional page (do not hand it in at the library) to print boxed-in title, author and degree statement so that they are visible through the opening in BU covers used for reports. This makes a nicely bound copy.
+
+%\buecethesistitleboxpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% TITLE PAGE 
+% Make the titlepage based on the above information.  If you need something special and can't use the standard form, you can specify the exact text of the titlepage yourself.  Put it in a titlepage environment and leave blank lines where you want vertical space. The spaces will be adjusted to fill the entire page.
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% COPYRIGHT PAGE 
+% The copyright page is blank except for the notice at the bottom. You must provide your name in capitals.
+\copyrightpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% APPROVAL PAGE 
+% Now include the approval page based on the readers information
+\approvalpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% DEDICATION			 
+\addcontentsline{toc}{chapter}{Dedication}
+\section*{Dedication}
+\begin{flushright}
+This dissertation is dedicated to \\
+my loving grandfather \\ Zhaosheng Jin \\ \& \\ my dear grandmother \\ Dongju Gao
+\end{flushright}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% ACKNOWLEDGEMENTS	 
+\newpage
+\addcontentsline{toc}{chapter}{Acknowledgements}
+\include{chapters/Acknowledgements}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% ABSTRACT		 
+\newpage
+\addcontentsline{toc}{chapter}{Abstract}
+\include{chapters/Abstract}
+
+% Now you can include a preface. Again, use something like
+% \newpage\section*{Preface} followed by your text
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% CODE FOR CLEANING UP PDF HYPERLINKS - HG 2018
+%remove the hyperlink colors for table of contents
+\begingroup
+  \hypersetup{linkbordercolor=white,linkcolor=black,
+    filecolor=black, urlcolor=black}  
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% TABLE OF CONTENTS	 
+% Table of contents comes after preface
+\tableofcontents
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% LIST OF TABLES	 
+% If you have tables this goes here - needs to be in appendix HG 2018
+\newpage
+\addcontentsline{toc}{chapter}{List of Tables}
+\listoftables
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% LIST OF FIGURES	
+% If you have figures this goes here - needs to be in appendix HG 2018
+\newpage
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+% \startlist[main]{lof}
+% \printlist[main]{lof}{}{\chapter*{List of Figures}}
+\endgroup
+
+% \addcontentsline{toc}{chapter}{List of Figures}
+% \startlist[main]{lof}% starts main list of figures
+% % \printlist[main]{lof}{}{\chapter*{List of Figures in Main Part}}% prints main list of figures
+% \printlist[main]{lof}{}{}% prints main list of figures
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% LIST OF SYMBOLS AND ABBREVIATIONS	 
+% List of Abbrevs is NOT optional (PUT IN ALPHABETICAL ORDER)
+% For mathematics a list of symbols is perhaps more appropriate, but fulfills the same role
+
+% \newpage
+% \addcontentsline{toc}{chapter}{List of Symbols and Abbreviations}
+% \include{chapters/Symbols}
+
+% END OF THE PRELIMINARY PAGES
+
+\newpage
+\endofprelim
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% the body of the thesis goes here.
+
+
+
+% \mainmatter
+
+\include{chapters/introduction}
+\clearpage
+
+\newpage
+
+\include{chapters/adapt/adapt-intro}
+\cleardoublepage
+
+\include{chapters/adapt/adapt-background}
+\cleardoublepage
+
+\include{chapters/adapt/adapt-loop-language}
+\clearpage
+
+\include{chapters/adapt/adapt-ssa}
+\cleardoublepage
+
+\include{chapters/adapt/adapt-algo}
+\cleardoublepage
+
+\include{chapters/adapt/adapt-exmaples}
+\cleardoublepage
+
+\include{chapters/adapt/adapt-relatedwork}
+
+\cleardoublepage
+
+\include{chapters/Epilogue}
+\cleardoublepage
+
+\include{chapters/conclusion}
+\cleardoublepage
+
+
+% \include{chapters/preface-appendix}
+% \cleardoublepage
+
+% \include{chapters/chapter1}
+% \\
+% \include{chapters/chapter2}
+% \cleardoublepage
+% \include{chapters/chapter3}
+% \cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Quick references for some R packages used that I want in the bibliography
+\nocite{tikzDevice,plotly,reshape,Rcomputing,Florida2000}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Put your appendices inside here, to maintain figure and table listings. Make sure to use \section{appendixA} to have some numbering for figures and tables.
+
+
+
+\appendix
+% \begin{appendices}
+\begingroup
+  \hypersetup{linkbordercolor=white,linkcolor=black,
+    filecolor=black, urlcolor=black} 
+% \addcontentsline{toc}{chapter}{List of Figures in Appendix}
+\listofappendixfigures
+\endgroup
+% \stoplist[main]{lof}% stops main list of figures
+% \startlist[appendix]{lof}
+% \printlist[appendix]{lof}{}{\chapter*{List of Figures in Appendix}}
+% % \include{chapters/Glossary}
+\include{chapters/appendix-adapt}
+% \stoplist[appendix]{lof}
+
+% % \include{chapters/Glossary}
+% \end{appendices}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The back matter
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% LIST OF JOURNAL ABBREVIATIONS	
+% If you don't write the journal names out in full in the bibliography then you need a list of journal abbreviations
+% \include{chapters/Journals}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% 	BIBLIOGRAPHY	
+% The bibliography itself can be single spaced with at least one extra space between items
+
+% 1.8.1 Formatting the bibliography
+% Include a complete bibliography at the end of the work. Arrange the bibliography alphabetically by the last name of the primary author. You may single-space citations, but leave one line of space between citations. If you use an article style format, where each chapter has its own separate bibliography, you must also include a cumulative bibliography at the end of the work.
+% Verify any other requirements for formatting the bibliography at the end of the work. Certain disciplines/departments may require an alternate arrangement to the bibliography, for example, separating primary and secondary sources and then arranging each alphabetically by last name of author.
+
+\newpage
+\singlespace
+\Urlmuskip=0mu plus 1mu\relax % Don't let the website links get all funky and break the page margins
+\bibliographystyle{apa-good} % technically, you need APA. This style file adds the URL to websites and the date accessed. NOTE: Mendeley API does not put the "date accessed" into the .bib file, so you may want to export directly - HG 2018
+\bibliography{main.bib} % keep this on, or you will get warnings about undefined citations
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% CURRICULUM VITAE 
+% Finally you must include your cv.  You can do that whatever way you like including by formatting it in a totally different program.
+
+% If you would like to grab it from some other source then be sure the page numbering is consecutive with the end of the bibliography and be sure it appears on the table of contents by adding a line such as
+% \addcontentsline{toc}{chapter}{Curriculum Vitae}
+
+\chapter*{Curriculum Vitae}
+% \thispagestyle{empty}
+\begin{large}
+\begin{center}
+\textbf{Jiawen Liu, MA}\\ 
+\today\\
+\end{center}
+\end{large}
+
+\setlength{\columnsep}{1.5in}
+\begin{multicols}{1}{
+\begin{center}{
+21 Overlook Ridge Ter, unit 527 \\ Revere, MA 02151 \\ (716) 429 6041 \\ \hyperlink{mailto:personaladdress@gmail.com}{jiawenliu18@gmail.com}\\
+Work office \\Boston University \\ Boston, MA 02118 \\\hyperlink{mailto:buemail@bu.edu}{jiawenl@bu.edu}\\}
+\end{center}}
+\end{multicols}
+
+\subsection*{Academic Training:}
+\begin{tabular}{p{0.22\textwidth}p{0.7\textwidth}}
+12/2023\small(expected) &  Ph.D. Boston University, Boston, MA; Computer Science\\
+06/2017  & B.A. Central University of Economics and Finance, Haidian, Beijing; Department of Information Science. \\
+\end{tabular}
+
+\subsection*{Doctoral Research:}
+\begin{tabular}{p{0.2\textwidth}p{0.72\textwidth}}
+\textbf{Title}: & Program-based Analysis For Quantitative Properties \\
+\textbf{Thesis advisor}: & Marco Gaboardi, PhD\\
+\textbf{Defense date}: & December 3, 2021 \\
+\textbf{Summary}: & Reasoning about quantitative properties of programs has great potential in program optimization and program security. This dissertation exploits the program-based analysis to reason about quantitative properties in different areas.
+\\
+\end{tabular}
+
+\subsection*{Original, Peer Reviewed Publications (newest first):}
+% Make sure to be consistent with your CV bibliographic info formatting
+\begin{enumerate}
+\item 
+% \underline{Weihao Qu}, Marco Gaboardi, Deepak Garg. Relational cost analysis in functional-imperative setting. \emph{Journal of Functional Programming } 2022. \\(doi: 10.1017/S0956796821000071)
+\item 
+% \hyperlink{https://www.ncbi.nlm.nih.gov/pubmed/XXX}{XXX}.
+% \item John Famous and Example Student. \emph{A special case of a well known conjecture}. Fancy Math. J. \textbf{46} no. 3 (2007), 473-490.
+\end{enumerate}
+
+\end{document}

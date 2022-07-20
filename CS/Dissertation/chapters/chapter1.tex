@@ -1,0 +1,30 @@
+\chapter{default}
+
+This is an introduction to using the \LaTeX \xspace template for writing your PhD Dissertation.
+
+\section{Equations}
+
+Here is a simple equation that I would like to reference at a later point. I have labeled it \verb+\label{eq:OCM2}+.
+\begin{equation} \label{eq:OCM2}
+C_{p}^{ss}=\dfrac{k_0}{k_{e}V}
+\end{equation}
+
+For equations that just need to be shown, but not referenced, you can use \verb+$$\dfrac{1}{2}$$+ to center the lines
+$$\dfrac{1}{2}=1-e^{-k_{e}t_{h}}\longrightarrow\frac{1}{2}=e^{-k_{e}t_{h}}\longrightarrow\ln⁡{(\dfrac{1}{2})}=\ln{(1)}-\ln{(2)}=-\ln{(2)}=-k_{e}t_{h}$$
+
+\section{Some important background}
+I have some literature that I would like to cite.\citep{Cole2014,Venzon1988,Murphy2000,Sprott2000} To use the author's name inline, I can refer to \citet{Cox1992} this way. 
+
+\subsection{Footnote citation}
+Figure \ref{fig:proflike} (on page \pageref{fig:proflike}) was pulled as a ".png" file from online and I would like to cite it in a footnote.\footnote{Image taken from: https://www.unc.edu/courses/2010fall/ecol/563/001/images/lectures/\\lecture8/fig4new.png}
+
+\section{Margins} \label{ch1:Description}
+Here is a small intro into sentences that break the margins. Hint: you can see this by "toggling on" the \verb+\usepackage[showframe]{geometry}+ line in the dissertation.tex file (at the top).
+
+"If I want to reference something that was done in chapter \ref{chapter2}, I can type \verb+\ref{chapter2}+."
+
+Notice that the previous paragraph breaks the page margins! This can happen when you use shorthand or other notations/equations that have trouble identifying the length of a line from the placeholder text. To fix this try putting the paragraph into \verb+\begin{sloppypar}...\end{sloppypar}+ as follows:
+
+\begin{sloppypar}
+If I want to reference something that was done in chapter \ref{chapter2}, I can type \verb+\ref{chapter2}+. 
+\end{sloppypar}

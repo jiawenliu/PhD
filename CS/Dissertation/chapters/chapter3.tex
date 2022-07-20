@@ -1,0 +1,50 @@
+\chapter{Final Set of Examples}
+\label{chapter3}
+
+\section{Tables and Figures}
+
+\subsection{Inline Table Example}
+\begin{table}[h]
+	\caption{Example set of tables side-by-side using minipage} 
+	\centering
+	\begin{minipage}[b]{0.30\linewidth}
+		\centerline{$\eta=6000$, $\mu=2000$}\smallskip
+		\centering
+		\begin{tabular}{ccc}
+			\hline
+			$K$ & $u_1$ & $u_2$\\
+			\hline
+			3   & 0.52 &0.46\\
+			7   & 0.47 &0.43\\
+			12  & 0.37 &0.36\\
+			\hline
+		\end{tabular}
+	\end{minipage}
+	\begin{minipage}[b]{0.34\linewidth}
+		\centerline{$K=10$, $\mu=2000$}\smallskip
+		\centering
+		\begin{tabular}{ccc}
+			\hline
+			$\eta$ & $u_1$ & $u_2$\\
+			\hline
+			1000&0.54& 0.45\\
+			3000&0.43& 0.40\\
+			9000&0.37& 0.37\\
+			\hline
+		\end{tabular}
+	\end{minipage}
+	\begin{minipage}[b]{0.32\linewidth}
+		\centerline{$K=10$, $\eta=6000$}\smallskip
+		\centering
+		\begin{tabular}{ccc}
+			\hline
+			$\mu$ & $u_1$ & $u_2$\\
+			\hline
+			100 &1.00&1.16\\
+			1000&0.53&0.47\\
+			3000&0.44&0.43\\
+			\hline
+		\end{tabular}
+	\end{minipage}
+	\label{tab:threetabs}
+\end{table}
