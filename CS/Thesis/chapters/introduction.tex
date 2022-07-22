@@ -2,13 +2,14 @@
 \label{introduction}
 
 
-When people talk about a computer program, \wq{they care about whether this program can bring something good and also something bad will not happen. The good thing happens when the program can give the users the correct answer as they expect or it can solve their problems correctly, in this case, we say that the program is \emph{functionally correct}. Also, the bad thing will not happen if this program executes as expected and never gets stuck, for this reason, in the programming language literature this property is often referred to as \emph{safety}.}
-Actually, besides the functional correctness and safety property of a program, people also care about some other properties which describe the side effects of programs, such as the execution time, memory usage, and power consumption. For instance, when you are installing an app on your phone, you not only care about whether the app is successfully installed, you may also want a progress bar providing an estimation time by when the installation can be done. These properties can usually be expressed in terms of quantities, and are called quantitative properties of programs. 
+When people talk about a computer program, {they care about whether this program can bring something good and also something bad will not happen. 
+The good thing happens when the program can give the users the correct answer as they expect or it can solve their problems correctly, in this case, we say that the program is \emph{functionally correct}. 
+Also, the bad thing will not happen if this program executes as expected and never gets stuck, for this reason, in the programming language literature this property is often referred to as \emph{safety}.}
+Actually, besides the functional correctness and safety property of a program, people also care about some other properties which describe the side effects of programs, such as the execution time, memory usage, and power consumption.
+For instance, when you are installing an app on your phone, you not only care about whether the app is successfully installed, you may also want a progress bar providing an estimation time by when the installation can be done. 
+These properties can usually be expressed in terms of quantities, and are called quantitative properties of programs. 
 
 In this dissertation, I will present two studies on reasoning about quantitative properties, from different axes. 
-
-
-
 
 
 
@@ -17,235 +18,109 @@ In this dissertation, I will present two studies on reasoning about quantitative
 % At the beginning, I would like to clarify the motivation of
 % reasoning about quantitative properties, which has more potential benefits in today's life than before.
 
-\wq{Nowadays, along with the popularity of mobile devices, more and more programs will be executed on machines with limited resources. We have seen that games are running on smartphones and tablets, apps tracking people's health data are running on wearable devices such as smartwatches, autopilot programs are running on Unmanned Aerial Vehicles(UAV). For these programs, quantitative properties such as memory usage, power consumption, and execution time become very important considering the resource limit of the devices that these programs are running on. In this sense, reasoning about these quantitative properties has wide potential applications. }
+{Nowadays, along with the popularity of mobile devices, more and more programs will be executed on machines with limited resources. 
+We have seen that games are running on smartphones and tablets, apps tracking people's health data are running on wearable devices such as smartwatches, autopilot programs are running on Unmanned Aerial Vehicles(UAV). 
+For these programs, quantitative properties such as memory usage, power consumption, and execution time become very important considering the resource limit of the devices that these programs are running on. 
+In this sense, reasoning about these quantitative properties has wide potential applications. }
 
-\wq{Another application is program optimization. People can safely replace a piece of code with the optimized one when they can reason about the memory usage or execution time of these two pieces of code and show the optimized one is always better. Reasoning about these resources can be realized by resource analysis.} 
+{Another application is program optimization. 
+People can safely replace a piece of code with the optimized one when they can reason about the memory usage or execution time of these two pieces of code and show the optimized one is always better. 
+Reasoning about these resources can be realized by resource analysis.} 
 
 % Reasoning about the resources consumed by a program guarantees the performance, as well as the safety on these devices. For example, we will not allow a program that may take larger memory than the embedded system it runs on, to avoid the crash due to the memory outrage. 
 
-Another application domain is security. \wq{ Reasoning about quantitative properties can help detect side-channel attacks.  A side-channel attack is any attack where the adversary uses some extra information from the cryptosystem. This extra information can be the timing information, power consumption. In timing channel attacks, the adversary observes the timing information of the cryptosystem handling the private information, such as the time of the system to verify one user's id and password. Let us assume the adversary knows the user's id (public in some other places) but does not know the password. The adversary can then have a malicious attempt with the user's id and a fake password. If the timing information of this cryptosystem is observably different from the target user's timing information, the adversary can compare the two passwords and learn the extra information on how far the two passwords are away from each other. Then the adversary can modify the next attempt accordingly. Fortunately, reasoning about the execution time of the target cryptosystem can tell us the system is resilient with respect to these attacks. In particular, reasoning about the difference of the execution time of the target system in two runs, one run takes arbitrary input and another one uses the password to be protected, can show that the attacker can not learn any information by observing the execution time of the two runs when the difference that is reasoned about is very small to be observed. This application requires relational reasoning, which is one important part of this dissertation.}
+Another application domain is security. { Reasoning about quantitative properties can help detect side-channel attacks.  
+A side-channel attack is any attack where the adversary uses some extra information from the cryptosystem. 
+This extra information can be the timing information, power consumption. 
+In timing channel attacks, the adversary observes the timing information of the cryptosystem handling the private information, such as the time of the system to verify one user's id and password. 
+Let us assume the adversary knows the user's id (public in some other places) but does not know the password. 
+The adversary can then have a malicious attempt with the user's id and a fake password. 
+If the timing information of this cryptosystem is observably different from the target user's timing information, the adversary can compare the two passwords and learn the extra information on how far the two passwords are away from each other. 
+Then the adversary can modify the next attempt accordingly. 
+Fortunately, reasoning about the execution time of the target cryptosystem can tell us the system is resilient with respect to these attacks. 
+In particular, reasoning about the difference of the execution time of the target system in two runs, one run takes arbitrary input and another one uses the password to be protected, can show that the attacker can not learn any information by observing the execution time of the two runs when the difference that is reasoned about is very small to be observed. 
+This application requires relational reasoning, which is one important part of this dissertation.}
 
-Also, quantitative properties can be used indirectly as some auxiliary component in other research. \wq{For example, in the data analysis community, the analysts run data analysis to study some general property of some population, such as people's age in the united states. Instead of running their data analysis on the population( big data), they choose the sample data drawn from the population because it is often impossible to run it on the population. People use generalization errors to describe the degree that the conclusion drawn from the sample data generalizes to the population. The analysts usually ask queries to interact with the sample data. A study has shown that when the queries are asked adaptively, which means the choice of one query may rely on the results of other queries, the generalization error of this data analysis becomes very large. A new technique to control the generalization error is to add mechanisms. The key point is to choose the "right" mechanism for the data analysis. Some researchers \citep{DworkFHPRR15, BassilyNSSSU16}
-shows that choice of the mechanisms for a data analysis is related to the relation between its queries. The relation between queries can be expressed as the length of the longest chain of queries in the algorithm such that every query in the chain may rely on its previous queries' results. The length is called adaptivity in this dissertation.}
+Also, quantitative properties can be used indirectly as some auxiliary component in other research. {For example, in the data analysis community, the analysts run data analysis to study some general property of some population, such as people's age in the united states. 
+Instead of running their data analysis on the population( big data), they choose the sample data drawn from the population because it is often impossible to run it on the population. People use generalization errors to describe the degree that the conclusion drawn from the sample data generalizes to the population. The analysts usually ask queries to interact with the sample data. 
+A study has shown that when the queries are asked adaptively, which means the choice of one query may rely on the results of other queries, the generalization error of this data analysis becomes very large. A new technique to control the generalization error is to add mechanisms. 
+The key point is to choose the "right" mechanism for the data analysis. Some researchers \citep{DworkFHPRR15, BassilyNSSSU16}
+shows that choice of the mechanisms for a data analysis is related to the relation between its queries. 
+The relation between queries can be expressed as the length of the longest chain of queries in the algorithm such that every query in the chain may rely on its previous queries' results. The length is called adaptivity in this dissertation.}
 %%%%% To reason about
 \section{Methodology}
-We use static analysis techniques to reason about the two main quantitative properties studied in this dissertation: the relational cost of two programs and the adaptivity of adaptive data analysis programs. 
+We use static analysis techniques to reason about the two main quantitative properties studied in this dissertation: 
+the adaptivity of adaptive data analysis programs,
+the reachability bound of while loop programs. 
 
-\subsection{Relational Refinement Type and Effect Systems}
- We choose the relational type and effect system, along with relational refinement, to perform the relational cost analysis. The benefit of this choice is that the dynamic information of the programs, which is the relational cost in our case, can appear in the type as an effect. We can then verify the cost of a program by type checking the program with the appropriate type annotated with the cost bound. We are interested in cost in the relational setting, so the type and effect system we use is relational. To be precise, the cost in the relational setting refers to the difference of execution cost of two programs, called relative cost. The relational type and effect system usually relates two programs to one relational type, which ascribes a pair of computations. The effect then becomes the upper bound on the relative cost of the two programs. Suppose we would like to compare two closed programs $t_1$ and $t_2$ and check whether $t_1$ runs fast than $t_2$. In a relational type and effect system, we can provide a judgment as follows.
-\[
-   \jtypediff{D}{t_1}{t_2}{\tau} 
-\]
-The relational cost (effect) $D$ reveals the upper bound on the difference of the cost of running the two programs $t_1$ and $t_2$, related by the relational type $\tau$. If $D$ is less than $0$ and cost stands for the execution time, we can safely say that $t_1$ runs faster than $t_2$.
-
-Relational refinement is another important component of our relational cost analysis, which is used to provide extra information about data structures to enable a precise cost estimation. For instance, our system relates a pair of lists, both of length $N$, which differ in at most $\alpha$ indices, the relational type $\mathsf{list}^{\alpha}[N]$.
-The main novelty of our system is the support of mutable arrays with destructive updates, one of the standard imperative features, which is missing in related work on this topic. Naturally, along with the support of mutable arrays, the modification of the heap where the arrays are stored before and after the computation involving array operations comes into our sight. We use relational refinement to reason about these imperative components. 
-More details about these refinements will be explained in the later chapters along with concrete examples.
+\subsection{Abstract Interpretation}
 
 \subsection{Dependency Graph}
-Another quantitative property we study is the adaptivity of adaptive data analysis programs. \wq{The adaptivity is defined to be the length of the longest chain of queries of the program in which one query may rely on its previous queries in the same chain. 
+Another quantitative property we study is the adaptivity of adaptive data analysis programs. 
+{The adaptivity is defined to be the length of the longest chain of queries of the program in which one query may rely 
+on its previous queries in the same chain. 
 The adaptivity of a data analysis program is quite different from the relative cost of the two programs. To reason about cost, we can simply sum the costs of sub-programs to get the upper bound of the cost. However, the adaptivity of each sub-program of the target program does not help much in finding the adaptivity. To use a type and effect system to reason about adaptivity, this system should be able to express certain dependencies.
 % Of course, we can sum them but then the result becomes imprecise. For this reason, we think the type and effect system is not the good direction to reason about the adaptivity of a data analysis program since it is tricky for the effect to carry information such as one query may depend on the other one. 
 We expect adaptivity can also be reasoned about by type and effect systems but in this work, we choose to use a dependency graph to reason about adaptivity.}
 
-\wq{There are two challenges to reason about adaptivity: what will a formal definition of the adaptivity of a data analysis program look like, and how to reason about the adaptivity. In our work, the first challenge is solved by a query-based dependency graph generated along with the evaluation of the program. Our trace-based operational semantics can generate the trace which tracks the queries asked in the evaluation of the program. The query-based dependency graph is constructed based on the queries in the trace. Every node of the graph represents a unique query asked in the program, and the directed edge between two nodes, identifying one query (one node) may depend on the other one. The adaptivity is then formally defined as the length of the longest path in the query-based dependency graph.}
-\wq{The second challenge is how to estimate the adaptivity of a data analysis program we have just defined. In order to upper bound the length of the longest path in the query-based dependency graph, we want to find a path in a dependency graph as well such that the path contains all the queries in that longest path in the query-based dependency graph. We develop an algorithm to build a variable-based dependency graph, in which every node represents the unique variable that is assigned in one assignment statement of the program. The direct edge between two nodes reflects both the data dependency and control flow dependency between variables. Also, we add the unit weight to the node whose variable is associated with a query result. Then the upper bound on the adaptivity of the data analysis program is estimated by the weight of the path with the highest weights in the variable-based dependency graph.}
+{There are two challenges to reason about adaptivity: what will a formal definition of the adaptivity of a data analysis program look like, and how to reason about the adaptivity. 
+In our work, the first challenge is solved by a query-based dependency graph generated along with the evaluation of the program. 
+Our trace-based operational semantics can generate the trace which tracks the queries asked in the evaluation of the program. 
+The query-based dependency graph is constructed based on the queries in the trace. Every node of the graph represents a unique query asked in the program, and the directed edge between two nodes, identifying one query (one node) may depend on the other one. 
+The adaptivity is then formally defined as the length of the longest path in the query-based dependency graph.}
+{The second challenge is how to estimate the adaptivity of a data analysis program we have just defined. 
+In order to upper bound the length of the longest path in the query-based dependency graph, we want to find a path in a dependency graph as well such that the path contains all the queries in that longest path in the query-based dependency graph. 
+We develop an algorithm to build a variable-based dependency graph, in which every node represents the unique variable that is assigned in one assignment statement of the program. 
+The direct edge between two nodes reflects both the data dependency and control flow dependency between variables. Also, we add the unit weight to the node whose variable is associated with a query result. Then the upper bound on the adaptivity of the data analysis program is estimated by the weight of the path with the highest weights in the variable-based dependency graph.}
 
-\wq{To summarize, we use two dependency graphs for reasoning about the adaptivity of a data analysis program: one query-based dependency graph to define the adaptivity, and one weighted variable-based dependency graph to estimate an upper bound on the adaptivity. }
-% We find that type and effect system is not suitable. The reason is that it is tricky for the effect to carry information such as one query may depend on the other. To obtain the adaptivity, the key point is to track the relation of any two queries in the programs. Naturally, we switch to a graph based approach. We develop a static program analysis algorithm to statically construct a dependency graph over variables, and only assign a unit weight to node associated with query requests, then the adpativity can be found in the graph as the most weighted path.
-
-% We show an example of the dependency graph in Figure~\ref{fig:intro_graph}. We present a simple adaptive data analysis algorithm with two rounds of adaptivity in a labelled loop language in the Static Single Assignment form on the left. $q_1(\chi[i_3])$ represents a query request of asking the value of $i_3$ column of the database. The metavariable $\chi$ represents the abstract row of the database. We use the dependency graph in Figure~\ref{fig:intro_graph}(b) to show the adaptivity. In the graph, $a_3^3$ represents the variable $a_3$ in the $3$rd iteration of the loop, other superscript can be understood in a similar way. We only add weight to variables associated with query requests, in red dashed circle in the graph. We can find the most weighted path, which is in red dashed line, shows the adaptivity 2. More details will be provided in the later chapters. 
-
-% \begin{figure} 
-% \centering
-%   \begin{subfigure}{.2\textwidth}
-%   \begin{centering}
-%   $
-%   \begin{array}{l}
-%   \clabel{ a_1 \leftarrow 0}^{1}; \\
-%   \clabel{ i_1 \leftarrow 0}^{2} ; \\
-%     \eloop ~ \clabel{3}^{3} ~ \edo ~ \\ 
-%     \quad [(i_3, i_1,i_2), (a_3,a_2,a_1)] \\
-%     %  \quad i_3 = \phi(i_1,i_2); \\
-%     %   \quad a_3 = \phi(a_1,a_2); \\
-%     \quad
-%     \clabel{ x_1 \leftarrow q_1(\chi[i_3])}^{4}   ; \\
-%     \quad \clabel{a_2 \leftarrow a_3+x_1}^{5}; \\
-%         \quad \clabel{i_2 \leftarrow i_3+1}^{6}; \\
-%     \clabel{l_1 \leftarrow q_2(\chi[4]*a_3)}^{7}\\
-%     \end{array}
-% % {
-% % \begin{array}{l}
-% %   \clabel{ a_1 \leftarrow [] }^{1}; \\
-% %     \eloop ~ \clabel{k}^{2} ~ \edo ~ \\
-% %     \Big(
-% %       a_3 = \phi(a_1,a_2); \\
-% %      \clabel{x_1 \leftarrow q() }^{3}  ; \\
-% %     \clabel{a_2 \leftarrow x :: a_3}^{4}      \Big); \\
-% %     \clabel{l_1 \leftarrow q(a_3)}^{5}\\
-% % \end{array}
-% % }
-%  $
-%  \caption{}
-%   \end{centering}
-%   \end{subfigure}
-%   \begin{subfigure}{.5\textwidth}
-%   \begin{centering}
-%   $\vcenter{\hbox{
-% % \]
-% % \begin{wrapfigure}{R}{0.5\textwidth}
-% % \begin{figure}
-% % \begin{tcolorbox}[colback=white]
-%   \begin{tikzpicture}[scale=\textwidth/18cm,samples=200]
-% %%% The nodes represents the k query in the first round
-% % \draw[very thick] (-1,6)  -- (13,6) -- (13,3) -- (-1,3) -- (-1,6);
-% % \draw[black] (-2.5, 4) circle (0pt) node [anchor=south]{\textbf{line 4:}};
-% % \draw[thick] (1, 1.1) circle (25pt) node
-% % % node[label={above: \small{iteration 1:}}] 
-% % {\tiny{$q_1^{(5,1)}$}} ;
-% \draw[] (2, 5.1) circle (15pt) node
-% {\tiny{ $a_1$}};
-% \draw[] (6, 8.1) circle (15pt) node
-% {\tiny{ $a_3^{1}$}};
-% % \draw[thick] (8, 11.1) circle (15pt) node
-% % {\tiny{ $x_{1}^{1}$}};
-% % \draw[thick] (10, 10.1) circle (15pt) node
-% % {\tiny{ $x_{2}^{1}$}};
-% \draw[very thick, dashed, red] (12, 8.1) circle (17pt) node{\tiny{\textbf{ $x_{1}^{1}$}}};
-% \draw[] (8, 7.1) circle (15pt) node
-% {\tiny{ $a_{2}^{1}$}};
-% \draw[] (6, 6.1) circle (15pt) node{\tiny{ $a_3^{2}$}};
-% % \draw[thick] (10, 8.1) circle (15pt) node
-% % {\tiny{ $x_{1}^{2}$}};
-% % \draw[thick] (12, 7.1) circle (15pt) node
-% % {\tiny{ $x_{2}^{2}$}};
-% \draw[very thick, dashed, red] (12, 6.1) circle (17pt) node{\tiny{\textbf{ $x_{1}^{2}$}}};
-% \draw[] (8, 5.1) circle (15pt) node
-% {\tiny{ $a_{2}^{2}$}};
-% % \draw[thick] (12, 5.1) circle (15pt) node
-% % {\tiny{ $x_1^{3}$}};
-% \draw[] (6, 4.1) circle (15pt) node
-% {\tiny{ $a_3^{3}$}};
-% \draw[very thick, dashed, red] (12, 4.1) circle (17pt) node{\tiny{\textbf{ $x_1^{3}$}}};
-% % \draw[thick] (12, 3.1) circle (15pt) node
-% % {\tiny{ $x_2^{3}$}};
-% \draw[] (8, 3.1) circle (15pt) node
-% {\tiny{ $a_{2}^{3}$}};
-%  \draw[] (6, 2.1) circle (15pt) node 
-% {\tiny{$a_3$}};
-% % \filldraw[black] (-2.5, 0) circle (0pt) node [anchor=south]{\textbf{line 7:}};
-% \draw[very thick, dashed, red] (3, 2.2) circle (17pt) node {\small{\textbf{$l_1$}}};
-% %dotted
-%  \draw[->, red, very thick, dashed] 
-%          (3.5, 2)  -- (5.5, 2) ;
-% %   \draw[->, red, very thick,snake=snake, segment amplitude=.4mm,
-% %          segment length=2mm, line after snake=1mm] 
-% %          (6, 0.5)  -- (6, 1.6) ;
-% \draw[->, red, very thick, dashed](6.5, 2.1)  -- (7.5, 2.8) ;
-%  \draw[->, red, very thick, dashed] (8.5, 3.1)  -- (11.5, 3.9) ;
-%     \draw[thick,->, blue] (8.5, 5.1)  -- (11.5, 5.9) ;
-% \draw[thick,->, blue] (8.5, 7.1)  -- (11.5, 7.9) ;
-% %  \draw[thick,->, blue] (10.5, 4.1)  -- (11.5, 4.8) ;
-% %   \draw[thick,->, red] (10.5, 4.1)  -- (11.5, 3.3) ;
-%   \draw[thick,->, blue] (7.5, 3.5)  -- (6.5, 4.0) ;
-%   \draw[thick,->, blue] (6.5, 4.1)  -- (7.5, 4.8) ;
-%     %  \draw[thick,->, blue] (10.5, 6.1)  -- (11.5, 6.8) ;
-% % \draw[thick,->, blue] (10, 6.6)  -- (10, 7.6) ;
-% \draw[thick,->, blue] (7.5, 5.5)  -- (6.5, 6.0) ;
-%  \draw[thick,->, blue] (6.5, 6.1)  -- (7.5, 6.8) ;
-% % \draw[thick,->, blue] (8.5, 9.1)  -- (9.5 , 9.8) ;
-% % \draw[thick,->, blue] (8, 9.6)  -- (8, 10.6) ;
-% \draw[thick,->, blue] (7.5, 7.5)  -- (6.5, 8.0) ;
-% \draw[thick,->, blue] (5.5, 8.0)  -- (2.6, 5.3) ;
-% \draw[thick,->, blue] (5.5, 6.0)  -- (2.6, 5.3) ;
-% \draw[thick,->, blue] (5.5, 4.0)  -- (2.6, 4.9) ;
-% \draw[thick,->, blue] (5.5, 2.0)  -- (2.6, 4.9) ;
-% % \draw[very thick,->, red] (6, 0.5)  to [out=30,in=240] (11, 3.2) ;
-% % \draw[very thick,->, blue] (6, 0.5)  to [out=150,in=300]  (1, 3.2) ;
-% \end{tikzpicture}
-% }
-% }
-% $
-% \caption{}
-%   \end{centering}
-%   \end{subfigure}
-%     \vspace{-0.3cm}
-%     \caption{(a) Example of a ssa program with two rounds of adaptivity (b) The corresponding variable-based dependency graph.}
-%     \vspace{-0.5cm}
-%     \label{fig:intro_graph}
-% \end{figure}
-% %
+{To summarize, we use two dependency graphs for reasoning about the adaptivity of a data analysis program: 
+one query-based dependency graph to define the adaptivity, and one weighted variable-based dependency graph to estimate an upper bound on the adaptivity. }
 
 \section{Contributions}
 
 Program analysis techniques are usually applied to study quantitative properties. In comparison to those related works, this dissertation has the following contributions.
 
 \begin{enumerate}
-\item We propose a refinement type and effect system {\Arel}, which provides relational cost analysis on programs with mutable arrays. It can be regarded as one step forward to the full support of imperative programs of relational cost analysis by means of type and effect systems.
-
-\item We propose a bidirectional type checking system that implements {\Arel}. The methodology used can guide the implementation of (relational) type and effect system, with (relational) refinements.  
 
 \item We propose a formal definition of the adaptivity of adaptive data analysis programs and develop a graph-based program analysis algorithm that statically estimates the adaptivity.
+\item reachability bound computing algorithm
 % To the best of our knowledge, it is the first work that statically estimates adaptivity to help design adaptive data analysis algorithms.  
 \end{enumerate}
 
 \section{Dissertation Outline}
-This dissertation includes two main parts. One reasons about the quantitative property (cost) of programs in the relational setting. Another one aims to use the quantitative property (adaptivity) of adaptive data programs indirectly, as an auxiliary component in data analysis research.
+This dissertation includes two main parts. 
+One reasons about the quantitative property (cost) of programs in the relational setting. Another one aims to use the quantitative property (adaptivity) of adaptive data programs indirectly, as an auxiliary component in data analysis research.
 
 The rest of the dissertation is divided into $5$ parts. 
 \begin{enumerate}
-    \item Part \romannum{1}~({\Arel}) is about relational cost analysis for functional-imperative programs.
+    \item Part \romannum{1}~ 
     
-    Chapter~\ref{ch:relcost} provides the necessary background of relational cost analysis in Section~\ref{sec:relcost-background} and shows the advantage of {\Relcost}~\citet{Cicek17}, a type and effect system for relational cost analysis over the traditional method described in Section~\ref{sec:relcost-traditional}, through a standard map example in Section~\ref{sec:relcost-map}. 
+    \item Part \romannum{2}~
     
-    Chapter~\ref{ch:arel} discusses the limitation of {\Relcost} that it only supports functional programs. Hence, we introduce {\Arel}, also a type and effect system, in spirit of {\Relcost}, but supporting one of the most common imperative features, mutable state in Section~\ref{sec:introduction-arel}. Two examples, including one which is still the map example but in its imperative version in Section~\ref{subsec:mapi}, serve as the introduction examples of {\Arel}. The contributions of {\Arel} are summarized in Section~\ref{sec:contribution-arel}.
-    
-    Chapter~\ref{ch:arel-ts} formally presents the type system of {\Arel}. The existence of stateful computation naturally partitions the system into two parts: the pure components like those in a standard functional language, and the impure ones which are designed for those stateful computations. Hence, the syntax in Section~\ref{sec:arel-syntax}, the operational semantics in Section~\ref{sec:arel-os}, the types in Section~\ref{sec:arel-types} as well as the typing judgments (Section~\ref{sec:arel-typing}) have the clear distinction between the pure and impure parts. Also, the types and typing support both the standard unary reasoning and relational reasoning, which leads to the unary and relational types and typing, respectively. The subtyping is also important in {\Arel} and is introduced in Section~\ref{subsec:arel-subtyping}. 
-    
-    Chapter~\ref{ch:arel-soundness} shows the soundness of {\Arel}. We present the logical relation model by introducing the interpretation of types in both the unary (Section~\ref{sec:arel-unary-interpretation}) and relational setting (Section~\ref{sec:arel-relational-interpretation}). Then the fundamental theorem as well as the necessary auxiliary lemmas are discussed in Section~\ref{sec:arel-metatheory}. 
-    Chapter~\ref{ch:arel-example} gives five more functional-imperative examples to help readers to understand how {\Arel} provides the precise relational cost analysis for many interesting problems.
-    
-    Chapter~\ref{ch:relatedwork_arel} discusses the related work of {\Arel}, from two perspectives. Many works that perform static cost analysis are compared with {\Arel} in Section~\ref{sec:arel-rw-static}, the main difference is that all these mentioned works focus on unary cost, while {\Arel} cares about relational cost. Then, the other related part is the relational verification, involving researches on relational reasoning in Section~\ref{sec:arel-rw-rv}.  
-    
-    \item Part \romannum{2}~(\BIAREL) is about the implementation of {\Arel}.
-    
-     Chapter~\ref{ch:intro-btc} clarifies three key points during the implementation: relational type system, relational effect and relational refinements. To handle them,  we choose bidirectional type checking, a successful technique to implement type systems. The study on bidirectional type checking is well-organized step by step, by first considering the implementation of standard relational type system by bidirectional type checking, and then adding relational refinements, and then adding relational effects, and finally including the impure component. The outline of the study is in Section~\ref{sec:biarel-step-by-step-overview}. The details of this study will be presented in Chapter~\ref{ch:rstlc-btc}.
-    
-    Chapter~\ref{ch:rstlc-btc} presents five type systems and the process of developing the corresponding bidirectional type systems. It starts from a standard relational 
-    type system {\relstlc} (Section~\ref{sec:biarel-relstlc}), then adding the relational refinements to form {\relref} in Section~\ref{sec:biarel-relref}, and then adding unary type system and connecting unary and relatioan types in {\relinfref} in Section~\ref{sec:biarel-relinfref}. \wq{After that, the relational effect is added to {\relinfref} to build the type system {\Relcost}~\citep{cciccek2017relational}  (a prior work {\Arel} extends from) and its bidirectional type system (in Ezgi Cicek's thesis \citep{cicek2018:thesis}) in Section~\ref{sec:biarel-relcost}.} Finally, the addition of imperative components to {\Relcost} gives us the bidirectional type system for {\Arel} (Section~\ref{sec:biarel-arel}). In this chapter, a two-step method is used to algorithmize all the systems except {\relstlc}.
-    
-    Chapter~\ref{ch:typechecker_arel} shows the implementation in real world - the bidirectional type checker. We present  {\BIAREL} for {\Arel}. \wq{We also include heuristics and constraint solving technique in the type checker {\birelcost} for {\Relcost} (see Ezgi Cicek's thesis~\citep{cicek2018:thesis}) that {\BIAREL} is inspired by, which can also be applied to {\BIAREL}.} Other systems in Chapter~\ref{ch:rstlc-btc} can be regarded as a simplified version of these two systems. Many examples are verified in experiments of  {\BIAREL} in Section~\ref{subsec:expriments-arel}.  
-    
-    Chapter~\ref{ch:relatedwork-biarel} discusses the literature on implementation of various combination of refinement types, effect systems, modal types and subtyping. It covers the related work on bidirectional typechecking (Section~\ref{sec:biarel-rw-bt}), lightweight dependent types (Section~\ref{sec:biarel-rw-ldt}), relational verification systems (Section~\ref{sec:biarel-rw-rvs}) as well as subtyping elimination (Section~\ref{sec:biarel-rw-es}).
-    
-    
-\item Part \romannum{3}~ shows the work on the program analysis algorithms to study the adaptivity of the adaptive data analysis program.    
+    \item Part \romannum{3}~{\ADAPTSYSTEM} shows the work on the program analysis algorithms to study the adaptivity of the adaptive data analysis program.    
 
 Chapter~\ref{ch:adapt_intro} gives the introduction of adaptive data analysis in Section~\ref{sec:adapt-backgroung} and the challenges (Section~\ref{sec:adapt-challenges}) we face to obtain the adaptivity to control the generalization error of an adaptive data analysis program.
 
 Chapter~\ref{ch:adapt-definition} presents the details of the loop language (Section~\ref{sec:adapt-loop-syntax}) we use to express data analysis programs, and shows the definition of adaptivity from a trace-based operational semantics in Section~\ref{sec:adapt-os}. 
 
-Chapter~\ref{ch:adapt-ssa} introduces the SSA version of the loop language (Section~\ref{sec:adapt-syntax-ssa-loop}) to enable an easier analysis over adaptivity by an easier tracking of dependency relations between variables. The limitation of direct analysis over the loop language is covered in Section~\ref{sec:adapt-limit}. The transformation from the loop language to the SSA loop language is presented in Section~\ref{sec:adapt-transformation}.
 
-Chapter~\ref{ch:adapt-algo} describes the program analysis algorithm {\ADAPTSYSTEM} that used to estimate the adaptivity of the data analysis programs (Section~\ref{sec:adapt-ve}, Section~\ref{sec:adapt-matrix}). The idea behind the algorithms (Section~\ref{sec:adapt-algo-ideas}) is to construct a data control dependency graph, and add weights to the graph. The adaptivity is estimated by the weight of the path with the highest weight.
+Chapter~\ref{ch:adapt-algo} describes the program analysis algorithm {\ADAPTSYSTEM} that used to estimate the adaptivity of the data analysis programs (Section~\ref{sec:adapt-ve}, Section~\ref{sec:adapt-matrix}). 
+The idea behind the algorithms (Section~\ref{sec:adapt-algo-ideas}) is to construct a data control dependency graph, and add weights to the graph. The adaptivity is estimated by the weight of the path with the highest weight.
 
-Chapter~\ref{ch:adapt-example} presents some more interesting examples {\ADAPTSYSTEM} can analyse. It includes a variant of two round data analysis algorithm (Section~\ref{sec:adapt-example-tr-odd}), an adaptive multiple rounds data analysis algorithm (Section~\ref{sec:adapt-example-mr}) and an example showing the over-approximate of our approach (Section~\ref{sec:adapt-example-over}). 
+Chapter~\ref{ch:adapt-example} presents some more interesting examples {\ADAPTSYSTEM} can analyse. 
+It includes a variant of two round data analysis algorithm (Section~\ref{sec:adapt-example-tr-odd}), 
+an adaptive multiple rounds data analysis algorithm (Section~\ref{sec:adapt-example-mr}) and an example showing the over-approximate of our approach (Section~\ref{sec:adapt-example-over}). 
 
 Chapter~\ref{ch:adapt-relatedwork} discusses the related works from three perspectives: Static program analysis (Section~\ref{sec:adapt-rw-static}), dynamic program analysis (Section~\ref{sec:adapt-rw-dynamic}) and generalization in adaptive data analysis (Section~\ref{sec:adapt-rw-ge}).  
 \item Part \romannum{4} ~ concludes the dissertation and discusses the future directions on studying the two quantitative properties: relative cost and adaptivity.
-\item Part \romannum{5} ~gives the appendices. The appendix~\ref{AppArel} includes the details of {\Arel}. The appendix ~\ref{AppB} includes everything we need to develop a bidirectional type system for a relational refinement type and effect system. The appendix~\ref{AppC} gives the proof of the lemmas of our framework in adaptive data analysis.    
+\item Part \romannum{5} ~gives the appendices. 
+ The appendix~\ref{AppC} gives the proof of the lemmas of our framework in adaptive data analysis.    
 \end{enumerate}
 
 
 
 \section{Previous Published Material}
 The contents of this dissertation are partly based on the work and writing in the following papers.
-
-The part of {\Arel} is based on the paper "Relational cost analysis for functional imperative programs" \citep{qu2019relational} appearing at ICFP 2019 and its journal version which will appear at Journal of Functional Programming 2022, at the link:\\ \hyperlink{link}{https://www.doi.org/10.1017/S0956796821000071. } 
-
-The part of {\BIAREL} is based on the paper "Bidirectional type checking for relational properties" \citep{birelcost} at PLDI 2019, and "Relational cost analysis for functional-imperative programs" \citep{qu2019relational}, \wq{and it builds on previous works describing the implementation of {\Relcost}~\citet{cicek2018:thesis}}.
-% \wq{The material of the implementation of {\Relcost} discussed in Chapter~\ref{ch:rstlc-btc} and Chapter~\ref{ch:typechecker_arel} in this dissertation comes from the Ezgi Cicek's Ph.D. thesis~\citet{cicek2018:thesis}.}
-
 
 % The work of{\ADAPTSYSTEM} is still under preparation.
 
