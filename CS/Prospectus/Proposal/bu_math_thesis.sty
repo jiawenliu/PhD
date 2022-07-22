@@ -1,0 +1,429 @@
+% bu_ece_thesis.sty  --  March 2004
+%
+% This style option is designed to work with the report document
+% style of LaTeX.  Use
+% \documentstyle[bu_ece_thesis]{report}
+%
+% BIOSTATISTICS BOSTON UNIVERSITY DISSERTATION LATEX TEMPLATE
+% Adapted from the BU Department of Electrical and Computer Engineering's template that can be found on the Mugar Library website
+% Prepared by Hanna Gerlovin <gerlovin@bu.edu> March 2018 based on earlier versions by Stephen Gildea, Paolo Gaudiano, Janusz Konrad, and Jonathan Polimeni
+
+%% DISCLAIMER: This software is only meant to assist Boston University students in following the guidelines for dissertation format established by the Graduate School. The format is based on the "Guide for writers of theses and dissertations", a Mugar Library publications. Each student is responsible for obtaining a copy of this publication to insure that the format is still valid. 
+
+% Adapted to Boston University standards by Paolo Gaudiano, based on Stephen Gildea's mitthesis.sty (1989). Original Copyright notice follows
+%%% Copyright (c) 1987 by Stephen Gildea
+%%% Permission to copy all or part of this work is granted, provided that the copies are not made or distributed for resale, and that the copyright notice and this notice are retained.
+%%% 
+
+% Load the packages to make things nice
+
+\usepackage[T1]{fontenc} % Keeps text less fuzzy
+\usepackage{palatino} % Accepted font style
+\usepackage{natbib} % Make sure to download the "fixed" apa-good.bst for the APA citations with websites listing URL and date accessed. NOTE: If you are using Overleaf.com, then your .bib file should come from a downloaded version - the api/interface with Mendeley doesn't include the date accessed for some reason
+\usepackage[english]{babel}
+\usepackage[intlimits]{amsmath}
+\usepackage{float} % for figures and tables
+\usepackage{ifthen}
+\usepackage{url} % for hyperlinks and websites
+\usepackage{enumitem} % had problems loading in TexWorks?
+\usepackage{xspace}
+
+\usepackage{multicol} % for making tables with merged columns
+\usepackage[hidelinks]{hyperref}
+\hypersetup{breaklinks=true,
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=black,      
+    urlcolor=black,
+    citecolor=black
+} % Cleaned up the hyperlinks a little so the PDF stopped putting red boxes around internal links
+ 
+\urlstyle{same}
+
+%put other packages you might need and custom declarations here
+\usepackage{appendix} % Needed for numbering and listing tables and figures from the appendices
+\usepackage{soul}
+\usepackage{multirow} % For collapsing/merging rows in tables
+\usepackage{longtable} % If your list is longer than one page, use the "longtable" package. Just \usepackage{longtable} and then replace the word "tabular" with "longtable".  
+\usepackage{graphicx}
+\usepackage[table,xcdraw]{xcolor} 
+
+\usepackage{tikz} % For drawing figures 
+\usetikzlibrary{matrix,shapes,arrows,arrows.meta,shapes.geometric} % useful for flowcharts
+\usepackage{listings} % package that can create "code-like" text
+
+\usepackage{threeparttable} % useful package for adding footnotes and other notes to a table
+\usepackage{rotating} % necessary for making sidewaysfigure or sidewaystable
+
+\usepackage{mathtools}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Now set up the parameters for the size and location of text on the page.
+
+% The top and left margins should be 1-1/2", and the bottom and right margins, 1" The measures below are always added to 1"
+\oddsidemargin 0.5in           % Additional left margin on odd-numbered pages (was 0.375in) Total left margin: 1in + 0.5in = 1.5in
+
+\textwidth 6.0in               % Leaves 1.0in right margin (was 6.1875in)
+
+\topmargin 0.0in            % Additional top margin (to the top of the header). Header height and header separator add 0.5in  Total top margin: 1in + 0.5in = 1.5in
+
+\headheight 12pt               % Header for numbering and running titles.
+\headsep 24pt                  % Separator between header and text.
+
+\textheight 8.4in              % Leaves 1.0in bottom margin (was 8.4in)
+
+\footskip 0.4in                % Distance from bottom of text to bottom of foot, which is where page number goes for preliminary pages. Hence number will be 0.6" from bottom.
+
+% 1.1.1 Double-space
+% Double-space all textual material and all preliminary pages. Footnotes, figure and table captions, and long quotations may be single-spaced. The bibliography may be single-spaced, with one extra space between each citation."
+
+\usepackage{setspace}
+\doublespacing 
+
+
+% 1.1.2 Typeface size and style
+% Use 12-pt font for the text, all headings, and subheadings. Titles or major headings may be in all upper case letters, bold, italics, or underlined, but they cannot be larger than 12-point. Font of 11-point or 10-point may be used for footnotes, long quotations, and tables that do not fit comfortably within required margins. Do not use smaller than 10-point font.
+% Use font type and sizes consistently throughout the work. Use standard font types such as Arial, Times, Palatino Linotype, Bookman, etc. Avoid using Times New Roman at sizes smaller than 12-point as it prints out illegibly. Avoid Calibri, a default typeface for MS-Word. All print must be dark, unbroken, and legible, including any material copied from other sources."
+%% End of formatting parameters %%
+
+% are we in the preliminary material
+\newif\ifinprelim\inprelimtrue
+
+%% DEFINE ALL THE PIECES THAT GO ON THE TITLE PAGE AND THE ABSTRACT.
+
+% \title and \author already exist
+
+% Type of degree as a counter:
+%   1 - Master of Science Thesis,
+%   2 - Doctoral Dissertation,
+%   3 - Master of Science Thesis and Doctoral Dissertation
+%   4 - Prospectus
+\newcount\degree
+
+% Your previous degree(s). If more than one degree, use single spacing
+\def\prevdegrees#1{\gdef\@prevdegrees{#1}}
+\def\@prevdegrees{}
+
+\def\university#1{\gdef\@university{#1}}
+\def\faculty#1{\gdef\@faculty{#1}}
+\def\department#1{\gdef\@department{#1}}
+
+% If you are getting two degrees, use \and between the names.
+\def\thisdegree#1{\setbox0\hbox{#1}  %for side effect of setting \@degreeword
+  \gdef\@thisdegree{#1}}
+
+% \and is used inside the \thisdegree argument to separate two degrees
+\def\and{\gdef\@degreeword{degrees} \par and \par}
+\def\@degreeword{degree}
+
+\def\thesisdate#1{\gdef\@thesisdate{#1}}
+
+% Only the year for BU. Month is used by MIT
+\def\degreeyear#1{\gdef\@degreeyear{#1}}
+\def\defenseyear#1{\gdef\@defenseyear{#1}}
+
+% Since there are multiple readers (at least two), we build
+% appropriate boxes for the approval page as the user makes multiple
+% calls to \reader
+\newbox\@approvalreader
+
+% The \reader command is based on the original MIT \supervisor command. It takes three arguments: An argument indicating whether it is first, second, third etc., then the name, then the title. For example, \reader{First}{John Doe}{Professor of Mathematics}
+% For some reason, the name and title must be SINGLE SPACED
+
+\def\reader{\@reader}
+\def\@reader#1#2#3{\setbox\@approvalreader\vbox
+  {\unvbox\@approvalreader \vskip 2\baselineskip % NO stretchy stuff
+  \hspace{-0.22in}\parbox[t]{0.2\textwidth}{\vspace{0mm} #1 Reader}\parbox[t]{0.75\textwidth}{
+        \singlespace
+        \rule{0.75\textwidth}{0.1mm}\\#2\\#3}}}
+
+% Major professor, should be same as first reader. Goes in abstract page
+\def\majorprof#1#2{\gdef\@majorprofname{#1}\gdef\@majorproftitle{#2}}
+
+
+%               TITLE BOX PAGE
+%
+% BU-ECE title box page - first page to fit the cut-out in the front cover
+\def\buecethesistitleboxpage{%
+  \thispagestyle{empty}
+  \vglue -1.0cm\hglue 4.5cm\includegraphics[width=4.0cm]{BUseal_color.eps}\\
+  \vglue 1.6cm
+  \fboxsep=10pt\fboxrule=1pt\hglue 1.25cm
+  \Ovalbox{\vbox to 6.2cm{\vfill\hbox{\vtop{\hsize=9.7cm\parindent=0pt
+        \renewcommand{\baselinestretch}{1.5}
+        \bf\sffamily\begin{center}\@title\end{center}
+        \sl\sffamily\begin{center}\MakeUppercase{\@author}\end{center}
+        \rm\sffamily
+        \ifcase\degree\or\thisdegree{Master of Science}\or
+                         \thisdegree{Doctor of Philosophy}\or
+                         \thisdegree{\gdef\@degreeword{degrees}
+                           Master of Science \and Doctor of Philosophy}\or
+												 \thisdegree{Doctor of Philosophy}
+                         \fi
+        \centerline{\ifcase\degree\or Thesis \or Dissertation \or
+  Dissertation \or Prospectus \fi
+                    submitted in partial fulfillment}
+        \centerline{of the requirements for the \@degreeword\ of}
+        \centerline{\@thisdegree}}}\vfill}}
+    \vglue 4.0cm\hglue 1.6cm
+    \vbox{\hbox{\vtop{\hsize=10.0cm\rmfamily\bfseries\Huge
+    \begin{center}
+      BOSTON\\
+      UNIVERSITY
+    \end{center}}}}
+  \clearpage
+	% back side of double-sided printout
+	\newpage\thispagestyle{empty}~\newpage
+  \setcounter{page}{1}
+}
+
+
+%               PRELIMINARY PAGES
+%
+% "The preliminary pages -- title page, copyright page, reader's approval page, etc. -- are numbered with lower-case Roman numerals (i, ii, iii,)." No page number on the title page, although it counts as page #i. This command is undone at the beginning of the text with the command \endofprelim (see below)
+%
+% According to the BU guide the correct order for preliminary pages is:
+% title, copyright (optional), approval,  acknowledgments (opt.), abstract, preface (opt.), Table of contents, List of tables (if any), List of illustrations (if any).
+
+% TITLE PAGE
+% You can use the titlepage environment to do it all yourself if you
+% don't want to use \maketitle.
+\def\titlepage{\newpage \thispagestyle{empty}
+\parindent 0pt
+\def\baselinestretch{1.8}
+\parskip 8pt plus 1fill
+\@normalsize
+\begin{center}
+}
+\def\endtitlepage{\end{center}\newpage}
+
+% Got tired of screwing around with \parskips that refuse to stretch, so I manually put a \vfill after each \par.
+\def\maketitle{\begin{titlepage}
+\pagenumbering{roman}
+\large
+\MakeUppercase{\@university}\\\MakeUppercase{\@faculty}\par\vfill
+\ifcase\degree\or Thesis \or Dissertation \or Dissertation \or
+Doctoral Dissertation Prospectus \fi\par\vfill
+{\bf \MakeUppercase{\@title}}\par\vfill
+by\par\vfill
+{\bf \MakeUppercase{\@author}}\\
+\begin{singlespace}
+\@prevdegrees
+\end{singlespace}
+\ifcase\degree\or\thisdegree{Master of Science}\or
+                 \thisdegree{Doctor of Philosophy}\or
+                 \thisdegree{Master of Science \and Doctor of
+                 Philosophy}\or
+								 \thisdegree{Doctor of Philosophy}
+                 \fi
+\par\vfill
+Submitted in partial fulfillment of the\\
+requirements for the \@degreeword\ of\\
+\@thisdegree\\
+\@degreeyear
+\end{titlepage}}%***\newpage\thispagestyle{empty}~\newpage}
+
+%               COPYRIGHT PAGE
+% Separate Copyright page. If it exists, it gets roman numeral ii but the page number is not printed. The name must be in allcaps
+\def\copyrightpage{\newpage\thispagestyle{empty}
+\null\vfill\par
+\begin{singlespace}
+
+\hspace{2in}
+\large \copyright \hspace{1ex} 
+\begin{minipage}[t]{3in}
+Copyright by \\
+\MakeUppercase{\@author}\\
+\@defenseyear
+\end{minipage}
+\end{singlespace}}
+
+%               APPROVAL PAGE
+% Separate approval page for BU style.
+% NO NUMBER on approval page, even if it is page #3. This differs from
+% the handbook, but Martha Wellman tells us it is the way to do it,
+% and the handbook will be updated.
+\def\approvalpage{\newpage\thispagestyle{empty}
+\def\baselinestretch{1.2}
+\begin{center}\large
+Approved by\\[2em]
+\unvbox\@approvalreader
+\end{center}
+\def\baselinestretch{1.6}\newpage}
+
+
+%               ABSTRACT PAGE
+\def\abstractpage{\newpage
+\begin{center}
+\begin{doublespace}
+{\large
+{\bf \MakeUppercase{\@title}}\par
+{\bf \MakeUppercase{\@author}}\\
+\ifcase\degree\or\or
+\@university,\ \@faculty, \@degreeyear
+\par
+% Major Professor: \@majorprofname, \@majorproftitle
+\mbox{Major Professor:  \@majorprofname}, 
+    \@majorproftitle 
+\par
+\vspace{\baselineskip}
+\or
+\@university,\ \@faculty, \@degreeyear
+\par
+% Major Professor: \@majorprofname, \@majorproftitle
+\mbox{Major Professor: \begin{minipage}[t]{4in}
+    \vspace*{-0.79\baselineskip} \begin{singlespace} \@majorprofname, 
+    \@majorproftitle \end{singlespace} \end{minipage}}
+\par
+\vspace{\baselineskip}
+\fi
+}\end{doublespace}
+ABSTRACT
+\end{center}
+}
+
+\def\endabstractpage{\newpage}
+
+%               END OF PRELIMINARY PAGES
+% Here is the peachy part: It is STRONGLY recommended that the page number for the text be located in the top-center of the page. IN the report style, LaTeX refuses to remove the page number in the \pagestyle{myheadings}, so we have to hack the actual ps@myheadings definition, then do a \markboth{}{} etc., which is done in the \endofprelim command.
+
+% Definition of 'myheadings' page style.
+%
+\def\ps@myheadings{
+\let\@mkboth\@gobbletwo
+\def\@oddhead{\hfil \rm\thepage \hfil}%
+\def\@evenhead{\hfil \rm\thepage \hfil}%
+\def\@oddfoot{}
+\def\@evenfoot{}
+\def\chaptermark##1{}
+\def\sectionmark##1{}%
+\def\subsectionmark##1{}
+}
+
+% The \endofprelim command is used after all the preliminary pages.
+% The command changes the page numbering to arabic numerals.
+% In order to suppress printing of the number on the first page, you should manually add the command \thispagestyle{empty} to the text, and if you use chapter you have to put the \thispagestyle command AFTER the first \chapter command, while \endofprelim can be before.
+\def\endofprelim{
+\inprelimfalse
+\pagenumbering{arabic}
+\markboth{}{}
+\pagestyle{myheadings}
+}
+
+% The chapter-making command is toned down a bit.
+% \@makechapterhead {TEXT} : Makes the heading for the \chapter command.
+
+\def\@makechapterhead#1{  % Heading for \chapter command
+  \thispagestyle{myheadings}
+  %\vspace*{12pt}   % Space at top of text page.
+  { \parindent 0pt \centering
+    \ifnum \c@secnumdepth >\m@ne     % IF secnumdepth > -1 THEN
+    \bf \MakeUppercase{\@chapapp{} \thechapter} % Print 'Chapter' and number.
+    \par
+    % \vskip 12pt % Space between number and title.
+    \fi %\Large \bf                         % Title.
+    \normalsize\bf   % Title.
+    #1\par
+    \nobreak  % TeX penalty to prevent page break.
+    \vskip 12pt  % Space between title and text.
+  } }
+
+% Must also do the \chapter* command which gets used for table of contents, list of figures, and such.
+\def\@makeschapterhead#1{  % Heading for \chapter* command
+  \ifinprelim
+  {} % do nothing
+  \else
+  \thispagestyle{myheadings}\addcontentsline{toc}{chapter}{#1}
+  \fi
+  \vspace*{12pt}   % Space at top of page.
+  { \parindent 0pt \centering
+    %\Large\bf                        % Title.
+    \bf                        % Title.
+    \MakeUppercase{#1}\par
+    \nobreak   % TeX penalty to prevent page break.
+    \vskip 12pt % Space between title and text.
+  } }
+
+
+% Also tone down the section headings a bit.
+%   Here we will use chapters if it's a thesis or dissertation, and   sections if it's a prospectus.
+\def\section{\@startsection{\ifnum\degree<4%
+section\else%
+chapter\fi}{1}{\z@}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus .2ex}{\bf\MakeUppercase}}
+
+\def\subsection{\@startsection{\ifnum\degree<4%
+subsection\else%
+section\fi}{2}{\z@}{-3.25ex plus -1ex minus -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
+
+\def\subsubsection{\@startsection{\ifnum\degree<4%
+subsubsection\else%
+subsection\fi}{2}{\z@}{-3.25ex plus -1ex minus -.2ex}{1.5ex plus .2ex}{\normalsize\it}}
+
+\def\subsubsubsection{\@startsection{\ifnum\degree<4%
+subsubsubsection\else%
+subsubsection\fi}{3}{\z@}{-3.25ex plus -1ex minus -.2ex}{1.5ex plus .2ex}{\noindent\normalsize\underline}}
+
+% If using the report style, use \cdotinstead of . in the figure number.
+% ***Karen --- why is this here?  I'm removing it
+%\@ifundefined{thechapter}{}{\def\thefigure{\thechapter$\cdot$\arabic{figure}}}
+
+%       BIBLIOGRAPHY
+
+% The original style file had notes about the style being APA-like. Due to the "outdated" nature of the apa styles out there -- i.e. they do not include the website url information -- I found a style file called "apa-good.bst" that works well after adding some edits. Make sure to load that style into your main folder. HG 2018
+
+
+%        CV -- HG 2018: I did not use this, have included my CV within the dissertation.tex file instead
+% here are some commands which might be useful for including a cv at the end of the thesis.  They are modified from those in resume.sty by Miklos Csuros csuros@cs.yale.edu
+
+\newcommand{\categoryfont}{\sl} 
+\newcounter{ccounter}
+\newlength{\categorytitlespace}
+\newlength{\categorytitlewidth}
+
+\setlength{\categorytitlespace}{1.1in}
+\setlength{\categorytitlewidth}{0.9in}
+
+\newif{\iffirstitem}
+\newenvironment{category}[1]%
+   {\firstitemtrue
+    \setcounter{ccounter}{0}
+   \def\makecategorytitle{%
+        \parbox[t][0pt]{0pt}{\hspace{-\categorytitlespace}\parbox[t]{\categorytitlewidth}{\categoryfont\raggedright#1}\vspace{-1in}}}
+   \par
+   \begin{list}{}{%
+      \setlength{\leftmargin}{\categorytitlespace}      
+      \setlength{\parsep}{0in}
+      }}
+   {\end{list}}
+
+%%%%%%% \citem
+\newcommand*{\citem}[1]{%
+   \iffirstitem
+       \item[]\leavevmode\makecategorytitle{\bf #1}%
+   \else
+      {\item[]{\bf #1}}%
+   \fi
+   \firstitemfalse
+    }
+
+
+%%%%%%% \citemnobullet
+\newcommand{\citemnobullet}{%
+        \iffirstitem
+                \item[] \leavevmode \makecategorytitle
+        \else
+                \item[]
+        \fi
+        \firstitemfalse
+                }
+
+%%%%%%% \citemenum
+\newcommand{\citemenum}{%
+        \stepcounter{ccounter}
+        \iffirstitem
+                \item[\arabic{ccounter}.] \leavevmode\makecategorytitle
+        \else
+                \item[\arabic{ccounter}.] 
+        \fi
+        \firstitemfalse
+                }

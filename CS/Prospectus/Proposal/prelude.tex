@@ -1,0 +1,795 @@
+\usepackage[english]{babel} 
+\usepackage{amsthm} 
+%\usepackage{,amsfonts}
+%\usepackage{lscape}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+% \usepackage{mathtools}
+\usepackage{blkarray, bigstrut}
+%\usepackage{times}
+\usepackage{bm}
+\usepackage{ stmaryrd } 
+
+\usepackage{romannum}
+
+\usepackage[normalem]{ulem}
+% For derivation rules
+\usepackage{mathpartir}
+\usepackage{color}
+% \usepackage{a4wide}
+\usepackage{subcaption} %% For complex figures with subfigures/subcaptions
+                        %% http://ctan.org/pkg/subcaption
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\usepackage{fourier} 
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,snakes,decorations.markings}
+\usetikzlibrary{svg.path,arrows.meta, calc} 
+
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+% \tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+%     text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{block} = [draw, very thick, fill=white, rectangle, 
+    minimum height=2.5em, minimum width=6em, text centered]
+
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,    minimum height=2em]
+
+\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+   1 with {\arrow[semithick]{open triangle 60}}},
+   double distance=1.4pt, shorten >= 5.5pt,
+   preaction = {decorate},
+   postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
+
+ 
+\newcommand{\THESYSTEM}{\textsf{ARel}}
+\newcommand{\Core}{\textsf{ARelCore}}
+\newcommand{\BIAREL}{\textsf{BiARel}}
+\newcommand{\Relcost}{\textsf{RelCost}}
+\newcommand{\tnamemin}{\textsf{ARel}}
+\newcommand{\Arel}{\textsf{ARel}}
+
+
+
+%Variations
+\newcommand{\astable}{\mathbb{S}}
+\newcommand{\achange}{U}
+
+%Index Terms
+\newcommand{\im}[1]{\ensuremath{#1}}
+
+\newcommand{\kw}[1]{\im{\mathtt{#1}}}
+
+\newcommand{\scond}[3]{(\eif\im{#1}\ethen\im{#2}\eelse\im{#3})}
+\newcommand{\keps}[2]{\epsilon(#1,#2)}
+\newcommand{\spower}[2]{#1^{#2}}
+\newcommand{\ssum}[4]{\sum\limits_{#1=#2}^{#3}#4}
+\newcommand{\smin}[2]{\kw{min}({#1},{#2})}
+\newcommand{\smax}[2]{\kw{max}(#1,#2)}
+\newcommand{\smaxx}[3]{\kw{max}(#1,#2,#3)}
+\newcommand{\smaxxx}[4]{\kw{max}(#1,#2,#3,#4)}
+
+%Sizes
+
+\newcommand{\szero}{0}
+\newcommand{\sone}{1}
+\newcommand{\splus}[2]{#1 + #2}
+\newcommand{\ssucc}[1]{#1 {+} \sone}
+\newcommand{\sminus}[2]{#1 - #2}
+\newcommand{\sdiv}[2]{\frac{#1}{#2}}
+\newcommand{\smult}[2]{#1\cdot#2}
+\newcommand{\splusone}[1]{#1+1}
+\newcommand{\sceil}[1]{\ceil*{#1}}
+\newcommand{\sfloor}[1]{\floor*{#1}}
+\newcommand{\size}[1]{|#1|}
+\newcommand{\slog}[1]{\kw{log}_2(#1)}
+\newcommand{\sinf}{\infty}
+
+% Types
+\newcommand{\grt}{A}
+\newcommand{\lbound}{\mathop{\uparrow}}
+\newcommand{\tbool}{\mbox{bool}}
+\newcommand{\trbool}{\mbox{bool}_r}
+\newcommand{\trint}{\mbox{int}}
+\newcommand{\tint}{\mbox{int}}
+\newcommand{\tunit}{\mbox{unit}}
+\newcommand{\trunit}{\mbox{unit}}
+\newcommand{\tlist}[3]{\mbox{list}[#1]^{#2}\,#3}
+\newcommand{\ulist}[2]{\mbox{list}[#1]\,#2}
+\newcommand{\tslist}[1]{\mbox{list}\,#1}
+\newcommand{\ttree}[3]{\mbox{tree}[#1]^{#2}\,#3}
+\newcommand{\utree}[2]{\mbox{tree}[#1]\,#2}
+\newcommand{\tbase}{b}
+\newcommand{\uarr}[2]{\mathrel{\xrightarrow[]{\wexec(#1,#2)}}} 
+\newcommand{\uarrd}{\mathrel{\xrightarrow{\wdead}}}
+\newcommand{\tarrd}[1]{\mathrel{\xrightarrow{\wdiff(#1)}}}
+
+\newcommand{\tubool}{\mbox{bool}_u}
+\newcommand{\uarrs}[1]{\mathrel{\xrightarrow[]{\mu(#1)}}} 
+
+
+
+\newcommand{\tforall}[3]{\forall#1\overset{\wexec(#2,#3)}{::}S.\,}
+\newcommand{\tforalld}[2]{\forall#1\overset{\wdiff(#2)}{::}S.\,}
+\newcommand{\uforalls}[2]{\forall#1\overset{\mu(#2)}{::}S.\,}
+\newcommand{\tforallS}[1]{\forall#1.\,}
+\newcommand{\tsforall}[1]{\forall#1{::}S.\,}
+\newcommand{\tforallN}[1]{\forall#1{::}\ssize.\,}
+
+
+\newcommand{\tchs}[1]{U\,(#1,#1)} 
+\newcommand{\tcho}[1]{U\,#1} 
+
+\newcommand{\tlift}[2]{(#1,#2)^{\uparrow}}
+\newcommand{\tpull}[1]{#1^{\nearrow}}
+\newcommand{\tpushd}[1]{(#1)^{\downarrow\square}}
+
+
+\newcommand{\uforalld}[1]{\forall#1\overset{\wdead}{::}S.\,}
+
+\newcommand{\texists}[1]{\exists#1{::}S.\,}
+\newcommand{\texistsN}[1]{\exists#1{::}\ssize.\,}
+\newcommand{\tcimpl}[2]{#1 \mathrel{\supset} #2}
+\newcommand{\tcprod}[2]{#1 \mathrel{\&} #2}
+
+\newcommand{\ttimes}{\mathrel{\times}}
+\newcommand{\tsum}{\mathrel{+}}
+\newcommand{\tinter}{\mathrel{\wedge}}
+\newcommand{\tst}[1]{(#1)^{\astable}}
+\newcommand{\tch}[2]{U\,(#1,#2)}
+\newcommand{\tmu}[1]{(#1)^{\mu}}
+\newcommand{\tno}[1]{(#1)^{\_}}
+\newcommand{\trm}[1]{|#1|}
+\newcommand{\tmup}[1]{(#1)^{\mu'}}
+\newcommand{\tdual}[1]{d({#1})}
+\newcommand{\tbox}[1]{\square\,#1}
+\newcommand{\tdmu}[1]{#1^{\shortdownarrow {\mu}}}
+\newcommand{\tmon}[1]{{\color{red}m(#1)}}
+\newcommand{\tforce}[1]{#1^{\shortdownarrow \achange }}
+
+% Terms
+\newcommand{\vbase}{r}
+\newcommand{\vtrue}{\mbox{tt}}
+\newcommand{\vfalse}{\mbox{ff}}
+\newcommand{\efix}{\mbox{fix\;}} 
+\newcommand{\efixNC}{\mbox{fix$_{NC}$\;}} 
+\newcommand{\eLam}{ \Lambda}
+\newcommand{\eApp}{ [\,]\,}
+\newcommand{\eleaf}{\mbox{leaf}} 
+\newcommand{\enode}{\mbox{node}}
+\newcommand{\eunit}{()}
+\newcommand{\econs}{\mbox{cons}} 
+\newcommand{\econsC}{\mbox{cons$_C$}} 
+\newcommand{\econsNC}{\mbox{cons$_{NC}$}} 
+\newcommand{\la}{\langle} \newcommand{\ra}{\rangle}
+\newcommand{\eapp}{\;} \newcommand{\eleft}{\pi_1}
+\newcommand{\eright}{\pi_2} \newcommand{\econst}{\kw{n}}
+\newcommand{\etrue}{\mbox{true}} \newcommand{\efalse}{\mbox{false}}
+\newcommand{\eif}{\mbox{if\;}} \newcommand{\ethen}{\mbox{\;then\;}}
+\newcommand{\eelse}{\mbox{\;else\;}} 
+\newcommand{\einl}{\mbox{inl\;}}
+\newcommand{\einr}{\mbox{inr\;}} 
+\newcommand{\elet}{\mbox{let\;}}
+\newcommand{\clet}{\mbox{clet}\;}
+\newcommand{\ecimp}{\mbox{.}_c\;}
+\newcommand{\eelimU}{\mbox{elim}_U\;} \newcommand{\ein}{\mbox{\;in\;}}
+\newcommand{\ecase}{\mbox{\;case\;}} 
+\newcommand{\eof}{\mbox{\;of\;}}
+\newcommand{\eas}{\mbox{\;as\;}} \newcommand{\ecelim}{\mbox{celim\;}}
+\newcommand{\enil}{\mbox{nil\;}} \newcommand{\epack}{\mbox{pack\;}}
+\newcommand{\eunpack}{\mbox{unpack\;}}
+\newcommand{\elam}{ \lambda} 
+% bityck terms
+\newcommand{\eswitch}{\mbox{switch}\;}
+\newcommand{\enoch}{\mbox{NC}\;}
+\newcommand{\eder}{\mbox{der}\;}
+\newcommand{\esplit}{\mbox{split}\;}
+\newcommand{\ecoerce}[2]{\mbox{coerce}_{#1,#2}\;}
+\newcommand{\econtra}{\mbox{contra}\;}
+
+\newcommand{\ealloc}[2]{ \mathrel{ \mathsf{alloc}\, {#1} \, {#2} } }
+\newcommand{\eallocB}[2]{ \mathrel{ \mathsf{alloc_b}\, {#1} \, {#2} } }
+\newcommand{\eupdt}[3]{ \mathrel{ \mathsf{updt} \ {#1} \ {#2} \ {#3} }  }
+\newcommand{\ereadx}[2] { \mathrel{ \mathsf{read} \ {#1} \ {#2} }  }
+\newcommand{\eupdtB}[3]{ \mathrel{ \mathsf{updt_b} \ {#1} \ {#2} \ {#3} }  }
+\newcommand{\ereadxB}[2] { \mathrel{ \mathsf{read_b} \ {#1} \ {#2} }  }
+\newcommand{\eret}[1] {\mathrel{ \mathsf{return} \, {#1} }}
+\newcommand{\eletx}[3]{  \mathrel{ \mathsf{let_m} \{ {#1} \} = {#2} \ \mathsf{in} \ {#3}  } }
+\newcommand{\ewith}{\;\mbox{with}\;} 
+\newcommand{\erty}[1]{|#1|}
+\newcommand{\eanno}[4]{(#1:#2,#3,#4)}
+\newcommand{\eannobi}[3]{(#1:#2,#3)}
+
+
+% Diff Rel
+\newcommand{\udiff}{\gtrapprox}
+\newcommand{\rdiff}{\ominus}
+\newcommand{\rdiffs}{\lesssim}
+\newcommand{\ldiff}{\lesssim}
+
+% Evaluation
+\newcommand{\red}[1]{\Downarrow^{#1}}
+
+\newcommand{\wmax}{\mbox{\scriptsize max}}
+\newcommand{\wmin}{\mbox{\scriptsize min}}
+\newcommand{\wdiff}{\mbox{\scriptsize diff}}
+\newcommand{\wexec}{\mbox{\scriptsize exec}}
+\newcommand{\wdead}{\mbox{\scriptsize dead}}
+
+
+
+% Typing judgments
+\newcommand{\jtype}[4]{\mathrel{\vdash_{#1}^{#2} {#3} : {#4}}}
+\newcommand{\jtypeM}[4]{\mathrel{\vdash_{#1}^{#2} {#3} :^c {#4}}}
+
+\newcommand{\jtypes}[3]{\mathrel{\vdash_{#1}^{\mu} {#2} : {#3}}}
+
+\newcommand{\jstype}[3]{\mathrel{\vdash
+    {#1} \backsim {#2} : {#3}}}
+
+
+\newcommand{\jtypediff}[4]{\mathrel{\vdash% _{\wdiff}
+    {#2} \ominus {#3} \ldiff #1 : {#4}}}
+
+\newcommand{\jtypediffM}[4]{\mathrel{\vdash
+    {#2} \ominus {#3} \ldiff #1 :^c {#4}}}
+\newcommand{\jmintypesame}[3]{\mathrel{\vdash
+    {#2} \ominus {#2} \ldiff #1 :^c {#3}}}
+
+\newcommand{\jelab}[6]{\mathrel{\vdash
+    {#2} \ominus {#3} \rightsquigarrow {#4} \ominus {#5} \ldiff #1 : {#6}}}
+\newcommand{\jelabSP}[6]{\mathrel{\vdash
+    {#2} \ominus {#3} \rightsquigarrow  \ldiff #1 : {#6}}}    
+\newcommand{\jelabsame}[4]{\mathrel{\vdash
+    {#2} \ominus {#3} \rightsquigarrow {#2} \ominus {#3} \ldiff #1 : {#4}}}
+
+\newcommand{\jelabun}[5]{\mathrel{\vdash_{#1}^{#2}
+    {#3} \rightsquigarrow {#4} : {#5}}}
+
+\newcommand{\jelabc}[4]{\mathrel{\vdash
+    {#2} \ominus {#3} \rightsquigarrow {#2}^* \ominus {#3}^* \ldiff #1 : {#4}}}
+
+
+\newcommand{\jelabcu}[4]{\mathrel{\vdash_{#1}^{#2}
+    {#3} \rightsquigarrow {#3}^* : {#4}}}
+
+\newcommand{\jtypediffsym}[5]{\mathrel{\vdash
+    #1 \ldiff {#3} \ominus {#4} \ldiff #2 : {#5}}}
+
+
+% Typing judgments
+\newcommand{\jiterm}[2]{\mathrel{\vdash {#1} :: #2}}
+\newcommand{\jtypemax}[1]{\mathrel{\vdash_{\wmax}^{#1}}}
+\newcommand{\jtypemin}[1]{\mathrel{\vdash_{\wmin}^{#1}}}
+\newcommand{\sty}[2]{\vdash#1 \mathrel{::} #2}
+
+\newcommand{\rname}[1]{\mbox{\small{#1}}}
+
+\newcommand{\vsem}[2]{\llbracket #1 \rrbracket_{V}^{#2}}
+\newcommand{\esem}[2]{\llbracket #1 \rrbracket_{E}^{#2}}
+\newcommand{\conj}{\mathrel{\wedge}}
+
+\newcommand{\vusem}[1]{\llparenthesis #1 \rrparenthesis_{V}}
+\newcommand{\eusem}[1]{\llparenthesis #1 \rrparenthesis_{E}}
+
+\newcommand{\jsubtype}[2]{\sat#1\sqsubseteq#2}
+\newcommand{\jasubtype}[2]{\sat^{\mathsf{\grt}}#1\sqsubseteq#2}
+\newcommand{\jeqtype}[2]{\sat#1 \equiv#2}
+\newcommand{\under}[2]{\sat #1 \trianglelefteq  #2}
+
+\newcommand{\type}{\text{type}}
+\newcommand{\rtype}{\text{relational type}}
+\newcommand{\Type}{\text{Type}}
+\newcommand{\Rtype}{\text{Relational type}}
+\newcommand{\creal}{\mathbb{R}}
+\newcommand{\cnat} {\mathbb{N}}
+% \newcommand{\cref}{\mathsf{ref}}
+
+
+%Bi-directional Typing Judgement
+\newcommand{\chdiff}[5]{\vdash{#1}\rdiff{#2}~{\downarrow}~#3,#4 \Rightarrow
+{\color{red}#5}}
+
+\newcommand{\chsdiff}[3]{\vdash{#1}\backsim{#2}~{\downarrow}~#3}
+
+
+\newcommand{\chdiffNC}[5]{\vdash^{\color{blue}NC}{#1}\rdiff{#2}~{\downarrow}~#3,#4 \Rightarrow
+{{\color{red}#5}}}
+
+\newcommand{\infdiff}[6]{\vdash{#1}\rdiff{#2}~{\uparrow}~{\color{red}{#3}}\Rightarrow[{\color{red}#4}],{\color{red}#5},{\color{red}#6}}
+
+\newcommand{\infsdiff}[3]{\vdash{#1}\backsim{#2}~{\uparrow}~{\color{red}{#3}}}
+
+\newcommand{\infdiffsimple}[5]{\vdash{#1}\rdiff{#2}~{\uparrow}~{\color{red}{#3}}\Rightarrow{\color{red}#4},{\color{red}#5}}
+
+\newcommand{\chmax}[4]{\vdash^{\wmax}{#1}~{\downarrow}~#2, #3  \Rightarrow
+{{\color{red}#4}}}
+\newcommand{\chmin}[4]{\vdash^{\wmin}{#1}~{\downarrow}~#2, #3  \Rightarrow
+{{\color{red}#4}}}
+
+\newcommand{\chexec}[5]{\vdash{#1}~{\downarrow}~#2, #3, #4  \Rightarrow
+{{\color{red}#5}}}
+
+\newcommand{\infmax}[5]{\vdash^{\wmax}{#1}~{\uparrow}~{\color{red}{#2}}\Rightarrow[{\color{red}#3}], {\color{red}#4},{\color{red}#5}}
+\newcommand{\infmin}[5]{\vdash^{\wmin}{#1}~{\uparrow}~{\color{red}{#2}}\Rightarrow[{\color{red}#3}], {\color{red}#4},{\color{red}#5}}
+
+\newcommand{\infexec}[6]{\vdash{#1}~{\uparrow}~{\color{red}{#2}}\Rightarrow[{\color{red}#3}], {\color{red}#4},{\color{red}#5},{\color{red}#6}}
+
+\newcommand{\infexecsimple}[5]{\vdash{#1}~{\uparrow}~{\color{red}{#2}}\Rightarrow{\color{red}#3}, {\color{red}#4},{\color{red}#5}}
+
+\newcommand{\emptypsi}{.}
+
+
+% Environment
+\newcommand{\memory}{\Gamma}%\Delta \ | \ \Phi \ | \ \Gamma  \ | \
+                            %\Sigma}
+\newcommand{\senv}{\Delta}
+\newcommand{\uenv}{\Omega}
+\newcommand{\renv}{\Gamma} 
+\newcommand{\cenv}{\Phi_a} 
+\newcommand{\lenv}{\Sigma}
+\newcommand{\sep}{ \, | \, }
+\newcommand{\monad}[4]{\mathrel{ M( \overset{ \mathrel{\mathrm{exec}{#4 }}}{#2}  })}
+\newcommand{\monadR}[4]{\mathrel{ \overset{\mathrm{diff}(#4)}{\{ {#1} \} \ {#2} \ \{ {#3} \} }}}
+\newcommand{\depProd}[4]{ \mathrel{ \Pi {#1} \stackrel{\mathrm{exec} {#4}}{:}{#2} . \ {#3}}}
+\newcommand{\depProdr}[4]{ \mathrel{ \Pi {#1} \stackrel{\mathrm{diff} {#4}}{:}{#2} . \ {#3}}}
+\newcommand{\uarrow}[3]{ \mathrel{ \stackrel{\mathrm{exec} {#3}}{{#1} \longrightarrow#2}}}
+\newcommand{\uforall}[4]{ \mathrel{ \stackrel{\mathrm{exec} {#4}}{\forall {#1} {::}#2 . \ #3}}}
+\newcommand{\uexist}[3]{ \mathrel{ \exists {#1} :: {#2} . \ {#3}}}
+\newcommand{\rarrow}[3]{ \mathrel{ \stackrel{\mathrm{diff} \, #3}{{#1} \longrightarrow {#2}}}}
+\newcommand{\rarrowt}[3]{ \mathrel{ {#1} \stackrel{\mathrm{} {#3}}{\longrightarrow} {#2}}}
+\newcommand{\rforall}[4]{ \mathrel{ \stackrel{\mathrm{diff}\, {#4} }{\forall {#1}{::}{#2} . \ {#3}}}}
+\newcommand{\rexists}[3]{ \mathrel{ \exists {#1} {::}{#2} . \ {#3}}}
+\newcommand{\rforallt}[4]{ \mathrel{ \forall {#1} \stackrel{\mathrm{} {#4}}{:}{#2} . \ {#3}}}
+\newcommand{\arr}[3]{ \mathrel{ \mathsf{Array}_{#1}[{#2}] \ {#3}} }
+\newcommand{\arrR}[3]{ \mathrel{ \mathsf{Array}_{#1}[{#2}] \ {#3}} }
+\newcommand{\lst}[2]{ \mathrel{ \mathsf{list}[{#1}] \ {#2}} }
+\newcommand{\lstR}[3]{ \mathrel{ \mathsf{list}^{#1}[{#2}] \ {#3}} }
+\newcommand{\abs}[2]{\mathrel { \lambda {#1} . {#2} } }
+\newcommand{\celim}[1] {\mathrel{ \mathsf{celim} \ {#1} }}
+\newcommand{\app}[2]{\mathrel{ {#1} \, {#2} }}
+\newcommand{\ret}[1] {\mathrel{ \mathsf{return} \, {#1} }}
+\newcommand{\letx}[3]{  \mathrel{ \mathsf{let} \{ {#1} \} = {#2} \
+\mathsf{in} \ {#3}  } }
+\newcommand{\letm}[3]{  \mathrel{ \mathsf{let}\   {#1} = {#2} \ \mathsf{in} \ {#3}  } }
+\newcommand{\packx}[1]{  \mathrel{ \mathsf{pack} \, {#1}} }
+\newcommand{\unpackx}[3]{  \mathrel{ \mathsf{unpack} \,  {#1} \, \mathsf{as} \, {#2} \, \mathsf{in} \ {#3}  } }
+\newcommand{\alloc}[2]{ \mathrel{ \mathsf{alloc}\, {#1} \, {#2} } }
+\newcommand{\updt}[3]{ \mathrel{ \mathsf{updt} \ {#1} \ {#2} \ {#3} }  }
+\newcommand{\readx}[2] { \mathrel{ \mathsf{read} \ {#1} \ {#2} }  }
+\newcommand{\tTt}[3]{\mathrel{  {#1} \xrightarrow \ {#2} } }
+\newcommand{\force}[1]{\mathrel{\mathsf{force} \ \ {#1}}}
+\newcommand{\tfix}{\mathsf{Fix}}
+\newcommand{\fix}[1]{\mathsf{fix} \, f(x). {#1}}
+
+%Relational
+\newcommand{\monadx}[3]{\mathrel{ \{ {#1} \} \ {#2} \ \{ {#3} \} }}
+\newcommand{\monadu}[4]{\mathrel{ \overset{ \mathrel{\mathrm{exec}{#4 }}}{\{ {#1} \} \ #2 \ \{ {#3} \}} }}
+\newcommand{\cmp}[4] {\mathrel{   \vdash  {#1} \ominus {#2} \ldiff {#4}  : {#3}  }}
+\newcommand{\pair}[1]{\mathrel{ {#1}_{1}{#1}_{2}}}
+\newcommand{\imp}[2]{\mathrel{  {#1} \Rightarrow {#2} }}
+\newcommand{\eval}[3]{\mathrel{ {#1} \Downarrow^{#3} {#2}   }}
+\newcommand{\evalf}[3]{\mathrel{ {#1} \Downarrow^{#3}_{f} {#2}   }}
+\newcommand{\evalp}[3]{\mathrel{ {#1} \Downarrow^{#3}_{p} {#2}   }}
+\newcommand{\heap}[1]{ ;  {#1}}
+\newcommand {\spc} { \  \ }
+\newcommand{\monadL}[3]{\mathrel{ \{ {#1} \}  \\  \ {#2} \ \\  \{ {#3} \} }}
+
+\newcommand{\wfa}[1]{\mathrel{\vdash {#1} \ \mathsf{wf}}}
+\newcommand{\wf}[1]{\mathrel{\vdash {#1} \ \mathsf{wf}}}
+\newcommand{\subtypeA}[2]{\mathrel{ \models {#1} \sqsubseteq {#2} } }
+\newcommand{\subtype}[2]{\mathrel{   \models {#1} \sqsubseteq {#2} }   }
+\newcommand{\subcost}[3]{\mathrel{   \models {#1} {#3} {#2} }   }
+
+\newcommand{\emptyhp}{\mathsf{empty}}
+\newcommand{\llb}[1]{ \llbracket {#1} \rrbracket }
+\newcommand{\llu}[2]{ \llb{#1}_{#2}}
+\newcommand{\llp}[2]{ \llparenthesis {#1} \rrparenthesis_{#2} }
+\newcommand{\llbe}[1]{ \llbracket {#1} \rrbracket^{E} }
+\newcommand{\llpe}[2]{ \llparenthesis {#1} \rrparenthesis_{#2}^{E} }
+\newcommand{\stepi}{k}
+
+%bidirectional type checking
+\newcommand{\trmo}[1]{|#1|}
+\newcommand{\bctx}{\Delta; \psi_a; \Phi_a; \Gamma}
+
+\newcommand{\sat}[1]{\models#1}
+\newcommand{\sata}[1]{\models_A#1}
+\newcommand{\ceq}[2]{#1\mathrel{\doteq}#2}
+\newcommand{\cleq}[2]{#1 \mathop{\leq} #2}
+\newcommand{\cleqspec}[2]{#1 \overline{\mathop{\leq}} #2}
+\newcommand{\clt}[2]{#1 \mathop{<} #2}
+\newcommand{\cgt}[2]{#1 \mathop{>} #2}
+\newcommand{\ceqz}[1]{#1 \mathrel{\doteq} 0}
+\newcommand{\cneg}[1]{\mathop{\neg}#1}
+\newcommand{\cand}[2]{#1 \wedge #2}
+\newcommand{\cexists}[3]{\exists#1::#2.#3}
+\newcommand{\cexistsK}[3]{\exists#1:#2.#3}
+\newcommand{\cexistsS}[2]{\exists#1.#2}
+\newcommand{\cexistsC}[2]{\exists#1::\scost.#2}
+\newcommand{\cexistsall}[2]{\exists(#1).#2}
+\newcommand{\cforall}[3]{\forall#1::#2.#3}
+\newcommand{\cforallS}[3]{\forall#1:#2.#3}
+\newcommand{\cimpl}[2]{#1\rightarrow#2}
+% \newcommand{\cor}[2]{#1 \vee #2}
+\newcommand{\ctrue}{\top}
+\newcommand{\cfalse}{\bottom}
+\newcommand{\blank}[2][100]{\hfil\penalty#1\hfilneg }
+\newcommand{\ccond}[3]{\im{#1}\mathrel{\mbox{?}}\im{#2}\mathrel{\colon}\im{#3}}
+
+\newcommand{\freshSize}[1]{#1\in\text{fresh}(\ssize)}
+\newcommand{\freshCost}[1]{#1\in\text{fresh}(\scost)}
+\newcommand{\freshVar}[1]{#1 \in \text{fresh}(S)}
+
+%Sorts
+\newcommand{\ssize}{\mathbb{N}}
+\newcommand{\svar}{\mathbb{V}}
+\newcommand{\scost}{\mathbb{R}}
+
+\newcommand{\wfty}[1]{\vdash   #1~\mathsf{wf}}
+\newcommand{\awfty}[1]{\vdash^{\mathsf{\grt}}   #1~\mathsf{wf}}
+\newcommand{\wfcs}[1]{\vdash   #1~\mathsf{wf}}
+\newcommand{\wfctx}[1]{\vdash   #1~\mathsf{wf}}
+\newcommand{\awfctx}[1]{\vdash^{\mathsf{\grt}}   #1~\mathsf{wf}}
+
+\newcommand{\jalgeqtype}[3]{\sat#1\equiv#2\Rightarrow {\color{red}#3}}
+\newcommand{\jalgasubtype}[3]{\sat^{\mathsf{\grt}}#1\sqsubseteq#2\Rightarrow {\color{red}#3}}
+\newcommand{\jalgsubtype}[3]{\sat#1\sqsubseteq#2\Rightarrow {\color{red}#3}}
+\newcommand{\jalgssubtype}[2]{\sat#1\leq#2}
+
+\newcommand{\fvars}[1]{\text{FV}(#1)}
+\newcommand{\fivars}[1]{\text{FIV}(#1)}
+
+\newcommand{\fv}[1]{\text{FV}(#1)}
+\newcommand{\fcv}[1]{\text{dom}(#1)}
+\newcommand{\fiv}[1]{\text{FIV}(#1)}
+\newcommand{\fdv}[1]{\text{dom}(#1)}
+\newcommand{\shade}[1]{\colorbox{lightgray}{#1}}
+
+\newcommand{\mg}[1]{\textcolor[rgb]{.90,0.00,0.00}{[MG: #1]}}
+\newcommand{\dg}[1]{\textcolor[rgb]{0.00,0.5,0.5}{[DG: #1]}}
+\newcommand{\wq}[1]{\textcolor[rgb]{0.0,0.0,0.0}{ #1}}
+\newcommand{\rd}[1]{\textcolor[rgb]{0,0.,0}{#1}}
+
+\newcommand{\ctx}{\Delta; \Phi_a; \Gamma}
+\newcommand{\octx}{\Delta; \Phi_a; \Omega}
+\newcommand{\uctx}{\Delta; \psi_a; \Phi_a; \Omega}
+\newcommand{\nctx}{\Delta; \Phi_a; \tbox{\Gamma}}
+\newcommand{\primctx}{\Upsilon}
+\newcommand{\rctx}[1]{\Delta; \Phi_a; \trm{\Gamma}{#1}}
+
+%Shortcuts
+\newcommand{\al}{\alpha}
+\newcommand{\algwf}[1]{\vdash  #1~\kw{wf}}
+\newcommand{\algwfa}[1]{\vdash^{A} #1~\kw{wf}}
+
+
+
+\newcommand{\suba}[1]{{#1}[\theta_a]}
+\newcommand{\subaex}[2]{{#1}[\theta_a, #2]}
+\newcommand{\subt}[1]{{#1}[\theta]}
+\newcommand{\subta}[1]{{#1}[\theta\,\theta_a]}
+\newcommand{\subsat}[3]{#1~ \rhd~ #2 : #3}
+
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+
+\usepackage{enumitem}
+\setenumerate{listparindent=\parindent}
+
+
+\newlist{enumconc}{enumerate}{3}
+\setlist[enumconc]{leftmargin=0.5cm, label*= \arabic*.  , topsep=1ex, parsep=0pt,  itemsep=3pt }
+
+\newlist{enumsub}{enumerate}{3}
+\setlist[enumsub]{ leftmargin=0.7cm, label*= \textbf{subcase} \bf \arabic*: }
+
+\newlist{enumsubsub}{enumerate}{3}
+\setlist[enumsubsub]{ leftmargin=0.5cm, label*= \textbf{subsubcase} \bf \arabic*: }
+
+
+
+
+\newenvironment{subproof}[1][\proofname]{%
+  \renewcommand{\qedsymbol}{$\blacksquare$}%
+  \begin{proof}[#1]%
+}{%
+  \end{proof}%
+}
+
+
+\newenvironment{nstabbing}
+  {\setlength{\topsep}{0pt}%
+   \setlength{\partopsep}{0pt}%
+   \tabbing}
+  {\endtabbing} 
+
+\newcommand{\sort}{S}
+\newcommand{\sorted}[1]{#1 \mathrel{::} \sort}
+\newcommand{\sized}[1]{#1 \mathrel{::} \ssize}
+\newcommand{\impure}[1]{\textcolor[rgb]{0,0,1}{#1}}
+
+\newcommand{\diam}{{\color{red}\diamond}}
+\newcommand{\dagg}{{\color{blue}\dagger}}
+
+%%% birelcost
+\newcommand{\relcostmin}{\textsf{RelCostCore}}
+\newcommand{\birelcost}{\textsf{BiRelCost}\xspace}
+\newcommand{\relstlc}{\textsf{relSTLC}\xspace}
+\newcommand{\relref}{\textsf{RelRef}\xspace}
+\newcommand{\relrefcore}{\textsf{RelRef Core}\xspace}
+\newcommand{\birelref}{\textsf{BiRelRef}\xspace}
+\newcommand{\relinf}{\textsf{RelInf}\xspace}
+\newcommand{\relinfcore}{\textsf{RelInf Core}\xspace}
+\newcommand{\birelinf}{\textsf{BiRelInf}\xspace}
+\newcommand{\relinfref}{\textsf{RelRefU}\xspace}
+\newcommand{\relinfrefcore}{\textsf{RelRefU Core}\xspace}
+\newcommand{\birelinfref}{\textsf{BiRelRefU}\xspace}
+
+\newcommand{\ofnil}[1]{~~\mbox{nil}~\to#1}
+\newcommand{\ofzero}[1]{~~\kw{0}~\to#1}
+\newcommand{\ofcons}[3]{|~#1::#2~\to~#3}
+\newcommand{\caseof}[1]{\mbox{case}~#1~\mbox{of}}
+
+\newcommand{\ie}{i.e.}
+\newcommand{\eg}{e.g.}
+\newcommand{\etc}{etc.}
+\newcommand{\e}{t}
+%%%%% environ proof
+
+\newenvironment{nop}{}{}
+
+% Math mode
+\newenvironment{sdisplaymath}{
+\begin{nop}\small\begin{displaymath}}{
+\end{displaymath}\end{nop}\ignorespacesafterend}
+\newenvironment{fdisplaymath}{
+\begin{nop}\footnotesize\begin{displaymath}}{
+\end{displaymath}\end{nop}\ignorespacesafterend}
+\newenvironment{smathpar}{
+\begin{nop}\small\begin{mathpar}}{
+\end{mathpar}\end{nop}\ignorespacesafterend}
+\newenvironment{fmathpar}{
+\begin{nop}\footnotesize\begin{mathpar}}{
+\end{mathpar}\end{nop}\ignorespacesafterend}
+\newenvironment{alignS}{
+\begin{nop}\begin{align}}{
+\end{align}\end{nop}\ignorespacesafterend}
+\newenvironment{salignS}{
+\begin{nop}\small\begin{align}}{
+\end{align}\end{nop}\ignorespacesafterend}
+\newenvironment{falignS}{
+\begin{nop}\footnotesize\begin{align*}}{
+\end{align}\end{nop}\ignorespacesafterend}
+
+% Stack formatting
+\newenvironment{stackAux}[2]{%
+\setlength{\arraycolsep}{0pt}
+\begin{array}[#1]{#2}}{
+\end{array}}
+\newenvironment{stackCC}{
+\begin{stackAux}{c}{c}}{\end{stackAux}}
+\newenvironment{stackCL}{
+\begin{stackAux}{c}{l}}{\end{stackAux}}
+\newenvironment{stackTL}{
+\begin{stackAux}{t}{l}}{\end{stackAux}}
+\newenvironment{stackTR}{
+\begin{stackAux}{t}{r}}{\end{stackAux}}
+\newenvironment{stackBC}{
+\begin{stackAux}{b}{c}}{\end{stackAux}}
+\newenvironment{stackBL}{
+\begin{stackAux}{b}{l}}{\end{stackAux}}
+
+%APPENDIX
+\newcommand{\caseL}[1]{% \setcounter{equation}{0}
+\item \textbf{#1}\newline}
+
+%% \makeatletter
+%% \newcommand\definitionname{Lemma}
+%% \newcommand\listdefinitionname{Proofs of Lemmas and Theorems}
+%% \newcommand\listofdefinitions{%
+%%   \section*{\listdefinitionname}\@starttoc{def}}
+%% \makeatother
+
+
+
+\newtheoremstyle{athm}{\topsep}{\topsep}%
+      {\upshape}%         Body font
+      {}%         Indent amount (empty = no indent, \parindent = para indent)
+      {\bfseries}% Thm head font
+      {}%        Punctuation after thm head
+      {.8em}%     Space after thm head (\newline = linebreak)
+      {\thmname{#1}\thmnumber{ #2}\thmnote{~\,(#3)}
+% \addcontentsline{Lemma}{Lemma}
+%   {\protect\numberline{\thechapter.\thelemma}#1}
+      % \ifstrempty{#3}%
+      {\addcontentsline{def}{section}{#1~#2~#3}}%
+      % {\addcontentsline{def}{subsection}{\theathm~#3}}
+\newline}%         Thm head spec
+
+ \theoremstyle{athm}
+
+
+% \newtheoremstyle{break}
+%   {\topsep}{\topsep}%
+%   {\itshape}{}%
+%   {\bfseries}{}%
+%   {\newline}{}%
+% \theoremstyle{break}
+
+%There are some problems with llncs documentcalss, so commenting these out until i find a solution
+%\spnewtheorem{thm1}[theorem]{Theorem}{\bfseries}{\upshape}
+%\newenvironment{Theorem}[1][]{\begin{thm1}\iffirstargument[#1]\fi\quad\\}{\end{thm1}}
+
+ \newtheorem{conjec}{Conjecture}
+ \newtheorem{corr}[thm]{Corollary}
+ \newtheorem{defn}{Definition}
+ \newtheorem{prop}[thm]{Proposition}
+ \newtheorem{assm}[thm]{Assumption}
+
+\newtheorem{Eg}[thm]{Example}
+\newtheorem{hypothesis}[thm]{Hypothesis}
+\newtheorem{motivation}{Motivation}
+
+% BNF symbols
+\newcommand{\bnfalt}{{\bf \,\,\mid\,\,}}
+\newcommand{\bnfdef}{{\bf ::=~}}
+
+%% Highlighting
+\newcommand{\hlm}[1]{\mbox{\hl{$#1$}}}
+
+%% Provenance modes
+\newcommand{\modifrcationProvenance}{{\bf MP}}
+\newcommand{\updateProvenance}{{\bf UP}}
+
+%Lemmas
+\newcommand{\lemref}[1]{Lemma \ref{#1}} %name and number
+\newcommand{\thmref}[1]{Theorem \ref{#1}} %name and number
+
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+
+\usepackage{enumitem}
+\setenumerate{listparindent=\parindent}
+
+\newlist{enumih}{enumerate}{3}
+\setlist[enumih]{label=\alph*),before=\raggedright, topsep=1ex, parsep=0pt,  itemsep=1pt }
+
+% \newlist{enumconc}{enumerate}{3}
+% \setlist[enumconc]{leftmargin=0.5cm, label*= \arabic*.  , topsep=1ex, parsep=0pt,  itemsep=3pt }
+
+% \newlist{enumsub}{enumerate}{3}
+% \setlist[enumsub]{ leftmargin=0.7cm, label*= \textbf{subcase} \bf \arabic*: }
+
+% \newlist{enumsubsub}{enumerate}{3}
+% \setlist[enumsubsub]{ leftmargin=0.5cm, label*= \textbf{subsubcase} \bf \arabic*: }
+
+\newlist{mainitem}{itemize}{3}
+\setlist[mainitem]{ leftmargin=0cm , label= {} }
+
+% Cost Constants
+\newcommand{\kvar}{c_{var}}
+\newcommand{\kconst}{c_{n}}
+\newcommand{\kinl}{c_{inl}}
+\newcommand{\kinr}{c_{inl}}
+\newcommand{\kcase}{c_{case}}
+\newcommand{\kfix}{c_{fix}}
+\newcommand{\kapp}{c_{app}}
+\newcommand{\kLam}{c_{fix}}
+\newcommand{\kiApp}{c_{iApp}}
+\newcommand{\kpack}{c_{pack}}
+\newcommand{\kunpack}{c_{unpack}}
+\newcommand{\knil}{c_{nil}}
+\newcommand{\kcons}{c_{cons}}
+\newcommand{\kcaseL}{c_{caseL}}
+\newcommand{\kleaf}{c_{leaf}}
+\newcommand{\knode}{c_{node}}
+\newcommand{\kcaseT}{c_{caseT}}
+\newcommand{\kprod}{c_{prod}}
+\newcommand{\kproj}{c_{proj}}
+\newcommand{\klet}{c_{let}}
+
+%%%%color
+\newcommand{\opt}[1]{\textcolor[rgb]{1,0,0}{{#1} }}
+\newcommand{\green}[1]{\textcolor[rgb]{0,0.5,0}{#1 }}
+\newcommand{\redd}[1]{\textcolor[rgb]{1,0.0,0}{#1 }}
+\newcommand{\ad}{\ \land \ }
+
+
+%%%%%%%%%%%%% adaptive
+\newtheorem{example}{Example}[section]
+\newcommand{\command}{c}
+
+\newcommand{\dist}{P}
+\newcommand{\mech}{M}
+\newcommand{\univ}{\mathcal{X}}
+\newcommand{\anyl}{A}
+\newcommand{\query}{f}
+\newcommand{\qlen}{k}
+\newcommand{\qrounds}{r}
+\newcommand{\answer}{a}
+\newcommand{\sample}{X}
+\newcommand{\ex}[2]{{\ifx&#1& \mathbb{E} \else \underset{#1}{\mathbb{E}} \fi \left[#2\right]}}
+\newcommand{\pr}[2]{{\ifx&#1& \mathbb{P} \else \underset{#1}{\mathbb{P}} \fi \left[#2\right]}}
+\newcommand{\var}[2]{{\ifx&#1& \mathrm{Var} \else \underset{#1}{\mathrm{Var}} \fi \left[#2\right]}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\from}{:}
+
+\newcommand{\assign}[2]{ \mathrel{ #1  \leftarrow #2 } }
+
+
+\newcommand{\aarrow}{\rightarrow_a}
+\newcommand{\barrow}{\rightarrow_b}
+\newcommand{\qarrow}{\rightarrow_q}
+\newcommand{\cmd}{c}
+\newcommand{\node}{N}
+
+\newcommand{\codom}{\kw{codom}}
+\newcommand{\ssa}[1]{{\bf{{#1}}}}
+
+\newcommand{\eloop}{\kw{loop}}
+\newcommand{\edo}{\kw{do}}
+
+%configuration
+\newcommand{\config}[1]{\langle #1 \rangle}
+\newcommand{\ematch}{\kw{match}}
+\newcommand{\clabel}[1]{\left[ #1 \right]}
+
+
+%\newcommand{\eprov}[1]{\eta_{#1}}
+
+\newcommand{\eop}{\delta}
+\newcommand{\ADAPTSYSTEM}{ADAPT}
+
+
+\newcommand{\expr}{e}
+\newcommand{\aexpr}{a}
+\newcommand{\bexpr}{b}
+\newcommand{\vall}{w}
+\newcommand{\valr}{v}
+\newcommand{\eprojl}{\kw{fst}}
+\newcommand{\eprojr}{\kw{snd}}
+%expression and commands for WHILE language
+\newcommand{\ewhile}{\kw{while}}
+\newcommand{\bop}{*}
+\newcommand{\uop}{\circ}
+\newcommand{\eskip}{\kw{skip}}
+
+%evaluation
+\newcommand{\bigstep}[1]{\mathrel{\to^{#1}}}
+
+\newcommand{\dmap}{\rho}
+\newcommand{\dmapb}{\bot_\dmap}
+\newcommand{\supp}{\kw{supp}}
+\newcommand{\dom}{\kw{dom}}
+
+\newcommand{\ag}[2]{\mathsf{VE}{(#1)}\to {(#2)}}
+\newcommand{\gp}[2]{\mathsf{GG}{(#1)}\to {(#2)}}
+\newcommand{\funct}[2]{\mathsf{GG}{(#1)}\to {(#2)}}
+
+\newtheorem{coro}{Corollary}[thm]
+
+%% adapt appendix
+\newcommand{\ts}[1]{ \llparenthesis {#1} \rrparenthesis }
+\newcommand{\sexpr}{\ssa{e} }
+\newcommand{\saexpr}{\ssa{a} }
+\newcommand{\sbexpr}{\ssa{b} }
+
+\newcommand{\fvssa}[1]{ \mathsf{nv_s} (#1)   }
+\newcommand{\vars}[1]{ \mathsf{rd} (#1)   }
+\newcommand{\avars}[1]{ \mathsf{wr} (#1)   }
+\newcommand{\varssa}[1]{ \mathsf{rd_s} (#1)   }
+\newcommand{\avarssa}[1]{ \mathsf{wr_s} (#1)   }
+\newcommand{\filtercost}[1]{\text{filterCost}(#1)}
