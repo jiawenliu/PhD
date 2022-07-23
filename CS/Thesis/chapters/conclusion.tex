@@ -5,52 +5,21 @@ In this chapter, we conclude this dissertation, mainly studying two quantitative
 review its key novelties and contributions discuss several directions on the future researches. 
 
 
-
-
-\section{Relative Cost}
-In the dissertation, we first present {\Arel}, a relational type-and-effect system that can
-be used to reason about the relative cost of functional-imperative
-programs with mutable arrays. 
-
-The contribution of {\Arel} can be summarized as:
-\begin{enumerate}
-   \item The support of array-based operations is useful for relational cost analysis.
-    \item The key contribution of {\Arel} is a set of
-lightweight relational refinements allowing one to establish different
-relations between pairs of state-affecting computations, including
-upper bounds on cost difference. 
-\item The soundness proof of {\Arel} via a novel Kriple logical relation model gives the theoretical foundation of the combination of type and effect systems and relational refinements for state-affecting computations.
-\item The implementation of {\Arel} shows the practical utility.
-\end{enumerate}
-
- On the other hand, there are also limitations when we introduce the mutable arrays into relational cost analysis and what we can do in future work.
- \begin{enumerate}
-     \item {\THESYSTEM} It now only supports arrays whose elements are of the ground type, due to our choice of the lightweight monadic types for the array-based operations. As a reminder, the elements of arrays are restricted to base type in {\Arel}. One of the directions to do in the future is to study other imperative features, finding out if there are some connections with our mutable arrays.
- The support of more complicated but common data types such as matrix(arrays of arrays) is now missing in {\Arel}. 
-   \item The other limitation comes from the implementation mentioned in Section~\ref{subsec:limitations-arel}, the efficiency of our type checker remains to be improved in future work. 
-  \wq{ \item One of the future works is to formalize the metatheory of {\Arel} via a proof assistant.}
- \end{enumerate}
  
-Another work we presented, which is related to {\Arel} is the implementation {\BIAREL}. Since {\Arel} is not suitable for implementation due to its non-determinism nature coming from its typing and subtyping, it is not straightforward to have a concrete implementation. To this end, we presented a theoretical study and a concrete implementation
-of bidirectional type checking in a setting that combines relational
-refinements, comonadic types, and relational effects, as well as the monadic types for arrays in {\Arel}. This rich setting
-poses unique challenges: The typing rules are not syntax-directed due
-to relational refinements; subtyping for (relational) comonads
-poses additional problems, as do the relational effects. We resolve
-these challenges through a process of elaboration and
-subtyping-elimination in the theory and using example-guided
-heuristics in the implementation. We validate experimentally that this
-approach is practical---it works for many different kinds of programs in {\Arel},
-has little annotation burden and type checking is acceptable. We believe that our work, along with the prior work~\citet{cicek2018:thesis} will help future designers implement other relational type and effect systems as well.
-
+ \section{Dynamic}
  
- \section{Adaptivity}
- 
- Another quantitative property is the adaptivity of programs. We presented {\ADAPTSYSTEM}, a program analysis algorithm that is useful to provide an upper bound on the adaptivity of data analysis under a specific data analysis model. This estimation can help data analysts to control the generalization errors of their analyses by choosing different algorithmic techniques based on adaptivity. Besides, a key contribution of our works is the formalization of the notion of adaptivity for adaptive data analysis. 
+ Another quantitative property is the adaptivity of programs. We presented {\ADAPTSYSTEM}, 
+ a program analysis algorithm that is useful to provide an upper bound on the adaptivity of data analysis under a specific data analysis model. 
+ This estimation can help data analysts to control the generalization errors of their analyses by choosing different algorithmic techniques based on adaptivity. 
+ Besides, a key contribution of our works is the formalization of the notion of adaptivity for adaptive data analysis. 
 
  There are some limitations of this work. 
  \begin{enumerate}
-     \item One limitation is that our algorithm may over-estimate the adaptivity of a program, as shown in Section~\ref{sec:adapt-example-over}, due to its path-insensitive nature when analyzing if conditions. The future direction is to use the constraint to track the necessary information and help to predict the path when the control flow diverges.
-     \item Another one is that our algorithm now can only analyze concrete bound for loops. The direction of future work is to support dynamic or unbounded loops. 
+     \item One limitation is that our algorithm may over-estimate the adaptivity of a program, 
+     as shown in Section~\ref{sec:adapt-example-over}, due to its path-insensitive nature when analyzing if conditions. 
+     The future direction is to use the constraint to track the necessary information and help to predict the path when the control flow diverges.
+     \item Another one is that our algorithm now can only analyze concrete bound for loops. 
+     The direction of future work is to support dynamic or unbounded loops. 
  \end{enumerate}
  
+ \section{Static}

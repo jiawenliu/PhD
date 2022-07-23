@@ -1,52 +1,12 @@
-\chapter{Introduction to Quantitative Properties}
+\chapter{Introduction to Adaptivity Analysis}
 \label{introduction}
-
-
-When people talk about a computer program, {they care about whether this program can bring something good and also something bad will not happen. 
-The good thing happens when the program can give the users the correct answer as they expect or it can solve their problems correctly, in this case, we say that the program is \emph{functionally correct}. 
-Also, the bad thing will not happen if this program executes as expected and never gets stuck, for this reason, in the programming language literature this property is often referred to as \emph{safety}.}
-Actually, besides the functional correctness and safety property of a program, people also care about some other properties which describe the side effects of programs, such as the execution time, memory usage, and power consumption.
-For instance, when you are installing an app on your phone, you not only care about whether the app is successfully installed, you may also want a progress bar providing an estimation time by when the installation can be done. 
-These properties can usually be expressed in terms of quantities, and are called quantitative properties of programs. 
-
-In this dissertation, I will present two studies on reasoning about quantitative properties, from different axes. 
 
 
 
 %%%% Benifit of reasoning about 
-\section{Motivation of Reasoning about Quantitative Properties}
+\section{Motivation of Reasoning about Adaptivity}
 % At the beginning, I would like to clarify the motivation of
 % reasoning about quantitative properties, which has more potential benefits in today's life than before.
-
-{Nowadays, along with the popularity of mobile devices, more and more programs will be executed on machines with limited resources. 
-We have seen that games are running on smartphones and tablets, apps tracking people's health data are running on wearable devices such as smartwatches, autopilot programs are running on Unmanned Aerial Vehicles(UAV). 
-For these programs, quantitative properties such as memory usage, power consumption, and execution time become very important considering the resource limit of the devices that these programs are running on. 
-In this sense, reasoning about these quantitative properties has wide potential applications. }
-
-{Another application is program optimization. 
-People can safely replace a piece of code with the optimized one when they can reason about the memory usage or execution time of these two pieces of code and show the optimized one is always better. 
-Reasoning about these resources can be realized by resource analysis.} 
-
-% Reasoning about the resources consumed by a program guarantees the performance, as well as the safety on these devices. For example, we will not allow a program that may take larger memory than the embedded system it runs on, to avoid the crash due to the memory outrage. 
-
-Another application domain is security. { Reasoning about quantitative properties can help detect side-channel attacks.  
-A side-channel attack is any attack where the adversary uses some extra information from the cryptosystem. 
-This extra information can be the timing information, power consumption. 
-In timing channel attacks, the adversary observes the timing information of the cryptosystem handling the private information, such as the time of the system to verify one user's id and password. 
-Let us assume the adversary knows the user's id (public in some other places) but does not know the password. 
-The adversary can then have a malicious attempt with the user's id and a fake password. 
-If the timing information of this cryptosystem is observably different from the target user's timing information, the adversary can compare the two passwords and learn the extra information on how far the two passwords are away from each other. 
-Then the adversary can modify the next attempt accordingly. 
-Fortunately, reasoning about the execution time of the target cryptosystem can tell us the system is resilient with respect to these attacks. 
-In particular, reasoning about the difference of the execution time of the target system in two runs, one run takes arbitrary input and another one uses the password to be protected, can show that the attacker can not learn any information by observing the execution time of the two runs when the difference that is reasoned about is very small to be observed. 
-This application requires relational reasoning, which is one important part of this dissertation.}
-
-Also, quantitative properties can be used indirectly as some auxiliary component in other research. {For example, in the data analysis community, the analysts run data analysis to study some general property of some population, such as people's age in the united states. 
-Instead of running their data analysis on the population( big data), they choose the sample data drawn from the population because it is often impossible to run it on the population. People use generalization errors to describe the degree that the conclusion drawn from the sample data generalizes to the population. The analysts usually ask queries to interact with the sample data. 
-A study has shown that when the queries are asked adaptively, which means the choice of one query may rely on the results of other queries, the generalization error of this data analysis becomes very large. A new technique to control the generalization error is to add mechanisms. 
-The key point is to choose the "right" mechanism for the data analysis. Some researchers \citep{DworkFHPRR15, BassilyNSSSU16}
-shows that choice of the mechanisms for a data analysis is related to the relation between its queries. 
-The relation between queries can be expressed as the length of the longest chain of queries in the algorithm such that every query in the chain may rely on its previous queries' results. The length is called adaptivity in this dissertation.}
 %%%%% To reason about
 \section{Methodology}
 We use static analysis techniques to reason about the two main quantitative properties studied in this dissertation: 
