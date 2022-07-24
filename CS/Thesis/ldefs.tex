@@ -1,0 +1,516 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMANDS FOR GENERAL PAPER WRITING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Theorem, Definition and Proof
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{defn}{Definition}
+\newtheorem{coro}{Corollary}[thm]
+
+\newtheorem{example}{Example}[section]
+\newcommand{\ADAPTSYSTEM}{ADAPT}
+
+\newcommand{\todo}[1]{{\color{red}\textbf{[[ #1 ]]}}}
+\newcommand{\todomath}[1]{{\scriptstyle \color{red}\mathbf{[[ #1 ]]}}}
+\newcommand{\completeness}[1]{{\color{blue}\textbf{[[ #1 ]]}}}
+\newcommand{\caseL}[1]{\item \textbf{case: #1}\newline}
+\newcommand{\subcaseL}[1]{\item \textbf{sub-case: #1}\newline}
+\newcommand{\subsubcaseL}[1]{\item \textbf{subsub-case: #1}\newline}
+\newcommand{\subsubsubcaseL}[1]{\item \textbf{subsubsub-case: \boldmath{#1}}\newline}
+
+\newcommand{\blue}[1]{{\tiny \color{blue}{ #1 }}}
+
+
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+\newcommand{\ts}[1]{ \llparenthesis {#1} \rrparenthesis }
+
+\theoremstyle{definition}
+
+\newtheorem{case}{Case}
+\newtheorem{subcase}{Case}
+\numberwithin{subcase}{case}
+\newtheorem{subsubcase}{Case}
+\numberwithin{subsubcase}{subcase}
+
+\newtheorem{subsubsubcase}{Case}
+\numberwithin{subsubsubcase}{subsubcase}
+
+\newcommand{\dist}{P}
+\newcommand{\mech}{M}
+\newcommand{\univ}{\mathcal{X}}
+\newcommand{\anyl}{A}
+% \newcommand{\query}{f}
+% \newcommand{\qlen}{k}
+\newcommand{\qrounds}{r}
+\newcommand{\answer}{a}
+\newcommand{\sample}{X}
+
+% \newcommand{\st}{~.~}
+
+%%%%COLORS
+\definecolor{periwinkle}{rgb}{0.8, 0.8, 1.0}
+\definecolor{powderblue}{rgb}{0.69, 0.88, 0.9}
+\definecolor{sandstorm}{rgb}{0.93, 0.84, 0.25}
+\definecolor{trueblue}{rgb}{0.0, 0.45, 0.81}
+
+\newlength\Origarrayrulewidth
+% horizontal rule equivalent to \cline but with 2pt width
+\newcommand{\Cline}[1]{%
+ \noalign{\global\setlength\Origarrayrulewidth{\arrayrulewidth}}%
+ \noalign{\global\setlength\arrayrulewidth{2pt}}\cline{#1}%
+ \noalign{\global\setlength\arrayrulewidth{\Origarrayrulewidth}}%
+}
+
+% draw a vertical rule of width 2pt on both sides of a cell
+\newcommand\Thickvrule[1]{%
+  \multicolumn{1}{!{\vrule width 2pt}c!{\vrule width 2pt}}{#1}%
+}
+
+% draw a vertical rule of width 2pt on the left side of a cell
+\newcommand\Thickvrulel[1]{%
+  \multicolumn{1}{!{\vrule width 2pt}c|}{#1}%
+}
+
+% draw a vertical rule of width 2pt on the right side of a cell
+\newcommand\Thickvruler[1]{%
+  \multicolumn{1}{|c!{\vrule width 2pt}}{#1}%
+}
+
+\newenvironment{subproof}[1][\proofname]{%
+  \renewcommand{\qedsymbol}{$\blacksquare$}%
+  \begin{proof}[#1]%
+}{%
+  \end{proof}%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Fonts Definition %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\omitthis}[1]{}
+
+% Misc.
+\newcommand{\etal}{\textit{et al.}}
+\newcommand{\bump}{\hspace{3.5pt}}
+
+% Text fonts
+\newcommand{\tbf}[1]{\textbf{#1}}
+
+% Math fonts
+\newcommand{\mbb}[1]{\mathbb{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mrm}[1]{\mathrm{#1}}
+\newcommand{\mtt}[1]{\mathtt{#1}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\mfrak}[1]{\mathfrak{#1}}
+\newcommand{\msf}[1]{\mathsf{#1}}
+\newcommand{\mscr}[1]{\mathscr{#1}}
+
+\newcommand{\diam}{{\color{red}\diamond}}
+\newcommand{\dagg}{{\color{blue}\dagger}}
+\let\oldstar\star
+\renewcommand{\star}{\oldstar}
+
+\newcommand{\im}[1]{\ensuremath{#1}}
+
+\newcommand{\kw}[1]{\im{\mathtt{#1}}}
+\newcommand{\set}[1]{\im{\{{#1}\}}}
+
+\newcommand{\mmax}{\ensuremath{\mathsf{max}}}
+
+\lstnewenvironment{ocaml}[2][]%
+  {\lstset{language=ocaml,style=ocaml-pretty,captionpos=t,abovecaptionskip=-\medskipamount,caption={#2},#1}}
+  %
+  {}
+
+\makeatletter
+\newcommand{\mysmallishfont}{\@setfontsize\mysmallishfont{8.7pt}{9.7pt}}
+\makeatother
+
+\makeatletter
+\newcommand{\myecfont}{\@setfontsize\myecfont{9.7pt}{10.7pt}}
+\makeatother
+
+\makeatletter
+\newcommand{\myecsmfont}{\@setfontsize\myecfont{8.7pt}{9.7pt}}
+\makeatother
+
+\lstdefinelanguage{ocaml}{
+  style=ocaml-default,
+  keywordsprefix={'},
+  morekeywords=[1]{},
+  morekeywords=[2]{type,op,axiom,lemma,module,pred,const,declare},
+  morekeywords=[3]{var,proc},
+  morekeywords=[4]{while,if,then,else,elif,return,proof,qed,realize,rec, match},
+}
+
+\lstdefinestyle{ocaml-default}{
+  escapechar=\#,
+  upquote=true,
+  columns=fullflexible,
+  captionpos=b,
+  frame=tb,
+  xleftmargin=0pt,
+  xrightmargin=0pt,
+  rangebeginprefix={(**\ begin\ },
+  rangeendprefix={(**\ end\ },
+  rangesuffix={\ *)},
+  includerangemarker=false,
+  basicstyle=\mysmallishfont\sffamily,
+  identifierstyle={},
+  keywordstyle=[1]{\itshape},
+  keywordstyle=[2]{\bfseries},
+  keywordstyle=[3]{\bfseries},
+  keywordstyle=[4]{\bfseries},
+  keywordstyle=[5]{\bfseries},
+  keywordstyle=[6]{\bfseries},
+  keywordstyle=[7]{},
+  keywordstyle=[8]{\bfseries},
+  keywordstyle=[9]{\bfseries},
+  literate={phi}{{$\!\phi\,$}}1
+           {phi1}{{$\!\phi_1$}}1
+           {phi2}{{$\!\phi_2$}}1
+           {phi3}{{$\!\phi_3$}}1
+           {phin}{{$\!\phi_n$}}1
+}
+
+\lstdefinestyle{ocaml-pretty}{
+    basicstyle=\mysmallishfont\sffamily,
+    literate={:=}{{$\mathrel{\gets}\;$}}1
+              {<=}{{$\mathrel{\leq}\;$}}1
+              {>=}{{$\mathrel{\geq}\;$}}1
+              {<>}{{$\mathrel{\neq}\;$}}1
+              {=\$}{{$\stackrel{\$}{\gets}\;$}}1
+              {->}{{$\rightarrow\;$}}1
+              {<-}{{$\leftarrow\;$}}1
+              {<->}{{$\leftrightarrow\;$}}1
+              {<=>}{{$\Leftrightarrow\;$}}1
+              {=>}{{$\Rightarrow\;$}}1
+              {==>}{{$\Longrightarrow\;$}}1
+              {\/\\}{{$\wedge\;$}}1
+              {\\\/}{{$\vee\;$}}1
+              {\^}{{\textasciicircum}}1
+              {procx}{{proc}}1
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Query While Language %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Language
+\newcommand{\command}{c}
+%Label
+\newcommand{\lin}{\kw{in}}
+\newcommand{\lex}{\kw{ex}}
+% expression
+\newcommand{\expr}{e}
+\newcommand{\aexpr}{a}
+\newcommand{\bexpr}{b}
+\newcommand{\sexpr}{\ssa{\expr} }
+\newcommand{\qexpr}{\psi}
+\newcommand{\qval}{\alpha}
+\newcommand{\query}{{\tt query}}
+\newcommand{\eif}{\;\kw{if}\;}
+\newcommand{\ethen}{\kw{\;then\;}}
+\newcommand{\eelse}{\kw{\;else\;}} 
+\newcommand{\eapp}{\;}
+\newcommand{\eprojl}{\kw{fst}}
+\newcommand{\eprojr}{\kw{snd}}
+\newcommand{\eifvar}{\kw{ifvar}}
+\newcommand{\ewhile}{\;\kw{while}\;}
+\newcommand{\bop}{\;*\;}
+\newcommand{\uop}{\;\circ\;}
+\newcommand{\eskip}{\kw{skip}}
+\newcommand{\edo}{\;\kw{do}\;}
+% More unary expression operators:
+\newcommand{\esign}{~\kw{sign}~}
+\newcommand{\elog}{~\kw{log}~}
+
+%%%%%%%%%% Extended
+\newcommand{\efun}{~\kw{fun}~}
+\newcommand{\ecall}{~\kw{call}~}
+
+
+% Domains
+\newcommand{\qdom}{\mathcal{QD}}
+\newcommand{\memdom}{\mathcal{M}}
+\newcommand{\dbdom}{\mathcal{DB}}
+\newcommand{\cdom}{\mathcal{C}}
+\newcommand{\ldom}{\mathcal{L}}
+
+\newcommand{\emap}{~\kw{map}~}
+\newcommand{\efilter}{~\kw{filter}~}
+
+%configuration
+\newcommand{\config}[1]{\langle #1 \rangle}
+\newcommand{\ematch}{\kw{match}}
+\newcommand{\clabel}[1]{\left[ #1 \right]}
+
+\newcommand{\etrue}{\kw{true}}
+\newcommand{\efalse}{\kw{false}}
+\newcommand{\econst}{c}
+\newcommand{\eop}{\delta}
+\newcommand{\efix}{\mathop{\kw{fix}}}
+\newcommand{\elet}{\mathop{\kw{let}}}
+\newcommand{\ein}{\mathop{ \kw{in}} }
+\newcommand{\eas}{\mathop{ \kw{as}} }
+\newcommand{\enil}{\kw{nil}}
+\newcommand{\econs}{\mathop{\kw{cons}}}
+\newcommand{\term}{t}
+\newcommand{\return}{\kw{return}}
+\newcommand{\bernoulli}{\kw{bernoulli}}
+\newcommand{\uniform}{\kw{uniform}}
+\newcommand{\app}[2]{\mathrel{ {#1} \, {#2} }}
+
+
+% Operational Semantics
+\newcommand{\env}{\rho}
+\newcommand{\rname}[1]{\textsf{\small{#1}}}
+\newcommand{\aarrow}{\Downarrow_a}
+\newcommand{\barrow}{\Downarrow_b}
+\newcommand{\earrow}{\Downarrow_e}
+\newcommand{\qarrow}{\Downarrow_q}
+\newcommand{\cmd}{c}
+\newcommand{\node}{N}
+\newcommand{\assign}[2]{ \mathrel{ #1  \leftarrow #2 } }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Trace and Events %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Trace 
+%%%%%%%% annotated query
+\newcommand{\aq}{\kw{aq}}
+\newcommand{\qtrace}{\kw{qt}}
+%annotated variables
+\newcommand{\av}{\kw{av}}
+\newcommand{\vtrace}{\kw{\tau}}
+\newcommand{\ostrace}{{\kw{\tau}}}
+\newcommand{\posttrace}{{\kw{\tau}}}
+
+\newcommand{\trace}{\kw{\tau}}
+
+% \newcommand{\vcounter}{\kw{\zeta}}
+\newcommand{\vcounter}{\kw{cnt}}
+
+\newcommand{\postevent}{{\kw{\epsilon}}}
+
+% \newcommand{\event}{\kw{\epsilon}}
+% \newcommand{\eventset}{\mathcal{E}}
+% \newcommand{\eventin}{\in_{\kw{e}}}
+% \newcommand{\eventeq}{=_{\kw{e}}}
+% \newcommand{\eventneq}{\neq_{\kw{e}}}
+% \newcommand{\eventgeq}{\geq_{\kw{e}}}
+% \newcommand{\eventlt}{<_{\kw{e}}}
+% \newcommand{\eventleq}{\leq_{\kw{e}}}
+% \newcommand{\eventdep}{\mathsf{DEP_{\kw{e}}}}
+% \newcommand{\asn}{\kw{{asn}}}
+% \newcommand{\test}{\kw{{test}}}
+% \newcommand{\ctl}{\kw{{ctl}}}
+\newcommand{\event}{\kw{\epsilon}}
+\newcommand{\eventset}{\mathcal{E}}
+\newcommand{\eventin}{\in_{\kw{e}}}
+\newcommand{\eventeq}{=_{\kw{e}}}
+\newcommand{\eventneq}{\neq_{\kw{e}}}
+\newcommand{\eventgeq}{\geq_{\kw{e}}}
+\newcommand{\eventlt}{<_{\kw{e}}}
+\newcommand{\eventleq}{\leq_{\kw{e}}}
+\newcommand{\eventdep}{\mathsf{DEP_{\kw{e}}}}
+\newcommand{\asn}{\kw{{asn}}}
+\newcommand{\test}{\kw{{test}}}
+\newcommand{\ctl}{\kw{{ctl}}}
+
+\newcommand{\sig}{\kw{sig}}
+\newcommand{\sigeq}{=_{\sig}}
+\newcommand{\signeq}{\neq_{\sig}}
+\newcommand{\notsigin}{\notin_{\sig}}
+\newcommand{\sigin}{\in_{\sig}}
+\newcommand{\sigdiff}{\kw{Diff}_{\sig}}
+\newcommand{\action}{\kw{act}}
+\newcommand{\diff}{\kw{Diff}}
+\newcommand{\seq}{\kw{seq}}
+\newcommand{\sdiff}{\kw{Diff}_{\seq}}
+
+\newcommand{\tracecat}{{\scriptscriptstyle ++}}
+\newcommand{\traceadd}{{\small ::}}
+
+\newcommand{\ism}{\kw{ism}}
+\newcommand{\ismdiff}{\kw{Diff}_{\sig}}
+\newcommand{\ismeq}{=_{\ism}}
+\newcommand{\ismneq}{\neq_{\ism}}
+\newcommand{\notismin}{\notin_{\ism}}
+\newcommand{\ismin}{\in_{\ism}}
+
+%operations on the trace and Annotated Query
+\newcommand{\projl}[1]{\kw{\pi_{l}(#1)}}
+\newcommand{\projr}[1]{\kw{\pi_{r}(#1)}}
+
+% operations on annotated query, i.e., aq
+\newcommand{\aqin}{\in_{\kw{aq}}}
+\newcommand{\aqeq}{=_{\kw{aq}}}
+\newcommand{\aqneq}{\neq_{\kw{aq}}}
+\newcommand{\aqgeq}{\geq_{\kw{aq}}}
+
+% operations on annotated variables, i.e., av
+\newcommand{\avin}{\in_{\kw{av}}}
+\newcommand{\aveq}{=_{\kw{av}}}
+\newcommand{\avneq}{\neq_{\kw{av}}}
+\newcommand{\avgeq}{\geq_{\kw{av}}}
+\newcommand{\avlt}{<_{\kw{av}}}
+
+% adaptivity
+\newcommand{\adap}{\kw{adap}}
+\newcommand{\ddep}[1]{\kw{depth}_{#1}}
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\natb}{\nat_{\bot}}
+\newcommand{\natbi}{\natb^\infty}
+\newcommand{\nnatA}{Z}
+\newcommand{\nnatB}{m}
+\newcommand{\nnatbA}{s}
+\newcommand{\nnatbB}{t}
+\newcommand{\nnatbiA}{q}
+\newcommand{\nnatbiB}{r}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Dynamic Program Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Execution Based Dependency, Graph and Adaptivity 
+\newcommand{\paths}{\mathcal{PATH}}
+\newcommand{\walks}{\mathcal{WK}}
+\newcommand{\progwalks}{\mathcal{WK}^{\kw{prog}}}
+
+\newcommand{\len}{\kw{len}}
+\newcommand{\lvar}{\mathbb{LV}}
+\newcommand{\avar}{\mathbb{AV}}
+\newcommand{\qvar}{\mathbb{QV}}
+\newcommand{\qdep}{\mathsf{DEP_{q}}}
+\newcommand{\vardep}{\mathsf{DEP_{var}}}
+\newcommand{\avdep}{\mathsf{DEP_{\av}}}
+\newcommand{\finitewalk}{\kw{fw}}
+\newcommand{\pfinitewalk}{\kw{fwp}}
+\newcommand{\dep}{\mathsf{DEP}}
+
+\newcommand{\llabel}{\iota}
+\newcommand{\entry}{\kw{entry}}
+\newcommand{\tlabel}{\mathbb{TL}}
+
+\newcommand{\traceG}{\kw{{G_{trace}}}}
+\newcommand{\traceV}{\kw{{V_{trace}}}}
+\newcommand{\traceE}{\kw{{E_{trace}}}}
+\newcommand{\traceF}{\kw{{Q_{trace}}}}
+\newcommand{\traceW}{\kw{{W_{trace}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Static Program Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Static Adaptivity Definition:
+\newcommand{\flowsto}{\kw{flowsTo}}
+\newcommand{\live}{\kw{RD}}
+
+%Analysis Algorithms and Graphs
+\newcommand{\weight}{\mathsf{W}}
+\newcommand{\green}[1]{{ \color{green} #1 } }
+
+\newcommand{\func}[2]{\mathsf{AD}(#1) \to (#2)}
+\newcommand{\varCol}{\bf{VetxCol}}
+\newcommand{\graphGen}{\bf{FlowGen}}
+\newcommand{\progG}{\kw{{G_{prog}}}}
+\newcommand{\progV}{\kw{{V_{prog}}}}
+\newcommand{\progE}{\kw{{E_{prog}}}}
+\newcommand{\progF}{\kw{{Q_{prog}}}}
+\newcommand{\progW}{\kw{{W_{prog}}}}
+\newcommand{\progA}{A_{\kw{prog}}}
+
+\newcommand{\midG}{\kw{{G_{mid}}}}
+\newcommand{\midV}{\kw{{V_{mid}}}}
+\newcommand{\midE}{\kw{{E_{mid}}}}
+\newcommand{\midF}{\kw{{Q_{mid}}}}
+
+
+
+\newcommand{\sccgraph}{\kw{G^{SCC}}}
+\newcommand{\sccG}{\kw{{G_{scc}}}}
+\newcommand{\sccV}{\kw{{V_{scc}}}}
+\newcommand{\sccE}{\kw{{E_{scc}}}}
+\newcommand{\sccF}{\kw{{Q_{scc}}}}
+\newcommand{\sccW}{\kw{{W_{scc}}}}
+
+
+\newcommand{\visit}{\kw{visit}}
+
+\newcommand{\flag}{\kw{F}}
+\newcommand{\Mtrix}{\kw{M}}
+\newcommand{\rMtrix}{\kw{RM}}
+\newcommand{\lMtrix}{\kw{LM}}
+\newcommand{\vertxs}{\kw{V}}
+\newcommand{\qvertxs}{\kw{QV}}
+\newcommand{\qflag}{\kw{Q}}
+\newcommand{\edges}{\kw{E}}
+\newcommand{\weights}{\kw{W}}
+\newcommand{\qlen}{\len^{\tt q}}
+\newcommand{\pwalks}{\mathcal{WK}_{\kw{p}}}
+
+\newcommand{\rb}{\mathsf{RechBound}}
+\newcommand{\pathsearch}{\mathsf{AdaptSearch}}
+
+%program abstraction
+\newcommand{\abst}[1]{\kw{abs}{#1}}
+\newcommand{\absexpr}{\abst{\kw{expr}}}
+\newcommand{\absevent}{\stackrel{\scriptscriptstyle{\alpha}}{\event{}}}
+\newcommand{\absfinal}{\abst{\kw{final}}}
+\newcommand{\absinit}{\abst{\kw{init}}}
+\newcommand{\absflow}{\abst{\kw{trace}}}
+\newcommand{\absG}{\abst{\kw{G}}}
+\newcommand{\absV}{\abst{\kw{V}}}
+\newcommand{\absE}{\abst{\kw{E}}}
+\newcommand{\absF}{\abst{\kw{F}}}
+\newcommand{\absW}{\abst{\kw{W}}}
+\newcommand{\locbound}{\kw{locb}}
+\newcommand{\absdom}{\mathcal{ADOM}}
+\newcommand{\inpvar}{\mathcal{VAR}_{\kw{in}}}
+\newcommand{\grdvar}{\mathcal{VAR}_{\kw{guard}}}
+
+
+\newcommand{\absclr}{{\kw{Tclosure}}}
+\newcommand{\varinvar}{{\kw{Vinvar}}}
+\newcommand{\init}{\kw{init}}
+\newcommand{\constdom}{\mathcal{SMBCST}}
+\newcommand{\dcdom}{\mathcal{DC}}
+\newcommand{\reset}{\kw{re}}
+\newcommand{\resetchain}{\kw{rechain}}
+\newcommand{\inc}{\kw{inc}}
+\newcommand{\dec}{\kw{dec}}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% author comments in draft mode %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newif\ifdraft
+%\draftfalse
+\drafttrue
+
+\ifdraft
+% Jiawen
+\newcommand{\jl}[1]{\textcolor[rgb]{.00,0.00,1.00}{[JL: #1]}}
+\newcommand{\jlside}[1]{\marginpar{\tiny \sf \textcolor[rgb]{.00,0.80,0.00}{[jl: #1]}}}
+% Deepak
+\newcommand{\dg}[1]{\textcolor[rgb]{.00,0.80,0.00}{[DG: #1]}}
+\newcommand{\dgside}[1]{\marginpar{\tiny \sf \textcolor[rgb]{.00,0.80,0.00}{[DG: #1]}}}
+% Marco
+\newcommand{\mg}[1]{\textcolor[rgb]{.80,0.00,0.00}{[MG: #1]}}
+\newcommand{\mgside}[1]{\marginpar{\tiny \sf \textcolor[rgb]{.80,0.00,0.00}{[MG: #1]}}}
+% Weihao
+\newcommand{\wq}[1]{\textcolor[rgb]{.00,0.80,0.00}{[WQ: #1]}}
+\newcommand{\wqside}[1]{\marginpar{\tiny \sf \textcolor[rgb]{.00,0.80,0.00}{[WQ: #1]}}}
+\else
+\newcommand{\mg}[1]{}
+\newcommand{\mgside}[1]{}
+\newcommand{\wq}[1]{}
+\newcommand{\wqside}[1]{}
+\newcommand{\rname}[1]{$\textbf{#1}$}
+\fi
