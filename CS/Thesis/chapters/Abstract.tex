@@ -10,8 +10,21 @@
 % The abstract must be written in English. A dissertation abstract is limited to 350 words or approximately 2,450 characters. A thesis abstract is limited to 250 words or approximately 1,750 characters.
 
 \begin{abstractpage}
-Many properties of programs can be expressed through quantities such as power consumption, memory usage, execution time, the number of function calls, etc. Controlling these quantities can improve program reliability, security, privacy, usability, etc. For instance, the performance in terms of the execution time of two pieces of code for the same task can be used to decide which one to use. Providing tight bounds on these quantities is useful to improve software design for different potential applications. 
-In this dissertation, I will focus on several different quantitative properties of programs that can be used to improve programs’ performance, along different axes.
-\todo{add RB}
-One quantity is the adaptivity in adaptive data analysis, where the queries asked by data analysts may depend on the results of previous queries. \wq{If we represent the interactions with a data analyst as a program, we can find some chain of queries so that every query may rely on the previous query in the chain. The adaptivity of this program is defined to be the length of the longest chain of queries.} Reasoning about adaptivity helps to choose the appropriate statistical technique to use to control the generalization error of the data analysis. We propose a program analysis algorithm to statically estimate adaptivity.
-\end{abstractpage}
+   Data analyses are usually designed to identify some property of the population from which the data are drawn, generalizing beyond the specific data sample. For this reason, data analyses are often designed in a way that guarantees that they produce a low generalization error.
+   That is, they are designed so that the result of a data analysis run on a sample data does not differ too much from the result one would achieve by running the analysis over the entire population. 
+   
+   An adaptive data analysis can be seen as a process composed by multiple queries interrogating some data, where the choice of which query to run next may rely on the results of previous queries. 
+   The generalization error of each individual query/analysis can be controlled by using an array of well-established statistical techniques.
+   However, when queries are arbitrarily composed, the different errors can propagate through the chain of different queries and bring to high generalization error. 
+   To address this issue, data analysts are designing several techniques that not only guarantee bounds on the generalization errors of single queries, but that also guarantee bounds on the generalization error of the composed analyses. 
+   The choice of which of these techniques to use, often depends on the chain of queries that an adaptive data analysis can generate.
+   %The total number of queries and the depth of the chain of queries are of great significance to guarantee the generalization error, when the composed data analyses are adaptive. 
+   % Gap
+   % Unfortunately, this depth which relies on the program(implementation) itself is costly in human efforts, and how to statically obtain this information is not well studied to support data analysts.
+   
+   In this work, we consider adaptive data analyses implemented as while-like programs and we design a program analysis which can help with identifying which technique to use to control their generalization error. 
+   More specifically, we formalize the intuitive notion of \emph{adaptivity} as a quantitative property of programs. 
+   We do this because the adaptivity level of a data analysis is a key measure to choose the right technique. 
+   Based on this definition, we design a program analysis for soundly approximating this quantity.
+   The program analysis generates a representation of the data analysis as a weighted dependency graph, where the weight is an upper bound on the number of times each variable can be reached, and uses a path search strategy to guarantee an upper bound on the adaptivity. 
+   We implement our program analysis  and show that it can help to analyze the adaptivity of several concrete data analyses with different adaptivity structures.\end{abstractpage}
