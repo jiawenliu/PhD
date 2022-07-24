@@ -1,21 +1,22 @@
 \chapter{The Program Dynamic Analysis for Adaptivity}
 \label{ch:adapt-dynamic}
-In this chapter, we formally introduce the language we will focus on for writing data analyses.  
-This is a simple loop language with some primitives for calling queries. 
-After defining the syntax of the language and showing an example, we will define its trace-based operational semantics. This is the main technical ingredient we will use to define the program's adaptivity.
-% We will conclude this chapter by discussing the limitation of this language with respect to static analysis for adaptivity.
 
-\section{Syntax of Query While Language}
-\label{sec:dynamic-syntax}
+\section{Introduction}
+\label{sec:dynamic-intro}
+\input{~/dynamic/introduction}
 
-\section{Trace-based Operational Semantics}
-\label{sec:dynamic-os}
+\section{Dynamic Data Dependency Analysis}
+\label{sec:dynamic-datadep}
 %
-\section{Program Adaptivity}
+\section{Dynamic Dependency Depth Analysis}
+\label{sec:dynamic-reachability}
+%
+\section{Dynamic Adaptivity Analysis}
 \label{sec:dynamic-dynamic}
 %
 \section{Examples}
 \label{sec:dynamic-examples}
+\input{~/dynamic/examples}
 %
 \section{Implementation}
 \label{sec:dynamic-implementation}
