@@ -1,6 +1,5 @@
-%% LyX 2.3.0 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
-\documentclass[english,11pt]{article}
+\documentclass[a4paper,11pt]{article}
+\usepackage[table]{xcolor}
 \include{prelude}
 \include{ldefs}
 \newcommand{\THESYSTEM}{\textsf{AdaptFun}}
@@ -14,8 +13,8 @@
 \begin{document}
 
 \title{{\em Dissertation Prospectus}
-\\  A Full-Spectrum Dependently Typed
-Language for Testing with Dynamic Equality}
+\\  A Full-Spectrum Program Analysis for Adaptivity of Adaptive Data Analysis, 
+\\ with Generalization on Program Resource Cost}
 
 \author{Jiawen Liu\\ Department of Computer Science, Boston University \\ \today}
 \maketitle
@@ -34,17 +33,30 @@ Language for Testing with Dynamic Equality}
 
 \section{The Query Language for Adaptive Data Analysis Program}
 \label{sec:language}
-\input{chapters/language}
+In this chapter, we formally introduce the language we will focus on for writing data analyses.  
+This is a simple loop language with some primitives for calling queries. 
+After defining the syntax of the language and showing an example, we will define its trace-based operational semantics. 
+This is the main technical ingredient we will use to define the program's adaptivity.
+
+\subsection{Syntax of Query While Language}
+\label{sec:language-syntax}
+In this section, we formally introduce the language we will focus on for writing data analyses.  This is a standard while language with some primitives for calling queries. After defining the syntax of the language and showing an example, we will define its trace-based operational semantics. This is the main technical ingredient we will use to define the program's adaptivity.
+% We will conclude this section by discussing the limitation of this language with respect to static analysis for adaptivity.
+
+\input{chapters/syntax}
+
+\subsection{Trace-based Operational Semantics}
+\label{sec:language-os}
+\input{chapters/os}
+% \input{chapters/language}
 \cleardoublepage
 
-\section{The Program Dynamic Analysis for Adaptivity}
+\section{The Execution-Based Program Analysis for Adaptivity}
 \label{sec:dynamic}
 \input{chapters/dynamic}
-\cleardoublepage
-% \section{Prior work}
 
 \section{The Program Static Analysis for Adaptivity}
-\label{subsec:static}
+\label{sec:static}
 \input{chapters/static}
 \cleardoublepage
 
@@ -70,9 +82,9 @@ Language for Testing with Dynamic Equality}
 \item September 01, 2022: Finish Path Sensitive Reachability Bound Algorithm Formalization and Implementation
 \item September 30, 2022: Finish re-writing the adaptivity analysis for adaptive data analysis program paper towards Journal
 \item October 15, 2022: Finish Path Sensitive Reachability Bound paper writing towards PLDI
-\item November 10, 2022 : Submit to PLDI 2023
-\item November 20, 2022 : Finish thesis
-\item December 05, 2022 : Defend
+\item November 10, 2022: Submit to PLDI 2023
+\item November 20, 2022: Finish thesis
+\item December 05, 2022: Defend
 \end{itemize}
 
 

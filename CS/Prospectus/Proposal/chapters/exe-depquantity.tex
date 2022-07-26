@@ -1,0 +1,163 @@
+Based on the variable \emph{may-dependency} relation,
+% gives us the edges, 
+we define the execution-based dependency graph.
+% \wq{Just a few sentences here, some overview of this subsection. See 4.2 for instance.}
+\begin{defn}[Execution Based Dependency Graph]
+\label{def:trace_graph}
+Given a program ${c}$,
+its \emph{execution-based dependency graph} 
+$\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is defined as follows,
+% over all possible traces,
+%
+{\small
+\[
+\begin{array}{rlcl}
+  \text{Vertices} &
+  \traceV({c}) & := & \left\{ 
+  x^l \in \mathcal{LV}
+  ~ \middle\vert ~ x^l \in \lvar(c)
+  \right\}
+  \\
+  \text{Directed Edges} &
+  \traceE({c}) & := & 
+  \left\{ 
+  (x^i, y^j) 
+%   \in \mathcal{LV} \times \mathcal{LV}
+  ~ \middle\vert ~
+  x^i, y^j \in \lvar(c) \land \vardep(x^i, y^j, c) 
+  % \text{\mg{$\land$ instead of ,}}
+  \right\}
+  \\
+%   \text{Weights} &
+%   \traceW & := & 
+%   \left\{ 
+%   (x^l, n) \in \mathcal{LV} \times \mathbb{N}
+%   ~ \middle\vert ~ 
+%   x^l \in \lvar_{c} \land
+%   n = \max \left\{ \vcounter(\vtrace', l)~ \middle\vert~
+%   \forall \vtrace, \vtrace' \in \mathcal{T} \st \config{{c}, \trace} \to^{*} \config{\eskip, \trace\cdot\vtrace'} 
+%   \right\}
+%   \right\}
+  \text{Weights} &
+  \traceW({c}) & := & 
+%   \left
+  \{ 
+  (x^l, w) 
+  % \in \mathcal{LV} \times \mathbb{N}
+  ~ \vert ~ 
+  w : \mathcal{T} \to \mathbb{N}
+  \land
+  x^l \in \lvar(c) 
+  \\ & & &
+  \land
+  % n = \max \left\{ 
+    % ~ \middle\vert~
+  \forall \vtrace \in \mathcal{T}_0(c), \trace' \in \mathcal{T} \st \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+  \implies w(\trace) = \vcounter(\vtrace', l) 
+  %  \right\}
+%   \right
+\}
+  \\
+  % \text{Query Label} &
+  \text{Query Annotation} &
+  \traceF({c}) & := & 
+\left\{(x^l, n)  
+% \in  \mathcal{LV}\times \{0, 1\} 
+~ \middle\vert ~
+ x^l \in \lvar(c) \land
+n = 1 \Leftrightarrow x^l \in \qvar(c) \land n = 0 \Leftrightarrow  x^l \notin \qvar(c)
+\right\}
+\end{array}.
+\]
+}
+% \mg{I don't understand what is the set of query labels above. Specifically, the formula with three iff is confusing.}\\
+% \jl{TODO: I actually don't need this query annotation in the graph, I can just use $\qvar(c)$ in defining the 
+% query length and computing the adaptivity?
+% But it need to change many notations later. So I think to think if it is necessary to remove or leave it.}
+% \mg{there is a dangling , below}\\
+% \mg{what is ``i.ts'' referring to in the sentence below?}\\
+% , where $\lvar_c$ is program $c$'s set of labeled variables.
+\end{defn}
+%
+% \jl{TODO: add description}
+%
+% The edge is directed, when an annotated query $q(v)^{(l,w)}$ may depend on its previous query $q(v')^{(l',w')}$, we have the directed
+% edge $(q(v)^{(l,w)}, q(v')^{(l'.w')})$, from $q(v)^{(l,w)} $ to $q(v')^{(l'.w')}$.
+% 
+% The query-based dependency graph only considers the newly generated annotated queries during the execution of the program $c$, so we see the nodes coming from the trace $t'-t$. The previous trace before the execution of $c$ is excluded when constructing the graph. To summary, for every execution of a program $c$ staring with different configurations, we can construct a corresponding dependency graph. 
+% \\
+% \mg{I don't understand the next sentence. First, by the definition edges are between nodes which are labelled variables, why do you have annotated queries now? I suspect that this and the next sentence are old.}
+% \jl{I deleted but forgot to push before}
+% \\
+% The edge is directed, when an annotated query $q(v)^{(l,w)}$ may depend on its previous query $q(v')^{(l',w')}$, we have the directed
+% edge $(q(v)^{(l,w)}, q(v')^{(l'.w')})$, from $q(v)^{(l,w)} $ to $q(v')^{(l'.w')}$.
+% 
+% The query-based dependency graph only considers the newly generated annotated queries during the execution of the program $c$, so we see the nodes coming from the trace $t'-t$. The previous trace before the execution of $c$ is excluded when constructing the graph. To summary\mg{To summarize}, for every execution of a program $c$ staring with different configurations, we can construct a corresponding dependency graph. 
+% \\
+% \mg{I also don't understand the next sentence. What is the injectivity of $\weights$ in a program dependency graph?And what is the image of $v$ in $\weights$. I find this very confusing.}
+% \jl{I removed this, it is mainly used for simplify the soundness proof.}
+% For any program $c$, by the injectivity of $\weights$ in its dependency graph, $\traceG({c}) = (\vertxs, \edges, \weights, \qflag)$, 
+% $\weights$ forms a function. 
+% \jl{
+There are four components of the execution-based dependency graph. 
+The vertices $\traceV(c)$ is the set of program $c$'s labeled variables $\lvar(c)$,
+which are statically collected.
+The query annotation is 
+a set of pairs $\traceF(c) \in \mathcal{P}(\mathcal{LV} \times \{0, 1\} )$ 
+mapping each $x^l \in \traceV(c)$ to $0$ or $1$, 
+indicating whether this labeled variable is in program $c$'s query variable set $\qvar(c)$.
+% assigned by a query request
+% \wq{is qF and $\traceF(c)$ the same?also V and $\progV(c)$}.
+% }
+% \\
+% { \wq{weigth udpates!}
+%   The weights $W$ is a set of pairs $\traceW(c) \in \mathcal{P}(\mathcal{LV} \times \mathbb{N})$ 
+% % is the set of pairs 
+% % The weight for each vertex in $\progV(c)$ is computed 
+% mapping each $x^l \in \progV(c)$ to a natural number. 
+% This natural number is the maximum occurrence time of label $l$
+% in program's execution trace, over all possible execution traces.
+% }
+% Notice here, the program contains free variables, which are the user's input variable.
+% % in the trace, we have the input variables free in the program. 
+% In order to compute the weight for each vertex, we need to be able to execute the program and obtain program's execution trace.
+% So, we assume the 
+% initial trace contains initial event $(k, in, K, \bullet)$ for every input variable $k$. 
+% In every initial event, 
+% $(k, in, K, \bullet)$, $k$ is the input variable name,
+% $in$ is the label for this variable and the upper case $K$ represents
+% its initial value. 
+{
+The weights is a set of pairs, $(x^l, w) \in \mathcal{LV} \times (\mathcal{T} \to \mathbb{N})$,
+with a labeled variable as first component and
+its weight $w$ the second component.
+Weight $w$ for
+% a labeled variable 
+$x^l$ is a function $w : \mathcal{T} \to \mathbb{N}$
+mapping from a starting trace to a natural number.
+When program executes under this starting trace $\trace$,
+$\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} $, it generates an execution trace $\trace'$.
+This natural number is the evaluation times of the labeled command corresponding to the vertex, 
+computed by the counter operator $w(\trace) = \vcounter(\vtrace', l)$.
+% \highlight{has weight $w : \trace \to \env(\trace) k$
+% % given all possible initial trace $\trace$.
+% % initial state 
+% % $\trace$, 
+% where $w_3$ is a function taking the initial state $\trace$ as input and return 
+% a natural number, 
+% and $\env(\trace) k$  is the value of $k$ in the initial state $\trace$.
+% % has weight $k$, 
+% Because the command at line $3$ is located inside a while loop, and the iterations of the loop depends on the value of the user input $k$,
+% which will be executed 
+% at most $\env(\trace) k$ times.
+% }
+% The weight is computed based on this initial value from initial trace. 
+We can see in the execution-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight of vertices in the while loop is  $\env(\trace) k$, which depends on the value of the user input $k$ specified in the starting trace $\tau$.
+The directed edges $\traceE({c})$ is also a set of pairs with two labeled variables $ (x^i, y^j) \in \mathcal{LV} \times \mathcal{LV}$, from $x^i$ pointing to $y^j$ in the graph.
+% with The directed edges $E$ 
+% comes 
+The edges are constructed directly from our variable may-dependency relation. 
+For any two vertices $x^{i}$ and $y^{j}$ in $\traceV(c)$, if they satisfy the variable may-dependency relation $\vardep(x^i, y^j, c)$, there is a direct edge between the two vertices in our execution-based dependency graph for program $c$.
+} 
+In most data analysis programs $c$ we are interested, there are usually some user input variables, such as $k$ in $\kw{twoRounds}$. 
+We denote $\mathcal{T}_0(c)$ as the set of initial traces in which all the input variables in $c$ are initialized, it is also reflected in $\traceW({c})$.    

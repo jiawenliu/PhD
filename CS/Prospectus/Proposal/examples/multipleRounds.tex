@@ -1,0 +1,337 @@
+\begin{example}[Multiple Rounds Algorithm]
+\label{ex:multiplerounds}
+%
+We look at an advanced adaptive data analysis algorithm - multiple rounds algorithm, as in Figure~\ref{fig:multi_graphs}(a).
+%
+%
+%   We have seen the two round algorithm in Section~\ref{subsec:loop-syntax}. We show the multiple-round algorithm, which is an advanced algorithm.
+%  \\
+%
+% The multiple rounds algorithm starts from an initialized empty tracking list $I$, two scores called Nscore $ns=0$ and Cscore $cs=0$, initialzied to $0$. It goes $k$ rounds and at every round, the two scores $ns$ and $cs$ are updated by the result $a$ of a query $q(f(I))$. The function $f( I)$ specifies a complex linear query using the updated tracking list $I$. The tracking list $I$ is updated by the two scores via a function $update(I,ns,cs)$ at every round. This update function mainly compares $ns$ and $cs$, when $ns \geq cs$, certain elements are added to the tracking list $I$. An implementation of the algorithm is presented in Figure~\ref{fig:multi_code}(a), in which the round number $k$ are set to $3$, and we use $update\_cscore(a)$ and $update\_nscore(a)$ to simplify the complex update on Cscore and Nscore respectively, for the sake of simplicity.
+% The multiple round algorithm is presented in Figure~\ref{fig:multi_graphs}(a).
+% It starts from an initialized empty tracking list $I$, a score called Nscore $ns=0$, another score Cscore $cs=0$.
+% with a hidden database $D$.
+% % a score called Nscore $ns=0$ , another score Cscore $cs=0$. There is a hidden database $X$ as well.
+% % It goes $k$ rounds and every round, the two scores $ns$ and $cs$ are updated by a query result. 
+% % Then the list $I$ is updated by the two scores for every round. After the $r$ rounds, the algorithm returns the columns of the hidden database $X$ not specified in the tracking list $I$, which is $X\setminus I$. 
+% It goes $k$ rounds and at every round, the two scores $ns$ and $cs$ are updated by a query result. 
+% Then the tracking list is updated by the two scores for every round.  
+% % Then the list $I$ is updated by the two scores for every round. 
+% After the $r$ rounds, the algorithm returns the columns of the hidden database $D$ not specified in the tracking list $I$, which is $D \setminus I$. 
+% \\
+% The algorithm is written in the {\tt Query While} language as $\kw{multipleRounds(k)} $ taking 
+% two parameters $k$ and $c$ for 
+% number of iterations and the distribution sampling primitive $c$.
+It takes the user input $k$ which decides the 
+number of iterations.
+% and the distribution sampling primitive $c$.
+It starts from an initialized empty tracking list $I$,
+% a score called Nscore $ns=0$ , another score Cscore $cs=0$. There is a hidden database $X$ as well.
+% It goes $k$ rounds and every round, the two scores $ns$ and $cs$ are updated by a query result. 
+% Then the list $I$ is updated by the two scores for every round. After the $r$ rounds, the algorithm returns the columns of the hidden database $X$ not specified in the tracking list $I$, which is $X\setminus I$. 
+{ goes $k$ rounds and at every round, tracking list $I$ is updated by a query result of $\query(\chi[I])$.
+% Then the list $I$ is updated by the two scores for every round. 
+After $r$ rounds, the algorithm returns the columns of the hidden database $D$ not specified in the tracking list $I$.
+% The $\mathrel{\mathsf{update}} ( {I}, (a, p))$ function takes $I, a, p$ as input and compute the updated results for $I$.
+% $\mathsf{update}$ function is used here to simplify the complex update computation of Nscore, Cscore and the tracking list $I$.
+We use functions $\kw{updnscore}(p,a)$,
+$\kw{updcscore}(p,a)$,$\kw{update}(I,ns,cs)$ to simplify the complex update computations of $Nscore$, $Cscore$ and the tracking list $I$, 
+which will not affect our analysis.%
+}
+% It uses a loop for the $k$ rounds computation and. 
+% We use functions $\kw{updnscore}(p,a)$,
+% $\kw{updcscore}(p,a)$,$\kw{update}(I,ns,cs)$ to simplify the complex update computation of Nscore, Cscore and the tracking list $I$. It will not change our analysis because these functions provides enough information through their arguments.
+% As described in the two round algorithm, the multi-round algorithm has a loop as well.
+% compare to two round algorithm
+
+% and the tracking list $I$. It will not change our analysis because these functions provides enough information through their arguments.
+% As described in the two round algorithm, the multi-round algorithm has a loop as well.
+% compare to two round algorithm
+{The interesting part here is the query asked in each iteration is not independent any more. 
+The query in one iteration $j$ now depends on the tracking list $I$ from its previous iteration $j-1$, which is updated by the query result in the same iteration $j-1$. The connection between queries from different iterations, 
+ which means these queries are adaptively chosen according to our discussion in overview.
+}
+% in comparison with the two rounds one, is that the query asked in each iteration is not independent(non-adaptive) anymore.
+% For example, the query $q^{j}$ at iteration $j$ now may depend on the tracking list $I$, which comes from the previous iteration $j-1$. Additionally, this list $I$ at iteration $j-1$ is updated by the query result $q^{j-1}$ at the same iteration. Intuitively, we can see the connection between queries from different iterations, which means these queries are adaptively chosen according to our Theorem~\ref{thm:gaussiannoise2}.
+
+% the result of the query from previous iteration,
+% so that the query ask at the $j^{th}$ iteration is
+% $q(p, I)$.
+%
+% In $MR$, the tracking list $I$ is initialized to an empty list. It appears inside the function of query $q(f(p,I))$ and updated in each iteration. 
+% by the result of query in that iteration. It uses an update function $\eupdt$. 
+% The input of this function is $a, p$, where $a$ is the result of the query in current iteration.
+% \\
+% By assuming a specific database $D = [[1, 1], [0, 0], [1, 1], [1, 1]]$,
+% \todo{The adaptivity through dependency graph}
+% \jl{
+% We first show its query-based dependency graph in Figure~\ref{fig:multi_graphs}(a), the execution trace $t_{mr}$ is generated as follows.}
+
+The program-based dependency graph is presented  in Figure~\ref{fig:multi_graphs}(b). Its execution-based dependency graph has the same graph, except different weight so we do not show it again. We can simply replaces $k$ with a function $w_k$ which takes a trace and returns the value of $k$ in this trace. The weight $1$ is replaced as a constant function $w_1$ taking whatever trace and returns $1$ for the execution-based dependency graph. For consistence, we use $w_k$ and $w_1$ for all the examples in this section.
+% Each vertex corresponds to a labeled variable in program,
+% and annotated with its weights and query annotation. 
+% For example the vertex on the top of the graph, $a^6:{}^k_1$
+% corresponds
+% to the variable $a$ assigned by the result of the query request in the labeled command
+% $\clabel{\assign{a}{\query(I)}}^6$ at line 6 with weight $k$ and query annotation $1$.
+% The same for other vertices.
+% The edges are constructed by the dependency relation 
+% checking all the possible program execution trace.
+% For example taking an arbitrary initial trace,
+% $\trace_0 = [(k, in, K, \bullet)]$, where $k$ is the 
+% initial value of input variable $k$ given by user,
+% we observe the execution trace as
+% $
+% % \trace_0 \tracecat
+% [ 
+% (j, 0, K, \bullet),
+% % (I, 1, [], \bullet),
+% % (ns, 2, 0, \bullet),
+% % (cs, 3, 0, \bullet),
+% \cdots,
+% (j>0, 4, \etrue, \bullet),
+% (j, 5, 1, \bullet),
+% (a, 6, v_1, []),
+% \cdots,
+% (I, 9, [1], \bullet),
+% \cdots,
+% (a, 6, v_2, [1]),
+% \cdots,
+% (I, 9, [1,1], \bullet), 
+% (j>0, 4, \efalse, \bullet)
+% ]$.
+% Then, by modifying the event $(I, 9, [1], \bullet)$ into 
+% $(I, 9, [1, 0], \bullet)$ in the first loop iteration, 
+%  and continuously executing the next command, 
+%  we 
+%  observe this execution,
+% % trace 
+% we obtain another execution trace:
+% $
+% % \trace_0 \tracecat
+% [ 
+% (j, 0, 2, \bullet),
+% % (I, 1, [], \bullet),
+% % (ns, 2, 0, \bullet),
+% % (cs, 3, 0, \bullet),
+% \cdots,
+% (j>0, 4, \etrue, \bullet),
+% (j, 5, 1, \bullet),
+% (a, 6, v_1, []),
+% \cdots,
+% (I, 9, [1], \bullet),
+% \cdots,
+% (a, 6, v_2', [1, 0]),
+% \cdots,
+% (I, 9, [1,1], \bullet),
+% (j>0, 4, \efalse, \bullet)
+% ]$.
+% In the two traces, the value assigned to $a$ at line 6 changed from the event $(a, 6, v_2, [1])$ into $(a, 6, v_2', [1, 0])$.
+% So we construct the directed edge from $a^6$ to $I^9$ and same way for all the other edges.
+% For the weight, we observe the occurrence time of the label for each 
+% labeled variable over all possible execution traces.
+% % Given $k \in \mathbb{N}$, we observe the infinite  
+% For labeled variables $j^0$, $I^1$, $ns^2$ and $cs^3$,
+% which are not involved in any while loop,
+% for any initial trace $\trace_0 \in \mathcal{T}$, 
+% these labeled command will be evaluated at most once.
+% % we observe only one occurrence time 
+% % over all possible execution trace.
+% So we assign these labeled variable
+% with weight $1: \trace_0 \to 1$, as their superscript 
+% on the graph in Figure~\ref{fig:multi_graphs}(b).
+% In the same way for labeled variables $j^5$, $a^6$, $ns^7$, $cs^8$ and $I^9$,
+% which are involved in while loop,
+% % given the initial value $K$ for input $k$, 
+% % we observe $K$ occurrence times
+% % for labels inside the loop.
+% % So, 
+% we assign the labeled variables 
+%  of the weight $k$. We abuse the notation $k$ as a function, such that for an initial trace $\trace_0 \in \mathcal{T}$,
+%  $k(\trace_0) = \env(\trace_0) k$.
+% %  in its 
+% % execution-based dependency graph, 
+% as shown in the superscript on these vertices
+% in Figure~\ref{fig:multi_graphs}(b).
+As the adaptivity definition in our formal adaptivity model in Definition~\ref{def:trace_adapt},
+there is a finite walk along the dashed arrows,
+$a^{6} \to I^9 \to ns^{7} \to  \cdots \to ns^7$ , 
+where every vertex is visited $w_k(\trace_0)$ times for an initial trace $\trace_0 \in \mathcal{T}_0(c)$.
+There is one vertex $a^{6}$ visited $w_k(\trace_0)$ times with query annotation 1, 
+So we have the adaptivity with $\trace_0$ for this program as $w_k(\trace_0)$.
+
+{
+Next, we show {$\THESYSTEM$} providing the tight upper bound for this example.
+% variable-based weighted dependency graph in Figure\ref{fig:multi_graphs}(b). We use a short in the graph, such as $a_1^{3}$ for $a_1^{(5, [4:3])}$ and so on. We show the most weighted path in the graph, which is the red dashed path as usual. Along the red dashed path, $3$ weighted nodes $a_1^{3},a_1^{2},a_1^{1} $, correspond to our queries $q_c, q_b$ and $q_a$ respectively. This is our intuition to estimate one graph in Figure~\ref{fig:multi_graphs}(b), to upper bound another graph(Figure~\ref{fig:multi_graphs})(a). Here, we simplify the estimated graph by omitting some variables such $ns_1$, $cs_1$ in  Figure~\ref{fig:multi_graphs}(b).  Every query node in the query-based dependency graph has a corresponding node(variable the query is associated) in the variable-based dependency graph generated by our analysis algorithm {\THESYSTEM}. 
+% program-based dependency graph Graph as an approximation of the graph in Figure~\ref{fig:multi_graphs}(b).
+% We omit the program-based dependency graph Graph for this example, because it 
+% has identical vertices, edges and query annotation to the  execution-based dependency graph in Figure~\ref{fig:multi_graphs}(b),
+% % except using the initial value $K$ as weights rather than 
+% % except having 
+% as well as the symbolic input variable $k$ 
+% % rather than its initial value $K$ 
+% as weights for 
+% the vertices involved inside while loop, specifically, $j^0$, $I^1$, $ns^2$ and $cs^3$.
+% as shown in the superscript on the vertex.
+% ant this graph has identical topology to the Execution-Based dependency graph as in Figure\ref{fig:multi_graphs}(b). 
+% We use a short in the graph, such as $a_1^{3}$ for $a_1^{(5, [4:3])}$ and so on. We show the most weighted path in the graph, which is the red dashed path as usual. 
+If first finds a path  
+% along 
+$a^{6}: {}^k_1 \to I^9:{}^k_0 \to ns^7:{}^k_0$ with three weighted vertices, and then $\pathsearch$ approximate this path to a walk, in which $a^6,I^9, ns^{7}$ is visited $k$ times. So the estimated adaptivity is $k$. We know for any initial trace $\trace_0$ where $\config{\trace_0, k} \earrow v$ and 
+$w_k(\trace_0) = v$. So $k$ from {$\THESYSTEM$} is a tight bound.
+% correspond to our queries $q_c, q_b$ and $q_a$ respectively. 
+% This is our intuition to estimate one graph in Figure~\ref{fig:multi_graphs}(b), to upper bound another graph(Figure~\ref{fig:multi_graphs})(a). 
+% Here, we simplify the estimated graph by omitting some variables such $ns_1$, $cs_1$ in  Figure~\ref{fig:multi_graphs}(b).  
+% Every query node in the query-based dependency graph has a corresponding node(variable the query is associated) in the variable-based dependency graph generated by our analysis algorithm {\THESYSTEM}. 
+% And this path corresponds to the finite walk where 
+% and every vertex is visited $w$ times where $\config{\trace_0, k} \earrow w$,
+% is the longest finite walk with the 
+% maximal query length.
+% % Then, by summing up the number of query vertices showing up in this walk,
+% % the query length is $k$, where $k$ is the program's adaptivity.
+% % we have the maximal query length 
+% $\THESYSTEM$ computes $k$ as upper bound for program's adaptivity $k$ and we have
+}
+\end{example}
+
+%
+\begin{figure}
+\centering
+\begin{subfigure}{0.25\textwidth}
+    \small{
+    $
+\begin{array}{l}
+\kw{multipleRounds(k, c)} \triangleq\\
+    \clabel{\assign{j}{k}}^0;
+    \clabel{\assign{I}{[]}}^1; \\
+    \clabel{\assign{ns}{0}}^2; 
+    \clabel{\assign{cs}{0}}^3; \\
+    \ewhile ~ \clabel{j > 0}^{4} ~ \edo ~ \\
+    \Big(
+    \clabel{\assign{j}{j-1}}^{5} ;
+    \clabel{\assign{a}{\query(I)}}^6; \\
+    \clabel{\assign{ns}{\kw{updnscore}(ns, a)}}^7; \\
+    \clabel{\assign{cs}{\kw{updcscore}(cs, a)}}^8; \\
+    \clabel{\assign{I}{\kw{updI}(I, ns, cs)}}^9
+    \Big) 
+\end{array}
+    $
+    }
+    \caption{}
+\end{subfigure}
+%
+    % \begin{subfigure}{.3\textwidth}
+    %     \begin{centering}
+    %  %   \todo{abstract-cfg for two round}
+    %  \begin{tikzpicture}[scale=\textwidth/18cm,samples=200]
+    %  \draw[] (-5, 10) circle (0pt) node{{ $0$}};
+    %  \draw[] (0, 10) circle (0pt) node{{ $1$}};
+    %  \draw[] (0, 7) circle (0pt) node{\textbf{$2$}};
+    %  \draw[] (0, 4) circle (0pt) node{{ $3$}};
+    %  \draw[] (0, 1) circle (0pt) node{{ $4$}};
+    %  \draw[] (-5, 1) circle (0pt) node{{ $5$}};
+    %  % Counter Variables
+    %  \draw[] (3, 7) circle (0pt) node {\textbf{$6$}};
+    %  \draw[] (3, 4) circle (0pt) node {{ $ex$}};
+    %  %
+    %  % Control Flow Edges:
+    %  \draw[ thick, -latex] (-4.5, 10)  -- node [above] {$a \leq 0$}(-0.5, 10);
+    %  \draw[ thick, -latex] (0, 9.5)  -- node [left] {$j \leq k$} (0, 7.5) ;
+    %  \draw[ thick, -latex] (0, 6.5)  -- node [left] {$\top$}  (0, 4.5);
+    %  \draw[ thick, -latex] (0, 3.5)  -- node [right] {$x \leq \max(\dbdom)$} (0, 1.5) ;
+    %  \draw[ thick, -latex] (0, 1)  -- node [above] {$j \leq j - 1$} (-4.5, 1) ;
+    %  \draw[ thick, -latex] (-5, 1.5)  -- node [left] {$a \leq a + x$} (-0.5, 7)  ;
+    %  \draw[ thick, -latex] (0.5, 7)  -- node [above] {$\top$}  (2.5, 7);
+    %  \draw[ thick, -latex] (3, 6.5)  -- node [left] {$\top$} (3, 4.5) ;
+    %  \end{tikzpicture}
+    %   \caption{}
+    %     \end{centering}
+    %     \end{subfigure}
+%      \begin{subfigure}{.3\textwidth}
+%         \begin{centering}
+%         \begin{tikzpicture}[scale=\textwidth/25cm,samples=200]
+% % Variables Initialization
+% \draw[] (-5, 1) circle (0pt) node{{ $I^1: {}^{w_1}_{0}$}};
+% \draw[] (-5, 7) circle (0pt) node{{$ns^2: {}^{w_1}_{0}$}};
+% \draw[] (-5, 4) circle (0pt) node{{ $cs^3: {}^{w_1}_{0}$}};
+% % Variables Inside the Loop
+%      \draw[] (0, 10) circle (0pt) node{{ $a^6: {}^{w}_{1}$}};
+%      \draw[] (0, 7) circle (0pt) node{{ $ns^7: {}^{w}_{0}$}};
+%      \draw[] (0, 4) circle (0pt) node{{ $cs^8: {}^{w}_{0}$}};
+%      \draw[] (0, 1) circle (0pt) node{{ $I^9: {}^{w}_{0}$}};
+%      % Counter Variables
+%      \draw[] (5, 9) circle (0pt) node {{$j^0: {}^{w_1}_{0}$}};
+%      \draw[] (5, 6) circle (0pt) node {{ $j^5: {}^{w}_{0}$}};
+%      %
+%      % Value Dependency Edges:
+%      \draw[ thick, -latex,] (0, 1.5)  -- (0, 3.5) ;
+%      \draw[ ultra thick, -latex, densely dotted,] (0, 7.5)  -- (0, 9.5) ;
+%      \draw[ thick, -Straight Barb] (1., 4) arc (120:-200:1);
+%      \draw[ thick, -Straight Barb] (6., 6.5) arc (150:-150:1);
+%      \draw[ thick, -Straight Barb] (1, 7.5) arc (220:-100:1);
+%      \draw[ thick, -latex] (5, 6.5)  -- (5, 8.5) ;
+%      % Value Dependency Edges on Initial Values:
+%      \draw[ thick, -latex,] (-1, 1)  -- (-4.5, 1) ;
+%      \draw[ thick, -latex,] (-1, 4)  -- (-4.5, 4) ;
+%      \draw[ thick, -latex,] (-1, 7)  -- (-4.5, 7) ;
+%      %
+%      \draw[ ultra thick, -latex, densely dotted,] (-0.5, 9.5)  to  [out=-130,in=130]  (-0.5, 1);
+%      \draw[ ultra thick, -latex, densely dotted,] (-0.5, 1.5)  to  [out=-250,in=250]  (-0.5, 6.5);
+%      % Control Dependency
+%     %  \draw[ thick,-latex] (1.5, 7)  -- (4, 9) ;
+%     %  \draw[ thick,-latex] (1.5, 4)  -- (4, 9) ;
+%      \draw[ thick,-latex] (1.5, 7)  -- (4, 6) ;
+%      \draw[ thick,-latex] (1.5, 4)  -- (4, 6) ;
+%      \draw[ thick,-latex] (1.5, 1)  -- (4, 6) ;
+%      \draw[ thick,-latex] (1.5, 10)  -- (4, 6) ;
+%      \end{tikzpicture}
+%      \caption{}
+%         \end{centering}
+%         \end{subfigure}
+        \begin{subfigure}{.6\textwidth}
+        \begin{centering}
+        \begin{tikzpicture}[scale=\textwidth/25cm,samples=200]
+% Variables Initialization
+\draw[] (-7, 1) circle (0pt) node{{ $I^1: {}^1_{0}$}};
+\draw[] (-7, 7) circle (0pt) node{{$ns^2: {}^{1}_{0}$}};
+\draw[] (-7, 4) circle (0pt) node{{ $cs^3: {}^{1}_{0}$}};
+% Variables Inside the Loop
+     \draw[] (0, 10) circle (0pt) node{{ $a^6: {}^{k}_{1}$}};
+     \draw[] (0, 7) circle (0pt) node{{ $ns^7: {}^{k}_{0}$}};
+     \draw[] (0, 4) circle (0pt) node{{ $cs^8: {}^{k}_{0}$}};
+     \draw[] (0, 1) circle (0pt) node{{ $I^9: {}^{k}_{0}$}};
+     % Counter Variables
+     \draw[] (7, 9) circle (0pt) node {{$j^0: {}^{1}_{0}$}};
+     \draw[] (7, 6) circle (0pt) node {{ $j^5: {}^{k}_{0}$}};
+     %
+     % Value Dependency Edges:
+     \draw[ thick, -latex,] (0, 1.5)  -- (0, 3.5) ;
+     \draw[ ultra thick, -latex, densely dotted,] (0, 7.5)  -- (0, 9.5) ;
+     \draw[ thick, -Straight Barb] (1.4, 4) arc (120:-200:1);
+     \draw[ thick, -Straight Barb] (8.5, 6.5) arc (150:-150:1);
+     \draw[ thick, -Straight Barb] (1, 7.5) arc (220:-100:1);
+     \draw[ thick, -latex] (7, 6.5)  -- (7, 8.5) ;
+     % Value Dependency Edges on Initial Values:
+     \draw[ thick, -latex,] (-1.5, 1)  -- (-5.5, 1) ;
+     \draw[ thick, -latex,] (-1.5, 4)  -- (-5.5, 4) ;
+     \draw[ thick, -latex,] (-1.5, 7)  -- (-5.5, 7) ;
+     %
+     \draw[ ultra thick, -latex, densely dotted,] (-1, 9.5)  to  [out=-130,in=130]  (-1, 1.5);
+     \draw[ ultra thick, -latex, densely dotted,] (-0.8, 1.7)  to  [out=-230,in=230]  (-0.5, 6.5);
+     % Control Dependency
+    %  \draw[ thick,-latex] (1.5, 7)  -- (4, 9) ;
+    %  \draw[ thick,-latex] (1.5, 4)  -- (4, 9) ;
+     \draw[ thick,-latex] (1.5, 7)  -- (5.8, 6) ;
+     \draw[ thick,-latex] (1.5, 4)  -- (5.8, 6) ;
+     \draw[ thick,-latex] (1.5, 1)  -- (5.8, 6) ;
+     \draw[ thick,-latex] (1.5, 10)  -- (5.8, 6) ;
+     \end{tikzpicture}
+     \caption{}
+        \end{centering}
+        \end{subfigure}
+    \vspace{-0.4cm}
+    \caption{(a) The simplified multiple rounds example (b) The program-based dependency graph from $\THESYSTEM$}
+    \vspace{-0.5cm}
+    \label{fig:multi_graphs}
+\end{figure}
+%

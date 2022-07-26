@@ -1,0 +1,133 @@
+Given 
+a program $c$'s execution-based dependency graph 
+% $G_{trace}(c)(\trace) = (\vertxs, \edges, \weights, \qflag)$,
+$\traceG({c})$,
+we define adaptivity 
+with respect to an initial trace $\trace_0 \in \mathcal{T}_0(c)$ by the finite walk in the graph, which has the most query requests along the walk.
+We show the definition of a finite walk as follows.
+%
+% The query length of a walk $k$ is the number of vertices which correspond to query variables in the vertices sequence of this walk. 
+% Instead of counting all 
+% the vertices in $k$'s vertices sequence, i
+
+\begin{defn}[Finite Walk (k)].
+  \label{def:finitewalk}
+  \\
+%   Given a program $c$'s execution-based dependency graph $\traceG({c})(\trace)$, 
+%   a \emph{finite walk} $fw$ in $\traceG({c})(\trace)$ is a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+%   for which there is a sequence of vertices $(v_1, \ldots, v_{n})$ such that:
+%   \begin{itemize}
+%       \item $e_i = (v_{i},v_{i + 1})$ for every $1 \leq i < n$.
+%       \item every vertex $v \in \traceV({c}) $ appears in $(v_1, \ldots, v_{n})$ at most 
+%       \wq{$\traceW({c})(\trace)$} times.  
+%   \end{itemize}
+%   %
+%   The length of $fw$ is the number of vertices in its vertex sequence, i.e., $\len(k) = n$.
+  Given the execution-based dependency graph $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ of a program $c$,
+  a \emph{finite walk} $k$ in $\traceG({c})$ is a 
+  function $k: \mathcal{T} \to $ sequence of edges.
+  For a initial trace $\trace_0 \in \mathcal{T}_0(c)$, 
+  $k(\trace_0)$ is a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+  for which there is a sequence of vertices 
+  $(v_1, \ldots, v_{n})$ such that:
+  \begin{itemize}
+      \item $e_i = (v_{i},v_{i + 1}) \in \traceE(c)$ for every $1 \leq i < n$.
+      \item every $v_i \in \traceV(c)$
+      and $(v_i, w_i) \in \traceW(c)$, 
+       $v_i$ appears in $(v_1, \ldots, v_{n})$ at most 
+    %   \wq{$\traceW({c})(\trace)$} 
+    $w(\trace_0)$
+      times.  
+  \end{itemize}
+  %
+  The length of $k(\trace_0)$ is the number of vertices in its vertices sequence, i.e., $\len(k)(\trace_0) = n$.
+ \end{defn}
+
+We use $\walks(\traceG(c))$ to denote 
+% \mg{``the set'', not ``a set''}a set containing all finite walks $k$ in $G$;
+the set containing all finite walks $k$ in $\traceG(c)$;
+and $k_{v_1 \to v_2} \in \walks(\traceG(c))$ with $v_1, v_2 \in \traceV(c)$ denotes the walk from vertex $v_1$ to $v_2$ . 
+\\
+We are interested in queries, so we need to recover the 
+variables corresponding to queries from the walk. We define the query length of a walk, 
+instead of counting all 
+the vertices in $k$'s vertices sequence, we just count the number of vertices which correspond to query variables in this sequence.
+%
+% \mg{I don't understand this definition. Is wrt a single query?if yes, who is chosing the query? Or is it any query?}
+% \jl{It is for any query, as long as the vertex is a query variable, in another worlds, this length just counting the number of query variables in the walk, instead of counting all 
+% the vertices.}
+% \todo{Make the definition clear}
+\begin{defn}[Query Length of the Finite Walk($\qlen$)].
+\label{def:qlen}
+\\
+% Given 
+% % labelled weighted graph $G = (\vertxs, \edges, \weights, \qflag)$, 
+% a program $c$'s execution-based dependency graph $\traceG(c)(\trace)$
+%  and a \emph{finite walk} $k$ in $\traceG(c)(\trace)$ with its vertex sequence $(v_1, \ldots, v_{n})$, 
+% %  the length of $k$ w.r.t query is defined as:
+% The query length of $k$ is the number of vertices which correspond to query variables in $(v_1, \ldots, v_{n})$ as follows, 
+% \[
+%   \qlen(k) = \len\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)
+% \]
+% , where $\big(v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)$ is a subsequence of $(v_1, \ldots, v_{n})$.
+Given 
+% labelled weighted graph $G = (\vertxs, \edges, \weights, \qflag)$, 
+the execution-based dependency graph $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ of a program $c$,
+ and a \emph{finite walk} 
+%  $k$ in $\traceG(c)(\trace)$
+ $k \in \walks(\traceG(c))$. 
+%  with its vertex sequence $(v_1, \ldots, v_{n})$, 
+%  the length of $k$ w.r.t query is defined as:
+The query length of $k$ is a function $\qlen(k): \mathcal{T} \to \mathbb{N}$, such that with an initial trace  $\trace_0 \in \mathcal{T}_0(c)$, $\qlen(k)(\trace_0)$ is
+the number of vertices which correspond to query variables in the vertices sequence of the walk $k(\trace_0)$
+$(v_1, \ldots, v_{n})$ as follows, 
+\[
+  \qlen(k)(\trace_0) = |\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)|.
+\]
+% , where $\trace_0 \in \mathcal{T}$ is the initial trace and $\big(v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)$ is a subsequence of $(v_1, \ldots, v_{n})$.
+%  $k$'s vertex sequence.
+% \mg{If I understand where you want to go, why don't you just use the cardinality of the set above, rather than taking the length of a subsequence?}
+% \jl{because the same vertex could have multiple occurrence in the sequence, and we will count all the occurrence instead of just once.
+% So the cardinality of set doesn't work.}
+\end{defn}
+%
+%
+% \subsection{SSA Transformation and Soundness of Transformation}
+% in File {\tt ``ssa\_transform\_sound.tex''}
+% \input{ssa_transform_sound}
+% %
+% %
+% The following lemma describes a property of the trace-based dependency graph.
+% For any program $c$ with a database $D$ and a initial trace $\trace$,
+% the directed edges in its trace-based dependency graph can only be constructed from variable with  
+% smaller labels variables of greater ones.
+% There doesn't exist backward edges with direction from greater labelled variables to smaller ones.
+% \begin{lem}
+% \label{lem:edgeforwarding}
+% [Edges are Forwarding Only].
+% \\
+% %
+% %
+% $$
+% \forall \trace \in \mathcal{T}, D \in \dbdom \st G(c, D) =  (\vertxs, \edges, \weights, \qflag) 
+% \implies
+% \forall (\event', \event) \in \edges \st \event' \eventleq \event
+% $$
+% %
+% \end{lem}
+% %
+% \begin{proof}
+% Proof in File: {\tt ``edge\_forward.tex''}.
+% % \input{edge_forward}
+% \end{proof}
+%
+%
+% %
+% \begin{lem}
+% \label{lem:DAG}
+% [Trace-based Dependency Graph is Directed Acyclic].
+% \\
+% %
+% $\forall \trace \in \mathcal{T}, D \in \dbdom $, $G(c, D)$ is a directed acyclic graph.
+% \end{lem}
+%

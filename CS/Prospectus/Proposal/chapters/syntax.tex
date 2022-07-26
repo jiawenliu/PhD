@@ -1,0 +1,166 @@
+\[
+\begin{array}{llll}
+% \mbox{Arithmetic Operators} 
+% & \oplus_a & ::= & + ~|~ - ~|~ \times 
+% %
+% ~|~ \div ~|~ \max ~|~ \min\\  
+% % \mbox{Unary Operators} 
+% % & \oplus_a & ::= & + ~|~ - ~|~ \times 
+% % %
+% % ~|~ \div \\  
+% \mbox{Boolean Operators} 
+% & \oplus_b & ::= & \lor ~|~ \land
+% \\
+% %
+% \mbox{Relational Operators} 
+% & \sim & ::= & < ~|~ \leq ~|~ == 
+% \\  
+%
+% \mbox{Label} 
+% & l & \in & \mathbb{N} 
+% % \mg{\text{This should be} \in \text{since l is a label and not a set.}}
+% \\ 
+%
+\mbox{Arithmetic Expression} 
+& \aexpr & ::= & 
+n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr 
+~|~ \elog \aexpr  ~|~ \esign \aexpr ~|~ \max(a, a) ~|~ \min(a, a)
+\\
+%
+\mbox{Boolean Expression} & \bexpr & ::= & 
+%
+\etrue ~|~ \efalse  ~|~ \neg \bexpr
+ ~|~ \bexpr \oplus_b \bexpr
+%
+~|~ \aexpr \sim \aexpr 
+\\
+%
+\mbox{Expression} & \expr & ::= & v ~|~ \aexpr ~|~  \bexpr ~|~ [\expr, \dots, \expr]
+\\  
+%
+\mbox{Value} 
+& v & ::= & { n ~|~  \etrue ~|~  \efalse ~|~ [] ~|~ [v, \dots, v]}  
+\\
+%
+\mbox{Query Expression} 
+& {\qexpr} & ::= 
+& { \qval ~|~ \aexpr ~|~ \qexpr \oplus_a \qexpr ~|~ \chi[\aexpr]} 
+\\
+%
+\mbox{Query Value} & \qval & ::= 
+& {n ~|~ \chi[n] ~|~ \qval \oplus_a  \qval ~|~ n \oplus_a  \chi[n]
+    ~|~ \chi[n] \oplus_a  n}\\
+% &&& \text{\mg{I don’t think this is what we want. Isn’t $\chi[n+1]$ a query value?}}\\
+% &&& \text{\mg{What about $\chi[i] + \chi[i] + \chi[i]$? They are not in the grammar}}
+% \\
+% &&& \text{\jl{ $\chi[i] + \chi[i] + \chi[i]$ and $\chi[n+1]$ are both expressions, they will be evaluated to a value 
+% 98i8i}}
+% \\%
+% \mbox{Commands} 
+% & {c} & ::= &   \assign {{x}}{ {\expr}} ~|~ \assign {{x} } {{\query(\qexpr)}}
+% ~|~ {\ewhile \bexpr  \edo {c} }
+% \\
+% &&&
+% ~|~ {c};{c}  
+% ~|~ \eif(\bexpr , {c}, {c}) 
+% ~|~ \eskip\\ 
+\mbox{Label} 
+& l & \in & \mathbb{N} \cup \{in, ex\} \\
+\mbox{Labeled Command} 
+& {c} & ::= &   [\assign {{x}}{ {\expr}}]^{l} ~|~  [\assign {{x} } {{\query(\qexpr)}}]^{l}
+~|~ {\ewhile [ \bexpr ]^{l} \edo {c} }
+ \\
+ &&&
+~|~ {c};{c}  
+~|~ \eif([\bexpr]{}^l , {c}, {c}) 
+~|~ [\eskip]^l 
+% &&& \text{\mg{Is skip missing a label?}}
+% \\
+% &&& \text{\jl{I intentionally removed leabel for skip before}}
+% \\%
+% &&& \text{\jl{but I realized I need it after implementation}}
+% \\%
+% &&& \text{\jl{I haven't yet updated it here, thanks for reminding}}
+% \\
+% \mbox{Event} 
+% & \event & ::= & 
+%     ({x}, l, v) ~|~ ({x}, l, \qval, v)  ~~~~~~~~~~~ \mbox{Assignment Event} \\
+% &&& ~|~(\bexpr, l, v)   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \mbox{Testing Event}
+% \\
+% \mbox{Event} 
+% & \event & ::= & 
+%     ({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval)  
+%     % ~~~~~~~~~~~ \mbox{Assignment Event} 
+% %     \\
+% % &&& 
+% ~|~(\bexpr, l, v, \bullet)   
+% % ~~~~
+% % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+% % \mbox{Testing Event}
+% \\
+% \\
+% &&& \text{\mg{I think it would be better to use quadruples for events, where the}}\\
+% &&& \text{\mg{first element is either a variable or a boolean expression and }}\\
+% &&& \text{\mg{the last is either a query value or some default value $\bullet$}}\\
+%
+% \mbox{Trace} & \trace
+% & ::= & \cdot | \trace \cdot \event | \trace \tracecat \trace 
+% \\
+%
+% \mbox{Trace} & \trace
+% & ::= & [] ~|~ \event:: \trace ~|~ \trace \tracecat \trace  \\
+% \mbox{Trace} & \trace
+% & ::= & [] ~|~ \trace :: \event
+% \\
+% &&& \text{\mg{I don't understand why you need both :: and ++ as constructors.}}\\
+% &&& \text{\jl{Because append is to the left but we are adding element to the left in the OS}}\\
+% &&& \text{\jl{I was too sticky to the convention, it is a good idea to append to the left and just use $::$}}
+% %
+% \mbox{Event Signature} & \sig
+% & ::= & (x, l, n) | (x, l, n, \query) | (b, l, n)
+% \\
+% %
+\end{array}
+\]
+We use
+$\mathcal{VAR}, \mathcal{VAL}, \mathcal{QVAL}, \cdom, \dbdom$ and $\qdom$ to stand
+for the set of variables,
+values, query values, commands, databases and the codomain of queries, respectively.
+%
+An expression is
+% can be 
+either a standard arithmetic expression or a boolean expression, or a list of expressions.
+% An arithmetic expression can be a constant $n$ denoting integer, a variable $x$ from some countable set $\mathcal{VAR}$, binary operation $\oplus_a$ such as addition, product, subtraction, etc, over arithmetic expressions, and also log and sign operation. 
+% %
+% A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq,=,<,$ etc.
+% Additionally, we also introduce list in expression.
+Our language supports primitives for queries, where a specific query is specified by a query expression $\qexpr$. A query expression contains the necessary information for a query request, for example, $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. Query expressions combine access to the database with other expressions, for example, $\chi[3] + 5$ represents a query which asks the value from the column 3 of each database raw $\chi$, adds 5 to each of these values, and then computes the average of these values.
+
+
+% the expression also includes the special variable $\chi$ representing a row of the database, and access to values at a certain index in $\chi$, as $\chi[\aexpr]$. Additionally, list over expressions is supported and $[]$ stands for the empty list. The access to elements in the list can be achieved through $x[\aexpr]$ when variable $x$ is referred to a list. The value $v$ now contains the natural number $n$, the boolean primitives $\etrue$ and $\efalse$, the special row $\chi$ and access to it $\chi[v]$, the empty list $[]$ and non-empty list $[v, \dots, v]$.
+% 
+%
+
+ A labeled command $c$ is just a command with a label --- we assume that labels are unique, so that they can help to identify uniquely every subexpression. We have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement  $\ewhile \bexpr \edo {c} $.
+ The main novelty of the syntax is the query request command $\assign{x}{q(\qexpr)}$. For instance, if a data analyst wants to ask a simple linear query which returns the first element of the row, they can simply use the command $ \assign{x}{q(\chi[1])}$ in their data analysis program.
+%  \wq{Shall we distinguish command and labeled command, they are now both $c$. }
+%  \jl{I'm not sure, we don't want to programmer to add the label when writing the program. The label is just added by us for analysis. but I'm worried it is too complicate if use two notations for command and labeled command }
+%
+% \[
+% \begin{array}{llll}
+% \mbox{Label} 
+% & l & \in & \mathbb{N} \cup \{in, ex\} \\
+% \mbox{Labeled Commands} 
+% & {c} & ::= &   [\assign {{x}}{ {\expr}}]^{l} ~|~  [\assign {{x} } {{\query(\qexpr)}}]^{l}
+% ~|~ {\ewhile [ \bexpr ]^{l} \edo {c} }
+%  \\
+%  &&&
+% ~|~ {c};{c}  
+% ~|~ \eif([\bexpr]{}^l , {c}, {c}) 
+% ~|~ [\eskip]^l 
+% \end{array}
+% \]
+We use  
+%$\mathcal{LVAR} = \mathcal{VAR} \times \mathcal{L} $ 
+$\mathcal{LV}$ to represent the universe of all the labeled variables.
+ 

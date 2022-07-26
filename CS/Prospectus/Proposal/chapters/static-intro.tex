@@ -1,0 +1,239 @@
+
+\paragraph{{Static analysis for adaptivity}}
+% The high level architecture of our static analysis framework is presented in 
+%  Figure~\ref{fig:structure}. The input of the analysis is a labeled program P for which the adaptivity A is defined by means of a trace-based definition, as discussed above. In order to estimate an upper bound on A, our program analysis first transforms the program P into static single assignment (SSA) form. The goal of this step is to guarantee that each variable is assigned only once. We show the result of this transformation applied to our two rounds strategy example in Figure~\ref{fig:dcfgraph_tworound}(a). 
+%  This transformation, when applied to a loop, introduces some extra variables that serve as intermediate storage. For example, in~\ref{fig:dcfgraph_tworound}(a) there is a new instruction $[(i_3,i_1,i_2),(a_3,a_1,a_2)]$ after the loop. This instruction asserts that the value of the new variables $i_3$ and $a_3$, depending on the execution step, may come from $i_2$ or $i_2$, $a_1$ or $a_2$, respectively. The transformation of a program into SSA form preserves the execution traces, and so, in turns, it preserves the adaptivity. 
+% Let us see now how o
+Our static analysis provides an upper bound on the adaptivity for this example as follows.
+% The high level architecture of our static analysis framework is presented in 
+% \jl{Still stick on the two rounds strategy example, which has the aforementioned adaptivity $2$ according our definition, we now present our static analysis which is able to provide an upper bound on the adaptivity, taking the labeled program as input, see Figure~\ref{fig:overview-example}(b). }
+% Based on the Ω The input of the analysis is a labeled program P for which the adaptivity $A(c)$ is defined in our formal model as discussed above. 
+%  transforms the program P into static single assignment (SSA) form. The goal of this step is to guarantee that each variable is assigned only once. We show the result of this transformation applied to our two rounds strategy example in Figure~\ref{fig:dcfgraph_tworound}(a). 
+%  This transformation, when applied to a loop, introduces some extra variables that serve as intermediate storage. For example, in~\ref{fig:dcfgraph_tworound}(a) there is a new instruction $[(i_3,i_1,i_2),(a_3,a_1,a_2)]$ after the loop. This instruction asserts that the value of the new variables $i_3$ and $a_3$, depending on the execution step, may come from $i_2$ or $i_2$, $a_1$ or $a_2$, respectively. The transformation of a program into SSA form preserves the execution traces, and so, in turns, it preserves the adaptivity. 
+%  Our framework l ${\THESYSTEM}$
+% \jl{Similar as the dependency graph in Figure~\ref{fig:overview-example}(c), {\THESYSTEM} constructs a "may" dependency graph between assigned variables whose dependency both considers control flow and data flow, with the help of some program analysis techniques. To be precise, 
+% this algorithm analyzes the data flow relations through variables assigned in every command, based on an abstract control flow graph shown in Figure~\ref{fig:dcfgraph_tworound}(a).} 
+% \jl{
+ {\THESYSTEM} constructs a program-based dependency graph, for our example we show this graph in Figure~\ref{fig:overview-example}(c). The edges of this graph are built by considering both control flow and data flow between assigned variables (the algorithm is presented in Section~\ref{sec:alg_edgegen}). The weight of every vertex is estimated by using a reachability-bound estimation algorithm (presented in Section~\ref{sec:alg_weightgen}), which can be symbolic and provide a sound upper bound on the weight of the corresponding vertex in the execution-based dependency graph. For instance, the weight $k$ of the vertex $x^{3}$ in Figure~\ref{fig:overview-example}(c) is a sound upper bound on the weight $w_k$ of vertex $x^{3}$ in Figure~\ref{fig:overview-example}(b), with the same starting trace. The soundness of this step is proved in Theorem~\ref{thm:addweight_soundness}.
+% Then {\THESYSTEM} computes the adaptivity upper bound through this program-based dependency graph, 
+% to approximate the adaptivity defined in the formal model above over the Figure~\ref{fig:overview-example}(b).
+% }
+%
+% through variables assigned in every command, based on an abstract control flow graph shown in Figure~\ref{fig:dcfgraph_tworound}(a).
+% \jl{Todo:Add some interesting points of this abstract graph of two round here. Do we want to keep the abstract-cfg here? which is a part of the analysis technique, I think maybe just the final weighted dcfg is enough}
+% (1)
+%  In this abstract control flow graph, every vertex is a label,
+%  corresponding to a label command in the program.
+% Each directed 
+%  edge represents an abstract transition 
+%  between two control locations, i.e., the labels of two commands (we call the labels also control location and they refer to the same thing), 
+%  where the second labeled command will be executed after execution of the command with first label.
+%  The abstract transition contains a set of difference constraints for variables, generated by abstracting the command of the first labeled.} \wq{The data control dependency graph generated by our algorithm for our two round strategy example is presented in Figure~\ref{fig:dcfgraph_tworound}(b). We can easily see in the graph, that the node $x^{3}$ from the query assignment at line $3$ may depend on the node $j^{1}$ from control flow and node $a^{5}$ may depend on $x^{3}$ from data flow.
+%
+%  \jl{ Please pay attention to the graph in Figure~\ref{fig:dcfgraph_tworound}(b), every node also has a weight. As a reminder, we also have weight for every node in the dependency graph from our trace semantics in Figure~\ref{fig:overview-example}(c), which stands for the maximal number of times the node (also the statement) appears in the possible traces. In our static analysis, we provide a sound upper bound on this weight from the trace(execution) by performing reachability bound analysis on every statement. The reachability bound is a upper bound on the number of the target command may be reached in a program, which is used as the weight of nodes in our static analysis based data control depdendency graph. The weight can be symbolic, as indicated by the weight $k$ of node $x^{3}$ in Figure~\ref{fig:dcfgraph_tworound}(b).}
+ %
+% {To be precise, in order to construct the program-based dependency graph,
+% $\THESYSTEM$ approximates the vertices and annotations in the first step.
+% Then it
+% analyzes the data flow relations for approximating the edges between every vertex,
+% as well as the quantitative information for approximating the weights of each vertex.}
+%  on the dependency depth. Then, it derives a weighted data dependency graph as in Figure~\ref{fig:dcfgraph_tworound}(b), aiming to approximate the graph modeled from execution traces in Figure~\ref{fig:overview-example}(c).
+%  Starting from the Figure~\ref{fig:dcfgraph_tworound}(a), $\THESYSTEM$ first generate an abstract control flow graph.
+%   In this abstract control flow graph, every vertex is a label,
+%  corresponding to a label command in the program.
+% Each directed 
+%  edge represents an abstract transition 
+%  between two control locations, i.e., the labels of two commands (we call the labels also control location and they refer to the same thing), 
+%  where the second labeled command will be executed after execution of the command with first label.
+%  The abstract transition contains a set of difference constraints for variables, generated by abstracting the command of the first labeled.
+%  through this graph and constraint for every transition, 
+%
+% and compute the transition closure for every abstract transition.
+% By solving the closure with the invariants of variables involved in this closure for every transition, 
+% we compute the symbolic reachability bound of every commands corresponding to 
+% this transition.
+ %
+ %  (3)
+%  in the meantime, this algorithm perform a feasible data-flow analysis through the reachable definition algorithm. 
+%  By generating set of all the reachable variables at location of label $l$ in the program $c$.
+% For every labelled variable $x^l$ in this set, 
+% the value assigned to that variable
+% in the assignment command associated to that label is reachable at the entry point of  executing the command of label $l$.
+% (4)Then,  by removing the edges between locations where the variables associated to that labeled command isn't reachable from the second location,
+% we refined this graph into a weighted-data dependency graph.
+ 
+% $\THESYSTEM$ first performs a simple pass on program collecting the identical vertices
+%  and query annotations as in Figure~\ref{fig:overview-example}(c).
+% Then, $\THESYSTEM$ performs a feasible data-flow analysis through the reachable definition algorithm, 
+% % and refined this graph
+% % into the weighted data dependency graph as in Figure~\ref{fig:dcfgraph_tworound}(b), 
+% as the approximation of edges in Figure~\ref{fig:overview-example}(b).
+%  As a reminder, we also have weight for every node in the dependency graph from our trace semantics as in Figure~\ref{fig:overview-example}(b), which stands for the maximal number of times the node (also the statement) appears over all the possible traces. 
+% Similarly,  $\THESYSTEM$ also 
+% % infers a symbolic 
+% computes a reachability bound as the approximated maximal number of visiting times for each vertex in the program-based dependency graph,
+% % by reachability bound for every
+% % labeled variable.
+% % In our static analysis, we provide a sound upper bound on this weight from the trace(execution) 
+% by performing a reachability bound analysis. 
+% This reachability bound is a upper bound on the number of the target command may be reached in a program, which is used as the weight of nodes in the program-based dependency graph generated from static analysis.
+% % based data control dependency graph. 
+% The weight is symbolic, as indicated by the weight $k$ of node $x^{3}$ in Figure~\ref{fig:overview-example}(c).
+% Then
+% $\THESYSTEM$ generates the program-based dependency graph as in Figure~\ref{fig:overview-example}(c), as a
+% % an approximated graph as in 
+% approximation for the graph in 
+% %  In Figure~\ref{fig:dcfgraph_tworound}(b), every node also has a weight. 
+% Figure~\ref{fig:overview-example}(b).}
+%  Figure~\ref{fig:dcfgraph_tworound}(b).
+%   The upper bound of reaching times of each variable, which performs as the weight of node in the .  estimated by  reachablility it refines this control flow graph into a weighted data-dependency graph, through the data flow and reaching bound analysis results. as well as the reaching times of each variable 
+% \wq{The last step of {\THESYSTEM} is that} it finds the longest walk in the weighted data control flow graph w.r.t. the query variables,
+% and return the number of query vertices it traversed alongside.
+% To be more specific,
+% (1)
+%  In this abstract control flow graph, every vertex is a label,
+%  corresponding to a label command in the program.
+% Each directed 
+%  edge represents an abstract transition 
+%  between two control locations, i.e., the labels of two commands (we call the labels also control location and they refer to the same thing), 
+%  where the second labeled command will be executed after execution of the command with first label.
+%  The abstract transition contains a set of difference constraints for variables, generated by abstracting the command of the first labeled.
+%  (2) Then through this graph and constraint for every transition, we infer the  invariant for every variable,
+% and compute the transition closure for every abstract transition.
+% By solving the closure with the invariants of variables involved in this closure for every transition, 
+% we compute the symbolic reachability bound of every commands corresponding to 
+% this transition.
+%  (3)
+%  in the meantime, this algorithm perform a feasible data-flow analysis through the reachable definition algorithm. 
+%  By generating set of all the reachable variables at location of label $l$ in the program $c$.
+% For every labelled variable $x^l$ in this set, 
+% the value assigned to that variable
+% in the assignment command associated to that label is reachable at the entry point of  executing the command of label $l$.
+% (4)Then,  by removing the edges between locations where the variables associated to that labeled command isn't reachable from the second location,
+% we refined this graph into a weighted-data dependency graph.
+%  In the last step, 
+ $\THESYSTEM$ search a walk on this graph which overapproximate the adaptivity of the program (this is done by an algorithm
+ $\pathsearch$ presented in  Section~\ref{sec:alg_adaptcompute}). 
+%  finds a finite walk on this graph.
+% This finite walk traverses the maximum times of query variables, 
+% and the visiting time of every vertex on this walk is restricted by its weight.
+% The maximum number of vertices visited on this walk which correspond to query variables, is the final estimated adaptivity upper bound, for the program.
+For instance, in Figure~\ref{fig:overview-example}(c), $\pathsearch$ first finds a path $l^6:{}^1_1 \to a^5: {}^k_1 \to x^3: {}^k_1$, and then approximate a walk with this path.
+Every vertex on this walk is visited once, and the number of vertices with query annotation $1$ traversed in this path is $2$, which is the upper bound we expect.
+It is worth to note here that even though the node $x^3$ has weight depending on $k$, 
+it is only visited once, similarly for $l^6$, hence the overall upper bound on the adaptivity is 2, as we expect.
+% By defining it as the finite walk, and restricting the visiting time of each node to its weight, 
+% it gives us significant improvement on the accuracy in terms of program cost analysis, comparing with computing the longest weighted path in the state-of-art graph-based program cost analysis works.
+%  For analyzing the visiting times of each variable, we 
+% \wq{Finally, we reach our analysis algorithm ${\THESYSTEM}$. To bound the longest path is Figure~\ref{fig:simpl-two-round-graph}(c), we decide to build a graph as well. To this end, {\THESYSTEM} constructs a variable-based weighted directed dependency graph where nodes are annotated variables and edges showing the may-dependency of variables. The may-dependency here considers both the data dependency and control dependency and the variables assigned with a query answer has weight $1$ and other variables have no weight. Hence, the estimated upper bound of adaptivity is the weight of most weighted path in the graph.  In Figure~\ref{fig:dcfgraph_tworound}(b), the most weighted path is the dashed one, with weighted node in dashed circle and normal node in standard circle. The weight of that path is $2$. In this example, {\THESYSTEM} produces an upper bound $2$, to the adaptivity $2$ we obtained before, showing its power of a tight estimation. 
+% }
+%  
+% \begin{figure} 
+% \centering
+%   \begin{subfigure}{.45\textwidth}
+%   \begin{centering}
+% %   \todo{abstract-cfg for two round}
+% \begin{tikzpicture}[scale=\textwidth/18cm,samples=200]
+% \draw[] (-5, 10) circle (0pt) node{{ $0$}};
+% \draw[] (0, 10) circle (0pt) node{{ $1$}};
+% \draw[] (0, 7) circle (0pt) node{\textbf{$2$}};
+% \draw[] (0, 4) circle (0pt) node{{ $3$}};
+% \draw[] (0, 1) circle (0pt) node{{ $4$}};
+% \draw[] (-5, 1) circle (0pt) node{{ $5$}};
+% % Counter Variables
+% \draw[] (3, 7) circle (0pt) node {\textbf{$6$}};
+% \draw[] (3, 4) circle (0pt) node {{ $ex$}};
+% %
+% % Control Flow Edges:
+% \draw[ thick, -latex] (-4.5, 10)  -- node [above] {$a \leq 0$}(-0.5, 10);
+% \draw[ thick, -latex] (0, 9.5)  -- node [left] {$j \leq k$} (0, 7.5) ;
+% \draw[ thick, -latex] (0, 6.5)  -- node [left] {$\top$}  (0, 4.5);
+% \draw[ thick, -latex] (0, 3.5)  -- node [right] {$x \leq \max(\dbdom)$} (0, 1.5) ;
+% \draw[ thick, -latex] (0, 1)  -- node [above] {$j \leq j - 1$} (-4.5, 1) ;
+% \draw[ thick, -latex] (-5, 1.5)  -- node [left] {$a \leq a + x$} (-0.5, 7)  ;
+% \draw[ thick, -latex] (0.5, 7)  -- node [above] {$\top$}  (2.5, 7);
+% \draw[ thick, -latex] (3, 6.5)  -- node [left] {$\top$} (3, 4.5) ;
+% \end{tikzpicture}
+%  \caption{}
+%   \end{centering}
+%   \end{subfigure}
+%   \begin{subfigure}{.5\textwidth}
+%   \begin{centering}
+%   \begin{tikzpicture}[scale=\textwidth/18cm,samples=200]
+% \draw[] (0, 10) circle (0pt) node
+% {{ $a^0: {}^1_{0}$}};
+% \draw[] (0, 7) circle (0pt) node
+% {\textbf{$x^3: {}^{k}_{1}$}};
+% \draw[] (0, 4) circle (0pt) node
+% {{ $a^5: {}^{k}_{0}$}};
+% \draw[] (0, 1) circle (0pt) node
+% {{ $l^6: {}^{1}_{1}$}};
+% % Counter Variables
+% \draw[] (5, 9) circle (0pt) node {\textbf{$j^2: {}^{1}_{0}$}};
+% \draw[] (5, 6) circle (0pt) node {{ $j^4: {}^{k}_{0}$}};
+% %
+% % Value Dependency Edges:
+% \draw[ ultra thick, -latex, densely dotted,] (0, 1.5)  -- (0, 3.5) ;
+% \draw[ ultra thick, -latex, densely dotted,] (0, 4.5)  -- (0, 6.5) ;
+% \draw[ thick, -latex] (0, 7.5)  -- (0, 9.5) ;
+% \draw[ thick, -Straight Barb] (1.5, 3.5) arc (120:-200:1);
+% \draw[ thick, -Straight Barb] (6.5, 6.5) arc (150:-150:1);
+% \draw[ thick, -latex] (5, 6.5)  -- (5, 8.5) ;
+% % Control Dependency
+% \draw[ thick,-latex] (1.5, 7)  -- (4, 9) ;
+% \draw[ thick,-latex] (1.5, 4)  -- (4, 9) ;
+% \draw[ thick,-latex] (1.5, 7)  -- (4, 6) ;
+% \draw[ thick,-latex] (1.5, 4)  -- (4, 6) ;
+% \end{tikzpicture}
+% \caption{}
+%   \end{centering}
+%   \end{subfigure}
+%     \vspace{-0.3cm}
+%     \caption{(a) Example of data-flow analysis results for two rounds of adaptivity (b) The  weighted data-dependency graph from static analysis result.}
+%     \vspace{-0.5cm}
+%     \label{fig:dcfgraph_tworound}
+% \end{figure}
+%
+\paragraph*{Related Work} 
+Our algorithm in Section~\ref{sec:algorithm} is influenced by many areas of static program analysis such as effect systems, control-flow analysis, and data-flow analysis~\cite{ryder1988incremental}. The idea of statically estimating a sound upper bound for the adaptivity from the semantics is indirectly inspired from prior work on cost analysis via effect systems~\cite{cciccek2017relational,radivcek2017monadic,qu2019relational}. The idea of defining adaptivity using data flow is inspired by the work of graded 
+Hoare logic~\cite{gaboardi2021graded}, which reasons about data flows as a resource. 
+%
+One of the most important ingredients of our work is the estimation of the program-based dependency graph. 
+There are many ways to construct a dependency graph statically.
+Some of the most related work focuses on the testing of graphical user interfaces (GUIs), using an event graph. For example, \cite{memon2007event} proposes an event-flow model using an algorithm to construct an event-flow graph, representing all the possible event interactions. This event-flow graph has a vertex for every GUI event such as click-to-paste and an edge between pairs of events that can be performed immediately one after the other. Our program-based dependency graph uses the edge to track the may-dependence of one variable with respect to another variable. The main difference is in the way the graph is constructed. {\THESYSTEM} relies on the structure of the target program, while the event-flow model only considers the event type. Another work \cite{arlt2012lightweight} constructs a weighted event-dependency graph, capturing data dependencies between events by analyzing bytecode. Every weighted edge indicates a dependency between two events, meaning one event possibly reads data written by the other event, with the weight showing the intensity of the dependency (the quantity of data involved). Our approach of generating the program-based dependency graph shares the idea of tracking data dependency via static analysis on the source code. However, because of the different domains, we care about assigned variables, and we use the weight in a different way to find a finite walk in the graph.
+% WCET on systems: \cite{} 
+% [GustafssonEL05]Towards a Flow Analysis for Embedded System C Programs
+% --> abstract interpretation.
+% --> on embedded system of c program
+% [AlbertAGP08] Automatic Inference of Upper Bounds for Recurrence Relations in Cost Analysis
+% --> invariant generation through ranking functions
+%
+% General While langue:
+% [BrockschmidtEFFG16]
+% Analyzing Runtime and Size Complexity of Integer Programs
+% --> invariant generation through ranking functions
+% [AliasDFG10] Multi-dimensional Rankings, Program Termination, and Complexity Bounds of Flowchart Programs
+% --> invariant generation through ranking functions
+% [Flores-MontoyaH14]Resource Analysis of Complex Programs with Cost Equations
+% --> invariant generation through cost equations or ranking functions
+%
+% [GulwaniJK09]Control-flow Refinement and Progress Invariants for Bound Analysis
+% --> program abstraction and invariant inference
+% []Bound Analysis using Backward Symbolic Execution
+% --> program abstraction and invariant inference
+%
+% [CicekBG0H17]relational Cost Analysis 0
+% Monadic refinements for relational cost analysis
+% [RajaniG0021]A unifying type-theory for higher-order (amortized) cost analysis
+% --> type-system
+Moreover, the state-of-art data-flow analysis techniques do not
+consider the quantitative information on how many times each variable is dependent on the other. Our weight estimation is inspired by
+% (specifically in the case if
+% the data-flow is nested in iterations of recursion into consideration). 
+ works in program complexity analysis and worst case execution time analysis areas, focusing on analyzing the cost of the entire program. 
+The techniques are based on
+type system~\cite{CicekBG0H17, RajaniG0021}, Hoare logic~\cite{CarbonneauxHS15}, abstract interpretation~\cite{GustafssonEL05, HumenbergerJK18},
+invariant generation through cost equations or ranking functions~\cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}
+or a combination of program abstraction and invariant inferring~\cite{GulwaniZ10, SinnZV17,GulwaniJK09}.
+In general, these techniques give the approximated upper bound of the program's total running time or resource cost.
+However, they failed to consider the case where the cost -- the adaptivity-- could decrease when there isn't a dependency relation between variables.

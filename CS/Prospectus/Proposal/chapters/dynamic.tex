@@ -1,0 +1,32 @@
+
+In this section, we present our definition of adaptivity on basis of an execution-based dependency graph. 
+The construction of this graph requires us to think about the dependency relation between two queries using what we have at hand - 
+the trace generated in Section~\ref{sec:language}. 
+
+\subsection{Introduction and Related Work}
+\label{subsec:dynamic-intro}
+\input{chapters/exe-intro}
+
+\subsection{Methodology}
+\label{subsec:dynamic-methodology}
+
+\subsubsection{Data Dependency Analysis}
+\label{subsubsec:dynamic-datadep}
+\input{chapters/exe-dep.tex}
+\subsubsection{ Dependency Depth Analysis}
+\label{subsubsec:dynamic-reachability}
+\input{chapters/exe-depquantity}%
+\subsubsection{Execution-Based Adaptivity Analysis}
+\label{subsubsec:dynamic-adapt}
+\input{chapters/exe-adapt}%
+%
+\subsection{Adaptivity through An Example}
+\label{subsec:dynamic-examples}
+\input{examples/twoRounds}
+%
+
+% \input{~/dynamic/relatedwork.tex}
+%
+\subsection{Implementation}
+\label{subsec:dynamic-implementation}
+%

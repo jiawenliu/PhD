@@ -1,0 +1,63 @@
+\subsection{Accurate Dynamic Dependency Depth Analysis}
+\label{subsec:furthers-dep-depth}
+%
+The program's adaptivity in our formal model,
+% which we define over the program's execution-based dependency graph from the dynamic 
+% analysis 
+in Definition~\ref{def:trace_adapt} also
+ comes across an over-approximation on the program's
+ intuitive adaptivity rounds.
+It is resulted from difference between its Dependency Depth analysis and the \emph{variable may-dependency} definition.
+It occurs when the weight is computed over the traces different from the traces used in 
+witness the \emph{variable may-dependency} relation.
+
+As shown in following example, 
+\include{examples/multipleRoundsSingle}
+
+% \subsubsection{Examples}
+% \label{subsubsec:furthers-dep-depth-examples}
+% % \subimport{examples/}{multipleRoundsSingle.tex}
+% \include{examples/multipleRoundsSingle}
+%%
+\subsubsection{Proposed Methodology}
+\label{subsubsec:furthers-dep-depth}
+% \input{~/dynamic/relatedwork.tex}
+1. define the variables dependency relation over two witness traces and an initial trace.
+\\
+2. Quantify the weight of every edge in the execution-based dependency graph, w.r.t. to the witness traces.
+\\
+
+\subsection{Path Sensitive Reachability Bound Analysis}
+\label{subsec:furthers-reachability}
+In existing static reachability bound analysis, 
+it comes across an over-approximation on the estimation due to its path-insensitive nature. 
+It occurs when the control flow can be decided in a particular way in front of conditional branches, 
+while the static analysis fails to witness. 
+As shown in following example, 
+\include{examples/multipleRoundsOdd}
+
+% as follo
+\subsubsection{Proposed Methodology}
+\label{subsubsec:furthers-reachability}
+Based on Existing Methodology on reachability bound analysis, design new algorithm computing the 
+
+
+\subsection{Static Adaptivity Analysis towards Completeness}
+\label{subsec:furthers-adaptcomplete}
+
+\subsubsection{Proposed Methodology}
+\label{subsubsec:furthers-adaptcomplete-methodology}
+%
+
+\subsection{Generalization on Program Resource Cost}
+\label{subsec:furthers-cost}
+
+\subsubsection{Background}
+\label{subsubsec:furthers-cost-backgroung}
+\subsubsection{Examples}
+\label{subsubsec:furthers-cost-example}
+
+\subsubsection{Proposed Methodology}
+\label{subsubsec:furthers-cost-methodology}
+
+
