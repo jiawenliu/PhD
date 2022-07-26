@@ -163,7 +163,9 @@ my loving grandmother \\ Xiuqin Yang
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% TABLE OF CONTENTS	 
 % Table of contents comes after preface
-\tableofcontents
+\begin{centering}
+  \tableofcontents
+  \end{centering}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -245,6 +247,7 @@ my loving grandmother \\ Xiuqin Yang
 
 
 
+\addtocontents{toc}{\protect\newpage}
 \appendix
 % \begin{appendices}
 \begingroup
@@ -257,6 +260,7 @@ my loving grandmother \\ Xiuqin Yang
 % \startlist[appendix]{lof}
 % \printlist[appendix]{lof}{}{\chapter*{List of Figures in Appendix}}
 % % \include{chapters/Glossary}
+% \addtocontents{toc}{\protect\newpage}
 \include{chapters/appendix}
 % \stoplist[appendix]{lof}
 
@@ -330,7 +334,6 @@ Work office \\Boston University \\ Boston, MA 02118 \\\hyperlink{mailto:buemail@
 % Make sure to be consistent with your CV bibliographic info formatting
 \begin{enumerate}
 \item 
-% \underline{Weihao Qu}, Marco Gaboardi, Deepak Garg. Relational cost analysis in functional-imperative setting. \emph{Journal of Functional Programming } 2022. \\(doi: 10.1017/S0956796821000071)
 \item 
 % \hyperlink{https://www.ncbi.nlm.nih.gov/pubmed/XXX}{XXX}.
 % \item John Famous and Example Student. \emph{A special case of a well known conjecture}. Fancy Math. J. \textbf{46} no. 3 (2007), 473-490.
