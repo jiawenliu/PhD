@@ -11,9 +11,8 @@ It is resulted from difference between its Dependency Depth analysis and the \em
 It occurs when the weight is computed over the traces different from the traces used in 
 witness the \emph{variable may-dependency} relation.
 
-As shown in following example, 
+As shown in following motivating example, 
 \include{examples/multipleRoundsSingle}
-
 % \subsubsection{Examples}
 % \label{subsubsec:furthers-dep-depth-examples}
 % % \subimport{examples/}{multipleRoundsSingle.tex}
@@ -40,24 +39,38 @@ As shown in following example,
 \subsubsection{Proposed Methodology}
 \label{subsubsec:furthers-reachability}
 Based on Existing Methodology on reachability bound analysis, design new algorithm computing the 
+reachability bounds for every labeled command.
+Comparing to just compute the reachability bound for the while loop command, new methodology improves the accuracy of the 
+reachability bound for every labeled command.
 
-
-\subsection{Static Adaptivity Analysis towards Completeness}
+\subsection{Static Adaptivity Computation towards Completeness}
 \label{subsec:furthers-adaptcomplete}
+The Algorithm is conditional completeness as proved in appendix, but Algorithm~\ref{alg:adaptscc} isn't.
+In the algorithm design at line: in Algorithm~\ref{alg:adaptscc}, an over-approximation happens here. 
 
+As  following motivating example shows.
 \subsubsection{Proposed Methodology}
 \label{subsubsec:furthers-adaptcomplete-methodology}
 %
-
+1. looking into more over-approximated example and summarize the common properties of these examples.
+\\
+2. Modify the Algorithm~\ref{alg:adaptscc}, targeting the line: 12 of the algorithm. 
+The goal is to reduce the over-approximation in computing adaptivity statically.
 \subsection{Generalization on Program Resource Cost}
 \label{subsec:furthers-cost}
 
-\subsubsection{Background}
+\subsubsection{Introduction and Related Work}
 \label{subsubsec:furthers-cost-backgroung}
-\subsubsection{Examples}
+There are two categories of the program cost analysis, Type-System Based and Static Program Analysis Based. But both of the
+works in these two areas fails to recognize the case where program resource consumption is decreased implicitly.
+\paragraph*{Type-System Based}
+\paragraph*{Static Program Analysis Based}
+
+\subsubsection{Motivating Example}
 \label{subsubsec:furthers-cost-example}
 
 \subsubsection{Proposed Methodology}
 \label{subsubsec:furthers-cost-methodology}
-
+Following the same system structure as $\THESYSTEM$,
+by modifying the restriction on finite walk, compute different resource cost for program.
 

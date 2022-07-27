@@ -690,150 +690,150 @@ The dependency graph is notated as follows:
  % without lose the adaptivity.
  %
  
- Now, we show an example illustrating how our two updating operations for adaptivity 
- for each path can guarantee both the accuracy and the soundness. 
- % Notice here, another special operation we have in the second branch is Non-updating of
- % % Non-updating the 
- % $\kw{querynum}$ and $\kw{flowcapacity}$.
- % This guarantees both the accuracy and the soundness.
- % Specifically,
- % % because a second visiting of the same vertex 
- % if this vertex is visited, it indicates that a cycle is monitored and  
- % % indicates there is a cycle goes back to this vertex, 
- % the traversing on this cycle is finished by going back to this vertex.
- % %
- % % then, when 
- % When we continuously search for walks heading out of this vertex, 
- % the minimum weight on this cycle does not affect the walks going out of this vertex that not pass this cycle.
- % However, if we keep recording the minimum weight, then we
- % %  are restricting 
- % restrict the visiting times of vertices on a walk by
- %  using the minimum weight of vertices not on this walk.
- % %  , it is unsound anymore.
- % Then, it is obviously that this leads to unsoundness.
- % \todo{example} 
- % To under stand how the two operations 
- Look at a Nested While Loop example program in Figure~\ref{fig:alg_adaptsearch_nestedwhile}.
-  %
-   %
-   \begin{figure}
-     \centering
-     {\small
-     \begin{subfigure}{.5\textwidth}
-     \begin{centering}
-     % 
-     $ 
-     \begin{array}{l}
-       \kw{nestedWhileMultiVarRecAcross}(k) \triangleq \\
-       \clabel{\assign{i}{k} }^{0} ; 
-       \clabel{ \assign{x}{\query(\chi[0])}}^{1} ; 
-       \clabel{ \assign{y}{\query(\chi[1])}}^{2} ; \\
-           \ewhile ~ \clabel{i > 0}^{3} ~ \edo ~ \\
-           \Big(
-            \clabel{\assign{i}{i-1}}^{4} ;
-            \clabel{\assign{j}{k}}^{5} ;
-            \clabel{\assign{y}{\query(\chi(\ln(x) + y))} }^{6}  ; \\
-            \ewhile ~ \clabel{j > 0}^{7} ~ \edo ~ \\
-            \Big(
-             \clabel{\assign{j}{j-1}}^{8};
-             \clabel{\assign{x}{\query(\chi(\ln(y))+\chi[x])} }^{9}
-             \Big) \Big)
-       \end{array}
-     %       
-     $
-     \caption{}
-     \end{centering}
-     \end{subfigure}
-     \quad
-     \begin{subfigure}{.3\textwidth}
-       \begin{centering}
-       \begin{tikzpicture}[scale=\textwidth/18cm,samples=200]
- % Variables Initialization
- \draw[] (-6, 1) circle (0pt) node{{ $a^0: {}^1_{0}$}};
- \draw[] (-6, 7) circle (0pt) node{{ $x^1: {}^{1}_{0}$}};
- % Variables Inside the Loop
-    \draw[] (0, 6) circle (0pt) node{{ $y^6: {}^{k}_{0}$}};
-    \draw[] (0, 2) circle (0pt) node{{ $x^9: {}^{k}_{0}$}};
-    % Counter Variables
-    \draw[] (6, 9) circle (0pt) node {{$i^0: {}^{1}_{0}$}};
-    \draw[] (6, 6) circle (0pt) node {{ $i^4: {}^{k}_{0}$}};
-    \draw[] (6, 3) circle (0pt) node {{$j^0: {}^{1}_{0}$}};
-    \draw[] (6, 0) circle (0pt) node {{ $j^8: {}^{k}_{0}$}};
-    %
-    % Value Dependency Edges:
-    \draw[ ultra thick, -latex, densely dotted,] (0.5, 7.2) arc (220:-100:1.2);
-    \draw[ thick, -latex] (6, 6.5)  -- (6, 8.5) ;
-    \draw[ thick, -latex] (6, 0.5)  -- (6, 2.5) ;
-    \draw[ ultra thick, -latex, densely dotted,] (1.5, 1.0) arc (120:-200:1.2);
-    % Value Dependency Edges on Initial Values:
-    \draw[ thick, -latex,] (-1.5, 2)  -- (-3.5, 2) ;
-    \draw[ thick, -latex,] (-1.5, 6)  -- (-3.5, 6) ;
-    %
-    \draw[ ultra thick, -latex, densely dotted,] (-1, 2.5)  to  [out=-220,in=220]  (-1, 5.5);
-    \draw[ ultra thick, -latex, densely dotted,]  (0.5, 5.5) to  [out=-60,in=60] (0.6, 2.5) ;
-    % Control Dependency
-   %  \draw[ thick,-latex] (1.5, 7)  -- (4, 9) ;
-   %  \draw[ thick,-latex] (1.5, 4)  -- (4, 9) ;
-   \draw[ thick, -latex, ] (7.5, 6.5) arc (150:-150:1);
-   \draw[ thick, -latex, ] (7.5, 0.5) arc (150:-150:1);
-   \draw[ thick,-latex] (1.5, 6)  -- (4, 6) ;
-    \draw[ thick,-latex] (1.5, 2)  -- (4, 6) ;
-    \draw[ thick,-latex] (1.5, 2)  -- (4, 1) ;
-    \end{tikzpicture}
-    \caption{}
-       \end{centering}
-       \end{subfigure}
-     }
-     % \end{wrapfigure}
-     % \end{equation*}
-     \vspace{-0.4cm}
-      \caption{(a) The nested while loop example, (b) The program-based dependency graph generated from $\THESYSTEM$.}
-     \label{fig:alg_adaptsearch_nestedwhile}
-     \vspace{-0.7cm}
-     \end{figure}
-     %
-     We first search for a path: $y^6 \to y^6$, and compute the adaptivity for this path as 
-     $k$.
-     Notice here, another special operation we have in the second branch is Non-updating of
- % Non-updating the 
- $\kw{querynum}$ and $\kw{flowcapacity}$.
- This guarantees both the accuracy and the soundness.
- Specifically,
- % because a second visiting of the same vertex 
- if this vertex is visited, it indicates that a cycle is monitored and  
- % indicates there is a cycle goes back to this vertex, 
- the traversing on this cycle is finished by going back to this vertex.
- %
- % then, when 
- When we continuously search for walks heading out of this vertex, 
- the minimum weight on this cycle does not affect the walks going out of this vertex that will not pass this cycle.
- However, if we keep recording the minimum weight, then we
- %  are restricting 
- restrict the visiting times of vertices on a walk by
-  using the minimum weight of vertices not on this walk.
- %  , it is unsound anymore.
- Then, it is obviously that this leads to unsoundness.
-   If we update the $\kw{flowcapacity}[y^6]$ as $k$ after visiting $y^6$ the second time 
-   on this walk,
-   % the walk $y^6 \to y^6$,
-   and continuously visit $x^9$,
-   then the $\kw{flowcapacity[k]}$ is 
-   updated as $\min(k, k^2)$.
-   So
-   %  which 
-   % restricting 
-   the visiting times of $x^9$ is restricted by $k$ on the walk $y^6 \to y^6 \to x^9$.
-   This restriction excludes the finite walk $y^6 \to y^6 \to x^9 \to x^9$ where $y^6$ and $x^9$ visited by $k^2$ times
-   in the computation. 
-   However, the finite walk $y^6 \to y^6 \to x^9 \to x^9$ where $y^6$ is visited $k$ times and $x^9$ is visited $k^2$ times, is 
-   a qualified walk, and exactly the longest walk we aim to find. So, by Non-updating the $\kw{flowcapacity}$ after 
-   visiting $y$ again, we guarantee that the visiting times of vertices on every searched walk will not be restricted by weights not on this walk.
- In the last line of this dfs algorithm, line: 16, it returns the adaptivity heading out from its input vertex.
- By applying this deep first search strategy on every vertex on this SCC, 
- we compute the adaptivity of this SCC by taking the maximum 
- % adaptivity reaching every vertex on this SCC.
- value over every vertex.
- %
- The soundness is formally guaranteed 
- % in Lemma~\ref{lem:sound_adaptalg_scc}
- in the appendix.
+%  Now, we show an example illustrating how our two updating operations for adaptivity 
+%  for each path can guarantee both the accuracy and the soundness. 
+%  % Notice here, another special operation we have in the second branch is Non-updating of
+%  % % Non-updating the 
+%  % $\kw{querynum}$ and $\kw{flowcapacity}$.
+%  % This guarantees both the accuracy and the soundness.
+%  % Specifically,
+%  % % because a second visiting of the same vertex 
+%  % if this vertex is visited, it indicates that a cycle is monitored and  
+%  % % indicates there is a cycle goes back to this vertex, 
+%  % the traversing on this cycle is finished by going back to this vertex.
+%  % %
+%  % % then, when 
+%  % When we continuously search for walks heading out of this vertex, 
+%  % the minimum weight on this cycle does not affect the walks going out of this vertex that not pass this cycle.
+%  % However, if we keep recording the minimum weight, then we
+%  % %  are restricting 
+%  % restrict the visiting times of vertices on a walk by
+%  %  using the minimum weight of vertices not on this walk.
+%  % %  , it is unsound anymore.
+%  % Then, it is obviously that this leads to unsoundness.
+%  % \todo{example} 
+%  % To under stand how the two operations 
+%  Look at a Nested While Loop example program in Figure~\ref{fig:alg_adaptsearch_nestedwhile}.
+%   %
+%    %
+%    \begin{figure}
+%      \centering
+%      {\small
+%      \begin{subfigure}{.5\textwidth}
+%      \begin{centering}
+%      % 
+%      $ 
+%      \begin{array}{l}
+%        \kw{nestedWhileMultiVarRecAcross}(k) \triangleq \\
+%        \clabel{\assign{i}{k} }^{0} ; 
+%        \clabel{ \assign{x}{\query(\chi[0])}}^{1} ; 
+%        \clabel{ \assign{y}{\query(\chi[1])}}^{2} ; \\
+%            \ewhile ~ \clabel{i > 0}^{3} ~ \edo ~ \\
+%            \Big(
+%             \clabel{\assign{i}{i-1}}^{4} ;
+%             \clabel{\assign{j}{k}}^{5} ;
+%             \clabel{\assign{y}{\query(\chi(\ln(x) + y))} }^{6}  ; \\
+%             \ewhile ~ \clabel{j > 0}^{7} ~ \edo ~ \\
+%             \Big(
+%              \clabel{\assign{j}{j-1}}^{8};
+%              \clabel{\assign{x}{\query(\chi(\ln(y))+\chi[x])} }^{9}
+%              \Big) \Big)
+%        \end{array}
+%      %       
+%      $
+%      \caption{}
+%      \end{centering}
+%      \end{subfigure}
+%      \quad
+%      \begin{subfigure}{.3\textwidth}
+%        \begin{centering}
+%        \begin{tikzpicture}[scale=\textwidth/18cm,samples=200]
+%  % Variables Initialization
+%  \draw[] (-6, 1) circle (0pt) node{{ $a^0: {}^1_{0}$}};
+%  \draw[] (-6, 7) circle (0pt) node{{ $x^1: {}^{1}_{0}$}};
+%  % Variables Inside the Loop
+%     \draw[] (0, 6) circle (0pt) node{{ $y^6: {}^{k}_{0}$}};
+%     \draw[] (0, 2) circle (0pt) node{{ $x^9: {}^{k}_{0}$}};
+%     % Counter Variables
+%     \draw[] (6, 9) circle (0pt) node {{$i^0: {}^{1}_{0}$}};
+%     \draw[] (6, 6) circle (0pt) node {{ $i^4: {}^{k}_{0}$}};
+%     \draw[] (6, 3) circle (0pt) node {{$j^0: {}^{1}_{0}$}};
+%     \draw[] (6, 0) circle (0pt) node {{ $j^8: {}^{k}_{0}$}};
+%     %
+%     % Value Dependency Edges:
+%     \draw[ ultra thick, -latex, densely dotted,] (0.5, 7.2) arc (220:-100:1.2);
+%     \draw[ thick, -latex] (6, 6.5)  -- (6, 8.5) ;
+%     \draw[ thick, -latex] (6, 0.5)  -- (6, 2.5) ;
+%     \draw[ ultra thick, -latex, densely dotted,] (1.5, 1.0) arc (120:-200:1.2);
+%     % Value Dependency Edges on Initial Values:
+%     \draw[ thick, -latex,] (-1.5, 2)  -- (-3.5, 2) ;
+%     \draw[ thick, -latex,] (-1.5, 6)  -- (-3.5, 6) ;
+%     %
+%     \draw[ ultra thick, -latex, densely dotted,] (-1, 2.5)  to  [out=-220,in=220]  (-1, 5.5);
+%     \draw[ ultra thick, -latex, densely dotted,]  (0.5, 5.5) to  [out=-60,in=60] (0.6, 2.5) ;
+%     % Control Dependency
+%    %  \draw[ thick,-latex] (1.5, 7)  -- (4, 9) ;
+%    %  \draw[ thick,-latex] (1.5, 4)  -- (4, 9) ;
+%    \draw[ thick, -latex, ] (7.5, 6.5) arc (150:-150:1);
+%    \draw[ thick, -latex, ] (7.5, 0.5) arc (150:-150:1);
+%    \draw[ thick,-latex] (1.5, 6)  -- (4, 6) ;
+%     \draw[ thick,-latex] (1.5, 2)  -- (4, 6) ;
+%     \draw[ thick,-latex] (1.5, 2)  -- (4, 1) ;
+%     \end{tikzpicture}
+%     \caption{}
+%        \end{centering}
+%        \end{subfigure}
+%      }
+%      % \end{wrapfigure}
+%      % \end{equation*}
+%      \vspace{-0.4cm}
+%       \caption{(a) The nested while loop example, (b) The program-based dependency graph generated from $\THESYSTEM$.}
+%      \label{fig:alg_adaptsearch_nestedwhile}
+%      \vspace{-0.7cm}
+%      \end{figure}
+%      %
+%      We first search for a path: $y^6 \to y^6$, and compute the adaptivity for this path as 
+%      $k$.
+%      Notice here, another special operation we have in the second branch is Non-updating of
+%  % Non-updating the 
+%  $\kw{querynum}$ and $\kw{flowcapacity}$.
+%  This guarantees both the accuracy and the soundness.
+%  Specifically,
+%  % because a second visiting of the same vertex 
+%  if this vertex is visited, it indicates that a cycle is monitored and  
+%  % indicates there is a cycle goes back to this vertex, 
+%  the traversing on this cycle is finished by going back to this vertex.
+%  %
+%  % then, when 
+%  When we continuously search for walks heading out of this vertex, 
+%  the minimum weight on this cycle does not affect the walks going out of this vertex that will not pass this cycle.
+%  However, if we keep recording the minimum weight, then we
+%  %  are restricting 
+%  restrict the visiting times of vertices on a walk by
+%   using the minimum weight of vertices not on this walk.
+%  %  , it is unsound anymore.
+%  Then, it is obviously that this leads to unsoundness.
+%    If we update the $\kw{flowcapacity}[y^6]$ as $k$ after visiting $y^6$ the second time 
+%    on this walk,
+%    % the walk $y^6 \to y^6$,
+%    and continuously visit $x^9$,
+%    then the $\kw{flowcapacity[k]}$ is 
+%    updated as $\min(k, k^2)$.
+%    So
+%    %  which 
+%    % restricting 
+%    the visiting times of $x^9$ is restricted by $k$ on the walk $y^6 \to y^6 \to x^9$.
+%    This restriction excludes the finite walk $y^6 \to y^6 \to x^9 \to x^9$ where $y^6$ and $x^9$ visited by $k^2$ times
+%    in the computation. 
+%    However, the finite walk $y^6 \to y^6 \to x^9 \to x^9$ where $y^6$ is visited $k$ times and $x^9$ is visited $k^2$ times, is 
+%    a qualified walk, and exactly the longest walk we aim to find. So, by Non-updating the $\kw{flowcapacity}$ after 
+%    visiting $y$ again, we guarantee that the visiting times of vertices on every searched walk will not be restricted by weights not on this walk.
+%  In the last line of this dfs algorithm, line: 16, it returns the adaptivity heading out from its input vertex.
+%  By applying this deep first search strategy on every vertex on this SCC, 
+%  we compute the adaptivity of this SCC by taking the maximum 
+%  % adaptivity reaching every vertex on this SCC.
+%  value over every vertex.
+%  %
+%  The soundness is formally guaranteed 
+%  % in Lemma~\ref{lem:sound_adaptalg_scc}
+%  in the appendix.
