@@ -354,8 +354,11 @@
 %
 % It is easy to show for every $(l_1, dc, l_2) \in \absflow(c)$ such that $l_2 \neq l_e$, $(l_1, l_2) \in flow(c)$. The formal Lemma and proof can be found in Lemma~\ref{lem:flow_to_absflow} in appendix~\ref{apdx:reachability_soundness}.
 %
-
-We define an abstract control flow graph for program $c$, 
+In order to analysis the static data dependency relation and the dependency relation quantity,
+I first build an abstract control flow graph as the base step for the analysis in Section~\ref{subsubsec:static-datadep}
+and Section~\ref{subsubsec:static-reachability} as follows.
+\paragraph*{Abstract Control Flow Graph}
+I define an abstract control flow graph for program $c$, 
 % which mimics the standard control flow graph, 
 whose vertices are the unique labels from $c$'s labeled commands with
 % . We also have
@@ -480,8 +483,10 @@ $
 %   \end{centering}
 %   \end{subfigure}
   \vspace{-0.3cm}
-  \caption{(a) The same $\kw{towRounds(k)}$ program as Figure~\ref{fig:overview-example}
-  (b) The abstract control flow graph for $\kw{towRounds(k)}$  (c) The abstract control flow graph with the reachability bound for $\kw{towRounds(k)}$.}
+  \caption{
+    (a) The same $\kw{towRounds(k)}$ program as Figure~\ref{fig:twoRounds_example}
+    (b) The abstract control flow graph for $\kw{towRounds(k)}$  
+    (c) The abstract control flow graph with the reachability bound for $\kw{towRounds(k)}$.}
   \vspace{-0.5cm}
   \label{fig:abscfg_tworound}
 \end{figure}

@@ -122,11 +122,11 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 % %
 \end{array}
 \]
-We use
-$\mathcal{VAR}, \mathcal{VAL}, \mathcal{QVAL}, \cdom, \dbdom$ and $\qdom$ to stand
-for the set of variables,
-values, query values, commands, databases and the codomain of queries, respectively.
-%
+% We use
+% $\mathcal{VAR}, \mathcal{VAL}, \mathcal{QVAL}, \cdom, \dbdom$ and $\qdom$ to stand
+% for the set of variables,
+% values, query values, commands, databases and the codomain of queries, respectively.
+% %
 An expression is
 % can be 
 either a standard arithmetic expression or a boolean expression, or a list of expressions.
@@ -140,9 +140,11 @@ Our language supports primitives for queries, where a specific query is specifie
 % the expression also includes the special variable $\chi$ representing a row of the database, and access to values at a certain index in $\chi$, as $\chi[\aexpr]$. Additionally, list over expressions is supported and $[]$ stands for the empty list. The access to elements in the list can be achieved through $x[\aexpr]$ when variable $x$ is referred to a list. The value $v$ now contains the natural number $n$, the boolean primitives $\etrue$ and $\efalse$, the special row $\chi$ and access to it $\chi[v]$, the empty list $[]$ and non-empty list $[v, \dots, v]$.
 % 
 %
-
- A labeled command $c$ is just a command with a label --- we assume that labels are unique, so that they can help to identify uniquely every subexpression. We have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement  $\ewhile \bexpr \edo {c} $.
- The main novelty of the syntax is the query request command $\assign{x}{q(\qexpr)}$. For instance, if a data analyst wants to ask a simple linear query which returns the first element of the row, they can simply use the command $ \assign{x}{q(\chi[1])}$ in their data analysis program.
+ A labeled command $c$ is just a command with a label --- we assume that labels are unique, so that they can help to identify uniquely every subexpression. 
+%  We have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement  $\ewhile \bexpr \edo {c} $.
+ The main novelty of the syntax is the query request command $\assign{x}{\query(\qexpr)}$. 
+ For instance, if a data analyst wants to ask a simple linear query which returns the first element of the row, 
+ they can simply use the command $ \assign{x}{\query(\chi[1])}$ in their data analysis program.
 %  \wq{Shall we distinguish command and labeled command, they are now both $c$. }
 %  \jl{I'm not sure, we don't want to programmer to add the label when writing the program. The label is just added by us for analysis. but I'm worried it is too complicate if use two notations for command and labeled command }
 %

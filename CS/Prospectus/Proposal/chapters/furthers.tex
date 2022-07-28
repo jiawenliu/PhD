@@ -1,76 +1,82 @@
-\subsection{Accurate Dynamic Dependency Depth Analysis}
+\subsection{Accurate Execution-Based Dependency Depth Analysis}
 \label{subsec:furthers-dep-depth}
 %
-The program's adaptivity in our formal model,
+The program's adaptivity in the formal model through the execution-based analysis,
 % which we define over the program's execution-based dependency graph from the dynamic 
 % analysis 
-in Definition~\ref{def:trace_adapt} also
- comes across an over-approximation on the program's
- intuitive adaptivity rounds.
-It is resulted from difference between its Dependency Depth analysis and the \emph{variable may-dependency} definition.
+in Definition~\ref{def:trace_adapt}, isn't precise enough w.r.t. the intuitive adaptivity rounds.
+It comes across an over-approximation 
+% on the program's
+%  intuitive adaptivity rounds.
+% It is 
+resulted from difference between its Dependency Depth analysis and the \emph{variable may-dependency} definition.
 It occurs when the weight is computed over the traces different from the traces used in 
 witness the \emph{variable may-dependency} relation.
-
-As shown in following motivating example, 
-\include{examples/multipleRoundsSingle}
-% \subsubsection{Examples}
-% \label{subsubsec:furthers-dep-depth-examples}
-% % \subimport{examples/}{multipleRoundsSingle.tex}
-% \include{examples/multipleRoundsSingle}
+As shown in the Example~\ref{ex:overdefined_adapt}.
+\input{examples/multipleRoundsSingle}
 %%
 \subsubsection{Proposed Methodology}
 \label{subsubsec:furthers-dep-depth}
 % \input{~/dynamic/relatedwork.tex}
-1. define the variables dependency relation over two witness traces and an initial trace.
+1. In the first stage of the execution-based analysis, 
+I will give an alternative variable \emph{may-dependency} definition 
+by referring to the analysis methodology in \cite{Cousot19a}.
 \\
-2. Quantify the weight of every edge in the execution-based dependency graph, w.r.t. to the witness traces.
+Specifically, I will define the variables dependency relation over two witness traces and an initial trace. Comparing to 
+the existing \emph{may-dependency} definition, which quantifies overall possible execution traces, the alternative
+definition explicitly relies on two specific witness traces from execution.
+This externalization helps in analyzing the dependency quantity through the same 
+witness traces as the \emph{may-dependency} relation. In this way, the over-approximation as illustrated above
+can be reduced.
 \\
-
-\subsection{Path Sensitive Reachability Bound Analysis}
+2. In the second stage of the execution-based analysis, 
+based on the new \emph{may-dependency} definition,
+I will compute the weight of every edge constructed from 
+\emph{may-dependency} relation in the execution-based dependency graph, w.r.t. to the witness traces.
+\\
+3. Then in the third stage, I will formalize the \emph{adaptivity} still as the 
+length of the longest finite walk. Differently from the previous one, I restrict 
+the occurrence of every edge in a finite walk no more than its weight as well.
+\\
+Through the three steps above, I give a more accurate formalization of the intuitive \emph{adaptivity}.
+%
+\subsection{Static Path Sensitive Reachability Bound Analysis}
 \label{subsec:furthers-reachability}
-In existing static reachability bound analysis, 
-it comes across an over-approximation on the estimation due to its path-insensitive nature. 
+In static program analysis framework $\THESYSTEM$, specifically on the dependency quantity, 
+I adopt the reachability bound analysis technique to estimate this dependency quantity.
+% In existing static reachability bound analysis, 
+However, it isn't precise enough w.r.t. the execution-based reachability bound on every program command.
+It comes across an over-approximation on the estimation due to its path-insensitive nature. 
 It occurs when the control flow can be decided in a particular way in front of conditional branches, 
 while the static analysis fails to witness. 
-As shown in following example, 
-\include{examples/multipleRoundsOdd}
+As shown in Example~\ref{ex:overapproximate}.
+\input{examples/multipleRoundsOdd}
 
 % as follo
 \subsubsection{Proposed Methodology}
 \label{subsubsec:furthers-reachability}
-Based on Existing Methodology on reachability bound analysis, design new algorithm computing the 
-reachability bounds for every labeled command.
-Comparing to just compute the reachability bound for the while loop command, new methodology improves the accuracy of the 
-reachability bound for every labeled command.
-
-\subsection{Static Adaptivity Computation towards Completeness}
-\label{subsec:furthers-adaptcomplete}
-The Algorithm is conditional completeness as proved in appendix, but Algorithm~\ref{alg:adaptscc} isn't.
-In the algorithm design at line: in Algorithm~\ref{alg:adaptscc}, an over-approximation happens here. 
-
-As  following motivating example shows.
-\subsubsection{Proposed Methodology}
-\label{subsubsec:furthers-adaptcomplete-methodology}
-%
-1. looking into more over-approximated example and summarize the common properties of these examples.
+Given the imprecision comes from the second stage of the static program analysis,
+I will insist on the same $\THESYSTEM$ framework,
+and design new algorithm for this stage.
+In this stage, 
+methodology on reachability bound analysis isn't path sensitive. 
+I will design a path sensitive reachability bound analysis algorithm computing the 
+reachability bounds for every labeled command taking the different paths inside while loop into consideration.
+% Comparing to just compute the reachability bound for the while loop command, new methodology improves the accuracy of the 
+% reachability bound for every labeled command.
 \\
-2. Modify the Algorithm~\ref{alg:adaptscc}, targeting the line: 12 of the algorithm. 
-The goal is to reduce the over-approximation in computing adaptivity statically.
-\subsection{Generalization on Program Resource Cost}
-\label{subsec:furthers-cost}
+Then, I will use this improved analysis result to estimate the dependency quantity.
+%
+% \subsection{Static Adaptivity Computation towards Completeness}
+% \label{subsec:furthers-adaptcomplete}
+% The Algorithm is conditional completeness as proved in appendix, but Algorithm~\ref{alg:adaptscc} isn't.
+% In the algorithm design at line: in Algorithm~\ref{alg:adaptscc}, an over-approximation happens here. 
 
-\subsubsection{Introduction and Related Work}
-\label{subsubsec:furthers-cost-backgroung}
-There are two categories of the program cost analysis, Type-System Based and Static Program Analysis Based. But both of the
-works in these two areas fails to recognize the case where program resource consumption is decreased implicitly.
-\paragraph*{Type-System Based}
-\paragraph*{Static Program Analysis Based}
-
-\subsubsection{Motivating Example}
-\label{subsubsec:furthers-cost-example}
-
-\subsubsection{Proposed Methodology}
-\label{subsubsec:furthers-cost-methodology}
-Following the same system structure as $\THESYSTEM$,
-by modifying the restriction on finite walk, compute different resource cost for program.
-
+% As  following motivating example shows.
+% \subsubsection{Proposed Methodology}
+% \label{subsubsec:furthers-adaptcomplete-methodology}
+% %
+% 1. looking into more over-approximated example and summarize the common properties of these examples.
+% \\
+% 2. Modify the Algorithm~\ref{alg:adaptscc}, targeting the line: 12 of the algorithm. 
+% The goal is to reduce the over-approximation in computing adaptivity statically.

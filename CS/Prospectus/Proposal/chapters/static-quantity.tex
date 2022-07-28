@@ -284,40 +284,8 @@ the maximum visiting times of $x^l$ over all execution traces of $c$, with the f
 % appendix~\ref{apdx:reachability_soundness}. 
 %
 \paragraph*{Example} 
-% \wq{update w3 < k, in our soundness setting}
-% Now let's 
-% % where we goes 
-% go back to the program-based dependency Graph which we aim to build for approximating the 
-% execution-based dependency graph for two-round example, 
 As in
-Figure~\ref{fig:overview-example}(c),
-%
-%  looking at the two-round example,
-%  as in  where we
-% each vertex in 
-%  $l$ is added with a weight by $absW$.
-% This weight represents the  maximum reaching times of this location $l$, in the other word, 
-% the estimated maximum visiting times of the command labeled with $l$.
-% For example, looking at the vertex $1$,
-% by analysis steps, since it isn't in any SCC, it's estimated reachability bound is computed as $1$.
-% However, for the vertex $4$ which is involved in an SCC, the reachability bound is inferred in another way.
-% By the constraint on the edge $4, j \leq j - 1, 5$,
-% we first infer its local bound as variable $j$.
-% Then by solving the invariant for variable $j$,
-% every vertex $x^l \in \progV(c)$ in this graph is annotated by its estimated weight where $(x^l, w_i) \in \progW(c)$ as superscription. 
-% corresponds to a labeled variable. 
-% for example $a^5$,
-% and this label $5$ is also a vertex $5$ in the abstract control flow graph in Figure~\ref{fig:abscfg_tworound}(c).
-%
-% we infer the value bound for $j$, which is $k$.
-% Then the reachability bound for this abstract transition, (i.e., edge $4, j \leq j - 1, 5$) 
-% Then it is straight forward, 
-% that the reachability bound for the label $5$, 
-% is also the maximum visiting times bound of the labeled variable $a^5$.
-% is computed as $k$ as well through Definition~\ref{def:abs_trace}.
-% In this abstract control flow graph, every vertex is a label,
-% corresponding to a label command in the program.
-% So we estimate the visiting time for labeled variable
+Figure~\ref{fig:twoRounds_example}(c),
 the weight for $a^5$ is $k$. which is a sound estimated weight.
 % in program-based dependency Graph as $k$ as well.
 For any initial $\trace_0 \in \mathcal{T}_0(c)$, we know $\config{\trace_0, k} \earrow \env(\trace_0) k$ and

@@ -1,0 +1,46 @@
+\subsection{Introduction and Related Work}
+\label{subsubsec:furthers-cost-backgroung}
+Through observation in following example, the heap resource consumption during the program 
+execution is accumulating in the same way as the program's adaptivity. Specifically, in line 5 
+where the list is re-written and the heap consumption is decreased implicitly. 
+This implicit decrease 
+of the cost works exactly the same as program's adaptivity decrease.
+\\
+This motivates the generalization of the analysis framework onto the program's resource cost analysis. Use this framework,
+I will give
+a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
+to the worst case cost analysis in traditional way.
+\\
+There are two categories of the program cost analysis, Type-System Based and Static Program Analysis Based. But both of the
+works in these two areas fails to recognize the case where program resource consumption is decreased implicitly.
+\paragraph*{Type-System Based}
+Existing
+static program analysis based type-system are mainly through 
+effect systems, 
+% control-flow analysis, and data-flow analysis~\cite{ryder1988incremental}. 
+% The idea of statically estimating a sound upper bound for the adaptivity from the semantics is indirectly inspired from prior work on cost analysis via effect systems~\cite{cciccek2017relational,radivcek2017monadic,qu2019relational}. The idea of defining adaptivity using data flow is inspired by the work of graded 
+Hoare logic~\cite{gaboardi2021graded}, and amortized type system~\cite{hoffmann_jost_2022}.
+%
+In these system, the cost are accumulating through the type induction. The only way to save the cost into the potential
+type, as in~\cite{GustafssonEL05} and \cite{hoffmann_jost_2022}, is through explicit abstraction or data structure de-allocation.
+That is to say, they cannot deal with the case where the cost (for example the adaptivity) decreases when there isn't a dependency relation between variables.
+\paragraph*{Static Program Analysis}
+Existing static program analysis works via the control flow or data flow analysis 
+in program resource cost analysis 
+mainly falls into two areas, the program complexity analysis and worst case execution time analysis. 
+They are focusing on analyzing the cost of the entire program. 
+The techniques are based on
+type system~\cite{CicekBG0H17, RajaniG0021}, Hoare logic~\cite{CarbonneauxHS15}, abstract interpretation~\cite{GustafssonEL05, HumenbergerJK18},
+invariant generation through cost equations or ranking functions~\cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}
+or a combination of program abstraction and invariant inferring~\cite{GulwaniZ10, SinnZV17,GulwaniJK09}.
+In general, these techniques give the approximated upper bound of the program's total running time or resource cost.
+However, they failed to consider the case where the cost -- the adaptivity-- could decrease when there isn't a dependency relation between variables.
+
+\subsection{Motivating Example}
+\label{subsubsec:furthers-cost-example}
+\input{examples/nested_while_across.tex}
+\subsection{Proposed Methodology}
+\label{subsubsec:furthers-cost-methodology}
+Following the same system structure as $\THESYSTEM$,
+by modifying the restriction on finite walk, compute different resource cost for program.
+

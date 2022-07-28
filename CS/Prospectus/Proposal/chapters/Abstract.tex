@@ -10,9 +10,54 @@ Data analyses are usually designed to identify some property of the population f
    % Gap
    % Unfortunately, this depth which relies on the program(implementation) itself is costly in human efforts, and how to statically obtain this information is not well studied to support data analysts.
    
-   In this work, we consider adaptive data analyses implemented as while-like programs and we design a program analysis which can help with identifying which technique to use to control their generalization error. 
-   More specifically, we formalize the intuitive notion of \emph{adaptivity} as a quantitative property of programs. 
-   We do this because the adaptivity level of a data analysis is a key measure to choose the right technique. 
-   Based on this definition, we design a program analysis for soundly approximating this quantity.
-   The program analysis generates a representation of the data analysis as a weighted dependency graph, where the weight is an upper bound on the number of times each variable can be reached, and uses a path search strategy to guarantee an upper bound on the adaptivity. 
-   We implement our program analysis  and show that it can help to analyze the adaptivity of several concrete data analyses with different adaptivity structures.
+   In this proposal, I will focus on analyse this intuitive \emph{adaptivity} property for the adaptive data analysis programs. 
+   Then I will extend this analysis with improved techniques and generalize this analysis onto program's resource cost analysis.
+   \\
+   Firstly I will analyse this \emph{adaptivity} property for the adaptive data analysis programs in a while-like language.
+   Through two aspects: the execution-based analysis and static-based program analysis.
+	In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
+   property of programs. This analysis is developed in three steps through different methodologies in each step. 
+   \\
+	a. The dependency relation between every query, through the methodology of semantic data dependency analysis.
+   \\
+	b. The dependency quantity analysis, through the methodology of execution-based data reachability bound analysis.
+   \\
+	c. The adaptivity analysis, based on the two analysis results above, give the formal \emph{adaptivity} model 
+   for program.
+   \\   
+   % I will focus on research on how to define the Adaptivity semantically. 
+   % (the Trace, Event, the Dependency relation, Dependency depth in terms of the evaluation times and the Adaptivity)
+	In the static-based program analysis, I will design a static program analysis for soundly approximating this quantity.
+   In this static program analysis, the program will be analysed in the same 3 aspects as the execution-based analysis 
+   while through static program analysis techniques, and a sound estimated result will be given in each aspect.
+   \\
+	a. The data dependency relation analysis through the static data flow analysis technique.
+   \\
+	b. The dependency quantity analysis through the static program reachability bound analysis techniques.
+   \\
+	c. Estimation, through algorithm designed based on the two results above, computing the adaptivity upper bound soundly 
+   and accurately.
+   \\
+   I will implement my program analysis and show that it can help to analyse the adaptivity of several concrete data analyses with different adaptivity structures.
+
+   Then, based on the implementation and experimental results, 
+   I will focus on improve three features of this full-spectrum analysis.
+   \\
+   1. I will improve the precision of the \emph{adaptivity} in the formalized model through the execution-based program analysis.
+   \\
+   2. In static program analysis, I will give tighter estimated upper bound on dependency quantity through 
+   path sensitive reachability bound analysis techniques. 
+   \\
+   3. In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
+   compute a tighter adaptivity upper bound as well.
+   
+   Finally, through observations that the heap resource consumption during the program 
+   execution increases and particularly decreases implicitly in the same way as the program's adaptivity, 
+   % Specifically, in line 5 
+   % where the list is re-written and the heap consumption is decreased implicitly. 
+   % This implicit decrease 
+   % of the cost works exactly the same as program's adaptivity decrease.
+   I'm interested in generalizing this quantity analysis framework onto the program's resource cost analysis. Use this framework,
+   I will give
+   a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
+   to the worst case cost analysis in traditional way.

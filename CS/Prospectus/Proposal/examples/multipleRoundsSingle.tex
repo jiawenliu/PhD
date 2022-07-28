@@ -1,22 +1,11 @@
 \begin{example}[Over-Defined Adaptivtiy Example]
     \label{ex:overdefined_adapt}
-    The program's adaptivity in our formal model,
-    % which we define over the program's execution-based dependency graph from the dynamic 
-    % analysis 
-    in Definition~\ref{def:trace_adapt} also
-     comes across an over-approximation on the program's
-     intuitive adaptivity rounds.
-    It is resulted from difference between its weight calculation and the \emph{variable may-dependency} definition.
-    It occurs when the weight is computed over the traces different from the traces used in 
-    witness the \emph{variable may-dependency} relation.
-    % control flow can be decided in a particular way in front of conditional branches, while the static analysis fails to witness. 
-    
     % We use one example to show the over-approximated definition, 
-    As the program in Figure~\ref{fig:overdefn_example}(a),
+    The program in Figure~\ref{fig:overdefn_example}(a),
     % This example is the variant of the multiple rounds strategy, 
     % we call it a multiple rounds odd iteration algorithm.
     % This example is still 
-    which is a variant of the multiple rounds strategy, 
+    is a variant of the multiple rounds strategy, 
     % we call it a multiple rounds single iteration algorithm, 
     named $\kw{multipleRoundSingle(k)}$ with input $k$.
     % as the input variable.

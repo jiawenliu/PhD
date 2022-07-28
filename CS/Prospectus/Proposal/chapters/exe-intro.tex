@@ -1,150 +1,18 @@
 
-In the data analysis model our programming framework supports, 
- %  an \emph{analyst} asks a sequence of queries to the mechanism, and receives the answers to these queries from the mechanism. In this model, the adaptivity we are interested in is the length of the longest sequence of such adaptively chosen queries, among all the queries the data analyst asks. 
-   we define that a query is adaptively chosen when it is affected by answers of previous queries. The next thing is to decide how do we define whether one query is "affected" by previous answers, with the limited information we have? As a reminder, 
-  when the analyst asks a query, the only known information will be the answers to previous queries and the current execution trace of the program.
- 
- 
- There are two possible situations that a query will be "affected",  
- either when the query expression directly uses the results of previous queries (data dependency), or when the control flow of the program with respect to a query (whether to ask this query or not) depends on the results of previous queries (control flow dependency).
- % As a first step, we give a definition of when one query may depend on a previous query, which is supposed to consider both control dependency and data dependency. We first look at two possible candidates:
- % \begin{enumerate}
- %     \item One query may depend on a previous query if and only if a change of the answer to the previous query may also change the result of the query.
- %     \item One query may depend on a previous query if and only if a change of the answer to the previous query may also change the appearance of the query.
- % \end{enumerate}
- 
- 
- Since the the results of previous queries can be stored or used in variables
- which aren't associated to the query request,
- it is necessary to track the dependency between queries, through all the program's variables,  
- and then we can distinguish variables which are assigned with query requests.
-  We give a definition of when one variable \emph{may-depend} on a previous variable with two candidates.
- {
- \begin{enumerate}
-     \item One variable may depend on a previous variable if and only if a change of the value assigned to the previous variable may also change the value assigned to the variable.
-     \item One variable may depend on a previous variable if and only if a change of the value assigned to the previous variable may also change the appearance of the assignment command to this variable 
-     % in\wq{during?} 
-     during execution.
- \end{enumerate}
- }
- %   The first candidate works well by witnessing the result of one query according to the change of the answer of another query. We can easily find that the two queries have nothing to do with each other in a simple example   
- 
- {   
- % The first situations works well by witnessing the result assigned to variable 
- % according to the change of the value assigned to another query. 
- % We can easily find that the two queries have nothing to do with each other in a simple example 
- % In the first one, by defining the dependency as
- The first definition is defined as
- % witnessing 
- % the query expressions equivalence (or the value equality for non-query assignment )
- the witness of a variation on the value assigned to the same variable through two executions,
- % assigned to the same variable through two executions, 
- according to the change of the value assigned to another variable in pre-trace.
- % the situation of data-dependency works well. \wq{long sentence, make it short?}
- In particular for query requests, the variation we observe is on the query value instead of on the query requesting results.
- % We can find that two queries 
- % % have nothing to do with each other in this simple example 
- % % depends on each other\wq{not each other, one direction.} 
- % satisfy this definition
- In 
- %this 
- the simple program $c_1 =\assign{x}{\query(\chi[2])} ;\assign{y}{\query(\chi[3] + x)}$.
-   %   but vulnerable to queries request protected by differential privacy mechanisms. In our loop language, a query $q(e)$ represents a query request to the database through a mechanism, which add random noise to protect the return results. In this setting, the results of one query will be randomized due to the noise attached by the mechanism which fails the first candidate because witnessing the results of one query can no longer tells whether the change of the results comes from another query or the change of noise of the differential privacy mechanism. For example, suppose we have a program $p$ which requests two simple queries $q_1()$ and $q_2()$ with no arguments as follows.
- %   \[
- %   c_1 =\assign{x}{\query(\chi[2])} ;\assign{y}{\query(\chi[3] + x)}.
- %   \]
- %  $ c = \assign{x}{\query(\chi[1])} ; \assign{y}{\query(\chi[2])}$,
- %  and 
- % Specifically, in the {\tt Query While} language, the query request is composed by two components: a symbol $\query$ representing a linear query type and 
- % % an argument
- % the query expression $\qexpr$ as an argument, 
- % which represents the function specifying what the query asks. 
- From our perspective, $\query(\chi[1])$ is different from $\query(\chi[2]))$. Informally, we think $\query(\chi[3] + x)$ may depend on the query $\query(\chi[2]))$, because equipped function of the former $\chi[3] + x$ may depend on the data stored in x assigned with the result of $\query(\chi[2]))$, according to this definition. }
- %
- % in this example: $c_1 = \assign{x}{\query(0)}; \assign{z}{\query(\chi[x])}$.
- % This candidate definition works well 
- 
- {
- Nevertheless, the first definition fails to catch control dependency because it just monitors the changes to a query, but misses the appearance of the query when the answers of its previous queries change. For instance, it fails to handle $
-       c_2 = \assign{x}{\query(\chi[1])} ; \eif( x > 2 , \assign{y}{\query(\chi[2])}, \eskip )
-    $, but the second definition can. However, it only considers the control dependency and misses the data dependency. This reminds us to define a \emph{may-dependency} relation between labeled variables by combining the two definitions to capture the two situations.
- %  $ p = \assign{x}{\query(\chi[1])} ; \assign{y}{\query(\chi[2])}$. 
- % This candidate definition works well with respect to data dependency. However, if fails to handle control dependency since it just monitors the changes to the answer of a query when the answer of previous queries returned change. The key point is that this query may also not be asked because of an analyst decision which depend on the answers of previous queries. An example of this situation is shown in program $p_1$ as follows.
-       
- %   Follow the first definition, we may conclude that $q_2()$ depends on $q_1()$ because the query $q_2()$ may return a different result. Nevertheless, we know that this change of return result of $q_2()$ when we change the value returned by $q_1()$ comes from the hidden mechanism(the noise). So $q_1$ and $q_2$ are independent. 
- %   We choose the second candidate, 
- %  Then, the second definition comes into place, which performs well in capturing this situation.
- %  by witnessing the appearance of an event generated from evaluating the associated command,
- % It defines the dependency as witnessing the appearance of an event generated from evaluating the same command,
- % %  query $\query(\chi[2]))$ 
- % % through it's query expressions equivalence (or a value equality for non-query assignment) 
- % in traces during two executions,
- %  upon the change of the result of one previous query $q(\chi[1])$ in $c_1$. 
- % Again,
- %  In particular, the arguments of a query characterizes it. In this sense, if the data used in the arguments changes due to a different answer to a certain previous query, the appearance of the query may change as well. This situation is also captured by our definition. 
- 
- % Let us look at $c = c_1;c_2$, a composition of program $c_1$ and $c_2$, 
- %  in which both the data dependency and control dependency need to be considered.
- % Our \emph{May-Dependency} works well on this $c$. We discuss the details of the definition in the following part. 
- %     \[
- %       c_2 = \assign{x}{\query(\chi[2])} ;\assign{y}{\query(\chi[3] + x)}
- %   \]
- % We can see the combination of the two definitions catches both situations.
- %catches data dependency in such a way, since $\query(\chi[2] + x)$ will not be the same query if the value of $x$ is changed.   
-   }
- %   % formal definition of IND
- %   \begin{defn}[Query may dependency ]
- % One query $q(v_2)$ may depend on its previous query $q(v_1)$ in a program $c$, with a starting loop maps $w$, denoted as
- % $\mathsf{DEP}(q(v_1)^{(l_1, w_1)}, q(v_2)^{(l_2, w_2)}, c,w,m,D)$ if: 
- % % \dg{I think the following definition describes when $q(v_2)$ depends on $q(v_1)$, not the other way around as stated in the previous sentence. Also, couldn't we look for $q(v_2)^{(l_2,w_2)}$ in $(t_3-t_1)$ instead of $(t_3-t)$ and then get rid of the "To" relation in the next definition?}
- % \[
- %   \begin{array}{l}
- %      \forall  t. \exists m_1,m_3,t_1,t_3.
- % \config{m, c,  t,w} \rightarrow^{*} \config{m_1, [\assign{x}{q(v_1)}]^{l_1} ; c_2,
- %   t_1,w_1} \rightarrow \\ \config{m_1[q(v_1)(D)/x], c_2,
- %   t_1++[q(v_1)^{(l_1, w_1)}], w_1} \rightarrow^{*} \config{m_3, \eskip,
- %   t_3,w_3} \\  
- %   \land 
- % \Big( q(v_1)^{(l_1,w_1)} \in (t_3-t) \land q(v_2)^{(l_2,w_2)} \in (t_3-t_1) \implies  \exists v \in \codom(q(v_1)), m_3', t_3', w_3'.  \\
- %  \config{m_1[v/x], {c_2}, t_1++[q(v_1)^{(l_1,w_1)}], w_1} \rightarrow^{*} \config{m_3', \eskip, t_3', w_3'} \land (q(v_2)^{(l_2,w_2)}) \not \in (t_3'-t_1)
- % \Big)\\
- % \land 
- % \Big(q(v_1)^{(l_1,w_1)} \in (t_3-t) \land q(v_2)^{(l_2,w_2)} \not\in (t_3-t_1) \implies  \exists v \in \codom(q(v_1)),  m_3', t_3', w_3'. \\
- %  \config{m_1[v/x], {c_2}, t_1++[q(v_1)^{(l_1,w_1)}], w_1} \rightarrow^{*} \config{m_3', \eskip, t_3', w_3'} \land (q(v_2)^{(l_2,w_2)})  \in (t_3'-t_1)
- % \Big)
- % \end{array}
- % \]
- % \end{defn}
- %  %TODO: some more explanation on def 1
- % %
- % % \dg{I have a feeling that something is very off here. Consider the program $p_1$ above. For this program, the definition above will say that there is a dependency between $q(\chi(1))$ and $\query(\chi[2]))$. Now consider the program $p_1' ~=~ \assign{x}{q(\chi(1))} ; \assign{z}{\query(\chi[2]))} ; \eif( x > 2 ,\assign{y}{z}, \eskip )$. This new program $p_1'$ is semantically equal to $p_1$, yet the definition above will say that in $p_1'$ there is no dependency between $q(\chi(1))$ and $\query(\chi[2]))$. So, the notion of dependency defined here does not respect semantic equivalence of programs, which is weird because adaptivity is fundamentally a semantic property.}
- % % \jl{I put doubt on the semantic equivalence here. If out output of the semantics is memory, I don't think they are semantically equivalent.}
- % %
- % We give a formal definition of the query-based dependency graph with the formal definition of may dependency between the two queries above.  
- % % graph definition
- % \begin{defn}[Query-based Dependency Graph]
- % Given a program $c$, a database $D$, a starting memory $m$, an initial loop maps $w$, the query-based dependency graph $G(c,D,m,w) = (V, E)$ is defined as: \\
- % $V =\{q(v)^{l,w} \in \mathcal{AQ} \mid \forall t. \exists m',  w', t'.  \config{m ,c, t, w}  \to^{*}  \config{m' , \eskip, t', w' }  \land q(v)^{l,w} \in {(t'-t)}  \}$.
- % \\
- % $E = \left\{(q(v)^{(l,w)},q(v')^{(l',w')}) \in \mathcal{AQ} \times \mathcal{AQ} 
- % ~ \left \vert ~ \mathsf{DEP}(q(v')^{(l',w')},q(v)^{(l,w)}, c,w,m,D)
- %  \right.\right\}$.
- % \end{defn}
- %
- % The function $\mathsf{To}(q(v')^{(l',w')}, q(v)^{(l,w)}$ tells that the query request $q(v')^{(l',w')}$ appears after the query request $q(v)^{(l,w)}$ in the trace, by comparing the annotation $(l',w')$ and $(l,w)$. It helps to decide on the direction of one edge.
- % The edge is directed, when an annotated query $q(v)^{(l,w)}$ may depend on its previous query $q(v')^{(l',w')}$, we have the directed
- % edge $(q(v)^{(l,w)}, q(v')^{(l'.w')})$, from $q(v)^{(l,w)} $ to $q(v')^{(l'.w')}$.
- 
- % The query-based dependency graph only considers the newly generated annotated queries during the execution of the program $c$, so we see the nodes coming from the trace $t'-t$. The previous trace before the execution of $c$ is excluded when constructing the graph. To summary, for every execution of a program $c$ staring with different configurations, we can construct a corresponding dependency graph. 
- 
- % % adaptivity definition - longest path
- % Finally, we reach the definition of adaptivity, by means of the query-based dependency graph. 
- 
- % \begin{defn}[Adaptivity in {\tt While} language]
- % Given a program $c$, and a memory $m$, a database $D$, a starting loop maps $w$, the adaptivity of the dependency graph $G(c, D,m,w) = (V, E)$ is the length of the longest path in this graph. We denote the path from $q(v)^{(l,w)}$ to $q(v')^{(l',w')}$ as $p(q(v)^{(l,w)}, q(v')^{(l',w')} )$. The adaptivity denoted as $A(c, D, m, w)$.
- % %
- % $$A(c, D, m, w) = \max\limits_{q(v)^{(l,w)},q(v')^{(l',w')} \in V }\{ |p(q(v)^{(l,w)}, q(v')^{(l',w')} )| \}$$
- % \end{defn}
+In order to formalize a quantitative property w.r.t. the dependency relation in program, I
+use a three-step analysis methodology developed as follows,
+\\
+ a. The dependency relation between every query, through the methodology of semantic data dependency analysis.
+\\
+ b. The dependency quantity analysis, through the methodology of execution-based data reachability bound analysis. Then 
+\\
+ c. The adaptivity analysis, based on the two analysis results above, 
+ I construct an execution-based dependency graph combining the dependency relation and the dependency quantity
+    and give the formal \emph{adaptivity} definition 
+    for program.
+\\
+The construction of this graph requires us to think about the dependency relation between two queries using what we have at hand - 
+the trace generated in Section~\ref{sec:language}. 
  \paragraph*{Related Work}
  {
 Our framework constructs a execution-based dependency graph based on the execution traces of a program. We define semantic dependence on this graph by considering (intraprocedural) data and control dependency~\cite{bilardi1996framework,cytron1991efficiently,pollock1989incremental}.    

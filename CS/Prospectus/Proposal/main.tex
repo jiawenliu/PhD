@@ -20,56 +20,43 @@
 \maketitle
 \begin{abstract}
 \input{chapters/Abstract}
-  
 \end{abstract}
 \tableofcontents{}
 
-\section{Introduction to Adaptivity Analysis}
+\section{Introduction}
 \label{sec:introduction}
-% \include{chapters/introduction}
-\cleardoublepage
-
-
+\input{chapters/introduction}
+% \clearpage
 
 \section{The Query Language for Adaptive Data Analysis Program}
 \label{sec:language}
-In this chapter, we formally introduce the language we will focus on for writing data analyses.  
-This is a simple loop language with some primitives for calling queries. 
-After defining the syntax of the language and showing an example, we will define its trace-based operational semantics. 
-This is the main technical ingredient we will use to define the program's adaptivity.
-
-\subsection{Syntax of Query While Language}
-\label{sec:language-syntax}
-In this section, we formally introduce the language we will focus on for writing data analyses.  This is a standard while language with some primitives for calling queries. After defining the syntax of the language and showing an example, we will define its trace-based operational semantics. This is the main technical ingredient we will use to define the program's adaptivity.
-% We will conclude this section by discussing the limitation of this language with respect to static analysis for adaptivity.
-
-\input{chapters/syntax}
-
-\subsection{Trace-based Operational Semantics}
-\label{sec:language-os}
-\input{chapters/os}
-% \input{chapters/language}
-\cleardoublepage
+\input{chapters/language}
+% \clearpage
 
 \section{The Execution-Based Program Analysis for Adaptivity}
 \label{sec:dynamic}
 \input{chapters/dynamic}
 
-\section{The Program Static Analysis for Adaptivity}
+\section{The Static Program Analysis for Adaptivity}
 \label{sec:static}
 \input{chapters/static}
-\cleardoublepage
+% \clearpage
 
 
 \section{Further Features}
 \label{sec:furthers}
 \input{chapters/furthers}
+% \clearpage
 
-% \include{chapters/dynamic}
-% \cleardoublepage
+\section{Generalization on Program Resource Cost}
+\label{sec:generalization}
+\input{chapters/generalization}
+% \clearpage
 
-% \include{chapters/static}
-% \cleardoublepage
+\section{Solving the CFL Reachability Problem through $\THESYSTEM$ by Reduction}
+\label{sec:cfl_reduction}
+\input{chapters/cfl_reduction}
+% \clearpage
 
 \section{Status and Plan}
 The $\THESYSTEM$ presented in Section~\ref{sec:dynamic} and Section~\ref{sec:static} are submitted as a paper to POPL'2023 and implemented as well. Below is the timeline plan for the further features of this work.
