@@ -61,11 +61,17 @@ Data analyses are usually designed to identify some property of the population f
    \\
    3. In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
    compute a tighter adaptivity upper bound as well.
+
+   Next, based on the implementation and experimental results, I proposed two significant 
+   further features can be improved for my analysis framework, and plan to finish the improvement 
+   before the final defense.
    
-   Then, through two observations,
-   that 
-   firstly, traditional program's resource cost analysis they failed to consider the case where the program's cost could decrease 
-   implicitly, and 
+   Then, through two observations as follows,
+  \\
+  1. traditional program's resource cost analysis they failed to consider the case where the program's cost could decrease 
+   implicitly, 
+   \\
+   2. and 
    % when there isn't a dependency relation between variables.
    the resource consumption during the program 
    execution increases and particularly decreases implicitly in the same way as the program's adaptivity, 
@@ -81,6 +87,8 @@ Data analyses are usually designed to identify some property of the population f
    I will give
    a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
    to the worst case cost analysis in traditional way.
+   For this work, the analysis framework design is expected to be done with the implementation start off before final defense.
+
 
    Finally, based on the study on traditional way of performing data flow and control analysis,
    I identify the similarity between the traditional way of performing data flow and control analysis, and the 
@@ -94,4 +102,5 @@ Data analyses are usually designed to identify some property of the population f
    % solving the data flow problem by reducing to CFL-reachability problem,
    % resource analysis through reducing to CFL-reachability problem, 
    I'm interested in showing that
-   CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework.
+   CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework. 
+   This work is planed to start off before final defense and develop further sophisticated after.

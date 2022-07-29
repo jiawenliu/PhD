@@ -9,6 +9,12 @@ Consider a dataset $X$ consisting of $n$ independent samples from some unknown p
  Adaptivity can arise from many common practices, such as exploratory data analysis, using the same data set for feature selection and regression, and the re-use of datasets across research projects.  Unfortunately, adaptivity invalidates traditional methods for ensuring generalization and statistical validity, which assume that the method is selected independently of the data. The misinterpretation of adaptively selected results has even been blamed for a ``statistical crisis'' in empirical science~\cite{GelmanL13}.
 %  ~\cite{GelmanL13}.
 
+A line of work initiated by \cite{DworkFHPRR15}, \cite{HardtU14} posed the question: Can I design \emph{general-purpose} methods that ensure generalization in the presence of adaptivity, together with guarantees on their accuracy?  
+The idea that has emerged in these works is to use randomization to help ensure generalization. 
+Specifically, these works have proposed to mediate the access of an adaptive data analysis to the data by means of queries from some pre-determined family (I will consider here a specific family of queries often called "statistical" or "linear" queries) that are sent to a 
+\emph{mechanism} which uses some randomized process to guarantee that the result of the query does not depend too much on the specific
+sampled dataset. 
+%
 \begin{figure}
     \centering
     \includegraphics[width=0.7\columnwidth]{figures/data_analysis_model.png}
@@ -16,12 +22,6 @@ Consider a dataset $X$ consisting of $n$ independent samples from some unknown p
     \label{fig:adaptivity-model-overview}
 \vspace{-0.5cm}
 \end{figure}
-
-A line of work initiated by \cite{DworkFHPRR15}, \cite{HardtU14} posed the question: Can I design \emph{general-purpose} methods that ensure generalization in the presence of adaptivity, together with guarantees on their accuracy?  
-The idea that has emerged in these works is to use randomization to help ensure generalization. 
-Specifically, these works have proposed to mediate the access of an adaptive data analysis to the data by means of queries from some pre-determined family (I will consider here a specific family of queries often called "statistical" or "linear" queries) that are sent to a 
-\emph{mechanism} which uses some randomized process to guarantee that the result of the query does not depend too much on the specific
-sampled dataset. 
 This guarantees that the result of the queries generalizes well. 
 This approach is described in Figure~\ref{fig:adaptivity-model-overview}, where
 I have a population that I'm interested in studying, and a dataset containing individual samples from this population. The adaptive data analysis I'm interested in running has access to the dataset through queries of some pre-determined family (e.g., statistical or linear queries) mediated by a mechanism. 
@@ -219,7 +219,10 @@ used to implement
 the adaptive data analysis.
 \item A formal adaptivity model through execution-based adaptivity analysis.
 \item A static program analysis algorithm, named {\THESYSTEM}.
-\item Improved features on the formal adaptivity model and {\THESYSTEM}.
-\item A proposed accurate program resource cost analysis framework generalized from {\THESYSTEM}.
-\item A proposed plan for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework.
+\item Two proposed further features to be improved based-on the formal adaptivity model and {\THESYSTEM},
+ expected to be done before the final defense.
+\item A proposed accurate program resource cost analysis framework generalized from {\THESYSTEM}. 
+The analysis framework design is expected to be done with the implementation start off before final defense.
+\item A proposed plan for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework,
+expected to be started off before final defense and developing further sophisticated after.
 \end{enumerate}
