@@ -39,7 +39,10 @@ In the data analysis model our programming framework supports,
 
  The second definition, I witness the disappearance of the evaluation of the second assignment command  according to the change of the value assigned to another variable in pre-trace.
 %
-Formally notated as follows,
+Formally notated by  $\eventdep(\event_1, \event_2, [\event_1 ] \tracecat \trace \tracecat [\event_2], c, D)$,
+where An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment
+event $\event_1 \in \eventset^{\asn}$ in a program ${c}$
+with a hidden database $D$ and a trace $\trace \in \mathcal{T}$, the full definition can be found in Appendix.
 \begin{defn}[Event May-Dependency]
 \label{def:event_dep}
   An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment
@@ -133,24 +136,60 @@ Formally notated as follows,
 % % changes in $\event_2'$.
 % % \jl{
 % We 
-I use special requirement $\diff(\event_2, \event_2')$, which guarantees that they
-have the same variable name and label but only differ 
-% % in their assigned value. 
-in their evaluated values.
-% assigned to the same variable. 
-In particularly for queries, if $\event_2$ and $\event_2'$ are 
-% query assignment events, then 
-generated from query requesting, then $\diff(\event_2, \event_2')$ guarantees that
-they differ in their query values rather than the 
-% query requesting value. 
-query requesting results. 
-Additionally, in order to handle multiple occurrences of the same event through iterations of the while loop,
- where  $\event_2$ and $\event_2'$ could be 
-in different while loops,
-we restrict the same occurrence of $\event_2$'s label in $\trace$ from the first execution with  the occurrence of $\event_2'$'s label in $\trace'$ from the second execution,
-through $\vcounter(\vtrace, \pi_2(\event_2))
+% I use special requirement $\diff(\event_2, \event_2')$, 
+% There are two special requirements not explicitly seplled out in this de $\diff(\event_2, \event_2')$, which guarantees that they
+% have the same variable name and label but only differ 
+% which guarantees that they
+% have the same variable name and label but only differ 
+% % % in their assigned value. 
+% in their evaluated values.
+% % assigned to the same variable. 
+% In particularly for queries, if $\event_2$ and $\event_2'$ are 
+% % query assignment events, then 
+% generated from query requesting, then $\diff(\event_2, \event_2')$ guarantees that
+% they differ in their query values rather than the 
+% % query requesting value. 
+% query requesting results. 
+% Additionally, in order to handle multiple occurrences of the same event through iterations of the while loop,
+%  where  $\event_2$ and $\event_2'$ could be 
+% in different while loops,
+% we restrict the same occurrence of $\event_2$'s label in $\trace$ from the first execution with  the occurrence of $\event_2'$'s label in $\trace'$ from the second execution,
+% through $\vcounter(\vtrace, \pi_2(\event_2))
+% = 
+% \vcounter(\vtrace', \pi_2(\event_2'))$ at line $4$.
+There are two special requirements not explicitly spelled out in this notation but they are 
+important in formalize the 
+dependency. 
+Specifically as follows,
+\begin{itemize}
+\item $\diff(\event_2, \event_2')$ for some $\event_2' \in \eventset$. 
+This guarantees that the witness on evaluation of $\event_2$ in the second execution is 
+from the same command.
+\item $\vcounter(\vtrace, \pi_2(\event_2))
 = 
-\vcounter(\vtrace', \pi_2(\event_2'))$ at line $4$.
+\vcounter(\vtrace', \pi_2(\event_2'))$ for some $\trace \in \mathcal{T}$ and the same $\event_2'$ as above.
+This guarantees that the witness on evaluation of $\event_2$ in the second execution is 
+from the same while iteration.
+\end{itemize}
+% have the same variable name and label but only differ 
+% which guarantees that they
+% have the same variable name and label but only differ 
+% % % in their assigned value. 
+% in their evaluated values.
+% % assigned to the same variable. 
+% In particularly for queries, if $\event_2$ and $\event_2'$ are 
+% % query assignment events, then 
+% generated from query requesting, then $\diff(\event_2, \event_2')$ guarantees that
+% they differ in their query values rather than the 
+% % query requesting value. 
+% query requesting results. 
+% Additionally, in order to handle multiple occurrences of the same event through iterations of the while loop,
+%  where  $\event_2$ and $\event_2'$ could be 
+% in different while loops,
+% we restrict the same occurrence of $\event_2$'s label in $\trace$ from the first execution with  the occurrence of $\event_2'$'s label in $\trace'$ from the second execution,
+% through $\vcounter(\vtrace, \pi_2(\event_2))
+% = 
+% \vcounter(\vtrace', \pi_2(\event_2'))$ at line $4$.
 %
 % In the second part (line $5-8$ of Definition~\ref{def:event_dep}), we 
 % % are witnessing 

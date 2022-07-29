@@ -83,11 +83,26 @@ This scenario motivates us to explore the design of program analysis techniques 
 and they
 could be ultimately be integrated into a tool for adaptive data analysis such as the \emph{Guess and Check} framework by~\cite{RogersRSSTW20}. 
 %
+In order to analyze this property, there are mainly three property. 
+In this proposal, I will first focus on analyzing 
+this adaptivity property for program based on solving the three problems specifically as follows.
+\paragraph*{Adaptivity Analysis}
+There are mainly three problems in order to analyse this adaptivity property, 
+and the full-spectrum analysis on this property is 
+% In this proposal, I will first focus on analyzing 
+% this adaptivity property for program based on solving 
+developed w.r.t. the three problems specifically as follows.
+
+\begin{itemize}
+    \item
 The first problem is \emph{how to define formally} a model for adaptive data analysis which is general enough to support the methods I discussed above and would permit to formulate the notion of adaptivity these methods use. 
 I take the approach of designing a programming framework for submitting queries to some \emph{mechanism} giving access to the data mediated by one of the techniques I mentioned before, e.g., adding Gaussian noise, randomly selecting a subset of the data, using the reusable holdout technique, etc. 
 In this approach, a program models an \emph{analyst} asking a sequence of queries to the mechanism. The mechanism runs the queries on the data applying one of the methods discussed above and returns the result to the program. The program can then use this result to decide which query to run next. 
-Overall, I'm interested in controlling the generalization of the results of the queries which are returned by the mechanism, by means of the adaptivity. 
+% Overall, I'm interested in controlling the generalization of the results of the queries which are returned by the mechanism, by means of the adaptivity. 
 
+Motivated by this, I present a while-like language with extensions on query request in Section~\ref{sec:language}.
+
+\item 
 The second problem is \emph{how to define the adaptivity of a given program}.
 Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
 For example, as shown in \cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier which first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
@@ -95,11 +110,34 @@ If one feature's correlation changes, the classifier depending on features is al
 This notion of dependency builds on the execution trace as a \emph{causal history}. 
 In particular, I'm interested in the history or provenance of a query up until this is executed, I'm not then concerned about how the result is used --- except for tracking whether the result of the query may further cause some other query. 
 This is because I focus on the generalization error of queries and not their post-processing. % 
-To formalize this intuition as a quantitative program property,
+To formalize this intuition as a quantitative program property, I develop an execution-based analysis
 % I first consider all the possible evaluations of a programs  --- I do this by 
-I use a trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to variable) is explicit and track which variable is associated with a query request. 
-I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-
+% I use a trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to variable) is explicit and track which variable is associated with a query request. 
+% I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
+% Through two aspects: the execution-based analysis and static-based program analysis.
+% 	In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
+%    property of programs. This analysis is developed 
+   in three steps through different methodologies in each step as follows,
+   \begin{enumerate}
+	\item The dependency relation between every query, through the methodology of semantic data dependency analysis.
+    \\
+    Specifically through a trace semantics recording the execution history of programs on some given input
+    %  --- and I create a dependency graph, 
+     the dependency between different variables (query is also assigned to variable) is explicit and track which variable is associated with a query request. 
+% I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
+% 	In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
+%    property of programs. This analysis is developed 
+%    \\
+   \item The dependency quantity analysis, through the methodology of execution-based data reachability bound analysis.
+%    \\
+	\item The adaptivity quantity analysis, based on the two analysis results above, give the formal \emph{adaptivity} model 
+   for program.
+   \\
+   Specifically, I create a dependency graph, where the dependency between different variables (query is also assigned to variable) is explicit and track which variable is associated with a query request. 
+   I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
+   The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
+   \end{enumerate}
+\item 
 The third problem is \emph{how to estimate the adaptivity of a given program}. 
 The adaptive data analysis model I consider and our definition of adaptivity suggest that for this task I can use a  program analysis that is based on some form of dependency analysis. This analysis needs to take into consideration:
 1) the fact that, in general, a query $Q$ is not a monolithic block but rather it may depend, through the use of variables and values, on other parts of the program. 
@@ -110,19 +148,18 @@ Hence, it needs to consider some form of data flow analysis.
 Hence, it needs to consider some quantitative information about the program dependencies. % {A quick example is that : I store the result of query $Q_1$ in variable $x$ and use variable $y$ to record the result of query $Q_2$. I want to construct the third query $Q_3$ which relies on the value stored in $x$, let us say, $Q_3$ will ask for the sum of the first column of a table if $x$ is positive and the sum of the second column otherwise. In this situation, I need data flow analysis. On the other hand, if I need the value of $y$ to help us decide whether I should ask $Q_3$, for example, I ask the third query if $y$ is odd, and do not ask if $y$ is even. Naturally, to be able to handle this case, control flow analysis comes into play. Formally speaking,  }
 To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
 I will develop a program analysis algorithm, named {\THESYSTEM}, which combines data flow and control flow analysis with reachability bound analysis~\cite{GulwaniZ10}. 
-This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve by directly using the data and control flow analyses or the ones that one would achieve by directly using reachability bound analysis techniques alone.
+This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve by directly using the data and control flow analyses or the ones that one would achieve by directly using reachability bound analysis techniques alone. Specifically as follows in the same 3 aspects as the execution-based analysis 
+while through static program analysis techniques, and a sound estimated result will be given in each aspect as follows.
+\begin{enumerate}
+\item The data dependency relation analysis through the static data flow analysis technique.
+\item The dependency quantity analysis through the static program reachability bound analysis techniques.
+\item The program adaptivity estimation, through newly designed algorithms based on the results estimated above, 
+computing the adaptivity upper bound soundly 
+and accurately.
+\end{enumerate}
 %%%%% To reason about
-
-% Then, through observation in following example, the heap resource consumption during the program 
-% execution is accumulating in the same way as the program's adaptivity. Specifically, in line 5 
-% where the list is re-wrote and the heap consumption is decreased implicitly. 
-% This implicit decrease 
-% of the cost works exactly the same as program's adaptivity decrease.
-% \\
-% This motivates the generalization of the analysis framework onto the program's resource cost analysis. Use this framework,
-% I will give
-% a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
-% to the worst case cost analysis in traditional way.
+\end{itemize}
+I will implement my program analysis and show that it can help to analyze the adaptivity of several concrete data analyses with different adaptivity structures.
 % \\
 \paragraph*{Towards the Accurate Program Resource Cost Analysis}
 Then, motivated by the two following aspects,  I'm interested in improving the accuracy of program's general resource cost analysis
