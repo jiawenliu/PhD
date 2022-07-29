@@ -122,7 +122,7 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 % %
 \end{array}
 \]
-% We use
+% I use
 % $\mathcal{VAR}, \mathcal{VAL}, \mathcal{QVAL}, \cdom, \dbdom$ and $\qdom$ to stand
 % for the set of variables,
 % values, query values, commands, databases and the codomain of queries, respectively.
@@ -141,7 +141,7 @@ Our language supports primitives for queries, where a specific query is specifie
 % 
 %
  A labeled command $c$ is just a command with a label --- we assume that labels are unique, so that they can help to identify uniquely every subexpression. 
-%  We have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement  $\ewhile \bexpr \edo {c} $.
+%  I have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement  $\ewhile \bexpr \edo {c} $.
  The main novelty of the syntax is the query request command $\assign{x}{\query(\qexpr)}$. 
  For instance, if a data analyst wants to ask a simple linear query which returns the first element of the row, 
  they can simply use the command $ \assign{x}{\query(\chi[1])}$ in their data analysis program.
@@ -162,7 +162,7 @@ Our language supports primitives for queries, where a specific query is specifie
 % ~|~ [\eskip]^l 
 % \end{array}
 % \]
-We use  
+I use  
 %$\mathcal{LVAR} = \mathcal{VAR} \times \mathcal{L} $ 
 $\mathcal{LV}$ to represent the universe of all the labeled variables.
  

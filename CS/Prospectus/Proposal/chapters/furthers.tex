@@ -12,7 +12,7 @@ It comes across an over-approximation
 resulted from difference between its Dependency Depth analysis and the \emph{variable may-dependency} definition.
 It occurs when the weight is computed over the traces different from the traces used in 
 witness the \emph{variable may-dependency} relation.
-As shown in the Example~\ref{ex:overdefined_adapt}.
+As shown in the Example~\ref{ex:multipleRoundSingle_example}.
 \input{examples/multipleRoundsSingle}
 %%
 \subsubsection{Proposed Methodology}
@@ -55,18 +55,35 @@ As shown in Example~\ref{ex:overapproximate}.
 % as follo
 \subsubsection{Proposed Methodology}
 \label{subsubsec:furthers-reachability}
-Given the imprecision comes from the second stage of the static program analysis,
-I will insist on the same $\THESYSTEM$ framework,
-and design new algorithm for this stage.
+The imprecision comes from the second stage of the static program analysis.
 In this stage, 
 methodology on reachability bound analysis isn't path sensitive. 
-I will design a path sensitive reachability bound analysis algorithm computing the 
+There are many works on program complexity analysis area, estimating the path sensitive loop bound 
+or reachability bound
+\cite{GustafssonEL05, HumenbergerJK18}, 
+\cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}, 
+\cite{GulwaniZ10, SinnZV17,GulwaniJK09, GulwaniMC09, abs-2203-04243}. 
+But they aren't analysing the reachability
+bound in a path sensitive way.
+\\
+I will first design a path sensitive reachability bound analysis algorithm computing the 
 reachability bounds for every labeled command taking the different paths inside while loop into consideration.
 % Comparing to just compute the reachability bound for the while loop command, new methodology improves the accuracy of the 
 % reachability bound for every labeled command.
 \\
-Then, I will use this improved analysis result to estimate the dependency quantity.
+Then follow the $\THESYSTEM$ framework,
+% and design new algorithm for this stage.
+% Then, I will 
+this improved analysis result will be applied to estimate the dependency quantity.
+Specifically, the newly designed path sensitive reachability bound analysis will 
+give tighter bound for program's every execution location.
+Then, based on the tighter bound,
+the program-based data dependency graph constructed in Section~\ref{subsubsec:static-adapt}
+will have a more accurate estimated weight, for each vertex.
 %
+As shown in Figure~\ref{fig:multipleRoundsOdd_example}, 
+through the newly-designed path sensitive reachability bound analysis,
+ideally the weight for vertex $p^6$ and $x^7$ will be $\frac{k}{2}$.
 % \subsection{Static Adaptivity Computation towards Completeness}
 % \label{subsec:furthers-adaptcomplete}
 % The Algorithm is conditional completeness as proved in appendix, but Algorithm~\ref{alg:adaptscc} isn't.

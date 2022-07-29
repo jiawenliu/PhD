@@ -1,7 +1,7 @@
-\begin{example}[Over-Defined Adaptivtiy Example]
-    \label{ex:overdefined_adapt}
+\begin{example}[Multiple Rounds Single Example]
+    \label{ex:multipleRoundSingle_example}
     % We use one example to show the over-approximated definition, 
-    The program in Figure~\ref{fig:overdefn_example}(a),
+    The program in Figure~\ref{fig:multipleRoundSingle_example}(a),
     % This example is the variant of the multiple rounds strategy, 
     % we call it a multiple rounds odd iteration algorithm.
     % This example is still 
@@ -30,7 +30,7 @@
     between $p^7$ and $p^7$ in one single iteration, 
     not the others. 
     % there is no edge from queries at odd iterations (such as $q_1,q_3,q_5$) to queries at even iteration(such as $q_2,q_4$). The longest path is dashed with a length $3$.  
-    As shown in the execution-based dependency graph in Figure~\ref{fig:overdefn_example}(b), 
+    As shown in the execution-based dependency graph in Figure~\ref{fig:multipleRoundSingle_example}(b), 
     there is an edge from $p^7$ to itself representing the existence of \emph{Variable May-Dependency} from $p^7$ on itself,
     and the visiting times of labeled variable $p^7$ is 
     $w_k(\trace_0)$ with a initial trace $\trace_0$. 
@@ -124,7 +124,7 @@
     % \vspace{-0.4cm}
      \caption{(a) The multi rounds single example
      (b) The execution-based dependency graph.}
-    \label{fig:overdefn_example}
+    \label{fig:multipleRoundSingle_example}
     % \vspace{-0.5cm}
     \end{figure}
         }

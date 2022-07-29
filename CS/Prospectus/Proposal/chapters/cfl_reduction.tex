@@ -1,8 +1,34 @@
 \subsection{Introduction and Related Work}
 \label{subsec:cfl-backgroung}
+Finally, based on the study on traditional way of performing data flow and control analysis,
+   I identify the similarity between the traditional way of performing data flow and control analysis, and the 
+   adaptivity analysis.  
+   Specifically I identify the similarity between 
+   solving the feasible path problem in the analysis by reducing to CFL-reachability problems,
+   and the way of computing the adaptivity in my static analysis framework.
+   Motivated by this observation, 
+   % I'm insterested
+   % the, There are similarity between
+   % solving the data flow problem by reducing to CFL-reachability problem,
+   % resource analysis through reducing to CFL-reachability problem, 
+   I'm interested in showing that
+   CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework.
 
 \subsection{Proposed Methodology}
 \label{subsec:cfl-methodology}
-Following the same system structure as $\THESYSTEM$,
-by modifying the restriction on finite walk, compute different resource cost for program.
+Based on the paper\cite{Reps98} where Thomas shows 
+four program analysis problems 
+which can be solved by reducing to CFL-reachability problem, I will follow the same idea and show the reduction
+in following steps.
+\begin{enumerate}
+   \item For the same four program analysis problems, each of them 
+   can be solved through  my \emph{adaptivity} analysis framework with 
+   a different generalization of $\THESYSTEM$ with higher accuracy.
+   \item Based on summarizing the common property of the four program analysis problems,
+   I will show a reduction from CFL-reachability problem 
+   by showing that CFL-reachability problem is a special case of 
+   computing the adaptivity. 
+\end{enumerate}
+%  system structure as $\THESYSTEM$,
+% by modifying the restriction on finite walk, compute different resource cost for program.
 

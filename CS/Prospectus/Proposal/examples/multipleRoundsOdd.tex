@@ -4,30 +4,30 @@
 The $\THESYSTEM$ comes across an over-approximation on the estimation due to its path-insensitive nature. 
 It occurs when the control flow can be decided in a particular way in front of conditional branches, while the static analysis fails to witness. 
 
-We show the over-approximation, in Figure~\ref{fig:overappr_example}(a),
+We show the over-approximation, in Figure~\ref{fig:multipleRoundsOdd_example}(a),
 we call it a multiple rounds odd iteration algorithm. In this algorithm, at line 5 of every iteration, 
 a query $\query(\chi[x])$ based on previous query results stored in $x$ is asked by the analyst like in the multiple rounds strategy. The difference is that only the query answers from the even iterations ($i =0, 2, \cdots $) are 
 % used to $b$. 
 used in the query 
 in line 7, $\query(\chi[\ln(y)])$.
   Because the execution trace only updates 
-%   $b$ using the query answers at odd iterations, so the answers from even iterations do not affect the queries at odd iterations. From the query-based dependency graph in Figure~\ref{fig:overappr_example}(b), we can see that there is no edge from queries at odd iterations (such as $q_1,q_3,q_5$) to queries at even iteration(such as $q_2,q_4$). The longest path is dashed with a length $3$.  However, {\THESYSTEM} fails to realize that odd iteration will always execute then branch and even iteration means else branch, so its dependency graph considers both branches for every iteration. In this sense, the dependency graph by {\THESYSTEM} is similar to the one in the multiple rounds strategy. We show the estimated graph in Figure~\ref{fig:overappr_example}(c). The estimated upper bound is then, $5$, instead of $3$. 
+%   $b$ using the query answers at odd iterations, so the answers from even iterations do not affect the queries at odd iterations. From the query-based dependency graph in Figure~\ref{fig:multipleRoundsOdd_example}(b), we can see that there is no edge from queries at odd iterations (such as $q_1,q_3,q_5$) to queries at even iteration(such as $q_2,q_4$). The longest path is dashed with a length $3$.  However, {\THESYSTEM} fails to realize that odd iteration will always execute then branch and even iteration means else branch, so its dependency graph considers both branches for every iteration. In this sense, the dependency graph by {\THESYSTEM} is similar to the one in the multiple rounds strategy. We show the estimated graph in Figure~\ref{fig:multipleRoundsOdd_example}(c). The estimated upper bound is then, $5$, instead of $3$. 
 $x$ using the query answers in even iterations, so the answers from odd iterations do not affect the queries in even iterations. 
-From the execution-based dependency graph in Figure~\ref{fig:overappr_example}(b), 
+From the execution-based dependency graph in Figure~\ref{fig:multipleRoundsOdd_example}(b), 
 we can see that the weight for the vertex $y^5$ is 
 $w_k/2$. a function which takes any initial trace $\trace_0$, return the value of $k/2$ evaluated in $\trace_0$.  
 However, {\THESYSTEM} fails to realize that odd iteration will always execute the then branch and even iteration means else branch, so 
 % its dependency 
 it considers both branches for every iteration. 
 In this sense, the weight estimated for $y^5$ and $p^6$ are both 
-$k$ as in Figure~\ref{fig:overappr_example}(c).
-As a result, {\THESYSTEM}  estimates the longest walk from Figure~\ref{fig:overappr_example}(c),
+$k$ as in Figure~\ref{fig:multipleRoundsOdd_example}(c).
+As a result, {\THESYSTEM}  estimates the longest walk from Figure~\ref{fig:multipleRoundsOdd_example}(c),
 $y^5  \to x^7  \to y^5  \to \cdots \to x^7  $ with each vertex visited $k$ times,
 as the dotted arrows. 
 And the adaptivity computed 
 % estimated from the program-based dependency graph graph from by finding the walk with the longest query length 
 is $1 + 2 * k$, instead of $1 + k$. 
-% We omitted the estimated graph, which is identical to the graph in Figure~\ref{fig:overappr_example}(b). 
+% We omitted the estimated graph, which is identical to the graph in Figure~\ref{fig:multipleRoundsOdd_example}(b). 
 %
 
 { \small
@@ -127,7 +127,7 @@ is $1 + 2 * k$, instead of $1 + k$.
 \caption{(a) The multiple rounds odd example 
 (b) The execution-based dependency graph
 (c) The program-based dependency graph graph from $\THESYSTEM$.}
-    \label{fig:overappr_example}
+    \label{fig:multipleRoundsOdd_example}
     % \vspace{-0.5cm}
 \end{figure}
 }

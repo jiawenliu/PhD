@@ -1,6 +1,7 @@
 % %%%% Benifit of reasoning about 
 % \subsection{Motivation of Reasoning about Adaptivity}
 % % 
+\paragraph*{Introduction to Adaptivity Analysis}
 Consider a dataset $X$ consisting of $n$ independent samples from some unknown population $\dist$.  How can I ensure that the conclusions drawn from $X$ \emph{generalize} to the population $\dist$?  Despite decades of research in statistics and machine learning on methods for ensuring generalization, there is an increased recognition that many scientific findings generalize poorly (e.g. 
 \cite{Ioannidis05,GelmanL13}
 ).  While there are many reasons a conclusion might fail to generalize, one that is receiving increasing attention is \emph{adaptivity}, which occurs when the choice of method for analyzing the dataset depends on previous interactions with the same dataset~\cite{GelmanL13}.
@@ -33,18 +34,21 @@ e.g.~\cite{dwork2015reusable,dwork2015generalization,BassilyNSSSU16,UllmanSNSS18
 %
 
 A key development in this line of work is that the best method for ensuring generalization in an adaptive data analysis depends to a large extent on the number of \emph{rounds of adaptivity}, the depth of the chain of queries. 
-As an informal example, the program $x \leftarrow q_1(D);y \leftarrow q_2(D,x);z \leftarrow q_3(D,y)$ has three rounds of adaptivity, since $q_2$  depends on $D$ not only directly because it is one of its input but also via the result of $q_1$, 
-which is also run on $D$, and similarly,  $q_3$ depends on $D$ directly but also via the result of $q_2$, which in turn depends on the result of $q_1$. 
-The works I discussed above showed that, not only does the analysis of the generalization error depend on the number of rounds, but knowing the number of rounds actually allows one to choose methods that lead to the smallest possible generalization error - I will discuss this further in Section~\ref{sec:overview}. 
+As an informal example, the program $x \leftarrow \query_1(D);y \leftarrow \query_2(D,x);z \leftarrow \query_3(D,y)$ has three rounds of adaptivity, since $\query_2$  depends on $D$ not only directly because it is one of its input but also via the result of $\query_1$, 
+which is also run on $D$, and similarly,  $\query_3$ depends on $D$ directly but also via the result of $\query_2$, which in turn depends on the result of $\query_1$. 
+The works I discussed above showed that, not only does the analysis of the generalization error depend on the number of rounds, 
+but knowing the number of rounds actually allows one to choose methods that lead to the smallest possible generalization error. 
 
 % \mg{Check the following - also the plots need to be on the same scale!}
-For example, these works showed that when an adaptive data analysis uses a large number of rounds of adaptivity then a low generalization error can be achieved by mechanism of 
+For example, these works showed that when an adaptive data analysis use a large number of rounds of adaptivity then a low generalization error can be achieved by mechanism of 
 adding to the result of each query Gaussian noise scaled to the number of rounds. When instead  an adaptive data analysis uses a small number of rounds of adaptivity then a low generalization error can be achieved by using more specialized methods, such as data splitting mechanism or the reusable holdout technique from~\cite{DworkFHPRR15}.
 To better understand this idea, I show in Figure~\ref{fig:generalization_errors} two experiments showcasing these situations. 
-More precisely, in Figure~\ref{fig:generalization_errors}(a) I show the results of a specific analysis\footnote{I will use formally a program implementing this analysis (Figure~\ref{fig:overview-example}) as a running example in the rest of the paper.} with two rounds of adaptivity. 
+More precisely, in Figure~\ref{fig:generalization_errors}(a) shows the results of a real world analysis
+with two rounds of adaptivity. 
 This analysis can be seen as a classifier which first runs 500 non-adaptive queries on the first 500 attributes of the data, looking for correlations between the attributes and a label, and then runs one last query which depends on all these correlations. 
 Without any mechanism the generalization error is pretty large, and the lower generalization error is achieved when the data-splitting method is used. 
-In Figure~\ref{fig:generalization_errors}(b), I show the results of a specific analysis\footnote{I will present this analysis formally in Section~\ref{sec:examples}.} with four hundreds rounds of adaptivity. 
+In Figure~\ref{fig:generalization_errors}(b) shows the results of a specific analysis
+with four hundreds rounds of adaptivity. 
 This analysis can be seen as a classifier which at each step runs an adaptive query based on the result of the previous ones. 
 Again, without any mechanism the generalization error is pretty large, and the lower generalization error is achieved when the Gaussian noise is used. 
 {\small
@@ -74,8 +78,6 @@ Again, without any mechanism the generalization error is pretty large, and the l
 \vspace{-0.5cm}
 \end{figure}
 }
-
-
 %gap
 This scenario motivates us to explore the design of program analysis techniques that can be used to estimate the number of \emph{rounds of adaptivity} that a program implementing a data analysis can perform. These techniques could be used to help a data analyst in the choice of the mechanism to use,
 and they
@@ -111,27 +113,76 @@ I will develop a program analysis algorithm, named {\THESYSTEM}, which combines 
 This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve by directly using the data and control flow analyses or the ones that one would achieve by directly using reachability bound analysis techniques alone.
 %%%%% To reason about
 
-Then, through observation in following example, the heap resource consumption during the program 
-execution is accumulating in the same way as the program's adaptivity. Specifically, in line 5 
-where the list is re-wrote and the heap consumption is decreased implicitly. 
-This implicit decrease 
-of the cost works exactly the same as program's adaptivity decrease.
-\\
-This motivates the generalization of the analysis framework onto the program's resource cost analysis. Use this framework,
-I will give
-a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
-to the worst case cost analysis in traditional way.
-\\
-There are two categories of the program cost analysis, Type-System Based and Static Program Analysis Based. But both of the
-works in these two areas fails to recognize the case where program resource consumption is decreased implicitly.
+% Then, through observation in following example, the heap resource consumption during the program 
+% execution is accumulating in the same way as the program's adaptivity. Specifically, in line 5 
+% where the list is re-wrote and the heap consumption is decreased implicitly. 
+% This implicit decrease 
+% of the cost works exactly the same as program's adaptivity decrease.
+% \\
+% This motivates the generalization of the analysis framework onto the program's resource cost analysis. Use this framework,
+% I will give
+% a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
+% to the worst case cost analysis in traditional way.
+% \\
+\paragraph*{Towards the Accurate Program Resource Cost Analysis}
+Then, motivated by the two following aspects,  I'm interested in improving the accuracy of program's general resource cost analysis
+by generalizing my \emph{adaptivity} analysis framework.
+\begin{itemize}
+    \item Firstly, in traditional program's resource cost analysis,
+    There are two categories of the program cost analysis, type-system based  and data-flow/control-flow analysis based. 
+    In the type-system design based works, they \cite{GustafssonEL05} and \cite{hoffmann_jost_2022}, explicit abstraction or data structure de-allocation in order to save or reduce the cost.
+    
+    Both of the
+    works in these two areas fails to recognize the case where program resource consumption is decreased implicitly.
+    \item The resource consumption during the program 
+    execution increases and particularly decreases implicitly in the same way as the program's adaptivity. This is explained in detail through an example in Section~\ref*{sec:generalization}.
+\end{itemize}
+% F
+% Then, through two observations,
+%    that 
+%    firstly, traditional program's resource cost analysis they failed to consider the case where the program's cost could decrease 
+%    implicitly, and 
+%    % when there isn't a dependency relation between variables.
+%    the resource consumption during the program 
+%    execution increases and particularly decreases implicitly in the same way as the program's adaptivity, 
+%    % Specifically, in line 5 
+%    % where the list is re-written and the heap consumption is decreased implicitly. 
+%    % This implicit decrease 
+%    % of the cost works exactly the same as program's adaptivity decrease.
+%    I'm interested in improving the accuracy of program's general resource cost analysis
+%    by generalizing my \emph{adaptivity} analysis framework.
+   %  onto the program's resource cost analysis. 
+   % Use this framework,
+   Based on the observations above, and through the generalized \emph{adaptivity} analysis framework.
+   I will give
+   a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
+   to the worst case cost analysis in traditional way.
+
+   \paragraph*{Towards Solving the CFL-Reachability Problem}
+Finally, based on the study on traditional way of performing data flow and control analysis,
+I identify the similarity between the traditional way of performing data flow and control analysis, and the 
+   adaptivity analysis.  
+   Specifically I identify the similarity between 
+   solving the feasible path problem in the analysis by reducing to CFL-reachability problems,
+   and the way of computing the adaptivity in my static analysis framework.
+   Motivated by this observation, 
+   % I'm insterested
+   % the, There are similarity between
+   % solving the data flow problem by reducing to CFL-reachability problem,
+   % resource analysis through reducing to CFL-reachability problem, 
+   I'm interested in showing that
+   CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework.
 
 
+\paragraph*{Proposal Structure}
 To sum up, this proposal covers the following topic.
 \begin{enumerate}
-\item A while-like language extended with query request feature, {\tt Query While} Language used to implement 
+\item A while-like language extended with query request feature, named {\tt Query While} Language, 
+used to implement 
 the adaptive data analysis.
 \item A formal adaptivity model through execution-based adaptivity analysis.
 \item A static program analysis algorithm, named {\THESYSTEM}.
-\item Extended features on the formal adaptivity model and {\THESYSTEM}.
-\item Generalization of {\THESYSTEM} on program resource cost analysis.
+\item Improved features on the formal adaptivity model and {\THESYSTEM}.
+\item A proposed accurate program resource cost analysis framework generalized from {\THESYSTEM}.
+\item A proposed plan for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework.
 \end{enumerate}

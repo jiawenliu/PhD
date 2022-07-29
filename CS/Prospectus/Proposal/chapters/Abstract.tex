@@ -5,12 +5,18 @@ Data analyses are usually designed to identify some property of the population f
    The generalization error of each individual query/analysis can be controlled by using an array of well-established statistical techniques.
    However, when queries are arbitrarily composed, the different errors can propagate through the chain of different queries and bring to high generalization error. 
    To address this issue, data analysts are designing several techniques that not only guarantee bounds on the generalization errors of single queries, but that also guarantee bounds on the generalization error of the composed analyses. 
-   The choice of which of these techniques to use, often depends on the chain of queries that an adaptive data analysis can generate.
-   %The total number of queries and the depth of the chain of queries are of great significance to guarantee the generalization error, when the composed data analyses are adaptive. 
+   The choice of which of these techniques to use, 
+   often depends on the chain of queries that an adaptive data analysis can generate.
+   Specifically the total number of queries and the depth of the chain of queries is of great significance 
+   to guarantee the generalization error, 
+   when the composed data analyses are adaptive. 
+   So in order to give a precise guarantee of generalization error
+   for the program,
+    I'm interested in analysing depth of the chain of queries in program, i.e., the program's \emph{adaptivity} property.
    % Gap
    % Unfortunately, this depth which relies on the program(implementation) itself is costly in human efforts, and how to statically obtain this information is not well studied to support data analysts.
-   
-   In this proposal, I will focus on analyse this intuitive \emph{adaptivity} property for the adaptive data analysis programs. 
+
+   In this proposal, I will firstly focus on analyse this intuitive \emph{adaptivity} property for the adaptive data analysis programs. 
    Then I will extend this analysis with improved techniques and generalize this analysis onto program's resource cost analysis.
    \\
    Firstly I will analyse this \emph{adaptivity} property for the adaptive data analysis programs in a while-like language.
@@ -29,13 +35,14 @@ Data analyses are usually designed to identify some property of the population f
    % (the Trace, Event, the Dependency relation, Dependency depth in terms of the evaluation times and the Adaptivity)
 	In the static-based program analysis, I will design a static program analysis for soundly approximating this quantity.
    In this static program analysis, the program will be analysed in the same 3 aspects as the execution-based analysis 
-   while through static program analysis techniques, and a sound estimated result will be given in each aspect.
+   while through static program analysis techniques, and a sound estimated result will be given in each aspect as follows.
    \\
 	a. The data dependency relation analysis through the static data flow analysis technique.
    \\
 	b. The dependency quantity analysis through the static program reachability bound analysis techniques.
    \\
-	c. Estimation, through algorithm designed based on the two results above, computing the adaptivity upper bound soundly 
+	c. The program adaptivity estimation, through newly designed algorithms based on the results estimated above, 
+   computing the adaptivity upper bound soundly 
    and accurately.
    \\
    I will implement my program analysis and show that it can help to analyse the adaptivity of several concrete data analyses with different adaptivity structures.
@@ -51,13 +58,36 @@ Data analyses are usually designed to identify some property of the population f
    3. In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
    compute a tighter adaptivity upper bound as well.
    
-   Finally, through observations that the heap resource consumption during the program 
+   Then, through two observations,
+   that 
+   firstly, traditional program's resource cost analysis they failed to consider the case where the program's cost could decrease 
+   implicitly, and 
+   % when there isn't a dependency relation between variables.
+   the resource consumption during the program 
    execution increases and particularly decreases implicitly in the same way as the program's adaptivity, 
    % Specifically, in line 5 
    % where the list is re-written and the heap consumption is decreased implicitly. 
    % This implicit decrease 
    % of the cost works exactly the same as program's adaptivity decrease.
-   I'm interested in generalizing this quantity analysis framework onto the program's resource cost analysis. Use this framework,
+   I'm interested in improving the accuracy of program's general resource cost analysis
+   by generalizing my \emph{adaptivity} analysis framework.
+   %  onto the program's resource cost analysis. 
+   % Use this framework,
+   Through the generalized \emph{adaptivity} analysis framework.
    I will give
    a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
    to the worst case cost analysis in traditional way.
+
+   Finally, based on the study on traditional way of performing data flow and control analysis,
+   I identify the similarity between the traditional way of performing data flow and control analysis, and the 
+   adaptivity analysis.  
+   Specifically I identify the similarity between 
+   solving the feasible path problem in the analysis by reducing to CFL-reachability problems,
+   and the way of computing the adaptivity in my static analysis framework.
+   Motivated by this observation, 
+   % I'm insterested
+   % the, There are similarity between
+   % solving the data flow problem by reducing to CFL-reachability problem,
+   % resource analysis through reducing to CFL-reachability problem, 
+   I'm interested in showing that
+   CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework.
