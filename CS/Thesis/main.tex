@@ -12,6 +12,7 @@
 % \usepackage{capt-of}
 \usepackage{tocloft}
 \usepackage{xpatch}
+\newcommand{\THESYSTEM}{\textsf{AdaptFun}}
 
 % \usepackage{hyperref}
 
@@ -129,7 +130,6 @@ B.A. in Department of Information Science, Central University of Economics and F
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% DEDICATION			 
-\addcontentsline{toc}{chapter}{Dedication}
 \section*{Dedication}
 \begin{flushright}
 This dissertation is dedicated to \\
@@ -214,18 +214,47 @@ my loving grandmother \\ Xiuqin Yang
 
 % \mainmatter
 
+\chapter{Introduction}
+\label{introduction}
 \include{chapters/introduction}
 \cleardoublepage
 
 
+% \addtocontents{toc}{\protect\newpage}
+\chapter{The {\tt Query While} Language for Adaptive Data Analysis Program}
+\label{ch:language}
 \include{chapters/language}
 \cleardoublepage
 
+\addtocontents{toc}{\protect\newpage}
+\chapter{The Execution-Based Program Analysis}
+\label{ch:dynamic}
 \include{chapters/dynamic}
 \cleardoublepage
 
+\chapter{The Static Program Analysis}
+\label{ch:static}
 \include{chapters/static}
 \cleardoublepage
+
+% \chapter{Accurate Adaptivity Analysis via Path Sensitive Reachability Analysis}
+% \label{ch:improved}
+% \include{chapters/improved}
+% \cleardoublepage
+
+% \addtocontents{toc}{\protect\newpage}
+\chapter{Refined Adaptivity Analysis via Path Sensitive Reachability Analysis}
+\label{ch:improved}
+\include{chapters/improved}
+\cleardoublepage
+
+\chapter{Accurate Program Resource Cost Analysis via $\THESYSTEM$}
+\label{ch:generalization}
+\input{chapters/generalization}
+
+\chapter{Furture Works}
+\label{ch:furthers}
+\input{chapters/cfl_reduction}
 
 % \include{chapters/dynamic/relatedwork}
 
@@ -234,6 +263,9 @@ my loving grandmother \\ Xiuqin Yang
 % \include{chapters/Epilogue}
 % \cleardoublepage
 
+\addtocontents{toc}{\protect\newpage}
+\chapter{Conclusion}
+\label{ch:conclusion}
 \include{chapters/conclusion}
 \cleardoublepage
 

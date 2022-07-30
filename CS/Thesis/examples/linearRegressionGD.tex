@@ -1,0 +1,144 @@
+%
+\begin{example}[Linear Regression Algorithm with Gradient Decent Optimization]
+\label{ex:linearregression}
+    The linear regression algorithm with gradient decent Optimization works well 
+    in our $\THESYSTEM$ as well.
+            %   \[
+            %   %
+            %   \begin{array}{l}
+            %   \kw{linearRegression(step, rate)} \triangleq \\
+            %          \clabel{ a \leftarrow 0}^{0} ; \\
+            %          \clabel{ c \leftarrow 0}^{1} ; \\
+            %           \clabel{\assign{j}{\kw{step}} }^{2} ; \\
+            %         %   \clabel{\assign{d}{10000000} }^{2} ; \\
+            %           \ewhile ~ \clabel{j > 0}^{3} ~ \edo ~ \\
+            %           \Big(
+            %               \clabel{\assign{da}{\query(-2 * (\chi[1] - (\chi[0]\times a + c)) \times (\chi[0]))} }^{4}  ; \\
+            %               \clabel{\assign{dc}{\query(-2 * (\chi[1] - (\chi[0]\times a + c)))} }^{5}  ; \\
+            %               \clabel{\assign{a}{a - \kw{rate} * da} }^{6}  ; \\
+            %               \clabel{\assign{c}{c - \kw{rate} * dc} }^{7}  ; \\
+            %            \clabel{\assign{j}{j-1}}^{8} 
+            %         %   \clabel{a \leftarrow x :: a}^{6} 
+            %           \Big);
+            %       \end{array}
+            %   \]
+              %
+              %
+                   %
+\begin{figure}
+\centering
+\begin{subfigure}{0.45\textwidth}
+    \centering
+    {\small
+        \[
+        \begin{array}{l}
+            \kw{linearRegressionGD(k, rate)} \triangleq \\
+                   \clabel{ a \leftarrow 0}^{0} ; 
+                   \clabel{ c \leftarrow 0}^{1} ; 
+                    \clabel{\assign{j}{\kw{k}} }^{2} ; \\
+                  %   \clabel{\assign{d}{10000000} }^{2} ; \\
+                    \ewhile ~ \clabel{j > 0}^{3} ~ \edo ~ \\
+                    \Big(
+                        \clabel{\assign{da}{\query(-2 * (\chi[1] - (\chi[0]\times a + c)) \times (\chi[0]))} }^{4}  ; \\
+                        \clabel{\assign{dc}{\query(-2 * (\chi[1] - (\chi[0]\times a + c)))} }^{5}  ; \\
+                        \clabel{\assign{a}{a - \kw{rate} * da} }^{6}  ; 
+                        \clabel{\assign{c}{c - \kw{rate} * dc} }^{7}  ; \\
+                     \clabel{\assign{j}{j-1}}^{8} 
+                  %   \clabel{a \leftarrow x :: a}^{6} 
+                    \Big);
+                \end{array}
+        \]
+        }
+     \caption{}
+        \end{subfigure}
+        \begin{subfigure}{.5\textwidth}
+            \begin{centering}
+            \begin{tikzpicture}[scale=\textwidth/25cm,samples=200]
+    % Variables Initialization
+    \draw[] (-6, 1) circle (0pt) node{{ $a^0: {}^1_{0}$}};
+    \draw[] (-6, 4) circle (0pt) node{{ $c^1: {}^{1}_{0}$}};
+    % Variables Inside the Loop
+         \draw[] (0, 10) circle (0pt) node{{ $da^4: {}^{k}_{1}$}};
+         \draw[] (0, 7) circle (0pt) node{{ $dc^5: {}^{k}_{0}$}};
+         \draw[] (0, 4) circle (0pt) node{{ $a^6: {}^{k}_{0}$}};
+         \draw[] (0, 1) circle (0pt) node{{ $c^7: {}^{k}_{0}$}};
+         % Counter Variables
+         \draw[] (7, 9) circle (0pt) node {{$j^0: {}^{1}_{0}$}};
+         \draw[] (7, 6) circle (0pt) node {{ $j^8: {}^{k}_{0}$}};
+         %
+         % Value Dependency Edges:
+         \draw[ thick, -latex,] (0, 1.5)  -- (0, 3.5) ;
+         \draw[ thick, -Straight Barb] (1.8, 4.2) arc (220:-100:1);
+         \draw[ thick, -Straight Barb] (7.5, 6.5) arc (150:-150:1);
+         \draw[ thick, -latex] (6, 6.5)  -- (6, 8.5) ;
+         \draw[ thick, -Straight Barb] (1.7, 1.) arc (120:-200:1);
+         % Value Dependency Edges on Initial Values:
+         \draw[ thick, -latex,] (-2, 1)  -- (-4.5, 1) ;
+         \draw[ thick, -latex,] (-2, 4)  -- (-4.5, 4) ;
+         %
+         \draw[ ultra thick, -latex, densely dotted,] (-1, 1.5)  to  [out=-220,in=220]  (-1, 6.5);
+         \draw[ ultra thick, -latex, densely dotted,] (-1, 4.5)  to  [out=-220,in=220]  (-1, 9.5);
+         \draw[ ultra thick, -latex, densely dotted,]  (1, 6.2) to  [out=-60,in=60] (0.5, 1.5) ;
+         \draw[ ultra thick, -latex, densely dotted,]  (1.2, 9.2)  to  [out=-50,in=50] (0.5, 4.5);
+         % Control Dependency
+        %  \draw[ thick,-latex] (1.5, 7)  -- (4, 9) ;
+        %  \draw[ thick,-latex] (1.5, 4)  -- (4, 9) ;
+         \draw[ thick,-latex] (1.8, 7)  -- (5.5, 6) ;
+         \draw[ thick,-latex] (1.8, 4)  -- (5.5, 6) ;
+         \draw[ thick,-latex] (1.8, 1)  -- (5.5, 6) ;
+         \draw[ thick,-latex] (1.8, 10)  -- (5.5, 6) ;
+         \end{tikzpicture}
+         \caption{}
+            \end{centering}
+            \end{subfigure}
+    \vspace{-0.5cm}
+    \caption{(a) The linear regression algorithm 
+    (b) The program-based dependency graph from $\THESYSTEM$}
+    \vspace{-0.5cm}
+    \label{fig:linear_regression}
+\end{figure}
+%
+Analysis Result: $ \progA(\kw{linearRegressionGD(k, rate)}) = k$
+\end{example} 
+%
+ 
+This linear regression algorithm 
+% in order to
+aims to
+model a linear relationship between a dependent variable $y$,
+% corresponding to the observed value in the column $\chi[1]$ in database, 
+and an independent variable $x$, $y = a \times x + c$, specifically approximating the 
+model parameter $a$ and $c$.
+In order to have a good approximation on the model parameter 
+$a$ and $c$, 
+% corresponding to the observed value in the column $\chi[0]$ in database, 
+it sends query to a training data set adaptively in every iteration.
+This training data set contains two columns (can extend to higher dimensional data sets), first column is used as the observed value for the independent variable $x$,
+second column is used as the observed label value for the dependent variable $y$.
+This algorithm is written in our {\tt Query While} language in Figure~\ref{fig:linear_regression}(a) as $\kw{linearRegressionGD(k, rate)}$.
+% taking the iteration number $\kw{step}$ 
+
+This linear regression algorithm starts from initializing the linear model parameters and the counter variable,
+and then goes into the training iterations.
+In each iteration, it computes the differential value w.r.t. parameter
+$a$ and $c$ respectively,
+through requesting two queries, $\query(-2 * (\chi[1] - (\chi[0]\times a + c)) \times (\chi[0]))$ and 
+$\query(-2 * (\chi[1] - (\chi[0]\times a + c)))$
+at line 4 and 5.
+Then, it uses these two differential values stored in variable $da$ and $dc$ to update the linear model parameters $a$ and $c$.
+%
+Its the program-based dependency graph is shown in Figure~\ref{fig:linear_regression}(b). Its execution-based dependency graph share the same graph, only needs to change the weight, $k$ into $w_k$ and $1$ for $w_1$ as we do in the previous example.
+% We omit the detail of how to 
+% generate this graph, which is similar to the generation procedure in 
+% Example~\ref{alg:multiRound}.
+In the execution-based dependency graph, there are multiple walks having the same longest query length.
+For example, the walk $c^7 \to dc^6 : \to c^7 \to \cdots \to dc^6$ along the 
+dotted arrows, where each vertex is visited $w_k(\trace_0)$ times for an initial trace $\trace_0$.
+% By counting the total occurrence time of vertices with annotation $1$ in this walk, we have this program's adaptivity $k$.
+There is actually other walks having the same query length $k$, the 
+walk $a^7 \to da^6  \to a^7 \to \cdots \to da^6 $ along the 
+dotted arrows, where each vertex is visited $w_k(\trace_0)$ times.
+% the dotted path corresponds to a finite walk with the longest query length and its adaptivity on this walk is $k$.
+But it doesn't affect the adaptivity for this program, which is still the maximal query length $w_k(\trace_0)$ with respect to initial trace $\trace_0$.
+Also, $\THESYSTEM$, estimates the adaptivity $k$ for this example. Similarly as the multiple round example, we can show it is a tight bound.
+%

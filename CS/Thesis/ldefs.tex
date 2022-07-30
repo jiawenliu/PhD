@@ -2,6 +2,30 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMANDS FOR GENERAL PAPER WRITING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%% Extra Ldefs:
+
+% \renewcommand{\textfraction}{0.1}
+% \renewcommand{\topfraction}{0.95}
+% \renewcommand{\bottomfraction}{0.95}
+% \renewcommand\floatpagefraction{0.9}
+% \setcounter{totalnumber}{50} \setcounter{topnumber}{50} \setcounter{bottomnumber}{50}
+% \renewcommand{\floatsep}{10pt}
+% \renewcommand{\intextsep}{10pt}
+% \setlength{\textfloatsep}{10pt}
+
+% \renewcommand{\headrulewidth}{0pt} \renewcommand{\footrulewidth}{0pt}
+
+% \newcommand{\eqnlinespace}{\\[5pt]}
+% \newcommand{\eqnlinespacelarge}{\\[10pt]}
+% \newcommand{\captionlinespace}{\\[0.05in]}
+
+% \renewcommand{\baselinestretch}{1.6}
+
+% %\renewcommand{\textwidth}{5.95in}
+% \setlength{\textwidth}{6.875in}
+
+% \renewcommand{\oddsidemargin}{0.5in}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Theorem, Definition and Proof
 \newtheorem{lem}{Lemma}[section]
@@ -12,7 +36,9 @@
 \newtheorem{example}{Example}[section]
 \newcommand{\ADAPTSYSTEM}{ADAPT}
 
-\newcommand{\todo}[1]{{\color{red}\textbf{[[ #1 ]]}}}
+\newcommand{\highlight}[1]{\textcolor[rgb]{.0,0.0,1.0}{ #1}}
+
+% \newcommand{\todo}[1]{{\color{red}\textbf{[[ #1 ]]}}}
 \newcommand{\todomath}[1]{{\scriptstyle \color{red}\mathbf{[[ #1 ]]}}}
 \newcommand{\completeness}[1]{{\color{blue}\textbf{[[ #1 ]]}}}
 \newcommand{\caseL}[1]{\item \textbf{case: #1}\newline}
@@ -50,7 +76,7 @@
 \newcommand{\answer}{a}
 \newcommand{\sample}{X}
 
-% \newcommand{\st}{~.~}
+\newcommand{\sthat}{~.~}
 
 %%%%COLORS
 \definecolor{periwinkle}{rgb}{0.8, 0.8, 1.0}
@@ -92,8 +118,8 @@
 
 % Misc.
 \newcommand{\etal}{\textit{et al.}}
+% \wd
 \newcommand{\bump}{\hspace{3.5pt}}
-
 % Text fonts
 \newcommand{\tbf}[1]{\textbf{#1}}
 

@@ -1,31 +1,30 @@
-\addtocontents{toc}{\protect\newpage}
-\chapter{The Program Dynamic Analysis for Adaptivity}
-\label{ch:dynamic}
-
-\section{Introduction}
+\section{Introduction and Related Work}
 \label{sec:dynamic-intro}
 % \input{~/dynamic/introduction.tex}
+\input{chapters/dynamic/exe-intro}
 
-\section{Dynamic Data Dependency Analysis}
-\label{sec:dynamic-datadep}
-%
-\section{Dynamic Dependency Depth Analysis}
-\label{sec:dynamic-reachability}
-In this chapter, we conclude this dissertation, mainly studying two adaptivity of data analysis programs.
+\section{Execution-Based Program Analysis}
+\label{sec:dynamic-analysis}
 
-%
-\section{Dynamic Adaptivity Analysis}
-\label{sec:dynamic-dynamic}
-In this chapter, we conclude this dissertation, mainly studying two adaptivity of data analysis programs.
+\subsection{Data Dependency Analysis}
+\label{subsec:dynamic-datadep}
+\input{chapters/dynamic/exe-dep.tex}
 
+\subsection{Data Dependency Quantity Analysis}
+\label{subsec:dynamic-reachability}
+\input{chapters/dynamic/exe-depquantity}%
+
+\subsection{Execution-Based Adaptivity Analysis}
+\label{subsec:dynamic-adapt}
+\input{chapters/dynamic/exe-adapt}%
 %
-\section{Examples}
+\section{Adaptivity through Examples}
 \label{sec:dynamic-examples}
-% \input{~/dynamic/examples}
-%
+\input{examples/twoRounds}
+
 \section{Implementation}
 \label{sec:dynamic-implementation}
 %
-\section{Related Work}
-\label{sec:dynamic-relatedwork}
-% \input{~/dynamic/relatedwork.tex}
+% \section{Related Work}
+% \label{sec:dynamic-relatedwork}
+% % \input{~/dynamic/relatedwork.tex}
