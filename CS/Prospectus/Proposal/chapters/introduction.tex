@@ -1,7 +1,63 @@
 % %%%% Benifit of reasoning about 
 % \subsection{Motivation of Reasoning about Adaptivity}
 % % 
-\paragraph*{Introduction to Adaptivity Analysis}
+I first introduction the Motivation of reasoning about the adaptivity quantity property for adaptive data analysis programs in Section~\ref{subsec:intro-motivation}.
+Then, I introduce the problems encountered when analysing this \emph{adaptivity} property for the adaptive data analysis programs in Section~\ref{subsec:intro-adapt}
+and the full-spectrum analysis methodology, the execution-based analysis and static-based program analysis.
+%
+Based on the implementation and experimental results, I proposed two significant 
+further features can be improved for my analysis framework in Section~\ref{subsec:intro-improve}, and plan to finish the improvement 
+before the final defense.
+%
+   % Next, based on the implementation and experimental results, I proposed two significant 
+   % further features can be improved for my analysis framework, and plan to finish the improvement 
+   % before the final defense.
+   %
+   Then, in Section~\ref{subsec:intro-cost}, through two observations, I introduce the motivations and methodology
+   for the general program cost analysis with implicit resource cost decreases.
+%   \\
+%   1. traditional program's resource cost analysis they failed to consider the case where the program's cost could decrease 
+%    implicitly, 
+%    \\
+%    2. and 
+%    % when there isn't a dependency relation between variables.
+%    the resource consumption during the program 
+%    execution increases and particularly decreases implicitly in the same way as the program's adaptivity, 
+%    % Specifically, in line 5 
+%    % where the list is re-written and the heap consumption is decreased implicitly. 
+%    % This implicit decrease 
+%    % of the cost works exactly the same as program's adaptivity decrease.
+%    I'm interested in improving the accuracy of program's general resource cost analysis
+%    by 
+%    %  onto the program's resource cost analysis. 
+%    % Use this framework,
+%    Through the generalized \emph{adaptivity} analysis framework.
+%    I will give
+%    a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
+%    to the worst case cost analysis in traditional way.
+   For this work, the analysis framework design and the implementation is expected to be done  before the final thesis.
+   Finally, I the Section~\ref*{subsec:intro-cfl} introduced the  interests in showing that
+   CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework. 
+   This work is planed to start off before final defense and develop further sophisticated after.
+   % based on the study on traditional way of performing data flow and control analysis,
+   % I identify the similarity between the traditional way of performing data flow and control analysis, and the 
+   % adaptivity analysis.  
+   % Specifically I identify the similarity between 
+   % solving the feasible path problem in the analysis by reducing to CFL-reachability problems,
+   % and the way of computing the adaptivity in my static analysis framework.
+   % Motivated by this observation, 
+   % % I'm insterested
+   % % the, There are similarity between
+   % % solving the data flow problem by reducing to CFL-reachability problem,
+   % % resource analysis through reducing to CFL-reachability problem, 
+   % I'm interested in showing that
+   % CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework. 
+   % This work is planed to start off before final defense and develop further sophisticated after.
+
+\subsection{Adaptive Data Analysis}
+\label{subsec:intro-motivation}
+
+
 Consider a dataset $X$ consisting of $n$ independent samples from some unknown population $\dist$.  How can I ensure that the conclusions drawn from $X$ \emph{generalize} to the population $\dist$?  Despite decades of research in statistics and machine learning on methods for ensuring generalization, there is an increased recognition that many scientific findings generalize poorly (e.g. 
 \cite{Ioannidis05,GelmanL13}
 ).  While there are many reasons a conclusion might fail to generalize, one that is receiving increasing attention is \emph{adaptivity}, which occurs when the choice of method for analyzing the dataset depends on previous interactions with the same dataset~\cite{GelmanL13}.
@@ -86,7 +142,9 @@ could be ultimately be integrated into a tool for adaptive data analysis such as
 In order to analyze this property, there are mainly three property. 
 In this proposal, I will first focus on analyzing 
 this adaptivity property for program based on solving the three problems specifically as follows.
-\paragraph*{Adaptivity Analysis}
+
+\subsection{Full-Spectrum Adaptivity Analysis and Methodology}
+\label{subsec:intro-adapt}
 There are mainly three problems in order to analyse this adaptivity property, 
 and the full-spectrum analysis on this property is 
 % In this proposal, I will first focus on analyzing 
@@ -95,14 +153,17 @@ developed w.r.t. the three problems specifically as follows.
 
 \begin{itemize}
     \item
+    \textbf{Adaptive Data Analysis Formalization}
 The first problem is \emph{how to define formally} a model for adaptive data analysis which is general enough to support the methods I discussed above and would permit to formulate the notion of adaptivity these methods use. 
 I take the approach of designing a programming framework for submitting queries to some \emph{mechanism} giving access to the data mediated by one of the techniques I mentioned before, e.g., adding Gaussian noise, randomly selecting a subset of the data, using the reusable holdout technique, etc. 
 In this approach, a program models an \emph{analyst} asking a sequence of queries to the mechanism. The mechanism runs the queries on the data applying one of the methods discussed above and returns the result to the program. The program can then use this result to decide which query to run next. 
 % Overall, I'm interested in controlling the generalization of the results of the queries which are returned by the mechanism, by means of the adaptivity. 
 
+\textbf{Methodology}
 Motivated by this, I present a while-like language with extensions on query request in Section~\ref{sec:language}.
 
 \item 
+\textbf{Adaptivity Formalization}
 The second problem is \emph{how to define the adaptivity of a given program}.
 Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
 For example, as shown in \cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier which first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
@@ -110,6 +171,8 @@ If one feature's correlation changes, the classifier depending on features is al
 This notion of dependency builds on the execution trace as a \emph{causal history}. 
 In particular, I'm interested in the history or provenance of a query up until this is executed, I'm not then concerned about how the result is used --- except for tracking whether the result of the query may further cause some other query. 
 This is because I focus on the generalization error of queries and not their post-processing. % 
+
+\textbf{Methodology}
 To formalize this intuition as a quantitative program property, I develop an execution-based analysis
 % I first consider all the possible evaluations of a programs  --- I do this by 
 % I use a trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to variable) is explicit and track which variable is associated with a query request. 
@@ -138,6 +201,7 @@ To formalize this intuition as a quantitative program property, I develop an exe
    The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
    \end{enumerate}
 \item 
+\textbf{Adaptivity Estimation}
 The third problem is \emph{how to estimate the adaptivity of a given program}. 
 The adaptive data analysis model I consider and our definition of adaptivity suggest that for this task I can use a  program analysis that is based on some form of dependency analysis. This analysis needs to take into consideration:
 1) the fact that, in general, a query $Q$ is not a monolithic block but rather it may depend, through the use of variables and values, on other parts of the program. 
@@ -146,6 +210,8 @@ Hence, it needs to consider some form of data flow analysis.
  it needs to consider some form of control flow analysis.
 3) the fact that. in general, I'm not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
 Hence, it needs to consider some quantitative information about the program dependencies. % {A quick example is that : I store the result of query $Q_1$ in variable $x$ and use variable $y$ to record the result of query $Q_2$. I want to construct the third query $Q_3$ which relies on the value stored in $x$, let us say, $Q_3$ will ask for the sum of the first column of a table if $x$ is positive and the sum of the second column otherwise. In this situation, I need data flow analysis. On the other hand, if I need the value of $y$ to help us decide whether I should ask $Q_3$, for example, I ask the third query if $y$ is odd, and do not ask if $y$ is even. Naturally, to be able to handle this case, control flow analysis comes into play. Formally speaking,  }
+
+\textbf{Methodology}
 To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
 I will develop a program analysis algorithm, named {\THESYSTEM}, which combines data flow and control flow analysis with reachability bound analysis~\cite{GulwaniZ10}. 
 This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve by directly using the data and control flow analyses or the ones that one would achieve by directly using reachability bound analysis techniques alone. Specifically as follows in the same 3 aspects as the execution-based analysis 
@@ -157,11 +223,26 @@ while through static program analysis techniques, and a sound estimated result w
 computing the adaptivity upper bound soundly 
 and accurately.
 \end{enumerate}
-%%%%% To reason about
-\end{itemize}
-I will implement my program analysis and show that it can help to analyze the adaptivity of several concrete data analyses with different adaptivity structures.
-% \\
-\paragraph*{Towards the Accurate Program Resource Cost Analysis}
+%%%%% To reason about%
+\end{itemize}% \\
+
+\subsection{Further Works}
+\subsubsection{Towards Accurate Full-Spectrum Adaptivity Analysis}
+\label{subsec:intro-improve}
+Based on the implementation and experimental results on the $\THESYSTEM$,
+I will focus on improve three features of this full-spectrum analysis as follows,
+\begin{enumerate}
+   \item The precision of the \emph{adaptivity} in the formalized model through the execution-based program analysis.
+
+\item  In static program analysis, I will give tighter estimated upper bound on dependency quantity through 
+path sensitive reachability bound analysis techniques. 
+
+\item In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
+compute a tighter adaptivity upper bound as well.
+\end{enumerate}
+\subsubsection{Towards Accurate Program Resource Cost Analysis and Methodology}
+\label{subsec:intro-cost}
+
 Then, motivated by the two following aspects,  I'm interested in improving the accuracy of program's general resource cost analysis
 by generalizing my \emph{adaptivity} analysis framework.
 \begin{itemize}
@@ -195,7 +276,9 @@ by generalizing my \emph{adaptivity} analysis framework.
    a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
    to the worst case cost analysis in traditional way.
 
-   \paragraph*{Towards Solving the CFL-Reachability Problem}
+\subsubsection{Towards Solving the CFL-Reachability Problem}
+\label{subsec:intro-cfl}
+
 Finally, based on the study on traditional way of performing data flow and control analysis,
 I identify the similarity between the traditional way of performing data flow and control analysis, and the 
    adaptivity analysis.  
@@ -211,7 +294,9 @@ I identify the similarity between the traditional way of performing data flow an
    CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework.
 
 
-\paragraph*{Proposal Structure}
+\subsection{Proposal Structure}
+\label{subsec:intro-structure}
+
 To sum up, this proposal covers the following topic.
 \begin{enumerate}
 \item A while-like language extended with query request feature, named {\tt Query While} Language, 

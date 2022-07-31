@@ -1,4 +1,4 @@
-\section{Refined Execution-Based Program Analysis via Dependency Quantity Refinement}
+\section{Adaptivity Analysis Refinement via Execution-Based Analysis}
 \label{sec:refine-exe}
 %
 The program's adaptivity in the formal model through the execution-based analysis,
@@ -15,11 +15,15 @@ witness the \emph{variable may-dependency} relation.
 As shown in the Example~\ref{ex:multipleRoundSingle_example}.
 \input{examples/multipleRoundsSingle}
 %%
-\section{ Methodology}
-\label{sec:refine-exe-analysis}
-% \input{~/dynamic/relatedwork.tex}
+% \subsection{ Methodology}
+% \label{sec:refine-exe-analysis}
+% % \input{~/dynamic/relatedwork.tex}
 
-\subsection{Data Dependency Analysis}
+\subsection{Language Extension}
+\label{subsec:refine-exe-language}
+\input{chapters/language_extended.tex}
+
+\subsection{Execution-Based Data Dependency Analysis Refinement}
 \label{subsec:refine-exe-datadep}
 \input{chapters/dynamic/exe-dep.tex}
 
@@ -34,7 +38,7 @@ This externalization helps in analyzing the dependency quantity through the same
 witness traces as the \emph{may-dependency} relation. In this way, the over-approximation as illustrated above
 can be reduced.
 
-\subsection{Data Dependency Quantity Analysis}
+\subsection{Data Dependency Quantity Analysis Refinement}
 \label{subsec:refine-exe-reachability}
 % \input{chapters/dynamic/exe-depquantity}%
 2. In the second stage of the execution-based analysis, 
@@ -50,15 +54,8 @@ I will compute the weight of every edge constructed from
 length of the longest finite walk. Differently from the previous one, I restrict 
 the occurrence of every edge in a finite walk no more than its weight as well.
 %
-\section{Refined Execution-Based Adaptivity Analysis through Examples}
-\label{sec:dynamic-examples}
-Through the three steps above, I give a more accurate formalization of the intuitive \emph{adaptivity}.
-\input{examples/multipleRoundsSingle.tex}
 
-\section{Implementation}
-\label{sec:dynamic-implementation}
-%
-\section{Refined Static Program Analysis via Path Sensitive Reachability Bound Analysis}
+\section{Adaptivity Analysis via Static Path Sensitive Reachability Bound Analysis}
 \label{sec:refine-static}
 In static program analysis framework $\THESYSTEM$, specifically on the dependency quantity, 
 I adopt the reachability bound analysis technique to estimate this dependency quantity.
@@ -115,3 +112,9 @@ ideally the weight for vertex $p^6$ and $x^7$ will be $\frac{k}{2}$.
 % \\
 % 2. Modify the Algorithm~\ref{alg:adaptscc}, targeting the line: 12 of the algorithm. 
 % The goal is to reduce the over-approximation in computing adaptivity statically.
+
+\section{Adaptivity Analysis Refinment through Examples}
+\label{sec:improved-examples}
+Through the three steps above, I give a more accurate formalization of the intuitive \emph{adaptivity}.
+\input{examples/multipleRoundsSingleAccurate.tex}
+\input{examples/multipleRoundsOdd.tex}

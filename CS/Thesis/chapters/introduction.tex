@@ -1,10 +1,12 @@
 % %%%% Benifit of reasoning about 
 % \subsection{Motivation of Reasoning about Adaptivity}
 % % 
-\paragraph*{Introduction to Adaptivity Analysis}
+\section{Motivation of Reasoning the Adaptivity for Adaptive Data Analysis}
+\label{sect:intro-adapt}
 Consider a dataset $X$ consisting of $n$ independent samples from some unknown population $\dist$.  How can I ensure that the conclusions drawn from $X$ \emph{generalize} to the population $\dist$?  Despite decades of research in statistics and machine learning on methods for ensuring generalization, there is an increased recognition that many scientific findings generalize poorly (e.g. 
 \cite{Ioannidis05,GelmanL13}
-).  While there are many reasons a conclusion might fail to generalize, one that is receiving increasing attention is \emph{adaptivity}, which occurs when the choice of method for analyzing the dataset depends on previous interactions with the same dataset~\cite{GelmanL13}.
+). 
+ While there are many reasons a conclusion might fail to generalize, one that is receiving increasing attention is \emph{adaptivity}, which occurs when the choice of method for analyzing the dataset depends on previous interactions with the same dataset~\cite{GelmanL13}.
 
  Adaptivity can arise from many common practices, such as exploratory data analysis, using the same data set for feature selection and regression, and the re-use of datasets across research projects.  Unfortunately, adaptivity invalidates traditional methods for ensuring generalization and statistical validity, which assume that the method is selected independently of the data. The misinterpretation of adaptively selected results has even been blamed for a ``statistical crisis'' in empirical science~\cite{GelmanL13}.
 %  ~\cite{GelmanL13}.
@@ -87,7 +89,7 @@ In order to analyze this property, there are mainly three property.
 In this proposal, I will first focus on analyzing 
 this adaptivity property for program based on solving the three problems specifically as follows.
 
-\paragraph*{Adaptivity Analysis}
+\section{Introduction to Adaptivity Analysis}
 There are mainly three problems in order to analyse this adaptivity property, 
 and the full-spectrum analysis on this property is 
 % In this proposal, I will first focus on analyzing 
@@ -162,7 +164,7 @@ and accurately.
 \end{itemize}
 I will implement my program analysis and show that it can help to analyze the adaptivity of several concrete data analyses with different adaptivity structures.
 % \\
-\paragraph*{Towards the Accurate Program Resource Cost Analysis}
+\section{Introduction to Program Resource Cost Analysis}
 Then, motivated by the two following aspects,  I'm interested in improving the accuracy of program's general resource cost analysis
 by generalizing my \emph{adaptivity} analysis framework.
 \begin{itemize}
@@ -196,20 +198,20 @@ by generalizing my \emph{adaptivity} analysis framework.
    a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
    to the worst case cost analysis in traditional way.
 
-   \paragraph*{Towards Solving the CFL-Reachability Problem}
-Finally, based on the study on traditional way of performing data flow and control analysis,
-I identify the similarity between the traditional way of performing data flow and control analysis, and the 
-   adaptivity analysis.  
-   Specifically I identify the similarity between 
-   solving the feasible path problem in the analysis by reducing to CFL-reachability problems,
-   and the way of computing the adaptivity in my static analysis framework.
-   Motivated by this observation, 
-   % I'm insterested
-   % the, There are similarity between
-   % solving the data flow problem by reducing to CFL-reachability problem,
-   % resource analysis through reducing to CFL-reachability problem, 
-   I'm interested in showing that
-   CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework.
+%    \section{Towards Solving the CFL-Reachability Problem}
+% Finally, based on the study on traditional way of performing data flow and control analysis,
+% I identify the similarity between the traditional way of performing data flow and control analysis, and the 
+%    adaptivity analysis.  
+%    Specifically I identify the similarity between 
+%    solving the feasible path problem in the analysis by reducing to CFL-reachability problems,
+%    and the way of computing the adaptivity in my static analysis framework.
+%    Motivated by this observation, 
+%    % I'm insterested
+%    % the, There are similarity between
+%    % solving the data flow problem by reducing to CFL-reachability problem,
+%    % resource analysis through reducing to CFL-reachability problem, 
+%    I'm interested in showing that
+%    CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework.
 
    \section{Contributions}
 
@@ -223,33 +225,33 @@ I identify the similarity between the traditional way of performing data flow an
    \end{enumerate}
 
 %%%%% To reason about
-\section{Methodology}
-We use static analysis techniques to reason about the two main quantitative properties studied in this dissertation: 
-the adaptivity of adaptive data analysis programs,
-the reachability bound of while loop programs. 
+% \section{Methodology}
+% We use static analysis techniques to reason about the two main quantitative properties studied in this dissertation: 
+% the adaptivity of adaptive data analysis programs,
+% the reachability bound of while loop programs. 
 
-\subsection{Abstract Interpretation}
+% \subsection{Abstract Interpretation}
 
-\subsection{Dependency Graph}
-Another quantitative property we study is the adaptivity of adaptive data analysis programs. 
-{The adaptivity is defined to be the length of the longest chain of queries of the program in which one query may rely 
-on its previous queries in the same chain. 
-The adaptivity of a data analysis program is quite different from the relative cost of the two programs. To reason about cost, we can simply sum the costs of sub-programs to get the upper bound of the cost. However, the adaptivity of each sub-program of the target program does not help much in finding the adaptivity. To use a type and effect system to reason about adaptivity, this system should be able to express certain dependencies.
-% Of course, we can sum them but then the result becomes imprecise. For this reason, we think the type and effect system is not the good direction to reason about the adaptivity of a data analysis program since it is tricky for the effect to carry information such as one query may depend on the other one. 
-We expect adaptivity can also be reasoned about by type and effect systems but in this work, we choose to use a dependency graph to reason about adaptivity.}
+% \subsection{Dependency Graph}
+% Another quantitative property we study is the adaptivity of adaptive data analysis programs. 
+% {The adaptivity is defined to be the length of the longest chain of queries of the program in which one query may rely 
+% on its previous queries in the same chain. 
+% The adaptivity of a data analysis program is quite different from the relative cost of the two programs. To reason about cost, we can simply sum the costs of sub-programs to get the upper bound of the cost. However, the adaptivity of each sub-program of the target program does not help much in finding the adaptivity. To use a type and effect system to reason about adaptivity, this system should be able to express certain dependencies.
+% % Of course, we can sum them but then the result becomes imprecise. For this reason, we think the type and effect system is not the good direction to reason about the adaptivity of a data analysis program since it is tricky for the effect to carry information such as one query may depend on the other one. 
+% We expect adaptivity can also be reasoned about by type and effect systems but in this work, we choose to use a dependency graph to reason about adaptivity.}
 
-{There are two challenges to reason about adaptivity: what will a formal definition of the adaptivity of a data analysis program look like, and how to reason about the adaptivity. 
-In our work, the first challenge is solved by a query-based dependency graph generated along with the evaluation of the program. 
-Our trace-based operational semantics can generate the trace which tracks the queries asked in the evaluation of the program. 
-The query-based dependency graph is constructed based on the queries in the trace. Every node of the graph represents a unique query asked in the program, and the directed edge between two nodes, identifying one query (one node) may depend on the other one. 
-The adaptivity is then formally defined as the length of the longest path in the query-based dependency graph.}
-{The second challenge is how to estimate the adaptivity of a data analysis program we have just defined. 
-In order to upper bound the length of the longest path in the query-based dependency graph, we want to find a path in a dependency graph as well such that the path contains all the queries in that longest path in the query-based dependency graph. 
-We develop an algorithm to build a variable-based dependency graph, in which every node represents the unique variable that is assigned in one assignment statement of the program. 
-The direct edge between two nodes reflects both the data dependency and control flow dependency between variables. Also, we add the unit weight to the node whose variable is associated with a query result. Then the upper bound on the adaptivity of the data analysis program is estimated by the weight of the path with the highest weights in the variable-based dependency graph.}
+% {There are two challenges to reason about adaptivity: what will a formal definition of the adaptivity of a data analysis program look like, and how to reason about the adaptivity. 
+% In our work, the first challenge is solved by a query-based dependency graph generated along with the evaluation of the program. 
+% Our trace-based operational semantics can generate the trace which tracks the queries asked in the evaluation of the program. 
+% The query-based dependency graph is constructed based on the queries in the trace. Every node of the graph represents a unique query asked in the program, and the directed edge between two nodes, identifying one query (one node) may depend on the other one. 
+% The adaptivity is then formally defined as the length of the longest path in the query-based dependency graph.}
+% {The second challenge is how to estimate the adaptivity of a data analysis program we have just defined. 
+% In order to upper bound the length of the longest path in the query-based dependency graph, we want to find a path in a dependency graph as well such that the path contains all the queries in that longest path in the query-based dependency graph. 
+% We develop an algorithm to build a variable-based dependency graph, in which every node represents the unique variable that is assigned in one assignment statement of the program. 
+% The direct edge between two nodes reflects both the data dependency and control flow dependency between variables. Also, we add the unit weight to the node whose variable is associated with a query result. Then the upper bound on the adaptivity of the data analysis program is estimated by the weight of the path with the highest weights in the variable-based dependency graph.}
 
-{To summarize, we use two dependency graphs for reasoning about the adaptivity of a data analysis program: 
-one query-based dependency graph to define the adaptivity, and one weighted variable-based dependency graph to estimate an upper bound on the adaptivity. }
+% {To summarize, we use two dependency graphs for reasoning about the adaptivity of a data analysis program: 
+% one query-based dependency graph to define the adaptivity, and one weighted variable-based dependency graph to estimate an upper bound on the adaptivity. }
 
 
 
