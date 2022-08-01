@@ -86,35 +86,294 @@ length of the longest finite walk with newly definition.
 
 \paragraph{Accurate Execution-Based Data Dependency Analysis}
 \label{subsec:refine-exe-datadep}
-\input{chapters/dynamic/exe-dep.tex}
-
-1. In the first stage of the execution-based analysis, 
+In the first stage of the execution-based analysis, 
 I will give an alternative variable \emph{may-dependency} definition 
 by referring to the analysis methodology in \cite{Cousot19a}.
-\\
+
 Specifically, I will define the variables dependency relation over two witness traces and an initial trace. Comparing to 
 the existing \emph{may-dependency} definition, which quantifies overall possible execution traces, the alternative
 definition explicitly relies on two specific witness traces from execution.
+
+In order to define this two witness traces based \emph{may-dependency} definition, we 
+need to observe the evaluation variation differently.
+New definitions on value difference is necessary in order to observe the evaluation variation in a different way, formally as follows.
+\highlight{
+\begin{defn}[Value Sequence $\seq(\trace, x^l)$]
+  \label{def:vseq}
+  \[
+\begin{array}{l}
+  \seq(\trace :: (x, l, v, \bullet), x^l) \triangleq \seq(\trace)::v  \qquad
+  \seq(\trace :: (x, l, v, \qval), x^l) \triangleq \seq(\trace):: \qval \qquad
+  \seq([]) \triangleq []\\
+  \seq(\trace :: (y, j, \_, \_), x^l) \triangleq \seq(\trace) \quad y \neq x \lor j \neq l 
+\end{array}
+\]
+\end{defn}
+%
+\begin{defn}[Difference Sequence $\sdiff(\trace_1, \trace_2, x^l )$]
+  \label{def:diffseq}
+  Let $ s_1 = \seq(\trace_1, x^l) \land s_2 = \seq(\trace_2, x^l)$ be the value sequence of $x^l$ 
+  on $\trace_1$ and $\trace_2$, and $s^l$ be the sequence with longer length and $s^t$ the 
+  shorter one,
+  then their difference sequence is defined as follows,
+  \[
+    \sdiff(\trace_1, \trace_2, x^l) \triangleq
+    \begin{array}{l}
+      \{ (s^t[k], s^l[k]) ~|~ 
+      % \land 
+      % \land 
+      s^t[k] \neq s^l[k], k = 0, \ldots, len(s^t)
+      \}
+      \\
+      \cup 
+      \{ (\cdot, s^l[k]) ~|~ 
+      \len(s^t) \leq \len(s^l)k = len(s^t), \ldots \len(s^l)
+      \}
+    \end{array}
+    \]
+\end{defn}
+}
+Then, alternative variable \emph{may-dependency} is formally defined as follows,
+\begin{defn}[Variable May-Dependency]
+    \label{def:improved_var_dep}
+\highlight{
+    A labeled variable $y^j \in \lvar(c)$ is in the \emph{may-dependency} relation with another
+    labeled variable $x^i \in \lvar(c)$ in a program ${c}$, w.r.t. an initial trace $\trace_0 \in \mathcal{T}_0(c)$
+    and two witness traces $\trace_1, \trace_2 \in \mathcal{T}$,
+    denoted as 
+    %
+    $\dep(x^i, y^j, \trace_1, \trace_2, \trace_0, {c})$, if an only if
+    \[
+      \begin{array}{l}
+    \exists 
+    D \in \dbdom, 
+    \trace_0' \in \mathcal{T} \sthat
+    (\forall z \neq x \sthat   \env(\trace_0 ) z =   \env(\trace_0') z )
+    \\ \quad \land 
+     \config{{c}, \vtrace_0} \rightarrow^{*} 
+      \config{\clabel{\eskip}^l, \vtrace_0  \tracecat \trace_1 } 
+      \land 
+      % \config{{c}_1, \vtrace_0' \tracecat [\event_1']}  \rightarrow^{*} 
+      % \config{\clabel{\eskip}^l,  
+      % \vtrace_0' \tracecat [\event_1] \tracecat \trace_2 }   
+      \config{{c}, \vtrace_0'} \rightarrow^{*} 
+      % \config{{c}_1, \vtrace_0' \tracecat [\event_1]}  \rightarrow^{*} 
+        \config{\clabel{\eskip}^l, \vtrace_0'  \tracecat \trace_2} 
+      \land 
+        \sdiff(\trace_1, \trace_2, y^j ) \neq \emptyset
+      \end{array}
+    \]  
+  }
+    \end{defn}
 This externalization helps in analyzing the dependency quantity through the same 
 witness traces as the \emph{may-dependency} relation. In this way, the over-approximation as illustrated above
 can be reduced.
+% \input{chapters/dynamic/exe-dep.tex}
 
 \paragraph{Accurate Data Dependency Quantity Analysis}
 \label{subsec:refine-exe-reachability}
 % \input{chapters/dynamic/exe-depquantity}%
-2. In the second stage of the execution-based analysis, 
+In the second stage of the execution-based analysis, 
 based on the new \emph{may-dependency} definition,
-I will compute the weight of every edge constructed from 
-\emph{may-dependency} relation in the execution-based dependency graph, w.r.t. to the witness traces.
+I compute the execution-based reachability bound for every pair of 
+labeled in the
+\emph{may-dependency} relation w.r.t. an initial trace. Formally as follows,
+%
+% For a program $c$ I compute the reachability bound for every labeled variable overall $c$'s execution traces,
+% w.r.t. an initial trace as follows,
+\[
+    \begin{array}{l}
+        rb(x^i, y^j) \triangleq 
+%   x^i, y^j \in \lvar(c)
+%   \land w \in \mathcal{P}( \mathcal{T}_0(c) \to \mathbb{N})
+%   \land 
+%   \exists \trace \in \mathcal{T}_0(c), 
+%   \trace_1, \trace_2 \in \mathcal{T} \sthat \dep(x^i, y^j,\trace_1, \trace_2, \trace_0, c)
+%   \\
+%   \land 
+\forall \trace_0 \in \mathcal{T}_0(c) \sthat
+  w (\trace_0) = \max \left\{ | \sdiff(\trace_1, \trace_2, y)|
+  ~\middle\vert~
+  \forall \trace_1, \trace_2 \in \mathcal{T} \sthat \dep(x^i, y^j,\trace_1, \trace_2, \trace_0, c) \right\}
+\end{array}
+\]
+%
+For any pair of labeled variable $(x^i, y^j) \in \ldom$, 
+$ rb(x^i, y^j)$ is a function $w: \mathcal{T}_0(c) \to \mathbb{N}$,
+    where given an initial trace $\trace_0$,
+    it is the maximum length of the difference sequence between all pairs of the witness traces $\trace_1, \trace_2$ 
+    satisfying the dependency relation.
 %
 \paragraph{Accurate Execution-Based Adaptivity Analysis}
 \label{subsec:refine-exe-adapt}
 % \input{chapters/dynamic/exe-adapt}%
 %
-3. Then in the third stage, I will formalize the \emph{adaptivity} still as the 
-length of the longest finite walk. Differently from the previous one, I restrict 
-the occurrence of every edge in a finite walk no more than its weight as well.
+In the third stage, the execution-based dependency graph is defined in a different way as follows,
+\begin{defn}[Execution Based Dependency Graph]
+    \label{def:trace_graph}
+    Given a program ${c}$,
+    its \emph{Execution-Base Dependency Graph} 
+    $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is defined as follows,
+    % over all possible traces,
+    %
+    \highlight{\small
+    \[
+    \begin{array}{lcl}
+      % \text{Vertices} &
+      \traceV({c}) & := & 
+      \{ 
+      (x^l, w) 
+      % \in \mathcal{LV} \times \mathbb{N}
+      ~ \vert ~ 
+      w : \mathcal{T} \to \mathbb{N}
+      \land
+      x^l \in \lvar(c) 
+      \\ & &
+      \land
+      % n = \max \left\{ 
+        % ~ \middle\vert~
+      \forall \trace \in \mathcal{T}_0(c), \trace' \in \mathcal{T} \sthat \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+      \implies w(\trace) = \vcounter(\vtrace', l) 
+      %  \right\}
+    %   \right
+    \}
+      \\
+      % \text{Edges} &
+      \traceE({c}) & := & 
+      \{ 
+      (x^i, w, y^j) 
+    %   \in \mathcal{LV} \times \mathcal{LV}
+      ~ \vert ~
+      x^i, y^j \in \lvar(c)
+      \land w \in \mathcal{P}( \mathcal{T}_0(c) \to \mathbb{N})
+      \land 
+      \exists \trace \in \mathcal{T}_0(c), 
+      \trace_1, \trace_2 \in \mathcal{T} \sthat \dep(x^i, y^j,\trace_1, \trace_2, \trace_0, c)
+      \\ & &
+      \land \forall \trace_0 \in \mathcal{T}_0(c) \sthat
+      w (\trace_0) = \max \left\{ | \sdiff(\trace_1, \trace_2, y)|
+      ~\middle\vert~
+      \forall \trace_1, \trace_2 \in \mathcal{T} \sthat \dep(x^i, y^j,\trace_1, \trace_2, \trace_0, c) \right\}
+      \}
+    \end{array}
+    \]
+    }
+    \end{defn}
+    There are two components of the execution-based dependency graph. 
+    \\
+    \highlight{
+    The vertices $\traceV(c)$  is a set of pairs, $(x^l, w) \in \mathcal{LV} \times (\mathcal{T} \to \mathbb{N})$,
+    with a labeled variable as first component and
+    its weight $w$ the second component.
+    Weight $w$ for
+    % a labeled variable 
+    $x^l$ is a function $w : \mathcal{T} \to \mathbb{N}$
+    mapping from a starting trace to a natural number.
+    When program executes under this starting trace $\trace$,
+    $\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} $, it generates an execution trace $\trace'$.
+    This natural number is the evaluation times of the labeled command corresponding to the vertex, 
+    computed by the counter operator $w(\trace) = \vcounter(\vtrace', l)$.
+    We can see in the execution-based dependency graph of $\kw{twoRounds}$ in
+     Figure~3(b) in main paper, the weight of vertices in the while loop is  $\env(\trace) k$, which depends on the value of the user input $k$ specified in the starting trace $\tau$.
+    \\
+    The directed edges $\traceE({c})$ is a set of triples $ (x^i, w, y^j) \in \mathcal{LV} \times \mathcal{P}(\mathcal{T}_0(c) \to \mathbb{N}) \times \mathcal{LV}$,
+     with two labeled variables (from $x^i$ pointing to $y^j$) and a weight $w$ for this edge.
+    % comes 
+    The edges are constructed directly from our variable may-dependency relation. 
+    For any two vertices $x^{i}$ and $y^{j}$ in $\traceV(c)$, if there exists two witness traces $\trace_1, \trace_2$ and an initial trace $\trace_0 \in \mathcal{T}_0$ such that,
+    they satisfy the variable may-dependency relation 
+    $\dep(x^i, y^j, \trace_1, \trace_2, \trace_0, c)$ , 
+    there is a direct edge. 
+    The weight of the edge is a function $w: \mathcal{T}_0(c) \to \mathbb{N}$,
+    where given an initial trace $\trace_0$,
+    it is the maximum length of the difference sequence between all pairs of the witness traces $\trace_1, \trace_2$ 
+    satisfying the dependency relation.
+    }
+    Then, the \emph{adaptivity} is still formalized as the 
+length of the longest finite walk. 
+Differently from the previous one, I restrict 
+the occurrence of every edge in a finite walk no more than its weight as well. Formally as follows,
+\begin{defn}[Finite Walk (k)].
+    \label{def:finitewalk}
+    \\
+    Given the execution-based dependency graph $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ of a program $c$,
+    a \emph{finite walk} $k$ in $\traceG({c})$ is a 
+    function $k: \mathcal{T} \to $ sequence of edges.
+    For a initial trace $\trace_0 \in \mathcal{T}_0(c)$, 
+    $k(\trace_0)$ is a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+    for which there is a sequence of vertices 
+    $(v_1, \ldots, v_{n})$ such that:
+    \begin{itemize}
+        \item \highlight{
+          $e_i = (v_{i}, w_i, v_{i + 1}) \in \traceE(c)$ for every $1 \leq i < n$, 
+          and $e_i$ appears in $(e_1 \ldots e_{n - 1})$  at most $w_i(\trace_0)$
+          times.
+        }
+        \item every $(v_i, w_i) \in \traceV(c)$
+        % and $(v_i, w_i) \in \traceW(c)$, 
+         and $v_i$ appears in $(v_1, \ldots, v_{n})$ at most 
+      %   \wq{$\traceW({c})(\trace)$} 
+      $w_i(\trace_0)$
+        times.  
+    \end{itemize}
+    %
+    The length of $k(\trace_0)$ is the number of vertices in its vertices sequence, i.e., $\len(k)(\trace_0) = n$.
+   \end{defn}
+  
+  We use $\walks(\traceG(c))$ to denote 
+  % \mg{``the set'', not ``a set''}a set containing all finite walks $k$ in $G$;
+  the set containing all finite walks $k$ in $\traceG(c)$;
+  and $k_{v_1 \to v_2} \in \walks(\traceG(c))$ with $v_1, v_2 \in \traceV(c)$ denotes the walk from vertex $v_1$ to $v_2$ . 
+  \\
+  We are interested in queries, so we need to recover the 
+  variables corresponding to queries from the walk. We define the query length of a walk, 
+  instead of counting all 
+  the vertices in $k$'s vertices sequence, we just count the number of vertices which correspond to query variables in this sequence.
+  %
+  % \mg{I don't understand this definition. Is wrt a single query?if yes, who is chosing the query? Or is it any query?}
+  % \jl{It is for any query, as long as the vertex is a query variable, in another worlds, this length just counting the number of query variables in the walk, instead of counting all 
+  % the vertices.}
+  % \todo{Make the definition clear}
+  \begin{defn}[Query Length of the Finite Walk($\qlen$)].
+  \label{def:qlen}
+  \\
+  Given 
+  the execution-based dependency graph 
+  $\traceG({c}) = (\traceV({c}), \traceE({c}))$ of a program $c$,
+   and a \emph{finite walk} 
+  %  $k$ in $\traceG(c)(\trace)$
+   $k \in \walks(\traceG(c))$. 
+  %  with its vertex sequence $(v_1, \ldots, v_{n})$, 
+  %  the length of $k$ w.r.t query is defined as:
+  The query length of $k$ is a function $\qlen(k): \mathcal{T} \to \mathbb{N}$, such that with an initial trace  $\trace_0 \in \mathcal{T}_0(c)$, $\qlen(k)(\trace_0)$ is
+  the number of vertices which correspond to query variables in the vertices sequence of the walk $k(\trace_0)$
+  $(v_1, \ldots, v_{n})$ as follows, 
+  \[
+    \qlen(k)(\trace_0) = |\big( v \mid v \in (v_1, \ldots, v_{n}) \land v \in \qvar(c) \big)|.
+  \]
+  % , where $\trace_0 \in \mathcal{T}$ is the initial trace and $\big(v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)$ is a subsequence of $(v_1, \ldots, v_{n})$.
+  %  $k$'s vertex sequence.
+  % \mg{If I understand where you want to go, why don't you just use the cardinality of the set above, rather than taking the length of a subsequence?}
+  % \jl{because the same vertex could have multiple occurrence in the sequence, and we will count all the occurrence instead of just once.
+  % So the cardinality of set doesn't work.}
+  \end{defn}
 %
+With the alternative finite walk and query length definition, the adaptivity in execution-based analysis 
+is formalized in the same way as in Definition~\ref{def:trace_adapt}.
+\begin{defn}
+    [Adaptivity of a Program].
+    \\
+    Given a program ${c}$, 
+    its adaptivity $A(c)$ is function 
+    $A(c) : \mathcal{T} \to \mathbb{N}$ such that for an
+    % with respect to a starting trace $\trace$ 
+    initial trace $\trace_0 \in \mathcal{T}_0(c)$, 
+    % is defined as follows:
+    %
+   $$
+    A(c)(\trace_0) = \max \big 
+    \{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \} $$
+    \end{defn}
 
 \section{Accurate Static Adaptivity Analysis}
 \label{sec:refine-static}
@@ -228,25 +487,397 @@ As shown in Figure~\ref{fig:multipleRoundsOdd_example},
 through the newly-designed path sensitive reachability bound analysis,
 ideally the weight for vertex $p^6$ and $x^7$ will be $\frac{k}{2}$.
 
-this improved analysis result will be applied to estimate the dependency quantity as follows,
-\begin{itemize}
-    \item $\THESYSTEM$ will construct different abstract control flow graph based on the requirement of the newly-designed
-    path-sensitive reachability bound algorithm.
+With extension as follows,
+\subsubsection{Extended Static Data Dependency Analysis}
+by using the results of Reaching definition analysis results, specifically $\live(l, c)$ for every label in a program $c$, we refine the vertices and edges in the $\absG$ graph 
+by generating the set of feasible data-flow between labeled variables as follows,
+\begin{defn}[Feasible Data-Flow]
+  \label{def:feasible_flowsto}
+  Given a program $c$ and two labeled variables $x^i, y^j$  in this program, 
+  $\flowsto(x^i, y^j, c)$ is 
+    {\footnotesize
+    \[
+   \begin{array}{ll}
+    \flowsto(x^i, y^j, \clabel{\assign{x}{\expr}}{}^l)  & \triangleq (x^i, y^j) \in \{ (y^i, x^l) | y \in \mathsf{FV}(\expr) 
+    % \land (y,i) \in \live(l, \clabel{\assign{x}{\expr}}^l) \}  \\
+    \land y^i \in \live(l, \clabel{\assign{x}{\expr}}^l) \}  \\
+    \flowsto(x^i, y^j, \clabel{\assign{x}{\query(\qexpr)}}{}^l)  & \triangleq (x^i, y^j) \in \{ (y^i, x^l) | y \in \mathsf{FV}(\qexpr) 
+    % \land (y,i) \in \live(l,\clabel{\assign{x}{\query(\qexpr)}}^l) \}  \\
+    \land y^i \in \live(l,\clabel{\assign{x}{\query(\qexpr)}}^l) \}  \\
+    \flowsto(x^i, y^j, [\eskip]^{l}) & \triangleq \efalse \\
+    \flowsto(x^i, y^j, \eif ([b]^l, c_1, c_2))  & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\ 
+        & \lor (x^i, y^j) \in
+       \{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+      %  (x,i) 
+      x^i \in \live(l, \eif ([b]^l, c_1, c_2)) \land  y^j \in \lvar(c_1) \\
+       &\lor (x^i, y^j) \in \{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+      %  (x,i) 
+      x^i\in \live(l, \eif ([b]^l, c_1, c_2))  \land  y^j \in \lvar(c_2) \\
+       \flowsto(x^i, y^j, \ewhile [b]^l \edo c_w)  & \triangleq  \flowsto(x^i, y^j, c_w)  \lor
+       \\ & 
+       (x^i, y^j) \in  \{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+      %  (x,i) 
+      x^i \in \live(l,   \ewhile [b]^l \edo c_w) \land  y^j \in \lvar(c_w) \\
+      \flowsto(x^i, y^j, c_1 ;c_2)  & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\
+      {\highlight{\flowsto(x^i, y^j, \clabel{\efun}^l: f ~ (r, x_1, \ldots, x_n) := c) }}
+       & \triangleq \efalse\\
+       {\highlight{\flowsto(x^i, y^j, \clabel{\assign{x}{\ecall(f, e_1, \ldots, e_n)}}^l )} } 
+       &     
+       \triangleq
+       \flowsto(x^i, y^j, \clabel{\assign{x_i}{e_i}}^{(l,i)}) \lor
+       \flowsto(x^i, y^j, \clabel{c^{+n}}^l) 
+       \\ & \quad
+       \lor
+       \left(\flowsto(x^i, y^j, \clabel{\assign{x}{r}}^{l}) 
+       \land f(r, x_1, \ldots, x_n) := c\in \live(l, c) \right)
+   \end{array}
+   \]
+   }
+   \end{defn}
+%
+We prove that this \emph{Feasible Data-Flow} relation is a sound approximation 
+of the \emph{Variable May-Dependency} relation over labeled variables for every program,
+in Appendix~\ref{apdx:flowsto_soundness_extend}.
+%
+\subsubsection{Extended Static Data Dependency Quantity Analysis}
+\paragraph*{Data Dependency Quantity over pair of Labeled Variables }
+Then we define the estimated directed edges
+% for each vertex in $\progV(c)$,
+between vertices $({x}_1^{i}, w_1)$  
+and $({x}_2^{j}, w_2)$ 
+where ${x}_1^{i}, {x}_2^{j} \in \lvar(c)$,
+as a set of triples 
+% $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{LV} \times EXPR(\constdom))$ 
+$\progE(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{A}_{\lin} \times \mathcal{LV})$
+% is the set of pairs 
+% The weight for each vertex in $\progV(c)$ is computed 
+indicating a directed edge from the first vertex to the second one in each pair
+as follows,
+\highlight{
+  \[
+    \progE^0(c) \triangleq 
+    \left\{ 
+    ({x}_1^{i}, w, {x}_2^{j}) \in \mathcal{LV} \times 
+    \mathcal{A}_{\kw{in}} \times \mathcal{LV}
+    ~ \middle\vert ~
+    \begin{array}{l}
+      {x}_1^{i}, {x}_2^{j} \in \lvar(c)
+    \land
+      % \\
+      \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat 
+      n \geq 0 \land
+      \\
+      \flowsto(x^i,  z_1^{r_1}, c) 
+      \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
+    \end{array}
+    \right\}
+    \]
+}
+with compute the weight for each edge in $\progE(c)$ computed above,
+% % as a set of pairs $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{LV} \times EXPR(\constdom))$ 
+% as a set of pairs 
+% % is the set of pairs 
+% % The weight for each vertex in $\progV(c)$ is computed 
+% mapping each $x^l \in \progV(c)$ to a symbolic expression over $\constdom$. Since symbolic expression 
+% over $\constdom$ is a subset of arithmetic expressions,
+% we use $\mathcal{A}_{in}$ denotes the arithmetic expression 
+% over $\mathcal{N}$ and input variable and $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{A}_{in})$ 
+% as follows,
+\highlight{
+% :
+% \\
+ \[
+   \progE(c) \triangleq
+   \left\{ (x^i, w, y^j) 
+\mid
+(x^i, w, y^j) \in \progE^0(c) \land 
+% w = \max\limits_{\absevent = (i, \_, j)} \{ \absclr(\absevent)\} 
+w = \max \left\{ \absclr(\absevent) ~\mid~ \absevent \in \absflow(c) \land \absevent = (i, \_, j) \right\} 
+\right\}.
+\]
+}
+%
+% Since 
+We prove that this 
+% symbolic expression is the upper bound for $x^l$'s 
+symbolic expression $w$ for edge $(x^i, w, y^j) \in \progE(c)$
+ is a sound upper bound of 
+the weight for the same edge $(x^i, w', y^j)$ in Program's execution-based dependency graph in Appendix~\ref{apdx:edgeweight_soundness}.
+% The maximum visiting times of $x^l$ over all execution traces of $c$ in Appendix~\ref{apdx:reachability_soundness}. 
+%
+\begin{thm}[Soundness of the Edge Weight Estimation]
+  \label{thm:edgeweight_soundness}
+Given a program ${c}$ with its program-based dependency graph 
+$\progG = (\progV, \progE)$,
+$\traceG = (\traceV, \traceE)$, we have:
+%
+\[
+\forall (x^l, w_{t}) \in \traceW,
+(x^l, w_{p}) \in \progW, \vtrace \in \mathcal{T} \sthat
+\config{{c}, \trace} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace'} 
+\land 
+\config{w_{p}, \trace} \earrow v
+\implies
+% \right\} 
+\leq 
+w_{t}(\trace) \leq v
+\]
+\end{thm}
 
-    \item The improved $\THESYSTEM$ will perform the same algorithm for analyzing the dependency relation in the first stage.
-    \item But in the second stage, the improved $\THESYSTEM$ 
-    apply the newly-designed  path-sensitive reachability bound algorithm for analyzing the dependency quantity.
-    The result from the new algorithm 
-    give a tighter approximation on the dependency quantity,
-    specifically on the reachability times of the program's every location.
-    \item Based on the two results analyzed from the steps above, 
-    i.e., the estimated dependency relation and the tighter reachability bound, the improved $\THESYSTEM$ will construct
-a more accurate program-based data dependency graph.
-%  constructed in Section~\ref{subsubsec:static-adapt}
-Then, by applying the same algorithm as in Section~\ref{subsubsec:static-adapt}, 
-the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.%
-\end{itemize}
+% this improved analysis result will be applied to estimate the dependency quantity as follows,
+% \begin{itemize}
+%     \item $\THESYSTEM$ will construct different abstract control flow graph based on the requirement of the newly-designed
+%     path-sensitive reachability bound algorithm.
 
+%     \item The improved $\THESYSTEM$ will perform the same algorithm for analyzing the dependency relation in the first stage.
+%     \item But in the second stage, the improved $\THESYSTEM$ 
+%     apply the newly-designed  path-sensitive reachability bound algorithm for analyzing the dependency quantity.
+%     The result from the new algorithm 
+%     give a tighter approximation on the dependency quantity,
+%     specifically on the reachability times of the program's every location.
+%     \item Based on the two results analyzed from the steps above, 
+%     i.e., the estimated dependency relation and the tighter reachability bound, the improved $\THESYSTEM$ will construct
+% a more accurate program-based data dependency graph.
+% %  constructed in Section~\ref{subsubsec:static-adapt}
+% Then, by applying the same algorithm as in Section~\ref{subsubsec:static-adapt}, 
+% the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.%
+% \end{itemize}
+\paragraph*{Extended Static Adaptivity Analysis}
+we build the estimated data dependency graph based on the above program static analysis as follows:
+\\
+\highlight{
+  \[
+    % \progG(c) = (\progV(c), \progE(c), \progW(c), \progF(c))
+    \progG(c) = (\progV(c), \progE(c))
+    \]
+}
+with $\progV(c)$ and  $\progE(c)$
+as computed in each steps above.
+%
+This program-based graph program-based graph has a similar topology structure as 
+% the one
+% of 
+the Execution-Based Dependency Graph. It has the same
+vertices 
+% and query annotations, 
+but approximated edges and weights.  
+% The algorithm computation is 
+It is formally defined in Definition~\ref{def:prog_graph}.
+% Through the reachable definition set on every label,
+% we remove the edges between labels where the variables associated to that labeled command isn't reachable from the second location.
+%\absG(c) =(\absV, \absE, \absW)
+\begin{defn}
+  [Program-Based Dependency Graph]
+  \label{def:improved_prog_graph}
+  % [Program-Based Weighted Data Dependency Graph Generation Algorithm]
+% \label{def:analyz_dcfg}
+Given a program $c$, with its abstract weighted control flow graph $\absG(c) = (\absV, \absE, \absW)$ and 
+feasible data flow relation $\flowsto(x^i, y^j, c)$ for every $x^i, y^j \in \lvar_c$, its Program-Based Weighted Data Dependency Graph
+$\progG(c) = (\progV, \progE)$,
+is generated as follows,
+{\footnotesize
+\[
+\begin{array}{lcl}
+\progV(c) & \triangleq &
+% \bigcup
+% \begin{array}{l}
+\left\{ (x^l, w) \in  \mathcal{LV} \times \mathcal{A}_{in}
+\mid
+x^l \in \lvar_{{c}} \land (l, w) \in \absW(c)
+\right\}
+\\
+\progE(c) & \triangleq &
+   \Big\{ (x^i, w, y^j) \in \mathcal{LV} \times 
+   \mathcal{A}_{\kw{in}} \times \mathcal{LV}
+~\mid~
+  \\ & & \quad 
+x^i, y^j \in \lvar(c) \land \flowsto(x^i, y^j, c) \land
+  \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat 
+  n \geq 0 
+  % \\ & & \quad 
+  % \flowsto(x^i,  z_1^{r_1}, c) 
+  \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
+  \\ & & \quad 
+  \land
+  w = \max \left\{ \absclr(\absevent) ~\mid~ \absevent \in \absflow(c) \land \absevent = (i, \_, j) \right\} 
+\Big\}.
+\end{array}
+\] }
+\end{defn}
+%  from refined weighted-labeled data-flow graph}
+Then, we define the adaptivity upper bound for a program $c$ under the extended definition.
+% Given a program ${c}$, we generate
+\\
+With
+% its 
+$c$'s program-based data dependency graph $\progG({c})$ approximated above,
+%
+its adaptivity upper bound 
+% Defined in Definition~\ref{def:prog_adapt} as 
+%
+is estimated as
+% Then the adaptivity bound based on program analysis for ${c}$ 
+% is the number of query vertices on a finite walk in $\progG({c})$. This finite walk satisfies:
+% \begin{itemize}
+% \item the number of query vertices on this walk is maximum
+% \item the visiting times of each vertex $v$ on this walk is bound by its reachability bound $\weights(v)$.
+% \end{itemize}
+the maximum query length over all finite walks in $\walks(\progG({c}))$ formally in Definition~\ref{def:prog_adapt}, 
+and computed 
+% is computed as the maximum query length over all finite walks in $\walks(\progG({c}))$, and computed 
+in Algorithm~\ref{alg:adpt_alg}.
+%
+% It is formally defined in \ref{def:prog_adapt}.
+% defined formally as follows.
+%
+% %
+% \begin{defn}
+% [{Program-Based Adaptivity}].
+% \label{def:prog_adapt}
+% \\
+% {
+% Given a program ${c}$ and its program-based graph 
+% $\progG({c})$
+% %  = (\vertxs, \edges, \weights, \qflag)$,
+% %
+% the program-based adaptivity for $c$ is defined as%
+% \[
+% \progA({c}) 
+% \triangleq \max
+% \left\{ \qlen(k)\ \mid \  k\in \walks(\progG({c}))\right \}.
+% \]
+% }
+% \end{defn} 
+
+% We use $\walks(\progG(c))$ represents the walks over the program-based dependency graph for $c$.
+Different from the finite walk on a program $c$'s execution based graph,
+%  $\traceG(c)$, 
+% $k \in \walks(\progG(c))$ 
+the finite walk in $\progG(c)$ doesn't rely on initial trace.
+The occurrence times of every $v_i $ in $k$'s vertex sequence is bound by 
+an arithmetic expression $w_i$ where $(v_i, w_i) \in \progV(c)$, is $v_i$'s estimated weight. 
+% Then $\qlen(k) \in \mathcal{A}_{in}$ as well. 
+% The full definition for $\walks(\progG(c))$ and $\qlen$ over $\walks(\progG(c))$ is in Apdix.
+%
+Formally defined as follows.
+\begin{defn}[Finite Walk on Program-Based Dependency Graph ($k$)].
+  \label{def:prog_finitewalk}
+  \\
+%   Given a program $c$'s execution-based dependency graph $\traceG({c})(\trace)$, 
+%   a \emph{finite walk} $fw$ in $\traceG({c})(\trace)$ is a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+%   for which there is a sequence of vertices $(v_1, \ldots, v_{n})$ such that:
+%   \begin{itemize}
+%       \item $e_i = (v_{i},v_{i + 1})$ for every $1 \leq i < n$.
+%       \item every vertex $v \in \traceV({c}) $ appears in $(v_1, \ldots, v_{n})$ at most 
+%       \wq{$\traceW({c})(\trace)$} times.  
+%   \end{itemize}
+%   %
+%   The length of $fw$ is the number of vertices in its vertex sequence, i.e., $\len(k) = n$.
+  Given a program $c$'s program-based dependency graph 
+  $\progG({c}) = (\progV(c), \progE(c))$
+  % , \progW(c), \progF(c))$, 
+  a \emph{finite walk} $k$ in $\traceG({c})$ is
+  % function $k: \mathcal{T} \to $ 
+  % sequence of edges.
+  % For a initial trace $\trace_0 \in \mathcal{T}$, 
+  % $k(\trace_0)$ is
+  a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+  for which there is a sequence of vertices 
+  $(v_1, \ldots, v_{n})$ such that:
+  \begin{itemize}
+      \item 
+      \highlight{
+        $e_i = (v_{i},w_i, v_{i + 1}) \in \progE(c)$ for every $1 \leq i < n$,
+        and occurrence times of $e_i$ smaller than $w_i$.
+        }
+      \item 
+      \highlight{
+        every vertex $(v_i, w_i) \in \progV(c)$,
+       $v_i$ appears in $(v_1, \ldots, v_{n})$ at most 
+    %   \wq{$\traceW({c})(\trace)$} 
+    $w_i$
+      times. } 
+  \end{itemize}
+  %
+  The length of $k$ is the number of vertices in its vertex sequence, i.e., $\len(k) = a$.
+ \end{defn}
+  We abuse the notation $\walks(\progG(c))$ represents the walks over the program-based dependency graph for $c$.
+Different from the walks on a program $c$'s execution based graph,
+ $k \in \walks(\traceG(c))$, 
+$k \in \walks(\progG(c))$ doesn't rely on initial trace.
+The occurrence times of every $v_i $ in $k$'s vertex sequence is bound by 
+an arithmetic expression $w_i$ where $(v_i, w_i) \in \progV(c)$, is $v_i$'s estimated weight. 
+% Notice here, for a walk in $\progG(c)$, the occurrence times of every vertex in vertices sequence, 
+%  and its 
+ The length of a finite walk $k \in \walks(\progG(c))$ is an arithmetic expression
+ as well, i.e., $\len(k) \in \mathcal{A}_{in}$
+
+ Then the query length of a finite walk in  $\progG(c)$ is an arithmetic expression as well as follows,
+%  $\qlen(k) \in \mathcal{A}_{in}$ as well. 
+% The adaptivity upper bound 
+% is estimated as
+% Then the adaptivity bound based on program analysis for ${c}$ 
+% is the number of query vertices on a finite walk in $\progG({c})$. This finite walk satisfies:
+% \begin{itemize}
+% \item the number of query vertices on this walk is maximum
+% \item the visiting times of each vertex $v$ on this walk is bound by its reachability bound $\weights(v)$.
+% \end{itemize}
+\begin{defn}[Query Length of the Finite Walk on Program-Based Dependency Graph ($\qlen$)]
+  \label{def:qlen}
+  % Given 
+  % % labelled weighted graph $G = (\vertxs, \edges, \weights, \qflag)$, 
+  % a program $c$'s execution-based dependency graph $\traceG(c)(\trace)$
+  %  and a \emph{finite walk} $k$ in $\traceG(c)(\trace)$ with its vertex sequence $(v_1, \ldots, v_{n})$, 
+  % %  the length of $k$ w.r.t query is defined as:
+  % The query length of $k$ is the number of vertices which correspond to query variables in $(v_1, \ldots, v_{n})$ as follows, 
+  % \[
+  %   \qlen(k) = \len\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)
+  % \]
+  % , where $\big(v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)$ is a subsequence of $(v_1, \ldots, v_{n})$.
+  Given 
+  % labelled weighted graph $G = (\vertxs, \edges, \weights, \qflag)$, 
+  a program $c$'s execution-based dependency graph 
+  $\progG({c}) = (\progV(c), \progE(c))$, 
+   and a \emph{finite walk} $k \in \walks(\progG(c))$,
+  %  $k$ in $\traceG(c)(\trace)$
+  %  $k \in \walks(\traceG(c))$. 
+  %  with its vertex sequence $(v_1, \ldots, v_{n})$, 
+  %  the length of $k$ w.r.t query is defined as:
+  The query length of $k$, $\qlen(k) \in \mathcal{A}_{in}$ 
+  % is a function $\qlen(k): \mathcal{T} \to \mathbb{N}$, such that with an initial trace  $\trace_0 \in \mathcal{T}$, 
+  % $\qlen(k)(\trace_0)$ 
+  is the number of vertices which correspond to query variables in the vertices sequence of the this walk $k$
+  $(v_1, \ldots, v_{n})$ as follows, 
+  \[
+    \qlen(k) = |\big( v \mid v \in (v_1, \ldots, v_{n}) \land v \in \qvar(c) \big)|.
+  \]
+  \end{defn}
+% is computed as the maximum query length over all finite walks in $\walks(\progG({c}))$, and computed 
+%
+% It is formally defined in \ref{def:prog_adapt}.
+% defined formally as follows.
+%
+%
+\begin{defn}
+[{Program-Based Adaptivity}].
+\label{def:prog_adapt}
+\\
+{
+Given a program ${c}$ and its program-based graph 
+$\progG({c})$
+%  = (\vertxs, \edges, \weights, \qflag)$,
+%
+the program-based adaptivity for $c$ is 
+% a function $\progA({c}): \mathcal{T} \to\mathbb{N} $,
+% for an initial trace $\trace_0 \in \mathcal{T}$,
+defined as%
+\[
+\progA({c})
+\triangleq \max
+\left\{ \qlen(k) \ \mid \  k \in \walks(\progG(c))\right \}.
+\]
+}
+\end{defn}
 % \section{Static Adaptivity Computation towards Completeness}
 % \label{sec:furthers-adaptcomplete}
 % The Algorithm is conditional completeness as proved in appendix, but Algorithm~\ref{alg:adaptscc} isn't.
