@@ -1,0 +1,144 @@
+\begin{example}[\highlight{Accurate Adapativity for Multiple Rounds Single Example}]
+    \label{ex:multipleRoundSingle}
+    % The program's adaptivity in our formal model,
+    % % which we define over the program's execution-based dependency graph from the dynamic 
+    % % analysis 
+    % in Definition~\ref{def:trace_adapt} also
+    %  comes across an over-approximation on the program's
+    %  intuitive adaptivity rounds.
+    % It is resulted from difference between its weight calculation and the \emph{variable may-dependency} definition.
+    % It occurs when the weight is computed over the traces different from the traces used in 
+    % witness the \emph{variable may-dependency} relation.
+    % % control flow can be decided in a particular way in front of conditional branches, while the static analysis fails to witness. 
+    % 
+    % We use one example to show the over-approximated definition, 
+    \highlight{As the program in Figure~\ref{fig:multipleRoundsSingle}(a),
+    % This example is the variant of the multiple rounds strategy, 
+    % we call it a multiple rounds odd iteration algorithm.
+    % This example is still 
+    which is a variant of the multiple rounds strategy, 
+    % we call it a multiple rounds single iteration algorithm, 
+    named $\kw{multipleRoundSingle(k)}$ with input $k$.
+    % as the input variable.
+    In this algorithm, 
+    at line 3 of every iteration, 
+    a query $\query(\chi[z] + y)$ based on previous query results stored in $z$ and $y$ is asked by the analyst 
+    as the $\kw{multipleRounds}$ strategy. 
+    The difference is that only the query answers from the one single iterations ($j = 2 $) are 
+    % used to $b$. 
+    used in this query $\query(\chi[z] + y)$.
+    Because the execution trace updates 
+    %   $b$ using the query answers at odd iterations, so the answers from even iterations do not affect the queries at odd iterations. From the query-based dependency graph in Figure~\ref{fig:overappr_example}(b), we can see that there is no edge from queries at odd iterations (such as $q_1,q_3,q_5$) to queries at even iteration(such as $q_2,q_4$). The longest path is dashed with a length $3$.  However, {\THESYSTEM} fails to realize that odd iteration will always execute then branch and even iteration means else branch, so its dependency graph considers both branches for every iteration. In this sense, the dependency graph by {\THESYSTEM} is similar to the one in the multiple rounds strategy. We show the estimated graph in Figure~\ref{fig:overappr_example}(c). The estimated upper bound is then, $5$, instead of $3$. 
+    $y$ by the constant $0$ for all the iterations where ($j \neq 2$) at line $5$ after the 
+    query request at line $3$.
+    In this way, all the query answers stored in $y$ will not be accessed in next query request at line $3$ in the iterations 
+    where  ($j \neq 2$).
+    Only query answer at one single iteration where ($j = 2 $) will be used in next query request
+    $\query(\chi[z] + y)$ at line $3$.
+    So the adaptivity for this example is $2$. 
+    % so the answers from odd iterations do not affect the queries at even iterations. 
+    % However, from the execution-based dependency graph in Figure~\ref{fig:overappr_example}(b), 
+    However, our adaptivity model fails to realize that there is only dependency relation 
+    between $y^3$ and $y^3$ in one single iteration, 
+    not the others. 
+    % there is no edge from queries at odd iterations (such as $q_1,q_3,q_5$) to queries at even iteration(such as $q_2,q_4$). The longest path is dashed with a length $3$.  
+    As shown in the execution-based dependency graph in Figure~\ref{fig:multipleRoundsSingle}(b), 
+    there is an edge from $y^3$ to itself representing the existence of \emph{Variable May-Dependency} from $y^3$ on itself,
+    and the visiting times of labeled variable $y^3$ is 
+    $w_k(\trace_0)$ with a initial trace $\trace_0$. 
+    % will always execute then branch and even iteration means else branch
+    % $k$.
+    As a result, the walk with the longest query length 
+    is
+    $y^3  \to \cdots \to y^3 \to z^1 $ with the vertex $y^3$ visited $w_k(\trace_0)$,
+    as the dotted arrows. 
+    The adaptivity 
+    % the Program-Based Dependency graph from {\THESYSTEM} by finding 
+    based on
+    this walk
+    % walk with the longest query length 
+    is $2$.
+    % %
+    The $\THESYSTEM$ is able to give us $2$,  as an accurate bound w.r.t this definition.}
+        \begin{figure}
+     \centering
+    \quad
+    \begin{subfigure}{.35\textwidth}
+    \begin{centering}
+    $
+        \begin{array}{l}
+            \kw{multipleRoundsSingle(k)}\\
+               \clabel{ \assign{j}{k}}^{0} ; 
+                \clabel{\assign{z}{\query(0)} }^{1} ;   \\          
+                \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ \\
+                \Big(
+                 \clabel{\assign{y}{\query(\chi[z]+y)} }^{3}  ; \\
+              \eif(\clabel{ j \neq 2}^{4}, 
+              \clabel{ \assign{y}{0}}^{5} ,\clabel{\eskip}^{6})\\
+              \clabel{\assign{j}{j - 1}}^{7}
+         \Big);\\
+            \end{array}
+    $
+    \caption{}
+    \end{centering}
+    \end{subfigure}
+    \begin{subfigure}{.6\textwidth}
+        \begin{centering}
+        \begin{tikzpicture}[scale=\textwidth/15cm,samples=150]
+    % Variables Initialization
+    % \draw[] (-5, 1) circle (0pt) node{{ $z^1: {}^{w_1}_{1}$}};
+    % \draw[] (-5, 7) circle (0pt) node{{$p^2: {}^{w_1}_{0}$}};
+    \draw[] (-5, 4) circle (0pt) node{{ $z^1: {}^{w_1}_{1}$}};
+    % Variables Inside the Loop
+     \draw[] (0, 6) circle (0pt) node{{ $y^3: {}^{w_k}_{1}$}};
+     \draw[] (0, 2) circle (0pt) node{{ $y^{5}: {}^{w_k}_{0}$}};
+     % Counter Variables
+     \draw[] (5, 6) circle (0pt) node {{$j^0: {}^{w_1}_{0}$}};
+     \draw[] (5, 2) circle (0pt) node {{ $j^8: {}^{w_k}_{0}$}};
+     %
+     % Value Dependency Edges:
+     \draw[ ultra thick, -Straight Barb, densely dotted,] (0.8, 7) arc (220:-100:1);
+     % The Weight for this edge
+     \draw[](1.2, 9.5) node 
+     {\highlight{\footnotesize
+            $\trace_0 \to 
+            \left\{\begin{array}{ll}
+               \env(\trace_0) k & \env(\trace_0) k  \leq 1 \\
+           2 & \env(\trace_0) k \geq 2
+            \end{array}\right\}
+            $}};
+     \draw[ thick, -latex] (-1, 6)  to  [out=-130,in=130]  
+    % The Weight for this edge
+    node [] {\highlight{$\trace_0 \to 1 $}} (-1, 2);
+     % Value Dependency Edges on Initial Values:
+     \draw[ ultra thick, -latex, densely dotted,] (-1.5, 6)  -- 
+    % The Weight for this edge
+    node [left] {\highlight{$\trace_0 \to \env(\trace_0) k $}} (-4, 4.7) ;
+     %
+     % Value Dependency For Control Variables:
+     \draw[ thick, -Straight Barb] (6.5, 2.5) arc  (150:-150:1);
+    % The Weight for this edge
+    \draw[](8, 2) node [] {\highlight{$\trace_0 \to \env(\trace_0) k  $}};
+     % Control Dependency
+     \draw[ thick, -latex] (5, 2.5)  -- 
+    % The Weight for this edge
+    node [right] {\highlight{$\trace_0 \to \env(\trace_0) k $}} (5, 5.5);
+     \draw[ thick,-latex] (1.5, 6)  -- (3.5, 6) ;
+     \draw[ thick,-latex] (1.5, 1.8)  -- 
+    % The Weight for this edge
+    node [] {\highlight{$\trace_0 \to \env(\trace_0) k $}} (3.5, 6) ;
+     \draw[ thick,-latex] (1.5, 6)  -- (3.5, 2) ;
+     \draw[ thick,-latex] (1.5, 1.8)  -- (3.5, 2) ; 
+    \end{tikzpicture}
+     \caption{}
+        \end{centering}
+        \end{subfigure}
+    % \end{wrapfigure}
+    % \end{equation*}
+    \vspace{-0.4cm}
+     \caption{(a) The multi rounds single example
+     (b) The execution-based dependency graph.}
+    \label{fig:multipleRoundsSingle}
+    \vspace{-0.5cm}
+    \end{figure}
+    \end{example}

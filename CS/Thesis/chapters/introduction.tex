@@ -11,7 +11,7 @@ In order to analyze this \emph{adaptivity} property for the adaptive data analys
 I introduce these three problems
 and the full-spectrum analysis methodologies developed according to these problems in Section~\ref{sec:intro-adapt}.
 Mainly through the language formalization,
-the execution-based analysis, and the static-based program analysis.
+the execution-based analysis, and the static-based program analysis as in Figure~\ref{fig:structure}.
 %
 Based on the implementation and experimental results, I introduce two significant 
 further features I designed to improve the precision of the analysis 
@@ -242,11 +242,21 @@ computing the adaptivity upper bound soundly
 and accurately.
 \end{enumerate}
 %%%%% To reason about%
+The overview of the  as in Figure~\ref{fig:structure}, composed of the execution-based adaptivity analysis (formalization)
+and the static program analysis for approximating the upper bound of the 
+adaptivity.
+\begin{figure}
+   \centering   
+   \includegraphics[width=1.0\textwidth]{figures/architecture.png}
+  \caption{High level architecture of the Full-Spectrum Adaptivity Analysis}
+   \label{fig:structure}
+\end{figure}
 \end{itemize}% \\
 
 % \subsection{Further Works}
 % \subsubsection{Towards Accurate Full-Spectrum Adaptivity Analysis}
 % \label{subsec:intro-improve}
+
 Based on the implementation and experimental results on the $\THESYSTEM$,
 I 
 % also focus on the two further features can be 

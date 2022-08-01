@@ -1,30 +1,31 @@
 \[
 \begin{array}{llll}
-% \mbox{Arithmetic Operators} 
+\mbox{Arithmetic Operators} 
+& \oplus_a & ::= & + ~|~ - ~|~ \times 
+%
+~|~ \div ~|~ \max ~|~ \min\\  
+% \mbox{Unary Operators} 
 % & \oplus_a & ::= & + ~|~ - ~|~ \times 
 % %
-% ~|~ \div ~|~ \max ~|~ \min\\  
-% % \mbox{Unary Operators} 
-% % & \oplus_a & ::= & + ~|~ - ~|~ \times 
-% % %
-% % ~|~ \div \\  
-% \mbox{Boolean Operators} 
-% & \oplus_b & ::= & \lor ~|~ \land
-% \\
-% %
-% \mbox{Relational Operators} 
-% & \sim & ::= & < ~|~ \leq ~|~ == 
-% \\  
+% ~|~ \div \\  
+\mbox{Boolean Operators} 
+& \oplus_b & ::= & \lor ~|~ \land
+\\
 %
-% \mbox{Label} 
-% & l & \in & \mathbb{N} 
-% % \mg{\text{This should be} \in \text{since l is a label and not a set.}}
-% \\ 
+\mbox{Relational Operators} 
+& \sim & ::= & < ~|~ \leq ~|~ == 
+\\  
+%
+\mbox{Label} 
+& l & \in & \mathbb{N} \cup \{in, ex\} 
+\\ 
 %
 \mbox{Arithmetic Expression} 
 & \aexpr & ::= & 
-n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr 
-~|~ \elog \aexpr  ~|~ \esign \aexpr ~|~ \max(a, a) ~|~ \min(a, a)
+n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr  
+\\
+&  &  & 
+ ~|~ \elog \aexpr  ~|~ \esign \aexpr
 \\
 %
 \mbox{Boolean Expression} & \bexpr & ::= & 
@@ -35,11 +36,11 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 ~|~ \aexpr \sim \aexpr 
 \\
 %
-\mbox{Expression} & \expr & ::= & v ~|~ \aexpr ~|~  \bexpr ~|~ [\expr, \dots, \expr]
+\mbox{Expression} & \expr & ::= & v ~|~ \aexpr ~|~ \bexpr ~|~ [\expr, \dots, \expr]
 \\  
 %
 \mbox{Value} 
-& v & ::= & { n ~|~  \etrue ~|~  \efalse ~|~ [] ~|~ [v, \dots, v]}  
+& v & ::= & { n ~|~ \etrue ~|~ \efalse ~|~ [] ~|~ [v, \dots, v]}  
 \\
 %
 \mbox{Query Expression} 
@@ -49,84 +50,33 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 %
 \mbox{Query Value} & \qval & ::= 
 & {n ~|~ \chi[n] ~|~ \qval \oplus_a  \qval ~|~ n \oplus_a  \chi[n]
-    ~|~ \chi[n] \oplus_a  n}\\
+    ~|~ \chi[n] \oplus_a  n}
+    \\
 % &&& \text{\mg{I don’t think this is what we want. Isn’t $\chi[n+1]$ a query value?}}\\
 % &&& \text{\mg{What about $\chi[i] + \chi[i] + \chi[i]$? They are not in the grammar}}
 % \\
 % &&& \text{\jl{ $\chi[i] + \chi[i] + \chi[i]$ and $\chi[n+1]$ are both expressions, they will be evaluated to a value 
-% 98i8i}}
+% }}
 % \\%
-% \mbox{Commands} 
-% & {c} & ::= &   \assign {{x}}{ {\expr}} ~|~ \assign {{x} } {{\query(\qexpr)}}
-% ~|~ {\ewhile \bexpr  \edo {c} }
-% \\
-% &&&
-% ~|~ {c};{c}  
-% ~|~ \eif(\bexpr , {c}, {c}) 
-% ~|~ \eskip\\ 
-\mbox{Label} 
-& l & \in & \mathbb{N} \cup \{in, ex\} \\
 \mbox{Labeled Command} 
 & {c} & ::= &   [\assign {{x}}{ {\expr}}]^{l} ~|~  [\assign {{x} } {{\query(\qexpr)}}]^{l}
 ~|~ {\ewhile [ \bexpr ]^{l} \edo {c} }
- \\
- &&&
+\\
+&&&
 ~|~ {c};{c}  
 ~|~ \eif([\bexpr]{}^l , {c}, {c}) 
-~|~ [\eskip]^l 
-% &&& \text{\mg{Is skip missing a label?}}
-% \\
-% &&& \text{\jl{I intentionally removed leabel for skip before}}
-% \\%
-% &&& \text{\jl{but I realized I need it after implementation}}
-% \\%
-% &&& \text{\jl{I haven't yet updated it here, thanks for reminding}}
-% \\
-% \mbox{Event} 
-% & \event & ::= & 
-%     ({x}, l, v) ~|~ ({x}, l, \qval, v)  ~~~~~~~~~~~ \mbox{Assignment Event} \\
-% &&& ~|~(\bexpr, l, v)   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \mbox{Testing Event}
-% \\
-% \mbox{Event} 
-% & \event & ::= & 
-%     ({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval)  
-%     % ~~~~~~~~~~~ \mbox{Assignment Event} 
-% %     \\
-% % &&& 
-% ~|~(\bexpr, l, v, \bullet)   
-% % ~~~~
-% % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-% % \mbox{Testing Event}
-% \\
-% \\
-% &&& \text{\mg{I think it would be better to use quadruples for events, where the}}\\
-% &&& \text{\mg{first element is either a variable or a boolean expression and }}\\
-% &&& \text{\mg{the last is either a query value or some default value $\bullet$}}\\
-%
-% \mbox{Trace} & \trace
-% & ::= & \cdot | \trace \cdot \event | \trace \tracecat \trace 
-% \\
-%
-% \mbox{Trace} & \trace
-% & ::= & [] ~|~ \event:: \trace ~|~ \trace \tracecat \trace  \\
-% \mbox{Trace} & \trace
-% & ::= & [] ~|~ \trace :: \event
-% \\
-% &&& \text{\mg{I don't understand why you need both :: and ++ as constructors.}}\\
-% &&& \text{\jl{Because append is to the left but we are adding element to the left in the OS}}\\
-% &&& \text{\jl{I was too sticky to the convention, it is a good idea to append to the left and just use $::$}}
-% %
-% \mbox{Event Signature} & \sig
-% & ::= & (x, l, n) | (x, l, n, \query) | (b, l, n)
-% \\
-% %
+~|~ [\eskip]^l
+\\ 
+\mbox{Event} 
+& \event & ::= & 
+    ({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval)  ~~~~~~~~~~~ \mbox{Assignment Event} \\
+&&& ~|~(\bexpr, l, v, \bullet)   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \mbox{Testing Event}
+\\
+\mbox{Trace} & \trace
+& ::= & [] ~|~ \trace :: \event
+\\
 \end{array}
 \]
-% I use
-% $\mathcal{VAR}, \mathcal{VAL}, \mathcal{QVAL}, \cdom, \dbdom$ and $\qdom$ to stand
-% for the set of variables,
-% values, query values, commands, databases and the codomain of queries, respectively.
-% %
 An expression is
 % can be 
 either a standard arithmetic expression or a boolean expression, or a list of expressions.
@@ -134,7 +84,13 @@ either a standard arithmetic expression or a boolean expression, or a list of ex
 % %
 % A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq,=,<,$ etc.
 % Additionally, we also introduce list in expression.
-Our language supports primitives for queries, where a specific query is specified by a query expression $\qexpr$. A query expression contains the necessary information for a query request, for example, $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. Query expressions combine access to the database with other expressions, for example, $\chi[3] + 5$ represents a query which asks the value from the column 3 of each database raw $\chi$, adds 5 to each of these values, and then computes the average of these values.
+Our language supports primitives for queries, 
+where a specific query is specified by a query expression $\qexpr$. 
+A query expression contains the necessary information for a query request, for example, 
+$\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
+Query expressions combine access to the database with other expressions, 
+for example, $\chi[3] + 5$ represents a query which asks the value from the column 3 of each database raw $\chi$, adds 5 to each of these values, 
+and then computes the average of these values.
 
 
 % the expression also includes the special variable $\chi$ representing a row of the database, and access to values at a certain index in $\chi$, as $\chi[\aexpr]$. Additionally, list over expressions is supported and $[]$ stands for the empty list. The access to elements in the list can be achieved through $x[\aexpr]$ when variable $x$ is referred to a list. The value $v$ now contains the natural number $n$, the boolean primitives $\etrue$ and $\efalse$, the special row $\chi$ and access to it $\chi[v]$, the empty list $[]$ and non-empty list $[v, \dots, v]$.
@@ -162,7 +118,203 @@ Our language supports primitives for queries, where a specific query is specifie
 % ~|~ [\eskip]^l 
 % \end{array}
 % \]
-I use  
+The following notations to represent the set of corresponding terms:
+\[
+\begin{array}{lll}
+\mathcal{VAR} & : & \mbox{Set of Variables}  
+\\ 
+%
+\mathcal{VAL} & : & \mbox{Set of Values} 
+\\ 
+%
+\mathcal{QVAL} & : & \mbox{Set of Query Values} 
+\\ 
+%
+\cdom & : & \mbox{Set of Commands} 
+\\ 
+%
+\mathcal{LV} & : & \mbox{Set of Labeled Variables}
+\\
+%
+\eventset  & : & \mbox{Set of Events}  
+\\
+%
+\eventset^{\asn}  & : & \mbox{Set of Assignment Events}  
+\\
+%
+\eventset^{\test}  & : & \mbox{Set of Testing Events}  
+\\
+%
+\ldom  & : & \mbox{Set of Labels}  
+\\
+%%
+\mathcal{VAL}  & : & \mbox{Set of Labeled Variables}  
+\\
+%%
+\dbdom  & : & \mbox{{Set of Databases}} 
+\\
+%
+{\mathcal{T}} & : & \mbox{Set of Traces}
+\\
+%
+% \qdom = {[-1,1]} & : & \mbox{{Domain of Query Results}}\\
+\qdom & : & \mbox{{Domain of Query Results}}\\
+% &&\text{\mg{I don't think you need to hard code [-1,1] here}}\\
+\end{array}
+\]
+
+The labeled variables and assigned variables are set of variables annotated by a label. 
+We use  
 %$\mathcal{LVAR} = \mathcal{VAR} \times \mathcal{L} $ 
-$\mathcal{LV}$ to represent the universe of all the labeled variables.
- 
+$\mathcal{LV}$ represents the universe of all the labeled variables and 
+$\avar_c \in \mathcal{P}(\mathcal{VAR} \times \mathbb{N}) \subset \mathcal{LV}$ and 
+$\lvar_c \in \mathcal{P}(\mathcal{VAR} \times \mathcal{L}) \subseteq \mathcal{LV}$,
+represents the the set of assigned variables and labeled variables for a labeled command $c$,
+defined in Definition~\ref{def:lvar} and \ref{def:avar}.
+%
+
+$FV: \expr \to \mathcal{P}(\mathcal{VAR})$, computes the set of free variables in an expression. To be precise,
+$FV(\aexpr)$, $FV(\bexpr)$ and $FV(\qexpr)$ represent the set of free variables in arithmetic
+expression $\aexpr$, boolean expression $\bexpr$ and query expression $\qexpr$ respectively.
+Labeled variables in $c$ is the set of assigned variables and all the free variables
+showing up in $c$ with a default label $in$. 
+The free variables
+showing up in $c$, which aren't defined before be used, are actually the input variables of this program.
+%
+
+\begin{defn}[Assigned Variables (
+% $\avar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$ or 
+$\avar : \cdom \to \mathcal{P}(\mathcal{VAR} \times \mathbb{N})$)]
+% labelled Variables 
+% (
+% % $\lvar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$ or 
+% $\lvar : \cdom \to \mathcal{P}(\mathcal{VAR} \times \mathcal{L})$
+\label{def:avar}
+{\footnotesize
+$$ \avar_{c} \triangleq
+  \left\{
+  \begin{array}{ll}
+      \{{x}^l\}                   
+      & {c} = [{\assign x e}]^{l} 
+      \\
+      \{{x}^l\}                   
+      & {c} = [{\assign x \query(\qexpr)}]^{l} 
+      \\
+      \avar_{{c_1}} \cup \avar_{{c_2}}  
+      & {c} = {c_1};{c_2}
+      \\
+      \avar_{{c}} \cup \avar_{{c_2}} 
+      & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
+      \\
+      \avar_{{c}'}
+      & {c}   = \ewhile ([\bexpr]^{l}, {c}')
+\end{array}
+\right.
+$$
+}
+\end{defn}
+%
+
+\begin{defn}[labelled Variables 
+(
+% $\lvar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$ or 
+$\lvar : \cdom \to \mathcal{P}(\mathcal{LV})$]
+\label{def:lvar}
+{\footnotesize
+$$
+  \lvar_{c} \triangleq
+  \left\{
+  \begin{array}{ll}
+      \{{x}^l\} \cup FV(\expr)^{in}                  
+      & {c} = [{\assign x e}]^{l} 
+      \\
+      \{{x}^l\}   \cup FV(\qexpr)^{in}                
+      & {c} = [{\assign x \query(\qexpr)}]^{l} 
+      \\
+      \lvar_{{c_1}} \cup \lvar_{{c_2}}  
+      & {c} = {c_1};{c_2}
+      \\
+      \lvar_{{c}} \cup \lvar_{{c_2}} \cup FV(\bexpr)^{in}
+      & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
+      \\
+      \lvar_{{c}'} \cup FV(\bexpr)^{in}
+      & {c}   = \ewhile ([\bexpr]^{l}, {c}')
+\end{array}
+\right.
+$$
+}
+\end{defn}
+%
+%
+%
+% is a subset of the program's assigned variables, where every variable in this set is assigned by a query in the program.
+% \mg{The set of query variables of a program is the set of variables set to the result of a query in the program.}\\
+We also defined the set of query variables for a program $c$,
+it is the set of variables set to the result of a query in the program formally in Definition~\ref{def:qvar}.
+% \mg{In the next definition, why do you call it a vector? It seems that you define it as a set.}\\
+% \jl{fixed}\\
+%
+% \begin{defn}[Query Variables ($\qvar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$)].
+  % \\
+\begin{defn}[Query Variables ($\qvar: \cdom \to \mathcal{P}(\mathcal{LV})$)] 
+  \label{def:qvar}
+Given a program $c$, its query variables 
+% \mg{it seems you are missing the $_c$ subscript. Also, this is a minor point but I don't think it is a good idea to use a subscript, cannot you just use $\qvar(c)$.}
+$\qvar(c)$ is the set of variables set to the result of a query in the program.
+% \jl{fixed}
+It is defined as follows:
+{\footnotesize
+$$
+  % \qvar_{{c}} \triangleq
+  \qvar(c) \triangleq
+  \left\{
+  \begin{array}{ll}
+      % \{\}                  
+      % & {c} = [{\assign x e}]^{(l, w)} 
+      % \\
+      % \{{x}^l\}                  
+      % & {c} = [{\assign x \query(\qexpr)}]^{(l, w)} 
+      % \\
+      % \qvar_{{c_1}} \cup \qvar_{{c_2}}  
+      % & {c} = {c_1};{c_2}
+      % \\
+      % \qvar_{{c_1}} \cup \qvar_{{c_2}} 
+      % & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
+      % \\
+      % \qvar_{{c}'}
+      % & {c}   = \ewhile ([\bexpr]^{l}, {c}')
+      \{\}                  
+      & {c} = [{\assign x \expr}]^{l} 
+      \\
+      \{{x}^l\}                  
+      & {c} = [{\assign x \query(\qexpr)}]^{l} 
+      \\
+      \qvar(c_1) \cup \qvar(c_2)  
+      & {c} = {c_1};{c_2}
+      \\
+      \qvar(c_1) \cup \qvar(c_2) 
+      & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
+      \\
+      \qvar(c')
+      & {c}   = \ewhile ([\bexpr]^{l}, {c}')
+\end{array}
+\right.
+$$
+}
+\end{defn}
+%
+It is easy to see that a program $c$'s query variables is a subset of 
+its labeled variables, $\qvar(c) \subseteq \lvar(c)$.
+%
+% \mg{In this definition as well as in others, I have the impression that you assume that the labelled variables are unique in the program. For example, it would not make sense to assign a query to the same labelled variable over and over. If this is the case, we need to make this very explicit in the paper.}
+% \jl{TODO}
+%
+Every labeled variable in a program is unique, formally as follows with proof in Appendix~\ref{apdx:lemma_sec123}.
+\begin{lem}[Uniqueness of the Labeled Variables]
+  \label{lem:lvar_unique}
+  For every program $c \in \cdom$ and every two labeled variables such that
+  $x^i, y^j \in \lvar(c)$, then $x^i \neq y^j$.
+  \[
+    \forall c \in \cdom, x^i, y^j \in \mathcal{L} \sthat x^i, y^j \in \lvar(c)\implies x^i \neq y^j.
+    \]
+\end{lem}
