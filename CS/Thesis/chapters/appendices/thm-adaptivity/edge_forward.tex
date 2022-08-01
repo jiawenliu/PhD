@@ -1,0 +1,162 @@
+\begin{proof}
+This lemma is proved by showing there is a contradiction. 
+
+\jl{
+Assume there exists an edge  $(\av', \av) \in \edges$ and $\av' \avgeq \av$, where $\av' = ({\qval}',l',w')$ and $\av = ({\qval},l,w)$.
+%
+According to the Definition~\ref{def:trace-based_graph}, we have:
+%
+$$
+DEP(\av', \av, c, m, D) ~ (1)
+$$
+%
+%
+Unfolding the Definition \ref{def:query_dep} in $(1)$,
+we know: there exists $t_1, t_3, m_1, m_3, c_2$ s.t.,
+%
+\[
+\config{m, c, [], []} \rightarrow^{*} 
+\config{m_1, [\assign{x}{\query({\qval'})}]^{l'} ; c_2,
+  t_1, w'} 
+\rightarrow^{\textbf{query-v}} 
+\config{m_1[v_1/x], c_2,
+(t_1 ++ [\av'], w_1} \rightarrow^{*} \config{m_3, \eskip, t_3,w_3} ~ (a)  
+\]
+%
+and
+%
+\[
+ \bigwedge
+ \begin{array}{l}   
+  % 
+  \left( 
+  \begin{array}{l}
+  \av \avin (t_3 - (t_1 ++ [\av'])) 
+  % 
+  \\
+  \implies 
+  \exists v \in \qdom, v \neq v_1, m_3', t_3', w_3'. ~  
+  \config{m_1[v/x], {c_2}, t_1 ++ [\av'], w_1} 
+  \\ 
+  \quad \quad 
+  \rightarrow^{*}
+  (\config{m_3', \eskip, t_3', w_3'} 
+  \land 
+  \av \not \avin (t_3'-(t_1 ++ [\av'])))
+\end{array} \right ) ~(b)
+\\
+\left( 
+  \begin{array}{l}
+  \av \not\avin (t_3 - (t_1 ++ [\av']))
+    % 
+    \\
+    \implies 
+  \exists v \in \qdom, v \neq v_1, m_3', t_3', w_3'. 
+  \config{m_1[v/x], {c_2}, t_1 ++ [\av'], w_1}
+  \\ 
+  \quad \quad 
+  \rightarrow^{*} 
+  (\config{m_3', \eskip, t_3', w_3'} 
+  \land 
+  \av  \avin (t_3' - (t_1 ++ [\av'])))
+\end{array} \right ) ~ (c)
+\end{array}
+\]
+%
+%
+According to the Theorem \ref{thm:os_wf_trace} and $(a)$, we know both $t_1$, $t_3$ are well-formed traces.
+% }
+% \\
+% \jl{
+\\
+Consider 2 cases:
+ \[\av \avin (t_3 - (t_1 ++[\av'])) ~(d) ~~ \lor ~~ \av \notin_{aq} (t_3 - (t_1 ++[\av'])) ~(e)\]
+%
+\begin{itemize}
+%
+  \caseL{ (d) \[\av \avin (t_3 - (t_1 ++[\av'])) ~ (d)\]}
+  By unfolding the trace subtraction operations, we have;
+  \[
+    \exists t_2. ~ s.t., ~ t_1 ++[\av'] ++ t_2 = t_3 \land \av \avin t_2 ~ (3)
+  \]
+%
+%
+According to the Corollary~\ref{coro:aqintrace} and $\av \avin t_2$, we have:
+%
+\[
+  \exists t_{21}, t_{22}, \av' ~ s.t.,~ (\av \aveq \av') \land t_{21} ++ [\av'] ++ t_{22} = t_2 ~ (4)
+\]
+%
+By rewriting $(4)$ inside $(3)$, we have:
+%
+\[
+  \exists t_{21}, t_{22}, \av'' ~ s.t.,~ (\av \aveq \av'') \land t_1 ++[\av'] ++ t_{21} ++ [\av''] ++ t_{22} = t_3 ~ \star
+\]
+%
+By the \emph{ordering} property in definition \ref{def:wf_trace} and $(\star)$, we know
+%
+\[
+  \av' <_{aq} \av
+\]
+%
+This is contradict to our assumption, where $\av' \avgeq \av$. 
+%
+%
+\caseL{(e), \[\av \notin_{aq} (t_3 - (t_1 ++[\av'])) ~(e)\]} 
+%
+According to the condition $(c)$, we know: $\exists v \in \qdom, v \neq v_1, m_3', t_3', w_3'.$
+    % 
+\[ 
+  \config{m_1[v/x], {c_2}, t_1 ++ [\av'], w_1} 
+  \rightarrow^{*} (\config{m_3', \eskip, t_3', w_3'} ~ (5)
+  \land \av  \in_{q} (t_3' - (t_1 ++ [\av']))) ~ (6)
+\] 
+%
+According to the Theorem \ref{thm:os_wf_trace}, Sub-Lemma-t and $(5)$,
+we know $t_3'- (t_1 ++ [\av'])$ is a well-formed trace.
+\\
+From $(a)$, we know that the minimal line number of $c_2$ is greater than $l'$, so we know that : 
+\[
+  \forall \av'' \in t_3'- (t_1 ++ [\av']), \av''>_{aq} \av'
+\]
+%
+Unfolding the trace subtraction operations in $(6)$, we have;
+\[
+  \exists t_2'. ~ s.t., ~ t_1 ++[\av'] ++ t_2' = t_3' \land \av \avin t_2' ~ (7)
+\]
+%
+%
+According to the sub-lemma and $(7)$, we have:
+%
+\[
+  \exists t_{21}', t_{22}' ~ s.t.,~ t_{21}' ++ [\av] ++ t_{22}' = t_2' ~ (8)
+\]
+%
+By rewriting $(8)$ inside $(7)$, we have:
+%
+\[
+  t_1 ++[\av'] ++ t_{21}' ++ [\av] ++ t_{22}' = t_3' ~ \diamond
+\]
+%
+By the \emph{ordering} property in definition \ref{def:wf_trace} and $(\diamond)$, we know
+%
+\[
+  \av' <_{aq} \av
+\]
+%
+This is contradict to the assumption,  $\av' \avgeq \av$.
+%
+\end{itemize}
+%
+From both cases, we derive $\av' \avgeq \av$, which is contradict to the hypothesis, i.e., $\av' \avgeq \av$.
+Then, we can conclude that 
+for any directed edge $(\av', \av) \in \edges$, 
+this is not the case that:
+%
+$$\av' \avgeq \av$$
+%
+}
+\end{proof}
+%
+%
+%

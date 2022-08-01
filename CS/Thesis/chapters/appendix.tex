@@ -2,25 +2,70 @@
 \label{AppC}
 
 
-% \section{High Level Language}
-% \input{chapters/adapt/appendix-adapt/highlevel}
-% \clearpage
-\section{Query While Language}
-\label{appendix:language}
-\input{chapters/appendices/language}
+\section{Implementation}
+\label{appendix:implementation}
+\input{chapters/appendices/implementation}
+
+\section{Theorems and Proofs in Section~\ref{ch:language},~\refeq{ch:dynamic},~\refeq{ch:static}}
+\label{appendix:thm-adaptivity}
+\section{Lemmas in Section~\ref{ch:language}}
+\label{apdx:lemma_sec123}
+\input{chapters/appendices/thm-adaptivity/lem_section123}
+\clearpage
+\subsection{Soundness of Full-Spectrum Adaptivity Analysis}
+\label{apdx:adapt_soundness}
+\input{chapters/appendices/thm-adaptivity/adapt_soundness}
+\input{chapters/appendices/thm-adaptivity/lem_adaptgraph}
+\clearpage
+\subsection{Soundness of $\THESYSTEM$'s Data Dependency Analysis}
+\subsubsection{Proof of the Soundness of $\flowsto$}
+\label{apdx:flowsto_soundness}
+\input{chapters/appendices/thm-adaptivity/flowsto_soundness}
+\clearpage
+\subsubsection{Proof of the Soundness of $\flowsto$ w.r.t. the Event}
+\label{apdx:flowsto_event_soundness}
+\input{chapters/appendices/thm-adaptivity/flowsto_event_soundness}
+\input{chapters/appendices/thm-adaptivity/lem_depinversion}
+\clearpage
+\subsection{Soundness of $\THESYSTEM$'s Data Dependency Quantity Analysis}
+\label{apdx:reachability_soundness}
+\input{chapters/appendices/thm-adaptivity/reachability_soundness}
+\clearpage
+\subsection{Soundness of Adaptivity Computation Algorithm}
+\label{apdx:adaptalg_soundness}
+\input{chapters/appendices/thm-adaptivity/adaptalg_soundness}
+% %
+\subsection{Conditional Completeness of Adaptivity Computation Algorithm}
+\label{apdx:adaptalg_completeness}
+\input{chapters/appendices/thm-adaptivity/adaptalg_completeness}
 \clearpage
 
-
-\section{The Program Static Analysis Algorithm}
-\label{appendix:adaptfun}
-\input{chapters/appendices/adaptfun}
-
-\section{Theorems}
-\label{appendix:theorem}
-\input{chapters/appendices/theorems}
+\section{Theorems and Proofs in Section~\ref{ch:improved}}
+\label{appendix:thm-improved}
+\subsection{Soundness of Accurate Full-Spectrum Adaptivity Analysis}
+\label{apdx:adapt_soundness_extend}
+\input{chapters/appendices/thm-improved/adapt_soundness_extend}
+\input{chapters/appendices/thm-improved/lem_adaptgraph_extend}
+\clearpage
+\subsection{Soundness of Improved $\THESYSTEM$'s Data Dependency Analysis}
+\label{apdx:flowsto_soundness_extend}
+\input{chapters/appendices/thm-improved/flowsto_soundness_extend}
+\paragraph*{Arithmetic Inversions}
+The Inversion Lemmas on expression evaluations is in Appendix~\ref{apdx:flowsto_event_soundness}
+\paragraph*{Events and Dependency Inversions}
+The Inversion Lemmas on \emph{may-dependency} relation, trace and event.
+\input{chapters/appendices/thm-improved/lem_depinversion_extend}
+\clearpage
+\subsection{Soundness of Path Sensitive Reachability Bounds Estimation}
+\label{apdx:ps_reachability_soundness}
+\input{chapters/appendices/thm-improved/ps_reachability_soundness}
+\clearpage
+\subsection{Soundness of Improved $\THESYSTEM$'s Data Dependency Quantity Analysis}
+\label{apdx:edgeweight_soundness}
+\input{chapters/appendices/thm-improved/edgeweight_soundness}
 \clearpage
 
-\section{Proofs}
-\label{appendix:proof}
-\input{chapters/appendices/proofs}
+\section{Theorems and Proofs in Section~\ref{ch:generalization}}
+\label{appendix:thm-generalization}
+% \input{chapters/appendices/theorems}
 \clearpage

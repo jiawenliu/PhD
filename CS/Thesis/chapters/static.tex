@@ -1,29 +1,44 @@
-
-\section{Introduction and Related Work}
+In this section, I present my 
+adaptivity analysis based on static program analysis as the second part of 
+the full-spectrum adaptivity analysis as in Figure~\ref{fig:structure}. 
+\section{Introduction}
 \label{sec:static-intro}
 \input{chapters/static/static-intro.tex}
 
 \section{Static Analysis Framework -- $\THESYSTEM$}
 \label{sec:static-adapfun}
-\input{chapters/static/static-abscfg}
+% \input{chapters/static/static-abscfg}
 
-\subsection{Static Data Dependency Analysis}
-\label{subsec:static-datadep}
-\input{chapters/static/static-dep}
+\subsection{Overview of $\THESYSTEM$}
+\label{sec:static-overview}
+\input{chapters/static/static-overview}
+\input{chapters/static/adaptfun.tex}
+% \subsection{Static Data Dependency Analysis}
+% \label{subsec:static-datadep}
+% \input{chapters/static/static-dep}
 
-\subsection{Static Reachability Bound Analysis}
-\label{subsec:static-reachability}
-\input{chapters/static/static-quantity}
+% \subsection{Static Reachability Bound Analysis}
+% \label{subsec:static-reachability}
+% \input{chapters/static/static-quantity}
 
 \subsection{Static Adaptivity Analysis}
 \label{subsec:static-adapt}
 \input{chapters/static/static-adapt}
 
-\section{Static Analyzed Adaptivity through Examples}
+\section{$\THESYSTEM$ through Examples}
 \label{sec:static-examples}
 %
+%
+I present four examples, illustrating $\THESYSTEM$.
+% \input{examples/twoRounds}
+\input{examples/multipleRounds}
+\input{examples/linearRegressionGD}
+\input{examples/multipleRoundsOdd}
+\input{examples/multipleRoundsSingle}
+% \input{examples/multipleRoundsSingleAccurate}
 \section{Implementation}
 \label{sec:static-implementation}
-
+Then I show my implementation of $\THESYSTEM$ and its experimental results on $18$ examples including these four examples.
+\input{chapters/static/static-implementation}
 % \section{Related Work}
 % \label{sec:static-relatedwork}

@@ -1,0 +1,115 @@
+\begin{thm}[Soundness of the Edge Weights Estimation]
+    \label{thm:edgeweight_soundness}
+  Given a program ${c}$ with its program-based dependency graph 
+  $\progG(c) = (\progV, \progE)$,
+  % $\traceG = (\traceV, \traceE, \traceW, \traceF)$, 
+  we have:
+    %
+    \[
+		\begin{array}{l}
+			\forall c \in \cdom 
+			% , (v, n) \in \mathcal{VAR} \times \mathbb{N} \times \mathbb{N}
+			 \st 
+			%  \\ \quad
+			 \progG({c}) = (\progV, \progE)
+			\land 
+			\traceG({c}) = (\traceV, \traceE)
+			\\ \quad
+			\implies
+			% \forall v \in \traceV \st 
+			% v \in \progV \land
+			% \traceW(v) \leq \progW(v)
+			\forall (v_1, w^p, v_2) \in \traceE,
+			(v_1, w^t, v_2) \in \progE, 
+			\trace_0 \in \mathcal{T}_0(c), 
+			\trace' \in \mathcal{T}, v \in \mathbb{N} \st
+			\\ \quad
+			\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+			\land 
+			\config{w^{p}, \trace_0} \earrow v
+			\implies
+			% \right\} 
+			w_{t}(\trace) \leq v
+		\end{array}
+		\]
+  \end{thm}
+%
+\begin{proof}
+  Taking an arbitrary a program ${c}$ with its program-based dependency graph 
+  $\progG(c) = (\progV, \progE)$, 
+  and an arbitrary pair of labeled variable and weights $(x^l, w) \in \progV$, 
+  and arbitrary $\vtrace, \trace' \in \mathbb{T},
+  v \in \mathbb{N}$ satisfying
+  \\
+  % \max \left\{ 
+    % \vcounter(\vtrace') l ~ \middle\vert~
+  % \forall \vtrace, \trace' \in \mathcal{T} \st 
+  $\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+  \land 
+  \config{\trace, w} \earrow v$
+  %  labelled variable $x^l \in \lvar_c$.
+  \\
+  By Definition of $\progW$ in $\progG(c)$, we know 
+  $  w = \absW(l) = \max \{ \absclr(\absevent) | \absevent = (l, \_, \_)\}$.
+  \\
+  By Lemma~\ref{lem:abscfg_sound}, there exists an abstract event in $\absflow(c)$ of form $(\absevent) = (l, \_, \_)$,
+  corresponding to the assignment command associated to labeled variable $x^l$. 
+  \\
+  Let $(\absevent) = (l, dc, l') \in \absflow(c)$ be this event for some $dc$ and $l'$ such that  $(\absevent) = (l, dc, l') \in \absflow(c)$,
+  by the last step of phase 2, we know
+  $
+  \progW(x^l) 
+  \triangleq \absclr(\absevent)
+  $.
+   Then, it is sufficient to show:
+  \[
+  %   \max \left\{ \vcounter(\vtrace') l ~ \middle\vert~
+  % \forall \vtrace \in \mathcal{T} \st \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
+  % \leq 
+  \forall v \in \mathbb{N} \st 
+  \config{\absclr(\absevent), \trace} \earrow 
+  \vcounter(\vtrace', l) \leq v
+  \absclr(\absevent)
+  \]
+  % By line:2 of Algorithm~\ref{alg:add_weights}, there are 2 cases:
+  By definition of $\absclr(\absevent)$:
+  \[
+ \begin{array}{ll}
+  \locbound(\absevent) & \locbound(\absevent) \in \constdom \\
+  Incr(\locbound(\absevent)) + 
+  \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\} 
+  & \locbound(\absevent) \notin \constdom
+\end{array}
+\]
+  \caseL{$\locbound(\absevent) \in \constdom$}
+  \\
+  Proved by the soundness of Local bound in Lemma~\ref{lem:local_bound_sound}.
+  \caseL{$\locbound(\absevent) \notin \constdom$}
+To show:
+\[
+  \begin{array}{l}
+    \max \left\{ \vcounter(\vtrace') l ~ \middle\vert~
+\forall \vtrace \in \mathcal{T} \st \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
+\\
+\leq 
+Incr(\locbound(\absevent)) + 
+\sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\} 
+\end{array}
+\]
+  % \caseL{$l \in prel$}
+  % \\
+  Taking an arbitrary initial trace
+  $\trace_0 \in \mathcal{T}$, 
+  executing $c$ with $\trace_0$, let $\trace$ be the trace after evaluation, i.e., $\config{{c}, \trace_0} \to^{*} \config{\eskip,\vtrace}$, it is sufficient to show:
+  \[ 
+    \begin{array}{l}
+      \vcounter(\vtrace') l \leq 
+    Incr(\locbound(\absevent)) + 
+    \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\}
+  \end{array}
+  \]
+%
+ By the soundness of the (1) Transition Bound and (2) Variable Bound Invariant 
+ in \cite{sinn2017complexity} Theorem 1, 
+This case is proved.
+\end{proof}

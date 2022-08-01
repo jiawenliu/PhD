@@ -1,7 +1,7 @@
 \documentclass[12pt, letterpaper]{report}   % Single-sided printing for the library
 
 % TOGGLE ON TO SEE PAGE MARGINS -- useful to check that your figures and tables don't go over the specified margins - HG 2018
-\usepackage[showframe]{geometry}
+% \usepackage[showframe]{geometry}
 
 \usepackage[bf]{caption} % Make nice captions with bold "Figure..." and "Table..."
 \setcaptionmargin{0.5in}
@@ -61,6 +61,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
+% \lipsum
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Setup commands for the bu thesis style file
 
@@ -103,7 +104,7 @@ B.A. in Department of Information Science, Central University of Economics and F
 % other set up commands which are a good idea
 
 %the bottom margins should be "as close as possible" to 1 inch, so allowdisplaybreaks is a good idea for theses with a lot of equations
-\allowdisplaybreaks
+% \allowdisplaybreaks
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -237,7 +238,7 @@ my loving grandmother \\ Xiuqin Yang
 \chapter{The Static Program Analysis for Adaptivity}
 \label{ch:static}
 \include{chapters/static}
-\cleardoublepage
+% \cleardoublepage
 
 % \chapter{Accurate Adaptivity Analysis via Path Sensitive Reachability Analysis}
 % \label{ch:improved}
@@ -248,9 +249,9 @@ my loving grandmother \\ Xiuqin Yang
 \chapter{Accurate Full-Spectrum Adaptivity Analysis}
 \label{ch:improved}
 \include{chapters/improved}
-\cleardoublepage
+% \clearpage
 
-\addtocontents{toc}{\protect\newpage}
+% \addtocontents{toc}{\protect\newpage}
 \chapter{Accurate Full-Spectrum Program Resource Cost Analysis via $\THESYSTEM$}
 \label{ch:generalization}
 \input{chapters/generalization}

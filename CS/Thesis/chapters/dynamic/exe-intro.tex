@@ -1,15 +1,6 @@
 
-In order to formalize a quantitative property w.r.t. the dependency relation in program, I
-use a three-step analysis methodology developed as follows,
-\\
- a. The dependency relation between every query, through the methodology of semantic data dependency analysis.
-\\
- b. The dependency quantity analysis, through the methodology of execution-based data reachability bound analysis. Then 
-\\
- c. The adaptivity analysis, based on the two analysis results above, 
- I construct an execution-based dependency graph combining the dependency relation and the dependency quantity
-    and give the formal \emph{adaptivity} definition 
-    for program.
+I first introduce some related works as background of the execution-based analysis, 
+then structure of this execution-based analysis.  
 % \\
 % The construction of this graph requires me to think about the dependency relation between two queries using what we have at hand - 
 % the trace generated in Section~\ref{sec:language}. 
@@ -37,3 +28,17 @@ However, Cousot excludes timing channels~\cite{SabelfeldM03} and empty observati
 % adaptivity round between the two queries. 
 My definition includes timing channels and empty observation by observing both the disappearance and value variation.
 }
+\paragraph*{Analysis Strcuture}
+In order to formalize a quantitative property w.r.t. the dependency relation in program, I
+use a three-step analysis methodology developed, 
+ as follows,
+\\
+ a. The dependency relation between every query, through the methodology of semantic data dependency analysis.
+\\
+ b. The dependency quantity analysis, through the methodology of execution-based data reachability bound analysis. Then 
+\\
+ c. The adaptivity analysis, based on the two analysis results above, 
+ I construct an execution-based dependency graph combining the dependency relation and the dependency quantity
+    and give the formal \emph{adaptivity} definition 
+    for program.
+    This analysis is the first part of the analysis in Figure~\ref{fig:structure}.

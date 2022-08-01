@@ -1,216 +1,270 @@
-% The full definitions of these above operators can be found in the appendix.
+\paragraph*{Challenge}
 In the data analysis model our programming framework supports, 
- %  an \emph{analyst} asks a sequence of queries to the mechanism, and receives the answers to these queries from the mechanism. In this model, the adaptivity we are interested in is the length of the longest sequence of such adaptively chosen queries, among all the queries the data analyst asks. 
-   we define that a query is adaptively chosen when it is affected by answers of previous queries. The next thing is to decide how do we define whether one query is "affected" by previous answers, 
-   with the limited information we have? 
-   As a reminder, 
-  when the analyst asks a query, the only known information will be the answers to previous queries and the current execution trace of the program.
- 
- There are two possible situations that a query will be "affected",  
- either when the query expression directly uses the results of previous queries (data dependency), or when the control flow of the program with respect to a query (whether to ask this query or not) 
- depends on the results of previous queries (control flow dependency).
- Since the results of previous queries can be stored or used in variables
- which aren't associated to the query request,
- it is necessary to track the dependency between queries, through all the program's variables,  
- and then we can distinguish variables which are assigned with query requests.
-  I give a definition of when one variable \emph{may-depend} on a previous variable by combining the following
-  two dependency definition.
- {
- \begin{enumerate}
-     \item One variable may depend on a previous variable if and only if a change of the value assigned to the previous variable may also change the value assigned to the variable.
-     \item One variable may depend on a previous variable if and only if a change of the value assigned to the previous variable may also change the appearance of the assignment command to this variable 
-     % in\wq{during?} 
-     during execution.
- \end{enumerate}
- }
- %   The first candidate works well by witnessing the result of one query according to the change of the answer of another query. We can easily find that the two queries have nothing to do with each other in a simple example   
- % The first situations works well by witnessing the result assigned to variable 
- % according to the change of the value assigned to another query. 
- % We can easily find that the two queries have nothing to do with each other in a simple example 
- % In the first one, by defining the dependency as
- The first definition is defined as
- % witnessing 
- % the query expressions equivalence (or the value equality for non-query assignment )
- the witness of a variation on the value assigned to the same variable through two executions,
- % assigned to the same variable through two executions, 
- according to the change of the value assigned to another variable in pre-trace.
- % the situation of data-dependency works well. \wq{long sentence, make it short?}
- In particular for query requests, the variation I observe is on the query value instead of on the query requesting results.
+%  an \emph{analyst} asks a sequence of queries to the mechanism, and receives the answers to these queries from the mechanism. In this model, the adaptivity we are interested in is the length of the longest sequence of such adaptively chosen queries, among all the queries the data analyst asks. 
+  we define that a query is adaptively chosen when it is affected by answers of previous queries. The next thing is to decide how do we define whether one query is "affected" by previous answers, with the limited information we have? As a reminder, 
+ when the analyst asks a query, the only known information will be the answers to previous queries and the current execution trace of the program.
 
- The second definition, I witness the disappearance of the evaluation of the second assignment command  according to the change of the value assigned to another variable in pre-trace.
+
+There are two possible situations that a query will be "affected",  
+either when the query expression directly uses the results of previous queries (data dependency), or when the control flow of the program with respect to a query (whether to ask this query or not) depends on the results of previous queries (control flow dependency).
+% As a first step, we give a definition of when one query may depend on a previous query, which is supposed to consider both control dependency and data dependency. We first look at two possible candidates:
+% \begin{enumerate}
+%     \item One query may depend on a previous query if and only if a change of the answer to the previous query may also change the result of the query.
+%     \item One query may depend on a previous query if and only if a change of the answer to the previous query may also change the appearance of the query.
+% \end{enumerate}
+
+
+Since the the results of previous queries can be stored or used in variables
+which aren't associated to the query request,
+it is necessary to track the dependency between queries, through all the program's variables,  
+and then we can distinguish variables which are assigned with query requests.
+ We give a definition of when one variable \emph{may-depend} on a previous variable with two candidates.
+{
+\begin{enumerate}
+    \item One variable may depend on a previous variable if and only if a change of the value assigned to the previous variable may also change the value assigned to the variable.
+    \item One variable may depend on a previous variable if and only if a change of the value assigned to the previous variable may also change the appearance of the assignment command to this variable 
+    % in\wq{during?} 
+    during execution.
+\end{enumerate}
+}
+%   The first candidate works well by witnessing the result of one query according to the change of the answer of another query. We can easily find that the two queries have nothing to do with each other in a simple example   
+
+{   
+% The first situations works well by witnessing the result assigned to variable 
+% according to the change of the value assigned to another query. 
+% We can easily find that the two queries have nothing to do with each other in a simple example 
+% In the first one, by defining the dependency as
+The first definition is defined as
+% witnessing 
+% the query expressions equivalence (or the value equality for non-query assignment )
+the witness of a variation on the value assigned to the same variable through two executions,
+% assigned to the same variable through two executions, 
+according to the change of the value assigned to another variable in pre-trace.
+% the situation of data-dependency works well. \wq{long sentence, make it short?}
+In particular for query requests, the variation we observe is on the query value instead of on the query requesting results.
+% We can find that two queries 
+% % have nothing to do with each other in this simple example 
+% % depends on each other\wq{not each other, one direction.} 
+% satisfy this definition
+In 
+%this 
+the simple program $c_1 =\assign{x}{\query(\chi[2])} ;\assign{y}{\query(\chi[3] + x)}$.
+ %
+ From our perspective, $\query(\chi[1])$ is different from $\query(\chi[2]))$. Informally, we think $\query(\chi[3] + x)$ may depend on the query $\query(\chi[2]))$, because equipped function of the former $\chi[3] + x$ may depend on the data stored in x assigned with the result of $\query(\chi[2]))$, according to this definition. }
 %
-Formally notated by  $\eventdep(\event_1, \event_2, [\event_1 ] \tracecat \trace \tracecat [\event_2], c, D)$,
-where An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment
-event $\event_1 \in \eventset^{\asn}$ in a program ${c}$
-with a hidden database $D$ and a trace $\trace \in \mathcal{T}$, the full definition can be found in Appendix.
-\begin{defn}[Event May-Dependency]
+% in this example: $c_1 = \assign{x}{\query(0)}; \assign{z}{\query(\chi[x])}$.
+% This candidate definition works well 
+Nevertheless, the first definition fails to catch control dependency because it just monitors the changes to a query, but misses the appearance of the query when the answers of its previous queries change. 
+For instance, it fails to handle $
+      c_2 = \assign{x}{\query(\chi[1])} ; \eif( x > 2 , \assign{y}{\query(\chi[2])}, \eskip )
+   $, but the second definition can. However, it only considers the control dependency and misses the data dependency. This reminds us to define a \emph{may-dependency} relation between labeled variables by combining the two definitions to capture the two situations.
+%
+%
+%
+%
+\paragraph{Dependency}
+ To define the may dependency relation on two labeled variables, we rely on the limited information at hand - the trace generated by the operational semantics. In this end, we first define the \emph{may-dependency} between events, and use it as a foundation of the variable may-dependency relation.
+\begin{defn}[Events Different up to Value ($\diff$)]
+  Two events $\event_1, \event_2 \in \eventset$ are  \emph{Different up to Value}, 
+  denoted as $\diff(\event_1, \event_2)$ if and only if:
+  \[
+    \begin{array}{l}
+  \pi_1(\event_1) = \pi_1(\event_2) 
+  \land  
+  \pi_2(\event_1) = \pi_2(\event_2) \\
+  \land  
+  \big(
+    (\pi_3(\event_1) \neq \pi_3(\event_2)
+  \land 
+  \pi_{4}(\event_1) = \pi_{4}(\event_2) = \bullet )
+  % \qquad \qquad 
+  \lor 
+  (\pi_4(\event_1) \neq \bullet
+  \land 
+  \pi_4(\event_2) \neq \bullet
+  \land 
+  \pi_{4}(\event_1) \neq_q \pi_{4}(\event_2)) 
+  \big)
+  \end{array}
+  \]
+  \end{defn}
+ %
+ We compare two events by defining $\diff(\event_1, \event_2)$. We use $\qexpr_1 =_{q} \qexpr_2$ and $\qexpr_1 \neq_{q} \qexpr_2$ to notate query expression equivalence and in-equivalence, distinct from standard equality. A program $c$'s
+%  , its 
+ labeled variables 
+%  and assigned variables are subsets of 
+is a subset of
+the labeled variables $\mathcal{LV}$, denoted by $\lvar(c) \in \mathcal{P}(\mathcal{VAR} \times \mathcal{L}) \subseteq \mathcal{LV}$.
+% annotated by a label. 
+% We use  
+%$\mathcal{LVAR} = \mathcal{VAR} \times \mathcal{L} $ 
+% $\mathcal{LV}$ represents the universe of all the labeled variables and 
+% $\avar(c) \in \mathcal{P}(\mathcal{VAR} \times \mathbb{N}) \subset \mathcal{LV}$ and 
+% $\lvar(c) \in \mathcal{P}(\mathcal{VAR} \times \mathcal{L}) \subseteq \mathcal{LV}$ for them. 
+We also define the set of query variables for a program $c$, $\qvar: \cdom \to 
+\mathcal{P}(\mathcal{LV})$.
+
+A program $c$'s query variables is a subset of 
+its labeled variables, $\qvar(c) \subseteq \lvar(c)$. We have the operator $\tlabel : \mathcal{T} \to \ldom$, which gives the set of labels in every event belonging to the trace.
+Then we introduce a counting operator $\vcounter : \mathcal{T} \to \mathbb{N} \to \mathbb{N}$, 
+% \wq{which counts the occurrence of of a variable in the trace,} 
+which counts the occurrence of a labeled variable in the trace,
+whose behavior is defined as follows,
+\[
+\begin{array}{ll}
+\vcounter(\trace :: (\_, l, \_, \_), l ) \triangleq \vcounter(\trace, l) + 1
+&
+\vcounter(\trace  ::(b, l, v, \bullet), l) \triangleq \vcounter(\trace, l) + 1
+\\
+\vcounter(\trace  :: (x, l, v, \qval), l) \triangleq \vcounter(\trace, l) + 1
+&
+% \vcounter(\trace :: (\_, l', \_, \_), l ) \triangleq \vcounter(\trace, l), l' \neq l 
+% &
+\vcounter(\trace  :: (x, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
+\\
+\vcounter(\trace  :: (b, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
+&
+\vcounter(\trace  :: (x, l', v, \qval), l) \triangleq \vcounter(\trace, l), l' \neq l
+\\
+\vcounter({[]}, l) \triangleq 0
+\end{array}
+\]
+The full definitions of these above operators can be found in the appendix.
+\begin{defn}[Event May-Dependency].
 \label{def:event_dep}
+\\ 
   An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment
   event $\event_1 \in \eventset^{\asn}$ in a program ${c}$
   with a hidden database $D$ and a trace $\trace \in \mathcal{T}$ denoted as 
   %
-  $\eventdep(\event_1, \event_2, [\event_1 ] \tracecat \trace \tracecat [\event_2], c, D)$
-%   , iff
-%   %
-%   \[
-%     \begin{array}{l}
-%   \exists \vtrace_0,
-%   \vtrace_1, \vtrace' \in \mathcal{T},\event_1' \in \eventset^{\asn}, {c}_1, {c}_2  \in \cdom  \st
-%   \diff(\event_1, \event_1') \land 
-%       \\ \quad
-%       (
-%         \exists  \event_2' \in \eventset \sthat 
-%     \left(
-%     \begin{array}{ll}   
-%    & \config{{c}, \vtrace_0} \rightarrow^{*} 
-%   \config{{c}_1, \vtrace_1 \tracecat [\event_1]}  \rightarrow^{*} 
-%     \config{{c}_2,  \vtrace_1 \tracecat [\event_1] \tracecat \vtrace \tracecat [\event_2] } 
-%     % 
-%    \\ 
-%    \bigwedge &
-%     \config{{c}_1, \vtrace_1 \tracecat [\event_1']}  \rightarrow^{*} 
-%     \config{{c}_2,  \vtrace_1 \tracecat[ \event_1'] \tracecat \vtrace' \tracecat [\event_2'] } 
-%   \\
-%   \bigwedge & 
-%   \diff(\event_2,\event_2' ) \land 
-%   \vcounter(\vtrace, \pi_2(\event_2))
-%   = 
-%   \vcounter(\vtrace', \pi_2(\event_2'))\\
-%   \end{array}
-%   \right)
-%   \\ \quad
-%   \lor 
-%   \exists \vtrace_3, \vtrace_3'  \in \mathcal{T}, \event_b \in \eventset^{\test} \sthat 
-%   \\ \quad
-%   \left(
-%   \begin{array}{ll}   
-%     & \config{{c}, \vtrace_0} \rightarrow^{*} 
-%       \config{{c}_1, \vtrace_1 \tracecat [\event_1]}  \rightarrow^{*} 
-%       \config{c_2,  \vtrace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_3} 
-%     \\ 
-%     \bigwedge &
-%     \config{{c}_1, \vtrace_1 \tracecat [\event_1']}  \rightarrow^{*} 
-%     \config{c_2,  \vtrace_1 \tracecat [\event_1'] \tracecat \trace' \tracecat [(\neg \event_b)] \tracecat \trace_3'} 
-%     \\
-%     \bigwedge &  \tlabel_{\trace_3} \cap \tlabel_{\trace_3'} = \emptyset
-%      \land \vcounter(\trace', \pi_2(\event_b)) = \vcounter(\trace, \pi_2(\event_b)) 
-%     %   \land \event_2 \eventin \trace_3
-%     % \land \event_2 \not\eventin \trace_3'
-%     \land \event_2 \in \trace_3
-%     \land \event_2 \not\in \trace_3'
-%   \end{array}
-%   \right)
-%   )
-% \end{array}
-%    \]
+  $\eventdep(\event_1, \event_2, [\event_1 ] \tracecat \trace \tracecat [\event_2], c, D)$, iff
+  %
+  \[
+    \begin{array}{l}
+  \exists \vtrace_0,
+  \vtrace_1, \vtrace' \in \mathcal{T},\event_1' \in \eventset^{\asn}, {c}_1, {c}_2  \in \cdom  \sthat
+  \diff(\event_1, \event_1') \land 
+      \\ \quad
+      (
+        \exists  \event_2' \in \eventset \sthat 
+    \left(
+    \begin{array}{ll}   
+   & \config{{c}, \vtrace_0} \rightarrow^{*} 
+  \config{{c}_1, \vtrace_1 \tracecat [\event_1]}  \rightarrow^{*} 
+    \config{{c}_2,  \vtrace_1 \tracecat [\event_1] \tracecat \vtrace \tracecat [\event_2] } 
+    % 
+   \\ 
+   \bigwedge &
+    \config{{c}_1, \vtrace_1 \tracecat [\event_1']}  \rightarrow^{*} 
+    \config{{c}_2,  \vtrace_1 \tracecat[ \event_1'] \tracecat \vtrace' \tracecat [\event_2'] } 
+  \\
+  \bigwedge & 
+  \diff(\event_2,\event_2' ) \land 
+  \vcounter(\vtrace, \pi_2(\event_2))
+  = 
+  \vcounter(\vtrace', \pi_2(\event_2'))\\
+  \end{array}
+  \right)
+  \\ \quad
+  \lor 
+  \exists \vtrace_3, \vtrace_3'  \in \mathcal{T}, \event_b \in \eventset^{\test} \sthat 
+  \\ \quad
+  \left(
+  \begin{array}{ll}   
+    & \config{{c}, \vtrace_0} \rightarrow^{*} 
+      \config{{c}_1, \vtrace_1 \tracecat [\event_1]}  \rightarrow^{*} 
+      \config{c_2,  \vtrace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_3} 
+    \\ 
+    \bigwedge &
+    \config{{c}_1, \vtrace_1 \tracecat [\event_1']}  \rightarrow^{*} 
+    \config{c_2,  \vtrace_1 \tracecat [\event_1'] \tracecat \trace' \tracecat [(\neg \event_b)] \tracecat \trace_3'} 
+    \\
+    \bigwedge &  \tlabel_{\trace_3} \cap \tlabel_{\trace_3'} = \emptyset
+     \land \vcounter(\trace', \pi_2(\event_b)) = \vcounter(\trace, \pi_2(\event_b)) 
+    %   \land \event_2 \eventin \trace_3
+    % \land \event_2 \not\eventin \trace_3'
+    \land \event_2 \in \trace_3
+    \land \event_2 \not\in \trace_3'
+  \end{array}
+  \right)
+  )
+\end{array}
+   \]
 % , where ${\tt label}(\event_2) = \pi_2(\event_2)$.
   %  
 %
 \end{defn}
 % \todo{add explnanation}
 % \jl{
-% Our event \emph{may-dependency} relation of 
-% two events $\event_1 \in \eventset^{\asn}$ and $\event_2 \in \eventset$, 
-% for a program $c$ and hidden database $D$ is w.r.t to
-% a trace $[\event_1 ] \tracecat \trace \tracecat [\event_2]$.
-% The $\event_1 \in \eventset^{\asn}$ is an assignment event because only a change on an assignment event will affect the execution trace, according to our operational semantics.
-% In order to observe the changes of $\event_2$ under the modification of $\event_1$, this trace 
-% $[\event_1 ] \tracecat \trace \tracecat [\event_2]$
-% starts with $\event_1$ and ends with $\event_2$.
-% % }
-% {The \emph{may-dependency} relation considers both the value dependency and value control dependency as discussed in Section~\ref{sec:design_choice}. The relation can be divided into two parts naturally in Definition~\ref{def:event_dep} (line $2-4$, $5-8$ respectively, starting from line $1$). The idea of the event $\event_1$ may depend on $\event_2$ can be briefly described:
-% we have one execution of the program as reference (See line $2$ and $6$, for the two kinds of dependency). 
-% When the value assigned to the 
-% % first variable 
-% first variable in $\event_1$ is modified, the reference trace $\trace_1 \tracecat [\event_1]$ is modified correspondingly to $\trace_1 \tracecat [\event_1']$.
-% We use $\diff(\event_1, \event_1')$ at line $1$ to express this modification, which guarantees that $\event_1$ and $\event_1'$ only differ in their assigned values and are equal on variable name and label. We perform a second run of the program by continuing the execution of the same program from the same execution point, 
-% but with the modified trace $\trace_1 \tracecat [\event_1']$ (See line $3$, $7$). 
-% The expected may dependency will be caught by observing two different possible changes (See line $4, 8$ respectively) when comparing the second execution with the reference one (similar definitions as in \cite{Cousot19a}). 
-% % \wq{
-% % In the first situation, we are witnessing 
-% In the first part (line $2-4$ of Definition~\ref{def:event_dep}), we witness
-% % that the value assigned to the second variable in $\event_2$
-% the appearance of $\event_2'$ in the second execution, and
-% % a variation in $\event_2$, which changes into $\event_2'$.
-% a variation between $\event_2$ and $\event_2'$ on their values.
-% % changes in $\event_2'$.
-% % \jl{
-% We 
-% I use special requirement $\diff(\event_2, \event_2')$, 
-% There are two special requirements not explicitly seplled out in this de $\diff(\event_2, \event_2')$, which guarantees that they
-% have the same variable name and label but only differ 
-% which guarantees that they
-% have the same variable name and label but only differ 
-% % % in their assigned value. 
-% in their evaluated values.
-% % assigned to the same variable. 
-% In particularly for queries, if $\event_2$ and $\event_2'$ are 
-% % query assignment events, then 
-% generated from query requesting, then $\diff(\event_2, \event_2')$ guarantees that
-% they differ in their query values rather than the 
-% % query requesting value. 
-% query requesting results. 
-% Additionally, in order to handle multiple occurrences of the same event through iterations of the while loop,
-%  where  $\event_2$ and $\event_2'$ could be 
-% in different while loops,
-% we restrict the same occurrence of $\event_2$'s label in $\trace$ from the first execution with  the occurrence of $\event_2'$'s label in $\trace'$ from the second execution,
-% through $\vcounter(\vtrace, \pi_2(\event_2))
-% = 
-% \vcounter(\vtrace', \pi_2(\event_2'))$ at line $4$.
-There are two special requirements not explicitly spelled out in this notation but they are 
-important in formalize the 
-dependency. 
-Specifically as follows,
-\begin{itemize}
-\item $\diff(\event_2, \event_2')$ for some $\event_2' \in \eventset$. 
-This guarantees that the witness on evaluation of $\event_2$ in the second execution is 
-from the same command.
-\item $\vcounter(\vtrace, \pi_2(\event_2))
-= 
-\vcounter(\vtrace', \pi_2(\event_2'))$ for some $\trace \in \mathcal{T}$ and the same $\event_2'$ as above.
-This guarantees that the witness on evaluation of $\event_2$ in the second execution is 
-from the same while iteration.
-\end{itemize}
-% have the same variable name and label but only differ 
-% which guarantees that they
-% have the same variable name and label but only differ 
-% % % in their assigned value. 
-% in their evaluated values.
-% % assigned to the same variable. 
-% In particularly for queries, if $\event_2$ and $\event_2'$ are 
-% % query assignment events, then 
-% generated from query requesting, then $\diff(\event_2, \event_2')$ guarantees that
-% they differ in their query values rather than the 
-% % query requesting value. 
-% query requesting results. 
-% Additionally, in order to handle multiple occurrences of the same event through iterations of the while loop,
-%  where  $\event_2$ and $\event_2'$ could be 
-% in different while loops,
-% we restrict the same occurrence of $\event_2$'s label in $\trace$ from the first execution with  the occurrence of $\event_2'$'s label in $\trace'$ from the second execution,
-% through $\vcounter(\vtrace, \pi_2(\event_2))
-% = 
-% \vcounter(\vtrace', \pi_2(\event_2'))$ at line $4$.
-%
-% In the second part (line $5-8$ of Definition~\ref{def:event_dep}), we 
-% % are witnessing 
-% witness
-% the disappearance of $\event_2$ through observing the change of a testing event $\event_b$.
-% % In order to change the appearance of 
-% % % and event, the command that generating $\event_2$ must not be executed in 
-% % 5yhan event, 
-% To witness
-% the disappearance, the command that generates $\event_2$ must not be executed in 
-% the second execution. 
-% The only way to control whether a command will be executed, is through the change of a guard's 
-% evaluation result in an if or while command, which generates a testing event $\event_b$ in the first place.
-% So we observe when
-% $\event_b$ changes into $\neg \event_b$ in the second execution firstly, 
-% whether it follows with the disappearance of $\event_2$ in the second trace. We restrict the occurrence of $\event_b$'s label in the two traces being the same
+Our event \emph{may-dependency} relation of 
+two events $\event_1 \in \eventset^{\asn}$ and $\event_2 \in \eventset$, 
+for a program $c$ and hidden database $D$ is w.r.t to
+a trace $[\event_1 ] \tracecat \trace \tracecat [\event_2]$.
+The $\event_1 \in \eventset^{\asn}$ is an assignment event because only a change on an assignment event will affect the execution trace, according to our operational semantics.
+In order to observe the changes of $\event_2$ under the modification of $\event_1$, this trace 
+$[\event_1 ] \tracecat \trace \tracecat [\event_2]$
+starts with $\event_1$ and ends with $\event_2$.
 % }
-% % s to the occurrence times of $\event_2'$'s label in the second trace,
-% through $\vcounter(\trace', \pi_2(\event_b)) = \vcounter(\trace, \pi_2(\event_b))$ to handle the while loop.
-% % changes in $\event_2'$, have the same variable and label and only differ in their assigned value. 
-% Again, for queries, we observe the disappearance based on the query value equivalence.
+{The \emph{may-dependency} relation considers both the value dependency and value control dependency as discussed in Section~\ref{sec:design_choice}. The relation can be divided into two parts naturally in Definition~\ref{def:event_dep} (line $2-4$, $5-8$ respectively, starting from line $1$). The idea of the event $\event_1$ may depend on $\event_2$ can be briefly described:
+we have one execution of the program as reference (See line $2$ and $6$, for the two kinds of dependency). 
+When the value assigned to the 
+% first variable 
+first variable in $\event_1$ is modified, the reference trace $\trace_1 \tracecat [\event_1]$ is modified correspondingly to $\trace_1 \tracecat [\event_1']$.
+We use $\diff(\event_1, \event_1')$ at line $1$ to express this modification, which guarantees that $\event_1$ and $\event_1'$ only differ in their assigned values and are equal on variable name and label. We perform a second run of the program by continuing the execution of the same program from the same execution point, 
+but with the modified trace $\trace_1 \tracecat [\event_1']$ (See line $3$, $7$). 
+The expected may dependency will be caught by observing two different possible changes (See line $4, 8$ respectively) when comparing the second execution with the reference one (similar definitions as in \cite{Cousot19a}). 
+
+% \wq{
+% In the first situation, we are witnessing 
+In the first part (line $2-4$ of Definition~\ref{def:event_dep}), we witness
+% that the value assigned to the second variable in $\event_2$
+the appearance of $\event_2'$ in the second execution, and
+% a variation in $\event_2$, which changes into $\event_2'$.
+a variation between $\event_2$ and $\event_2'$ on their values.
+% changes in $\event_2'$.
+% \jl{
+We have special requirement $\diff(\event_2, \event_2')$, which guarantees that they
+have the same variable name and label but only differ 
+% % in their assigned value. 
+in their evaluated values.
+% assigned to the same variable. 
+In particularly for queries, if $\event_2$ and $\event_2'$ are 
+% query assignment events, then 
+generated from query requesting, then $\diff(\event_2, \event_2')$ guarantees that
+they differ in their query values rather than the 
+% query requesting value. 
+query requesting results. 
+Additionally, in order to handle multiple occurrences of the same event through iterations of the while loop,
+ where  $\event_2$ and $\event_2'$ could be 
+in different while loops,
+we restrict the same occurrence of $\event_2$'s label in $\trace$ from the first execution with  the occurrence of $\event_2'$'s label in $\trace'$ from the second execution,
+through $\vcounter(\vtrace, \pi_2(\event_2))
+= 
+\vcounter(\vtrace', \pi_2(\event_2'))$ at line $4$.
+% }
+% }
+
+% \wq{
+In the second part (line $5-8$ of Definition~\ref{def:event_dep}), we 
+% are witnessing 
+witness
+the disappearance of $\event_2$ through observing the change of a testing event $\event_b$.
+% In order to change the appearance of 
+% % and event, the command that generating $\event_2$ must not be executed in 
+% 5yhan event, 
+To witness
+the disappearance, the command that generates $\event_2$ must not be executed in 
+the second execution. 
+The only way to control whether a command will be executed, is through the change of a guard's 
+evaluation result in an if or while command, which generates a testing event $\event_b$ in the first place.
+So we observe when
+$\event_b$ changes into $\neg \event_b$ in the second execution firstly, 
+whether it follows with the disappearance of $\event_2$ in the second trace. We restrict the occurrence of $\event_b$'s label in the two traces being the same
+}
+% s to the occurrence times of $\event_2'$'s label in the second trace,
+through $\vcounter(\trace', \pi_2(\event_b)) = \vcounter(\trace, \pi_2(\event_b))$ to handle the while loop.
+% changes in $\event_2'$, have the same variable and label and only differ in their assigned value. 
+Again, for queries, we observe the disappearance based on the query value equivalence.
 % if $\event_2$ and $\event_2'$ are query assignment events, then 
 % they differ in their query value rather than the assigned value. 
 % }
@@ -218,7 +272,8 @@ from the same while iteration.
 % \mg{I don't understand this explanation. What are the ``assignment commands associated to the two labelled variables''}
 % \jl{revised but need more think}
 % Explanation: 
-Considering 
+
+{Considering 
 % a program's all possible executions 
 all events generated during a program's executions
 under an initial trace,
@@ -230,6 +285,8 @@ as long as there is one pair of events satisfying the \emph{event may-dependency
  we say the two 
 related
 variables satisfy the \emph{variable may-dependency} relation, in Definition~\ref{def:var_dep}.
+}
+
 \begin{defn}[Variable May-Dependency].
   \label{def:var_dep}
   \\
@@ -250,4 +307,4 @@ variables satisfy the \emph{variable may-dependency} relation, in Definition~\re
 \eventdep(\event_1, \event_2, \trace, c, D) 
   \end{array}
 \]  %
-  \end{defn}
+\end{defn}

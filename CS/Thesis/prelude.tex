@@ -1,58 +1,108 @@
 %Packages
+% \usepackage[T1]{fontenc}
+% \usepackage{fourier} 
+% \usepackage[english]{babel} 
+% \usepackage{amsmath,amsfonts} 
+% \usepackage{amsthm} 
+% \usepackage{color}   %May be necessary if you want to color links
+% \usepackage{hyperref}
+% \usepackage{lscape}
 % \usepackage{lipsum}
-\usepackage[T1]{fontenc}
-\usepackage{fourier} 
+% \usepackage{geometry}
+% \usepackage{amsmath}
+% \usepackage{algorithm}
+% \usepackage{algorithmic}
+% \usepackage{amssymb}
+% \usepackage{amsfonts}
+% \usepackage{times}
+% \usepackage{bm}
+% \usepackage{ stmaryrd }
+% \SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
+% \usepackage{ amssymb }
+% \usepackage{ textcomp }
+% \usepackage[normalem]{ulem}
+% % For derivation rules
+% \usepackage{mathpartir}
+% \usepackage{color}
+% \usepackage{a4wide}
+% \usepackage{caption}
+% \usepackage{subcaption}
+% \usepackage{mathpartir}
+% \usepackage{amsmath,amsfonts}
+% \usepackage{ amssymb }
+% \usepackage{color}
+% \usepackage{algorithm}
+% \usepackage{algorithmic}
+% \usepackage{microtype}
+% \usepackage{eucal}
+% \usepackage{url}
+% \usepackage{tikz}
+% \usepackage{xspace}
+% \usepackage{array}
+% \usepackage{listings}
+% \usepackage{import}
+
+% \usetikzlibrary{shapes.geometric}
+% \usetikzlibrary{arrows.meta,arrows}
+% \usetikzlibrary{decorations.text}
+% % % % 
+
 \usepackage[english]{babel} 
-\usepackage{amsmath,amsfonts} 
 \usepackage{amsthm} 
-\usepackage{color}   %May be necessary if you want to color links
-\usepackage{hyperref}
-\usepackage{lscape}
-\usepackage{geometry}
-\usepackage{amsmath}
+%\usepackage{,amsfonts}
+%\usepackage{lscape}
+
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{amssymb}
-\usepackage{amsfonts}
-\usepackage{times}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+% \usepackage{mathtools}
+\usepackage{blkarray, bigstrut}
+%\usepackage{times}
 \usepackage{bm}
-\usepackage{ stmaryrd }
-\SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
-\usepackage{ amssymb }
-\usepackage{ textcomp }
+\usepackage{ stmaryrd } 
+
+\usepackage{romannum}
+
 \usepackage[normalem]{ulem}
 % For derivation rules
 \usepackage{mathpartir}
 \usepackage{color}
-\usepackage{a4wide}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{mathpartir}
-\usepackage{amsmath,amsfonts}
-\usepackage{ amssymb }
-\usepackage{color}
-\usepackage{algorithm}
-\usepackage{algorithmic}
-\usepackage{microtype}
-\usepackage{eucal}
-\usepackage{url}
+% \usepackage{a4wide}
+\usepackage{subcaption} %% For complex figures with subfigures/subcaptions
+                        %% http://ctan.org/pkg/subcaption
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\usepackage{fourier} 
 \usepackage{tikz}
-\usepackage{xspace}
-\usepackage{array}
-\usepackage{listings}
-\usepackage{import}
+\usetikzlibrary{shapes,arrows,snakes,decorations.markings}
+\usetikzlibrary{svg.path,arrows.meta, calc} 
 
-\usetikzlibrary{shapes.geometric}
-\usetikzlibrary{arrows.meta,arrows}
-\usetikzlibrary{decorations.text}
-% % % % 
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+% \tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+%     text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{block} = [draw, very thick, fill=white, rectangle, 
+    minimum height=2.5em, minimum width=6em, text centered]
+
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,    minimum height=2em]
+
+\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+   1 with {\arrow[semithick]{open triangle 60}}},
+   double distance=1.4pt, shorten >= 5.5pt,
+   preaction = {decorate},
+   postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
 
 %%%% Extra packages
-\usepackage[T1]{fontenc}
-\usepackage[latin9]{inputenc}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{cancel}
+% \usepackage[T1]{fontenc}
+% \usepackage[latin9]{inputenc}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{cancel}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 % \usepackage{typesetting/latex8}

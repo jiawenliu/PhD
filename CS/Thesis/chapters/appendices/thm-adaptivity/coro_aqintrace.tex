@@ -1,0 +1,40 @@
+\begin{coro}
+\label{coro:aqintrace}
+\[
+\aq \aqin t \implies \exists t_1, t_2, \aq'. ~ s.t., ~ (\aq \aqeq \aq') \land t_1 ++ [\aq'] ++ t_2 = t	
+\]
+\end{coro}
+\begin{subproof}
+Proof in File: {\tt ``coro\_aqintrace.tex''}
+% \input{coro_aqintrace}
+By unfolding the $\aq \aqin t$, we have the following cases:
+%
+\caseL{$t = []$} The hypothesis is $\efalse$, this case is proved.
+%
+\caseL{$t = \aq'::t' \land \aq' \aqeq \aq $}
+%
+Let $t_1 = []$ and $t_2 = t'$, by unfolding the list concatenation operation, we have:
+%
+\[
+	t_1 ++ [\aq'] ++ t_2 = [] ++ [\aq'] ++ t' = t
+\]
+%
+Since $\aq' \aqeq \aq$ by the hypothesis, this case is proved.
+%
+\caseL{$t = \aq'::t' \land \aq' \aqneq \aq $}
+%
+By induction hypothesis on $\aq \aqin t'$, we know:
+%
+\[
+	\exists t_1', t_2', \aq''. ~ s.t., ~ (\aq \aqeq \aq'') \land t_1' ++ [\aq''] ++ t_2' = t'	
+\]
+%
+Let $t_1 = \aq'::t_1'$ and $t_2 = t_2'$, by unfolding the list concatenation operation, we have:
+%
+\[
+	t_1 ++ [\aq''] ++ t_2 = (\aq':: t_1') ++ [\aq''] ++ t_2' = \aq'::t' = t
+\]
+%
+Since $\aq'' \aqeq \aq$ by the hypothesis, this case is proved.
+%
+\end{subproof}

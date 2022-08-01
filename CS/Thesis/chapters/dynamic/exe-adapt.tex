@@ -1,17 +1,22 @@
 
-Based on the variable \emph{may-dependency} relation in Section~\ref{subsubsec:dynamic-datadep} and 
-the dependency quantity analysis in Section~\ref{subsubsec:dynamic-reachability}
+Based on the variable \emph{may-dependency} relation in Section~\ref{subsec:dynamic-datadep} and 
+the dependency quantity analysis in Section~\ref{subsec:dynamic-reachability}.
 % gives us the edges, 
-I define the execution-based dependency graph. And then formalize the \emph{adaptivity} in this section.
+I firstly define the execution-based dependency graph, then formalize the \emph{adaptivity} in this section.
+% \wq{Just a few sentences here, some overview of this subsection. See 4.2 for instance.}
+\paragraph{Execution Based Dependency Graph}
+\label{para:execution-base-graph-def}
+Based on the variable \emph{may-dependency} relation,
+% gives us the edges, 
+we define the execution-based dependency graph.
 % \wq{Just a few sentences here, some overview of this subsection. See 4.2 for instance.}
 \begin{defn}[Execution Based Dependency Graph]
 \label{def:trace_graph}
 Given a program ${c}$,
 its \emph{execution-based dependency graph} 
 $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is defined as follows,
-% over all possible traces,
-%
-{\small
+{
+  \small
 \[
 \begin{array}{rlcl}
   \text{Vertices} &
@@ -30,16 +35,6 @@ $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is def
   % \text{\mg{$\land$ instead of ,}}
   \right\}
   \\
-%   \text{Weights} &
-%   \traceW & := & 
-%   \left\{ 
-%   (x^l, n) \in \mathcal{LV} \times \mathbb{N}
-%   ~ \middle\vert ~ 
-%   x^l \in \lvar_{c} \land
-%   n = \max \left\{ \vcounter(\vtrace', l)~ \middle\vert~
-%   \forall \vtrace, \vtrace' \in \mathcal{T} \st \config{{c}, \trace} \to^{*} \config{\eskip, \trace\cdot\vtrace'} 
-%   \right\}
-%   \right\}
   \text{Weights} &
   \traceW({c}) & := & 
 %   \left
@@ -50,12 +45,12 @@ $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is def
   w : \mathcal{T} \to \mathbb{N}
   \land
   x^l \in \lvar(c) 
-  % \\ & & &
-  \land w = rb(x^l)
+  \\ & & &
+  \land
   % n = \max \left\{ 
     % ~ \middle\vert~
-  % \forall \vtrace \in \mathcal{T}_0(c), \trace' \in \mathcal{T} \st \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
-  % \implies w(\trace) = \vcounter(\vtrace', l) 
+  \forall \vtrace \in \mathcal{T}_0(c), \trace' \in \mathcal{T} \sthat \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+  \implies w(\trace) = \vcounter(\vtrace', l) 
   %  \right\}
 %   \right
 \}
@@ -72,92 +67,51 @@ n = 1 \Leftrightarrow x^l \in \qvar(c) \land n = 0 \Leftrightarrow  x^l \notin \
 \end{array}.
 \]
 }
-% \mg{I don't understand what is the set of query labels above. Specifically, the formula with three iff is confusing.}\\
-% \jl{TODO: I actually don't need this query annotation in the graph, I can just use $\qvar(c)$ in defining the 
-% query length and computing the adaptivity?
-% But it need to change many notations later. So I think to think if it is necessary to remove or leave it.}
-% \mg{there is a dangling , below}\\
-% \mg{what is ``i.ts'' referring to in the sentence below?}\\
-% , where $\lvar_c$ is program $c$'s set of labeled variables.
 \end{defn}
 %
-% \jl{TODO: add description}
-%
-% The edge is directed, when an annotated query $q(v)^{(l,w)}$ may depend on its previous query $q(v')^{(l',w')}$, we have the directed
-% edge $(q(v)^{(l,w)}, q(v')^{(l'.w')})$, from $q(v)^{(l,w)} $ to $q(v')^{(l'.w')}$.
-% 
-% The query-based dependency graph only considers the newly generated annotated queries during the execution of the program $c$, so we see the nodes coming from the trace $t'-t$. The previous trace before the execution of $c$ is excluded when constructing the graph. To summary, for every execution of a program $c$ staring with different configurations, we can construct a corresponding dependency graph. 
-% \\
-% \mg{I don't understand the next sentence. First, by the definition edges are between nodes which are labelled variables, why do you have annotated queries now? I suspect that this and the next sentence are old.}
-% \jl{I deleted but forgot to push before}
-% \\
-% The edge is directed, when an annotated query $q(v)^{(l,w)}$ may depend on its previous query $q(v')^{(l',w')}$, we have the directed
-% edge $(q(v)^{(l,w)}, q(v')^{(l'.w')})$, from $q(v)^{(l,w)} $ to $q(v')^{(l'.w')}$.
-% 
-% The query-based dependency graph only considers the newly generated annotated queries during the execution of the program $c$, so we see the nodes coming from the trace $t'-t$. The previous trace before the execution of $c$ is excluded when constructing the graph. To summary\mg{To summarize}, for every execution of a program $c$ staring with different configurations, we can construct a corresponding dependency graph. 
-% \\
-% \mg{I also don't understand the next sentence. What is the injectivity of $\weights$ in a program dependency graph?And what is the image of $v$ in $\weights$. I find this very confusing.}
-% \jl{I removed this, it is mainly used for simplify the soundness proof.}
-% For any program $c$, by the injectivity of $\weights$ in its dependency graph, $\traceG({c}) = (\vertxs, \edges, \weights, \qflag)$, 
-% $\weights$ forms a function. 
-% \jl{
 There are four components of the execution-based dependency graph. 
 The vertices $\traceV(c)$ is the set of program $c$'s labeled variables $\lvar(c)$,
 which are statically collected.
-The query annotation 
-% is 
-% a set of pairs $\traceF(c) \in \mathcal{P}(\mathcal{LV} \times \{0, 1\} )$ 
-% mapping each $x^l \in \traceV(c)$ to $0$ or $1$, 
-indicates whether this labeled variable is assigned by a query in program $c$.
-% 's query variable set $\qvar(c)$.
-% assigned by a query request
-% \wq{is qF and $\traceF(c)$ the same?also V and $\progV(c)$}.
-% }
-% \\
-% { \wq{weigth udpates!}
-%   The weights $W$ is a set of pairs $\traceW(c) \in \mathcal{P}(\mathcal{LV} \times \mathbb{N})$ 
-% % is the set of pairs 
-% % The weight for each vertex in $\progV(c)$ is computed 
-% mapping each $x^l \in \progV(c)$ to a natural number. 
-% This natural number is the maximum occurrence time of label $l$
-% in program's execution trace, over all possible execution traces.
-% }
-% Notice here, the program contains free variables, which are the user's input variable.
-% % in the trace, we have the input variables free in the program. 
-% In order to compute the weight for each vertex, we need to be able to execute the program and obtain program's execution trace.
-% So, we assume the 
-% initial trace contains initial event $(k, in, K, \bullet)$ for every input variable $k$. 
-% In every initial event, 
-% $(k, in, K, \bullet)$, $k$ is the input variable name,
-% $in$ is the label for this variable and the upper case $K$ represents
-% its initial value. 
+The query annotation is 
+a set of pairs $\traceF(c) \in \mathcal{P}(\mathcal{LV} \times \{0, 1\} )$ 
+mapping each $x^l \in \traceV(c)$ to $0$ or $1$, 
+indicating whether this labeled variable is in program $c$'s query variable set $\qvar(c)$.
 {
-% \highlight{has weight $w : \trace \to \env(\trace) k$
-% % given all possible initial trace $\trace$.
-% % initial state 
-% % $\trace$, 
-% where $w_3$ is a function taking the initial state $\trace$ as input and return 
-% a natural number, 
-% and $\env(\trace) k$  is the value of $k$ in the initial state $\trace$.
-% % has weight $k$, 
-% Because the command at line $3$ is located inside a while loop, and the iterations of the loop depends on the value of the user input $k$,
-% which will be executed 
-% at most $\env(\trace) k$ times.
-% }
-% The weight is computed based on this initial value from initial trace. 
-% We can see in the execution-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight of vertices in the while loop is  $\env(\trace) k$, which depends on the value of the user input $k$ specified in the starting trace $\tau$.
-% The directed edges $\traceE({c})$ is also a set of pairs with two labeled variables $ (x^i, y^j) \in \mathcal{LV} \times \mathcal{LV}$, from $x^i$ pointing to $y^j$ in the graph.
-% with The directed edges $E$ 
-% comes 
+The weights is a set of pairs, $(x^l, w) \in \mathcal{LV} \times (\mathcal{T} \to \mathbb{N})$,
+with a labeled variable as first component and
+its weight $w$ the second component.
+Weight $w$ for
+% a labeled variable 
+$x^l$ is a function $w : \mathcal{T} \to \mathbb{N}$
+mapping from a starting trace to a natural number.
+When program executes under this starting trace $\trace$,
+$\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} $, it generates an execution trace $\trace'$.
+This natural number is the evaluation times of the labeled command corresponding to the vertex, 
+computed by the counter operator $w(\trace) = \vcounter(\vtrace', l)$.
+We can see in the execution-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight of vertices in the while loop is  $\env(\trace) k$, which depends on the value of the user input $k$ specified in the starting trace $\tau$.
+The directed edges $\traceE({c})$ is also a set of pairs with two labeled variables $ (x^i, y^j) \in \mathcal{LV} \times \mathcal{LV}$, from $x^i$ pointing to $y^j$ in the graph.
 The edges are constructed directly from our variable may-dependency relation. 
 For any two vertices $x^{i}$ and $y^{j}$ in $\traceV(c)$, if they satisfy the variable may-dependency relation $\vardep(x^i, y^j, c)$, there is a direct edge between the two vertices in our execution-based dependency graph for program $c$.
 } 
+In most data analysis programs $c$ we are interested, there are usually some user input variables, such as $k$ in $\kw{twoRounds}$. 
+We denote $\mathcal{T}_0(c)$ as the set of initial traces in which all the input variables in $c$ are initialized, it is also reflected in $\traceW({c})$.    
+
+\paragraph{Trace-based Adaptivity}
+
+% \wq{
+% Given 
+% a program $c$'s execution-based dependency graph 
+% % $G_{trace}(c)(\trace) = (\vertxs, \edges, \weights, \qflag)$,
+% $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$
+% we define adaptivity 
+% with respect to $\trace$ by the finite walk in the graph, which has the most query requests along the walk.
+% }
 
 Given 
 a program $c$'s execution-based dependency graph 
 % $G_{trace}(c)(\trace) = (\vertxs, \edges, \weights, \qflag)$,
 $\traceG({c})$,
-I formalize the adaptivity 
+we define adaptivity 
 with respect to an initial trace $\trace_0 \in \mathcal{T}_0(c)$ by the finite walk in the graph, which has the most query requests along the walk.
 We show the definition of a finite walk as follows.
 %
@@ -239,53 +193,9 @@ $(v_1, \ldots, v_{n})$ as follows,
 \[
   \qlen(k)(\trace_0) = |\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)|.
 \]
-% , where $\trace_0 \in \mathcal{T}$ is the initial trace and $\big(v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)$ is a subsequence of $(v_1, \ldots, v_{n})$.
-%  $k$'s vertex sequence.
-% \mg{If I understand where you want to go, why don't you just use the cardinality of the set above, rather than taking the length of a subsequence?}
-% \jl{because the same vertex could have multiple occurrence in the sequence, and we will count all the occurrence instead of just once.
-% So the cardinality of set doesn't work.}
 \end{defn}
-%
-%
-% \subsection{SSA Transformation and Soundness of Transformation}
-% in File {\tt ``ssa\_transform\_sound.tex''}
-% \input{ssa_transform_sound}
-% %
-% %
-% The following lemma describes a property of the trace-based dependency graph.
-% For any program $c$ with a database $D$ and a initial trace $\trace$,
-% the directed edges in its trace-based dependency graph can only be constructed from variable with  
-% smaller labels variables of greater ones.
-% There doesn't exist backward edges with direction from greater labelled variables to smaller ones.
-% \begin{lem}
-% \label{lem:edgeforwarding}
-% [Edges are Forwarding Only].
-% \\
-% %
-% %
-% $$
-% \forall \trace \in \mathcal{T}, D \in \dbdom \st G(c, D) =  (\vertxs, \edges, \weights, \qflag) 
-% \implies
-% \forall (\event', \event) \in \edges \st \event' \eventleq \event
-% $$
-% %
-% \end{lem}
-% %
-% \begin{proof}
-% Proof in File: {\tt ``edge\_forward.tex''}.
-% % \input{edge_forward}
-% \end{proof}
-%
-%
-% %
-% \begin{lem}
-% \label{lem:DAG}
-% [Trace-based Dependency Graph is Directed Acyclic].
-% \\
-% %
-% $\forall \trace \in \mathcal{T}, D \in \dbdom $, $G(c, D)$ is a directed acyclic graph.
-% \end{lem}
-%
+The definition of adaptivity is then presented in Def~\ref{def:trace_adapt} below.
+
 \begin{defn}
   [Adaptivity of a Program].
   \label{def:trace_adapt}

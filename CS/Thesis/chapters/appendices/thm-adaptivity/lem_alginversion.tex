@@ -1,0 +1,199 @@
+%
+\begin{lem}[Flow Search Algorithm ($\mathcal{A}$) Inversion 1]
+\label{lem:inv_alg1}
+For all $D \in \dbdom , c \in \cdom, \trace \in \mathcal{T}, \event_1, \event_2 \in \eventset^{\asn}$, and a list $l$,
+if $l \in \mathcal{A}(\event_1, \event_2, \trace, c, D)$,
+then l must have the form $[\pi_1(\event_1)^{\pi_2(\event_1)},\ldots, \pi_1(\event_2)^{\pi_2(\event_2)}]$.
+\[
+\begin{array}{l}
+    \forall D \in \dbdom , c \in \cdom, \trace \in \mathcal{T}, l \st \forall \event_1, \event_2 \in \eventset^{\asn} \st
+  \\ \quad 
+ l\in \mathcal{A}(\event_1, \event_2, \trace, c, D)  \implies  l = [\pi_1(\event_1)^{\pi_2(\event_1)},\ldots, \pi_1(\event_2)^{\pi_2(\event_2)}]
+\end{array}
+\]
+\end{lem}
+%
+\begin{proof}
+% Let $l \in \mathcal{A}(\event_1, \event_2, \trace, c, D)$. By definition of $\mathcal{A}$ we have 
+% \[l\in \kw{setmap} 
+% 	% \bigcup\limits_{l \in \kw{dfs}(\trace, c, D) \land l = \event_1 :: l'}
+% 	\left(\emap 
+% 		(\efun  \event \to \pi_1(\event)^{\pi_2(\event)})	
+% 	(\efilter 
+% 		(\efun \event \to  \event \in \eventset^{\asn})) \right)
+% 	S
+% \]
+% for $S=\kw{setfilter}
+% 		(\efun l \to \exists l' \st l = \event_1 :: l' ++ [\event_2]) ~ \kw{dfs}(\trace, c, D)$.
+% So, in particular by definition of setmap there is a list $l_1\in S$ such that 
+% \[
+% 	% \bigcup\limits_{l \in \kw{dfs}(\trace, c, D) \land l = \event_1 :: l'}
+% \emap 
+% 		(\efun  \event \to \pi_1(\event)^{\pi_2(\event)})	
+% 	(\efilter 
+% 		(\efun \event \to  \event \in \eventset^{\asn}))
+% 	l_1 = l
+% \]
+% \[
+% l = [\event_1, \cdots, \event_2]
+% \]
+% \\
+Let  $l \in \mathcal{A}(\event_1, \event_2, \trace, c, D)$,
+by definition of $\mathcal{A}$, we know 
+%
+$$l\in \kw{setmap} 
+	% \bigcup\limits_{l \in \kw{dfs}(\trace, c, D) \land l = \event_1 :: l'}
+		\left(\efun l \to ( \emap 
+		(\efun  \event \to \pi_1(\event)^{\pi_2(\event)})
+	(\efilter 
+		(\efun \event \to  \event \in \eventset^{\asn}) ~ l) \right)
+	~ S,
+$$
+%
+where $S=(\kw{setfilter} ~(\efun l \to l = [\event_1, \cdots, \event_2]) ~ (\kw{dfs} \eapp \trace \eapp c \eapp  D))$.
+\\
+Then, by definition of $\kw{setmap}$, we know $l$ is an output of
+\\
+$\left(\efun l \to ( \emap 
+		(\efun  \event \to \pi_1(\event)^{\pi_2(\event)})
+	(\efilter 
+		(\efun \event \to  \event \in \eventset^{\asn}) ~ l) \right)$.
+\\
+Then we know there exists a preimage
+$l_e \in S $
+for $l$ such that 
+$$
+\emap (\efun  \event \to \pi_1(\event)^{\pi_2(\event)}) 
+(\efilter (\efun \event \to  \event \in \eventset^{\asn}) ~ l_e) 
+= l.
+$$
+ %
+Since $l_e \in (\kw{setfilter} ~(\efun l \to l = [\event_1, \cdots, \event_2]) ~ (\kw{dfs} \eapp \trace \eapp c \eapp  D))$,
+\\
+by the $\kw{setfilter}$ function,
+we know only the lists of events in $(\kw{dfs} \eapp \trace \eapp c \eapp  D)$ having the form
+$ [\event_1, \cdots, \event_2] $ are preserved in $S$, i.e.,
+\[
+	\forall l \in (\kw{setfilter} ~(\efun l \to l = [\event_1, \cdots, \event_2]) ~ \kw{dfs}(\trace, c, D))
+	\st l = [\event_1, \cdots, \event_2]
+\]
+%
+Then we know $l_e$ also has the same form, 
+i.e., $l_e = [\event_1, \cdots, \event_2]$.
+%
+\\
+Let $l_{ef} = (\efilter (\efun \event \to  \event \in \eventset^{\asn})) ~ l_e$, 
+by $\event_1, \event_2 \in \eventset^{\asn}$, 
+we know $\event_1$ and $\event_2$ are preserved in $l_{ef}$, i.e.,:
+\[
+	l_{ef} =[\event_1, \cdots, \event_2]
+\]
+%
+Then, by applying the function
+$\emap (\efun  \event \to \pi_1(\event)^{\pi_2(\event)})$ to 
+$l_{ef}$, we have $l$ as follows:
+\[
+	[\pi_1(\event_1)^{\pi_2(\event_1)}, \cdots, \pi_1(\event_2)^{\pi_2(\event_2)}]
+\]
+%
+%
+This lemma is proved.
+\end{proof}
+%
+\begin{lem}[Flow Search Algorithm ($\mathcal{A}$) Inversion 2]
+\label{lem:inv_alg2}
+For every $\event_1, \event_2 \in \eventset^{\asn}, D \in \dbdom , c \in \cdom$, we have either one of the two following cases:
+\begin{enumerate}
+  \item $\mathcal{A}(\event_1, \event_2,  [\event_1; \event_2], c, D) = 
+  \left\{[\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}] \right \}$ 
+  and $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$.
+  \item  $\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = \{\}$ 
+  and $\neg \eventdep(\event_1, \event_2, [\event_1; \event_2] c, D)$;
+\end{enumerate}
+\end{lem}
+% \wq{ Good! I just realize this lemma is only used for case 4 of 5.3.}
+%\jl{Yes!}
+\begin{proof}
+By definition of $A$, we know:
+%
+\[
+	\begin{array}{l}
+	\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D)
+	= 
+	\kw{setmap} ~
+	% \bigcup\limits_{l \in \kw{dfs}(\trace, c, D) \land l = \event_1 :: l'}
+	\\ \qquad \qquad
+	\left(\efun l \to ( \emap 
+		(\efun  \event \to \pi_1(\event)^{\pi_2(\event)})
+	(\efilter 
+		(\efun \event \to  \event \in \eventset^{\asn}) ~ l) \right)
+	\\ \qquad \qquad
+	(\kw{setfilter} ~
+		(\efun l \to l = [\event_1, \cdots, \event_2]) ~ 
+		% \left(\left\{[\event_2]\right\} \cup \left\{ \event_1 \stackrel{[\event_1; \event_2]}{\uplus} [\event_2] \right\} \right))
+		\left(\left\{[\event_2]\right\} \cup \left(  {\uplus} \eapp \event_1 \eapp {[\event_1; \event_2]} \eapp [\event_2] \right) \right))
+	\end{array}
+\]
+by definition of $ {\uplus} \eapp \event_1 \eapp {[\event_1; \event_2]} \eapp [\event_2]  $, we know 
+\[
+	\begin{array}{l}
+	% \event_1 \stackrel{[\event_1; \event_2]}{\uplus} [\event_2]
+	{\uplus} \eapp \event_1 \eapp {[\event_1; \event_2]} \eapp [\event_2] 
+	=   
+	\\ \quad \qquad 	
+	\ecase \eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)
+	\to \left\{ [\event_1, \event_2] \right\}
+	\\ \quad \qquad 	
+	\ecase \_
+	\to \left\{ \right\}
+\end{array}
+\]
+%
+By simplification of the $\kw{setfilter}$, $\emap$, $\efilter$ and $\kw{setmap}$ functions, we know
+\\
+in the case of $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$:
+% \\
+$\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = 
+  \left\{[\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}] \right \}$
+\\
+(1) is proved.
+\\
+And in the case of $\neg \eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$: 
+% \\
+$\mathcal{A}(\event_1, \event_2, \cdot  \event_1 \tracecat [\event_2], c, D) = 
+  \left\{ \right \}$
+\\
+(2) is proved.
+\end{proof}
+%
+%
+% \begin{lem}[\todo{Assignment Evaluation Inversion}].
+% 	\label{lem:inv_eval_asn}
+% 	\[
+% 	\begin{array}{l}
+% 		\forall x \in \lvar_c, \kw{V_{ptl}} \in \subseteq \lvar_c \expr \st 
+% 		\exists \trace, \trace' \in \mathcal{T} \st 
+% 		\\ \quad
+% 		\forall z \in \lvar_c \setminus (\{x\} \cup \kw{V_{ptl}}) \st 
+% 		\env(\trace) z = \env(\trace') z 
+% 		\\ \quad \land
+% 		\forall \event \in \trace, \event' \in \trace' \st 
+% 		\pi_1(\event) \in \kw{V_{ptl}} \land \diff(\event, \event') 
+% 		\\ \quad
+% 		\implies 
+% 		\neg \eventdep(\event, \event_y, \trace[\event:\event_y] ) 
+% 		\implies
+% 		\config{\trace, [\assign{y}{\expr}]{}^l;c'} \rightarrow^{asn} \config{\trace\cdot \event_y, c'}
+% 		\\ \quad
+% 		\implies 
+% 		\config{\trace', [\assign{y}{\expr}]{}^l;c'} \rightarrow^{asn} \config{\trace'\cdot \event_y',c'}
+% 		\land \diff(\event_y, \event_y')
+% 		\implies x \in VAR(\expr)
+% 	\end{array}
+% 	\]
+% 	\end{lem}	
+%
+%
+% \todo{Event Dependency Transitivity}
+  %
+%
