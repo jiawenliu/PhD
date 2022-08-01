@@ -1,0 +1,776 @@
+In this chapter, we formally introduce the language we will focus on for writing data analyses.  
+This is a simple loop language with some primitives for calling queries. 
+After defining the syntax of the language and showing an example, we will define its trace-based operational semantics. 
+This is the main technical ingredient we will use to define the program's adaptivity.
+
+%
+%
+\paragraph{Labeled Language}
+% \mg{It is ok to list all the operations in the appendix but for the main paper it is better to save space.}
+\[
+\begin{array}{llll}
+\mbox{Arithmetic Operators} 
+& \oplus_a & ::= & + ~|~ - ~|~ \times 
+%
+~|~ \div ~|~ \max ~|~ \min\\  
+% ~|~ \div \\  
+\mbox{Boolean Operators} 
+& \oplus_b & ::= & \lor ~|~ \land
+\\
+%
+\mbox{Relational Operators} 
+& \sim & ::= & < ~|~ \leq ~|~ == 
+\\  
+%
+\mbox{Arithmetic Expression} 
+& \aexpr & ::= & 
+n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr  
+ ~|~ \elog \aexpr  ~|~ \esign \aexpr
+\\
+%
+\mbox{Boolean Expression} & \bexpr & ::= & 
+%
+\etrue ~|~ \efalse  ~|~ \neg \bexpr
+ ~|~ \bexpr \oplus_b \bexpr
+%
+~|~ \aexpr \sim \aexpr 
+\\
+%
+\mbox{Expression} & \expr & ::= & v ~|~ \aexpr ~|~ \bexpr ~|~ [\expr, \dots, \expr]
+\\  
+%
+\mbox{Value} 
+& v & ::= & { n ~|~ \etrue ~|~ \efalse ~|~ [] ~|~ [v, \dots, v]}  
+\\ 
+&&&
+\highlight
+{
+~|~ (r, x_1, \ldots, x_n) := c
+}
+\\
+%
+\mbox{Query Expression} 
+& {\qexpr} & ::= 
+& { \qval ~|~ \aexpr ~|~ \qexpr \oplus_a \qexpr ~|~ \chi[\aexpr]} 
+\\
+%
+\mbox{Query Value} & \qval & ::= 
+& {n ~|~ \chi[n] ~|~ \qval \oplus_a  \qval ~|~ n \oplus_a  \chi[n]
+    ~|~ \chi[n] \oplus_a  n}
+\\
+% \\%
+\mbox{Label} 
+& l & ::= & (n \in \mathbb{N} \cup \{\lin, \lex\}) ~|~ (l, n)
+\\ 
+%
+\mbox{Labeled Command} 
+& {c} & ::= &  
+\clabel{\assign{x}{\expr}}^l 
+~|~ \clabel{\assign{x}{\query(\qexpr)}}^l
+~|~  \clabel{\eskip}^l
+~|~ \ewhile \clabel{\bexpr}^{l} \edo {c}
+~|~ \eif(\clabel{\bexpr}^{l} , {c}, {c}) 
+\\ 
+&&&
+\highlight
+{
+~|~ \clabel{\efun}^l: x(r, x_1, \ldots, x_n) := c
+~|~ \clabel{\assign{x}{\ecall(x, e_1, \ldots, e_n)}}^l
+}
+~|~ {c};{c}  
+\\ 
+% \\
+\mbox{Event} 
+& \event & ::= & 
+    ({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval)  ~~~~~~~~~~~ \mbox{Assignment Event} \\
+&&& ~|~(\bexpr, l, v, \bullet)   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \mbox{Testing Event}
+\\
+% &&& \text{\mg{I think it would be better to use quadruples for events, where the}}\\
+% &&& \text{\mg{first element is either a variable or a boolean expression and }}\\
+% &&& \text{\mg{the last is either a query value or some default value $\bullet$}}\\
+%
+% \mbox{Trace} & \trace
+% & ::= & \cdot | \trace \cdot \event | \trace \tracecat \trace 
+% \\
+%
+% \mbox{Trace} & \trace
+% & ::= & [] ~|~ \event:: \trace ~|~ \trace \tracecat \trace  \\
+\mbox{Trace} & \trace
+& ::= & [] ~|~ \trace :: \event\\
+% &&& \text{\mg{I don't understand why you need both :: and ++ as constructors.}}\\
+% &&& \text{\jl{Because append is to the left but we are adding element to the left in the OS}}\\
+% &&& \text{\jl{I was too sticky to the convention, it is a good idea to append to the left and just use $::$}}
+% %
+% \mbox{Event Signature} & \sig
+% & ::= & (x, l, n) | (x, l, n, \query) | (b, l, n)
+% \\
+% %
+\end{array}
+\]
+% \todo{change trace notation into list, and update corresponding operator nations}
+% \\
+% \wqside{"$\cdot$" has two meanings? empty, delimit. Trace is list of event?}
+We use following notations to represent the set of corresponding terms:
+\[
+\begin{array}{lll}
+\mathcal{VAR} & : & \mbox{Set of Variables}  
+\\ 
+%
+\mathcal{VAL} & : & \mbox{Set of Values} 
+\\ 
+%
+\mathcal{QVAL} & : & \mbox{Set of Query Values} 
+\\ 
+%
+\cdom & : & \mbox{Set of Commands} 
+\\ 
+%
+\eventset  & : & \mbox{Set of Events}  
+\\
+%
+\eventset^{\asn}  & : & \mbox{Set of Assignment Events}  
+\\
+%
+\eventset^{\test}  & : & \mbox{Set of Testing Events}  
+\\
+%
+\ldom  & : & \mbox{Set of Labels}  
+\\
+%%
+\mathcal{VAL}  & : & \mbox{Set of Labeled Variables}  
+\\
+%%
+\dbdom  & : & \mbox{{Set of Databases}} 
+\\
+%
+{\mathcal{T}} & : & \mbox{Set of Traces}
+\\
+%
+\mathcal{T}_0(c) & : & \mbox{Set of Initial Traces, where all the input variables of the program $c$ are initialized.
+}
+\\
+%
+% \qdom = {[-1,1]} & : & \mbox{{Domain of Query Results}}\\
+\qdom & : & \mbox{{Domain of Query Results}}\\
+% &&\text{\mg{I don't think you need to hard code [-1,1] here}}\\
+\end{array}
+\]
+%
+%
+%
+Environment $ \env : {\mathcal{T}}  \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\bot\}$
+% \mgside{The following definition is missing one case, also it is better to say that $y\neq x$.}
+% \[
+% \begin{array}{lll}
+% \env(\trace  \tracecat [(x, l, v, \cdot)]) x \triangleq v
+% &
+% \env(\trace \tracecat [(y, l, v, \cdot)]) x \triangleq \env(\trace) x, y \neq x
+% &
+% \env(\trace \tracecat [(b, l, v, \cdot)]) x \triangleq \env(\trace) x
+% \\
+% \env(\trace \tracecat [(x, l, v, \qval)]) x \triangleq v
+% &
+% \env(\trace \tracecat [(y, l, v, \qval)]) x \triangleq \env(\trace) x, y \neq x
+% &
+% \env({[]} ) x \triangleq \bot
+% \end{array}
+% \]
+\[
+\begin{array}{lll}
+\env(\trace  \traceadd (x, l, v, \bullet)) x \triangleq v
+&
+\env(\trace \traceadd (y, l, v, \bullet)) x \triangleq \env(\trace) x, y \neq x
+&
+\env(\trace \traceadd (b, l, v, \bullet)) x \triangleq \env(\trace) x
+\\
+\env(\trace \traceadd (x, l, v, \qval)) x \triangleq v
+&
+\env(\trace \traceadd (y, l, v, \qval)) x \triangleq \env(\trace) x, y \neq x
+&
+\env({[]} ) x \triangleq \bot
+\end{array}
+\]
+%
+%
+% \subsection{Trace-based Operational Semantics for Language \mg{What is ``Language''?}}
+\paragraph{{Trace-based Operational Semantics for {\tt Query While} Language}}
+{
+\begin{mathpar}
+\boxed{ \config{\trace,\aexpr} \aarrow v \, : \, \mbox{Trace  $\times$ Arithmetic Expr $\Rightarrow$ Arithmetic Value} }
+\\
+% \text{\mg{Missing. Without these rules it is difficult to understand why we need a trace to evaluate expressions.}}
+% \\
+\inferrule{ 
+  \empty
+}{
+ \config{\trace,  n} 
+ \aarrow n
+}
+\and
+\inferrule{ 
+  \env(\trace) x = v
+}{
+ \config{\trace,  x} 
+ \aarrow v
+}
+\and
+\inferrule{ 
+  \config{\trace, \aexpr_1} \aarrow v_1
+  \and 
+  \config{\trace, \aexpr_2} \aarrow v_2
+  \and 
+   v_1 \oplus_a v_2 = v
+}{
+ \config{\trace,  \aexpr_1 \oplus_a \aexpr_2} 
+ \aarrow v
+}
+\and
+\inferrule{ 
+  \config{\trace, \aexpr} \aarrow v'
+  \and 
+  \elog v' = v
+}{
+ \config{\trace,  \elog \aexpr} 
+ \aarrow v
+}
+\and
+\inferrule{ 
+  \config{\trace, \aexpr} \aarrow v'
+  \and 
+  \esign v' = v
+}{
+ \config{\trace,  \esign \aexpr} 
+ \aarrow v
+}
+\\
+\boxed{ \config{\trace, \bexpr} \barrow v \, : \, \mbox{Trace $\times$ Boolean Expr $\Rightarrow$ Boolean Value} }
+\\% \\
+\inferrule{ 
+  \empty
+}{
+ \config{\trace,  \efalse} 
+ \barrow \efalse
+}
+\and 
+\inferrule{ 
+  \empty
+}{
+ \config{\trace,  \etrue} 
+ \barrow \etrue
+}
+\and 
+\inferrule{ 
+  \config{\trace, \bexpr} \barrow v'
+  \and 
+  \neg v' = v
+}{
+ \config{\trace,  \neg \bexpr} 
+ \barrow v
+}
+\and 
+\inferrule{ 
+  \config{\trace, \bexpr_1} \barrow v_1
+  \and 
+  \config{\trace, \bexpr_2} \barrow v_2
+  \and 
+   v_1 \oplus_b v_2 = v
+}{
+ \config{\trace,  \bexpr_1 \oplus_b \bexpr_2} 
+ \barrow v
+}
+\and 
+\inferrule{ 
+  \config{\trace, \aexpr_1} \aarrow v_1
+  \and 
+  \config{\trace, \aexpr_2} \aarrow v_2
+  \and 
+   v_1 \sim v_2 = v
+}{
+ \config{\trace,  \aexpr_1 \sim \aexpr_2} 
+ \barrow v
+}
+\\
+\boxed{ \config{\trace, \expr} \earrow v \, : \, \mbox{Trace $\times$ Expression $\Rightarrow$ Value} }
+\\
+\inferrule{ 
+  \config{\trace, \aexpr} \aarrow v
+}{
+ \config{\trace,  \aexpr} 
+ \earrow v
+}
+\and
+\inferrule{ 
+  \config{\trace, \bexpr} \barrow v
+}{
+ \config{\trace,  \bexpr} 
+ \earrow v
+}
+\and
+\inferrule{ 
+  \config{\trace, \expr_1} \earrow v_1
+  \cdots
+  \config{\trace, \expr_n} \earrow v_n
+}{
+ \config{\trace,  [\expr_1, \cdots, \expr_n]} 
+ \earrow [v_1, \cdots, v_n]
+}
+\and
+\inferrule{ 
+  \empty
+}{
+ \config{\trace,  v} 
+ \earrow v
+}
+\\
+\boxed{ \config{\trace, \qexpr} \qarrow \qval \, : \, \mbox{Trace  $\times$ Query Expr $\Rightarrow$ Query Value} }
+\\
+\inferrule{ 
+  \config{\trace, \aexpr} \aarrow n
+}{
+ \config{\trace,  \aexpr} 
+ \qarrow n
+}
+\and
+\inferrule{ 
+  \config{\trace, \qexpr_1} \qarrow \qval_1
+  \and
+  \config{\trace, \qexpr_2} \qarrow \qval_2
+}{
+ \config{\trace,  \qexpr_1 \oplus_a \qexpr_2} 
+ \qarrow \qval_1 \oplus_a \qval_2
+}
+\and
+\inferrule{ 
+  \config{\trace, \aexpr} \aarrow n
+}{
+ \config{\trace, \chi[\aexpr]} \qarrow \chi[n]
+}
+\and
+\inferrule{ 
+  \empty
+}{
+ \config{\trace,  \qval} 
+ \qarrow \qval
+}
+ \end{mathpar}
+%
+The trace based operational semantics rules are defined in Figure \ref{fig:os}.
+%
+\begin{figure}
+%   \text{\mg{Several skip are missing labels. Do we need fresh labels or we reuse l?}}
+%   \\
+%   \text{\jl{Both are good for OS, but generate fresh label will need extra arguments in soundness proof, so rescuing l is better}}
+%   \\
+% \text{\mg{Also, why we use ++, cannot we just define lists as adding elements on the right?}}  \\
+% \text{\jl{I was too sticky to the convention, it is a good idea to append to the left and just use $::$ as construtor}}  \\
+% \text{\mg{It is also unclear why we store the boolean expression in if and while, besides the boolean value.}}\\
+% \text{\jl{When proving the soundness of dependency between trace-based and program-based,}}\\
+% \text{\jl{The variable used in the boolean expression is useful in proving the inversion Lemmas.}}
+{
+\begin{mathpar}
+\boxed{
+\mbox{Command $\times$ Trace}
+\xrightarrow{}
+\mbox{Command $\times$ Trace}
+}
+\and
+\boxed{\config{{c, \trace}}
+\xrightarrow{} 
+\config{{c',  \trace'}}
+}
+\\
+\inferrule
+{
+\empty
+}
+{
+\config{\clabel{\eskip}^l,  \trace } 
+\xrightarrow{} 
+\config{\clabel{\eskip}^l, \trace}
+}
+~\textbf{skip}
+%
+\and
+%
+\inferrule
+{
+\event = ({x}, l, v, \bullet)
+}
+{
+\config{[\assign{{x}}{\aexpr}]^{l},  \trace } 
+\xrightarrow{} 
+\config{\clabel{\eskip}^l, \trace \traceadd \event}
+}
+~\textbf{assn}
+%
+\and
+%
+{
+\inferrule
+{
+ \config{\trace, \qexpr }\qarrow \qval
+ \and 
+\query(\qval) = v
+\and 
+\event = ({x}, l, v, \qval)
+}
+{
+\config{{[\assign{x}{\query(\qexpr)}]^l, \trace}}
+\xrightarrow{} 
+\config{{\clabel{\eskip}^l,  \trace \traceadd \event} }
+}
+~\textbf{query}
+}
+%
+\and
+%
+\inferrule
+{
+  \config{\trace, b} \barrow \etrue
+ \and 
+ \event = (b, l, \etrue, \bullet)
+}
+{
+\config{{\ewhile [b]^{l} \edo c, \trace}}
+\xrightarrow{} 
+\config{{
+c; \ewhile [b]^{l} \edo c,
+\trace \traceadd \event}}
+}
+~\textbf{while-t}
+%
+%
+\and
+%
+\inferrule
+{
+  \config{\trace, b} \barrow \efalse
+ \and 
+ \event = (b, l, \efalse, \bullet)
+}
+{
+\config{{\ewhile [b]^{l}, \edo c, \trace}}
+\xrightarrow{} 
+\config{{
+  \clabel{\eskip}^l,
+\trace \traceadd \event}}
+}
+~\textbf{while-f}
+%
+%
+\and
+%
+%
+\inferrule
+{
+\config{{c_1, \trace}}
+\xrightarrow{}
+\config{{c_1',  \trace'}}
+}
+{
+\config{{c_1; c_2, \trace}} 
+\xrightarrow{} 
+\config{{c_1'; c_2, \trace'}}
+}
+~\textbf{seq1}
+%
+\and
+%
+\inferrule
+{
+  \config{{c_2, \trace}}
+  \xrightarrow{}
+  \config{{c_2',  \trace'}}
+}
+{
+\config{{\clabel{\eskip}^l; c_2, \trace}} \xrightarrow{} \config{{ c_2', \trace'}}
+}
+~\textbf{seq2}
+%
+\and
+%
+%
+\inferrule
+{
+  \config{\trace, b} \barrow \etrue
+ \and 
+ \event = (b, l, \etrue, \bullet)
+}
+{
+ \config{{
+\eif([b]^{l}, c_1, c_2), 
+\trace}}
+\xrightarrow{} 
+\config{{c_1, \trace \traceadd \event}}
+}
+~\textbf{if-t}
+%
+\and
+%
+\inferrule
+{
+ \config{\trace, b} \barrow \efalse
+ \and 
+ \event = (b, l, \efalse, \bullet)
+}
+{
+\config{{\eif([b]^{l}, c_1, c_2), \trace}}
+\xrightarrow{} 
+\config{{c_2, \trace \traceadd \event}}
+}
+~\textbf{if-f}
+% %
+\and
+%
+\highlight{
+\inferrule
+{
+ c' = (c)^{+n}
+ \and 
+ \event = (f, l, (r, x_1, \ldots, x_n) := c', \bullet)
+}
+{
+\config{{
+  [\efun]^l: f(r, x_1, \ldots, x_n) := c, \trace}}
+\xrightarrow{} 
+\config{{\clabel{\eskip}^l, \trace \traceadd \event}}
+}
+~\textbf{fun-def}
+%
+}
+\\
+\highlight{
+%
+\inferrule
+{
+  \config{ \trace, f} \earrow (r, x_1, \ldots, x_n) := c
+\and 
+\config{{
+  \clabel{\assign{x_1}{e_1}}^{(l, 1)}; \ldots;
+  \clabel{\assign{x_n}{e_n}}^{(l, n)}, \trace}} 
+  \xrightarrow{}^* 
+  \config{{\clabel{\eskip}^{(l, n)}, \trace_1}}
+  \\ 
+  \config{{\clabel{c}^{(l)}, \trace_1}}
+  \xrightarrow{}^* 
+  \config{{\clabel{\eskip}^{l}, \trace'}}
+  \and
+  \config{\trace', r } \earrow v
+  \and
+ \event = (x, l, v, \bullet)
+}
+{
+\config{{
+  \clabel{\assign{x}{\ecall(f, e_1, \ldots, e_n)}}^l, \trace}}
+\xrightarrow{} 
+\config{{\clabel{\eskip}^l, \trace' :: \event}}
+}
+~\textbf{fun-call}
+}
+%
+\end{mathpar}
+}
+% \end{subfigure}
+    \caption{Trace-based Operational Semantics for Language.}
+    \label{fig:os}
+\end{figure}
+%
+\\
+\highlight{
+  \begin{defn}[Label Increase]
+    \label{def:label_inc}  
+    Label Increase $ + : {\ldom \to \mathbb{N} \to \ldom}$, increase a label $l$ by a natural number $n$:
+\[
+    n + n' \triangleq n'' ~ n, n' \in \mathbb{N} \land \config{[], n + n'} \aarrow n''
+   \qquad (l, n) + n' \triangleq (l + n', n'') ~ n, n' \in \mathbb{N} \land \config{[], n + n'} \aarrow n''
+   \]
+\end{defn}
+The case of $(l, n) + n'$ will never happen during evaluation.
+By Operational semantics, the only place the label increase is in rule \textbf{fun-def},
+$c' = (c)^{+n}$, where $c$ is the function body.
+By the rule \textbf{fun-call}, and the label augment in Definition~\ref{def:comlabel_aug}, the function body $c$ will never be augmented.
+%
+\begin{defn}[Command Label Increase] 
+  \label{def:comlabel_inc}
+Command Label Increase $ {(\cdot)}{}^{+n} : {\cdom \to \cdom}$, increase the label in command by $n$.
+\[
+\begin{array}{ll}
+  (\clabel{\assign{x}{\expr}}^l){}^{+n} & \triangleq \clabel{\assign{x}{\expr}}^{l + n}\\
+(\clabel{\assign{x}{\query(\qexpr)}}^l)^{+n} & \triangleq \clabel{\assign{x}{\query(\qexpr)}}^{l + n}\\
+(\clabel{\eskip}^l)^{+n} & \triangleq \clabel{\eskip}^{l + n}\\
+(\ewhile \clabel{\bexpr}^{l} \edo {c'})^{+n} & \triangleq \ewhile \clabel{\bexpr}^{l+n} \edo {(c')^{+n}}\\
+(\eif(\clabel{\bexpr}^{l} , {c_1}, {c_2}))^{+n}  & \triangleq \eif(\clabel{\bexpr}^{l+n} , {(c_1)^{+n}}, {(c_2)^{+n}})\\
+% (\clabel{\efun}^l: x(r^l, x_1, \ldots, x_n) := c)^{+n} & \triangleq \clabel{\efun}^{l + n}: x(r^l, x_1, \ldots, x_n) := (c)^{+n} \\
+(\clabel{\efun}^l: x(r^l, x_1, \ldots, x_n) := c)^{+n} & \triangleq \clabel{\efun}^{l + n}: x(r^l, x_1, \ldots, x_n) := c \\
+(\clabel{\assign{x}{\ecall(x, e_1, \ldots, e_n)}}^l)^{+n} & \triangleq \clabel{\assign{x}{\ecall(x, e_1, \ldots, e_n)}}^{l + n}\\
+({c_1};{c_2})^{+n} &  \triangleq {(c_1)}^{+n};{(c_2)}^{+n}
+\end{array}
+\]
+\end{defn}
+%
+\begin{defn}[Command Label Augment] 
+  \label{def:comlabel_aug}
+  Command Label Augment $ \clabel{\cdot}^{l} : {\cdom \to \cdom}$, augment the label in command with a label $l$ 
+in order to record the calling site.
+\[
+\begin{array}{ll}
+  \clabel{\clabel{\assign{x}{\expr}}^{l'}}{}^{l} & \triangleq \clabel{\assign{x}{\expr}}^{(l, l')}\\
+  \clabel{\clabel{\assign{x}{\query(\qexpr)}}^{l'}}^{l} & \triangleq \clabel{\assign{x}{\query(\qexpr)}}^{(l, l')}\\
+  \clabel{\clabel{\eskip}^{l'}}^{l} & \triangleq \clabel{\eskip}^{(l, l')}\\
+  \clabel{\ewhile \clabel{\bexpr}^{l'} \edo {c'}}^{l} & \triangleq \ewhile \clabel{\bexpr}^{(l, l')} \edo {(c')^{l}}\\
+  \clabel{\eif(\clabel{\bexpr}^{l'} , {c_1}, {c_2})}^{l}  & \triangleq \eif(\clabel{\bexpr}^{(l, l')} , {(c_1)^{l}}, {(c_2)^{l}})\\
+  \clabel{\clabel{\efun}^{l'}: x(r^l, x_1, \ldots, x_n) := c}^{l} & \triangleq \clabel{\efun}^{(l, l')}: x(r^l, x_1, \ldots, x_n) := c \\
+  \clabel{\clabel{\assign{x}{\ecall(x, e_1, \ldots, e_n)}}^{l'}}^{l} & \triangleq \clabel{\assign{x}{\ecall(x, e_1, \ldots, e_n)}}^{(l, l')}\\
+  \clabel{{c_1};{c_2}}^{l} &  \triangleq \clabel{c_1}^{l};\clabel{c_2}^{l}
+\end{array}
+\]
+\end{defn}
+}
+% Each command is now labeled with a label $l$, either a natural number standing for the line of code where the command appears, or a symbol of $in$ or $ex$ used for annotating the input variables, and the exist point of the program. Notice that we associate the label $l$ to the conditional predicate $\bexpr$ in the if statement, and to the while guard counter $\bexpr$ in the $\ewhile$ statement.
+% We abuse the same notation $c$ for labeled command in the rest of the paper.
+% \\
+% \todo{notation}
+The labeled variables and assigned variables are set of variables annotated by a label. 
+We use  
+%$\mathcal{LVAR} = \mathcal{VAR} \times \mathcal{L} $ 
+$\mathcal{LV}$ represents the universe of all the labeled variables and 
+$\avar_c \in \mathcal{P}(\mathcal{VAR} \times \mathbb{N}) \subset \mathcal{LV}$ and 
+$\lvar_c \in \mathcal{P}(\mathcal{VAR} \times \mathcal{L}) \subseteq \mathcal{LV}$,
+represents the the set of assigned variables and labeled variables for a labeled command $c$,
+defined in Definition~\ref{def:lvar} and \ref{def:avar}.
+%
+\\
+$FV: \expr \to \mathcal{P}(\mathcal{VAR})$, computes the set of free variables in an expression. To be precise,
+$FV(\aexpr)$, $FV(\bexpr)$ and $FV(\qexpr)$ represent the set of free variables in arithmetic
+expression $\aexpr$, boolean expression $\bexpr$ and query expression $\qexpr$ respectively.
+Labeled variables in $c$ is the set of assigned variables and all the free variables
+showing up in $c$ with a default label $in$. 
+The free variables
+showing up in $c$, which aren't defined before be used, are actually the input variables of this program.
+%
+\begin{defn}[Assigned Variables (
+% $\avar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$ or 
+$\avar : \cdom \to \mathcal{P}(\mathcal{VAR} \times \mathbb{N})$)]
+% labelled Variables 
+% (
+% % $\lvar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$ or 
+% $\lvar : \cdom \to \mathcal{P}(\mathcal{VAR} \times \mathcal{L})$
+\label{def:avar}
+{\footnotesize
+$$ \avar_{c} \triangleq
+  \left\{
+  \begin{array}{ll}
+      \{{x}^l\}                   
+      & {c} = [{\assign x e}]^{l} 
+      \\
+      \{{x}^l\}                   
+      & {c} = [{\assign x \query(\qexpr)}]^{l} 
+      \\
+      \avar_{{c_1}} \cup \avar_{{c_2}}  
+      & {c} = {c_1};{c_2}
+      \\
+      \avar_{{c}} \cup \avar_{{c_2}} 
+      & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
+      \\
+      \avar_{{c}'}
+      & {c}   = \ewhile ([\bexpr]^{l}, {c}')
+\end{array}
+\right.
+$$
+}
+\end{defn}
+%
+
+\begin{defn}[labelled Variables 
+(
+% $\lvar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$ or 
+$\lvar : \cdom \to \mathcal{P}(\mathcal{LV})$]
+\label{def:lvar}
+{\footnotesize
+$$
+  \lvar_{c} \triangleq
+  \left\{
+  \begin{array}{ll}
+      \{{x}^l\} \cup FV(\expr)^{in}                  
+      & {c} = [{\assign x e}]^{l} 
+      \\
+      \{{x}^l\}   \cup FV(\qexpr)^{in}                
+      & {c} = [{\assign x \query(\qexpr)}]^{l} 
+      \\
+      \lvar_{{c_1}} \cup \lvar_{{c_2}}  
+      & {c} = {c_1};{c_2}
+      \\
+      \lvar_{{c}} \cup \lvar_{{c_2}} \cup FV(\bexpr)^{in}
+      & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
+      \\
+      \lvar_{{c}'} \cup FV(\bexpr)^{in}
+      & {c}   = \ewhile ([\bexpr]^{l}, {c}')
+\end{array}
+\right.
+$$
+}
+\end{defn}
+%
+%
+%
+% is a subset of the program's assigned variables, where every variable in this set is assigned by a query in the program.
+% \mg{The set of query variables of a program is the set of variables set to the result of a query in the program.}\\
+We also defined the set of query variables for a program $c$,
+it is the set of variables set to the result of a query in the program formally in Definition~\ref{def:qvar}.
+% \mg{In the next definition, why do you call it a vector? It seems that you define it as a set.}\\
+% \jl{fixed}\\
+%
+% \begin{defn}[Query Variables ($\qvar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$)].
+  % \\
+\begin{defn}[Query Variables ($\qvar: \cdom \to \mathcal{P}(\mathcal{LV})$)] 
+  \label{def:qvar}
+Given a program $c$, its query variables 
+% \mg{it seems you are missing the $_c$ subscript. Also, this is a minor point but I don't think it is a good idea to use a subscript, cannot you just use $\qvar(c)$.}
+$\qvar(c)$ is the set of variables set to the result of a query in the program.
+% \jl{fixed}
+It is defined as follows:
+{\footnotesize
+$$
+  % \qvar_{{c}} \triangleq
+  \qvar(c) \triangleq
+  \left\{
+  \begin{array}{ll}
+      \{\}                  
+      & {c} = [{\assign x \expr}]^{l} 
+      \\
+      \{{x}^l\}                  
+      & {c} = [{\assign x \query(\qexpr)}]^{l} 
+      \\
+      \qvar(c_1) \cup \qvar(c_2)  
+      & {c} = {c_1};{c_2}
+      \\
+      \qvar(c_1) \cup \qvar(c_2) 
+      & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
+      \\
+      \qvar(c')
+      & {c}   = \ewhile ([\bexpr]^{l}, {c}')
+\end{array}
+\right.
+$$
+}
+\end{defn}
+%
+It is easy to see that a program $c$'s query variables is a subset of 
+its labeled variables, $\qvar(c) \subseteq \lvar(c)$.
+%
+% \mg{In this definition as well as in others, I have the impression that you assume that the labelled variables are unique in the program. For example, it would not make sense to assign a query to the same labelled variable over and over. If this is the case, we need to make this very explicit in the paper.}
+% \jl{TODO}
+%
+Every labeled variable in a program is unique, formally as follows with proof in Appendix~\ref{apdx:lemma_sec123}.
+\begin{lem}[Uniqueness of the Labeled Variables]
+  \label{lem:lvar_unique}
+  For every program $c \in \cdom$ and every two labeled variables such that
+  $x^i, y^j \in \lvar(c)$, then $x^i \neq y^j$.
+  \[
+    \forall c \in \cdom, x^i, y^j \in \mathcal{L} \sthat x^i, y^j \in \lvar(c)\implies x^i \neq y^j.
+    \]
+\end{lem}
+%
+%
+%
+\clearpage
