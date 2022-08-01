@@ -5,11 +5,11 @@ The program's adaptivity in the formal model through the execution-based analysi
 % which we define over the program's execution-based dependency graph from the dynamic 
 % analysis 
 in Definition~\ref{def:trace_adapt}, isn't precise enough w.r.t. the intuitive adaptivity rounds.
-It comes across an over-approximation 
+It comes across as an over-approximation 
 % on the program's
-%  intuitive adaptivity rounds.
+% intuitive adaptivity rounds.
 % It is 
-resulted from difference between its Dependency Depth analysis and the \emph{variable may-dependency} definition.
+resulted from the difference between its Dependency Depth analysis and the \emph{variable may-dependency} definition.
 It occurs when the weight is computed over the traces different from the traces used in 
 witness the \emph{variable may-dependency} relation.
 As shown in the Example~\ref{ex:multipleRoundSingle_example}.
@@ -18,35 +18,39 @@ As shown in the Example~\ref{ex:multipleRoundSingle_example}.
 \subsubsection{Proposed Methodology}
 \label{subsubsec:furthers-dep-depth}
 % \input{~/dynamic/relatedwork.tex}
-1. In the first stage of the execution-based analysis, 
+Based on the execution-based dependency analsysis in Section~\ref{sec:dynamic}, the improvement on the accuracy 
+of formalizing the
+\emph{adaptivity} is planned to develop in following three-steps.
+\begin{enumerate}
+\item In the first stage of the execution-based analysis, 
 I will give an alternative variable \emph{may-dependency} definition 
 by referring to the analysis methodology in \cite{Cousot19a}.
-\\
-Specifically, I will define the variables dependency relation over two witness traces and an initial trace. Comparing to 
+%
+Specifically, I will define the variables' dependency relation over two witness traces and an initial trace. Comparing to 
 the existing \emph{may-dependency} definition, which quantifies overall possible execution traces, the alternative
-definition explicitly relies on two specific witness traces from execution.
+the definition explicitly relies on two specific witness traces from execution.
 This externalization helps in analyzing the dependency quantity through the same 
 witness traces as the \emph{may-dependency} relation. In this way, the over-approximation as illustrated above
 can be reduced.
-\\
-2. In the second stage of the execution-based analysis, 
+%
+\item In the second stage of the execution-based analysis, 
 based on the new \emph{may-dependency} definition,
 I will compute the weight of every edge constructed from 
 \emph{may-dependency} relation in the execution-based dependency graph, w.r.t. to the witness traces.
-\\
-3. Then in the third stage, I will formalize the \emph{adaptivity} still as the 
+%
+\item Then in the third stage, I will formalize the \emph{adaptivity} still as the 
 length of the longest finite walk. Differently from the previous one, I restrict 
-the occurrence of every edge in a finite walk no more than its weight as well.
-\\
+the occurrence of every edge in a finite walk to no more than its weight as well.
+\end{enumerate}
 Through the three steps above, I give a more accurate formalization of the intuitive \emph{adaptivity}.
 %
-\subsection{Static Path Sensitive Reachability Bound Analysis}
+\subsection{Accurate Static Adaptivity Analysis}
 \label{subsec:furthers-reachability}
 In static program analysis framework $\THESYSTEM$, specifically on the dependency quantity, 
 I adopt the reachability bound analysis technique to estimate this dependency quantity.
 % In existing static reachability bound analysis, 
 However, it isn't precise enough w.r.t. the execution-based reachability bound on every program command.
-It comes across an over-approximation on the estimation due to its path-insensitive nature. 
+It comes across as an over-approximation on estimation due to its path-insensitive nature. 
 It occurs when the control flow can be decided in a particular way in front of conditional branches, 
 while the static analysis fails to witness. 
 As shown in Example~\ref{ex:overapproximate}.
@@ -55,45 +59,53 @@ As shown in Example~\ref{ex:overapproximate}.
 % as follo
 \subsubsection{Proposed Methodology}
 \label{subsubsec:furthers-reachability}
-The imprecision comes from the second stage of the static program analysis.
-In this stage, 
-methodology on reachability bound analysis isn't path sensitive. 
-There are many works on program complexity analysis area, estimating the path sensitive loop bound 
-or reachability bound
-\cite{GustafssonEL05, HumenbergerJK18}, 
-\cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}, 
-\cite{GulwaniZ10, SinnZV17,GulwaniJK09, GulwaniMC09, abs-2203-04243}. 
-But they aren't analysing the reachability
-bound in a path sensitive way.
-\\
-I will first design a path sensitive reachability bound analysis algorithm computing the 
-reachability bounds for every labeled command taking the different paths inside while loop into consideration.
-% Comparing to just compute the reachability bound for the while loop command, new methodology improves the accuracy of the 
+The accurate static adaptivity analysis is planned to be improved in following two steps.
+\begin{enumerate}
+    \item \textbf{Path Sensitive Reachability Bound Algorithm Design}
+    
+    The imprecision comes from the second stage of the static program analysis.
+    The algorithm in this stage is to statically estimate the 
+    reachability bound for every location of program.
+    Specifically, this reachability bound analysis algorithm isn't path sensitive. 
+    There are many works in the program complexity analysis area, estimating the path-sensitive loop bound 
+    or reachability bound
+    \cite{GustafssonEL05, HumenbergerJK18}, 
+    \cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}, 
+    \cite{GulwaniZ10, SinnZV17,GulwaniJK09, GulwaniMC09, abs-2203-04243}. 
+    But they aren't analyzing the reachability
+    bound in a path-sensitive way.
+    \\
+    Motivated by this observation, I will first design path-sensitive reachability bound analysis algorithm computing the 
+    reachability bounds for every labeled command taking the different paths inside while loop into consideration.
+% Compared to just computing the reachability bound for the while loop command, the new methodology improves the accuracy of the 
 % reachability bound for every labeled command.
-\\
-Then follow the $\THESYSTEM$ framework,
-% and design new algorithm for this stage.
+% \\
+    \item \textbf{$\THESYSTEM$ via Path Sensitive Reachability Bound Algorithm Design}
+
+    Then follow the same static program analysis based $\THESYSTEM$ framework in Section~\ref{sec:static},
+% and design a new algorithm for this stage.
 % Then, I will 
-this improved analysis result will be applied to estimate the dependency quantity.
-Specifically, the newly designed path sensitive reachability bound analysis will 
-give tighter bound for program's every execution location.
-Then, based on the tighter bound,
-the program-based data dependency graph constructed in Section~\ref{subsubsec:static-adapt}
-will have a more accurate estimated weight, for each vertex.
-%
+this improved analysis result will be applied to estimate the dependency quantity as follows,
+\begin{itemize}
+    \item $\THESYSTEM$ will construct different abstract control flow graph based on the requirement of the newly-designed
+    path-sensitive reachability bound algorithm.
+
+    \item The improved $\THESYSTEM$ will perform the same algorithm for analyzing the dependency relation in the first stage.
+    \item But in the second stage, the improved $\THESYSTEM$ 
+    apply the newly-designed  path-sensitive reachability bound algorithm for analyzing the dependency quantity.
+    The result from the new algorithm 
+    give a tighter approximation on the dependency quantity,
+    specifically on the reachability times of the program's every location.
+    \item Based on the two results analyzed from the steps above, 
+    i.e., the estimated dependency relation and the tighter reachability bound, the improved $\THESYSTEM$ will construct
+a more accurate program-based data dependency graph.
+%  constructed in Section~\ref{subsubsec:static-adapt}
+Then, by applying the same algorithm as in Section~\ref{subsubsec:static-adapt}, 
+the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.%
+\end{itemize}
+\end{enumerate}
 As shown in Figure~\ref{fig:multipleRoundsOdd_example}, 
-through the newly-designed path sensitive reachability bound analysis,
+through the newly-designed path-sensitive reachability bound analysis,
 ideally the weight for vertex $p^6$ and $x^7$ will be $\frac{k}{2}$.
 % \subsection{Static Adaptivity Computation towards Completeness}
 % \label{subsec:furthers-adaptcomplete}
-% The Algorithm is conditional completeness as proved in appendix, but Algorithm~\ref{alg:adaptscc} isn't.
-% In the algorithm design at line: in Algorithm~\ref{alg:adaptscc}, an over-approximation happens here. 
-
-% As  following motivating example shows.
-% \subsubsection{Proposed Methodology}
-% \label{subsubsec:furthers-adaptcomplete-methodology}
-% %
-% 1. looking into more over-approximated example and summarize the common properties of these examples.
-% \\
-% 2. Modify the Algorithm~\ref{alg:adaptscc}, targeting the line: 12 of the algorithm. 
-% The goal is to reduce the over-approximation in computing adaptivity statically.

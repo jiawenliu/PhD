@@ -2,22 +2,22 @@
 \paragraph{{Static analysis for adaptivity}}
 In order to give a sound approximating this quantity, I design a static program analysis framework through three steps analysis
 similar to the execution-based analysis in Section~\ref{sec:dynamic}.
-In this static program analysis, the program will be analysed in the same 3 aspects as the execution-based analysis 
-   while through static program analysis techniques, and a sound estimated result will be given in each aspect.
-   \\
-	a. The data dependency relation analysis through the static data flow analysis technique.
-   \\
-	b. The dependency quantity analysis through the static program reachability bound analysis techniques.
-   \\
-	c. Combining the two analysis result above, I build a program-based dependency graph for approximating
-    the execution-based dependency graph. Then, I design an algorithm computing the adaptivity upper bound soundly 
-   and accurately on the program-based dependency graph.
+In this static program analysis, the program will be analyzed in the same 3 aspects as the execution-based analysis 
+ while through static program analysis techniques, a sound estimated result will be given in each aspect.
+ \\
+ a. The data dependency relation analysis through the static data flow analysis technique.
+ \\
+ b. The dependency quantity analysis through the static program reachability bound analysis techniques.
+ \\
+ c. Combining the two analysis result above, I build a program-based dependency graph for approximating
+ the execution-based dependency graph. Then, I design an algorithm computing the adaptivity upper bound soundly 
+ and accurately on the program-based dependency graph.
 %
 \paragraph*{Related Work} 
 My design of $\THESYSTEM$ in this section is influenced by many areas of static program analysis such as 
 effect systems, control-flow analysis, and data-flow analysis~\cite{ryder1988incremental}. 
-The idea of statically estimating a sound upper bound for the adaptivity from the semantics is indirectly inspired from prior work on cost analysis via effect systems~\cite{cciccek2017relational,radivcek2017monadic,qu2019relational}. The idea of defining adaptivity using data flow is inspired by the work of graded 
-Hoare logic~\cite{gaboardi2021graded}, which reasons about data flows as a resmyce. 
+The idea of statically estimating a sound upper bound for the adaptivity from the semantics is indirectly inspired by prior work on cost analysis via effect systems~\cite{cciccek2017relational,radivcek2017monadic,qu2019relational}. The idea of defining adaptivity using data flow is inspired by the work of graded 
+Hoare logic~\cite{gaboardi2021graded}, which reasons about data flow as a resource. 
 %
 One of the most important ingredients of my work is the estimation of the program-based dependency graph. 
 There are many ways to construct a dependency graph statically.
@@ -26,12 +26,12 @@ This event-flow graph has a vertex for every GUI event such as click-to-paste an
 The main difference is in the way the graph is constructed. {\THESYSTEM} relies on the structure of the target program, while the event-flow model only considers the event type. 
 Another work \cite{arlt2012lightweight} constructs a weighted event-dependency graph, capturing data dependencies between events by analyzing bytecode. 
 Every weighted edge indicates a dependency between two events, meaning one event possibly reads data written by the other event, with the weight showing the intensity of the dependency (the quantity of data involved). 
-My approach of generating the program-based dependency graph shares the idea of tracking data dependency via static analysis on the smyce code. 
+My approach to generating the program-based dependency graph shares the idea of tracking data dependency via static analysis on the same code. 
 However, because of the different domains, we care about assigned variables, and we use the weight in a different way to find a finite walk in the graph.
 % WCET on systems: \cite{} 
 % [GustafssonEL05]Towards a Flow Analysis for Embedded System C Programs
 % --> abstract interpretation.
-% --> on embedded system of c program
+% --> on an embedded system of c program
 % [AlbertAGP08] Automatic Inference of Upper Bounds for Recurrence Relations in Cost Analysis
 % --> invariant generation through ranking functions
 %
@@ -58,11 +58,12 @@ consider the quantitative information on how many times each variable is depende
 My weight estimation is inspired by
 % (specifically in the case if
 % the data-flow is nested in iterations of recursion into consideration). 
- works in program complexity analysis and worst case execution time analysis areas, 
+ works in program complexity analysis and worst-case execution time analysis areas, 
  focusing on analyzing the cost of the entire program. 
 The techniques are based on
 type system~\cite{CicekBG0H17, RajaniG0021}, Hoare logic~\cite{CarbonneauxHS15}, abstract interpretation~\cite{GustafssonEL05, HumenbergerJK18},
 invariant generation through cost equations or ranking functions~\cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}
-or a combination of program abstraction and invariant inferring~\cite{GulwaniZ10, SinnZV17,GulwaniJK09}.
-In general, these techniques give the approximated upper bound of the program's total running time or resmyce cost.
+or a combination of program abstraction and invariant inferring~\cite{GulwaniZ10, SinnZV17, GulwaniJK09}.
+In general, these techniques give the approximated upper bound of the program's total running time or resource cost.
 However, they failed to consider the case where the cost -- the adaptivity-- could decrease when there isn't a dependency relation between variables.
+

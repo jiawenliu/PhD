@@ -1,35 +1,35 @@
 This section covers the introduction of the current resource cost analysis, a 
-motivating example showing the traditional way fail to give a tight bound on program's resource cost 
+motivating example showing the traditional way fails to give a tight bound on the program's resource cost 
 % similarity between general and the program's adaptivity accumulation,
 and the proposed methodology I plan to adopt for improving the general resource cost analysis.
 \subsection{Introduction and Related Work}
 \label{subsubsec:furthers-cost-backgroung}
-% Through observation in following example, the heap resource consumption during the program 
+% Through observation in the following example, the heap resource consumption during the program 
 % execution is accumulating in the same way as the program's adaptivity. 
 % More specifically in Example~\ref{}Specifically, in line 5 
 % where the list is re-written and the heap consumption is decreased implicitly. 
 % This implicit decrease 
-% of the cost works exactly the same as program's adaptivity decrease.
+% of the cost works the same as the program's adaptivity decreases.
 % \\
 % This motivates the generalization of the analysis framework onto the program's resource cost analysis. Use this framework,
 % I will give
 % a more accurate resource cost estimation 
-% by taking the program's implicit resource cost into consideration, comparing 
-% to the worst case cost analysis in traditional way.
+% by considering the program's implicit resource cost, comparing 
+% to the worst case cost analysis in the traditional way.
 % \\
 There are mainly two categories of methodology in the static program resource cost analysis areas, 
-through type-system based  and data-flow/control-flow analysis based. 
-They can be summarized briefly as follows, but to the best of my knowledge,
+through type-system based and data-flow/control-flow analysis based. 
+They can be summarized as follows, but to the best of my knowledge,
 all these works in the two categories fail to recognize the case where program resource consumption is decreased implicitly.
  \paragraph*{Type-System Based}
 Existing
-static program analysis based type-system are mainly through 
+static program analysis based type-system is mainly through 
 effect systems, 
 % control-flow analysis, and data-flow analysis~\cite{ryder1988incremental}. 
-% The idea of statically estimating a sound upper bound for the adaptivity from the semantics is indirectly inspired from prior work on cost analysis via effect systems~\cite{cciccek2017relational,radivcek2017monadic,qu2019relational}. The idea of defining adaptivity using data flow is inspired by the work of graded 
+% The idea of statically estimating a sound upper bound for the adaptivity from the semantics is indirectly inspired by prior work on cost analysis via effect systems~\cite{cciccek2017relational,radivcek2017monadic,qu2019relational}. The idea of defining adaptivity using data flow is inspired by the work of graded 
 Hoare logic~\cite{gaboardi2021graded}, and amortized type system~\cite{hoffmann_jost_2022}.
 %
-In these systems, the cost are accumulating through the type induction. 
+In these systems, the cost is accumulating through the type of induction. 
 The only way to save the cost into the potential
 type, as in~\cite{GustafssonEL05} and \cite{hoffmann_jost_2022}, 
 is through explicit abstraction or data structure de-allocation.
@@ -37,12 +37,12 @@ That is to say, they cannot deal with the case where the cost (for example the a
 \paragraph*{Data-flow/Control-flow Analysis Based}
 Existing static program analysis works via the control flow or data flow analysis 
 in program resource cost analysis 
-mainly falls into two areas, the program complexity analysis and worst case execution time analysis. 
+mainly falls into two areas, the program complexity analysis, and worst case execution time analysis. 
 They are focusing on analyzing the cost of the entire program. 
 The techniques are based on
 type system~\cite{CicekBG0H17, RajaniG0021}, Hoare logic~\cite{CarbonneauxHS15}, abstract interpretation~\cite{GustafssonEL05, HumenbergerJK18},
 invariant generation through cost equations or ranking functions~\cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}
-or a combination of program abstraction and invariant inferring~\cite{GulwaniZ10, SinnZV17,GulwaniJK09}.
+or a combination of program abstraction and invariant inferring~\cite{GulwaniZ10, SinnZV17, GulwaniJK09}.
 In general, these techniques give the approximated upper bound of the program's total running time or resource cost.
 However, they failed to consider the case where the program's cost could decrease when there isn't a dependency relation between variables.
 
@@ -53,16 +53,16 @@ However, they failed to consider the case where the program's cost could decreas
 \label{subsubsec:furthers-cost-methodology}
 As shown in the Example~\ref{ex:heapcost} above, the heap resource consumption during the program 
 execution is accumulating in the same way as the program's adaptivity. 
-Specifically, in line : 6 and line :  9
+Specifically, in the line: 6 and the line : 9
 the list assigned to $x$ and $y$ is re-written instead of accumulated.
-So the heap consumption is in the loop isn't accumulated recursively, which is exactly
+So the heap consumption in the loop isn't accumulated recursively, which is 
 the same as the case where the adaptivity isn't accumulated because of non-dependency between variables.
-In other words, these operations in above cases imply implicit cost decreases 
-which are all considered as increases in traditional resource analysis 
+In other words, these operations in the above cases imply implicit cost decreases 
+which are all considered as increases in the traditional resource analysis 
 method.
 % In other wor decreased implicitly. 
 % This implicit decrease 
-% of the cost works exactly the same as program's adaptivity decrease.
+% of the cost works exactly the same as the program's adaptivity decrease.
 \\
 According to this high similarity between the program's resource cost and the 
 program's adaptivity property, I plan to adopt the similar analysis procedure as in Section~\ref{sec:dynamic} and 
@@ -71,42 +71,42 @@ and generalize
 % This motivates the generalization of 
 % the analysis
 $\THESYSTEM$ framework onto the general resource cost analysis. 
-Based this framework,
+Based on this framework,
 I will give
-a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
-to the worst case cost analysis in traditional way. Specifically as follows:
+a more accurate resource cost estimation by considering the program's implicit resource cost, comparing 
+to the worst-case cost analysis in the traditional way. Specifically as follows:
 % \\
-\paragraph*{Language Generalization} Since the interested property 
-to be analysed isn't the \emph{adaptivity},
-the {\tt Query While} Language will be generalized into standard while language with inter-procedure function call.
+\paragraph*{Language Generalization} Since the interesting property 
+to be analyzed isn't the \emph{adaptivity},
+the {\tt Query While} Language will be generalized into standard while language with the inter-procedure function call.
 % \\
 \paragraph*{Resource Cost Formalization through Execution-Based Analysis} 
 Formalize the program resource cost through an execution-based program analysis as in Section~\ref{sec:dynamic}.
-In this formalization, instead of formalize the intuitive \emph{adaptive}, the resource cost will be the
-target quantitative property of program.
+In this formalization, instead of formalizing the intuitive \emph{adaptive}, the resource cost will be the
+target quantitative property of a program.
 % \\
 \paragraph*{Resource Cost Estimation through Generalized $\THESYSTEM$}
 According to this high similarity between the program's resource cost and the 
 program's adaptivity property, the static program analysis for the resource cost property will 
-be performed on a generalized  $\THESYSTEM$.  $\THESYSTEM$ will be generalized specifically as follows:
+be performed on a generalized $\THESYSTEM$. $\THESYSTEM$ will be generalized specifically as follows:
 % \\
 % 1.
 % % the analysis
 % $\THESYSTEM$ framework onto the program's resource cost analysis. 
 \begin{enumerate}
-    \item The analysis processes in first two steps of $\THESYSTEM$ in Section~\ref{subsubsec:static-datadep}
-    and Section~\ref{subsubsec:static-reachability} will be adopted exactly the same in the generalized $\THESYSTEM$.
-    \item Then, generalized $\THESYSTEM$ will construct a similar program-based dependency graph 
-    in the same way as in Section~\ref*{subsubsec:static-adapt}, but without query annotation. 
-    \item According to the formalized resource cost quantity from execution-based analysis above,
-    generalized $\THESYSTEM$ will add extra annotation on this graph describing this property.
-    \item Then, based on the resource cost quantity, the adaptivity quantity in Definition~\ref{def:prog_adapt}
-    will be modified for describing this resource cost quantity, through a modified restricted finite walk.
-    \item Then in the last step, the adaptivity computation algorithm will be adopted to search for the longest 
-    walk under the modified restriction and compute the bound for 
-    this resource cost quantity.
+ \item The analysis processes in the first two steps of $\THESYSTEM$ in Section~\ref{subsubsec:static-datadep}
+ and Section~\ref{subsubsec:static-reachability} will be adopted exactly the same in the generalized $\THESYSTEM$.
+ \item Then, generalized $\THESYSTEM$ will construct a similar program-based dependency graph 
+ in the same way as in Section~\ref*{subsubsec:static-adapt}, but without query annotation. 
+ \item According to the formalized resource cost quantity from the execution-based analysis above,
+ generalized $\THESYSTEM$ will add extra annotation on this graph describing this property.
+ \item Then, based on the resource cost quantity, the adaptivity quantity in Definition~\ref{def:prog_adapt}
+ will be modified for describing this resource cost quantity, through a modified restricted finite walk.
+ \item Then in the last step, the adaptivity computation algorithm will be adopted to search for the longest 
+ walk under the modified restriction and compute the bound for 
+ this resource cost quantity.
 \end{enumerate}
 
 % Following the same system structure as $\THESYSTEM$,
-% by modifying the restriction on finite walk, compute different resource cost for program.
+% by modifying the restriction on the finite walk, compute different resource costs for the program.
 
