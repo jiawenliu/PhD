@@ -1,8 +1,13 @@
-This section covers the introduction of the current resource cost analysis, a 
-motivating example showing the traditional way fail to give a tight bound on program's resource cost 
+This section covers the background of the current resource cost analysis,
+with a 
+motivating example.
+This example shows that the traditional way fails to give a tight bound on the program's resource cost.
 % similarity between general and the program's adaptivity accumulation,
-and the proposed methodology I plan to adopt for improving the general resource cost analysis.
-\section{Introduction and Related Work}
+Then, this section covers the proposed methodology I plan to adopt for an accurate full-Spectrum
+analysis on 
+% the general resource cost analysis.
+the program's resource cost.
+\section{Background}
 \label{sec:generalcost-backgroung}
 % Through observation in following example, the heap resource consumption during the program 
 % execution is accumulating in the same way as the program's adaptivity. 
@@ -46,7 +51,7 @@ or a combination of program abstraction and invariant inferring~\cite{GulwaniZ10
 In general, these techniques give the approximated upper bound of the program's total running time or resource cost.
 However, they failed to consider the case where the program's cost could decrease when there isn't a dependency relation between variables.
 
-\section{Analysis Framework via $\THESYSTEM$}
+\section{Accurate Full-Spectrum Analysis via $\THESYSTEM$}
 \label{sec:generalcost-methodology}
 As shown in the Example~\ref{ex:heapcost} above, the heap resource consumption during the program 
 execution is accumulating in the same way as the program's adaptivity. 
@@ -104,7 +109,7 @@ be performed on a generalized  $\THESYSTEM$.  $\THESYSTEM$ will be generalized s
     this resource cost quantity.
 \end{enumerate}
 
-\section{Example}
+\section{Program Resource Cost Analysis Example}
 \label{sec:generalcost-example}
 \input{examples/heap_cost}
 

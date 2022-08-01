@@ -1,24 +1,36 @@
-\subsection{Accurate Execution-Based Dependency Depth Analysis}
+\subsection{Accurate Execution-Based Adaptivity Analysis}
 \label{subsec:furthers-dep-depth}
 %
-The program's adaptivity in the formal model through the execution-based analysis,
+The program's adaptivity in the formal model through the execution-based analysis in Section~\ref{sec:dynamic}
 % which we define over the program's execution-based dependency graph from the dynamic 
 % analysis 
-in Definition~\ref{def:trace_adapt}, isn't precise enough w.r.t. the intuitive adaptivity rounds.
+(specifically in Definition~\ref{def:trace_adapt}), isn't precise enough w.r.t. the intuitive adaptivity rounds.
 It comes across as an over-approximation 
 % on the program's
 % intuitive adaptivity rounds.
+as shown in the Example~\ref{ex:multipleRoundsSingle_example}.
 % It is 
-resulted from the difference between its Dependency Depth analysis and the \emph{variable may-dependency} definition.
-It occurs when the weight is computed over the traces different from the traces used in 
-witness the \emph{variable may-dependency} relation.
-As shown in the Example~\ref{ex:multipleRoundSingle_example}.
+In this example, the formalized adaptivity by execution-based analysis in Section~\ref{sec:dynamic} 
+is the initial value of the input variable $k$.
+However, the intuitive \emph{adaptivity} is only $2$ given whatever initial trace.
+This is resulted from the
+%  difference 
+disconnection between the 
+% dependency Depth 
+dependency quantity analysis in Section~\ref{subsubsec:dynamic-reachability} and 
+the data dependency analysis in \emph{variable may-dependency} definition in Section~\ref{subsubsec:dynamic-datadep}.
+It occurs when the 
+% weight 
+dependency quantity is computed over the traces different from the traces used in 
+% witness 
+analyzing the \emph{variable may-dependency} relation.
+% As shown in the Example~\ref{ex:multipleRoundsSingle_example}.
 \input{examples/multipleRoundsSingle}
 %%
 \subsubsection{Proposed Methodology}
 \label{subsubsec:furthers-dep-depth}
 % \input{~/dynamic/relatedwork.tex}
-Based on the execution-based dependency analsysis in Section~\ref{sec:dynamic}, the improvement on the accuracy 
+Based on the execution-based dependency analysis in Section~\ref{sec:dynamic}, the improvement on the accuracy 
 of formalizing the
 \emph{adaptivity} is planned to develop in following three-steps.
 \begin{enumerate}
@@ -50,10 +62,18 @@ In static program analysis framework $\THESYSTEM$, specifically on the dependenc
 I adopt the reachability bound analysis technique to estimate this dependency quantity.
 % In existing static reachability bound analysis, 
 However, it isn't precise enough w.r.t. the execution-based reachability bound on every program command.
-It comes across as an over-approximation on estimation due to its path-insensitive nature. 
+It comes across an over-approximation on estimation due to its path-insensitive nature,
+as shown in the Example~\ref{ex:multipleRoundsOdd_example}.
+% It is 
+In this example, the estimated adaptivity by static analysis in Section~\ref{sec:static} 
+is $1 + 2*k$ where $k$ is the initial value of the input variable.
+However, the formal \emph{adaptivity} is only $1 + k$ from the execution-based analysis.
+
+This is resulted from the  path-insensitive of the dependency quantity in
+second stage of the static analysis in Section~\ref{subsubsec:static-reachability}
 It occurs when the control flow can be decided in a particular way in front of conditional branches, 
 while the static analysis fails to witness. 
-As shown in Example~\ref{ex:overapproximate}.
+% As shown in Example~\ref{ex:overapproximate}.
 \input{examples/multipleRoundsOdd}
 
 % as follo

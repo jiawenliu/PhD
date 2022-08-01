@@ -1,20 +1,27 @@
 % %%%% Benefit of reasoning about 
 % \subsection{Motivation of Reasoning about Adaptivity}
 % % 
-I first introduce the Motivation of reasoning about the adaptivity quantity property for adaptive data analysis programs in Section~\ref{subsec:intro-motivation}.
-Then, I introduce the problems encountered when analyzing this \emph{adaptivity} property for the adaptive data analysis programs in Section~\ref{subsec:intro-adapt}
-and the full-spectrum analysis methodology, the execution-based analysis, and static-based program analysis.
+In Section~\ref{subsec:intro-motivation},
+I firstly introduce the motivation of reasoning about this \emph{adaptivity} quantity property 
+for adaptive data analysis program.
+% analyzing 
+In order to analyze this \emph{adaptivity} property for the adaptive data analysis, there are 3 problems encountered.
+I introduce these three problems
+and the full-spectrum analysis methodologies developed according to these problems in Section~\ref{subsec:intro-adapt}.
+Mainly through the language formalization,
+the execution-based analysis, and the static-based program analysis.
 %
-Based on the implementation and experimental results, I proposed two significant 
-further features can be improved for my analysis framework in Section~\ref{subsec:intro-improve}, and plan to finish the improvement 
+Based on the implementation and experimental results, I propose two significant 
+further features can be improved in the analysis methodologies in Section~\ref{subsec:intro-improve}, 
+and plan to finish these improvements 
 before the final defense.
 %
  % Next, based on the implementation and experimental results, I proposed two significant 
  % further features can be improved for my analysis framework, and plan to finish the improvement 
  % before the final defense.
  %
- Then, in Section~\ref{subsec:intro-cost}, through two observations, I introduce the motivations and methodology
- for the general program cost analysis with implicit resource cost decreases.
+ Then, in Section~\ref{subsec:intro-cost}, through two observations, I introduce the motivations and methodologies
+ for the accurate full-spectrum program resource cost analysis with implicit cost decreases.
 % \\
 % 1. traditional program's resource cost analysis failed to consider the case where the program's cost could decrease 
 % implicitly, 
@@ -36,8 +43,11 @@ before the final defense.
 % a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
 % to the worst case cost analysis in a traditional way.
  For this work, the analysis framework design and the implementation is expected to be done before the final thesis.
- Finally, the Section~\ref*{subsec:intro-cfl} introduced the interest in showing that
- CFL-reachability problems can be solved by reducing them to my adaptivity analysis framework. 
+ Finally, the Section~\ref*{subsec:intro-cfl} introduce 
+%  the interest in showing that
+CFL-Reachability problem and motivations of 
+%  CFL-Reachability problems can be solved by reducing them to my adaptivity analysis framework. 
+solving it by reducing into my adaptivity analysis framework. 
  This work is planned to start before the final defense and develop further sophisticated after.
  % based on the study on the traditional way of performing data flow and control analysis,
  % I identify the similarity between the traditional way of performing data flow and control analysis, and the 
@@ -230,21 +240,23 @@ and accurately.
 \subsubsection{Towards Accurate Full-Spectrum Adaptivity Analysis}
 \label{subsec:intro-improve}
 Based on the implementation and experimental results on the $\THESYSTEM$,
-I will focus on improving three features of this full-spectrum analysis as follows,
+I will focus on the two further features can be improved in my full-spectrum analysis as follows,
 \begin{enumerate}
- \item The precision of the \emph{adaptivity} in the formalized model through the execution-based program analysis.
+ \item The precision of formalizing the intuitive \emph{adaptivity} 
+%  in the formal  model 
+through the execution-based program analysis.
 
 \item In static program analysis, I will give a tighter estimated upper bound on dependency quantity through 
 path sensitive reachability bound analysis techniques. 
 
-\item In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
-compute a tighter adaptivity upper bound as well.
+% \item In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
+% compute a tighter adaptivity upper bound as well.
 \end{enumerate}
-\subsubsection{Towards Accurate Program Resource Cost Analysis and Methodology}
+\subsubsection{Towards Accurate Full-Spectrum Program Resource Cost Analysis}
 \label{subsec:intro-cost}
 
 Then, motivated by the two following aspects, I'm interested in improving the accuracy of the program's general resource cost analysis
-by generalizing my \emph{adaptivity} analysis framework.
+by generalizing this \emph{adaptivity} analysis framework.
 \begin{itemize}
  \item Firstly, in a traditional program's resource cost analysis,
  There are two categories of program cost analysis, type-system based and data-flow/control-flow analysis based. 
@@ -274,7 +286,7 @@ by generalizing my \emph{adaptivity} analysis framework.
  Based on the observations above, and through the generalized \emph{adaptivity} analysis framework.
  I will give
  a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, compared 
- to the worst-case cost analysis in a traditional way.
+ to the worst-case cost analysis in the traditional way.
 
 \subsubsection{Towards Solving the CFL-Reachability Problem}
 \label{subsec:intro-cfl}

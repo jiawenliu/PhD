@@ -1,60 +1,73 @@
-\section{Solving the CFL Reachability Problem through $\THESYSTEM$ by Reduction}
-\label{ch:cfl_reduction}
-\subsection{Introduction and Related Work}
+% \section{Solving the CFL Reachability Problem through $\THESYSTEM$ by Reduction}
+% \label{ch:cfl_reduction}
+\section{Background}
 \label{subsec:cfl-backgroung}
-Finally, based on the study on traditional way of performing data flow and control analysis,
-   I identify the similarity between the traditional way of performing data flow and control analysis, and the 
-   adaptivity analysis.  
-   Specifically I identify the similarity between 
-   solving the feasible path problem in the analysis by reducing to CFL-reachability problems,
-   and the way of computing the adaptivity in my static analysis framework.
-   Motivated by this observation, 
-   % I'm insterested
-   % the, There are similarity between
-   % solving the data flow problem by reducing to CFL-reachability problem,
-   % resource analysis through reducing to CFL-reachability problem, 
-   I'm interested in showing that
-   CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework.
-
-\subsection{Proposed Methodology}
+From the background in Section~\ref{sec:generalization},
+in the works of data flow and control analysis area,
+the traditional way of computing the program resource cost is
+% Finally, based on the study on the traditional way of performing data flow and control analysis,
+by reducing to the CFL-reachability problems.
+%
+% I identify the similarity between the traditional way of performing data flow and control analysis and the 
+%  adaptivity analysis. 
+According to this, 
+I identify 
+% the similarity between the traditional way of performing data flow and control analysis and the 
+that there are some similarities the traditional way of estimating the program resource cost and 
+the adaptivity.
+%  Specifically, I identify the similarity between 
+%  solving the feasible path problem in the analysis by reducing 
+Specifically, there are similarities between solving the CFL-reachability problems they reduced to,
+%  CFL-reachability problems,
+ and the way of computing the adaptivity in 
+%  my static analysis framework.
+the third step of $\THESYSTEM$.
+ Motivated by this observation, 
+ % I'm Interested
+ % the, There are similarities between
+ % solving the data flow problem by reducing to CFL-reachability problem,
+ % resource analysis through reducing to CFL-reachability problem, 
+ I'm interested in showing that
+ CFL-reachability problems can be solved by reducing to my adaptivity analysis framework.
+\section{Methodology}
 \label{subsec:cfl-methodology}
 Based on the paper\cite{Reps98} where Thomas shows 
 three program analysis problems 
 which can be solved by reducing to CFL-reachability problem, I will follow the same idea and show the reduction
-in following steps.
+in the following steps.
 \begin{itemize}
-   \item For the same three program analysis problems, each of them 
-   can be solved through  my \emph{adaptivity} analysis framework with 
-   a different generalization of $\THESYSTEM$ with higher accuracy.
-   \begin{itemize}
-      \item Interprocedural Dataflow Analysis.
-      \\
-      The key problem in the interprocedural data-flow analysis is to identify the feasible path and remove 
-      the in-feasible one from the graph.
-      This problem can be solved by applying the first two procedure $\THESYSTEM$ and modify the weight
-      by $0$ and $1$ representing feasible or  not. In this way, each qualified finite walk in 
-      $\THESYSTEM$ represents a feasible path, i.e., the feasible path is just a special case of finite walk 
-      with weight $0$ or $1$.
-      \item Interprocedural Program Slicing.
-      \\
-      There are two key problems here and each of them can be solved by $\THESYSTEM$ as follows,
-      \\ 
-      1. The first key problem to be solved is to identify the data dependency relations between variables. 
-      This can be solved by applying the first procedure of $\THESYSTEM$.
-      \\
-      2.  Similar as the  interprocedural data-flow analysis, the second problem is to identify the feasible path and remove 
-      the in-feasible one from the graph is the other key problem. 
-      This can be solved in the same way by modifying the second step of by applying the first two procedure $\THESYSTEM$,
-      where the weight is reduced to either $0$ and $1$ representing feasible or not.
-      \item Shape Analysis.
-      \\
-      This problem can be solved by generalizing the in the same way as proposed in Section~\ref{sec:generalization}.
-      % \item Flow-Insensitive Points-Analysis
-   \end{itemize}
-   \item Based on summarizing the common property of the three program analysis problems,
-   I will show a reduction from CFL-reachability problem 
-   by showing that CFL-reachability problem is a special case of 
-   computing the adaptivity. 
+ \item For the same three program analysis problems, each of them 
+ can be solved through my \emph{adaptivity} analysis framework with 
+ a different generalization of $\THESYSTEM$ with higher accuracy.
+ \begin{itemize}
+ \item Interprocedural Dataflow Analysis.
+ \\
+ The key problem in the interprocedural data-flow analysis is to identify the feasible path and remove 
+ the in-feasible one from the graph.
+ This problem can be solved by applying the first two procedures $\THESYSTEM$ and modifying the weight
+ by $0$ and $1$ representing feasible or not. In this way, each qualified finite walk-in 
+ $\THESYSTEM$ represents a feasible path, i.e., the feasible path is just a special case of finite walk 
+ with weight $0$ or $1$.
+ \item Interprocedural Program Slicing.
+ \\
+ There are two key problems here and each of them can be solved by $\THESYSTEM$ as follows,
+ \\ 
+ 1. The first key problem to be solved is to identify the data dependency relations between variables. 
+ This can be solved by applying the first procedure of $\THESYSTEM$.
+ \\
+ 2. Similar to the interprocedural data-flow analysis, the second problem is to identify the feasible path and remove 
+ the in-feasible one from the graph is the other key problem. 
+ This can be solved in the same way by modifying the second step by applying the first two procedures $\THESYSTEM$,
+ where the weight is reduced to either $0$ and $1$ representing feasible or not.
+ \item Shape Analysis.
+ \\
+ This problem can be solved by generalizing the in the same way as proposed in Section~\ref{sec:generalization}.
+ % \item Flow-Insensitive Points-Analysis
+ \end{itemize}
+ \item Based on summarizing the common property of the three program analysis problems,
+ I will show a reduction in CFL-Reachability problem 
+ by showing that the CFL-reachability problem is a special case of 
+ computing the adaptivity. 
 \end{itemize}
 %  system structure as $\THESYSTEM$,
 % by modifying the restriction on finite walk, compute different resource cost for program.

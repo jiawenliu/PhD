@@ -1,18 +1,33 @@
 \subsection{Introduction and Related Work}
 \label{subsec:cfl-backgroung}
-Finally, based on the study on the traditional way of performing data flow and control analysis,
- I identify the similarity between the traditional way of performing data flow and control analysis and the 
- adaptivity analysis. 
- Specifically, I identify the similarity between 
- solving the feasible path problem in the analysis by reducing CFL-reachability problems,
- and the way of computing the adaptivity in my static analysis framework.
+% According to the works in performing data flow and control analysis
+From the background in Section~\ref{sec:generalization},
+in the works of data flow and control analysis area,
+the traditional way of computing the program resource cost is
+% Finally, based on the study on the traditional way of performing data flow and control analysis,
+by reducing to the CFL-reachability problems.
+%
+% I identify the similarity between the traditional way of performing data flow and control analysis and the 
+%  adaptivity analysis. 
+According to this, 
+I identify 
+% the similarity between the traditional way of performing data flow and control analysis and the 
+that there are some similarities the traditional way of estimating the program resource cost and 
+the adaptivity.
+%  Specifically, I identify the similarity between 
+%  solving the feasible path problem in the analysis by reducing 
+Specifically, there are similarities between solving the CFL-reachability problems they reduced to,
+%  CFL-reachability problems,
+ and the way of computing the adaptivity in 
+%  my static analysis framework.
+the third step of $\THESYSTEM$.
  Motivated by this observation, 
  % I'm Interested
  % the, There are similarities between
  % solving the data flow problem by reducing to CFL-reachability problem,
  % resource analysis through reducing to CFL-reachability problem, 
  I'm interested in showing that
- CFL-reachability problems can be solved by reducing them to my adaptivity analysis framework.
+ CFL-reachability problems can be solved by reducing to my adaptivity analysis framework.
 
 \subsection{Proposed Methodology}
 \label{subsec:cfl-methodology}
