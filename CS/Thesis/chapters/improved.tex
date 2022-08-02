@@ -388,6 +388,7 @@ is formalized in the same way as in Definition~\ref{def:trace_adapt}.
 % As shown in Example~\ref{ex:overapproximate}.
 % \input{examples/multipleRoundsOdd}
 
+\paragraph*{Motivation}
 In static program analysis framework $\THESYSTEM$, specifically on the dependency quantity, 
 I adopt the reachability bound analysis technique to estimate this dependency quantity.
 % In existing static reachability bound analysis, 
@@ -406,10 +407,10 @@ while the static analysis fails to witness.
 % As shown in Example~\ref{ex:overapproximate}.
 \input{examples/multipleRoundsOdd}
 % as follo
+\paragraph*{Overview}
 The accurate static adaptivity analysis is planned to be improved in following two steps.
 \begin{enumerate}
     \item \textbf{Path Sensitive Reachability Bound Algorithm Design}
-    
     The imprecision comes from the second stage of the static program analysis.
     The algorithm in this stage is to statically estimate the 
     reachability bound for every location of program.
@@ -422,33 +423,42 @@ The accurate static adaptivity analysis is planned to be improved in following t
     But they aren't analyzing the reachability
     bound in a path-sensitive way.
     \\
-    Motivated by this observation, I will first design path-sensitive reachability bound analysis algorithm computing the 
+    Motivated by this observation, 
+    in Section~\ref{subsec:refine-static} 
+    I first design path-sensitive reachability bound analysis algorithm computing the 
     reachability bounds for every labeled command taking the different paths inside while loop into consideration.
 % Compared to just computing the reachability bound for the while loop command, the new methodology improves the accuracy of the 
 % reachability bound for every labeled command.
 % \\
     \item \textbf{Accurate $\THESYSTEM$ via Path Sensitive Reachability Bound Algorithm}
 
-    Then follow the same static program analysis based $\THESYSTEM$ framework in Section~\ref{sec:static},
+    Then in order to improve the static program adaptivity analysis, specifically
+    the $\THESYSTEM$ framework presented in Chapter~\ref{ch:static}, I apply the 
+    path sensitive reachability bound algorithm into it in Section~\ref{sec:refine-static}.
+    % it. 
+    Following the same static program analysis $\THESYSTEM$ framework
+    %  in Section~\ref{sec:static},
 % and design a new algorithm for this stage.
 % Then, I will 
-this improved analysis result will be applied to estimate the dependency quantity as follows,
+this improvement is designed in following three steps.
+% result will be applied to estimate the dependency quantity as follows,
 \begin{itemize}
-    \item $\THESYSTEM$ will construct different abstract control flow graph based on the requirement of the newly-designed
-    path-sensitive reachability bound algorithm.
-
-    \item The improved $\THESYSTEM$ will perform the same algorithm for analyzing the dependency relation in the first stage.
-    \item But in the second stage, the improved $\THESYSTEM$ 
+    \item Improved $\THESYSTEM$ constructs different abstract control flow graph based on the requirement of the newly-designed
+    path-sensitive reachability bound algorithm in Section~\ref{sec:refine-static-datadep}
+    \item Then it performs the same algorithm for analyzing the dependency relation in the first stage, still in Section~\ref{sec:refine-static-datadep}.
+    \item But in the second stage in Section~\ref{sec:refine-static-reachability}, the improved $\THESYSTEM$ 
     apply the newly-designed  path-sensitive reachability bound algorithm for analyzing the dependency quantity.
     The result from the new algorithm 
     give a tighter approximation on the dependency quantity,
     specifically on the reachability times of the program's every location.
     \item Based on the two results analyzed from the steps above, 
-    i.e., the estimated dependency relation and the tighter reachability bound, the improved $\THESYSTEM$ will construct
+    i.e., the estimated dependency relation and the tighter reachability bound, 
+    the improved $\THESYSTEM$ will construct
 a more accurate program-based data dependency graph.
 %  constructed in Section~\ref{subsubsec:static-adapt}
 Then, by applying the same algorithm as in Section~\ref{subsubsec:static-adapt}, 
-the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.%
+the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.
+This is presented in Section~\ref{sec:refine-static-adapt}%
 \end{itemize}
 \end{enumerate}
 
@@ -470,6 +480,8 @@ Motivated by this observation, I will first design path-sensitive reachability b
 reachability bounds for every labeled command taking the different paths inside while loop into consideration.
 % Comparing to just compute the reachability bound for the while loop command, new methodology improves the accuracy of the 
 % reachability bound for every labeled command.
+
+\todo{Path Sensitive Reachability Bound Analysis Algorithm And Papers}
 \\
 \subsection{Accurate $\THESYSTEM$ via Path Sensitive Reachability Bound Algorithm}
 \label{subsec:refine-static}
@@ -489,6 +501,7 @@ ideally the weight for vertex $p^6$ and $x^7$ will be $\frac{k}{2}$.
 
 With extension as follows,
 \subsubsection{Extended Static Data Dependency Analysis}
+\label{sec:refine-static-datadep}
 by using the results of Reaching definition analysis results, specifically $\live(l, c)$ for every label in a program $c$, we refine the vertices and edges in the $\absG$ graph 
 by generating the set of feasible data-flow between labeled variables as follows,
 \begin{defn}[Feasible Data-Flow]
@@ -540,6 +553,7 @@ of the \emph{Variable May-Dependency} relation over labeled variables for every 
 in Appendix~\ref{apdx:flowsto_soundness_extend}.
 %
 \subsubsection{Extended Static Data Dependency Quantity Analysis}
+\label{sec:refine-static-reachability}
 \paragraph*{Data Dependency Quantity over pair of Labeled Variables }
 Then we define the estimated directed edges
 % for each vertex in $\progV(c)$,
@@ -642,7 +656,8 @@ w_{t}(\trace) \leq v
 % Then, by applying the same algorithm as in Section~\ref{subsubsec:static-adapt}, 
 % the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.%
 % \end{itemize}
-\paragraph*{Extended Static Adaptivity Analysis}
+\subsubsubsection{Static Adaptivity Analysis Extension}
+\label{sec:refine-static-adapt}
 we build the estimated data dependency graph based on the above program static analysis as follows:
 \\
 \highlight{

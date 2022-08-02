@@ -1,4 +1,22 @@
-\subsection{Accurate Execution-Based Adaptivity Analysis}
+\subsection{{\tt Query While} Language Extension}
+\label{subsec:furthers-language}
+The {\tt Query While} Language presented in Section~\ref*{sec:language} is limited to 
+standard while language with only $\eif$ and $\ewhile$ commands and basic assignment commands.
+I plan to extend it with inter-procedure call in following two steps,
+\begin{itemize}
+    \item I plan to firstly extend the syntax with  function definition and function call commands, sketching as follows,
+\[
+\highlight
+{\mbox{Labeled Command} 
+c ::= 
+\clabel{\efun}^l: x(r, x_1, \ldots, x_n) := c
+~|~ \clabel{\assign{x}{\ecall(x, e_1, \ldots, e_n)}}^l
+}
+\]
+    \item Accordingly, I will extend the operational semantics with function definition and call rules.
+\end{itemize}
+
+\subsection{Execution-Based Adaptivity Analysis Extension}
 \label{subsec:furthers-dep-depth}
 %
 The program's adaptivity in the formal model through the execution-based analysis in Section~\ref{sec:dynamic}

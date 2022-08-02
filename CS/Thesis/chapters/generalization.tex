@@ -7,7 +7,7 @@ Then, this section covers the proposed methodology I plan to adopt for an accura
 analysis on 
 % the general resource cost analysis.
 the program's resource cost.
-\section{Background}
+\section{Introduction}
 \label{sec:generalcost-backgroung}
 % Through observation in following example, the heap resource consumption during the program 
 % execution is accumulating in the same way as the program's adaptivity. 
@@ -22,6 +22,7 @@ the program's resource cost.
 % by taking the program's implicit resource cost into consideration, comparing 
 % to the worst case cost analysis in traditional way.
 % \\
+\subsubsection{Background}
 There are mainly two categories of methodology in the static program resource cost analysis areas, 
 through type-system based  and data-flow/control-flow analysis based. 
 They can be summarized briefly as follows, but to the best of my knowledge,
@@ -51,8 +52,8 @@ or a combination of program abstraction and invariant inferring~\cite{GulwaniZ10
 In general, these techniques give the approximated upper bound of the program's total running time or resource cost.
 However, they failed to consider the case where the program's cost could decrease when there isn't a dependency relation between variables.
 
-\section{Accurate Full-Spectrum Analysis via $\THESYSTEM$}
-\label{sec:generalcost-methodology}
+\subsection{Motivation}
+\label{subsubsec:furthers-cost-example}
 As shown in the Example~\ref{ex:heapcost} above, the heap resource consumption during the program 
 execution is accumulating in the same way as the program's adaptivity. 
 Specifically, in line : 6 and line :  9
@@ -62,13 +63,26 @@ the same as the case where the adaptivity isn't accumulated because of non-depen
 In other words, these operations in above cases imply implicit cost decreases 
 which are all considered as increases in traditional resource analysis 
 method.
+\input{examples/heap_cost}
+
+\section{Accurate Full-Spectrum Analysis via $\THESYSTEM$}
+\label{sec:generalcost-methodology}
+As discussed in Section~\ref{subsubsec:furthers-cost-example}
+% shown in the Example~\ref{ex:heapcost} above, the heap resource consumption during the program 
+% execution is accumulating in the same way as the program's adaptivity. 
+% Specifically, in line : 6 and line :  9
+% the list assigned to $x$ and $y$ is re-written instead of accumulated.
+% So the heap consumption is in the loop isn't accumulated recursively, which is exactly
+% the same as the case where the adaptivity isn't accumulated because of non-dependency between variables.
+% In other words, these operations in above cases imply implicit cost decreases 
+% which are all considered as increases in traditional resource analysis 
+% method.
 % In other wor decreased implicitly. 
 % This implicit decrease 
 % of the cost works exactly the same as program's adaptivity decrease.
-\\
-According to this high similarity between the program's resource cost and the 
-program's adaptivity property, I plan to adopt the similar analysis procedure as in Section~\ref{sec:dynamic} and 
-Section~\ref{sec:static},
+according to this high similarity between the program's resource cost and the 
+program's adaptivity property, I adopt the similar analysis procedure as in Section~\ref{ch:dynamic} and 
+Section~\ref{ch:static},
 and generalize 
 % This motivates the generalization of 
 % the analysis
@@ -109,7 +123,7 @@ be performed on a generalized  $\THESYSTEM$.  $\THESYSTEM$ will be generalized s
     this resource cost quantity.
 \end{enumerate}
 
-\section{Program Resource Cost Analysis Example}
+\section{The Accurate Full-Spectrum Program Resource Cost Analysis via Examples}
 \label{sec:generalcost-example}
 \input{examples/heap_cost}
 
