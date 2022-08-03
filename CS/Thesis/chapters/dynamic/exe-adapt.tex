@@ -88,7 +88,8 @@ When program executes under this starting trace $\trace$,
 $\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} $, it generates an execution trace $\trace'$.
 This natural number is the evaluation times of the labeled command corresponding to the vertex, 
 computed by the counter operator $w(\trace) = \vcounter(\vtrace', l)$.
-We can see in the execution-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight of vertices in the while loop is  $\env(\trace) k$, which depends on the value of the user input $k$ specified in the starting trace $\tau$.
+We can see in the execution-based dependency graph of $\kw{twoRounds}$ in 
+Figure~\ref{fig:twoRounds_example}(b), the weight of vertices in the while loop is  $\env(\trace) k$, which depends on the value of the user input $k$ specified in the starting trace $\tau$.
 The directed edges $\traceE({c})$ is also a set of pairs with two labeled variables $ (x^i, y^j) \in \mathcal{LV} \times \mathcal{LV}$, from $x^i$ pointing to $y^j$ in the graph.
 The edges are constructed directly from our variable may-dependency relation. 
 For any two vertices $x^{i}$ and $y^{j}$ in $\traceV(c)$, if they satisfy the variable may-dependency relation $\vardep(x^i, y^j, c)$, there is a direct edge between the two vertices in our execution-based dependency graph for program $c$.

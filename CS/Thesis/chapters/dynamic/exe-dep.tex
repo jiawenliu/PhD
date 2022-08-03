@@ -1,4 +1,5 @@
-\paragraph*{Challenge}
+\paragraph{Challenge}
+\label{para:exe-dep-challenge}
 In the data analysis model our programming framework supports, 
 %  an \emph{analyst} asks a sequence of queries to the mechanism, and receives the answers to these queries from the mechanism. In this model, the adaptivity we are interested in is the length of the longest sequence of such adaptively chosen queries, among all the queries the data analyst asks. 
   we define that a query is adaptively chosen when it is affected by answers of previous queries. The next thing is to decide how do we define whether one query is "affected" by previous answers, with the limited information we have? As a reminder, 
@@ -205,7 +206,8 @@ In order to observe the changes of $\event_2$ under the modification of $\event_
 $[\event_1 ] \tracecat \trace \tracecat [\event_2]$
 starts with $\event_1$ and ends with $\event_2$.
 % }
-{The \emph{may-dependency} relation considers both the value dependency and value control dependency as discussed in Section~\ref{sec:design_choice}. The relation can be divided into two parts naturally in Definition~\ref{def:event_dep} (line $2-4$, $5-8$ respectively, starting from line $1$). The idea of the event $\event_1$ may depend on $\event_2$ can be briefly described:
+{The \emph{may-dependency} relation considers both the value dependency and value control dependency as discussed in 
+analysis challenges in Paragraph~\ref{para:exe-dep-challenge}. The relation can be divided into two parts naturally in Definition~\ref{def:event_dep} (line $2-4$, $5-8$ respectively, starting from line $1$). The idea of the event $\event_1$ may depend on $\event_2$ can be briefly described:
 we have one execution of the program as reference (See line $2$ and $6$, for the two kinds of dependency). 
 When the value assigned to the 
 % first variable 

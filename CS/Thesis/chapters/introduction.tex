@@ -266,8 +266,8 @@ while through static program analysis techniques, a sound estimated result will 
 % \item The program adaptivity estimation, through newly designed algorithms based on the results estimated above, 
 % computing the adaptivity upper bound soundly 
 % and accurately.
-\item The data dependency relation analysis through the static data flow analysis technique in Section~\ref{subsec:alg_weightedgegen}.
-\item Still in Section~\ref{subsec:alg_weightedgegen}, the dependency quantity analysis through the static program reachability bound analysis techniques.
+\item The data dependency relation analysis through the static data flow analysis technique in Section~\ref{sec:alg_weightedgegen}.
+\item Still in Section~\ref{sec:alg_weightedgegen}, the dependency quantity analysis through the static program reachability bound analysis techniques.
 \item 
 % The program  estimation, 
 In Section~\ref{subsec:static-adapt},
@@ -347,7 +347,8 @@ by generalizing this \emph{adaptivity} analysis framework.
  Both of the
  works in these two areas fail to recognize the case where program resource consumption is decreased implicitly.
  \item The resource consumption during the program 
- execution increases and particularly decreases implicitly in the same way as the program's adaptivity. This is explained in detail through an example in Section~\ref*{sec:generalization}.
+ execution increases and particularly decreases implicitly in the same way as the program's adaptivity. 
+ This is explained in detail through an example in Section~\ref*{sec:generalcost-backgroung}.
 \end{itemize}
 % F
 % Then, through two observations,
@@ -365,7 +366,7 @@ by generalizing this \emph{adaptivity} analysis framework.
 % by generalizing my \emph{adaptivity} analysis framework.
  % onto the program's resource cost analysis. 
  % Use this framework,
- Based on the observations above, in Chapter~\ref{ch:generalization}
+ Based on the observations above, in Chapter~\ref{ch:generalization},
 %  Based on the observations above, and through the generalized \emph{adaptivity} analysis framework.
 %  I will give
 %  a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, compared 
@@ -443,15 +444,24 @@ In Chapter~\ref{ch:furthers}, I started this work and proposed plans on developi
    
    \begin{enumerate}
    
-      \item A while-like language extended with query request feature, named {\tt Query While} Language, 
-      used to implement 
-      the adaptive data analysis.
-      \item A formal adaptivity model through execution-based adaptivity analysis.
-      \item A static program analysis algorithm named {\THESYSTEM}.
+      \item A programming framework for adaptive data analyses where the program represents an analyst that can query a generalization-preserving mechanism mediating the access to some data. 
+      % \item A trace-based operational semantics for the loop language, specific to dependency between queries.
+      \item 
+      % {A formal definition of the notion of adaptivity under the analyst-mechanism model. This definition is built on a query-based dependency graph built out of all the possible program execution traces.}
+      A formal definition of the notion of adaptivity under the analyst-mechanism model. 
+      This definition is built on a variable-based dependency graph that is constructed using sets of program execution traces.
+      % \item A transformation between the {\tt Loop} language and the ssa language, with the soundness of the transformation.
+      \item 
+      % A program analysis algorithm {\THESYSTEM} which provides an upper bound on the adaptivity via a variable-based dependency graph.
+      A static program analysis algorithm {\THESYSTEM} combining data flow, control flow and  reachability bound analysis in order to provide tight bounds on the adaptivity of a program. 
+      %
+      \item A soundness proof of the program analysis showing that the adaptivity estimated by {\THESYSTEM} bounds the true adaptivity of the program. 
+      \item An implementation of {\THESYSTEM} and an experimental evaluation the bounds this implementation provides on several examples.
       \item An algorithm designed for program path-sensitive reachability bound analysis with implementation.
-      \item An improved formal adaptivity model and {\THESYSTEM} with implementation.
+      % \item An improved formal adaptivity model and {\THESYSTEM} with implementation.
       %  expected to be done before the final defense.
-      \item An accurate program resource cost analysis framework generalized from {\THESYSTEM} with implementation.
+      \item An accurate full-spectrum program resource cost analysis, 
+      generalized from {\THESYSTEM} with implementation.
       % The analysis framework design is expected to be done with the implementation start off before the final defense.
          % To the best of our knowledge, it is the first work that statically estimates adaptivity to help design adaptive data analysis algorithms.  
    \end{enumerate}
@@ -488,19 +498,19 @@ In Chapter~\ref{ch:furthers}, I started this work and proposed plans on developi
 
 
 \section{Dissertation Outline}
-This dissertation includes two main parts. 
+This dissertation includes following parts. 
 \begin{enumerate}
 \item A while-like language extended with query request feature, named {\tt Query While} Language, 
 used to implement 
-the adaptive data analysis.
-\item A formal adaptivity model through execution-based adaptivity analysis.
-\item A static program analysis algorithm, named {\THESYSTEM}.
-\item Two proposed further features to be improved based-on the formal adaptivity model and {\THESYSTEM},
- expected to be done before the final defense.
-\item A proposed accurate program resource cost analysis framework generalized from {\THESYSTEM}. 
-The analysis framework design is expected to be done with the implementation start off before final defense.
-\item A proposed plan for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework,
-expected to be started off before final defense and developing further sophisticated after.
+the adaptive data analysis in Chapter~\ref{ch:language}.
+\item A formal adaptivity model through execution-based adaptivity analysis in Chapter~\ref{ch:dynamic}.
+\item A static program analysis algorithm, named {\THESYSTEM} through static adaptivity analysis in Chapter~\ref{ch:static}.
+\item An extended full-spectrum program adaptivity analysis in Chapter~\ref{ch:improved}.
+\item An accurate full-spectrum program resource cost analysis, 
+generalized from {\THESYSTEM} with implementation in Chapter~\ref{ch:generalization}.
+\item Proposed future works for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework in
+Chapter~\ref{ch:furthers},
+expected to be started off before final defense and developing further after.
 \end{enumerate}
 
 
