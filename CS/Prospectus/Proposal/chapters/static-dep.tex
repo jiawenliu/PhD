@@ -1,8 +1,8 @@
 I develop a variant of data flow analysis, called Feasible Data-Flow Generation, which produces a sound approximation of the edges in the execution based dependency graph.
-%  $\live_{in}(l,c)$ and $\live_{out}(l, c)$ is computed by the Standard worklist algorithm. (For simplicity, we use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.
+%  $\live_{in}(l,c)$ and $\live_{out}(l, c)$ is computed by the Standard worklist algorithm. (For simplicity, I use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.
 %%
 \paragraph{Feasible Data-Flow Generation}
-We generate edges by using both control and data flow in the following $\flowsto$ relation, which uses the results of reaching definition analysis, as $\live(l, c)$ for every label $l$ in a program $c$. $\mathsf{FV}$ computes the set of free variables in an expression. 
+ I generate edges by using both control and data flow in the following $\flowsto$ relation, which uses the results of reaching definition analysis, as $\live(l, c)$ for every label $l$ in a program $c$. $\mathsf{FV}$ computes the set of free variables in an expression. 
 % $\mathsf{blk}$ returns a list of labeled computation blocks of a labeled command $c$.
 %
 %   \[
@@ -21,7 +21,7 @@ We generate edges by using both control and data flow in the following $\flowsto
   \label{def:feasible_flowsto}
   Given a program $c$ and two labeled variables $x^i, y^j$  in this program, 
   $\flowsto(x^i, y^j, c)$ is 
-    {\footnotesize
+    {\small
     \[
    \begin{array}{ll}
     \flowsto(x^i, y^j, \clabel{\assign{x}{\expr}}{}^l)  & \triangleq (x^i, y^j) \in \{ (y^i, x^l) | y \in \mathsf{FV}(\expr) 
@@ -53,22 +53,25 @@ We generate edges by using both control and data flow in the following $\flowsto
    }
    \end{defn}
 %
-We prove that this \emph{Feasible Data-Flow} relation is a sound approximation 
-of the \emph{variable may-Dependency} relation over labeled variables for every program,
-in the appendix.
+This \emph{Feasible Data-Flow} relation is a sound approximation 
+of the \emph{variable may-Dependency} relation over labeled variables for every program.
+The soundness is proved in full paper.
+% in the appendix.
 % ~\ref{apdx:flowsto_soundness}.
 %
 \paragraph*{Edge Estimation}
-Then we define the estimated directed edges
+Based on the \emph{Feasible Data-Flow} relation,
+the estimated directed edges
 % for each vertex in $\progV(c)$,
-between vertices in $\progV(c)$,
+between vertices in $\progV(c)$ is defined
 as a set of pairs 
 % $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{LV} \times EXPR(\constdom))$ 
-$\progE(c) \in \mathcal{P}( \mathcal{LV} \times \mathcal{LV})$
+$\progE(c) \in \mathcal{P}( \mathcal{LV} \times \mathcal{LV})$.
 % is the set of pairs 
 % The weight for each vertex in $\progV(c)$ is computed 
-indicating a directed edge from the first vertex to the second one in each pair
-as follows,
+Each pair of vertices indicates a directed edge from the first vertex to the second one
+%  in each pair
+formally as follows.
 {
   \[
     \begin{array}{ll}
@@ -98,9 +101,9 @@ as follows,
     \end{array}
     \]
 }
-We prove that this estimated directed edge set $\progE(c)$ is a sound approximation of the 
-edge set in $c$'s execution-based dependency graph 
-in the appendix.
+This estimated directed edge set $\progE(c)$ is a sound approximation of the 
+edge set in $c$'s execution-based dependency graph, which is proved in full paper.
+% in the appendix.
 % ~\ref{apdx:adapt_soundness}.
 %  \begin{defn}[Feasible Data-Flow]
 %   \label{def:feasible_flowsto}
@@ -122,7 +125,7 @@ in the appendix.
 %    For any two labeled variables $x^i, y^j$ in a program $c$, 
 %   %  it is easy to see that there is a one-on-one correspondence between 
 %   %  $\flowsto$ relation of the two variables, and the $dcdg$ analysis result on $c$.
-%   we use $\flowsto()$ denote if they have a feasible data-flow relation in Definition~\ref{def:flowsto}.
+%   I use $\flowsto()$ denote if they have a feasible data-flow relation in Definition~\ref{def:flowsto}.
 %    \begin{defn}[Feasible Data-Flow ($\flowsto$)]
 %    \label{def:flowsto}
 %    \[
@@ -142,35 +145,36 @@ in the appendix.
   %  \end{thm}
   %  This soundness is proved in Proof~\ref{pf:rd_soundness} in appendix~\ref{apdx:rd_soundness}.
   \paragraph*{Example}
- Look at Figure~\ref{fig:twoRounds_example}(c),
-and take the edge $(l^6, a^5)$ for example.
-By $\flowsto(l^6, a^5, c)$, we can see $a$ is used directly in the query expression $\chi[k]*a$,
+The edge $(l^6, a^5)$ in Figure~\ref{fig:twoRounds_example}(c) is constructed by this definition.
+% and take  for example.
+By $\flowsto(l^6, a^5, c)$, I can see $a$ is used directly in the query expression $\chi[k]*a$,
 in the assignment command $\clabel{\assign{l}{\query(\chi[k]*a)}}^l$,
 i.e., $a \in FV(\chi[k]*a)$.
-Also, from the reaching definition analysis, we know $a^5 \in \live(6, \kw{twoRounds(k)})$.
-Then we have $\flowsto(l^6, a^5, c)$ and construct the edge $(l^6, a^5)$.
-And the same way for constructing the rest edges. Also, the edge $(x^3,j^5)$ in the same graph represents the control flow, caught by our $\flowsto$ relation.
+Also, from the reaching definition analysis, I know $a^5 \in \live(6, \kw{twoRounds(k)})$.
+Then I have $\flowsto(l^6, a^5, c)$ and construct the edge $(l^6, a^5)$.
+And the same way for constructing the rest edges. Also, the edge $(x^3,j^5)$ in the same graph represents the control flow, 
+caught by the $\flowsto$ relation.
 %
 %   \subsection{Program-Based Data Dependency Graph Generation}
 %   %  Weighted Data Dependency Graph Generation}
 %   \label{sec:alg_graphgen}
    %
 %    Each directed edge represents an abstract transition 
-%    between two control locations, i.e., the labels of two commands (we call the labels also control location and they refer to the same thing in the follows), 
+%    between two control locations, i.e., the labels of two commands ( I call the labels also control location and they refer to the same thing in the follows), 
 %    where the second labeled command will be executed after execution of the command with first label.
 %    The abstract transition contains a set of difference constraints for variables, generated by abstracting the command of the first label.
 %   \item Computing 
-%   % we get the reachability bound for each command.
+%   % I get the reachability bound for each command.
 %   the symbolic reachability bound for each command,
 %   % the value bound invariant for each variable in the event and 
 %   by inferring the value bound invariant for each variable 
 %   % the event transition closure over the abstract control flow graph,
 %   and the transition closure for every abstract transition through the constraints over the abstract control flow graph.
 %   % \\
-%   % Through this graph and constraint for every transition, we infer the  invariant for every variable,
+%   % Through this graph and constraint for every transition, I infer the  invariant for every variable,
 %   % and compute the transition closure for every abstract transition.
 %   % By solving the closure with the invariants of variables involved in this closure for every transition, 
-%   % we compute the symbolic reachability bound of every commands corresponding to 
+%   % I compute the symbolic reachability bound of every commands corresponding to 
 % %     % this transition.
 % %     \item Performing a feasible data-flow analysis from the reachable definition algorithm. 
 % % %  By generating set of all the reachable variables at location of label $l$ in the program $c$.
@@ -204,7 +208,7 @@ And the same way for constructing the rest edges. Also, the edge $(x^3,j^5)$ in 
 % % This graph is used 
 % for approximating the trace-based weight-data dependency graph.
 % \\
-% Specifically, we first annotate each vertex of label $l$ with the variable 
+% Specifically, I first annotate each vertex of label $l$ with the variable 
 % assigned in that labeled command, and remove the rest doesn't correspond to an assignment command.
 % Then 
 % add direct edge between two labeled variables,

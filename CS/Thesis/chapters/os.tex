@@ -1,3 +1,5 @@
+The operational semantics is defined based on the event, trace as well as the 
+environment, which are introduced firstly as follows.
 \paragraph{Event}
 An event tracks useful information about each step of the evaluation, as a quadruple. Its first element is either 
 an assigned variable (from an assignment command) or a boolean expression (from the guard of if or while command), follows by 
@@ -398,7 +400,7 @@ A trace can be regarded as the program history, which records queries asked by t
   \]
   \end{coro}
 %  
-\paragraph*{Environment}
+\paragraph{Environment}
 An environment is standard, a map from variables to values.
 $\env : {\mathcal{T}}  \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\bot\}$, 
 which maps a trace and a variable to the latest value assigned to this variable on the trace is defined as follows.
@@ -422,7 +424,7 @@ iteration the query is at when it appears in a loop statement, specified by $w$.
 \]
  %% trace
 
- \paragraph*{Operational Semantic Rules}
+ \paragraph*{Operational Semantics}
  The complete operational semantic evaluation rules are presented in Figure~\ref{fig:os},
  with the evaluation rules for expressions in Figure~\ref{fig:expr_eval}.
 

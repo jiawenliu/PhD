@@ -1,3 +1,6 @@
+The operational semantics is defined based on the event and trace, which are introduced firstly as follows.
+% \\
+\paragraph*{Event}
 An event tracks useful information about each step of the evaluation, as a quadruple. Its first element is either 
 an assigned variable (from an assignment command) or a boolean expression (from the guard of if or while command), follows by 
  the label associated with this event, the value evaluated either from the expression assigned to the variable,
@@ -161,6 +164,7 @@ or the boolean expression in the guard.
 % \end{defn}
 % %
 % %
+\paragraph*{Trace}
 A trace $\trace \in \mathcal{T} $ is a list of events, 
 collecting the events generated along the program execution. $\mathcal{T} $ represents the set of traces. There are some useful operators: the trace concatenation operator $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$, combines two traces.
 The belongs to operator $\in : \eventset \to \mathcal{T} \to \{\etrue, \efalse \} $ and its opposite $\not\in$
@@ -232,6 +236,7 @@ A trace can be regarded as the program history, which records queries asked by t
 
 
 
+\paragraph*{Environment}
 The function $\env : {\mathcal{T}} \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\bot\}$, which maps a trace and a variable to the latest value assigned to this variable on the trace is defined as follows.
 % \wq{Question: Seem $\env$ is a function that looks up in the input trace and returns you the latest value of the variable. I have a question, in the two-round example, I see $env(\tau)(k)$ while $k$ is not defined(it is input), so in our two-round example in Overview, the value is stored in the second event is $\bot$? Also, another important, $\env$ relies on the input trace, so it will not appear in the trace, or config, is it precise?}
 % \jl{yes, it is precise. 
@@ -558,6 +563,7 @@ The function $\env : {\mathcal{T}} \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\b
 % and evaluates it to another configuration, 
 % in which $c$ is evaluated to $c'$ and trace $\trace$ is updated to $\trace'$. 
 % is updated during the evaluation,
+\paragraph*{Operational Semantics}
 I give a selection of rules of the trace-based operational semantics in Figure~\ref{fig:os}. 
 
 % \todo{Make sure the operational semantics is a big step and correct assn rules.}

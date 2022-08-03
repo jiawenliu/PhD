@@ -1,25 +1,31 @@
 \paragraph{Challenge}
 \label{para:exe-dep-challenge}
-In the data analysis model our programming framework supports, 
-%  an \emph{analyst} asks a sequence of queries to the mechanism, and receives the answers to these queries from the mechanism. In this model, the adaptivity we are interested in is the length of the longest sequence of such adaptively chosen queries, among all the queries the data analyst asks. 
-  we define that a query is adaptively chosen when it is affected by answers of previous queries. The next thing is to decide how do we define whether one query is "affected" by previous answers, with the limited information we have? As a reminder, 
+In the data analysis model the programming framework supports, 
+%  an \emph{analyst} asks a sequence of queries to the mechanism, and receives the answers to these queries from the mechanism. In this model, the adaptivity I are interested in is the length of the longest sequence of such adaptively chosen queries, among all the queries the data analyst asks. 
+  I define that a query is adaptively chosen when it is affected by answers of previous queries. The next thing is to decide how do I define whether one query is "affected" by previous answers, with the limited information I have? As a reminder, 
  when the analyst asks a query, the only known information will be the answers to previous queries and the current execution trace of the program.
 
 
 There are two possible situations that a query will be "affected",  
 either when the query expression directly uses the results of previous queries (data dependency), or when the control flow of the program with respect to a query (whether to ask this query or not) depends on the results of previous queries (control flow dependency).
-% As a first step, we give a definition of when one query may depend on a previous query, which is supposed to consider both control dependency and data dependency. We first look at two possible candidates:
+% As a first step, I give a definition of when one query may depend on a previous query, which is supposed to consider both control dependency and data dependency. We first look at two possible candidates:
 % \begin{enumerate}
 %     \item One query may depend on a previous query if and only if a change of the answer to the previous query may also change the result of the query.
 %     \item One query may depend on a previous query if and only if a change of the answer to the previous query may also change the appearance of the query.
 % \end{enumerate}
 
 
-Since the the results of previous queries can be stored or used in variables
+Since the results of previous queries can be stored or used in variables
 which aren't associated to the query request,
-it is necessary to track the dependency between queries, through all the program's variables,  
-and then we can distinguish variables which are assigned with query requests.
- We give a definition of when one variable \emph{may-depend} on a previous variable with two candidates.
+it is necessary to track the dependency between queries, through all the program's variables.
+In the meantime, the trace-based operational semantics tracks the information,
+distinguishing variables which are assigned with query requests.
+% and then I can distinguish variables which are assigned with query requests.
+In this way, the \emph{may-dependency} relation between queries can be recovered through 
+the \emph{may-dependency} relation over all the program's variables.
+According to this, I focus on the analysis on the variable \emph{may-dependency} relation in the following of this section.
+
+I give a definition of when one variable \emph{may-depend} on a previous variable with two candidates.
 {
 \begin{enumerate}
     \item One variable may depend on a previous variable if and only if a change of the value assigned to the previous variable may also change the value assigned to the variable.
@@ -42,7 +48,7 @@ the witness of a variation on the value assigned to the same variable through tw
 % assigned to the same variable through two executions, 
 according to the change of the value assigned to another variable in pre-trace.
 % the situation of data-dependency works well. \wq{long sentence, make it short?}
-In particular for query requests, the variation we observe is on the query value instead of on the query requesting results.
+In particular for query requests, the variation I observe is on the query value instead of on the query requesting results.
 % We can find that two queries 
 % % have nothing to do with each other in this simple example 
 % % depends on each other\wq{not each other, one direction.} 
@@ -51,20 +57,24 @@ In
 %this 
 the simple program $c_1 =\assign{x}{\query(\chi[2])} ;\assign{y}{\query(\chi[3] + x)}$.
  %
- From our perspective, $\query(\chi[1])$ is different from $\query(\chi[2]))$. Informally, we think $\query(\chi[3] + x)$ may depend on the query $\query(\chi[2]))$, because equipped function of the former $\chi[3] + x$ may depend on the data stored in x assigned with the result of $\query(\chi[2]))$, according to this definition. }
+ From our perspective, $\query(\chi[1])$ is different from $\query(\chi[2]))$. Informally, I think $\query(\chi[3] + x)$ may depend on the query $\query(\chi[2]))$, because equipped function of the former $\chi[3] + x$ may depend on the data stored in x assigned with the result of $\query(\chi[2]))$, according to this definition. }
 %
 % in this example: $c_1 = \assign{x}{\query(0)}; \assign{z}{\query(\chi[x])}$.
 % This candidate definition works well 
 Nevertheless, the first definition fails to catch control dependency because it just monitors the changes to a query, but misses the appearance of the query when the answers of its previous queries change. 
 For instance, it fails to handle $
       c_2 = \assign{x}{\query(\chi[1])} ; \eif( x > 2 , \assign{y}{\query(\chi[2])}, \eskip )
-   $, but the second definition can. However, it only considers the control dependency and misses the data dependency. This reminds us to define a \emph{may-dependency} relation between labeled variables by combining the two definitions to capture the two situations.
+   $, but the second definition can. However, it only considers the control dependency and misses the data dependency. 
+  This reminds me to define a \emph{may-dependency} relation between labeled variables by combining the two definitions to capture the two situations.
 %
 %
+% I define the According to the trace-based operational semantics,
 %
 %
-\paragraph{Dependency}
- To define the may dependency relation on two labeled variables, we rely on the limited information at hand - the trace generated by the operational semantics. In this end, we first define the \emph{may-dependency} between events, and use it as a foundation of the variable may-dependency relation.
+\paragraph{Event Dependency}
+ To define the \emph{may-dependency} relation on two labeled variables, I rely on the limited information at hand - the trace generated by the operational semantics. In this end, I first define the \emph{may-dependency} between events, and use it as a foundation of the variable may-dependency relation.
+
+ 
 \begin{defn}[Events Different up to Value ($\diff$)]
   Two events $\event_1, \event_2 \in \eventset$ are  \emph{Different up to Value}, 
   denoted as $\diff(\event_1, \event_2)$ if and only if:
@@ -107,7 +117,7 @@ We also define the set of query variables for a program $c$, $\qvar: \cdom \to
 
 A program $c$'s query variables is a subset of 
 its labeled variables, $\qvar(c) \subseteq \lvar(c)$. We have the operator $\tlabel : \mathcal{T} \to \ldom$, which gives the set of labels in every event belonging to the trace.
-Then we introduce a counting operator $\vcounter : \mathcal{T} \to \mathbb{N} \to \mathbb{N}$, 
+Then I introduce a counting operator $\vcounter : \mathcal{T} \to \mathbb{N} \to \mathbb{N}$, 
 % \wq{which counts the occurrence of of a variable in the trace,} 
 which counts the occurrence of a labeled variable in the trace,
 whose behavior is defined as follows,
@@ -208,7 +218,7 @@ starts with $\event_1$ and ends with $\event_2$.
 % }
 {The \emph{may-dependency} relation considers both the value dependency and value control dependency as discussed in 
 analysis challenges in Paragraph~\ref{para:exe-dep-challenge}. The relation can be divided into two parts naturally in Definition~\ref{def:event_dep} (line $2-4$, $5-8$ respectively, starting from line $1$). The idea of the event $\event_1$ may depend on $\event_2$ can be briefly described:
-we have one execution of the program as reference (See line $2$ and $6$, for the two kinds of dependency). 
+I have one execution of the program as reference (See line $2$ and $6$, for the two kinds of dependency). 
 When the value assigned to the 
 % first variable 
 first variable in $\event_1$ is modified, the reference trace $\trace_1 \tracecat [\event_1]$ is modified correspondingly to $\trace_1 \tracecat [\event_1']$.
@@ -217,8 +227,8 @@ but with the modified trace $\trace_1 \tracecat [\event_1']$ (See line $3$, $7$)
 The expected may dependency will be caught by observing two different possible changes (See line $4, 8$ respectively) when comparing the second execution with the reference one (similar definitions as in \cite{Cousot19a}). 
 
 % \wq{
-% In the first situation, we are witnessing 
-In the first part (line $2-4$ of Definition~\ref{def:event_dep}), we witness
+% In the first situation, I are witnessing 
+In the first part (line $2-4$ of Definition~\ref{def:event_dep}), I witness
 % that the value assigned to the second variable in $\event_2$
 the appearance of $\event_2'$ in the second execution, and
 % a variation in $\event_2$, which changes into $\event_2'$.
@@ -239,7 +249,7 @@ query requesting results.
 Additionally, in order to handle multiple occurrences of the same event through iterations of the while loop,
  where  $\event_2$ and $\event_2'$ could be 
 in different while loops,
-we restrict the same occurrence of $\event_2$'s label in $\trace$ from the first execution with  the occurrence of $\event_2'$'s label in $\trace'$ from the second execution,
+I restrict the same occurrence of $\event_2$'s label in $\trace$ from the first execution with  the occurrence of $\event_2'$'s label in $\trace'$ from the second execution,
 through $\vcounter(\vtrace, \pi_2(\event_2))
 = 
 \vcounter(\vtrace', \pi_2(\event_2'))$ at line $4$.
@@ -247,7 +257,7 @@ through $\vcounter(\vtrace, \pi_2(\event_2))
 % }
 
 % \wq{
-In the second part (line $5-8$ of Definition~\ref{def:event_dep}), we 
+In the second part (line $5-8$ of Definition~\ref{def:event_dep}), I 
 % are witnessing 
 witness
 the disappearance of $\event_2$ through observing the change of a testing event $\event_b$.
@@ -259,14 +269,14 @@ the disappearance, the command that generates $\event_2$ must not be executed in
 the second execution. 
 The only way to control whether a command will be executed, is through the change of a guard's 
 evaluation result in an if or while command, which generates a testing event $\event_b$ in the first place.
-So we observe when
+So I observe when
 $\event_b$ changes into $\neg \event_b$ in the second execution firstly, 
 whether it follows with the disappearance of $\event_2$ in the second trace. We restrict the occurrence of $\event_b$'s label in the two traces being the same
 }
 % s to the occurrence times of $\event_2'$'s label in the second trace,
 through $\vcounter(\trace', \pi_2(\event_b)) = \vcounter(\trace, \pi_2(\event_b))$ to handle the while loop.
 % changes in $\event_2'$, have the same variable and label and only differ in their assigned value. 
-Again, for queries, we observe the disappearance based on the query value equivalence.
+Again, for queries, I observe the disappearance based on the query value equivalence.
 % if $\event_2$ and $\event_2'$ are query assignment events, then 
 % they differ in their query value rather than the assigned value. 
 % }
@@ -284,7 +294,7 @@ under an initial trace,
 % corresponding to the two labeled variables,
 % evaluations of the assignment commands associated to the two labelled variables respectively, 
 as long as there is one pair of events satisfying the \emph{event may-dependency} relation in Definition~\ref{def:event_dep}, 
- we say the two 
+ I say the two 
 related
 variables satisfy the \emph{variable may-dependency} relation, in Definition~\ref{def:var_dep}.
 }

@@ -1,3 +1,4 @@
+The syntax is shown as follows,
 \[
 \begin{array}{llll}
 \mbox{Arithmetic Operators} 
@@ -17,14 +18,14 @@
 \\  
 %
 \mbox{Label} 
-& l & \in & \mathbb{N} \cup \{in, ex\} 
+& l & \in & \mathbb{N} \cup \{\lin, \lex\} 
 \\ 
 %
 \mbox{Arithmetic Expression} 
 & \aexpr & ::= & 
 n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr  
-\\
-&  &  & 
+% \\
+% &  &  & 
  ~|~ \elog \aexpr  ~|~ \esign \aexpr
 \\
 %
@@ -52,7 +53,7 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 & {n ~|~ \chi[n] ~|~ \qval \oplus_a  \qval ~|~ n \oplus_a  \chi[n]
     ~|~ \chi[n] \oplus_a  n}
     \\
-% &&& \text{\mg{I don’t think this is what we want. Isn’t $\chi[n+1]$ a query value?}}\\
+% &&& \text{\mg{I don’t think this is what I want. Isn’t $\chi[n+1]$ a query value?}}\\
 % &&& \text{\mg{What about $\chi[i] + \chi[i] + \chi[i]$? They are not in the grammar}}
 % \\
 % &&& \text{\jl{ $\chi[i] + \chi[i] + \chi[i]$ and $\chi[n+1]$ are both expressions, they will be evaluated to a value 
@@ -83,26 +84,33 @@ either a standard arithmetic expression or a boolean expression, or a list of ex
 % An arithmetic expression can be a constant $n$ denoting integer, a variable $x$ from some countable set $\mathcal{VAR}$, binary operation $\oplus_a$ such as addition, product, subtraction, etc, over arithmetic expressions, and also log and sign operation. 
 % %
 % A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq,=,<,$ etc.
-% Additionally, we also introduce list in expression.
-Our language supports primitives for queries, 
-where a specific query is specified by a query expression $\qexpr$. 
-A query expression contains the necessary information for a query request, for example, 
-$\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
+% Additionally, I also introduce list in expression.
+% Our language supports primitives for queries, 
+% where a specific query is specified by a query expression $\qexpr$. 
+% A query expression contains the necessary information for a query request, for example, 
+% $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
+% Query expressions combine access to the database with other expressions, 
+% for example, $\chi[3] + 5$ represents a query which asks the value from the column 3 of each database raw $\chi$, adds 5 to each of these values, 
+% and then computes the average of these values.
+The key extension is
+%  language supports 
+the primitives for queries, where a specific query is specified by a query expression $\qexpr$. 
+A query expression contains the necessary information for a query request, 
+for example, $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
 Query expressions combine access to the database with other expressions, 
-for example, $\chi[3] + 5$ represents a query which asks the value from the column 3 of each database raw $\chi$, adds 5 to each of these values, 
-and then computes the average of these values.
-
+for example, $\chi[3] + 5$ represents a query that asks the value from column 3 of each database raw $\chi$, 
+adds 5 to each of these values, and then computes the average of these values.
 
 % the expression also includes the special variable $\chi$ representing a row of the database, and access to values at a certain index in $\chi$, as $\chi[\aexpr]$. Additionally, list over expressions is supported and $[]$ stands for the empty list. The access to elements in the list can be achieved through $x[\aexpr]$ when variable $x$ is referred to a list. The value $v$ now contains the natural number $n$, the boolean primitives $\etrue$ and $\efalse$, the special row $\chi$ and access to it $\chi[v]$, the empty list $[]$ and non-empty list $[v, \dots, v]$.
 % 
 %
- A labeled command $c$ is just a command with a label --- we assume that labels are unique, so that they can help to identify uniquely every subexpression. 
+ A labeled command $c$ is just a command with a label --- I assume that labels are unique, so that they can help to identify uniquely every subexpression. 
 %  I have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement  $\ewhile \bexpr \edo {c} $.
  The main novelty of the syntax is the query request command $\assign{x}{\query(\qexpr)}$. 
  For instance, if a data analyst wants to ask a simple linear query which returns the first element of the row, 
  they can simply use the command $ \assign{x}{\query(\chi[1])}$ in their data analysis program.
-%  \wq{Shall we distinguish command and labeled command, they are now both $c$. }
-%  \jl{I'm not sure, we don't want to programmer to add the label when writing the program. The label is just added by us for analysis. but I'm worried it is too complicate if use two notations for command and labeled command }
+%  \wq{Shall I distinguish command and labeled command, they are now both $c$. }
+%  \jl{I'm not sure, I don't want to programmer to add the label when writing the program. The label is just added by us for analysis. but I'm worried it is too complicate if use two notations for command and labeled command }
 %
 % \[
 % \begin{array}{llll}
@@ -306,7 +314,7 @@ $$
 It is easy to see that a program $c$'s query variables is a subset of 
 its labeled variables, $\qvar(c) \subseteq \lvar(c)$.
 %
-% \mg{In this definition as well as in others, I have the impression that you assume that the labelled variables are unique in the program. For example, it would not make sense to assign a query to the same labelled variable over and over. If this is the case, we need to make this very explicit in the paper.}
+% \mg{In this definition as well as in others, I have the impression that you assume that the labelled variables are unique in the program. For example, it would not make sense to assign a query to the same labelled variable over and over. If this is the case, I need to make this very explicit in the paper.}
 % \jl{TODO}
 %
 Every labeled variable in a program is unique, formally as follows with proof in Appendix~\ref{apdx:lemma_sec123}.
