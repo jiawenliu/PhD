@@ -178,7 +178,7 @@ In this approach, a program models an \emph{analyst} asking a sequence of querie
 % Overall, I'm interested in controlling the generalization of the results of the queries which are returned by the mechanism, by means of adaptivity. 
 
 \textbf{Methodology}
-Motivated by this, I present a while-like language with extensions on query requests in Section~\ref{sec:language}.
+Motivated by this, I present a while-like language named {\tt Query While} language with extensions on query requests in Section~\ref{sec:language}.
 
 \item 
 \textbf{Adaptivity Formalization}
@@ -201,7 +201,7 @@ I develop an execution-based analysis in Section~\ref{sec:dynamic}.
 % property of programs. This analysis is developed 
  This execution-based analysis is designed in three steps through different methodologies as follows,
  \begin{enumerate}
- \item First step is to analyze the \emph{dependency relation} between every query, 
+ \item The first step is to analyze the \emph{dependency relation} between every query, 
  through the methodology of semantic data dependency analysis.
  %
  Specifically through a trace semantics recording the execution history of programs on given input,
@@ -221,9 +221,18 @@ This analysis is developed through the methodology of execution-based reachabili
 % \\
  \item The last step is the intuitive \emph{adaptivity} quantity analysis, 
  according to the two analysis results above, specifically \emph{dependency relation} and \emph{dependency quantity}.
- This analysis is developed through the formal \emph{adaptivity} definition. \\
- Specifically, I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
- I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
+ This step 
+%  is developed through 
+gives the formal \emph{adaptivity} definition as the analysis result. \\
+ Specifically, this analysis is developed through creating a dependency graph firstly. 
+ In this graph, the dependency between different variables (query is also assigned to a variable) 
+ is explicit and track which variable is associated with a query request. 
+ This dependency comes from the \emph{dependency relation} from the first step analysis.
+ \\
+Then, I enrich this graph with 
+weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
+This weight comes from the \emph{dependency quantity} from the second step analysis results.
+\\
  The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
  \end{enumerate}
 \item 
@@ -247,8 +256,8 @@ by directly using the data and control flow analyses or the ones that one would 
 by directly using reachability bound analysis techniques alone. 
 % Specifically as follows in the same 
 It is developed in 3 aspects similar to the execution-based analysis 
-while through static program analysis techniques, 
-a sound estimated result is given in each part as follows.
+while through static program analysis techniques.
+A sound estimated result is given in each part, which is summarized as follows.
 \begin{enumerate}
 \item The data dependency relation analysis through the static data flow analysis technique.
 \item The dependency quantity analysis through the static program reachability bound analysis techniques.
@@ -375,19 +384,21 @@ the third step of $\THESYSTEM$.
 \subsection{Proposal Structure}
 \label{subsec:intro-structure}
 
-To sum up, this proposal covers the following topic.
+To sum up, this proposal covers the following topic in each following section.
 \begin{enumerate}
 \item A while-like language extended with query request feature, named {\tt Query While} Language, 
 used to implement 
-the adaptive data analysis.
-\item A formal adaptivity model through execution-based adaptivity analysis.
-\item A static program analysis algorithm named {\THESYSTEM}.
-\item Three proposed further features to be improved based on the 
+the adaptive data analysis in Section~\ref{sec:language}.
+\item A formal adaptivity model through execution-based adaptivity analysis in Section~\ref{sec:dynamic}.
+\item A static program analysis algorithm named {\THESYSTEM} in Section~\ref{sec:static}.
+\item Three proposed further features to be improved in Section~\ref{sec:furthers}, 
+based on the 
 % formal adaptivity model and {\THESYSTEM}, 
- full-spectrum adaptivity analysis presented in Section~\ref{sec:language},~\ref{sec:dynamic} and~\ref{sec:static},
- expected to be done before the final defense.
-\item A proposed accurate program resource cost analysis framework generalized from {\THESYSTEM}. 
+ full-spectrum adaptivity analysis.
+%  presented in Section~\ref{sec:language},~\ref{sec:dynamic} and~\ref{sec:static},
+ This proposed work is planned to be done before the final defense.
+\item A proposed accurate program resource cost analysis framework generalized from {\THESYSTEM} in Section~\ref{sec:generalization}. 
 The analysis framework design is expected to be done with the implementation start off before the final defense.
-\item A proposed plan for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework,
-expected to be started off before final defense and developing further sophisticated after.
+\item A proposed plan for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework in Section~\ref{sec:cfl_reduction},
+expected to start before final defense and developing further after.
 \end{enumerate}

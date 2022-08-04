@@ -1,4 +1,4 @@
-\subsection{Introduction and Related Work}
+\subsection{Introduction}
 \label{subsec:cfl-backgroung}
 % According to the works in performing data flow and control analysis
 From the background in Section~\ref{sec:generalization},
@@ -39,34 +39,41 @@ in the following steps.
  \item For the same three program analysis problems, each of them 
  can be solved through my \emph{adaptivity} analysis framework with 
  a different generalization of $\THESYSTEM$ with higher accuracy.
- \begin{itemize}
- \item Interprocedural Dataflow Analysis.
+ \begin{enumerate}
+ \item \textbf{Inter-procedural Dataflow Analysis}.
  \\
  The key problem in the interprocedural data-flow analysis is to identify the feasible path and remove 
  the in-feasible one from the graph.
- This problem can be solved by applying the first two procedures $\THESYSTEM$ and modifying the weight
- by $0$ and $1$ representing feasible or not. In this way, each qualified finite walk-in 
- $\THESYSTEM$ represents a feasible path, i.e., the feasible path is just a special case of finite walk 
+ This problem can be solved by applying the first two procedures $\THESYSTEM$ firstly.
+ Then in the third step of  $\THESYSTEM$, the dependency graph constructed by $\THESYSTEM$ needs to be modified.
+ Specifically, the weight in that graph will be changed to $0$ and $1$ 
+ representing feasible or not. 
+ In this way, each qualified finite walk-in 
+ $\THESYSTEM$ represents a feasible path.
+In the other words, the feasible path is simply a special case of finite walk 
  with weight $0$ or $1$.
- \item Interprocedural Program Slicing.
+ \item \textbf{Inter-procedural Program Slicing}.
  \\
  There are two key problems here and each of them can be solved by $\THESYSTEM$ as follows,
  \\ 
  1. The first key problem to be solved is to identify the data dependency relations between variables. 
- This can be solved by applying the first procedure of $\THESYSTEM$.
+ This can be solved by applying the first step of $\THESYSTEM$.
  \\
- 2. Similar to the interprocedural data-flow analysis, the second problem is to identify the feasible path and remove 
+ 2. Similar to the inter-procedural data-flow analysis, 
+ the second problem is to identify the feasible path and remove 
  the in-feasible one from the graph is the other key problem. 
- This can be solved in the same way by modifying the second step by applying the first two procedures $\THESYSTEM$,
- where the weight is reduced to either $0$ and $1$ representing feasible or not.
- \item Shape Analysis.
+ This can be solved in the same way by modifying the third step and applying the first two procedures $\THESYSTEM$,
+ where the weight is simplified to either $0$ or $1$.
+%   representing feasible or not.
+ \item \textbf{Shape Analysis}.
  \\
- This problem can be solved by generalizing the in the same way as proposed in Section~\ref{sec:generalization}.
+ This problem can be solved by the generalized full-spectrum analysis framework in Section~\ref{sec:generalization}.
  % \item Flow-Insensitive Points-Analysis
- \end{itemize}
+ \end{enumerate}
  \item Based on summarizing the common property of the three program analysis problems,
- I will show a reduction in CFL-Reachability problem 
- by showing that the CFL-reachability problem is a special case of 
+ I will show a reduction from CFL-Reachability problem to the 
+ adaptivity analysis problem.
+ Specifically, I will show that the CFL-reachability problem is a special case of 
  computing the adaptivity. 
 \end{itemize}
 % system structure as $\THESYSTEM$,

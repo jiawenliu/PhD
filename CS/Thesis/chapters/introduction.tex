@@ -257,13 +257,29 @@ I develop an execution-based analysis in Chapter~\ref{ch:dynamic}.
   based on the \emph{dependency relation} above.
   This analysis is developed through the methodology of execution-based reachability bound analysis.
   % \\
-   \item The last step in Section~\ref{subsec:dynamic-adapt}  is the intuitive \emph{adaptivity} quantity analysis, 
+   % \item The last step in Section~\ref{subsec:dynamic-adapt}  is the intuitive \emph{adaptivity} quantity analysis, 
+   % according to the two analysis results above, specifically \emph{dependency relation} and \emph{dependency quantity}.
+   % This analysis is developed through the formal \emph{adaptivity} definition. \\
+   % Specifically, I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
+   % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
+   % The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
+   \item The last step is the intuitive \emph{adaptivity} quantity analysis, 
    according to the two analysis results above, specifically \emph{dependency relation} and \emph{dependency quantity}.
-   This analysis is developed through the formal \emph{adaptivity} definition. \\
-   Specifically, I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-   I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
-   The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-   \end{enumerate}
+   This step 
+  %  is developed through 
+  gives the formal \emph{adaptivity} definition as the analysis result. 
+  \\
+  Specifically, this analysis is developed through creating a dependency graph firstly. 
+  In this graph, the dependency between different variables (query is also assigned to a variable) 
+  is explicit and track which variable is associated with a query request. 
+  This dependency comes from the \emph{dependency relation} from the first step analysis.
+  \\
+ Then, I enrich this graph with 
+ weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
+ This weight comes from the \emph{dependency quantity} from the second step analysis results.
+ \\
+  The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
+      \end{enumerate}
    \item 
 \textbf{Adaptivity Estimation}
 The third problem is \emph{how to estimate the adaptivity of a given program}. 

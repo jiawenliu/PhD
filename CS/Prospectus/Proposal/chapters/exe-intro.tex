@@ -13,7 +13,7 @@
 % \\
 % The construction of this graph requires me to think about the dependency relation between two queries using what we have at hand - 
 % the trace generated in Section~\ref{sec:language}. 
- \paragraph*{Related Work}
+ \paragraph*{Background and Related Work}
  {
 My framework constructs an execution-based dependency graph based on the execution traces of a program. I define semantic dependence on this graph by considering (intraprocedural) data and control dependency~\cite{bilardi1996framework,cytron1991efficiently,pollock1989incremental}. 
 One related work 
@@ -71,7 +71,7 @@ To formalize this intuition as a quantitative program property, I develop an exe
  \item The last step is the intuitive \emph{adaptivity} quantity analysis presented in Section~\ref{subsubsec:dynamic-adapt}.
  According to the two analysis results above, specifically \emph{dependency relation} and \emph{dependency quantity},
  I define the formal \emph{adaptivity} model in definition~\ref{def:trace_adapt} through 
- construct a dependency graph.
+ constructing a dependency graph.
 %  This analysis is developed through the formal \emph{adaptivity} definition. \\
 %  Specifically, I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
 %  I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 

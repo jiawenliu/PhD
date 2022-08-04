@@ -7,7 +7,7 @@ Then, this section covers the proposed methodology I plan to adopt for an accura
 analysis on 
 % the general resource cost analysis.
 the program's resource cost.
-\subsection{Background}
+\subsection{Introduction}
 \label{subsubsec:furthers-cost-backgroung}
 % Through observation in the following example, the heap resource consumption during the program 
 % execution is accumulating in the same way as the program's adaptivity. 
@@ -22,7 +22,7 @@ the program's resource cost.
 % by considering the program's implicit resource cost, comparing 
 % to the worst case cost analysis in the traditional way.
 % \\
-There are mainly two categories of methodology in the static program resource cost analysis areas, 
+\paragraph*{Background and Related Work}There are mainly two categories of methodology in the static program resource cost analysis areas, 
 through type-system based and data-flow/control-flow analysis based. 
 They can be summarized as follows, but to the best of my knowledge,
 all these works in the two categories fail to recognize the case where program resource consumption is decreased implicitly.
@@ -51,7 +51,7 @@ or a combination of program abstraction and invariant inferring~\cite{GulwaniZ10
 In general, these techniques give the approximated upper bound of the program's total running time or resource cost.
 However, they failed to consider the case where the program's cost could decrease when there isn't a dependency relation between variables.
 
-\subsection{Motivating Example}
+\paragraph{Motivating Example}
 \label{subsubsec:furthers-cost-example}
 \input{examples/heap_cost}
 \subsection{Proposed Methodology}
