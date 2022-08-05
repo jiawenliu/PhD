@@ -3,31 +3,39 @@
 % %%%% Benefit of reasoning about 
 % \subsection{Motivation of Reasoning about Adaptivity}
 % % 
-In Section~\ref{subsec:intro-motivation},
-I firstly introduce the motivation of reasoning about the \emph{adaptivity} quantity property 
-for adaptive data analysis program.
+The adaptive data analysis designed for identifying  properties for unknown populations / distributions 
+through data samples is widely 
+used in research and industrial areas.
+% , including machine learning areas, etc.. 
+When generalizing the result from data sample to the unknown populations, 
+the generalization error is a key issue researchers focusing on reducing.
+From existing research, the \emph{adaptivity} in the analysis plays a key role in reducing the generalization error.
+In this chapter, 
+I firstly introduce the  cruciality for reasoning about the \emph{adaptivity} quantity property 
+for adaptive data analysis program in Section~\ref{sec:intro-motivation}.
 % analyzing 
-In order to analyze this \emph{adaptivity} property for the adaptive data analysis, there are 3 challenges
+Motivated by the significance of \emph{adaptivity},
+in order to analyze this \emph{adaptivity} property for the adaptive data analysis, there are 3 challenges
 % problems encountered.
-introduced next in Section~\ref{subsec:intro-adapt}.
+introduced in Section~\ref{sec:intro-adapt}.
 % I introduce these three problems
 % and the full-spectrum analysis methodologies developed according to these problems 
 Targeting to the three challenges, I introduce my full-spectrum analysis methodologies accordingly.
 Concretely, the full-spectrum analysis is developed through the language formalization,
-the execution-based analysis, and the static-based program analysis.
+the execution-based analysis and the static-based program analysis.
 %
 Based on the implementation and experimental results on my full-spectrum analysis, 
 % I propose three significant 
 % further features can be improved 
 % % in the analysis methodologies 
-% in Section~\ref{subsec:intro-improve}, 
+% in Section~\ref{sec:intro-improve}, 
 % and plan to finish these improvements 
 % before the final defense.
 % %
 % Based on the implementation and experimental results, 
 I introduce three significant 
-further features I designed to improve the precision of the analysis 
-% methodologies in Section~\ref{subsec:intro-improve}, 
+further features I designed to improve the precision of the analysis.
+% methodologies in Section~\ref{sec:intro-improve}, 
 % and plan to finish these improvements 
 % before the final defense.
 %
@@ -35,8 +43,12 @@ further features I designed to improve the precision of the analysis
  % further features can be improved for my analysis framework, and plan to finish the improvement 
  % before the final defense.
  %
- Then, in Section~\ref{sec:intro-cost}, through two observations, I introduce the motivations and methodologies
- for the accurate full-spectrum program resource cost analysis.
+ Then, in Section~\ref{sec:intro-cost}, through the connection between the \emph{adaptivity} and program's resource cost
+%  two observations, 
+I introduce 
+% the motivations and methodologies
+%  for 
+ the accurate full-spectrum analysis framework for the program's general resource cost analysis.
 %   with implicit cost decreases.
 % \\
 % 1. traditional program's resource cost analysis failed to consider the case where the program's cost could decrease 
@@ -82,8 +94,8 @@ develop further sophisticated after.
  % I'm interested in showing that
  % CFL-reachability problems can be solved by reducing them to my adaptivity analysis framework. 
  % This work is planned to start before the final defense and develop further sophisticated after.
-
-\section{Motivation of Reasoning about Adaptivity for Adaptive Data Analysis}
+The Section~\ref{sec:intro-outline} summarizes the contributions and outline of this dissertation.
+\section{Adaptive Data Analysis}
 \label{sec:intro-motivation}
 
 Consider a dataset $X$ consisting of $n$ independent samples from some unknown population $\dist$. How can I ensure that the conclusions are drawn from $X$ \emph{generalize} to the population $\dist$? Despite decades of research in statistics and machine learning on methods for ensuring generalization, there is an increased recognition that many scientific findings generalize poorly (e.g. 
@@ -245,19 +257,19 @@ I develop an execution-based analysis in Chapter~\ref{ch:dynamic}.
    Specifically through a trace semantics recording the execution history of programs on given input,
    % --- and I create a dependency graph, 
    the dependency between different variables (query is also assigned to a variable) is explicitly tracked and 
-   analyzed. This is presented in Section~\ref{subsec:dynamic-datadep}.
+   analyzed. This is presented in Section~\ref{sec:dynamic-datadep}.
   %   and 
   %   which variable is associated with a query request. 
   % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
   % In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
   % property of programs. This analysis is developed 
   % \\
-   \item The second step in Section~\ref{subsec:dynamic-reachability} is to analyze the \emph{dependency quantity} 
+   \item The second step in Section~\ref{sec:dynamic-reachability} is to analyze the \emph{dependency quantity} 
   %  analysis, 
   based on the \emph{dependency relation} above.
   This analysis is developed through the methodology of execution-based reachability bound analysis.
   % \\
-   % \item The last step in Section~\ref{subsec:dynamic-adapt}  is the intuitive \emph{adaptivity} quantity analysis, 
+   % \item The last step in Section~\ref{sec:dynamic-adapt}  is the intuitive \emph{adaptivity} quantity analysis, 
    % according to the two analysis results above, specifically \emph{dependency relation} and \emph{dependency quantity}.
    % This analysis is developed through the formal \emph{adaptivity} definition. \\
    % Specifically, I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
@@ -293,7 +305,7 @@ Hence, it needs to consider some quantitative information about the program depe
 
 \textbf{Methodology}
 To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
-I will develop a program analysis algorithm, named {\THESYSTEM} in Chapter~\ref{ch:static}.
+I develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{ch:static}.
 %  which 
 % {\THESYSTEM} combines data flow and control flow analysis with reachability bound analysis~\cite{GulwaniZ10}. 
 % This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve by directly using the data and control flow analyses or the ones that one would achieve by directly using reachability bound analysis techniques alone. Specifically as follows in the same 3 aspects as the execution-based analysis 
@@ -304,29 +316,43 @@ This new program analysis gives tighter bounds on the adaptivity of a program th
 by directly using the data and control flow analyses or the ones that one would achieve 
 by directly using reachability bound analysis techniques alone. 
 % Specifically as follows in the same 
-It is developed in 3 aspects similar to the execution-based analysis 
-while through static program analysis techniques, 
-a sound estimated result is given in each part as follows.
+It is developed in 3 aspects similar to the execution-based adaptivity analysis 
+while through static program analysis techniques. 
+A sound estimated result is given in each part, which is summarized as follows.
 \begin{enumerate}
 % \item The data dependency relation analysis through the static data flow analysis technique.
 % \item The dependency quantity analysis through the static program reachability bound analysis techniques.
 % \item The program adaptivity estimation, through newly designed algorithms based on the results estimated above, 
 % computing the adaptivity upper bound soundly 
 % and accurately.
-\item The data dependency relation analysis through the static data flow analysis technique in Section~\ref{sec:alg_weightedgegen}.
-\item Still in Section~\ref{sec:alg_weightedgegen}, the dependency quantity analysis through the static program reachability bound analysis techniques.
+\item The {\THESYSTEM} analyzes the data \emph{dependency relation} through the static data flow analysis technique in Section~\ref{sec:alg_weightedgegen}.
+This analysis corresponds to the first step in execution-based adaptivity analysis. 
+The estimated result produced from 
+this step is proved as a sound upper bound for the \emph{dependency relation} from execution-based analysis.
+\item 
+% Still , 
+Corresponding to the second step in execution-based adaptivity analysis, the \emph{dependency quantity} 
+is estimated by {\THESYSTEM} through the static program reachability bound analysis techniques, in Section~\ref{sec:alg_weightedgegen}.
+% This analysis corresponds to the second step in execution-based adaptivity analysis. 
+The estimated result produced from 
+this step is proved as a sound upper bound for the \emph{dependency quantity} from execution-based analysis as well.
 \item 
 % The program  estimation, 
-In Section~\ref{subsec:static-adapt},
-the static analysis for adaptivity, specifically estimating the \emph{adaptivity} formalized in the execution-based analysis.
-%  is presented in Section~\ref{subsubsec:static-reachability}.
+% In 
+The static program adaptivity analysis in this step
+% , specifically estimating 
+estimates the \emph{adaptivity} formalized in the third step of execution-based analysis in Section~\ref{sec:static-adapt}.
+%  is presented in Section~\ref{sec:static-reachability}.
 % the program adaptivity estimation, 
-In this analysis, I construct a program-based dependence graph for approximating the execution-based graph
-%  in Section~\ref{subsubsec:dynamic-adapt}.
-Then, based on this graph, I design an algorithm
+According to the third step of execution-based adaptivity analysis, 
+{\THESYSTEM} in this step also constructs a program-based dependence graph for approximating the execution-based dependency graph.
+%  in Section~\ref{sec:dynamic-adapt}.
+Then, based on this graph, {\THESYSTEM} 
+% I design an algorithm
 %  based on the results estimated above, 
-computing the adaptivity upper bound soundly 
-and accurately.
+% computing 
+computes the adaptivity upper bound soundly 
+and accurately through a newly designed algorithm.
 \end{enumerate}
 %%%%% To reason about%
 Figure~\ref{fig:structure} is the overview of this full-spectrum program adaptivity analysis.
@@ -336,7 +362,7 @@ The fundamental part is the {\tt Query While} language designed for formalizing 
 adaptive data analysis. Building on this, 
 the execution-based adaptivity analysis (formalization)
 and the static program analysis for approximating the upper bound of the 
-adaptivity are the two major analysis parts of this framework.
+adaptivity are the two major analysis parts of this full-spectrum adaptivity analysis.
 \begin{figure}
    \centering   
    \includegraphics[width=1.0\textwidth]{figures/architecture.png}
@@ -347,7 +373,7 @@ adaptivity are the two major analysis parts of this framework.
 
 % \subsection{Further Works}
 % \subsubsection{Towards Accurate Full-Spectrum Adaptivity Analysis}
-% \label{subsec:intro-improve}
+% \label{sec:intro-improve}
 
 Based on the implementation and experimental results of the basic full-spectrum analysis,
 % $\THESYSTEM$,
@@ -366,16 +392,23 @@ extend it in Section~\ref{ch:improved} in following 3 aspects.
 % % compute a tighter adaptivity upper bound as well.
 % \end{enumerate}
 \begin{enumerate}
-   \item The {\tt Query While} Language is extended in Section~\ref{subsec:refine-exe-language} with inter-procedure call.
-   \item In the execution-based \emph{adaptivity},
-   the precision of formalizing the intuitive \emph{adaptivity} is improved,
+   \item The {\tt Query While} Language is extended in Section~\ref{sec:refine-exe-language} with inter-procedure call.
+   \item In the execution-based \emph{adaptivity} analysis part,
+   the precision of formalizing the intuitive \emph{adaptivity} is improved, with extension on the
 %  in the formal  model 
-in the meantime extend this analysis with inter-procedure call in Section~\ref{sec:refine-exe}.
-\item In static \emph{adaptivity} analysis, I 
-give a tighter estimated upper bound on \emph{adaptivity}
+% in the meantime extend this analysis with 
+inter-procedure call in Section~\ref{sec:refine-exe}.
+\item The static program \emph{adaptivity} analysis is extended inter-procedure call as well, 
+and improved by
+giving a tighter estimated upper bound on \emph{adaptivity} in Section~\ref{sec:refine-static}.
 %  give a tighter estimated upper bound 
-Specifically, I improve the accuracy of the static \emph{dependency quantity} analysis in the second step through 
-path sensitive reachability bound analysis techniques in Section~\ref{subsec:refine-static}.
+Especially in order to improve the accuracy of the estimated result, a
+% I improve the accuracy of the static \emph{dependency quantity} analysis in the second step through 
+% designing a
+path sensitive reachability bound analysis algorithm is designed in Section~\ref{sec:refine-static-psreachability}.
+Based on this newly designed algorithm,
+I improve the accuracy of the static \emph{dependency quantity} analysis in the second step 
+is improved, and a tighter upper bound on \emph{adaptivity} is computed correspondingly.
 % \item In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
 % compute a tighter adaptivity upper bound as well.
 \end{enumerate}
@@ -388,10 +421,10 @@ Moving towards the area of general program resource cost analysis,
 % Then, motivated by the two following aspects, 
 there are two interesting observations as follows.
 % I'm interested 
-These two observations motivated my in 
+These two observations motivated me in 
 % improving the accuracy of the program's general resource cost analysis
 improving the accuracy of the program's general resource cost analysis
-by generalizing this \emph{adaptivity} analysis framework.
+by generalizing this full-spectrum \emph{adaptivity} analysis.
 \begin{itemize}
  \item Firstly, in a traditional program's resource cost analysis,
  There are two categories of program cost analysis, type-system based and data-flow/control-flow analysis based. 
@@ -472,9 +505,9 @@ computing the program resource cost is
 to reduce the analysis problem into the CFL-reachability problems.
 % Finally, based on the study on the traditional way of performing data flow and control analysis,
 According to this, 
-I identify 
+I identify x
 % the similarity between the traditional way of performing data flow and control analysis and the 
-that there are some similarities between the traditional way of estimating the program resource cost and 
+the similarities between the traditional way of estimating the program resource cost and 
 the adaptivity.
 %  Specifically, I identify the similarity between 
 %  solving the feasible path problem in the analysis by reducing 
@@ -491,33 +524,7 @@ the third step of $\THESYSTEM$.
  I'm interested in showing that
  CFL-reachability problems can be solved by reducing to my adaptivity analysis framework.
 In Chapter~\ref{ch:furthers}, I started this work and proposed plans on developing this work in the furture.
-   \section{Contributions}
 
-   Program analysis techniques are usually applied to study quantitative properties. In comparison to those related works, this dissertation has the following contributions.
-   
-   \begin{enumerate}
-   
-      \item A programming framework for adaptive data analyses where the program represents an analyst that can query a generalization-preserving mechanism mediating the access to some data. 
-      % \item A trace-based operational semantics for the loop language, specific to dependency between queries.
-      \item 
-      % {A formal definition of the notion of adaptivity under the analyst-mechanism model. This definition is built on a query-based dependency graph built out of all the possible program execution traces.}
-      A formal definition of the notion of adaptivity under the analyst-mechanism model. 
-      This definition is built on a variable-based dependency graph that is constructed using sets of program execution traces.
-      % \item A transformation between the {\tt Loop} language and the ssa language, with the soundness of the transformation.
-      \item 
-      % A program analysis algorithm {\THESYSTEM} which provides an upper bound on the adaptivity via a variable-based dependency graph.
-      A static program analysis algorithm {\THESYSTEM} combining data flow, control flow and  reachability bound analysis in order to provide tight bounds on the adaptivity of a program. 
-      %
-      \item A soundness proof of the program analysis showing that the adaptivity estimated by {\THESYSTEM} bounds the true adaptivity of the program. 
-      \item An implementation of {\THESYSTEM} and an experimental evaluation the bounds this implementation provides on several examples.
-      \item An algorithm designed for program path-sensitive reachability bound analysis with implementation.
-      % \item An improved formal adaptivity model and {\THESYSTEM} with implementation.
-      %  expected to be done before the final defense.
-      \item An accurate full-spectrum program resource cost analysis, 
-      generalized from {\THESYSTEM} with implementation.
-      % The analysis framework design is expected to be done with the implementation start off before the final defense.
-         % To the best of our knowledge, it is the first work that statically estimates adaptivity to help design adaptive data analysis algorithms.  
-   \end{enumerate}
 
 %%%%% To reason about
 % \section{Methodology}
@@ -548,9 +555,35 @@ In Chapter~\ref{ch:furthers}, I started this work and proposed plans on developi
 % {To summarize, we use two dependency graphs for reasoning about the adaptivity of a data analysis program: 
 % one query-based dependency graph to define the adaptivity, and one weighted variable-based dependency graph to estimate an upper bound on the adaptivity. }
 
-
-
-\section{Dissertation Outline}
+\section{Contributions and Outline}
+\label{sec:intro-outline}
+\paragraph{Contributions}
+This dissertation has the following contributions.
+\begin{enumerate}
+   \item A programming framework for adaptive data analyses where the program represents an analyst that can query a generalization-preserving mechanism mediating the access to some data. 
+   % \item A trace-based operational semantics for the loop language, specific to dependency between queries.
+   \item 
+   % {A formal definition of the notion of adaptivity under the analyst-mechanism model. This definition is built on a query-based dependency graph built out of all the possible program execution traces.}
+   A formal definition of the notion of adaptivity under the analyst-mechanism model. 
+   This definition is built on a variable-based dependency graph that is constructed using sets of program execution traces.
+   % \item A transformation between the {\tt Loop} language and the ssa language, with the soundness of the transformation.
+   \item 
+   % A program analysis algorithm {\THESYSTEM} which provides an upper bound on the adaptivity via a variable-based dependency graph.
+   A static program analysis algorithm {\THESYSTEM} combining data flow, control flow and  reachability bound analysis in order to provide tight bounds on the adaptivity of a program. 
+   %
+   \item A soundness proof of the program analysis showing that the adaptivity estimated by {\THESYSTEM} bounds the true adaptivity of the program. 
+   \item An implementation of {\THESYSTEM} and an experimental evaluation the bounds this implementation provides on several examples.
+   \item A path-sensitive program reachability bound analysis algorithm designed for program with application beyond adaptivity analysis
+    with implementation.
+   % \item An improved formal adaptivity model and {\THESYSTEM} with implementation.
+   %  expected to be done before the final defense.
+   \item An accurate full-spectrum program resource cost analysis, 
+   generalized from {\THESYSTEM} with implementation.
+   % The analysis framework design is expected to be done with the implementation start off before the final defense.
+      % To the best of our knowledge, it is the first work that statically estimates adaptivity to help design adaptive data analysis algorithms.  
+\end{enumerate}
+%
+\paragraph*{Outline}
 This dissertation includes following parts. 
 \begin{enumerate}
 \item A while-like language extended with query request feature, named {\tt Query While} Language, 
@@ -568,7 +601,7 @@ expected to be started off before final defense and developing further after.
 
 
 
-\section{Previous Published Material}
+\paragraph{Previous Published Material}
 The contents of this dissertation are partly based on the work and writing in the following papers.
 
 % The work of{\ADAPTSYSTEM} is still under preparation.

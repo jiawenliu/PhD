@@ -78,55 +78,7 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \\
 \end{array}
 \]
-An expression is
-% can be 
-either a standard arithmetic expression or a boolean expression, or a list of expressions.
-% An arithmetic expression can be a constant $n$ denoting integer, a variable $x$ from some countable set $\mathcal{VAR}$, binary operation $\oplus_a$ such as addition, product, subtraction, etc, over arithmetic expressions, and also log and sign operation. 
-% %
-% A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq,=,<,$ etc.
-% Additionally, I also introduce list in expression.
-% Our language supports primitives for queries, 
-% where a specific query is specified by a query expression $\qexpr$. 
-% A query expression contains the necessary information for a query request, for example, 
-% $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
-% Query expressions combine access to the database with other expressions, 
-% for example, $\chi[3] + 5$ represents a query which asks the value from the column 3 of each database raw $\chi$, adds 5 to each of these values, 
-% and then computes the average of these values.
-The key extension is
-%  language supports 
-the primitives for queries, where a specific query is specified by a query expression $\qexpr$. 
-A query expression contains the necessary information for a query request, 
-for example, $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
-Query expressions combine access to the database with other expressions, 
-for example, $\chi[3] + 5$ represents a query that asks the value from column 3 of each database raw $\chi$, 
-adds 5 to each of these values, and then computes the average of these values.
-
-% the expression also includes the special variable $\chi$ representing a row of the database, and access to values at a certain index in $\chi$, as $\chi[\aexpr]$. Additionally, list over expressions is supported and $[]$ stands for the empty list. The access to elements in the list can be achieved through $x[\aexpr]$ when variable $x$ is referred to a list. The value $v$ now contains the natural number $n$, the boolean primitives $\etrue$ and $\efalse$, the special row $\chi$ and access to it $\chi[v]$, the empty list $[]$ and non-empty list $[v, \dots, v]$.
-% 
-%
- A labeled command $c$ is just a command with a label --- I assume that labels are unique, so that they can help to identify uniquely every subexpression. 
-%  I have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement  $\ewhile \bexpr \edo {c} $.
- The main novelty of the syntax is the query request command $\assign{x}{\query(\qexpr)}$. 
- For instance, if a data analyst wants to ask a simple linear query which returns the first element of the row, 
- they can simply use the command $ \assign{x}{\query(\chi[1])}$ in their data analysis program.
-%  \wq{Shall I distinguish command and labeled command, they are now both $c$. }
-%  \jl{I'm not sure, I don't want to programmer to add the label when writing the program. The label is just added by us for analysis. but I'm worried it is too complicate if use two notations for command and labeled command }
-%
-% \[
-% \begin{array}{llll}
-% \mbox{Label} 
-% & l & \in & \mathbb{N} \cup \{in, ex\} \\
-% \mbox{Labeled Commands} 
-% & {c} & ::= &   [\assign {{x}}{ {\expr}}]^{l} ~|~  [\assign {{x} } {{\query(\qexpr)}}]^{l}
-% ~|~ {\ewhile [ \bexpr ]^{l} \edo {c} }
-%  \\
-%  &&&
-% ~|~ {c};{c}  
-% ~|~ \eif([\bexpr]{}^l , {c}, {c}) 
-% ~|~ [\eskip]^l 
-% \end{array}
-% \]
-The following notations to represent the set of corresponding terms:
+For clarity, the following notations are used to represent the set of corresponding terms:
 \[
 \begin{array}{lll}
 \mathcal{VAR} & : & \mbox{Set of Variables}  
@@ -170,7 +122,59 @@ The following notations to represent the set of corresponding terms:
 % &&\text{\mg{I don't think you need to hard code [-1,1] here}}\\
 \end{array}
 \]
+\paragraph*{Standard Expression}
+The expressions are either the standard one or the extended one.
+A standard expression is
+% can be 
+either a standard arithmetic expression or a boolean expression, or a list of expressions.
+An arithmetic expression can be a constant $n$ denoting integer, a variable $x$ from some countable set $\mathcal{VAR}$, binary operation $\oplus_a$ such as addition, product, subtraction, etc, over arithmetic expressions, and also log and sign operation. 
+%
+A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq,=,<,$ etc.
+Additionally, I also introduce list in expression.
+Our language supports primitives for queries, 
+where a specific query is specified by a query expression $\qexpr$. 
+A query expression contains the necessary information for a query request, for example, 
+$\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
+Query expressions combine access to the database with other expressions, 
+for example, $\chi[3] + 5$ represents a query which asks the value from the column 3 of each database raw $\chi$, adds 5 to each of these values, 
+and then computes the average of these values.
+\paragraph*{Query Expression}
+The key extension is
+%  language supports 
+the primitive for queries, where a specific query is specified by a query expression $\qexpr$. 
+A query expression contains the necessary information for a query request, 
+for example, $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
+Query expressions combine access to the database with other expressions, 
+for example, $\chi[3] + 5$ represents a query that asks the value from column 3 of each database raw $\chi$, 
+adds 5 to each of these values, and then computes the average of these values.
 
+% the expression also includes the special variable $\chi$ representing a row of the database, and access to values at a certain index in $\chi$, as $\chi[\aexpr]$. Additionally, list over expressions is supported and $[]$ stands for the empty list. The access to elements in the list can be achieved through $x[\aexpr]$ when variable $x$ is referred to a list. The value $v$ now contains the natural number $n$, the boolean primitives $\etrue$ and $\efalse$, the special row $\chi$ and access to it $\chi[v]$, the empty list $[]$ and non-empty list $[v, \dots, v]$.
+% 
+%
+\paragraph*{Labeled Command}
+ A labeled command $c$ is just a command with a label --- I assume that labels are unique, so that they can help to identify uniquely every subexpression. 
+%  I have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement  $\ewhile \bexpr \edo {c} $.
+ The main novelty of the syntax is the query request command $\assign{x}{\query(\qexpr)}$. 
+ For instance, if a data analyst wants to ask a simple linear query which returns the first element of the row, 
+ they can simply use the command $ \assign{x}{\query(\chi[1])}$ in their data analysis program.
+%  \wq{Shall I distinguish command and labeled command, they are now both $c$. }
+%  \jl{I'm not sure, I don't want to programmer to add the label when writing the program. The label is just added by us for analysis. but I'm worried it is too complicate if use two notations for command and labeled command }
+%
+% \[
+% \begin{array}{llll}
+% \mbox{Label} 
+% & l & \in & \mathbb{N} \cup \{in, ex\} \\
+% \mbox{Labeled Commands} 
+% & {c} & ::= &   [\assign {{x}}{ {\expr}}]^{l} ~|~  [\assign {{x} } {{\query(\qexpr)}}]^{l}
+% ~|~ {\ewhile [ \bexpr ]^{l} \edo {c} }
+%  \\
+%  &&&
+% ~|~ {c};{c}  
+% ~|~ \eif([\bexpr]{}^l , {c}, {c}) 
+% ~|~ [\eskip]^l 
+% \end{array}
+% \]
+\paragraph*{Labeled Variables}
 The labeled variables and assigned variables are set of variables annotated by a label. 
 We use  
 %$\mathcal{LVAR} = \mathcal{VAR} \times \mathcal{L} $ 
@@ -180,7 +184,7 @@ $\lvar_c \in \mathcal{P}(\mathcal{VAR} \times \mathcal{L}) \subseteq \mathcal{LV
 represents the the set of assigned variables and labeled variables for a labeled command $c$,
 defined in Definition~\ref{def:lvar} and \ref{def:avar}.
 %
-
+% \\
 $FV: \expr \to \mathcal{P}(\mathcal{VAR})$, computes the set of free variables in an expression. To be precise,
 $FV(\aexpr)$, $FV(\bexpr)$ and $FV(\qexpr)$ represent the set of free variables in arithmetic
 expression $\aexpr$, boolean expression $\bexpr$ and query expression $\qexpr$ respectively.
@@ -189,7 +193,7 @@ showing up in $c$ with a default label $in$.
 The free variables
 showing up in $c$, which aren't defined before be used, are actually the input variables of this program.
 %
-
+%
 \begin{defn}[Assigned Variables (
 % $\avar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$ or 
 $\avar : \cdom \to \mathcal{P}(\mathcal{VAR} \times \mathbb{N})$)]
@@ -198,7 +202,6 @@ $\avar : \cdom \to \mathcal{P}(\mathcal{VAR} \times \mathbb{N})$)]
 % % $\lvar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$ or 
 % $\lvar : \cdom \to \mathcal{P}(\mathcal{VAR} \times \mathcal{L})$
 \label{def:avar}
-{\footnotesize
 $$ \avar_{c} \triangleq
   \left\{
   \begin{array}{ll}
@@ -219,16 +222,14 @@ $$ \avar_{c} \triangleq
 \end{array}
 \right.
 $$
-}
 \end{defn}
 %
-
+%
 \begin{defn}[labelled Variables 
 (
 % $\lvar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$ or 
 $\lvar : \cdom \to \mathcal{P}(\mathcal{LV})$]
 \label{def:lvar}
-{\footnotesize
 $$
   \lvar_{c} \triangleq
   \left\{
@@ -250,15 +251,19 @@ $$
 \end{array}
 \right.
 $$
-}
 \end{defn}
 %
 %
 %
 % is a subset of the program's assigned variables, where every variable in this set is assigned by a query in the program.
 % \mg{The set of query variables of a program is the set of variables set to the result of a query in the program.}\\
-We also defined the set of query variables for a program $c$,
-it is the set of variables set to the result of a query in the program formally in Definition~\ref{def:qvar}.
+% In the same way, in order to 
+Distinctively, a key definition for the extension of the query primitives 
+is the set of query variables for a program $c$.
+This definition is the key point to track the query requests in the Following full-spectrum adaptivity analysis.
+% track the I also defined the set of query variables for a program $c$.
+It is defined as the set of variables,
+which are assigned by the result of a query request in the program formally in Definition~\ref{def:qvar}.
 % \mg{In the next definition, why do you call it a vector? It seems that you define it as a set.}\\
 % \jl{fixed}\\
 %
@@ -271,7 +276,7 @@ Given a program $c$, its query variables
 $\qvar(c)$ is the set of variables set to the result of a query in the program.
 % \jl{fixed}
 It is defined as follows:
-{\footnotesize
+{
 $$
   % \qvar_{{c}} \triangleq
   \qvar(c) \triangleq

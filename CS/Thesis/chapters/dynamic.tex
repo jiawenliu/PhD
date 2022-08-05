@@ -5,9 +5,9 @@ I present an execution-based program adaptivity analysis in this section.
 It is the first part of the full-spectrum adaptivity analysis as in Figure~\ref{fig:structure}. 
 This analysis formalizes the intuitive \emph{adaptivity} through three steps in 
 Section~\ref{sec:dynamic-analysis}.
-% ,~\ref{subsubsec:dynamic-reachability}
+% ,~\ref{sec:dynamic-reachability}
 % % I  an execution based program analysis in this section.
-% and~\ref{subsubsec:dynamic-adapt}.
+% and~\ref{sec:dynamic-adapt}.
 Then through an example in Section~\ref{sec:dynamic-examples}, I show that the formalized
 % can give the 
 adaptivity matches the program's intuitive \emph{adaptivity}.
@@ -16,19 +16,24 @@ adaptivity matches the program's intuitive \emph{adaptivity}.
 % \input{~/dynamic/introduction.tex}
 \input{chapters/dynamic/exe-intro}
 
-\section{Execution-Based Program Analysis}
+% \section{The Execution-Based Adaptivity Analysis Overview}
+% \label{sec:dynamic-intro}
+% % \input{~/dynamic/introduction.tex}
+% \input{chapters/dynamic/exe-intro}
+
+\section{Execution-Based Program Adaptivity Analysis}
 \label{sec:dynamic-analysis}
 
-\subsection{Data Dependency Analysis}
-\label{subsec:dynamic-datadep}
+\subsection{Data Dependency Relation Analysis}
+\label{sec:dynamic-datadep}
 \input{chapters/dynamic/exe-dep.tex}
 
 \subsection{Data Dependency Quantity Analysis}
-\label{subsec:dynamic-reachability}
+\label{sec:dynamic-reachability}
 \input{chapters/dynamic/exe-depquantity}%
 
-\subsection{Execution-Based Adaptivity Analysis}
-\label{subsec:dynamic-adapt}
+\subsection{Adaptivity Analysis}
+\label{sec:dynamic-adapt}
 \input{chapters/dynamic/exe-adapt}%
 %
 \section{Adaptivity through An Example}

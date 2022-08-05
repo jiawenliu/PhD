@@ -1,0 +1,145 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[table]{xcolor}
+\include{prelude}
+\include{ldefs}
+\newcommand{\THESYSTEM}{\textsf{AdaptFun}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+
+\title{{\em Dissertation Prospectus}
+\\ {An Analysis Framework for Program Non-Linear Quantitative Property}
+% , 
+% \\ with Generalization on  Analysis
+}
+
+\author{Jiawen Liu\\ Department of Computer Science, Boston University}
+\maketitle
+\begin{abstract}
+\input{chapters/Abstract}
+\end{abstract}
+
+\clearpage
+\tableofcontents{}
+
+\clearpage
+\section{Introduction}
+\label{sec:introduction}
+\subsection{Non-Linear Quantitative Property}
+\subsection{Methodology}
+\subsection{Structure}
+% \input{chapters/introduction}
+% \clearpage
+
+\section{The Extended While Language for Non-Linear Quantitative Property Analysis}
+\label{sec:language}
+\subsection{Syntax}
+\subsection{Trace-based Operational Semantics}
+% \input{chapters/language}
+% \clearpage
+
+\section{The Execution-Based Program Analysis for Non-Linear Quantitative Property}
+\label{sec:dynamic}
+\subsection{Introduction}
+\label{subsec:dynamic-intro}
+\input{chapters/exe-intro}
+
+\subsection{Methodology}
+\label{subsec:dynamic-methodology}
+
+\subsubsection{``Non-Linear Quantitative Property'' Relation Analysis}
+\label{subsubsec:dynamic-datadep}
+\input{chapters/exe-dep.tex}
+\subsubsection{``Non-Linear Quantitative Property'' Relation Quantity  Analysis}
+\label{subsubsec:dynamic-reachability}
+\input{chapters/exe-depquantity}%
+\subsubsection{``Non-Linear Quantitative Property'' Formalization}
+\label{subsubsec:dynamic-adapt}
+\input{chapters/exe-adapt}%
+%
+% \subsection{Adaptivity through An Example}
+% \label{subsec:dynamic-examples}
+% \input{examples/twoRounds}
+
+\section{The Static Program Analysis for Non-Linear Quantitative Property}
+\label{sec:static}
+\subsection{Introduction}
+\label{subsec:dynamic-intro}
+% \input{chapters/exe-intro}
+
+\subsection{Methodology}
+\label{subsec:dynamic-methodology}
+
+% \subsubsection{``Non-Linear Quantitative Property'' Relation Analysis}
+% \label{subsubsec:dynamic-datadep}
+% \input{chapters/exe-dep.tex}
+% \subsubsection{``Non-Linear Quantitative Property'' Relation Quantity  Analysis}
+% \label{subsubsec:dynamic-reachability}
+% \input{chapters/exe-depquantity}%
+% \subsubsection{``Non-Linear Quantitative Property'' Formalization}
+% \label{subsubsec:dynamic-adapt}
+% \input{chapters/exe-adapt}%
+% \input{chapters/static}
+% \clearpage
+
+\section{Application on Adaptivity Analysis for Adaptive Data Analysis}
+\label{sec:furthers}
+\subsection{Introduction}
+\input{chapters/adapt-introduction}
+\subsection{Language Instantiation}
+\input{chapters/language}
+\subsection{Execution-based Analysis}
+\input{chapters/dynamic}
+\subsection{Static Analysis}
+\input{chapters/static}
+% \input{chapters/furthers}
+% \clearpage
+% \section{Towards Accurate Program Quantitative Property Analysis}
+% \label{sec:generalization}
+% \input{chapters/generalization}
+% \clearpage
+\section{Application on Program Heap Resource Cost Analysis}
+\label{sec:furthers}
+\subsection{Language Instantiation}
+\subsection{Execution-based Analysis}
+\subsection{Static Analysis}
+% \input{chapters/furthers}
+
+\section{Application on Probabilistic Density Function Computation}
+\label{sec:furthers}
+\subsection{Language Instantiation}
+\subsection{Execution-based Analysis}
+\subsection{Static Analysis}
+
+\section{Towards Solving the CFL-Reachability Problem}
+\label{sec:cfl_reduction}
+\input{chapters/cfl_reduction}
+% \clearpage
+
+\section{Status and Plan}
+The program analysis framework presented in Section~\ref{sec:dynamic} and Section~\ref{sec:static} 
+based on the language in Section~\ref{sec:language}
+ is submitted as a paper to POPL'2023 and implemented as well. 
+ Below is the timeline plan for the proposed extensions of this work
+ from Section~\ref{sec:furthers}, \ref{sec:generalization} and \ref{sec:cfl_reduction}.
+\begin{itemize}
+\item September 05, 2022: Finish the improved execution-based dependency depth analysis and implementation
+\item September 20, 2022: Finish Path Sensitive Reachability Bound Algorithm design and starting implementation
+\item September 30, 2022: Finish Path Sensitive Reachability Bound Algorithm implementation and formalization.
+\item October 15, 2022:  Finish generalization on program resource cost analysis implementation 
+and the reduction of CFL-Reachability problem.
+\item November 05, 2022: Finish Path Sensitive Reachability Bound paper writing and Submit to PLDI 2023
+\item November 20, 2022: Finish thesis
+\item December 05, 2022: Defend
+\end{itemize}
+
+
+\bibliographystyle{plain}
+\bibliography{main.bib}
+
+\end{document}

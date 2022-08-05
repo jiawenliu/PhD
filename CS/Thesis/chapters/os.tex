@@ -6,26 +6,28 @@ an assigned variable (from an assignment command) or a boolean expression (from 
  the label associated to this event, the value evaluated either from the expression assigned to the variable,
 or the boolean expression in the guard.
  The last element stores the query information, which a query value whose default is $\bullet$. I declare event projection operator $\pi_i$ which projects the $i$th element from an event.
+%
 \[
-\begin{array}{llll}
+\begin{array}{llllr}
 \mbox{Event} 
 & \event & ::= & 
-    ({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval)  ~~~~~~~~~~~ \mbox{Assignment Event} 
+    ({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval)  & \mbox{Assignment Event} \\
+& & & 
 ~|~(\bexpr, l, v, \bullet)   
-~~~~
+&
 \mbox{Testing Event}
-% \mbox{Trace} & \trace
-% & ::= & [] ~|~ \trace :: \event
 \end{array}
 \]
-
+%
 The event projection operators $\pi_i$ projects the $i$th element from an event: 
 \\
 $\pi_i : 
 \eventset \to \mathcal{VAR}\cup \mbox{Boolean Expression}  \cup \mathbb{N} \cup \mathcal{VAL} \cup \mathcal{QVAL} $ 
 % \wqside{use b for Boolean expression?}
-
+\\
 %
+Another key definition for this {\tt Query While} language with the query primitives extension is the 
+\emph{Equivalence} of Query Expression in Definition~\ref{def:query_equal}.
 In order to distinguish if a query's choice is affected by previous values, 
 % \jl{
 % we need to be able to identify whether two queries are the equivalent or not, so that when we change the result of one query, whether another query is affected. For the equivalence of queries, } 
@@ -105,42 +107,28 @@ $$
 % %
 \paragraph{Trace}
 A trace $\trace \in \mathcal{T} $ is a list of events, 
-collecting the events generated along the program execution. $\mathcal{T} $ represents the set of traces. There are some useful operators: the trace concatenation operator $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$, combines two traces.
-The belongs to operator $\in : \eventset \to \mathcal{T} \to \{\etrue, \efalse \} $ and its opposite $\not\in$
-express whether or not an event belongs to a trace.
-Another operator $\llabel : \mathcal{T} \to \mathcal{VAR} \to \{\mathbb{N}\}\cup \{\bot\}$,
-takes a trace and a variable as input and returns the label of the latest assignment event which assigns value to that variable. 
-% I also have the operator $\tlabel : \mathcal{T} \to \ldom$, which gives the set of labels in every event belonging to a trace. 
-% The full definitions of these above operators can be found in the appendix.
+collecting the events generated along the program execution. $\mathcal{T} $ represents the set of traces. 
+A trace can be regarded as the program history, 
+which records all the evaluations for assignment commands and guards in $\eif$ and $\ewhile$ command.
+This includes queries asked by the analyst during the execution of the program as well. 
+I collect the trace with a trace-based operational semantics based on transitions 
+of the form $ \config{c, \trace} \to \config{c', \trace'} $. 
+It states that a configuration $\config{c, \trace}$,
+which consists of a command $c$ to be evaluated and a starting trace $\trace$, 
+evaluates to another configuration with the trace updated along with the evaluation of the command $c$ to the normal form of the command $\eskip$.
+%
 \[
 \begin{array}{llll}
 \mbox{Trace} & \trace
 & ::= & [] ~|~ \trace :: \event
 \end{array}
 \]
-
-A trace can be regarded as the program history, which records queries asked by the analyst during the execution of the program. I collect the trace with a trace-based operational semantics based on transitions of the form $ \config{c, \trace} \to \config{c', \trace'} $. It states that a configuration $\config{c, \trace}$, which consists of a command $c$ to be evaluated and a starting trace $\trace$, evaluates to another configuration with the trace updated along with the evaluation of the command $c$ to the normal form of the command $\eskip$.
+There are some useful operators: the trace concatenation operator $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$, combines two traces.
+% I also have the operator $\tlabel : \mathcal{T} \to \ldom$, which gives the set of labels in every event belonging to a trace. 
+% The full definitions of these above operators can be found in the appendix.
 \begin{defn}[Trace Concatenation, $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$]
   Given two traces $\trace_1, \trace_2 \in \mathcal{T}$, the trace concatenation operator 
   $\tracecat$ is defined as:
-  % \[
-    % \trace_1 \tracecat \trace_2 \triangleq
-    % \left\{
-    % \begin{array}{ll} 
-    %   \trace_1 \tracecat [] \triangleq \trace_1 & 
-    %   \trace_1 \tracecat (\trace_2' :: \event) \triangleq  (\trace_1  \tracecat \trace_2')  :: \event 
-    % \end{array}
-    % \right.
-  % \]
-  % \[
-    % \trace_1 \tracecat \trace_2 \triangleq
-    % \left\{
-    % \begin{array}{ll} 
-    %   \trace_1 \tracecat [] \triangleq \trace_1 & 
-    %   \trace_1 \tracecat (\trace_2' :: \event) \triangleq  (\trace_1  \tracecat \trace_2')  :: \event 
-    % \end{array}
-    % \right.
-  % \]
   \[
     \trace_1 \tracecat \trace_2 \triangleq
     \left\{
@@ -208,7 +196,10 @@ A trace can be regarded as the program history, which records queries asked by t
   %   \end{array}
   %   \right.
   % \end{equation}
-  \begin{defn}(An Event Belongs to A Trace)
+The belongs to operator $\in : \eventset \to \mathcal{T} \to \{\etrue, \efalse \} $ and its opposite $\not\in$
+express whether an event belongs to a trace, formally as follows in Definition~\ref{def:event_belong}.
+\begin{defn}[An Event Belongs to A Trace]
+  \label{def:event_belong}
     An event $\event \in \eventset$ belongs to a trace $\trace$, i.e., $\event \in \trace$ are defined as follows:
   %
   \begin{equation}
@@ -308,7 +299,8 @@ A trace can be regarded as the program history, which records queries asked by t
   % &&
   % \end{array}
   % \]
-  \[
+  \begin{defn}[Occurrence Counter]
+    \[
   \begin{array}{lll}
   \vcounter(\trace :: (x, l, v, \bullet), l ) \triangleq \vcounter(\trace, l) + 1
   &
@@ -326,11 +318,13 @@ A trace can be regarded as the program history, which records queries asked by t
   &&
   \end{array}
   \]
-  
-  We introduce an operator $\llabel : \mathcal{T} \to \mathcal{VAR} \to \ldom \cup \{\bot\}$, which 
-  takes a trace and a variable and returns the label of the latest assignment event which assigns value to that variable.
+\end{defn}
+Another operator $\llabel : \mathcal{T} \to \mathcal{VAR} \to \{\mathbb{N}\}\cup \{\bot\}$,
+takes a trace and a variable as input and returns the label of the latest assignment event which assigns value to that variable. 
+  % We introduce an operator $\llabel : \mathcal{T} \to \mathcal{VAR} \to \ldom \cup \{\bot\}$, which 
+  % takes a trace and a variable and returns the label of the latest assignment event which assigns value to that variable.
   Its behavior is defined as follows,
-  % \begin{defn}[Latest Label]
+  \begin{defn}[Latest Label]
     \[
       % \begin{array}{lll}
     \llabel(\trace  :: (x, l, \_, \_)) x \triangleq l
@@ -349,9 +343,10 @@ A trace can be regarded as the program history, which records queries asked by t
     \llabel({[]}) x \triangleq \bot
     % \end{array}
     \]
-
+  \end{defn}
+  %
     The operator $\tlabel : \mathcal{T} \to \mathcal{P}{(\ldom)}$ gives the set of labels in every event belonging to 
-    a trace, whoes behavior is defined as follows,
+    a trace, whose behavior is defined as follows,
   \[
     % \begin{array}{llll}
   \tlabel{(\trace  :: (\_, l, \_, \_)])} \triangleq \{l\} \cup \tlabel{(\trace )}
@@ -359,7 +354,6 @@ A trace can be regarded as the program history, which records queries asked by t
   \tlabel({[ ]}) \triangleq \{\}
   % \end{array}
   \]
-  
   %
   % \mg{The next lemma is trivial but it still needs a proof sketch.}
   If we observe the operational semantics rules, we can find that no rule will shrink the trace. 
@@ -595,7 +589,6 @@ iteration the query is at when it appears in a loop statement, specified by $w$.
 The expression evaluation rules rely on the evaluation of 
 arithmetic expressions $\config{\trace,\aexpr} \aarrow v $ 
 and boolean expressions $\config{\trace, \bexpr} \barrow v $.
-
 
  The step trace-based operational semantics has the form of $ \config{c, \trace} \xrightarrow{} { \config{c', \trace'}}$. 
 It reads the configuration $\config{c, \trace}$ consisting of a labeled command $c$ and a pre-trace $\trace$, 

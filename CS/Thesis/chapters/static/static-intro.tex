@@ -53,7 +53,7 @@ or a combination of program abstraction and invariant inferring~\cite{GulwaniZ10
 In general, these techniques give the approximated upper bound of the program's total running time or resource cost.
 However, they failed to consider the case where the cost -- the adaptivity-- could decrease when there isn't a dependency relation between variables.
 
-\paragraph{{Static Analysis for Adaptivity Overview}}
+\paragraph{{Static Analysis for Adaptivity Outline}}
 In order to give a sound approximating this quantity, I design a static program analysis framework through three steps analysis
 similar to the execution-based analysis in Chapter~\ref{ch:dynamic}.
 % In order to give a sound approximating this quantity, I design a static program analysis framework through three steps analysis
@@ -72,9 +72,9 @@ similar to the execution-based analysis in Chapter~\ref{ch:dynamic}.
    \item In Section~\ref{sec:alg_weightedgegen}
    The data \emph{dependency relation} analysis through the static data flow analysis technique.
    \item Still in Section~\ref{sec:alg_weightedgegen}, the \emph{dependency quantity} analysis through the static program reachability bound analysis techniques.
-   \item The static analysis for adaptivity is presented in Section~\ref{subsec:static-adapt}.
+   \item The static analysis for adaptivity is presented in Section~\ref{sec:static-adapt}.
    % the program adaptivity estimation, 
-   In this analysis, I construct a program-based dependence graph for approximating the execution-based graph in Section~\ref{subsec:dynamic-adapt}.
+   In this analysis, I construct a program-based dependence graph for approximating the execution-based graph in Section~\ref{sec:dynamic-adapt}.
    Then, based on this graph, I design an algorithm
    %  based on the results estimated above, 
    computing the adaptivity upper bound soundly 

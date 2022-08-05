@@ -1,14 +1,14 @@
 In this section, I present my 
 Improved full-spectrum adaptivity analysis 
 following the same architecture as Figure~\ref{fig:structure}.
-The extended language is presented first in Section~\ref{subsec:refine-exe-language},
+The extended language is presented first in Section~\ref{sec:refine-exe-language},
 following with the first significant improvement
 through the execution-based analysis in Section~\ref{sec:refine-exe}.
 The other significant improvement w.r.t. the 
 static adaptivity analysis is presented in Section~\ref{sec:refine-static}.
 %
 \section{Language Extension}
-\label{subsec:refine-exe-language}
+\label{sec:refine-exe-language}
 \input{chapters/language_extended.tex}
 
 \section{Accurate Execution-Based Adaptivity Analysis}
@@ -47,8 +47,8 @@ This is resulted from the
 %  difference 
 disconnection between the 
 % dependency Depth 
-dependency quantity analysis in Section~\ref{subsubsec:dynamic-reachability} and 
-the data dependency analysis in \emph{variable may-dependency} definition in Section~\ref{subsubsec:dynamic-datadep}.
+dependency quantity analysis in Section~\ref{sec:dynamic-reachability} and 
+the data dependency analysis in \emph{variable may-dependency} definition in Section~\ref{sec:dynamic-datadep}.
 It occurs when the 
 % weight 
 dependency quantity is computed over the traces different from the traces used in 
@@ -77,7 +77,7 @@ based on the new \emph{may-dependency} definition,
 I will compute the weight of every edge constructed from 
 \emph{may-dependency} relation in the execution-based dependency graph, w.r.t. to the witness traces.
 %
-\item Then in the third stage in Section~\ref{subsec:refine-exe-adapt}, 
+\item Then in the third stage in Section~\ref{sec:refine-exe-adapt}, 
 I formalize the \emph{adaptivity} as the 
 length of the longest finite walk with newly definition. 
 % Differently from the previous one, I restrict 
@@ -85,7 +85,7 @@ length of the longest finite walk with newly definition.
 \end{enumerate}
 
 \paragraph{Accurate Execution-Based Data Dependency Analysis}
-\label{subsec:refine-exe-datadep}
+\label{sec:refine-exe-datadep}
 In the first stage of the execution-based analysis, 
 I will give an alternative variable \emph{may-dependency} definition 
 by referring to the analysis methodology in \cite{Cousot19a}.
@@ -171,7 +171,7 @@ can be reduced.
 % \input{chapters/dynamic/exe-dep.tex}
 
 \paragraph{Accurate Data Dependency Quantity Analysis}
-\label{subsec:refine-exe-reachability}
+\label{sec:refine-exe-reachability}
 % \input{chapters/dynamic/exe-depquantity}%
 In the second stage of the execution-based analysis, 
 based on the new \emph{may-dependency} definition,
@@ -205,7 +205,7 @@ $ rb(x^i, y^j)$ is a function $w: \mathcal{T}_0(c) \to \mathbb{N}$,
     satisfying the dependency relation.
 %
 \paragraph{Accurate Execution-Based Adaptivity Analysis}
-\label{subsec:refine-exe-adapt}
+\label{sec:refine-exe-adapt}
 % \input{chapters/dynamic/exe-adapt}%
 %
 In the third stage, the execution-based dependency graph is defined in a different way as follows,
@@ -424,7 +424,7 @@ The accurate static adaptivity analysis is planned to be improved in following t
     bound in a path-sensitive way.
     \\
     Motivated by this observation, 
-    in Section~\ref{subsec:refine-static} 
+    in Section~\ref{sec:refine-static} 
     I first design path-sensitive reachability bound analysis algorithm computing the 
     reachability bounds for every labeled command taking the different paths inside while loop into consideration.
 % Compared to just computing the reachability bound for the while loop command, the new methodology improves the accuracy of the 
@@ -455,15 +455,15 @@ this improvement is designed in following three steps.
     i.e., the estimated dependency relation and the tighter reachability bound, 
     the improved $\THESYSTEM$ will construct
 a more accurate program-based data dependency graph.
-%  constructed in Section~\ref{subsubsec:static-adapt}
-Then, by applying the same algorithm as in Section~\ref{subsubsec:static-adapt}, 
+%  constructed in Section~\ref{sec:static-adapt}
+Then, by applying the same algorithm as in Section~\ref{sec:static-adapt}, 
 the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.
 This is presented in Section~\ref{sec:refine-static-adapt}%
 \end{itemize}
 \end{enumerate}
 
 \subsection{Path Sensitive Reachability Bound Algorithm Design}
-\label{subsec:refine-static-psreachability}
+\label{sec:refine-static-psreachability}
 The imprecision comes from the second stage of the static program analysis.
 The algorithm in this stage is to statically estimate the 
 reachability bound for every location of program.
@@ -484,7 +484,7 @@ reachability bounds for every labeled command taking the different paths inside 
 \todo{Path Sensitive Reachability Bound Analysis Algorithm And Papers}
 \\
 \subsection{Accurate $\THESYSTEM$ via Path Sensitive Reachability Bound Algorithm}
-\label{subsec:refine-static}
+\label{sec:refine-static}
 Then follow the $\THESYSTEM$ framework,
 % and design new algorithm for this stage.
 % Then, I will 
@@ -652,8 +652,8 @@ w_{t}(\trace) \leq v
 %     \item Based on the two results analyzed from the steps above, 
 %     i.e., the estimated dependency relation and the tighter reachability bound, the improved $\THESYSTEM$ will construct
 % a more accurate program-based data dependency graph.
-% %  constructed in Section~\ref{subsubsec:static-adapt}
-% Then, by applying the same algorithm as in Section~\ref{subsubsec:static-adapt}, 
+% %  constructed in Section~\ref{sec:static-adapt}
+% Then, by applying the same algorithm as in Section~\ref{sec:static-adapt}, 
 % the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.%
 % \end{itemize}
 \subsubsection{Extended Static Adaptivity Analysis}
@@ -900,7 +900,7 @@ defined as%
 
 % As  following motivating example shows.
 % \subsection{Proposed Methodology}
-% \label{subsec:furthers-adaptcomplete-methodology}
+% \label{sec:furthers-adaptcomplete-methodology}
 % %
 % 1. looking into more over-approximated example and summarize the common properties of these examples.
 % \\
