@@ -44,13 +44,13 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 & v & ::= & { n ~|~ \etrue ~|~ \efalse ~|~ [] ~|~ [v, \dots, v]}  
 \\
 %
-\mbox{Query Expression} 
+\highlight{\mbox{Query Expression}  }
 & {\qexpr} & ::= 
-& { \qval ~|~ \aexpr ~|~ \qexpr \oplus_a \qexpr ~|~ \chi[\aexpr]} 
+& \highlight{ \qval ~|~ \aexpr ~|~ \qexpr \oplus_a \qexpr ~|~ \chi[\aexpr]}
 \\
 %
-\mbox{Query Value} & \qval & ::= 
-& {n ~|~ \chi[n] ~|~ \qval \oplus_a  \qval ~|~ n \oplus_a  \chi[n]
+\highlight{\mbox{Query Value} }& \qval & ::= 
+& \highlight{n ~|~ \chi[n] ~|~ \qval \oplus_a  \qval ~|~ n \oplus_a  \chi[n]
     ~|~ \chi[n] \oplus_a  n}
     \\
 % &&& \text{\mg{I don’t think this is what I want. Isn’t $\chi[n+1]$ a query value?}}\\
@@ -60,7 +60,7 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 % }}
 % \\%
 \mbox{Labeled Command} 
-& {c} & ::= &   [\assign {{x}}{ {\expr}}]^{l} ~|~  [\assign {{x} } {{\query(\qexpr)}}]^{l}
+& {c} & ::= &   [\assign {{x}}{ {\expr}}]^{l} ~|~  \highlight{[\assign {{x} } {{\query(\qexpr)}}]^{l}}
 ~|~ {\ewhile [ \bexpr ]^{l} \edo {c} }
 \\
 &&&
@@ -143,10 +143,21 @@ The key extension is
 %  language supports 
 the primitive for queries, where a specific query is specified by a query expression $\qexpr$. 
 A query expression contains the necessary information for a query request, 
-for example, $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
+for example, $\chi[\qexpr]$ represents the values at a certain index $\qexpr$ in a row $\chi$ of the database. 
+When this expression is encapsulated by the symbol $\query$,
+ $ \query(\chi[\qexpr]) $ computes the average value at certain index over each row of the database as follows,
+ \[
+  \query(\chi[\qexpr]) = \frac{1}{n}\sum\limits_{i = 0}^{n}\chi_i[\qexpr]
+  \]
 Query expressions combine access to the database with other expressions, 
-for example, $\chi[3] + 5$ represents a query that asks the value from column 3 of each database raw $\chi$, 
-adds 5 to each of these values, and then computes the average of these values.
+for example, 
+$\chi[3] + 5$ represents a query that asks the value from column 3 of each database raw $\chi$, 
+adds 5 to each of these values, and then computes the average of these values as follows, where $n$ is 
+data base $\chi$'s number of raw.
+%
+\[
+  \query(\chi[3] + 5) = \frac{1}{n}\sum\limits_{i = 0}^{n}\chi_i[3] + 5
+  \]
 
 % the expression also includes the special variable $\chi$ representing a row of the database, and access to values at a certain index in $\chi$, as $\chi[\aexpr]$. Additionally, list over expressions is supported and $[]$ stands for the empty list. The access to elements in the list can be achieved through $x[\aexpr]$ when variable $x$ is referred to a list. The value $v$ now contains the natural number $n$, the boolean primitives $\etrue$ and $\efalse$, the special row $\chi$ and access to it $\chi[v]$, the empty list $[]$ and non-empty list $[v, \dots, v]$.
 % 

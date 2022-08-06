@@ -286,6 +286,20 @@ The analysis framework for the adaptivity property is
 % In this proposal, I will first focus on analyzing 
 % this adaptivity property for the program based on solving 
 developed w.r.t. the three challenges introduced above accordingly.
+As shown in Figure~\ref{fig:structure}.
+% There are mainly three parts, each targeting on a challenge above.
+It is composed of three parts, each targeting on a challenge above.
+The fundamental part is the {\tt Query While} language designed for formalizing the 
+adaptive data analysis. Building on this, 
+the execution-based adaptivity analysis (formalization)
+and the static program analysis for approximating the upper bound of the 
+adaptivity are the two major analysis parts of this full-spectrum adaptivity analysis.
+\begin{figure}
+   \centering   
+   \includegraphics[width=1.0\textwidth]{figures/overview.png}
+  \caption{High level architecture of the Program Analysis Framework}
+   \label{fig:structure}
+\end{figure}
 
 \begin{enumerate}
  \item
