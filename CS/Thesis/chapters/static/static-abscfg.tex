@@ -378,26 +378,26 @@ $Q_m$ is the maximal value for query requesting result from the database $DB$. $
 %
 \begin{figure} 
 \centering
-\begin{subfigure}{.2\textwidth}
+\begin{subfigure}{.7\textwidth}
 \begin{centering}
 {\small
 $
     \begin{array}{l}
           \clabel{ \assign{a}{0}}^{0} ;   
             \clabel{\assign{j}{k} }^{1} ; \\
-            \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ \\
+            \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ 
             \Big(
-             \clabel{\assign{x}{\query(\chi[j])} }^{3}  ; \\
-             \clabel{\assign{j}{j-1}}^{4} ;\\
+             \clabel{\assign{x}{\query(\chi[j])} }^{3}  ;
+             \clabel{\assign{j}{j-1}}^{4} ;
             \clabel{\assign{a}{x + a}}^{5}       \Big);\\
-            \clabel{\assign{l}{\query(\chi[k]*a)} }^{6}\\
+            \clabel{\assign{l}{\query(\chi[k]*a)} }^{6}
         \end{array}
 $
 }
 \caption{}
 \end{centering}
 \end{subfigure}
-  \begin{subfigure}{.35\textwidth}
+  \begin{subfigure}{.45\textwidth}
   \begin{centering}
 %   \todo{abstract-cfg for two round}
 \begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
@@ -424,7 +424,7 @@ $
 \caption{}
   \end{centering}
   \end{subfigure}
-  \begin{subfigure}{.35\textwidth}
+  \begin{subfigure}{.45\textwidth}
     \begin{centering}
   %   \todo{abstract-cfg for two round}
   \begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
@@ -451,43 +451,10 @@ $
   \caption{}
     \end{centering}
     \end{subfigure}
-%       \begin{subfigure}{.3\textwidth}
-%   \begin{centering}
-%   \begin{tikzpicture}[scale=\textwidth/18cm,samples=200]
-% \draw[] (0, 10) circle (0pt) node
-% {{ $a^0: {}^1_{0}$}};
-% \draw[] (0, 7) circle (0pt) node
-% {\textbf{$x^3: {}^{k}_{1}$}};
-% \draw[] (0, 4) circle (0pt) node
-% {{ $a^5: {}^{k}_{0}$}};
-% \draw[] (0, 1) circle (0pt) node
-% {{ $l^6: {}^{1}_{1}$}};
-% % Counter Variables
-% \draw[] (5, 9) circle (0pt) node {\textbf{$j^2: {}^{1}_{0}$}};
-% \draw[] (5, 6) circle (0pt) node {{ $j^4: {}^{k}_{0}$}};
-% %
-% % Value Dependency Edges:
-% \draw[ ultra thick, -latex, densely dotted,] (0, 1.5)  -- (0, 3.5) ;
-% \draw[ ultra thick, -latex, densely dotted,] (0, 4.5)  -- (0, 6.5) ;
-% \draw[ thick, -latex] (0, 7.5)  -- (0, 9.5) ;
-% \draw[ thick, -Straight Barb] (1.5, 3.5) arc (120:-200:1);
-% \draw[ thick, -Straight Barb] (6.5, 6.5) arc (150:-150:1);
-% \draw[ thick, -latex] (5, 6.5)  -- (5, 8.5) ;
-% % Control Dependency
-% \draw[ thick,-latex] (1.5, 7)  -- (4, 9) ;
-% \draw[ thick,-latex] (1.5, 4)  -- (4, 9) ;
-% \draw[ thick,-latex] (1.5, 7)  -- (4, 6) ;
-% \draw[ thick,-latex] (1.5, 4)  -- (4, 6) ;
-% \end{tikzpicture}
-% \caption{}
-%   \end{centering}
-%   \end{subfigure}
-  \vspace{-0.3cm}
   \caption{
     (a) The same $\kw{towRounds(k)}$ program as Figure~\ref{fig:twoRounds_example}
     (b) The abstract control flow graph for $\kw{towRounds(k)}$  
     (c) The abstract control flow graph with the reachability bound for $\kw{towRounds(k)}$.}
-  \vspace{-0.5cm}
   \label{fig:abscfg_tworound}
 \end{figure}
 %

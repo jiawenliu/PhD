@@ -1,17 +1,9 @@
-For a program $c$ I compute the reachability bound for every labeled variable overall $c$'s execution traces,
-w.r.t. an initial trace as follows,
+For a program $c$, the reachability bound for every labeled variable overall $c$'s execution traces,
+w.r.t. an initial trace is computed as follows,
 \[
   rb(x^l) \triangleq \forall \vtrace \in \mathcal{T}_0(c), \trace' \in \mathcal{T} \st \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
-  \implies w(\trace) = \vcounter(\vtrace', l) 
+  \implies rb(x^l)(\trace) = \vcounter(\vtrace', l) 
   \]
-%
-$(x^l, w) \in \mathcal{LV} \times (\mathcal{T} \to \mathbb{N})$,
-with a labeled variable as first component and
-its weight $w$ the second component.
-Weight $w$ for
-% a labeled variable 
-$x^l$ is a function $w : \mathcal{T} \to \mathbb{N}$
-mapping from a starting trace to a natural number.
 When program executes under this starting trace $\trace$,
 $\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} $, it generates an execution trace $\trace'$.
 This natural number is the evaluation times of the labeled command corresponding to the vertex, 

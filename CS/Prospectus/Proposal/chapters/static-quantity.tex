@@ -227,18 +227,24 @@ This analysis is  inspired from the program complexity analysis method in \cite{
 The detail of our symbolic reachability bound analysis which uses the difference constraint of the abstract control flow graph can be found in the appendix.
 %
 %
-% \paragraph{Vertex Weight Computation}
+\paragraph{Reachability Bound Estimation for Step 3}
 % The weight for each vertex in $\progV(c)$ is computed as follows,
-Then we compute the weight for each vertex in $\progV(c)$,
-as a set of pairs $(x^l, w) \in \ldom \times \mathcal{A}_{in}$
+Then we estimate the reachability bound for each labeled variable $x^l$, and construct a set of weights. 
+This set of weights is used to in estimating the dependency graph in step3.
+% vertex in $\progV(c)$,
+% as a set of pairs $(x^l, w) \in \ldom \times \mathcal{A}_{in}$
 % $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{LV} \times EXPR(\constdom))$ 
 % is the set of pairs 
 % The weight for each vertex in $\progV(c)$ is computed 
-mapping each $x^l \in \progV(c)$ to an arithmetic  expression over $\mathbb{N}$ and
+The estimated the reachability bound mapping each $x^l \in \lvar(c)$ to an arithmetic  expression over $\mathbb{N}$ and
 input variables. 
-Because
-the vertices in the two graph share the same unique label, the line number of the same command,
-we define $\progW(c)$
+\[ 
+  rb_{\kw{prog}}(x^l) = w \st (l, w) \in \absW(c)
+  \]
+% Because
+% the vertices in the two graph share the same unique label, the line number of the same command,
+% we define 
+$\progW(c)$ is defined
 % denoted by $\mathcal{A}_{in}$
 as follows,
 {
@@ -246,9 +252,9 @@ as follows,
 % \\
  \[\progW(c) \triangleq
 %   \left
-  \{ (x^l, w)
-\mid
-x^l \in \progV(c) \land (l, w) \in \absW(c)
+  \{ (x^l,  rb_{\kw{prog}}(x^l))
+% \mid
+% x^l \in \progV(c) \land (l, w) \in \absW(c)
 % \right
 \}.
 \]
@@ -273,12 +279,12 @@ the maximum visiting times of $x^l$ over all execution traces of $c$, with the f
   % \max \left\{ 
     % \vcounter(\vtrace') l ~ \middle\vert~
   % \forall \vtrace, \trace' \in \mathcal{T} \st 
-  \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat\vtrace} 
-  \land 
+  % \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat\vtrace} 
+  % \land 
   \config{\vtrace_0, w} \earrow v
   \implies
   % \right\} 
-  \vcounter(\vtrace, l) \leq v
+  rb(x^l) \trace_0 \leq v
   \]
   \end{thm}
 % appendix~\ref{apdx:reachability_soundness}. 
@@ -289,7 +295,7 @@ Figure~\ref{fig:twoRounds_example}(c),
 the weight for $a^5$ is $k$. which is a sound estimated weight.
 % in program-based dependency Graph as $k$ as well.
 For any initial $\trace_0 \in \mathcal{T}_0(c)$, we know $\config{\trace_0, k} \earrow \env(\trace_0) k$ and
-the weight $w_k$ for vertex $a^5$ from Figrue~\ref{fig:overview-example}(b)
+the weight $w_k$ for vertex $a^5$ from Figrue~\ref{fig:twoRounds_example}(b)
 $w_k(\trace_0) = \env(\trace_0) k$. 
 %
 In the same way, the weights for all the other vertices are sound.

@@ -152,6 +152,13 @@ indicates whether this labeled variable is assigned by a query in program $c$.
 The edges are constructed directly from our variable may-dependency relation. 
 For any two vertices $x^{i}$ and $y^{j}$ in $\traceV(c)$, if they satisfy the variable may-dependency relation $\vardep(x^i, y^j, c)$, there is a direct edge between the two vertices in our execution-based dependency graph for program $c$.
 } 
+The weight is a set of pairs $(x^l, w) \in \traceW(c)$,
+with a labeled variable as first component and
+its weight $w$ the second component.
+Weight $w$ for
+% a labeled variable 
+$x^l$ is a function $w : \mathcal{T}_0(c) \to \mathbb{N}$
+mapping from an initial trace to a natural number.
 
 Given 
 a program $c$'s execution-based dependency graph 
@@ -161,6 +168,7 @@ I formalize the adaptivity
 with respect to an initial trace $\trace_0 \in \mathcal{T}_0(c)$ by the finite walk in the graph, which has the most query requests along the walk.
 We show the definition of a finite walk as follows.
 %
+
 % The query length of a walk $k$ is the number of vertices which correspond to query variables in the vertices sequence of this walk. 
 % Instead of counting all 
 % the vertices in $k$'s vertices sequence, i

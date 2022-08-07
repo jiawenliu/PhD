@@ -3,8 +3,8 @@
 % % 
 In Section~\ref{subsec:intro-motivation},
 I firstly introduce the background and limitation of the 
-adaptive data analysis so far, 
-and motivation of reasoning about the \emph{adaptivity} quantity property 
+adaptive data analysis, 
+and the motivation of reasoning about the \emph{adaptivity} quantity property 
 for adaptive data analysis program in Section~\ref{subsec:intro-motivation}.
 % analyzing 
 In order to analyze this \emph{adaptivity} property for the adaptive data analysis, there are 3 challenges
@@ -12,11 +12,15 @@ In order to analyze this \emph{adaptivity} property for the adaptive data analys
 introduced.
 % I introduce these three problems
 % and the full-spectrum analysis methodologies developed according to these problems 
-Targeting to the three challenges, I introduce my full-spectrum analysis methodologies accordingly in Section~\ref{subsec:intro-adapt}.
-Concretely, the full-spectrum analysis is developed through the language formalization,
+Targeting to the three challenges, I introduce the methodologies 
+of the program analysis framework for adaptivity,
+accordingly in Section~\ref{subsec:intro-adapt}.
+Concretely, 
+% the full-spectrum 
+this analysis framework is developed through the language formalization,
 the execution-based analysis, and the static-based program analysis.
 %
-Based on the implementation and experimental results on my full-spectrum analysis, 
+Based on the implementation and experimental results on this analysis framework, 
 I propose three significant 
 further features can be improved 
 % in the analysis methodologies 
@@ -424,21 +428,21 @@ Based on the implementation and experimental results of the basic full-spectrum 
 I plan to focus on the following three further features which can be extended and improved.
 %  in my full-spectrum analysis.
 \begin{enumerate}
-    \item Extension of the {\tt Query While} Language with inter-procedure call.
+    \item In the adaptive data analysis formalization, I plan to extend the {\tt Query While} Language with inter-procedure call.
     \item In the execution-based \emph{adaptivity},
-    I plan to improve the precision of the intuitive \emph{adaptivity} formalization,
+    I plan to improve the precision of the \emph{adaptivity} formalization w.r.t. the program's intuitive adaptivity rounds,
 %  in the formal  model 
-in the meantime extend this analysis with inter-procedure call.
-\item In static \emph{adaptivity} analysis, I plan to give a tighter estimated upper bound on \emph{adaptivity}
+and extend this analysis with inter-procedure call.
+\item In static \emph{adaptivity} analysis, I plan to give a tighter estimated upper bound on \emph{adaptivity}.
 %  give a tighter estimated upper bound 
 Specifically, I will focus on improving the accuracy of the static \emph{dependency quantity} analysis in the second step through 
-path sensitive reachability bound analysis techniques. 
+developing a  path sensitive reachability bound analysis technique. 
 % \item In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
 % compute a tighter adaptivity upper bound as well.
 \end{enumerate}
 \subsubsection{Towards Accurate Program Quantitative Property Analysis}
 \label{subsec:intro-cost}
-Moving towards the area of general program resource cost analysis,
+Moving towards the area of program's quantitative property analysis,
 % Then, motivated by the two following aspects, 
 there are two interesting observations as follows.
 % I'm interested 

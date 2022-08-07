@@ -59,11 +59,12 @@ The soundness is proved in full paper.
 % in the appendix.
 % ~\ref{apdx:flowsto_soundness}.
 %
-\paragraph*{Edge Estimation}
+\paragraph*{Edge Estimation for Step 3}
 Based on the \emph{Feasible Data-Flow} relation,
-the estimated directed edges
+we  estimate a set of directed edges, which is 
+used to construct the estimated program-based dependency graph for step 3.
 % for each vertex in $\progV(c)$,
-between vertices in $\progV(c)$ is defined
+The set of directed edges between labeled variables is defined
 as a set of pairs 
 % $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{LV} \times EXPR(\constdom))$ 
 $\progE(c) \in \mathcal{P}( \mathcal{LV} \times \mathcal{LV})$.

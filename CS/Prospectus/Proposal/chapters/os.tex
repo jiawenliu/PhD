@@ -435,7 +435,7 @@ The function $\env : {\mathcal{T}} \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\b
  \highlight{
  \inferrule
  {
- \trace, \qexpr \qarrow \qval
+\config{ \trace, \qexpr} \qarrow \qval
  \and 
  \query(\qval) = v
  \and 
@@ -453,7 +453,7 @@ The function $\env : {\mathcal{T}} \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\b
  %
  \inferrule
  {
- \trace, b \barrow \etrue
+\config{ \trace, b} \barrow \etrue
  \and 
  \event = (b, l, \etrue, \bullet)
  }
@@ -471,7 +471,7 @@ The function $\env : {\mathcal{T}} \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\b
  %
  \inferrule
  {
- \trace, b \barrow \efalse
+ \config{\trace, b} \barrow \efalse
  \and 
  \event = (b, l, \efalse, \bullet)
  }
