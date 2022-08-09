@@ -1,7 +1,7 @@
-This section covers the background of the current resource cost analysis,
+This section covers the background of the current resource cost and quantitative property analysis,
 with a 
 motivating example.
-This example shows that the traditional way fails to give a tight bound on the program's resource cost.
+This example shows that the traditional way fails to give a tight bound on the program's non-monotonic resource cost.
 % similarity between general and the program's adaptivity accumulation,
 Then, this section covers the proposed methodology I plan to adopt for an accurate full-Spectrum
 analysis on 
@@ -85,12 +85,12 @@ to the worst-case cost analysis in the traditional way. Specifically as follows:
 to be analyzed isn't the \emph{adaptivity},
 the {\tt Query While} Language will be generalized into standard while language with the inter-procedure function call.
 % \\
-\paragraph*{Resource Cost Formalization through Execution-Based Analysis} 
+\paragraph*{Non-Monotonic Resource Cost Formalization through Execution-Based Analysis} 
 Formalize the program resource cost through an execution-based program analysis as in Section~\ref{sec:dynamic}.
 In this formalization, instead of formalizing the intuitive \emph{adaptive}, the resource cost will be the
 target quantitative property of a program.
 % \\
-\paragraph*{Resource Cost Estimation through Generalized $\THESYSTEM$}
+\paragraph*{Non-Monotonic Resource Cost Estimation through Generalized $\THESYSTEM$}
 According to this high similarity between the program's resource cost and the 
 program's adaptivity property, the static program analysis for the resource cost property will 
 be performed on a generalized $\THESYSTEM$. $\THESYSTEM$ will be generalized specifically as follows:

@@ -1,6 +1,8 @@
 
-In order to estimate weight for every vertex in the program-based dependency graph,
-we perform the symbolic reachability bound analysis on the abstract control flow graph and add weight as shown in Figure~\ref{fig:abscfg_tworound}(c). 
+% In order to estimate weight for every vertex in the program-based dependency graph,
+In order to estimate the \emph{Dependency-Quantity} from the execution-based analysis,
+we perform the symbolic reachability bound analysis on the program's abstract control flow graph $\absG(c)$ firstly,
+and add weight on that graph as shown in Figure~\ref{fig:abscfg_tworound}(c). 
 % This because
 % the vertices in the two graph share the same unique label, the line number.
 % We would like to generate the closure of every edge, which is an equality relation between variables.  Solving this closure gives us the reachability bound for this edge. With all the bound for all the edges in the abstract control flow graph, we can calculate the weight for every vertex in this graph. For example, we show the closure generated for the edge $(4, j < j - 1, 5)$, 
@@ -215,7 +217,8 @@ we perform the symbolic reachability bound analysis on the abstract control flow
 % location $0$ before executing command at line $1$.
 %
 % The same way for the rest weights' computation.
-We use $\absW(c)$ for the computed weights, 
+% We use for 
+The computed weights $\absW(c)$ is
 a set of pairs 
 $(l, w)$ where 
 $w$ is the weight 
@@ -227,10 +230,11 @@ This analysis is  inspired from the program complexity analysis method in \cite{
 The detail of our symbolic reachability bound analysis which uses the difference constraint of the abstract control flow graph can be found in the appendix.
 %
 %
-\paragraph{Reachability Bound Estimation for Step 3}
+\paragraph{Reachability Bound Estimation}
 % The weight for each vertex in $\progV(c)$ is computed as follows,
-Then we estimate the reachability bound for each labeled variable $x^l$, and construct a set of weights. 
-This set of weights is used to in estimating the dependency graph in step3.
+With the computed weights $\absW(c)$ for program $c$,
+we compute the reachability bound for each labeled variable $x^l$ as the estimation of the 
+execution-based \emph{Dependency-Quantity}. 
 % vertex in $\progV(c)$,
 % as a set of pairs $(x^l, w) \in \ldom \times \mathcal{A}_{in}$
 % $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{LV} \times EXPR(\constdom))$ 
@@ -244,21 +248,6 @@ input variables.
 % Because
 % the vertices in the two graph share the same unique label, the line number of the same command,
 % we define 
-$\progW(c)$ is defined
-% denoted by $\mathcal{A}_{in}$
-as follows,
-{
-% :
-% \\
- \[\progW(c) \triangleq
-%   \left
-  \{ (x^l,  rb_{\kw{prog}}(x^l))
-% \mid
-% x^l \in \progV(c) \land (l, w) \in \absW(c)
-% \right
-\}.
-\]
-}
 %
 We prove that this 
 % symbolic expression is the upper bound for $x^l$'s 
@@ -273,7 +262,7 @@ the maximum visiting times of $x^l$ over all execution traces of $c$, with the f
   we have:
     %
   \[
-  \forall (x^l, w) \in \progW, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T},
+  \forall x^l \in \lvar(c), \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T},
   v \in \mathbb{N}
    \st 
   % \max \left\{ 
@@ -289,6 +278,18 @@ the maximum visiting times of $x^l$ over all execution traces of $c$, with the f
   \end{thm}
 % appendix~\ref{apdx:reachability_soundness}. 
 %
+Based on $\rb_{\kw{prog}}$, we construct a set of weights as follows. 
+This set of weights is used to in estimating the dependency graph in step3.
+$\progW(c)$ is defined
+% denoted by $\mathcal{A}_{in}$
+as follows,
+% :
+% \\
+ \[\progW(c) \triangleq
+  \left
+  \{ (x^l,  rb_{\kw{prog}}(x^l)) \mid x^l \in \lvar(c) 
+\right \}.
+\]
 \paragraph*{Example} 
 As in
 Figure~\ref{fig:twoRounds_example}(c),

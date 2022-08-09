@@ -24,28 +24,30 @@ I develop a variant of data flow analysis, called Feasible Data-Flow Generation,
     {\small
     \[
    \begin{array}{ll}
-    \flowsto(x^i, y^j, \clabel{\assign{x}{\expr}}{}^l)  & \triangleq (x^i, y^j) \in \{ (y^i, x^l) | y \in \mathsf{FV}(\expr) 
+    \flowsto(x^i, y^j, \clabel{\assign{y}{\expr}}{}^l)  
+    & \triangleq (x^i, y^j) \in \left\{ (x^i, y^l) | x \in \mathsf{FV}(\expr) 
     % \land (y,i) \in \live(l, \clabel{\assign{x}{\expr}}^l) \}  \\
-    \land y^i \in \live(l, \clabel{\assign{x}{\expr}}^l) \}  \\
-    \flowsto(x^i, y^j, \clabel{\assign{x}{\query(\qexpr)}}{}^l)  & \triangleq (x^i, y^j) \in \{ (y^i, x^l) | y \in \mathsf{FV}(\qexpr) 
+    \land x^i \in \live(l, \clabel{\assign{y}{\expr}}^l) \right\}  \\
+    \flowsto(x^i, y^j, \clabel{\assign{y}{\query(\qexpr)}}{}^l)  
+    & \triangleq (x^i, y^j) \in \left\{ (x^i, y^l) | x \in \mathsf{FV}(\qexpr) 
     % \land (y,i) \in \live(l,\clabel{\assign{x}{\query(\qexpr)}}^l) \}  \\
-    \land y^i \in \live(l,\clabel{\assign{x}{\query(\qexpr)}}^l) \}  \\
+    \land x^i \in \live(l,\clabel{\assign{y}{\query(\qexpr)}}^l) \right\}  \\
     \flowsto(x^i, y^j, [\eskip]^{l})  & = \emptyset \\
     \flowsto(x^i, y^j, \eif ([b]^l, c_1, c_2))  & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\ 
         & \lor (x^i, y^j) \in
-       \{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+        \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
       %  (x,i) 
-      x^i \in \live(l, \eif ([b]^l, c_1, c_2)) \land  y^j \in \lvar(c_1) \\
+      x^i \in \live(l, \eif ([b]^l, c_1, c_2)) \land  y^j \in \lvar(c_1) \right\} \\
     %   ([y = \_]^j) \in \mathsf{blk}(c_1) \} \\
-       &\lor (x^i, y^j) \in \{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+       &\lor (x^i, y^j) \in \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
       %  (x,i) 
-      x^i\in \live(l, \eif ([b]^l, c_1, c_2))  \land  y^j \in \lvar(c_2) \\
+      x^i\in \live(l, \eif ([b]^l, c_1, c_2))  \land  y^j \in \lvar(c_2)  \right\} \\
     %   \land ([y = \_]^j) \in \mathsf{blk}(c_2) \} \\
        \flowsto(x^i, y^j, \ewhile [b]^l \edo c_w)  & \triangleq  \flowsto(x^i, y^j, c_w)  \lor
        \\ & 
-       (x^i, y^j) \in  \{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+       (x^i, y^j) \in  \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
       %  (x,i) 
-      x^i \in \live(l,   \ewhile [b]^l \edo c_w) \land  y^j \in \lvar(c_w) \\
+      x^i \in \live(l,   \ewhile [b]^l \edo c_w) \land  y^j \in \lvar(c_w) \right\} \\
     %   ([y = \_]^j) \in \mathsf{blk}(c_w) \} \\
        \flowsto(x^i, y^j, c_1 ;c_2)  & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\
    \end{array}
