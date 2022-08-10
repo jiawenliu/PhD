@@ -1,6 +1,8 @@
-My static analysis provides an upper bound on the adaptivity for this example as follows.
-{\THESYSTEM} constructs a program-based dependency graph, for my example we show this graph in 
-Figure~\ref{fig:twoRounds_example}(c).
+The static analysis provides an upper bound on the adaptivity for the example program in Figure~\ref{fig:twoRounds_example}(a) as follows.
+Figure~\ref{fig:twoRounds_example}(c) is the program-based dependency graph constructed by
+{\THESYSTEM}.
+%  constructs a , for my example we show this graph in 
+% .
 The edges of this graph are built by considering both control flow and data flow between assigned variables (the algorithm is presented in Section~\ref{subsubsec:static-datadep}). 
 The weight of every vertex is estimated by using a reachability-bound estimation algorithm 
 (presented in Section~\ref{subsubsec:static-reachability}), which can be symbolic and provide a sound upper bound on the weight of the corresponding vertex in the execution-based dependency graph. 

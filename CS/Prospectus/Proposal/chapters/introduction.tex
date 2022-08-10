@@ -51,7 +51,7 @@ analyzing program's \emph{non-monotonic} quantitative property accurately.
 % % where the list is re-written and the heap consumption is decreased implicitly. 
 % % This implicit decrease 
 % % of the cost works the same as the program's adaptivity decreases.
-% I'm interested in improving the accuracy of the program's general resource cost analysis
+% I am interested in improving the accuracy of the program's general resource cost analysis
 % by 
 % % onto the program's resource cost analysis. 
 % % Use this framework,
@@ -74,11 +74,11 @@ solving it by reducing into my full-spectrum adaptivity analysis framework.
  % solving the feasible path problem in the analysis by reducing CFL-reachability problems,
  % and the way of computing the adaptivity in my static analysis framework.
  % Motivated by this observation, 
- % % I'm Interested
+ % % I am Interested
  % % the, There are similarities between
  % % solving the data flow problem by reducing to CFL-reachability problem,
  % % resource analysis through reducing to CFL-reachability problem, 
- % I'm interested in showing that
+ % I am interested in showing that
  % CFL-reachability problems can be solved by reducing them to my adaptivity analysis framework. 
  % This work is planned to start before the final defense and develop further sophisticated after.
 
@@ -132,7 +132,7 @@ sampled dataset.
 \end{figure}
 This guarantees that the result of the queries generalizes well. 
 This approach is described in Figure~\ref{fig:adaptivity-model-overview}, where
-I have a population that I'm interested in studying, and a dataset containing individual samples from this population. The adaptive data analysis I'm interested in running has access to the dataset through queries of some pre-determined family (e.g., statistical or linear queries) mediated by a mechanism. 
+I have a population that I am interested in studying, and a dataset containing individual samples from this population. The adaptive data analysis I am interested in running has access to the dataset through queries of some pre-determined family (e.g., statistical or linear queries) mediated by a mechanism. 
 This mechanism uses randomization to reduce the generalization error of the queries issued to the data.
 This line of work has identified many new algorithmic techniques for ensuring generalization in adaptive data analysis, leading to algorithms with greater statistical power than all previous approaches. 
 Common methods proposed by these works include the addition of noise to the result of a query, data splitting, etc. 
@@ -148,8 +148,10 @@ The works I discussed above showed that not only does the analysis of the genera
 but knowing the number of rounds allows one to choose methods that lead to the smallest possible generalization error. 
 
 % \mg{Check the following - also the plots need to be on the same scale!}
-For example, these works showed that when an adaptive data analysis uses a large number of rounds of adaptivity then a low generalization error can be achieved by the mechanism of 
-adding to the result of each query Gaussian noise scaled to the number of rounds. When instead an adaptive data analysis uses a small number of rounds of adaptivity then a low generalization error can be achieved by using more specialized methods, such as the data splitting mechanism or the reusable holdout technique from~\cite{DworkFHPRR15}.
+For example, these works showed that when an adaptive data analysis uses a large number of rounds 
+of adaptivity then a low generalization error can be achieved by the mechanism that 
+adds Gaussian noise scaled to the number of rounds to each query result.
+When instead an adaptive data analysis uses a small number of rounds of adaptivity then a low generalization error can be achieved by using more specialized methods, such as the data splitting mechanism or the reusable holdout technique from~\cite{DworkFHPRR15}.
 To better understand this idea, I show in Figure~\ref{fig:generalization_errors} two experiments showcasing these situations. 
 More precisely, in Figure~\ref{fig:generalization_errors}(a) shows the results of a real-world analysis
 with two rounds of adaptivity. 
@@ -212,9 +214,14 @@ developed w.r.t. the three challenges accordingly.
  \textbf{Adaptive Data Analysis Formalization}
 
 The first challenge is \emph{how to define formally} a model for adaptive data analysis which is general enough to support the methods I discussed above and would permit to formulate the notion of adaptivity these methods use. 
-I take the approach of designing a programming framework for submitting queries to some \emph{mechanism} giving access to the data mediated by one of the techniques I mentioned before, e.g., adding Gaussian noise, randomly selecting a subset of the data, using the reusable holdout technique, etc. 
-In this approach, a program models an \emph{analyst} asking a sequence of queries to the mechanism. The mechanism runs the queries on the data applying one of the methods discussed above and returns the result to the program. The program can then use this result to decide which query to run next. 
-% Overall, I'm interested in controlling the generalization of the results of the queries which are returned by the mechanism, by means of adaptivity. 
+I take the approach of designing a programming framework for submitting queries to some \emph{mechanism} giving access 
+to the data mediated by one of the techniques which are mentioned before, 
+including the mechanism of adding Gaussian noise, 
+the mechanism that randomly selects a subset of the data, 
+and the mechanism that uses the reusable holdout technique, etc. 
+In this approach, a program models an \emph{analyst} asking a sequence of queries to the mechanism. 
+The mechanism runs the queries on the data applying one of the methods discussed above and returns the result to the program. The program can then use this result to decide which query to run next. 
+% Overall, I am interested in controlling the generalization of the results of the queries which are returned by the mechanism, by means of adaptivity. 
 
 % \textbf{Methodology}
 Motivated by this, I present a while-like language named {\tt Query While} language with extensions on query requests in Section~\ref{sec:language}.
@@ -227,8 +234,11 @@ Intuitively, a query $Q$ may depend on another query $P$, if there are two value
 For example, as shown in \cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
 If one feature's correlation changes, the classifier depending on features is also affected. 
 This notion of dependency builds on the execution trace as a \emph{causal history}. 
-In particular, I'm interested in the history or provenance of a query up until this is executed, I'm not then concerned about how the result is used --- except for tracking whether the result of the query may further cause some other query. 
-This is because I focus on the generalization error of queries and not their post-processing. % 
+In particular, I am interested in the history or provenance of a query up until this is executed, 
+% I am not then concerned about how the result is used --- except for 
+simultaneously in tracking whether the result of the query may further cause some other query. 
+This is because I'm focusing on the generalization error which could be propagated by queries.
+% and not their post-processing. % 
 
 To formalize this intuitive \emph{adaptivity} as a quantitative program property, 
 I develop an execution-based analysis in Section~\ref{sec:dynamic}.
@@ -285,7 +295,7 @@ The adaptive data analysis model I consider and our definition of adaptivity sug
 Hence, it needs to consider some form of data flow analysis. 
 2) the fact that, in general, the decision on whether to run a query or not may depend on some other value. Hence, 
  it needs to consider some form of control flow analysis.
-3) the fact that. in general, I'm not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
+3) the fact that. in general, I am not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
 Hence, it needs to consider some quantitative information about the program dependencies. % {A quick example is that: I store the result of query $Q_1$ in variable $x$ and use variable $y$ to record the result of query $Q_2$. I want to construct the third query $Q_3$ which relies on the value stored in $x$, let us say, $Q_3$ will ask for the sum of the first column of a table if $x$ is positive and the sum of the second column otherwise. In this situation, I need data flow analysis. On the other hand, if I need the value of $y$ to help us decide whether I should ask $Q_3$, for example, I ask the third query if $y$ is odd, and do not ask if $y$ is even. Naturally, to be able to handle this case, control flow analysis comes into play. Formally speaking, }
 
 To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
@@ -326,7 +336,7 @@ analysis framework.
 % The first challenge is \emph{how to define formally} a model for adaptive data analysis which is general enough to support the methods I discussed above and would permit to formulate the notion of adaptivity these methods use. 
 % I take the approach of designing a programming framework for submitting queries to some \emph{mechanism} giving access to the data mediated by one of the techniques I mentioned before, e.g., adding Gaussian noise, randomly selecting a subset of the data, using the reusable holdout technique, etc. 
 % In this approach, a program models an \emph{analyst} asking a sequence of queries to the mechanism. The mechanism runs the queries on the data applying one of the methods discussed above and returns the result to the program. The program can then use this result to decide which query to run next. 
-% % Overall, I'm interested in controlling the generalization of the results of the queries which are returned by the mechanism, by means of adaptivity. 
+% % Overall, I am interested in controlling the generalization of the results of the queries which are returned by the mechanism, by means of adaptivity. 
 
 % \textbf{Methodology}
 % Motivated by this,
@@ -341,7 +351,7 @@ with extensions on query requests in Section~\ref{sec:language}.
 % For example, as shown in \cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
 % If one feature's correlation changes, the classifier depending on features is also affected. 
 % This notion of dependency builds on the execution trace as a \emph{causal history}. 
-% In particular, I'm interested in the history or provenance of a query up until this is executed, I'm not then concerned about how the result is used --- except for tracking whether the result of the query may further cause some other query. 
+% In particular, I am interested in the history or provenance of a query up until this is executed, I am not then concerned about how the result is used --- except for tracking whether the result of the query may further cause some other query. 
 % This is because I focus on the generalization error of queries and not their post-processing. % 
 
 % \textbf{Methodology}
@@ -402,7 +412,7 @@ This weight comes from the \emph{dependency quantity} from the second step analy
 % Hence, it needs to consider some form of data flow analysis. 
 % 2) the fact that, in general, the decision on whether to run a query or not may depend on some other value. Hence, 
 %  it needs to consider some form of control flow analysis.
-% 3) the fact that. in general, I'm not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
+% 3) the fact that. in general, I am not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
 % Hence, it needs to consider some quantitative information about the program dependencies. 
 % {A quick example is that: I store the result of query $Q_1$ in variable $x$ and use variable $y$ to record the result of query $Q_2$. I want to construct the third query $Q_3$ which relies on the value stored in $x$, let us say, $Q_3$ will ask for the sum of the first column of a table if $x$ is positive and the sum of the second column otherwise. In this situation, I need data flow analysis. On the other hand, if I need the value of $y$ to help us decide whether I should ask $Q_3$, for example, I ask the third query if $y$ is odd, and do not ask if $y$ is even. Naturally, to be able to handle this case, control flow analysis comes into play. Formally speaking, }
 % \textbf{Methodology}
@@ -464,20 +474,21 @@ developing a new path sensitive reachability bound analysis technique.
 Moving towards the area of program's quantitative property analysis,
 % Then, motivated by the two following aspects, 
 there are two interesting observations as follows.
-% I'm interested 
+% I am interested 
 These two observations motivated me in 
 % improving the accuracy of the program's general resource cost analysis
 improving the accuracy of the program's general resource cost analysis
 by generalizing this \emph{adaptivity} analysis framework.
 \begin{itemize}
- \item In the traditional program's resource cost and quantitative property analysis,
- There are two research areas, 
+ \item 
+%  In the traditional program's resource cost and quantitative property analysis,
+ There are two research areas in the traditional program's resource cost and quantitative property analysis.
 %  of program cost analysis, 
-type-system based and data-flow/control-flow analysis based. 
-In the type-system design-based works, they \cite{GustafssonEL05} and \cite{hoffmann_jost_2022}, explicit abstraction or data structure de-allocation in order to save or reduce the cost.
- 
- Both of the
- works in these two areas fail to recognize the case where program resource consumption or quantitative properties 
+One area is type-system based and the other is data-flow/control-flow analysis based. 
+In the type-system design-based areas (\cite{GustafssonEL05}, \cite{hoffmann_jost_2022}), 
+the analysis technique requires explicit abstraction or data structure de-allocation in order to save or reduce the cost.
+ The
+ works in both of these two areas fail to recognize the case where program resource consumption or quantitative properties 
  are decreased implicitly or increased \emph{non-monotonically}.
  \item These resource consumptions or quantitative properties during the program 
  execution increase and particularly decrease implicitly in the same way as the program's adaptivity. 
@@ -495,7 +506,7 @@ In the type-system design-based works, they \cite{GustafssonEL05} and \cite{hoff
 % % where the list is re-written and the heap consumption is decreased implicitly. 
 % % This implicit decrease 
 % % of the cost works exactly the same as the program's adaptivity decrease.
-% I'm interested in improving the accuracy of the program's general resource cost analysis
+% I am interested in improving the accuracy of the program's general resource cost analysis
 % by generalizing my \emph{adaptivity} analysis framework.
  % onto the program's resource cost analysis. 
  % Use this framework,
@@ -529,11 +540,11 @@ Specifically, there are similarities between solving the CFL-reachability proble
 %  my static analysis framework.
 the third step of $\THESYSTEM$.
  Motivated by this, 
- % I'm Interested
+ % I am Interested
  % the, There are similarities between
  % solving the data flow problem by reducing to CFL-reachability problem,
  % resource analysis through reducing to CFL-reachability problem, 
- I'm interested in showing that
+ I am interested in showing that
  CFL-reachability problems can be solved by reducing to my adaptivity analysis framework.
 % I identify the similarity between the traditional way of performing data flow and control analysis and the 
 %  adaptivity analysis. 
@@ -541,11 +552,11 @@ the third step of $\THESYSTEM$.
 %  solving the feasible path problem in the analysis by reducing CFL-reachability problems,
 %  and the way of computing the adaptivity in my static analysis framework.
 %  Motivated by this observation, 
-%  % I'm interested
+%  % I am interested
 %  % the, There are similarities between
 %  % solving the data flow problem by reducing to CFL-reachability problem,
 %  % resource analysis through reducing to CFL-reachability problem, 
-%  I'm interested in showing that
+%  I am interested in showing that
 %  CFL-reachability problems can be solved by reducing them to my adaptivity analysis framework.
 
 

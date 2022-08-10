@@ -17,10 +17,12 @@
  {
 My framework constructs an execution-based dependency graph based on the execution traces of a program. I define semantic dependence on this graph by considering (intraprocedural) data and control dependency~\cite{bilardi1996framework,cytron1991efficiently,pollock1989incremental}. 
 One related work 
-\cite{austin1992dynamic} presents a methodology to construct a dynamic dependency graph (DDG) based on the dynamic execution of a program in an imperative language, where edges represent dependency between instructions. Data dependency, control dependency, storage dependency, and resource dependency between instructions are all considered. My execution-based dependency graph only needs data dependency and control dependency between variable assignment results. 
+\cite{austin1992dynamic} presents a methodology to construct a dynamic dependency graph (DDG) based on the dynamic execution of a program in an imperative language, 
+where edges represent dependency between instructions. Data dependency, control dependency, storage dependency, and resource dependency between instructions are all considered. My execution-based dependency graph only needs data dependency and control dependency between variable assignment results. 
 % Critical path length analysis on DDGs is useful for understanding the scope for parallelization, while we use the length of the longest path to define adaptivity. 
 %
-DDGs have been used in many other domains. \cite{nagar2018automated} use DDGs to find serializability violations. \cite{hammer2006dynamic} use similar \emph{program dependency graphs} \cite{ferrante1987program} for dynamic program slicing.
+DDGs have been used in many other domains. \cite{nagar2018automated} use DDGs to find serializability violations. \cite{hammer2006dynamic} use similar \emph{program dependency graphs}. 
+\cite{ferrante1987program} for dynamic program slicing.
 \cite{mastroeni2008data} propose ways of constructing different kinds of program slices, by choosing different program dependencies. 
 % For example, in either syntactic or semantics sense.
 % This abstract dependency is based on properties rather than exact data.
