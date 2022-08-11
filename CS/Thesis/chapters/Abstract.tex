@@ -30,23 +30,30 @@
  % Gap
  % Unfortunately, this depth which relies on the program(implementation) itself is costly in human efforts, and how to statically obtain this information is not well studied to support data analysts.
 
- In this thesis, 
- I firstly focus on formalizing and analyzing the intuitive \emph{adaptivity} property for 
+%  In this thesis, 
+ I first focus on formalizing and analyzing the intuitive \emph{adaptivity} property for 
  the adaptive data analysis program
  and present 
- my full-spectrum \emph{adaptivity} analysis framework.
- Next, based on the implementation and experimental results of my \emph{adaptivity} analysis framework, 
- I extend this full-spectrum framework in three significant 
+%  my full-spectrum \emph{adaptivity} analysis framework.
+a program analysis framework for the adaptive data analysis.
+ Next, based on
+  the implementation and experimental results 
+of this program analysis framework
+and the limitation of the existing static analysis techniques,
+%  I extend this full-spectrum framework in three significant 
+I design a new static path-sensitive reachability bound analysis algorithm.
 %  further features can be improved in this 
-aspects.
+% aspects.
+Then I apply this newly-designed algorithm into my program analysis framework and improve my analysis 
+framework from three significant aspects.
  % and plan to finish the improvement 
  % before the final defense.
-Then according to the connection between the \emph{adaptivity} and program's resource cost,
+Then according to the similarities between the \emph{adaptivity} and program's \emph{non-monotonic} resource cost,
 I present 
  % I propose extensions of this analysis with improved techniques, 
  % and 
-an accurate full-spectrum program resource cost analysis via
-the generalization of my \emph{adaptivity} analysis framework.
+a static analysis framework for the program's {non-monotonic} resource cost analysis via
+the generalization of the \emph{adaptivity} analysis framework.
 % plan to finish the design and implementation in the thesis.
 In the end, 
 I propose an interesting further work on solving the 

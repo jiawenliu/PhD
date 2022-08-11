@@ -107,7 +107,14 @@ $$
 % %
 \paragraph{Trace}
 A trace $\trace \in \mathcal{T} $ is a list of events, 
-collecting the events generated along the program execution. $\mathcal{T} $ represents the set of traces. 
+collecting the events generated along the program execution. 
+\[
+\begin{array}{llll}
+\mbox{Trace} & \trace
+& ::= & [] ~|~ \trace :: \event
+\end{array}
+\]
+$\mathcal{T} $ represents the set of traces. 
 A trace can be regarded as the program history, 
 which records all the evaluations for assignment commands and guards in $\eif$ and $\ewhile$ command.
 This includes queries asked by the analyst during the execution of the program as well. 
@@ -117,12 +124,7 @@ It states that a configuration $\config{c, \trace}$,
 which consists of a command $c$ to be evaluated and a starting trace $\trace$, 
 evaluates to another configuration with the trace updated along with the evaluation of the command $c$ to the normal form of the command $\eskip$.
 %
-\[
-\begin{array}{llll}
-\mbox{Trace} & \trace
-& ::= & [] ~|~ \trace :: \event
-\end{array}
-\]
+\\
 There are some useful operators: the trace concatenation operator $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$, combines two traces.
 % I also have the operator $\tlabel : \mathcal{T} \to \ldom$, which gives the set of labels in every event belonging to a trace. 
 % The full definitions of these above operators can be found in the appendix.
