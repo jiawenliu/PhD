@@ -1,0 +1,217 @@
+I implemented $\THESYSTEM$ as a tool which takes a labeled command as input  
+% labeled command 
+and outputs an upper bound on the program adaptivity and on the number of query requests.
+This implementation consists of an 
+abstract control flow graph generation, weight estimation (as presented in Section~\ref{sec:alg_weightgen}),
+edge estimation (as presented in Section~\ref{sec:alg_edgegen}) in Ocaml, 
+and the adaptivity computation algorithm shown in Section~\ref{sec:alg_adaptcompute} in Python.
+The OCaml program takes the labeled command as input and outputs the program-based dependency graph,
+feeds into the python program and the python program provides the adaptivity upper bound and the query number as the final output.
+
+I evaluated this implementation on $17$ example programs with the evaluation results shown  in Table~\ref{tb:imp}.
+In this table,
+the first column is the name of each program.
+For each program $c$, the second column is its intuitive adaptivity rounds,
+the third column is the $A(c)$ we defined through our formal semantic model above.
+% in Section~\ref{sec:dep_adaptivity}.
+In the third column, we use $k$ represent the weight function $w_k$ (in program's execution-based dependency graph) which return value of variable $k$ 
+from an initial trace $\trace_0$, same for natural numbers.
+The last column is the output of the $\THESYSTEM$ implementation, which consists of two expressions.
+The first one is the upper bound for adaptivity and the second one is the 
+upper bound for the total number of query requests in the program.
+
+The first 3 programs we evaluated are $ \kw{twoRoundsComplete(k)}$, $ \kw{multipleRoundsComplete(k)}$, 
+and the $\kw{linearRegressionGD(k, rate)}$ which we discussed in overview and above section.
+% Section~\ref{sec:examples}.
+% The same for the third programprograms in the table row 
+For these examples, $A(c)$ 
+% based dynamic analysis 
+give the accurate adaptivity definition, 
+simultaneously the $\THESYSTEM$ outputs the tight bounds for both of the adaptivity and query requesting number as expected.
+% Look at 
+% the $ \kw{linearRegressionGD(k)}$ which we discussed in Section~\ref{sec:examples}, the $\THESYSTEM$ outputs the accurate bound $k$ as expected.
+But for the forth program $\kw{multipleRoundOdd(k)}$, $\THESYSTEM$ outputs an over-approximated upper bound $1 + 2*k$ for the $A(c)$, 
+which is consistent with our expectation as discussed in Example~\ref{ex:multipleRoundSingle}. 
+The fifth program is the evaluation results for the example in Example~\ref{ex:multipleRoundSingle}, where $\THESYSTEM$ outputs
+the tight bound for $A(c)$ but $A(c)$ is a loose definition of the program's actual adaptivity rounds.
+%
+The programs in the table from  $\kw{seq()}$ to $ \kw{nestedWhileMultiPathMultiVarRecAcross(k)}$ are 
+designed for testing the programs under different possible situitions.
+These programs contain control dependency, data value dependency,
+the nested while, dependency through multiple variables, dependency across nested loops, and so on. 
+Overall for these examples, our system gives both the accurate adaptivity definition and 
+adaptivity upper bound simultaneously through the dynamic analysis and 
+static analysis.
+The full programs are defined below from Example~\ref{ex:twoRoundsComplete} to Example~\ref{ex:nestedWhileMultiVarRecAcross}.
+%
+For the other programs, the complete program can be found in Appendix.
+\begin {table}[H]
+        \vspace{-0.3cm}
+    \caption{Experimental results of {\THESYSTEM} implementation}
+        \label{tb:imp}
+        \begin{center}
+        \centering
+{\footnotesize
+        \begin{tabular}{ r | p{12mm} p{55mm} p{\textwidth}}
+         Program $c$ & adaptive \newline rounds & $A(c)$ \newline $w: \mathcal{T}_0(c) \to \mathbb{N}$ & $\THESYSTEM$ \newline $\progA(c)$, $\# \query$ \\ 
+         \hline
+         $  \kw{twoRoundsComplete(k)}$ & $2$ & $\trace_0 \to 2$ & $2$, $k$ \\
+         $  \kw{multipleRoundsComplete(k)}$ & $k$ & $\trace_0 \to \env(\trace_0) k$ & $k$, $k$  \\
+         $  \kw{linearRegressionGD(k, rate)}$ & $k$ & $k$ & $k$, $2 * k$  \\
+         $  \kw{multipleRoundsOdd(k)}$ & $1 + k$ 
+                                    & $
+                                        \trace_0 \to 
+                                        \left\{\begin{array}{ll}
+                                        1 + \env(\trace_0) k & \env(\trace_0) k  \leq 1 \\
+                                        1 + 2 * \lceil{(\env(\trace_0) k)} \rceil / 2 & \env(\trace_0) k \geq 2
+                                        \end{array}\right\}
+                                        $ 
+              & $1 + 2*k$, $1 + 2*k$  \\
+         $  \kw{multipleRoundsSingle(k)}$    & $2$ 
+                                            & $
+                                                \trace_0 \to 
+                                                \left\{\begin{array}{ll}
+                                                \env(\trace_0) k & \env(\trace_0) k  \leq 1 \\
+                                                2 & \env(\trace_0) k \geq 2
+                                                \end{array}\right\}
+                                                $ 
+                                            & $2 + k$ , $2 + k$  \\
+         $\kw{seq()}$ & $4$ & $4$ & $4$, $4$  \\ 
+         $\kw{seqMultiVar()}$ & $4$ & $4$ & $4$, $4$ \\  
+         $ \kw{ifValueDependency}$ & $3$ & $3$ & $3$, $3$ \\
+         $\kw{ifControlDependency()}$ & $3$ & $3$ & $3$, $3$  \\
+         $ \kw{whileRec(k)}$ & $1+k$ & $1+k$ & $1+k$  \\
+        %  $ \kw{whileMultiplePath(k)}$ & $1 + k$ & $1 + k$ & $1 + 2 * k$, $1 + 2 * k$  \\
+         $ \kw{whileMultipleVar(k)}$ & $1 + 2*k$ & $1 + 2*k$ & $1 + 2*k$, $2 + 3 * k$  \\
+         $ \kw{whileValueControlDependency(k)}$ & $1 + 2*k$ & $1 + 2*k$ & $1 + 2 * k$, $2 + 2 * k$  \\
+         $ \kw{whileMultiplePathValueControlDependency(k)}$ & $2 + k$ & $2 + k$  & $2 + k$, $1 + 2 * k$   \\
+         $ \kw{nestWhileValueDependency(k)}$ & $2 + k^2$ & $2 + k^2$  & $2 + k^2$, $1 + k + k^2$   \\
+         $ \kw{nestedWhileRecAcross(k)}$ & $1 + 2*k$ & $1 + 2*k$ & $1 + 2*k$,  $1 + k + k^2$   \\
+         $ \kw{nestedWhileMultiVarRecAcross(k)}$ & $1 + k + k^2$ & $1 + k + k^2$  & $1 + k + k^2$,  $2 + k + k^2$  \\
+         $ \kw{nestedWhileMultiPathMultiVarRecAcross(k)}$ & $1 + k + k^2$ & $1 + k + k^2$  & $1 + k + k^2$,  $2 + k + k^2$  \\
+        \end{tabular}
+}        
+\end{center}
+\end{table}
+        %
+
+\begin{example}[Complete Two Round Algorithm]
+        \label{ex:twoRoundsComplete}
+        \[
+        %
+            \kw{twoRoundsComplete(k)} \triangleq
+        \begin{array}{l}
+               \clabel{ a \leftarrow []}^{1} ; \\
+                \clabel{\assign{j}{k} }^{2} ; \\
+                \ewhile ~ \clabel{j > 0}^{3} ~ \edo ~ \\
+                \Big(
+                 \clabel{\assign{x}{\query(\chi[k - j]\cdot \chi[k])} }^{4}  ; \\
+                 \clabel{\assign{j}{j-1}}^{5} ;\\
+                \clabel{a \leftarrow x :: a}^{6}       \Big);\\
+                \clabel{l \leftarrow (\kw{sign}\big (\sum_{i\in [k]} \chi[i]\times\ln\frac{1+a[i]}{1-a[i]} \big ))}^{7}\\
+            \end{array}
+        \]
+        %
+        \begin{algorithm}
+        \footnotesize
+        \caption{A two-round analyst strategy for random data (The example in  \cite{dwork2015preserving})}
+        \label{alg:twoRound}
+        \begin{algorithmic}
+        \REQUIRE Mechanism $\mathcal{M}$ with a hidden data set $D \in \{-1,+1\}^{n\times (k+1)} \subset \dbdom$.
+        \STATE  {\bf for}\ $j\in [k]$\ {\bf do}.  
+        \STATE \qquad {\bf define} $q_j(d)=d(j)\cdot d(k)$ where $d \in \{D(i) ~|~ i = 0, \cdots, n\} \subseteq \{-1,+1\}^{k+1}$.
+        \STATE \qquad {\bf let} $a_j=\mathcal{M}(q_j)$ 
+        \STATE \qquad \COMMENT{In the line above, $\mathcal{M}$ computes approx. the exp. value  of $q_j$ over $D$. So, $a_j\in [-1,+1]$.}
+        \STATE {\bf define} $q_{k}(d)= d(k) \cdot \kw{sign}\big (\sum_{i\in [k]} x(i) \cdot \ln\frac{1+a_i}{1-a_i} \big )$ where $x\in \{-1,+1\}^{k+1}$.
+        \STATE\COMMENT{In the line above,  $\kw{sign}(y)=\left \{ \begin{array}{lr} +1 & \kw{if}\ y\geq 0\\ -1 &\kw{otherwise} \end{array} \right . $.}
+        \STATE {\bf let} $a_{k+1}=\mathcal{M}(q_{k+1})$
+        \STATE\COMMENT{In the line above,  $\mathcal{M}$ computes approx. the exp. value  of $q_{k+1}$ over $X$. So, $a_{k+1}\in [-1,+1]$.}
+        \RETURN $a_{k+1}$.
+        \ENSURE $a_{k+1}\in [-1,+1]$
+            % \ENSURE 
+        \end{algorithmic}
+        \end{algorithm}
+        %
+    %
+        \end{example}
+    
+    \begin{example}[Complete Multiple Round Algorithm]
+    %
+    \begin{algorithm}
+    \footnotesize
+    \caption{A multi-round analyst strategy for random data base \cite{dwork2015preserving}}
+    \label{alg:multiRound}
+    \begin{algorithmic}
+    \REQUIRE Mechanism $\mathcal{M}$ with a hidden state $X\in [N]^{n}$ sampled u.a.r., control set size $c$
+    \STATE Define control dataset $C = \{0,1, \cdots, c - 1\}$
+    \STATE Initialize $Nscore(i) = 0$ for $i \in [N]$, $I = \emptyset$ and $Cscore(C(i)) = 0$ for $i \in [c]$
+    \STATE  {\bf for}\ $j\in [k]$\ {\bf do} 
+    \STATE \qquad {\bf let} $p=\uniform(0,1)$ 
+    \STATE \qquad {\bf define} $q (x) = \bernoulli ( p )$ .
+    \STATE \qquad {\bf define} $qc (x) = \bernoulli ( p )$ .
+    \STATE \qquad {\bf let} $a = \mathcal{M}(q)$ 
+    \STATE \qquad {\bf for}\ $i \in [N]$\ {\bf do}
+    \STATE \qquad \qquad $Nscore(i) = Nscore(i) + (a - p)*(q (i) - p)$ if $i \notin I$
+    \STATE \qquad {\bf for}\ $i \in [c]$\ {\bf do}
+    \STATE \qquad \qquad $Cscore(C(i)) = Cscore(C(i)) + (a - p)*(qc (i) - p)$
+    \STATE \qquad {\bf let} $I = \{i | i\in [N] \land Nscore(i) > \max(Cscore)\}$
+    \STATE \qquad {\bf let} $D = D \setminus I$ 
+    \RETURN $D$.
+    \end{algorithmic}
+    \end{algorithm}
+    %
+    {\small
+    \begin{figure}
+        \begin{subfigure}{0.8\textwidth}
+        \begin{centering}
+        $
+    \kw{multipleRoundsComplete(k, c, N)} \triangleq
+    \begin{array}{l}
+        \clabel{\assign{j}{N}}^0 ; 
+         \clabel{\assign{cs}{0}}^1; 
+         \clabel{\assign{ns}{0}}^2;
+         \clabel{\assign{I}{0}}^3; 
+         \clabel{\assign{w}{k}}^{4} ;\\
+         \ewhile ~ \clabel{j > 0}^{5} ~ \edo ~ \\
+         \Big(
+         \clabel{\assign{j}{j-1}}^{6} ;
+         \clabel{\assign{cs}{0 + cs}}^7; 
+         \clabel{\assign{ns}{0 + ns}}^8
+         \Big); \\
+    
+         \ewhile ~ \clabel{w > 0}^{9} ~ \edo ~ \\
+        \Big(
+        \clabel{\assign{w}{w-1}}^{10} ;
+        \left[p \leftarrow c \right]^{11}; 
+        \left[q \leftarrow c \right]^{12}; 
+        \left[ a \leftarrow \query (\chi[I]) \right]^{13};\\
+        \clabel{\assign{i}{N}}^{14} ; 
+        \ewhile ~ \clabel{i > 0}^{15} ~ \edo ~ \\
+        \Big(
+        \clabel{\assign{i}{i-1}}^{16} ;
+        \clabel{\assign{cs(i)}{cs(i) + (a - p) * (q - p)}}^{17}; \\
+        \eif (\clabel{ I < i}^{18}, \clabel{\assign{ns(i)}{{ns(i) + (a - p) * (q - p)}}}^{19},
+        \clabel{\assign{ns}{ns(i)}}^{20}    )
+        \Big); \\
+        \clabel{\assign{i2}{N}}^{21} ; \\
+        \ewhile ~ \clabel{i2 > 0}^{22} ~ \edo ~ \\
+        \Big(
+        \clabel{\assign{i2}{i2-1}}^{23} ;
+        \eif (\clabel{ns(i2) > \kw{max}(cs)}^{24}, 
+        \clabel{\assign{I}{i + I}}^{25},
+        \clabel{\assign{I}{I}}^{26})
+        \Big)
+        \Big) 
+    \end{array}
+       $
+       \caption{}
+        \end{centering}
+        \end{subfigure}
+        \vspace{-0.3cm}
+        \caption{(a) The labeled program implementing the multiple round algorithm (b)The same program in the SSA version}
+        \vspace{-0.5cm}
+        \label{fig:multiround_complete}
+        \end{figure}
+    }
+    %
+    \end{example}

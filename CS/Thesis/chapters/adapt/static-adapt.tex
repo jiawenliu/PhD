@@ -68,7 +68,35 @@ I firstly define the execution-based dependency graph, then formalize the \emph{
 \subsubsection{Program-Based Data Dependency Graph Generation}
 %  Weighted Data Dependency Graph Generation}
  \label{sec:alg_graphgen}
-Finally I build the estimated data dependency graph based on the above program static analysis as follows:
+ To build the graph, we firstly estimate the vertices and query annotations straightforwardly as follows.
+\paragraph{Vertices Estimation and Query Annotation Estimation}
+\label{sec:alg_vertexgen}
+The vertices in the static analysis dependency graph are actually identical as the  Execution-Based Dependency Graph, which are assigned variables in the program annotated with the unique label(line number). These vertices are collected by statically scanning the program, like what I do for vertices of its Execution-Based Dependency Graph. The vertices are defined formally as follows.
+
+  \highlight{
+\[
+    \progV(c) \triangleq \left\{ 
+  x^l \in \mathcal{LV} 
+  ~ \middle\vert ~
+  x^l \in \lvar_{c}
+  \right\}
+  \]
+  }
+  %
+
+The static scanning of the programs also tells us whether one vertice(assigned variable) is assigned by a query request.  I have similar definition when defining the Execution-Based Dependency Graph, 
+a set of pairs $\progF(c) \in \mathcal{P}(\mathcal{LV} \times \{0, 1\} )$ 
+% is the set of pairs 
+% The weight for each vertex in $\progV(c)$ is computed 
+mapping each $x^l \in \progV(c)$ to a flag, either $0$ or $1$, where $1$  means $x^{l}$ is a member of $ \qvar_{c}$, a set of those variables assigned with query requests, and $0$ means $x^{l}$ not in this set. It is defined formally below.
+
+\[\progF(c) =\left\{(x^l, n)  \in  \mathcal{LV} \times \{0, 1\} 
+~ \middle\vert ~
+x^l \in \lvar_{c},
+n = 1 \iff x^l \in \qvar_{c} \land n = 0 \iff  x^l \not\in \qvar_{c} .
+\right\}\]
+
+Then, I build the estimated data dependency graph based on the above program static analysis as follows:
 \\
 \highlight{
 \[

@@ -1,0 +1,150 @@
+Plan:
+\textbf{Two Examples + Algorithm Overview}
+\begin{itemize}
+\item {Multiple-Path While Loop}
+\\
+\textbf{The First Challenge/Problem from The Example, 
+and the Overview of the New Techniques Targeting This Problem}
+\item {Nested While Loop}
+\\
+\textbf{The Second Challenge/Problem from The Example,
+and the Overview of the New Techniques Targeting This Problem}
+\end{itemize}
+In this section, we discuss two representative examples with
+challenges of analyzing the symbolic bounds for the reachability-bound.
+We also give the technique overview for the analysis algorithm.
+%
+\subsection{Multiple-Path Loop}
+\label{sec:overview-multiplepath}
+\input{examples/whileOdd}
+Figure~\ref{fig:whileOdd}(a) shows an example of the multiple path loops
+with different iterations for different paths.
+This example is simplified from the example in~\cite{Sumit2010rechability}, which
+is a skeleton code from the .Net base-class library.
+\\
+In this example,
+the precise reachability-bounds for control location $3$ and $4$ are both $\frac{k}{4}$,
+$\frac{k}{2}$ for location $2$, and $\frac{k}{2} + 1$ for location $1$.
+\\
+In order to know location $3$ and $4$ are executed $\frac{k}{4}$,
+we need to know location $3$ and $4$ is executed alternatively after each other.
+In other words, neither of them is executed twice in 2 consecutive iterations.
+\\
+However, by paper~\cite{Sumit2010rechability} where the \emph{reachability-bound} problem is defined,
+it can only derive the bound $k$ for location $3$ and $4$ by their path-insensitive method.
+To best of my knowledge, there isn't any other later works solving the \emph{reachability-bound} problem.
+\\
+Among the works on loop bound analysis, \cite{GulwaniJK09} can compute the precise global
+loop bound (i.e., $\frac{k}{2}$) for this simple example in a path-sensitive way.
+Using this global bound, we can compute the reachability-bound for location $1$ and $2$.
+However, reachability-bound for control location $3$ and $4$ are still unclear.
+% In order to know location $3$ and $4$ are executed $\frac{k}{4}$,
+% we need to know location $3$ and $4$ is executed alternatively after each other.
+% In other words, neither of them is executed twice in 2 consecutive iterations.
+% \\
+% We need to generate the repeat patterns containing the two execution paths reflecting this property.
+% % However, this execution path corresponds to two iterations of the while loop.
+% \\
+% Then, we recover the \emph{reachability-bound} of location $3$ and $4$ globally from the
+% repeat pattern through the \emph{Inside-Out} Algorithm introduced next.
+% we need to 
+\paragraph*{Outside-In Algorithm}
+The first key idea of this path-sensitive \emph{reachability-bound} algorithm is the \emph{outside-in} algorithm.
+\\
+This algorithm combines the idea of DC-based program abstraction from \cite{sinn2017complexity}
+and the while loop refinement~\cite{GulwaniJK09} efficient.
+It first generates the constraint program based on the Difference constraint and refines every while loop in this constraint program.
+Each refined while loop in the program is composed of its all possible repeat patterns.
+Then it
+computes the bound for every possible repeat pattern of the execution paths for every while loop,
+in the direction
+from its outermost repeat pattern to its innermost repeat pattern.
+\\
+% and the while loop refinement~\cite{GulwaniJK09}.
+For this $\kw{whileOdd}$ example, the \emph{Outside-In} algorithm generates 
+the repeat patterns containing the two execution paths reflecting this property.
+There are 4 possible repeat patterns for this example:
+\\
+$\rprepeat(2 \to 3 \to 1; 2 \to 4 \to 1)$.
+\\
+$\rprepeat(2 \to 3 \to 1; 2 \to 4 \to 1)$.
+\\
+$2 \to 3 \to 1$
+\\
+$2 \to 4 \to 1$.
+\\
+\emph{Outside-In} computes the bound for every repeat pattern
+as $\frac{k}{4}$, $\frac{k}{4}$, $1$, and $1$ respectively.
+\\
+Then in the next step, we recover the \emph{reachability-bound} of location $3$ and $4$ globally from the
+repeat pattern through the \emph{Inside-Out} Algorithm.
+\subsection{Nested Loops with Related Iterator}
+\label{sec:overview-nestedwhile}
+Figure~\ref{fig:threeWhile}(a) shows an example of the nested loops with related 
+iterators.
+This example is adopted from the example in~\cite{GulwaniJK09}, which is common in product code.
+\\
+In line 8, $i$ is reset by $w$ and $w$ is reset by $j$ at line 5. So we know the
+while $LOOP_6$ is only executed in the first iteration of while loop 1 and 3.
+\\
+We also know while loop $LOOP_3$ at line 3 is executed only in 
+the first $m - N$ iterations of the 
+$LOOP_1$ because $j$ is reset by $i$ in line 2.
+\\
+So the total combined iterations of all the three loops is bounded above by 
+$n + m^2 - m \times N$.
+\\
+So far, The loop bound analysis method in \cite{GulwaniJK09} is able to give
+an approximation for the $n + (m \times n) + N$. 
+The DC-based algorithm in \cite{sinn2017complexity} is able to
+compute the precise combined loop bound of $n + m^2 - m \times N$.
+\\
+However, knowing the global loop bound isn't enough to solve the \emph{reachability-bound problem} for locations inside
+$LOOP_6$.
+\\
+% However, i
+% In order to solve the \emph{reachability-bound problem} for locations inside
+In order to how many times the locations inside
+$LOOP_6$ is executed globally, we need to know
+how many iterations of the $LOOP_3$ and $LOOP_1$, 
+during which the $LOOP_6$ is executed.
+Then multiply the local bound of $LOOP_6$ with the iterations during which it can be touched.
+\\
+The Progress Invariant method in \cite{GulwaniJK09} is only able to compute
+the loop bound for $LOOP_6$ inside $LOOP_3$ and $LOOP_1$.
+So we have to over-approximate the global bound for $LOOP_6$ with the
+overall program complexity, i.e., $n + m^2 - m \times N$.
+\\
+For the same reason, the DC-based algorithm in \cite{sinn2017complexity}
+is only able to
+compute the precise combined loop bound and the local bound of each loop
+separately as well.
+We are still unable to know the  \emph{reachability-bound} for the locations in the innermost loop.
+% \\
+\paragraph*{Inside-Out Algorithm}
+The second key idea of this path-sensitive reachability analysis algorithm is the
+\emph{inside-out} algorithm.
+This algorithm computes an \emph{Inside-Out} bound on number of the iterations for
+every nested outside loop w.r.t. the innermost loop of every control location.
+Such that during these iterations, the innermost loop is touched. 
+% the for every program control location,
+% how many times the innermost loop of this control location will be touched w.r.t. every
+% outside loop it is nested in.
+This is distinguished from the traditional methods, which compute the local bound
+of the innermost loop w.r.t. the outside loop it is nested in.
+%
+\\
+For this nested loop program $\kw{threeNestedWhile}$, 
+we compute the \emph{Inside-Out} bound for $LOOP_1$ and $LOOP_3$
+w.r.t. the $LOOP_6$ as follows,
+$InOut(LOOP_1, LOOP_6) = 1$.
+\\
+$InOut(LOOP_3, LOOP_6) = 1$.
+Then, we combine this result with the local bound
+computed from the \emph{Outside-In} algorithm.
+For the only one path $6 \to 7$ in $LOOP_6$, 
+we compute the accurate reachability bound $N$.
+\\
+Finally, the derivation of the reachability bound for location $6$ and $7$
+on this path is straightforward.
+\input{examples/threeNestedWhile}

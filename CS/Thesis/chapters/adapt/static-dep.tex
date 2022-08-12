@@ -1,0 +1,375 @@
+
+% \subsection{Data Dependency Relation Analysis}
+% \label{sec:alg_edgegen}
+% % \wq{
+   I show how to estimate the directed edges in the static analysis dependency graph.
+ I develop a variant of data flow analysis, called Feasible Data-Flow Generation, which 
+considers both the control flow and data flow and
+is a sound approximation of the edges in the execution based dependency graph.
+% }
+
+% \wq{
+  Also, worth to mention, I use the result of reaching definition on the abstract control flow graph in feasible 
+data-flow generation to have a more precise approximation. Let us see a simple example, a program $ [x = 0]^{1}; [x=2]^{2};  [y = x+1]^{3}$. The standard data flow analysis 
+tells us that both the labeled variable $x^{1}$ and $x${2} may flow to $y^{3}$, which will result in an unnecessary edge ($x^{1}, y^{3}$). The result of reaching definition 
+can help us eliminate this kind of edge by telling us, at line $3$, only variable $x^{2}$ is reachable. 
+% }
+
+
+% In this step, through 
+% % the vertices and edges in 
+% $c$'s abstract contrl flow graph $\absG(c)$,
+%  $\THESYSTEM$ performs a feasible data-flow analysis 
+%  using the reachable definition algorithm,
+% %  and then Then I generated the set of feasible data-flow between labeled variables based on that.
+% and generates the 
+% %set of 
+% feasible data-flow relation between labeled variables.
+% \\
+%  By generating set of all the reachable variables at location of label $l$ in the program $c$.
+% For every labelled variable $x^l$ in this set, 
+% the value assigned to that variable
+% in the assignment command associated to that label is reachable at the entry point of  executing the command of label $l$.
+% \\
+In the first step, 
+it performs the standard reaching definition analysis given a program $c$, 
+on 
+% its every label $l$
+every label in $\absV(c)$.  This step generates set of all the reachable variables at location of label $l$ in the program $c$.
+The $\live(l, c)$ represent the analysis result, which is the set of 
+reachable labeled variables in program $c$ at the location of label $l$.
+For every labelled variable $x^l$ in this set, 
+the value assigned to that variable
+in the assignment command associated to that label is reachable at the entry point of  executing the command of label $l$.
+% \\
+% it performs the standard reaching definition analysis given a program $c$, on its every label $l$.
+% \\
+% Another operator \mathsf{blocks} 
+The block, 
+is either the command of the form of assignment, skip, or a test of the form of $[b]^{l}$, 
+% and $block$ of program $c$ is 
+denoted by $\mathsf{blocks}(c)$
+the set of all the blocks 
+in program $c$, where  $\mathsf{blocks}: \cdom \to \mathcal{P}(\cdom \cup \clabel{\bexpr}^{l})$.
+Then it generates the set of feasible data-flow between labeled variables with detail in Definition~\ref{def:feasible_flowsto}, 
+based on $\live(l, c)$ for every label in a program $c$ and its blocks $\mathsf{blocks}$.
+\\
+The details are as follows.
+%
+% Performing a feasible data-flow analysis through the reachable definition algorithm. 
+%  By generating set of all the reachable variables at location of label $l$ in the program $c$.
+% For every labelled variable $x^l$ in this set, 
+% the value assigned to that variable
+% in the assignment command associated to that label is reachable at the entry point of  executing the command of label $l$.
+% \paragraph{Generate CFG}
+%  \begin{def}
+%   \label{def:init_label}
+%   Define $\mathsf{init}$: Command -> label, which returns the initial label of the statement. 
+% \[
+%  \begin{array}{ll}
+%     init([x := e]^{l})  & = l  \\
+%      init([x := q(e)]^{l})  & = l \\
+%      init([skip]^{l})  & = l \\
+%      init([if [b]^l then C_1 else C_2]^{l})  & = l \\
+%      init([while [b]^l do C]^{l})  & = l \\
+%      init(C_1 ; C_2)  & = init(C_1) \\
+%  \end{array}
+%  \]
+% \end{def}
+%   Define $\mathsf{final}$: Command -> Powerset(label), which returns the final labels of the statement. 
+%  \[
+%  \begin{array}{ll}
+%     final([x := e]^{l})  & = \{l\}  \\
+%      final([x := q(e)]^{l})  & = \{l\}  \\
+%      final([skip]^{l})  & = \{l\} \\
+%      final([if [b]^l then C_1 else C_2]^{l})  & = final(C_1) \cup final(C_2) \\
+%      final([while [b]^l do C]^{l})  & = \{l\} \footnote{while terminates after b evaluates to false} \\
+%      final(C_1 ; C_2)  & =  final(C_2) \\
+%  \end{array}
+%  \]
+% \paragraph*{Blocks and Defs}
+%  Define block B to be either the command of the form of assignment, skip, or test of the form of $[b]^{l}$.\\
+%  Define $\mathsf{blocks}$ : command -> Powerset(Block)
+%  \[
+%  \begin{array}{ll}
+%     blocks([x := e]^{l})  & = \{[x := e]^{l}\}  \\
+%      block([x := q(e)]^{l})  & = \{[x := q(e)]^{l}\}  \\
+%      blocks([skip]^{l})  & = \{[skip]^{l}\} \\
+%      blocks([if [b]^l then C_1 else C_2]^{l})  & = {[b]^{l}} \cup blocks(C_1) \cup blocks(C_2) \\
+%      blocks([while [b]^l do C]^{l})  & = \{[b]^{l}\} \cup blocks(C) \\
+%      blocks(C_1 ; C_2)  & = blocks(C_1) \cup  blocks(C_2) \\
+%  \end{array}
+%  \]
+%  Define $\mathsf{labels}$ to get the labels of blocks.
+%  \[
+%    labels(C) = \{l | [B]^{l} \in blocks(C) \}
+%  \]  
+
+% The control flow graph is generated by edges between labels. Define $\mathsf{flow}$: command -> P (label $\times$ label ).
+
+% \[
+%  \begin{array}{ll}
+%     flow([x := e]^{l})  & = \emptyset  \\
+%      flow([x := q(e)]^{l})  & = \emptyset  \\
+%      flow([skip]^{l})  & = \emptyset \\
+%      flow([if [b]^l then C_1 else C_2)  & =  flow(C_1) \cup flow(C_2)\cup \{(l, init(C_1)) , (l, init(C_2)) \} \\
+%      flow([while [b]^l do C)  & =  flow(C) \cup \{(l, init(C)) \} \cup \{(l', l)| l' \in final(C) \} \\
+%      flow(C_1 ; C_2)  & = flow(C_1) \cup  flow(C_2) \cup \{ (l,init(C_2)) | l \in final(C_1) \} \\
+%  \end{array}
+%  \]
+ 
+ \paragraph{Reaching definition analysis}
+ \todo{extend and formalize}
+%  Define block B to be either the command of the form of assignment, skip, or test of the form of $[b]^{l}$.\\
+%  Define $\mathsf{blocks}$ : command -> Powerset(Block)
+A block  is either the command of the form of assignment, skip, or test of the form of $[b]^{l}$.\\
+The operator $\mathsf{blk} : \cdom \to blocks$ gives all the blocks in program $c$.
+\\
+%  \[
+%  \begin{array}{ll}
+%     blocks([x := e]^{l})  & = \{[x := e]^{l}\}  \\
+%      block([x := q(e)]^{l})  & = \{[x := q(e)]^{l}\}  \\
+%      blocks([skip]^{l})  & = \{[skip]^{l}\} \\
+%      blocks([if [b]^l then C_1 else C_2]^{l})  & = {[b]^{l}} \cup blocks(C_1) \cup blocks(C_2) \\
+%      blocks([while [b]^l do C]^{l})  & = \{[b]^{l}\} \cup blocks(C) \\
+%      blocks(C_1 ; C_2)  & = blocks(C_1) \cup  blocks(C_2) \\
+%  \end{array}
+%  \]
+ Set $?$ to be undefined:
+ \\
+%  $label^{?}$ is label $\cup \{?\}$.\\
+%  Define $\mathsf{kill}$: $blocks \to \mathcal{P}(\mathcal{VAR} \times LABEL \cup \{?\})$, which produces the set of labelled variables of assignment destroyed by the block.
+The operator $\mathsf{kill}$: $blocks \to \mathcal{P}(\mathcal{VAR} \times \ldom \cup \{?\})$ produces the set of labelled variables of assignment destroyed by the block.
+ \\
+  % Define $\mathsf{gen}$: $blocks \to \mathcal{P}(\mathcal{VAR} \times LABEL \cup \{?\})$, which generates the set of labelled variables generated by the block.
+  The operator $\mathsf{gen}$: $blocks \to \mathcal{P}(\mathcal{VAR} \times \ldom \cup \{?\})$ generates the set of labelled variables generated by the block.
+  \\
+  % Define $defs(x)(c): \mathcal{VAR} \to LABEL$, gives all the labels where assigns value to variable x in the target program $c$. 
+  % The operator  $defs(c): \mathcal{VAR} \to \ldom$ gives all the labels where assigns value to variable in $c$. 
+%  \[
+%  \begin{array}{ll}
+%     kill([x := e]^{l})  & = \{ (x, ?) \} \cup \{ (x, l') | l' \in defs(x) \} \\
+%      kill([x := q(e)]^{l})  & = \{ (x, ?) \} \cup \{ (x, l') | l' \in defs(x) \}  \\
+%      kill([skip]^{l})  & = \emptyset \\
+%      kill([ [b]^l ]^{l})  & =  \emptyset
+%  \end{array}
+%  ~~
+%   \begin{array}{ll}
+%       gen([x := e]^{l})  & = \{ (x, l) \}  \\
+%      gen([x := q(e)]^{l})  & = \{ (x, l) \}  \\
+%      gen([skip]^{l})  & = \emptyset \\
+%      gen([ [b]^l ]^{l})  & =  \emptyset 
+%  \end{array}
+%  \]
+%  Define $in(l)$, $out(l)$: LABEL$ \to \mathcal{VAR} \times LABEL \cup \{?\}$ for every block in program $c$ is computed as follows,
+%  \[
+%  \begin{array}{lll}
+%     in(l)  & = \{ (x, ?) | x^l \in \lvar_c \land  l = \absinit(c) \}  
+%     \cup \{ out(l')|  | (l',\_, l) \in \absE \land  l \neq \absinit(c)\}  \\
+%      out(l)  & =  gen(B^{l}) \cup \{ in(l) \setminus kill(B^l)  \} & B^l \in blocks(c)   
+%  \end{array}
+%  \]
+%  computing $in(l)$ and $out(l)$ for every $B^l \in blocks(c) $, and repeating these two step
+% until the $in(l)$ and $out(l)$ are stabilized for every $B^l \in blocks(c) $
+%  I use $\live_{in}(l,c)$ and $\live_{out}(l, c)$ denote the stabilized results for the command of label $l$ in program $c$. 
+%  Define $defs(x)(c): \mathcal{VAR} \to LABEL$, gives all the labels where assigns value to variable x in the target program $c$.
+% Define $defs(x)(c): \mathcal{VAR} \to \ldom$, gives all the labels where assigns value to variable x in the target program $c$.
+% \\
+%  Define $in(l)$, $out(l)$: $ \ldom \to \mathcal{VAR} \times LABEL \cup \{?\}$ for every block in program $c$ is computed as follows,
+The operator  $in(l)$, $out(l)$: $ \ldom \to \mathcal{LV} \cup \{?\}$ for every block in program $c$ is defined as follows,
+ \[
+ \begin{array}{ll}
+    % in(l)  & = \{ (x, ?) | x^l \in \lvar_c \land  l = \absinit(c) \}  
+    in(l)  & = \{ x^{?} | x^l \in \lvar_c \land  l = \absinit(c) \}  
+    \cup \{ out(l')|  | (l',\_, l) \in \absE(c) \land  l \neq \absinit(c)\}  \\
+     out(l)  & =  gen(B^{l}) \cup \{ in(l) \setminus kill(B^l)  \}  
+ \end{array}
+ \]
+computing $in(l)$ and $out(l)$ for every $B^l \in blocks(c) $, and repeating these two steps
+until the $in(l)$ and $out(l)$ are stabilized for every $B^l \in blocks(c) $
+%  I use $\live_{in}(l,c)$ and $\live_{out}(l, c)$ denote the stabilized results for the command of label $l$ in program $c$. 
+ I use $\live(l,c)$ to represent 
+% $\live_{in}(l,c)$ in the other part of the paper.
+denote the stabilized result of $in(l)$ at label $l$ in program $c$. 
+% The $\live_{in}(l,c)$ and $\live_{out}(l, c)$ is computed by the Standard worklist algorithm. (For simplicity, I use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.}
+\\
+% The $\live_{in}(l,c)$ and $\live_{out}(l, c)$ 
+The stabilized $in(l)$ and $out(l)$ for program $c$, as well as $\live(l, c)$,
+is computed by the standard worklist algorithm with detail as below. 
+% For simplicity, I use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.
+\begin{enumerate}
+    \item initial in[l]=out[l]=$\emptyset$
+    \item initial in[entry label] = $\emptyset$
+    \item initialize a work queue, contains all the blocks in C
+    \item while |W| != 0 \\
+         pop l in W\\
+          old = out[l]\\
+          in(l) =  out(l') where $(l',\_, l) \in \absE(c)$\\
+           out(l) = gen($b^l$) $\cup$ (in(l) - kill($b^l$) ) where $b^l$ in $\mathsf{blk}(c)$   \\
+          if (old != out(l)) W= W $\cup$ \{l'| (l,l') in $(l',\_, l) \in \absE(c)$\}\\
+          end while
+\end{enumerate}
+%
+% computing $in(l)$ and $out(l)$ for every $B^l \in blocks(c) $, and repeating these two step
+% until the $in(l)$ and $out(l)$ are stabilized for every $B^l \in blocks(c) $
+%  I use $\live_{in}(l,c)$ and $\live_{out}(l, c)$ denote the stabilized results for the command of label $l$ in program $c$. 
+% The $\live_{in}(l,c)$ and $\live_{out}(l, c)$ is computed by the Standard worklist algorithm. (For simplicity, I use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.
+%%
+\paragraph{Feasible Data-Flow Generation}
+by using the results of Reaching definition analysis results, specifically $\live(l, c)$ for every label in a program $c$, I refine the vertices and edges in the $\absG$ graph 
+by generating the set of feasible data-flow between labeled variables as follows,
+%
+%   \[
+%  \begin{array}{ll}
+%     dcdg([x := e]^{l})  & = \{ (y^i, x^l) | y \in VAR(e) \land (y,i) \in \live_{in}(l) \}  \\
+%      dcdg([x := q(e)]^{l})  & = \{ (y^i, x^l) | y \in VAR(e) \land (y,i) \in \live_{in}(l) \}  \\
+%      dcdg([skip]^{l})  & = \emptyset \\
+%      dcdg([if [b]^l then C_1 else C_2)  & =  dcdg(c_1) \cup dcdg(c_2)\\ & \cup \{(x^i,y^j) | x \in VAR(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(c_1) \} \\
+%      &\cup \{(x^i,y^j) | x \in VAR(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(c_2) \} \\
+%      dcdg([while [b]^l do c)  & =  dcdg(c) \cup \{(x^i,y^j) | x \in VAR(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(C) \} \\
+%      dcdg(c_1 ;c_2)  & = dcdg(c_1) \cup  dcdg(c_2) \\
+%  \end{array}
+%  \]
+%
+\begin{defn}[Feasible Data-Flow]
+  \label{def:feasible_flowsto}
+  Given a program $c$ and two labeled variables $x^i, y^j$  in this program, 
+  $\flowsto(x^i, y^j, c)$ is 
+    {\footnotesize
+    \[
+   \begin{array}{ll}
+    \flowsto(x^i, y^j, \clabel{\assign{x}{\expr}}{}^l)  & \triangleq (x^i, y^j) \in \{ (y^i, x^l) | y \in \mathsf{FV}(\expr) 
+    % \land (y,i) \in \live(l, \clabel{\assign{x}{\expr}}^l) \}  \\
+    \land y^i \in \live(l, \clabel{\assign{x}{\expr}}^l) \}  \\
+    \flowsto(x^i, y^j, \clabel{\assign{x}{\query(\qexpr)}}{}^l)  & \triangleq (x^i, y^j) \in \{ (y^i, x^l) | y \in \mathsf{FV}(\qexpr) 
+    % \land (y,i) \in \live(l,\clabel{\assign{x}{\query(\qexpr)}}^l) \}  \\
+    \land y^i \in \live(l,\clabel{\assign{x}{\query(\qexpr)}}^l) \}  \\
+    \flowsto(x^i, y^j, [\eskip]^{l})  & = \emptyset \\
+    \flowsto(x^i, y^j, \eif ([b]^l, c_1, c_2))  & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\ 
+        & \lor (x^i, y^j) \in
+       \{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+      %  (x,i) 
+      x^i \in \live(l, \eif ([b]^l, c_1, c_2)) \land  y^j \in \lvar(c_1) \\
+    %   ([y = \_]^j) \in \mathsf{blk}(c_1) \} \\
+       &\lor (x^i, y^j) \in \{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+      %  (x,i) 
+      x^i\in \live(l, \eif ([b]^l, c_1, c_2))  \land  y^j \in \lvar(c_2) \\
+    %   \land ([y = \_]^j) \in \mathsf{blk}(c_2) \} \\
+       \flowsto(x^i, y^j, \ewhile [b]^l \edo c_w)  & \triangleq  \flowsto(x^i, y^j, c_w)  \lor
+       \\ & 
+       (x^i, y^j) \in  \{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+      %  (x,i) 
+      x^i \in \live(l,   \ewhile [b]^l \edo c_w) \land  y^j \in \lvar(c_w) \\
+    %   ([y = \_]^j) \in \mathsf{blk}(c_w) \} \\
+       \flowsto(x^i, y^j, c_1 ;c_2)  & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\
+   \end{array}
+   \]
+   }
+   \end{defn}
+%
+This \emph{Feasible Data-Flow} relation is a sound approximation 
+of the \emph{variable may-Dependency} relation over labeled variables for every program.
+The soundness is proved
+in Appendix~\ref{apdx:flowsto_soundness}.
+%
+\paragraph*{Edges Estimation}
+Then I define the estimated directed edges
+% for each vertex in $\progV(c)$,
+between vertices in $\progV(c)$,
+as a set of pairs 
+% $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{LV} \times EXPR(\constdom))$ 
+$\progE(c) \in \mathcal{P}(\in \mathcal{LV} \times \mathcal{LV})$
+% is the set of pairs 
+% The weight for each vertex in $\progV(c)$ is computed 
+indicating a directed edge from the first vertex to the second one in each pair
+as follows,
+\highlight{
+  \[
+    \progE(c) \triangleq 
+    \left\{ 
+    ({x}_1^{i}, {x}_2^{j}) \in \mathcal{LV} \times \mathcal{LV}
+    ~ \middle\vert ~
+    \begin{array}{l}
+      {x}_1^{i}, {x}_2^{j} \in \progV(c)
+    \land
+      % \\
+      \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  
+      n \geq 0 \land
+      \\
+      \flowsto(x^i,  z_1^{r_1}, c) 
+      \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
+    \end{array}
+    \right\}
+    \]
+}
+This estimated directed edge set $\progE(c)$ is a sound approximation of the 
+edge set in $c$'s execution-based dependency graph, which is proved 
+in Appendix~\ref{apdx:adapt_soundness}.
+%  \begin{defn}[Feasible Data-Flow]
+%   \label{def:feasible_flowsto}
+%     {\footnotesize
+%     \[
+%    \begin{array}{ll}
+%       dcdg(\clabel{\assign{x}{\expr}}{}^l)  & = \{ (y^i, x^l) | y \in FV(e) \land (y,i) \in \live_{in}(l, \clabel{\assign{x}{\expr}}^l) \}  \\
+%        dcdg(\clabel{\assign{x}{\query(\qexpr)}}{}^l)  & = \{ (y^i, x^l) | y \in FV(e) \land (y,i) \in \live_{in}(l,\clabel{\assign{x}{\query(\qexpr)}}^l) \}  \\
+%        dcdg([\eskip]^{l})  & = \emptyset \\
+%        dcdg([\eif [b]^l \ethen c_1 \eelse c_2)  & =  dcdg(c_1) \cup dcdg(c_2)\\ & \cup 
+%        \{(x^i,y^j) | x \in FV(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(c_1) \} \\
+%        &\cup \{(x^i,y^j) | x \in FV(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(c_2) \} \\
+%        dcdg([\ewhile [b]^l \edo c)  & =  dcdg(c) \cup \{(x^i,y^j) | x \in FV(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(C) \} \\
+%        dcdg(c_1 ;c_2)  & = dcdg(c_1) \cup  dcdg(c_2) \\
+%    \end{array}
+%    \]
+%    }
+%    \end{defn}
+%    For any two labeled variables $x^i, y^j$ in a program $c$, 
+%   %  it is easy to see that there is a one-on-one correspondence between 
+%   %  $\flowsto$ relation of the two variables, and the $dcdg$ analysis result on $c$.
+%   I use $\flowsto()$ denote if they have a feasible data-flow relation in Definition~\ref{def:flowsto}.
+%    \begin{defn}[Feasible Data-Flow ($\flowsto$)]
+%    \label{def:flowsto}
+%    \[
+%    \forall c \in \cdom, x^i, y^j \in \lvar_c \sthat  
+%    \flowsto(x^i, y^j, c) \iff (x^i, y^j) \in dcdg(c)
+%    \]
+%    \end{defn}
+  %  This soundness is proved in Proof~\ref{pf:rd_soundness} in Appendix~\ref{apdx:rd_soundness}.
+  %  For any two labeled variables in a program $c$, it is easy to see that there is a one-on-one correspondence between 
+  %  $\flowsto$ relation of the two variables, and the $dcdg$ analysis result on $c$.
+  %  \begin{thm}[Soundness of the Feasible Data-Flow Analysis]
+  %  \label{thm:rd_soundness}
+  %  \[
+  %  \forall c \in \cdom, x^i, y^j \in \lvar_c \sthat  
+  %  \flowsto(x^i, y^j, c) \iff (x^i, y^j) \in dcdg(c)
+  %  \]
+  %  \end{thm}
+  %  This soundness is proved in Proof~\ref{pf:rd_soundness} in Appendix~\ref{apdx:rd_soundness}.
+  \paragraph*{Example}
+% Still looking at the Figure~\ref{fig:adapfun_tworound}(c), 
+% and taking the edge $(l^6, a^5)$ for example.
+% By $\flowsto(l^6, a^5, c)$, I can see $a$ is used directly in the query expression $\chi[k]*a$,
+% in the assignment command $\clabel{\assign{l}{\query(\chi[k]*a)}}^l$,
+% i.e., $a \in FV(\chi[k]*a)$.
+% Also, from the Reaching definition analysis, I know $a^5 \in \live(6, two-round)$.
+% Then I have $\flowsto(l^6, a^5, c)$ and construct the edge $(l^6, a^5)$.
+% And same way for constructing the rest edges.
+%
+The edge $(l^6, a^5)$ in Figure~\ref{fig:twoRounds_example}(c) is constructed by this definition.
+% and take  for example.
+By $\flowsto(l^6, a^5, c)$, I can see $a$ is used directly in the query expression $\chi[k]*a$,
+in the assignment command $\clabel{\assign{l}{\query(\chi[k]*a)}}^l$,
+i.e., $a \in FV(\chi[k]*a)$.
+Also, from the reaching definition analysis, I know $a^5 \in \live(6, \kw{twoRounds(k)})$.
+Then I have $\flowsto(l^6, a^5, c)$ and construct the edge $(l^6, a^5)$.
+And the same way for constructing the rest edges. Also, the edge $(x^3,j^5)$ in the same graph represents the control flow, 
+caught by the $\flowsto$ relation.
+
+% Still looking at the Figure~3(c) in main paper, 
+% and taking the edge $(l^6, a^5)$ for example.
+% By $\flowsto(l^6, a^5, c)$, I can see $a$ is used directly in the query expression $\chi[k]*a$,
+% in the assignment command $\clabel{\assign{l}{\query(\chi[k]*a)}}^l$,
+% i.e., $a \in FV(\chi[k]*a)$.
+% Also, from the Reaching definition analysis, I know $a^5 \in \live(6, two-round)$.
+% Then I have $\flowsto(l^6, a^5, c)$ and construct the edge $(l^6, a^5)$.
+% And same way for constructing the rest edges. Also, the edge $(x^3,j^5)$ in the same graph represents the control flow, caught by our $\flowsto$ relation.
+%

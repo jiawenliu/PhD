@@ -1,0 +1,47 @@
+
+I first introduce some previous works of the execution-based analysis, 
+then structure of this execution-based analysis.  
+% \\
+% The construction of this graph requires me to think about the dependency relation between two queries using what we have at hand - 
+% the trace generated in Section~\ref{sec:language}. 
+ \paragraph*{Background and Related Work}
+ \todo{Rewrite}
+ {
+My framework constructs an execution-based dependency graph based on the execution traces of a program. 
+I define semantic dependence on this graph by considering (intraprocedural) data and control 
+dependency~\cite{bilardi1996framework,cytron1991efficiently,pollock1989incremental}.    
+One related work  
+\cite{austin1992dynamic} presents a methodology to construct a dynamic dependency graph (DDG) based on the dynamic execution of a program in an imperative language, where edges represent dependency between instructions. Data dependency, control dependency, storage dependency, and resource dependency between instructions are all considered. My execution-based dependency graph only needs data dependency and control dependency between variable assignment results. 
+% Critical path length analysis on DDGs is useful for understanding the scope for parallelization, while we use the length of the longest path to define adaptivity.  
+%
+DDGs have been used in many other domains. \cite{nagar2018automated} use DDGs to find serializability violations. \cite{hammer2006dynamic} use similar \emph{program dependency graphs} \cite{ferrante1987program} for dynamic program slicing.
+\cite{mastroeni2008data} propose ways of constructing different kinds of program slices, by choose different program dependency. 
+% For example, in either syntactic or semantics sense.
+% This abstract dependency is based on properties rather than exact data.
+% Aims to give finer and smaller program slice. 
+They actually use a combination of  
+static and dynamic dependency graphs but in a manner that is different from how we use the two. Their slicing uses both static and dynamic dependency graphs, while we use the dynamic dependency graph as the basis of a definition, which is then soundly approximated by an analysis based on the static dependency graph.}
+
+{My execution-based data dependency relation definition over variables 
+is inspired by the method in \cite{Cousot19a}, where the dependency relation is also identified by looking into the differences on two execution traces. 
+However, Cousot excludes timing channels~\cite{SabelfeldM03} and empty observation, which are also not considered as a form of dependency in traditional dependency analysis \cite{DenningD77}.
+% In the cases of empty observation and timing channels, the second query is executed 
+% in one trace and isn't in another trace by modifying value of first query. 
+% Then, the second query is indeed depend on the first query and there exists an
+% adaptivity round between the two queries. 
+My definition includes timing channels and empty observation by observing both the disappearance and value variation.
+}
+% \paragraph*{Analysis Structure}
+% In order to formalize a quantitative property w.r.t. the dependency relation in program, I
+% use a three-step analysis methodology developed, 
+%  as follows,
+% \\
+%  a. The dependency relation between every query, through the methodology of semantic data dependency analysis.
+% \\
+%  b. The dependency quantity analysis, through the methodology of execution-based data reachability bound analysis. Then 
+% \\
+%  c. The adaptivity analysis, based on the two analysis results above, 
+%  I construct an execution-based dependency graph combining the dependency relation and the dependency quantity
+%     and give the formal \emph{adaptivity} definition 
+%     for program.
+%     This analysis is the first part of the analysis in Figure~\ref{fig:structure}.

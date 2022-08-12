@@ -1,0 +1,115 @@
+
+% \\
+\section{Future Works}
+\label{sec:intro-cfl}
+\paragraph{Program Resource Cost Analysis}
+\label{sec:intro-cost}
+% Then, motivated by the two following aspects, I'm interested in improving the accuracy of the program's general resource cost analysis
+% by generalizing this \emph{adaptivity} analysis framework.
+Moving towards the area of general program resource cost analysis,
+% Then, motivated by the two following aspects, 
+there are two interesting observations as follows.
+% I'm interested 
+These two observations motivated me in 
+% improving the accuracy of the program's general resource cost analysis
+improving the accuracy of the program's general resource cost analysis
+by generalizing this full-spectrum \emph{adaptivity} analysis.
+\begin{itemize}
+ \item Firstly, in a traditional program's resource cost analysis,
+ There are two categories of program cost analysis, type-system based and data-flow/control-flow analysis based. 
+ In the type-system design-based works, they \cite{GustafssonEL05} and \cite{hoffmann_jost_2022}, explicit abstraction or data structure de-allocation in order to save or reduce the cost.
+ 
+ Both of the
+ works in these two areas fail to recognize the case where program resource consumption is decreased implicitly.
+ \item The resource consumption during the program 
+ execution increases and particularly decreases implicitly in the same way as the program's adaptivity. 
+ This is explained in detail through an example in Section~\ref*{sec:generalcost-backgroung}.
+\end{itemize}
+% F
+% Then, through two observations,
+% that 
+% firstly, traditional program's resource cost analysis failed to consider the case where the program's cost could decrease 
+% implicitly, and 
+% % when there isn't a dependency relation between variables.
+% the resource consumption during the program 
+% execution increases and particularly decreases implicitly in the same way as the program's adaptivity, 
+% % Specifically, in line 5 
+% % where the list is re-written and the heap consumption is decreased implicitly. 
+% % This implicit decrease 
+% % of the cost works exactly the same as the program's adaptivity decrease.
+% I'm interested in improving the accuracy of the program's general resource cost analysis
+% by generalizing my \emph{adaptivity} analysis framework.
+ % onto the program's resource cost analysis. 
+ % Use this framework,
+ Based on the observations above, in Chapter~\ref{ch:generalization},
+%  Based on the observations above, and through the generalized \emph{adaptivity} analysis framework.
+%  I will give
+%  a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, compared 
+%  to the worst-case cost analysis in the traditional way.
+ I develop
+ an accurate program general resource cost analysis framework through generalizing my full-spectrum \emph{adaptivity} analysis.
+ This framework can give more accurate cost bound than traditional worst-case resource cost estimation methods,
+ by taking the program's implicit resource cost into consideration.
+% F
+% Then, through two observations,
+%    that 
+%    firstly, traditional program's resource cost analysis they failed to consider the case where the program's cost could decrease 
+%    implicitly, and 
+%    % when there isn't a dependency relation between variables.
+%    the resource consumption during the program 
+%    execution increases and particularly decreases implicitly in the same way as the program's adaptivity, 
+%    % Specifically, in line 5 
+%    % where the list is re-written and the heap consumption is decreased implicitly. 
+%    % This implicit decrease 
+%    % of the cost works exactly the same as program's adaptivity decrease.
+%    I'm interested in improving the accuracy of program's general resource cost analysis
+%    by generalizing my \emph{adaptivity} analysis framework.
+   %  onto the program's resource cost analysis. 
+   % Use this framework,
+   % Based on the observations above, and through the generalized \emph{adaptivity} analysis framework.
+   % I will give
+   % a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
+   % to the worst case cost analysis in traditional way.
+
+%    \section{Towards Solving the CFL-Reachability Problem}
+% Finally, based on the study on traditional way of performing data flow and control analysis,
+% I identify the similarity between the traditional way of performing data flow and control analysis, and the 
+%    adaptivity analysis.  
+%    Specifically I identify the similarity between 
+%    solving the feasible path problem in the analysis by reducing to CFL-reachability problems,
+%    and the way of computing the adaptivity in my static analysis framework.
+%    Motivated by this observation, 
+%    % I'm insterested
+%    % the, There are similarity between
+%    % solving the data flow problem by reducing to CFL-reachability problem,
+%    % resource analysis through reducing to CFL-reachability problem, 
+%    I'm interested in showing that
+%    CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework.
+
+\paragraph*{Solving the CFL Reachability Problem}
+Still in the area of general program resource cost analysis,
+the traditional methodology of performing data flow and control analysis and 
+computing the program resource cost is
+% Finally, based on the study on the traditional way of performing data flow and control analysis,
+to reduce the analysis problem into the CFL-reachability problems.
+% Finally, based on the study on the traditional way of performing data flow and control analysis,
+According to this, 
+I identify x
+% the similarity between the traditional way of performing data flow and control analysis and the 
+the similarities between the traditional way of estimating the program resource cost and 
+the adaptivity.
+%  Specifically, I identify the similarity between 
+%  solving the feasible path problem in the analysis by reducing 
+Specifically, there are similarities between solving the CFL-reachability problems they reduced to,
+%  CFL-reachability problems,
+ and the way of computing the adaptivity in 
+%  my static analysis framework.
+the third step of $\THESYSTEM$.
+ Motivated by this, 
+ % I'm Interested
+ % the, There are similarities between
+ % solving the data flow problem by reducing to CFL-reachability problem,
+ % resource analysis through reducing to CFL-reachability problem, 
+ I'm interested in showing that
+ CFL-reachability problems can be solved by reducing to my adaptivity analysis framework.
+In Chapter~\ref{ch:furthers}, I started this work and proposed plans on developing this work in the furture.
