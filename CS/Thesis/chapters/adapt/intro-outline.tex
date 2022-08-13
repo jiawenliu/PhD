@@ -1,7 +1,26 @@
+\paragraph*{Chapter Outline}
+This chapter includes following parts. 
+\begin{enumerate}
+   \item Previous Works on Adaptive Data Analysis
+\item A while-like language extended with query request feature, named {\tt Query While} Language, 
+used to implement 
+the adaptive data analysis in Chapter~\ref{ch:language}. 
+\item A formal adaptivity model through execution-based adaptivity analysis in Chapter~\ref{ch:dynamic}.
+\item A static program analysis algorithm, named {\THESYSTEM} through static adaptivity analysis in Chapter~\ref{ch:static}.
+\item An extended full-spectrum program adaptivity analysis in Chapter~\ref{ch:improved}.
+\item An accurate full-spectrum program resource cost analysis, 
+generalized from {\THESYSTEM} with implementation in Chapter~\ref{ch:generalization}.
+\item Proposed future works for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework in
+Chapter~\ref{ch:furthers},
+expected to be started off before final defense and developing further after.
+\end{enumerate}
+
+
 \paragraph{Contributions}
-This dissertation has the following contributions.
+This chapter has the following contributions.
 \begin{enumerate}
    \item A programming framework for adaptive data analyses where the program represents an analyst that can query a generalization-preserving mechanism mediating the access to some data. 
+   This language is extended from existing framework with inputs and inter-procedure call.
    % \item A trace-based operational semantics for the loop language, specific to dependency between queries.
    \item 
    % {A formal definition of the notion of adaptivity under the analyst-mechanism model. This definition is built on a query-based dependency graph built out of all the possible program execution traces.}
@@ -14,34 +33,13 @@ This dissertation has the following contributions.
    %
    \item A soundness proof of the program analysis showing that the adaptivity estimated by {\THESYSTEM} bounds the true adaptivity of the program. 
    \item An implementation of {\THESYSTEM} and an experimental evaluation the bounds this implementation provides on several examples.
-   \item A path-sensitive program reachability bound analysis algorithm designed for program with application beyond adaptivity analysis
-    with implementation.
-   % \item An improved formal adaptivity model and {\THESYSTEM} with implementation.
-   %  expected to be done before the final defense.
-   \item An accurate full-spectrum program resource cost analysis, 
-   generalized from {\THESYSTEM} with implementation.
-   % The analysis framework design is expected to be done with the implementation start off before the final defense.
-      % To the best of our knowledge, it is the first work that statically estimates adaptivity to help design adaptive data analysis algorithms.  
+   % \item A path-sensitive program reachability bound analysis algorithm designed for program with application beyond adaptivity analysis
+   %  with implementation.
+   % \item An accurate full-spectrum program resource cost analysis, 
+   % generalized from {\THESYSTEM} with implementation.
 \end{enumerate}
 %
-\paragraph*{Outline}
-This dissertation includes following parts. 
-\begin{enumerate}
-\item A while-like language extended with query request feature, named {\tt Query While} Language, 
-used to implement 
-the adaptive data analysis in Chapter~\ref{ch:language}.
-\item A formal adaptivity model through execution-based adaptivity analysis in Chapter~\ref{ch:dynamic}.
-\item A static program analysis algorithm, named {\THESYSTEM} through static adaptivity analysis in Chapter~\ref{ch:static}.
-\item An extended full-spectrum program adaptivity analysis in Chapter~\ref{ch:improved}.
-\item An accurate full-spectrum program resource cost analysis, 
-generalized from {\THESYSTEM} with implementation in Chapter~\ref{ch:generalization}.
-\item Proposed future works for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework in
-Chapter~\ref{ch:furthers},
-expected to be started off before final defense and developing further after.
-\end{enumerate}
-
-
-
+\todo{combine}
 \paragraph*{Contributions and Improvements}
 Given the limitation of existing reachability bound analysis techniques, I designed a path-sensitive reachability bound 
 analysis algorithm

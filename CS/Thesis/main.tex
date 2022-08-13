@@ -220,7 +220,7 @@ my loving grandmother \\ Xiuqin Yang
 
 \chapter{Introduction}
 \label{introduction}
-% \include{chapters/introduction}
+\input{chapters/introduction}
 \clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -278,7 +278,7 @@ my loving grandmother \\ Xiuqin Yang
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter*{\redd{PART \romannum{2} \quad  PROGRAM ANALYSIS FRAMEWORK FOR ADAPTIVE DATA ANALYSIS}}
-
+\input{chapters/adapt/adapt-preface}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
@@ -297,21 +297,19 @@ my loving grandmother \\ Xiuqin Yang
 
 \chapter{Previous Works on Adaptivity Analysis}
 \label{sec:prework}
-\section{The Execution-Based Program Analysis}
-% \section{Introduction}
-\label{sec:prework-exe}
-% \input{~/dynamic/introduction.tex}
-\input{chapters/adapt/exe-intro}
-
-\section{Static Analysis}
-% \section{Introduction}
+\input{chapters/adapt/prework-preface}
+%
+\section{The Language Design}
+\label{sec:prework-language}
+\input{chapters/adapt/prework-language}
+%
+\section{The Adaptivity Formalization}
+\label{sec:prework-formalization}
+\input{chapters/adapt/prework-formalization}
+%
+\section{The Adaptivity Estimation}
 \label{sec:prework-static}
-\input{chapters/adapt/static-intro}
-\section{Existing Adaptivity Analysis Framework}
-\label{sec:prework-adapt}
-\subsection{The Loop Language}
-\subsection{The Formal Definition for Adaptivity}
-\subsection{The Program Analysis Algorithm}
+\input{chapters/adapt/prework-static}
 
 
 
@@ -378,21 +376,33 @@ my loving grandmother \\ Xiuqin Yang
 \label{sec:static-examples}
 \input{chapters/adapt/static-examples}
 
-\section{ \todo{Integrated into sections above} The Program Analysis Framework Improvement}
-\input{chapters/adapt/improved}
+% \section{ \todo{Integrated into sections above} The Program Analysis Framework Improvement}
+% \input{chapters/adapt/improved}
 % \clearpage
 
 \clearpage
 \chapter{Examples and Implementations}
 \label{sec:adapt-implementation}
-Then I show my implementation of $\THESYSTEM$ and its experimental 
-results on $18$ examples including these four examples.
 \section{Examples}
 \input{chapters/adapt/adapt-examples}
 \section{Implementation}
 \input{chapters/adapt/implementation}
 
-% \include{chapters/dynamic/relatedwork}
+\chapter{Related Works}
+\label{sec:adapt-relatedwork}
+
+\section{The Execution-Based Program Analysis}
+\label{sec:relatedwork-exe}
+\input{chapters/adapt/relatedwork-exe}
+
+
+\section{Static Analysis}
+\label{sec:relatedwork-static}
+\input{chapters/adapt/relatedwork-static}
+
+\section{Generalization in Adaptive Data Analysis}
+\label{sec:relatedwork-adapt}
+\input{chapters/adapt/relatedwork-adapt}
 
 % \cleardoublepage
 \chapter*{\redd{PART \romannum{3} \quad Epilogue}}

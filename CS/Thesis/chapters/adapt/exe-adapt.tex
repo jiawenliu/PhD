@@ -9,6 +9,7 @@ Based on the variable \emph{may-dependency} relation,
 % gives us the edges, 
 we define the execution-based dependency graph.
 % \wq{Just a few sentences here, some overview of this subsection. See 4.2 for instance.}
+\todo{remove:
 \begin{defn}[Execution Based Dependency Graph]
 \label{def:trace_graph}
 Given a program ${c}$,
@@ -95,18 +96,159 @@ For any two vertices $x^{i}$ and $y^{j}$ in $\traceV(c)$, if they satisfy the va
 } 
 In most data analysis programs $c$ we are interested, there are usually some user input variables, such as $k$ in $\kw{twoRounds}$. 
 We denote $\mathcal{T}_0(c)$ as the set of initial traces in which all the input variables in $c$ are initialized, it is also reflected in $\traceW({c})$.    
+}
+\begin{defn}[Execution Based Dependency Graph]
+  \label{def:trace_graph}
+  Given a program ${c}$,
+  its \emph{Execution-Base Dependency Graph} 
+  $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is defined as follows,
+  % over all possible traces,
+  %
+  \highlight{\small
+  \[
+  \begin{array}{lcl}
+    % \text{Vertices} &
+    \traceV({c}) & := & 
+    \{ 
+    (x^l, w) 
+    % \in \mathcal{LV} \times \mathbb{N}
+    ~ \vert ~ 
+    w : \mathcal{T} \to \mathbb{N}
+    \land
+    x^l \in \lvar(c) 
+    \\ & &
+    \land
+    % n = \max \left\{ 
+      % ~ \middle\vert~
+    \forall \trace \in \mathcal{T}_0(c), \trace' \in \mathcal{T} \sthat \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+    \implies w(\trace) = \vcounter(\vtrace', l) 
+    %  \right\}
+  %   \right
+  \}
+    \\
+    % \text{Edges} &
+    \traceE({c}) & := & 
+    \{ 
+    (x^i, w, y^j) 
+  %   \in \mathcal{LV} \times \mathcal{LV}
+    ~ \vert ~
+    x^i, y^j \in \lvar(c)
+    \land w \in \mathcal{P}( \mathcal{T}_0(c) \to \mathbb{N})
+    \land 
+    \exists \trace \in \mathcal{T}_0(c), 
+    \trace_1, \trace_2 \in \mathcal{T} \sthat \dep(x^i, y^j,\trace_1, \trace_2, \trace_0, c)
+    \\ & &
+    \land \forall \trace_0 \in \mathcal{T}_0(c) \sthat
+    w (\trace_0) = \max \left\{ | \sdiff(\trace_1, \trace_2, y)|
+    ~\middle\vert~
+    \forall \trace_1, \trace_2 \in \mathcal{T} \sthat \dep(x^i, y^j,\trace_1, \trace_2, \trace_0, c) \right\}
+    \}
+  \end{array}
+  \]
+  }
+  \end{defn}
+  There are two components of the execution-based dependency graph. 
+  \\
+  \highlight{
+  The vertices $\traceV(c)$  is a set of pairs, $(x^l, w) \in \mathcal{LV} \times (\mathcal{T} \to \mathbb{N})$,
+  with a labeled variable as first component and
+  its weight $w$ the second component.
+  Weight $w$ for
+  % a labeled variable 
+  $x^l$ is a function $w : \mathcal{T} \to \mathbb{N}$
+  mapping from a starting trace to a natural number.
+  When program executes under this starting trace $\trace$,
+  $\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} $, it generates an execution trace $\trace'$.
+  This natural number is the evaluation times of the labeled command corresponding to the vertex, 
+  computed by the counter operator $w(\trace) = \vcounter(\vtrace', l)$.
+  We can see in the execution-based dependency graph of $\kw{twoRounds}$ in
+   Figure~3(b) in main paper, the weight of vertices in the while loop is  $\env(\trace) k$, which depends on the value of the user input $k$ specified in the starting trace $\tau$.
+  \\
+  The directed edges $\traceE({c})$ is a set of triples $ (x^i, w, y^j) \in \mathcal{LV} \times \mathcal{P}(\mathcal{T}_0(c) \to \mathbb{N}) \times \mathcal{LV}$,
+   with two labeled variables (from $x^i$ pointing to $y^j$) and a weight $w$ for this edge.
+  % comes 
+  The edges are constructed directly from our variable may-dependency relation. 
+  For any two vertices $x^{i}$ and $y^{j}$ in $\traceV(c)$, if there exists two witness traces $\trace_1, \trace_2$ and an initial trace $\trace_0 \in \mathcal{T}_0$ such that,
+  they satisfy the variable may-dependency relation 
+  $\dep(x^i, y^j, \trace_1, \trace_2, \trace_0, c)$ , 
+  there is a direct edge. 
+  The weight of the edge is a function $w: \mathcal{T}_0(c) \to \mathbb{N}$,
+  where given an initial trace $\trace_0$,
+  it is the maximum length of the difference sequence between all pairs of the witness traces $\trace_1, \trace_2$ 
+  satisfying the dependency relation.
+  }
 
 \paragraph{Trace-based Adaptivity}
+Then, the \emph{adaptivity} is still formalized as the 
+length of the longest finite walk. 
+Differently from the previous one, I restrict 
+the occurrence of every edge in a finite walk no more than its weight as well. Formally as follows,
+\begin{defn}[Finite Walk (k)].
+  \label{def:finitewalk}
+  \\
+  Given the execution-based dependency graph $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ of a program $c$,
+  a \emph{finite walk} $k$ in $\traceG({c})$ is a 
+  function $k: \mathcal{T} \to $ sequence of edges.
+  For a initial trace $\trace_0 \in \mathcal{T}_0(c)$, 
+  $k(\trace_0)$ is a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+  for which there is a sequence of vertices 
+  $(v_1, \ldots, v_{n})$ such that:
+  \begin{itemize}
+      \item \highlight{
+        $e_i = (v_{i}, w_i, v_{i + 1}) \in \traceE(c)$ for every $1 \leq i < n$, 
+        and $e_i$ appears in $(e_1 \ldots e_{n - 1})$  at most $w_i(\trace_0)$
+        times.
+      }
+      \item every $(v_i, w_i) \in \traceV(c)$
+      % and $(v_i, w_i) \in \traceW(c)$, 
+       and $v_i$ appears in $(v_1, \ldots, v_{n})$ at most 
+    %   \wq{$\traceW({c})(\trace)$} 
+    $w_i(\trace_0)$
+      times.  
+  \end{itemize}
+  %
+  The length of $k(\trace_0)$ is the number of vertices in its vertices sequence, i.e., $\len(k)(\trace_0) = n$.
+ \end{defn}
 
-% \wq{
-% Given 
-% a program $c$'s execution-based dependency graph 
-% % $G_{trace}(c)(\trace) = (\vertxs, \edges, \weights, \qflag)$,
-% $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$
-% we define adaptivity 
-% with respect to $\trace$ by the finite walk in the graph, which has the most query requests along the walk.
-% }
+We use $\walks(\traceG(c))$ to denote 
+% \mg{``the set'', not ``a set''}a set containing all finite walks $k$ in $G$;
+the set containing all finite walks $k$ in $\traceG(c)$;
+and $k_{v_1 \to v_2} \in \walks(\traceG(c))$ with $v_1, v_2 \in \traceV(c)$ denotes the walk from vertex $v_1$ to $v_2$ . 
+\\
+We are interested in queries, so we need to recover the 
+variables corresponding to queries from the walk. We define the query length of a walk, 
+instead of counting all 
+the vertices in $k$'s vertices sequence, we just count the number of vertices which correspond to query variables in this sequence.
+%
+% \mg{I don't understand this definition. Is wrt a single query?if yes, who is chosing the query? Or is it any query?}
+% \jl{It is for any query, as long as the vertex is a query variable, in another worlds, this length just counting the number of query variables in the walk, instead of counting all 
+% the vertices.}
+% \todo{Make the definition clear}
+\begin{defn}[Query Length of the Finite Walk($\qlen$)].
+\label{def:qlen}
+\\
+Given 
+the execution-based dependency graph 
+$\traceG({c}) = (\traceV({c}), \traceE({c}))$ of a program $c$,
+ and a \emph{finite walk} 
+%  $k$ in $\traceG(c)(\trace)$
+ $k \in \walks(\traceG(c))$. 
+%  with its vertex sequence $(v_1, \ldots, v_{n})$, 
+%  the length of $k$ w.r.t query is defined as:
+The query length of $k$ is a function $\qlen(k): \mathcal{T} \to \mathbb{N}$, such that with an initial trace  $\trace_0 \in \mathcal{T}_0(c)$, $\qlen(k)(\trace_0)$ is
+the number of vertices which correspond to query variables in the vertices sequence of the walk $k(\trace_0)$
+$(v_1, \ldots, v_{n})$ as follows, 
+\[
+  \qlen(k)(\trace_0) = |\big( v \mid v \in (v_1, \ldots, v_{n}) \land v \in \qvar(c) \big)|.
+\]
+% , where $\trace_0 \in \mathcal{T}$ is the initial trace and $\big(v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)$ is a subsequence of $(v_1, \ldots, v_{n})$.
+%  $k$'s vertex sequence.
+% \mg{If I understand where you want to go, why don't you just use the cardinality of the set above, rather than taking the length of a subsequence?}
+% \jl{because the same vertex could have multiple occurrence in the sequence, and we will count all the occurrence instead of just once.
+% So the cardinality of set doesn't work.}
+\end{defn}
 
+\todo{remove:
 Given 
 a program $c$'s execution-based dependency graph 
 % $G_{trace}(c)(\trace) = (\vertxs, \edges, \weights, \qflag)$,
@@ -114,14 +256,8 @@ $\traceG({c})$,
 we define adaptivity 
 with respect to an initial trace $\trace_0 \in \mathcal{T}_0(c)$ by the finite walk in the graph, which has the most query requests along the walk.
 We show the definition of a finite walk as follows.
-%
-% The query length of a walk $k$ is the number of vertices which correspond to query variables in the vertices sequence of this walk. 
-% Instead of counting all 
-% the vertices in $k$'s vertices sequence, i
-
-\begin{defn}[Finite Walk (k)].
+\begin{defn}[Finite Walk (k)]
   \label{def:finitewalk}
-  \\
 %   Given a program $c$'s execution-based dependency graph $\traceG({c})(\trace)$, 
 %   a \emph{finite walk} $fw$ in $\traceG({c})(\trace)$ is a sequence of edges $(e_1 \ldots e_{n - 1})$ 
 %   for which there is a sequence of vertices $(v_1, \ldots, v_{n})$ such that:
@@ -151,7 +287,6 @@ We show the definition of a finite walk as follows.
   %
   The length of $k(\trace_0)$ is the number of vertices in its vertices sequence, i.e., $\len(k)(\trace_0) = n$.
  \end{defn}
-
 We use $\walks(\traceG(c))$ to denote 
 % \mg{``the set'', not ``a set''}a set containing all finite walks $k$ in $G$;
 the set containing all finite walks $k$ in $\traceG(c)$;
@@ -194,6 +329,7 @@ $(v_1, \ldots, v_{n})$ as follows,
   \qlen(k)(\trace_0) = |\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)|.
 \]
 \end{defn}
+}
 The definition of adaptivity is then presented in Def~\ref{def:trace_adapt} below.
 
 \begin{defn}

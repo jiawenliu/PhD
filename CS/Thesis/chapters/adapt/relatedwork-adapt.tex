@@ -1,0 +1,17 @@
+Starting from the works by \citet{DworkFHPRR15} and \citet{HardtU14}, several works have designed methods that ensure generalization for adaptive data analyses.
+Some examples
+are:~\cite{dwork2015reusable,dwork2015generalization,
+BassilyNSSSU16,UllmanSNSS18,FeldmanS17,jung2019new,SteinkeZ20,RogersRSSTW20}.
+Several of these works drew inspiration from the idea of using methods designed to ensure differential privacy, a notion of formal data privacy, in order to guarantee generalization for adaptive data analyses.
+By limiting the influence that an individual can have on the result of a data analysis, even in adaptive settings, differential privacy can also be used to limit the influence that a specific data sample can have on the statistical validity of a data analysis.
+This connection is actually in two directions, as discussed for example by \citet{YeomGFJ18}.
+
+Considering this connection between generalization and privacy, it is not surprising
+that some works on programming language techniques for privacy-preserving data analysis are related to our work. 
+Adaptive Fuzz~\cite{Winograd-CortHR17} is a programming framework for differential privacy that is designed around the concept of adaptivity. 
+This framework is based on a typed functional language that distinguish between several forms of adaptive and non-adaptive composition theorem with the goal of achieving better upper bounds on the privacy cost.
+Adaptive Fuzz uses a type system and some partial evaluation to guarantee that the programs respect differential privacy.
+However, it does not include any technique to bound the number of rounds of adaptivity. 
+\citet{lobo2021programming} propose a language for differential privacy where one can reason about the accuracy of programs in terms of confidence intervals on the error that the use of differential privacy can generate. These are akin to bounds on the generalization error. This language is based on a static analysis which however cannot handle adaptivity. 
+%
+The way we formalize the access to the data mediated by a mechanism is a reminiscence of how the interaction with an oracle is modeled in the verification of security properties. As an example, the recent works by \citet{BarbosaBGKS21} and \citet{AguirreBGGKS21} use different techniques to track the number of accesses to an oracle. However, reasoning about the number of accesses is easier than estimating the adaptivity of these calls, as we do instead here.

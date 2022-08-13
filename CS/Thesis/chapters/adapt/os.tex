@@ -745,8 +745,54 @@ c; \ewhile [b]^{l} \edo c),
 \config{{c_2, \trace \traceadd \event}}
 }
 ~\textbf{if-f}
+% \and
+% %
+% \highlight{
+% \inferrule
+% {
+%  c' = (c)^{+n}
+%  \and 
+%  \event = (f, l, (r, x_1, \ldots, x_n) := c', \bullet)
+% }
+% {
+% \config{{
+%   [\efun]^l: f(r, x_1, \ldots, x_n) := c, \trace}}
+% \xrightarrow{} 
+% \config{{\clabel{\eskip}^l, \trace \traceadd \event}}
+% }
+% ~\textbf{fun-def}
+% %
+% }
+% \\
+% \highlight{
+% %
+% \inferrule
+% {
+%   \config{ \trace, f} \earrow (r, x_1, \ldots, x_n) := c
+% \and 
+% \config{{
+%   \clabel{\assign{x_1}{e_1}}^{(l, 1)}; \ldots;
+%   \clabel{\assign{x_n}{e_n}}^{(l, n)}, \trace}} 
+%   \xrightarrow{}^* 
+%   \config{{\clabel{\eskip}^{(l, n)}, \trace_1}}
+%   \\ 
+%   \config{{\clabel{c}^{(l)}, \trace_1}}
+%   \xrightarrow{}^* 
+%   \config{{\clabel{\eskip}^{l}, \trace'}}
+%   \and
+%   \config{\trace', r } \earrow v
+%   \and
+%  \event = (x, l, v, \bullet)
+% }
+% {
+% \config{{
+%   \clabel{\assign{x}{\ecall(f, e_1, \ldots, e_n)}}^l, \trace}}
+% \xrightarrow{} 
+% \config{{\clabel{\eskip}^l, \trace' :: \event}}
+% }
+% ~\textbf{fun-call}
+% }
 \end{mathpar}
-% \end{subfigure}
     \caption{Trace-based Operational Semantics for Language.}
     \label{fig:os}
 \end{figure}

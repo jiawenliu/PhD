@@ -78,6 +78,106 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \\
 \end{array}
 \]
+% \[
+% \begin{array}{llll}
+% \mbox{Arithmetic Operators} 
+% & \oplus_a & ::= & + ~|~ - ~|~ \times 
+% %
+% ~|~ \div ~|~ \max ~|~ \min\\  
+% % ~|~ \div \\  
+% \mbox{Boolean Operators} 
+% & \oplus_b & ::= & \lor ~|~ \land
+% \\
+% %
+% \mbox{Relational Operators} 
+% & \sim & ::= & < ~|~ \leq ~|~ == 
+% \\  
+% %
+% \mbox{Arithmetic Expression} 
+% & \aexpr & ::= & 
+% n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr  
+%  ~|~ \elog \aexpr  ~|~ \esign \aexpr
+% \\
+% %
+% \mbox{Boolean Expression} & \bexpr & ::= & 
+% %
+% \etrue ~|~ \efalse  ~|~ \neg \bexpr
+%  ~|~ \bexpr \oplus_b \bexpr
+% %
+% ~|~ \aexpr \sim \aexpr 
+% \\
+% %
+% \mbox{Expression} & \expr & ::= & v ~|~ \aexpr ~|~ \bexpr ~|~ [\expr, \dots, \expr] ~|~ \highlight{\fname}
+% \\  
+% %
+% \mbox{Value} 
+% & v & ::= & { n ~|~ \etrue ~|~ \efalse ~|~ [] ~|~ [v, \dots, v]}  
+% \\ 
+% &&&
+% \highlight
+% {
+% ~|~ (x_0, x_1, \ldots, x_n) := c
+% }
+% \\
+% %
+% \highlight{\mbox{Query Expression}} 
+% & {\qexpr} & ::= 
+% & \highlight{ \qval ~|~ \aexpr ~|~ \qexpr \oplus_a \qexpr ~|~ \chi[\aexpr]} 
+% \\
+% %
+% \mbox{Query Value} & \qval & ::= 
+% & \highlight{n ~|~ \chi[n] ~|~ \qval \oplus_a  \qval ~|~ n \oplus_a  \chi[n]
+%     ~|~ \chi[n] \oplus_a  n}
+% \\
+% % \\%
+% \mbox{Label} 
+% & l & ::= & (n \in \mathbb{N} \cup \{\lin, \lex\}) ~|~ (l, n)
+% \\ 
+% %
+% \mbox{Labeled Command} 
+% & {c} & ::= &  
+% \clabel{\assign{x}{\expr}}^l 
+% ~|~ \clabel{\assign{x}{\query(\qexpr)}}^l
+% ~|~  \clabel{\eskip}^l
+% ~|~ \ewhile \clabel{\bexpr}^{l} \edo {c}
+% ~|~ \eif(\clabel{\bexpr}^{l} , {c}, {c}) 
+% \\ 
+% &&&
+% \highlight
+% {
+% ~|~ \clabel{\efun}^l: \fname (x_0, x_1, \ldots, x_n) := c
+% ~|~ \clabel{\assign{x}{\ecall(x, e_1, \ldots, e_n)}}^l
+% }
+% ~|~ {c};{c}  
+% \\ 
+% % \\
+% \mbox{Event} 
+% & \event & ::= & 
+%     ({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval) ~|~ (\fname, l, v, \qval)  ~~~~~~~~~~~ \mbox{Assignment Event} \\
+% &&& ~|~(\bexpr, l, v, \bullet)   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \mbox{Testing Event}
+% \\
+% % &&& \text{\mg{I think it would be better to use quadruples for events, where the}}\\
+% % &&& \text{\mg{first element is either a variable or a boolean expression and }}\\
+% % &&& \text{\mg{the last is either a query value or some default value $\bullet$}}\\
+% %
+% % \mbox{Trace} & \trace
+% % & ::= & \cdot | \trace \cdot \event | \trace \tracecat \trace 
+% % \\
+% %
+% % \mbox{Trace} & \trace
+% % & ::= & [] ~|~ \event:: \trace ~|~ \trace \tracecat \trace  \\
+% \mbox{Trace} & \trace
+% & ::= & [] ~|~ \trace :: \event\\
+% % &&& \text{\mg{I don't understand why you need both :: and ++ as constructors.}}\\
+% % &&& \text{\jl{Because append is to the left but we are adding element to the left in the OS}}\\
+% % &&& \text{\jl{I was too sticky to the convention, it is a good idea to append to the left and just use $::$}}
+% % %
+% % \mbox{Event Signature} & \sig
+% % & ::= & (x, l, n) | (x, l, n, \query) | (b, l, n)
+% % \\
+% % %
+% \end{array}
+% \]
 For clarity, the following notations are used to represent the set of corresponding terms:
 \[
 \begin{array}{lll}
@@ -161,7 +261,13 @@ data base $\chi$'s number of raw.
 
 % the expression also includes the special variable $\chi$ representing a row of the database, and access to values at a certain index in $\chi$, as $\chi[\aexpr]$. Additionally, list over expressions is supported and $[]$ stands for the empty list. The access to elements in the list can be achieved through $x[\aexpr]$ when variable $x$ is referred to a list. The value $v$ now contains the natural number $n$, the boolean primitives $\etrue$ and $\efalse$, the special row $\chi$ and access to it $\chi[v]$, the empty list $[]$ and non-empty list $[v, \dots, v]$.
 % 
-%
+% Another extension is the inter-procedure call and function definition.
+% In the function define command $\clabel{\efun}^l: \fname (x_0, x_1, \ldots, x_n) := c$,
+% the function body $c$ is assigned to the function of name $\fname$, $x_1, \ldots, x_n$ is the function
+% arguments and the first element $x_0$ in the arguments is the return variable.
+% We only support the first-order function definition and function call. 
+
+% %
 \paragraph*{Labeled Command}
  A labeled command $c$ is just a command with a label --- I assume that labels are unique, so that they can help to identify uniquely every subexpression. 
 %  I have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement  $\ewhile \bexpr \edo {c} $.
