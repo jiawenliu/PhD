@@ -152,7 +152,8 @@ my loving grandmother \\ Xiuqin Yang
 %%%% ABSTRACT		 
 \newpage
 \addcontentsline{toc}{chapter}{Abstract}
-\include{chapters/Abstract}
+\todo{Rewrite}
+\input{chapters/Abstract}
 
 % Now you can include a preface. Again, use something like
 % \newpage\section*{Preface} followed by your text
@@ -218,7 +219,7 @@ my loving grandmother \\ Xiuqin Yang
 
 % \mainmatter
 
-\chapter{Introduction}
+\chapter{Introduction\todo{rewrite}}
 \label{introduction}
 \input{chapters/introduction}
 \clearpage
@@ -229,7 +230,7 @@ my loving grandmother \\ Xiuqin Yang
 
 \chapter*{\redd{PART \romannum{1} \quad  REACHABILITY BOUND ANALYSIS}}
 
-\chapter{Introduction}
+\chapter{Introduction \todo{Add details after PLDI}}
 \label{sec:reachability-intro}
 \section{Reachability Bound Problem}
 \label{sec:reachability-background}
@@ -258,10 +259,10 @@ my loving grandmother \\ Xiuqin Yang
 % \label{sec:static_rb}
 % \input{static_reachabilitybound}
 % % % % 
-\section{Constraint Program Abstract and Refinement}
+\section{Program Abstraction and Refinement}
 % \subsection{Constraint Program Refinement}
 
-\section{Path Sensitive Reachability Bound Computation}
+\section{Path Sensitive Reachability Bound Analysis}
 \subsection{Outside-In Algorithm}
 \label{sec:outsidein}
 \subsection{Inside-Out Algorithm}
@@ -281,7 +282,7 @@ my loving grandmother \\ Xiuqin Yang
 \input{chapters/adapt/adapt-preface}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Introduction}
+\chapter{Introduction\todo{progress-90\% need passes on Details}}
 \input{chapters/adapt/intro-preface}
 \section{Adaptive Data Analysis}
 \label{sec:adapt-background}
@@ -295,7 +296,7 @@ my loving grandmother \\ Xiuqin Yang
 \label{sec:adapt-outline}
 \input{chapters/adapt/intro-outline}
 
-\chapter{Previous Works on Adaptivity Analysis}
+\chapter{Previous Works on Adaptivity Analysis\todo{progress-80\% more simplifies and passes on details}}
 \label{sec:prework}
 \input{chapters/adapt/prework-preface}
 %
@@ -316,7 +317,7 @@ my loving grandmother \\ Xiuqin Yang
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NEW ADAPTIVITY ANALYSIS FRAMEWORK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{New Adaptivity Analysis Framework}
+\chapter{New Adaptivity Analysis Framework\todo{progress-70\% need emphasis on improvements and passes on details}}
 \label{sec:adapt-analysis}
 \input{chapters/adapt/analysis-preface}
 
@@ -325,12 +326,12 @@ my loving grandmother \\ Xiuqin Yang
 % \include{chapters/adapt/analysis-architecture}
 \clearpage
 \section{The {\tt Query While} Language}
-\label{ch:language}
+\label{sec:adapt-language}
 \input{chapters/adapt/language}
 
 \clearpage
 \section{The Execution-Based Program Analysis for Adaptivity}
-\label{ch:dynamic}
+\label{sec:adapt-exe}
 \input{chapters/adapt/exe-preface}
 
 \subsection{Data Dependency Relation Analysis}
@@ -345,17 +346,17 @@ my loving grandmother \\ Xiuqin Yang
 \label{sec:dynamic-adapt}
 \input{chapters/adapt/exe-adapt}%
 %
-\subsection{Adaptivity through Examples}
+\subsection{Formalized Adaptivity through Examples}
 \label{sec:dynamic-examples}
 \input{chapters/adapt/exe-examples}%
 
 
 \clearpage
-\section{The Static Program Analysis for Adaptivity}
-\label{ch:static}
+\section{The Static Program Analysis for Adaptivity - {\THESYSTEM}}
+\label{sec:adapt-static}
 \input{chapters/adapt/static-preface}
 
-\subsection{$\THESYSTEM$ Architecture}
+\subsection{Analysis Architecture}
 \label{sec:static-overview}
 \input{chapters/adapt/static-overview}
 
@@ -368,11 +369,11 @@ my loving grandmother \\ Xiuqin Yang
 \label{sec:static-quantity}
 \input{chapters/adapt/static-quantity}
 
-\subsection{Adaptivity Computation through Dependency Graph}
+\subsection{Adaptivity Estimation through Dependency Graph}
 \label{sec:static-adapt}
 \input{chapters/adapt/static-adapt}
 
-\subsection{{\THESYSTEM} through Examples}
+\subsection{Estimated Adaptivity through Examples}
 \label{sec:static-examples}
 \input{chapters/adapt/static-examples}
 
@@ -381,14 +382,14 @@ my loving grandmother \\ Xiuqin Yang
 % \clearpage
 
 \clearpage
-\chapter{Examples and Implementations}
+\chapter{Examples and Implementations \todo{progress-60\% need update examples with new graph, emphasis on improvements and passes on details}}
 \label{sec:adapt-implementation}
 \section{Examples}
 \input{chapters/adapt/adapt-examples}
 \section{Implementation}
 \input{chapters/adapt/implementation}
 
-\chapter{Related Works}
+\chapter{Related Works\todo{progress-90\% need passes on details}}
 \label{sec:adapt-relatedwork}
 
 \section{The Execution-Based Program Analysis}
@@ -412,10 +413,10 @@ my loving grandmother \\ Xiuqin Yang
 
 
 % \addtocontents{toc}{\protect\newpage}
-\chapter{Conclusion}
+\chapter{Conclusion\todo{progress-30\% need details for Reachability bounds, emphasis on improvements of Adaptivity Analysis and passes on details}}
 \label{sec:conclusion}
 \input{chapters/conclusion}
-\chapter{Future Works}
+\chapter{Future Works\todo{progress-70\% need simplifies and passes on details}}
 \label{sec:future}
 \section{Towards Accurate Program Non-Monotonic Resource Cost Analysis via {\THESYSTEM}}
 \label{ch:generalization}

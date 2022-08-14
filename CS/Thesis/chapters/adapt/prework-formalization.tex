@@ -1,0 +1,89 @@
+The previous works on formalizing the adaptivity is through a query-based dependency graph.
+Below is a summary of their query-based dependency graph construction and adaptivity formal definition, followed
+by the weaknesses of this formalization method.
+\subsection*{Query-Based Dependency Graph}
+Below is the formal definition of query may dependency based on their trace-based operational semantics from \todo{Thesis}.
+The notations $\in_q$ and $\not\in_q$ a query belongs to the trace or not repectively, with the formal definition in \todo{Thesis}.
+
+\begin{defn}[Query may dependency]
+One query $q({v_q}_1)$ may depend on another query $q({v_q}_2)$ in a program $c$, with a starting loop maps $w$, a starting memory $m$, hidden database $D$, denoted as \\
+$\mathsf{DEP}(q({v_q}_1)^{(l_1, w_1)}, q({v_q}_2)^{(l_2, w_2)}, c,w, m, D)$ is defined below. 
+\[
+\begin{array}{l}
+\forall  t. \exists m_1,m_3,t_1,t_3,c_2.\\
+  \left (\begin{array}{l}   
+\config{m, c,  t,w} \rightarrow^{*} \config{m_1, [\assign{x}{q({v_q}_1)}]^{l_1} ; c_2,
+  t_1,w_1} \rightarrow \\ \config{m_1[q({v_q}_1)(D)/x], c_2,
+  t_1++[q({v_q}_1)^{(l_1, w_1)}], w_1} \rightarrow^{*} \config{m_3, \eskip,
+  t_3,w_3} \\  
+  \land \\
+\Big( q({v_q}_1)^{(l_1,w_1)} \in_{q} (t_3-t) \land q({v_q}_2)^{(l_2,w_2)} \in_{q} (t_3-t_1) \\ \implies  \exists v \in \codom(q({v_q}_1)), m_3', t_3', w_3'.  \\
+ \config{m_1[v/x], {c_2}, t_1++[q({v_q}_1)^{(l_1,w_1)}], w_1} \rightarrow^{*} \config{m_3', \eskip, t_3', w_3'} \\ \land (q({v_q}_2)^{(l_2,w_2)}) \not \in_{q} (t_3'-t_1)
+\Big)\\
+\land \\
+\Big(q({v_q}_1)^{(l_1,w_1)} \in_{q} (t_3-t) \land q({v_q}_2)^{(l_2,w_2)} \not\in_{q} (t_3-t_1) \\ \implies  \exists v \in \codom(q({v_q}_1)),  m_3', t_3', w_3'. \\
+ \config{m_1[v/x], {c_2}, t_1++[q({v_q}_1)^{(l_1,w_1)}], w_1} \rightarrow^{*} \config{m_3', \eskip, t_3', w_3'} \\ \land (q({v_q}_2)^{(l_2,w_2)})  \in_{q} (t_3'-t_1)
+\Big)
+\end{array} \right )
+\end{array}
+\]
+\end{defn}
+%
+Based on the \emph{may-dependency} between the two queries above,
+below is their formal definition of query-based dependency graph. 
+For every execution of a program $c$ staring with different configurations, 
+they construct a corresponding dependency graph.  
+% graph definition
+\begin{defn}[Query-based Dependency Graph]
+Given a program $c$, a database $D$, a starting memory $m$, an initial loop map $w$, the query-based dependency graph $G(c,D,m,w) = (V, E)$ is defined as: \\
+$V =\{q({v_q})^{l,w} \in \mathcal{AQ} \mid \forall t. \exists m',  w', t'.  \config{m ,c, t, w}  \to^{*}  \config{m' , \eskip, t', w' }  \land q({v_q})^{l,w} \in {(t'-t)}  \}$.
+\\
+$E = \left\{(q({v_q})^{(l,w)},q({v_q}')^{(l',w')}) \in \mathcal{AQ} \times \mathcal{AQ} 
+~ \left \vert ~ \mathsf{DEP}(q({v_q}')^{(l',w')},q({v_q})^{(l,w)}, c,w,m,D)
+ \right.\right\}$.
+\end{defn}
+%
+% The function $\mathsf{To}(q(v')^{(l',w')}, q(v)^{(l,w)}$ tells that the query request $q(v')^{(l',w')}$ appears after the query request $q(v)^{(l,w)}$ in the trace, by comparing the annotation $(l',w')$ and $(l,w)$. It helps to decide on the direction of one edge.
+The edge is directed, when an annotated query $q({v_q})^{(l,w)}$ may depend on its previous query $q({v_q}')^{(l',w')}$, we have the directed
+edge $(q({v_q})^{(l,w)}, q({v_q}')^{(l'.w')})$, from $q({v_q})^{(l,w)} $ to $q({v_q}')^{(l'.w')}$.
+
+The query-based dependency graph only considers the newly generated annotated queries during the execution of the program $c$,
+so we see the nodes coming from the trace $t'-t$.
+The previous trace before the execution of $c$ is excluded when constructing the graph.
+% To summarize, for every execution of a program $c$ staring with different configurations, 
+% they can construct a corresponding dependency graph. 
+
+\subsection*{Adaptivity Formalization}
+Below is the definition of adaptivity from \todo{Thesis}, by means of the query-based dependency graph. 
+\begin{defn}[Adaptivity in {loop} language]
+Given a program $c$, and a memory $m$, a database $D$, a starting loop map $w$, the adaptivity of the dependency graph $G(c, D,m,w) = (V, E)$ is the length of the longest path in this graph. We denote the path from $q({v_q})^{(l,w)}$ to $q({v_q}')^{(l',w')}$ as $p(q({v_q})^{(l,w)}, q({v_q}')^{(l',w')} )$. The adaptivity denoted as $A(c, D, m, w)$.
+%
+$$A(c, D, m, w) = \max\limits_{q({v_q})^{(l,w)},q({v_q}')^{(l',w')} \in V } |p(q({v_q})^{(l,w)}, q({v_q}')^{(l',w')} )| $$
+\end{defn}
+\subsection*{Limitations}
+Limited by their language design and the dependency graph construction,
+this adaptivity definition is weak in the following senses.
+\begin{itemize}
+    \item \textbf{Expressiveness Limitation}
+    \\
+    The definition isn't general enough to give the formal adaptivity for the adaptive data analysis programs with non-constant
+    while loops. However, while loops with non-deterministic number of iterations are common in adaptive data analysis programs.
+    \item \textbf{Accuracy Limitation}
+    \\
+    This definition relies on a specific memory, while map, and an execution trace.
+    It gives the adaptivity for the adaptive data analysis program w.r.t. one specific
+    execution. In the other words, this value isn't indeed the adaptivity for the program, but for the program under one single execution.
+    % to The trace only tracks the query requests. This lost the information of the variables
+    % which are assigned by query values even they are not assigned by query requests. 
+    \item \textbf{Efficiency Limitation}
+    \\
+    This definition is in-efficient in the senses that it requires the fully unfolding of every iteration of the while loop.
+    There are two reasons for this low-Efficiency.
+    The first one comes from the low-efficiency of their trace-based operational semantics,
+    which requires the trace to track the loop iteration number in the annotated query.
+    The other is caused by their dependency graph generation, which requires every query requests evaluated during the program execution
+    as the graph nodes.
+    Both of the two processes generate unnecessary and duplicate nodes during the while iterations.
+    %  annotatation of the  the query request executed in the program
+    % with integer indicating the while loops. 
+\end{itemize}

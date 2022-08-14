@@ -1,0 +1,263 @@
+In the previous works on estimating the adaptivity, they design a program analysis framework through constructing a variable-based weighted dependency graph.
+Before they analyze and generate this graph, they first re-write the program from the loop language into
+a Static Single Assignment (SSA) version of loop language.
+The following parts summarize the SSA version of the loop language with their program analysis framework,
+followed by the limitations of their analysis method.
+\subsection*{SSA-Language}
+In order to distinguish different query requests in the case where they are assigned to
+%  the issue of re-assignment of query requesting results to 
+the same variable, they re-write the program from the loop language into SSA form.
+% The SSA labeled command $\ssa{c}$ inherits from the {loop} language, except that the expressions and variables in these commands 
+A selection of the (SSA) version of loop language syntax is shown below.
+%  now in its SSA version as shown below. 
+\[
+\begin{array}{llll}
+ & \ssa{c} & ::= &   [\assign {\ssa{x}}{ \ssa{\expr}}]^{l} ~|~  [\assign {{\ssa{x}} } {q({\ssa{e_q}})}]^{l}
+%
+~|~  {{ifvar(\bar{\ssa{x}}, \bar{\ssa{x}}')}}  ~|~ [\eskip]^{l}  ~|~
+ \eloop ~ [{\ssa{\aexpr}}]^{l}, {n},  [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ~ \edo ~ {\ssa{c}}  ~|~ \\ &&& \ssa{c};\ssa{c}  ~|~  \eif([\ssa{\bexpr}]^{l}, ([\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] , [\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}],[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] ) , \ssa{c}, \ssa{c}) 	
+\end{array}
+\]
+In this SSA version, if command contains the extra part $([\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ,
+[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}],[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] )$,
+which helps to track the dependency of new assigned variables in both branches($[\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$),
+then branch $[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}]$, and else branch $[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] $. 
+The $\bar{\ssa{x}}$ is a list of SSA variables,
+in which every element $\ssa{x}$ may depend on the corresponding element(at same location),
+$\ssa{x_1}$ from $\bar{\ssa{x_1}}$ collected in the then branch or the corresponding element $\ssa{x_2}$ from $\bar{\ssa{x_2}}$ collected in the else branch.
+The size of these three lists are required to be the same.
+And the loop command also has similar part $ [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$ focusing on the loop body.
+
+Then they transform the operational semantics rules with all the operations defined under the loop language introduced in Section~\ref{sec:prework-language}. The transformation computation can be found in \todo{Thesis}.
+\\
+Based on the transformed language, they also redefine the formal adaptivity for the transformed program equivalent to the
+loop language-based definition. The complete definition is also in \todo{Thesis}.
+%
+\subsection*{Program Analysis Algorithm}
+This part summarizes the previous analysis algorithm for estimating the adaptivity for a program. 
+This algorithm is based on the SSA version of the loop language, and
+consists of three auxiliary algorithms: a variable estimation algorithm $\mathsf{VE}$, a matrix-vector based graph generating algorithm $\mathsf{GG}$ to generate the weighted variable-based dependency graph, and a path-searching algorithm $\mathsf{PS}$ to find the most weighted path in the graph.
+%
+\begin{enumerate}
+    \item \textbf{{Variable Estimation Algorithm}}
+\\
+%
+The $\mathsf{VE}$ specifies the nodes of their variable-based dependency graph. The result of $\mathsf{VE}$ is stored in a global variable list $G$, fed to the next step.
+\\
+    Figure~\ref{fig:prework-static_ag1} is a selection of the key rules from their $\mathsf{VE}$ algorithm. This algorithm adds variables to the global variable list $G$. $\mathsf{VE}$ has the form $\ag{G; w; \ssa{c}}{ G'; w'} $, as shown in . The input of $\mathsf{VE}$ is a list of annotated variables $G$ collected before the program $\ssa{c}$, a loop map $w$ consistent with previous estimation, and an input SSA program $\ssa{c}$. The output of the algorithm is the updated global list $G'$, along with the updated loop maps $w$, for later estimation.  
+    \\
+    Their variable estimation for the while loop is low-efficient. As shown in rule \textbf{ag-loop},
+    they unfold every iteration of the while loop, and create new annotated variables for every iteration.
+    This rule causes a major limitation of their static analysis.
+{\footnotesize
+\begin{figure}
+ \begin{mathpar}
+% \inferrule
+% {
+% }
+% { \ag{G ;w; \ssa{[\assign {x}{\expr}]^{l}}}{G ++ [\ssa{x}^{(l,w)}];w}
+% % G ;w; \ssa{[\assign {x}{\expr}]^{l}} \to G ++ [x^{(l,w)}];w 
+% }
+% ~\textbf{ag-asgn}
+% \and
+\inferrule
+{
+}
+{ \ag{G ;w;  [ \assign{\ssa{x}}{q(\ssa{\expr_q})}]^{l}}{  G ++ [\ssa{x}^{(l,w)}] ; w} 
+}~\textbf{ag-query}
+%
+\and 
+%
+\inferrule
+{
+\ag{G; w; \ssa{c_1}}{  G_1;w_1}
+\and 
+ \ag{G_1;w ; \ssa{c_2}}{  G_2; w_2}
+ \\
+ {G_3 = G_2 ++ \ssa{[\bar{x}^{(l,w)}]++ \ssa{[\bar{y}^{(l,w)}]}++ \ssa{[\bar{z}^{(l,w)}]} }}
+}
+{
+\ag{G; w;
+[\eif(\ssa{\bexpr},[ \bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ,[ \bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}],[ \bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}], \ssa{ c_1, c_2)}]^{l} }{ G_3 ;w}
+}~\textbf{ag-if}
+\and 
+\inferrule
+{
+{G_0 = G \quad w_0 =w }
+\and
+\forall 0 \leq z < N. 
+{ \ag{ G_z ++ \ssa{[\bar{x}^{(l, {w_z}+l)}]} ; (w_z+l); \ssa{c}}{ G_{z+1} ; w_{z+1}}  }
+\\
+{G_f = G_N ++ \ssa{[\bar{x}^{(l, w_N \setminus l)}]} }
+\and
+{ \ssa{\aexpr} =  {N}  }
+}
+{\ag{G; w; [\eloop ~ \ssa{\aexpr}, n, [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ~ \edo ~ \ssa{c}]^{l} }{ G_f; w_N\setminus l }
+}~\textbf{ag-loop}
+\end{mathpar}
+ \caption{The key rule of variable estimation algorithm.  }
+    \label{fig:prework-static_ag1}
+\end{figure}
+}
+%
+\item \textbf{Graph Generating}
+\\
+The algorithm $\mathsf{GG}$ generates a matrix-vector-based graph for the program. 
+The matrix $M$ records the may-dependency between annotated variables in the global list $G$. It has size $|G| \times |G|$. The vector $V$ has the same size as $G$ and gives a weight to each variable in $G$. This weight is $1$ when the variable is assigned with a query request and $0$ otherwise. 
+
+To be precise, the $i$th row, $j$th column of the matrix $M$, written $M[i][j]$, is  $1$ when there may be a dependency from variable $ G[i]$ to $G[j]$. Dually, $M[i][j] =0$ means no dependency. In a similar way, $V[i]=1$ means the variable $G[i]$ is assigned with a query request.
+Figure~\ref{fig:prework-static_alg2} shows some selected rules of this algorithm.
+The rule \textbf{ad-loop} is still as low-efficient as the rule \textbf{ag-loop} in Figure~\ref{fig:prework-static_ag1} for the same reason.
+%
+\begin{figure}
+{\footnotesize
+\begin{mathpar}
+% \inferrule
+% {M = \mathsf{L}(i) * ( \mathsf{R}(\ssa{\expr},i) + \Gamma )
+% }
+% {
+%  \gp{\Gamma;[\assign {\ssa{x}}{\ssa{\expr}} ]^{l}; i }{M; V_{\emptyset}; i+1 }
+% % \Gamma \vdash_{M, V_{\emptyset}}^{(i, i+1)} [\assign {\ssa{x}}{\ssa{\expr}} ]^{l}
+% }
+% ~\textbf{ad-asgn}
+% \and
+\inferrule
+{M = \mathsf{L}(i) * ( \mathsf{R}(\ssa{\expr_q},i) + \Gamma )
+\\
+V= \mathsf{L}(i)
+}
+{ 
+\gp{\Gamma;[ \assign{\ssa{x}}{q(\ssa{\expr_q})} ]^{l} ; i }{M;V;i+1}
+%  \vdash^{(i, i+1)}_{M, V} [ \assign{\ssa{x}}{q(\ssa{\expr})} ]^{l} 
+}~\textbf{ad-query}
+%
+\and 
+%
+\inferrule
+{
+{\gp{\Gamma + \mathsf{R}(\ssa{\bexpr}, i_1); \ssa{c_1} ; i_1 }{ M_1;V_1;i_2 }}
+% \Gamma + \mathsf{R}(\bexpr, i_1) \vdash^{(i_1, i_2)}_{M_1, V_1} \ssa{c_1} 
+% : \Phi \land \bexpr \Rightarrow \Psi
+\\
+{\gp{\Gamma + \mathsf{R}(\ssa{\bexpr}, i_1);\ssa{c_2} ; i_2 }{ M_2; V_2 ;i_3}}
+% \Gamma + \mathsf{R}(\ssa{\bexpr}, i_1) \vdash^{(i_2, i_3)}_{M_2, V_2} \ssa{c_2} 
+% : \Phi \land \neg \bexpr \Rightarrow \Psi
+\\
+% { \forall 0 \leq j < |\bar{x}|. \bar{x}(j) = x_j, \bar{x_1}(j) = x_{1j}, \bar{x_2}(j) = x_{2j}  }
+{\gp{\Gamma; [ \bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]; i_3 }{ M_x; V_{\emptyset}; i_3+|\bar{\ssa{x}}| }}
+%
+\\\\
+%
+{\gp{\Gamma; [ \bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}]; i_3+|\bar{\ssa{x}}| }{ M_y; V_{\emptyset}; i_3+|\bar{\ssa{x}}|+|\bar{\ssa{y}}| }}
+%
+\\
+%
+{\gp{\Gamma; [ \bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}]; i_3+|\bar{\ssa{x}}|+ |\bar{\ssa{y}}|}{ M_y; V_{\emptyset}; i_3+|\bar{\ssa{x}}|+|\bar{\ssa{y}}| + |\bar{\ssa{z}}| }}
+\\
+{M = (M_1+M_2)+ M_x+M_y +M_z }
+}
+{
+\gp{\Gamma ; \eif([\ssa{\bexpr}]^{l},[ \bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ,[ \bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}] , [ \bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] , \ssa{ c_1, c_2)} ; i_1}{ M ;V_1 \uplus V_2  ; i_3+|\bar{x}|+|\bar{y}|+|\bar{z}| }
+}\\~\textbf{ad-if}
+%
+% %
+% %
+% \\ 
+% %
+% \inferrule
+% {
+% {\gp{\Gamma; \ssa{c_1} ; i_1 }{ M_1 ; V_1; i_2 }  }
+% % \Gamma \vdash^{(i_1, i_2)}_{M_1, V_1} \ssa{c_1} 
+% % : \Phi \Rightarrow \Phi_1
+% \and 
+% {\gp{\Gamma;\ssa{c_2}; i_2}{M_2; V_2 ;i_3 }}
+% % \Gamma \vdash^{(i_2, i_3)}_{M_2, V_2} \ssa{c_2} 
+% % : \Phi_1 \Rightarrow \Psi 
+% }
+% {
+% \gp{\Gamma ; (\ssa{c_1 ; c_2} ) ; i_1}{(M_1 {;} M_2) ; V_1 \uplus V_2 ; i_3  }
+% % \Gamma \vdash^{(i_1, i_3)}_{M_1 {;} M_2, V_1 \uplus V_2}
+% % \ssa{c_1 ; c_2} 
+% % : \Phi \Rightarrow \Psi
+% }
+% ~\textbf{ad-seq}
+\and 
+\inferrule
+{
+B= |\ssa{\bar{x}}| \and {A = |\ssa{c}|}
+% \and
+% {\Gamma \vdash^{(i, i+B)}_{M_{10}, V_{10}} [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] }
+% \and
+% {\Gamma \vdash^{(i+B,i+B+A )}_{M_{20}, V_{20}} \ssa{c} 
+% }
+\\
+\forall 0 \leq j < N. 
+{\gp{\Gamma;[\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]; i+ j*(B+A) }{M_{1j};V_{1j}; i+B+j*(B+A) }}
+% {\Gamma \vdash^{(i+j*(B+A), i+B+j*(B+A))}_{M_{1j}, V_{1j}}  } [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]
+\\
+{
+\gp{\Gamma;\ssa{c} ; i+B+j*(B+A)  }{M_{2j}; V_{2j}; i+B+A+j*(B+A) }
+% \Gamma \vdash^{(i+B+j*(B+A),i+B+A+j*(B+A) )}_{M_{2j}, V_{2j}} \ssa{c} 
+% : \Phi \land e_n = \lceil{z+1}\rceil \Rightarrow \Psi 
+}
+\\
+{
+\gp{\Gamma ; [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ; i+N*(B+A) }{M; V ;i+N*(B+A)+B}
+% \Gamma \vdash^{(i+N*(B+A) ,i+N*(B+A)+B )}_{M, V} [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]
+% : \Psi \Rightarrow \Phi \land e_N = \lceil{z}\rceil 
+}
+\\
+{ \ssa{\aexpr} =  {N}  }
+\and
+{M' = M+ \sum_{0 \leq j <N}( M_{1j}+M_{2j})  }
+\and
+{V' = V \uplus \sum_{0 \leq j <N}( V_{1j} \uplus V_{2j})  }
+}
+{
+\gp{\Gamma;\eloop ~ [\ssa{\aexpr}]^{l}, ~0, [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ~ \edo ~ \ssa{c}, i }{ M';V' ;i+N*(B+A)+B }
+%  \vdash^{(i,   )}_{M', V'} 
+% : \Phi \land \expr_N = \lceil { N} \rceil \Rightarrow \Phi \land \expr_N = \lceil{0}\rceil
+}~\textbf{ad-loop}
+\end{mathpar}
+}
+    \caption{The key rules of the graph generating algorithm.}
+    \label{fig:prework-static_alg2}
+\end{figure}
+%
+\item \textbf{Longest Weighted Path Search}
+\\
+They use standard longest path search algorithm to compute the adaptivity bound over the variable-based dependency graph.
+\end{enumerate}
+\subsection*{Limitations}
+\begin{enumerate}
+    \item  \textbf{Efficiency Limitations}
+    \begin{enumerate}
+    \item
+    In order to address the issue of re-assignment of different query requesting results to the same variable, they re-write the program from the loop language into SSA form.
+    However, this rewriting is low-efficient and unnecessary.
+    The re-assignment problem can be resolved efficiently and accurately through many state-of-art static program analysis techniques, such as the
+    variable reachable analysis, etc..
+    \item  Their variable estimation algorithm is low-efficient by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1}.
+    This rule unfolds every iteration of the while loop, and create new annotated variables for every iteration.
+    This operation increased the complexity of the program analysis by exponential factors. 
+    \item For the same reason as above, their \textbf{Graph Generation} algorithm is low-efficient as well.
+    \end{enumerate}
+    %
+    \item \textbf{Expressiveness Limitations}
+    \begin{enumerate}
+    \item Their variable estimation algorithm is unable to analyze the programs with
+    non-constant (or non-deterministic) loop iteration numbers.
+    This is caused by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1}.
+    This rule unfolds every iteration of the while loop, and create new annotated variables for every iteration.
+    In order to guarantee the termination of the analysis, they have to limit the loop with constant number of loop iteration.
+    \item For the same reason as above, their \textbf{Graph Generation} algorithm is limited as well.
+    \end{enumerate}
+    \item \textbf{Accuracy Limitations}
+    \begin{enumerate}
+        \item The estimated adaptivity from this framework is loose.
+        It over-approximate in the cases where there isn't semantic dependency between variables even though the variables
+        is explicitly used in the query request.
+        \item This program analysis framework is naive in the sense that all the three steps are standard.
+    And the framework is simply a straightforward composition of the three steps.
+    \end{enumerate}
+\end{enumerate}

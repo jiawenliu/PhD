@@ -186,7 +186,7 @@ This requires us to design new analysis techniques in order to formalize this qu
 % % property of programs. This analysis is developed 
 %  in three steps through different methodologies in each step as follows,
  To formalize this intuitive \emph{adaptivity} as a quantitative program property, 
-I develop an execution-based analysis in Chapter~\ref{ch:dynamic}.
+I develop an execution-based analysis in Section~\ref{sec:adapt-exe}.
 % I first consider all the possible evaluations of a program --- I do this by 
 % I use a trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
 % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
@@ -335,7 +335,7 @@ and the complexity. No need to mention the adaptivity analysis.
 
 \paragraph{Methodology}
 To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
-I develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{ch:static}.
+I develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static}.
 %  which 
 % {\THESYSTEM} combines data flow and control flow analysis with reachability bound analysis~\cite{GulwaniZ10}. 
 % This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve by directly using the data and control flow analyses or the ones that one would achieve by directly using reachability bound analysis techniques alone. Specifically as follows in the same 3 aspects as the execution-based analysis 
@@ -355,14 +355,14 @@ A sound estimated result is given in each part, which is summarized as follows.
 % \item The program adaptivity estimation, through newly designed algorithms based on the results estimated above, 
 % computing the adaptivity upper bound soundly 
 % and accurately.
-\item The {\THESYSTEM} analyzes the data \emph{dependency relation} through the static data flow analysis technique in Section~\ref{sec:alg_weightedgegen}.
+\item The {\THESYSTEM} analyzes the data \emph{dependency relation} through the static data flow analysis technique in Section~\ref{sec:static-dep}.
 This analysis corresponds to the first step in execution-based adaptivity analysis. 
 The estimated result produced from 
 this step is proved as a sound upper bound for the \emph{dependency relation} from execution-based analysis.
 \item 
 % Still , 
 Corresponding to the second step in execution-based adaptivity analysis, the \emph{dependency quantity} 
-is estimated by {\THESYSTEM} through the static program reachability bound analysis techniques, in Section~\ref{sec:alg_weightedgegen}.
+is estimated by {\THESYSTEM} through the static program reachability bound analysis techniques, in Section~\ref{sec:static-quantity}.
 % This analysis corresponds to the second step in execution-based adaptivity analysis. 
 The estimated result produced from 
 this step is proved as a sound upper bound for the \emph{dependency quantity} from execution-based analysis as well.

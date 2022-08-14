@@ -1,37 +1,43 @@
 \paragraph*{Chapter Outline}
 This chapter includes following parts. 
 \begin{enumerate}
-   \item Previous Works on Adaptive Data Analysis
-\item A while-like language extended with query request feature, named {\tt Query While} Language, 
-used to implement 
-the adaptive data analysis in Chapter~\ref{ch:language}. 
-\item A formal adaptivity model through execution-based adaptivity analysis in Chapter~\ref{ch:dynamic}.
-\item A static program analysis algorithm, named {\THESYSTEM} through static adaptivity analysis in Chapter~\ref{ch:static}.
-\item An extended full-spectrum program adaptivity analysis in Chapter~\ref{ch:improved}.
-\item An accurate full-spectrum program resource cost analysis, 
-generalized from {\THESYSTEM} with implementation in Chapter~\ref{ch:generalization}.
-\item Proposed future works for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework in
-Chapter~\ref{ch:furthers},
-expected to be started off before final defense and developing further after.
+   \item Previous Works on Adaptive Data Analysis in Section~\ref{sec:prework}.
+   \item A new program analysis framework for the adaptivity of Adaptive Data Analysis in Chapter~\ref{sec:adapt-analysis}.
+   This program analysis framework has three major components,
+   \begin{enumerate}
+      \item A while-like language extended with query request feature, named {\tt Query While} Language, 
+      used to implement the adaptive data analysis in Section~\ref{sec:adapt-language}. 
+      \item A formal adaptivity model through execution-based adaptivity analysis in Section~\ref{sec:adapt-exe}.
+      \item A static program analysis algorithm, named {\THESYSTEM} through static adaptivity analysis in Section~\ref{sec:adapt-static}.
+   \end{enumerate}
+   \item The manual examples demonstrating the new adaptivity analysis framework, and the evaluation results from the implementation
+   of this analysis framework in Section~\ref{sec:adapt-implementation}.
+   \item Section~\ref{sec:adapt-relatedwork} presents the related works in the program analysis and the data analysis areas
+   related to our adaptivity analysis framework.
 \end{enumerate}
 
 
 \paragraph{Contributions}
 This chapter has the following contributions.
 \begin{enumerate}
-   \item A programming framework for adaptive data analyses where the program represents an analyst that can query a generalization-preserving mechanism mediating the access to some data. 
-   This language is extended from existing framework with inputs and inter-procedure call.
+   \item A new programming framework for adaptive data analyses
+   where the program represents an analyst that can query a generalization-preserving mechanism mediating the access to some data. 
+   This programming framework can support more general data analysis programs than existing adaptivity analysis works.
+   %  is extended from existing framework,  with inputs and inter-procedure call.
    % \item A trace-based operational semantics for the loop language, specific to dependency between queries.
    \item 
    % {A formal definition of the notion of adaptivity under the analyst-mechanism model. This definition is built on a query-based dependency graph built out of all the possible program execution traces.}
-   A formal definition of the notion of adaptivity under the analyst-mechanism model. 
+   A new formal definition of the notion of adaptivity under the analyst-mechanism model. 
    This definition is built on a variable-based dependency graph that is constructed using sets of program execution traces.
+   This definition formalizes the intuitive \emph{adaptivity} more precise than previous adaptivity formalization.
    % \item A transformation between the {\tt Loop} language and the ssa language, with the soundness of the transformation.
    \item 
    % A program analysis algorithm {\THESYSTEM} which provides an upper bound on the adaptivity via a variable-based dependency graph.
-   A static program analysis algorithm {\THESYSTEM} combining data flow, control flow and  reachability bound analysis in order to provide tight bounds on the adaptivity of a program. 
+   A new static program analysis algorithm {\THESYSTEM} combining data flow,
+   control flow and reachability bound analysis in order to provide tighter bounds on the adaptivity of a program than previous works.
    %
-   \item A soundness proof of the program analysis showing that the adaptivity estimated by {\THESYSTEM} bounds the true adaptivity of the program. 
+   \item A soundness proof of the program analysis showing that the adaptivity estimated by {\THESYSTEM} bounds the true adaptivity
+   (i.e., the \emph{adaptivity} formalized for the program through the execution-based analysis) of the program. 
    \item An implementation of {\THESYSTEM} and an experimental evaluation the bounds this implementation provides on several examples.
    % \item A path-sensitive program reachability bound analysis algorithm designed for program with application beyond adaptivity analysis
    %  with implementation.
@@ -39,47 +45,47 @@ This chapter has the following contributions.
    % generalized from {\THESYSTEM} with implementation.
 \end{enumerate}
 %
-\todo{combine}
-\paragraph*{Contributions and Improvements}
-Given the limitation of existing reachability bound analysis techniques, I designed a path-sensitive reachability bound 
-analysis algorithm
+% \todo{combine}
+% \paragraph*{Contributions and Improvements}
+% Given the limitation of existing reachability bound analysis techniques, I designed a path-sensitive reachability bound 
+% analysis algorithm
 
-Based on the implementation and experimental results of the basic full-spectrum analysis,
-% $\THESYSTEM$,
-I 
-% also focus on the two further features can be 
-extend it in Section~\ref{ch:improved} in following 3 aspects.
+% Based on the implementation and experimental results of the basic full-spectrum analysis,
+% % $\THESYSTEM$,
+% I 
+% % also focus on the two further features can be 
+% extend it in Section~\ref{ch:improved} in following 3 aspects.
+% % \begin{enumerate}
+% %  \item The precision of formalizing the intuitive \emph{adaptivity} 
+% % %  in the formal  model 
+% % through the execution-based program analysis.
+
+% % \item In static program analysis, I will give a tighter estimated upper bound on dependency quantity through 
+% % path sensitive reachability bound analysis techniques. 
+
+% % % \item In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
+% % % compute a tighter adaptivity upper bound as well.
+% % \end{enumerate}
 % \begin{enumerate}
-%  \item The precision of formalizing the intuitive \emph{adaptivity} 
+%    \item The {\tt Query While} Language is extended in Section~\ref{sec:refine-exe-language} with inter-procedure call.
+%    \item In the execution-based \emph{adaptivity} analysis part,
+%    the precision of formalizing the intuitive \emph{adaptivity} is improved, with extension on the
 % %  in the formal  model 
-% through the execution-based program analysis.
-
-% \item In static program analysis, I will give a tighter estimated upper bound on dependency quantity through 
-% path sensitive reachability bound analysis techniques. 
-
+% % in the meantime extend this analysis with 
+% inter-procedure call in Section~\ref{sec:refine-exe}.
+% \item The static program \emph{adaptivity} analysis is extended inter-procedure call as well, 
+% and improved by
+% giving a tighter estimated upper bound on \emph{adaptivity} in Section~\ref{sec:refine-static}.
+% %  give a tighter estimated upper bound 
+% Especially in order to improve the accuracy of the estimated result, a
+% % I improve the accuracy of the static \emph{dependency quantity} analysis in the second step through 
+% % designing a
+% path sensitive reachability bound analysis algorithm is designed in Section~\ref{sec:refine-static-psreachability}.
+% Based on this newly designed algorithm,
+% I improve the accuracy of the static \emph{dependency quantity} analysis in the second step 
+% is improved, and a tighter upper bound on \emph{adaptivity} is computed correspondingly.
 % % \item In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
 % % compute a tighter adaptivity upper bound as well.
 % \end{enumerate}
-\begin{enumerate}
-   \item The {\tt Query While} Language is extended in Section~\ref{sec:refine-exe-language} with inter-procedure call.
-   \item In the execution-based \emph{adaptivity} analysis part,
-   the precision of formalizing the intuitive \emph{adaptivity} is improved, with extension on the
-%  in the formal  model 
-% in the meantime extend this analysis with 
-inter-procedure call in Section~\ref{sec:refine-exe}.
-\item The static program \emph{adaptivity} analysis is extended inter-procedure call as well, 
-and improved by
-giving a tighter estimated upper bound on \emph{adaptivity} in Section~\ref{sec:refine-static}.
-%  give a tighter estimated upper bound 
-Especially in order to improve the accuracy of the estimated result, a
-% I improve the accuracy of the static \emph{dependency quantity} analysis in the second step through 
-% designing a
-path sensitive reachability bound analysis algorithm is designed in Section~\ref{sec:refine-static-psreachability}.
-Based on this newly designed algorithm,
-I improve the accuracy of the static \emph{dependency quantity} analysis in the second step 
-is improved, and a tighter upper bound on \emph{adaptivity} is computed correspondingly.
-% \item In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
-% compute a tighter adaptivity upper bound as well.
-\end{enumerate}
 
 %%%%% To reason about%
