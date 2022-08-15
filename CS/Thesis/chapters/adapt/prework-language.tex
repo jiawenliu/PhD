@@ -64,6 +64,7 @@ However, the adaptive data analysis programs with non-constant (even non-determi
 %
 \subsection*{Trace-Based Operational Semantics}
 In the previous program formalization work, their operational semantics is defined based on labeled command and trace with come special operators as follows.
+
 \[
 \begin{array}{llll}
      \mbox{Labeled commands} & c & ::= &   [\assign x \expr]^{l} ~|~  [\assign x q(e_q)]^{l}
@@ -71,8 +72,8 @@ In the previous program formalization work, their operational semantics is defin
  & & & ~|~ \eif([\bexpr]^l, c, c) 	 ~|~ [\eskip]^{l} \\
 \end{array}
 \]
-
-Each command is now labeled with a label $l$, a natural number standing for the line of code where the command appears. Notice that we associate the label $l$ to the conditional predicate $\bexpr$ in the if statement, and to the loop counter $\aexpr$ in the loop statement. We will also use  Loop map $w$ as defined below.  
+% Each command is now labeled 
+They first annotate each command with a label $l$, a natural number standing for the line of code where the command appears. Notice that we associate the label $l$ to the conditional predicate $\bexpr$ in the if statement, and to the loop counter $\aexpr$ in the loop statement. We will also use  Loop map $w$ as defined below.  
 \[
 \begin{array}{llll}
  \mbox{Loop Map} & w & \in & \mbox{Label} \to \mathbb{N} \\
@@ -83,12 +84,14 @@ Each command is now labeled with a label $l$, a natural number standing for the 
 \mbox{Trace} & t & ::= & [] ~|~ q(v_q)^{(l, w) } :: t \\
 \end{array}
 \]
-  Loop map are a map from the label $l$ to the iteration number $n$.
+ Then, they have the Loop map, which is a map from the label $l$ to the iteration number $n$.
 %   Because statements in the loop share the same line number,  varied iterations , the label $l$ is not enough to distinguish statements.
-  A mapping $[k \to n]$ gives accurate information on which loop a statement is in by its key $k$ (label at loop counter), and which iteration $n$ the statement belongs to.
-  For example, the loop map $w=[3:1, 4:2]$ indicates that the statement is currently in a nested loop, the outer loop starting from label $3$ and in its first iteration, the statement is now in the inner loop starting from label $4$ and in the second iteration. We use $\emptyset$ to represent an empty map, indicating the statement is not in any loop.
+  A mapping $[k \to n]$ gives accurate information on which loop a statement is in by its key $k$ (label at loop counter),
+  and which iteration $n$ the statement belongs to.
+  % For example, the loop map $w=[3:1, 4:2]$ indicates that the statement is currently in a nested loop, the outer loop starting from label $3$ and in its first iteration, the statement is now in the inner loop starting from label $4$ and in the second iteration. We use $\emptyset$ to represent an empty map, indicating the statement is not in any loop.
 
-  A memory is standard, a map from variables to values. Queries can be uniquely annotated as $\mathcal{AQ}$, and the annotation $(l,w)$ considers the location of the query by line number $l$ and which iteration the query is at when it appears in a loop statement, specified by $w$.
+  The memory in their language is standard, which is a map from variables to values.
+  Distinctly, queries can be uniquely annotated as $\mathcal{AQ}$, and the annotation $(l,w)$ considers the location of the query by line number $l$ and which iteration the query is at when it appears in a loop statement, specified by $w$.
  
   %% trace
   A trace $t$ is a list of annotated queries accumulated along with the execution of the program. 

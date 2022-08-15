@@ -68,11 +68,12 @@ I firstly define the execution-based dependency graph, then formalize the \emph{
 \subsubsection{Program-Based Data Dependency Graph Generation}
 %  Weighted Data Dependency Graph Generation}
  \label{sec:alg_graphgen}
+\todo{Remove:
  To build the graph, we firstly estimate the vertices and query annotations straightforwardly as follows.
 \paragraph{Vertices Estimation and Query Annotation Estimation}
 \label{sec:alg_vertexgen}
 The vertices in the static analysis dependency graph are actually identical as the  Execution-Based Dependency Graph, which are assigned variables in the program annotated with the unique label(line number). These vertices are collected by statically scanning the program, like what I do for vertices of its Execution-Based Dependency Graph. The vertices are defined formally as follows.
-
+%
   \highlight{
 \[
     \progV(c) \triangleq \left\{ 
@@ -83,19 +84,18 @@ The vertices in the static analysis dependency graph are actually identical as t
   \]
   }
   %
-
+%
 The static scanning of the programs also tells us whether one vertice(assigned variable) is assigned by a query request.  I have similar definition when defining the Execution-Based Dependency Graph, 
 a set of pairs $\progF(c) \in \mathcal{P}(\mathcal{LV} \times \{0, 1\} )$ 
 % is the set of pairs 
 % The weight for each vertex in $\progV(c)$ is computed 
-mapping each $x^l \in \progV(c)$ to a flag, either $0$ or $1$, where $1$  means $x^{l}$ is a member of $ \qvar_{c}$, a set of those variables assigned with query requests, and $0$ means $x^{l}$ not in this set. It is defined formally below.
-
+mapping each $x^l \in \progV(c)$ to a flag, either $0$ or $1$, where $1$  means $x^{l}$ is a member of $ \qvar_{c}$, a set of those variables assigned with query requests,
+and $0$ means $x^{l}$ not in this set. It is defined formally below.
 \[\progF(c) =\left\{(x^l, n)  \in  \mathcal{LV} \times \{0, 1\} 
 ~ \middle\vert ~
 x^l \in \lvar_{c},
 n = 1 \iff x^l \in \qvar_{c} \land n = 0 \iff  x^l \not\in \qvar_{c} .
 \right\}\]
-
 Then, I build the estimated data dependency graph based on the above program static analysis as follows:
 \\
 \highlight{
@@ -193,7 +193,112 @@ n = 1 \iff x^l \in \qvar_{c} \land n = 0 \iff  x^l \in \qvar_{c} .
 \end{array}
 \] }
 \end{defn}
+}
+Finally we build the estimated data dependency graph based on the above program static analysis as follows:
+\\
+\highlight{
+  \[
+    % \progG(c) = (\progV(c), \progE(c), \progW(c), \progF(c))
+    \progG(c) = (\progV(c), \progE(c))
+    \]
+}
+with $\progV(c)$ and  $\progE(c)$
+as computed in each steps above.
+%
+This program-based graph program-based graph has a similar topology structure as 
+% the one
+% of 
+the Execution-Based Dependency Graph. It has the same
+vertices 
+% and query annotations, 
+but approximated edges and weights.  
+% The algorithm computation is 
+It is formally defined in Definition~\ref{def:prog_graph}.
+% Through the reachable definition set on every label,
+% we remove the edges between labels where the variables associated to that labeled command isn't reachable from the second location.
+%\absG(c) =(\absV, \absE, \absW)
+\begin{defn}
+  [Program-Based Dependency Graph]
+  \label{def:prog_graph}
+  % [Program-Based Weighted Data Dependency Graph Generation Algorithm]
+% \label{def:analyz_dcfg}
+Given a program $c$, with its abstract weighted control flow graph $\absG(c) = (\absV, \absE, \absW)$ and 
+feasible data flow relation $\flowsto(x^i, y^j, c)$ for every $x^i, y^j \in \lvar_c$, its Program-Based Weighted Data Dependency Graph
+$\progG(c) = (\progV, \progE)$,
+is generated as follows,
+% \\
+% \highlight{
+% $\progV =\{x^l | x^l \in \lvar_c\} $
+% \\
+% $\progE = \{(y^i, x^l) | (y^i, x^l)  \in dcdg(c) \}$
+% \\
+% $\progW = \{(x^l, w ) | (l, w ) \in \absW \land x^l \in \lvar_c\}$
+% \\
+% $\progF = \{(l, q) \in \mathcal{L} \times \{0, 1\}| q = 1 \iff l \in \qvar_c, q = 0 \iff l \notin \qvar_c \}$.
+% }
+% \end{defn}
+% \begin{defn}
+  % [Program-Based Dependency Graph].
+  % \label{def:prog_graph}
+%   % \\
+% Given a program ${c}$
+% its program-based graph 
+% $\progG({c}) = (\vertxs, \edges, \weights, \qflag)$ is defined as:
+{\footnotesize
+\[
+\begin{array}{lcl}
+% \text{Vertices} &
+% \progV & := & \left\{ 
+% x^l \in \mathcal{LV} 
+% ~ \middle\vert ~
+% x^l \in \lvar_{c}
+% \right\}
+% \\
+% \text{Directed Edges} &
+% \progE & := & 
+% \left\{ 
+% ({x}_1^{i}, {x}_2^{j}) \in \mathcal{LV} \times \mathcal{LV}
+% ~ \middle\vert ~
+% \begin{array}{l}
+%   {x}_1^{i}, {x}_2^{j} \in \vertxs
+% \land
+%   % \\
+%   \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \st 
+%   n \geq 0 \land
+%   \\
+%   \flowsto(x^i,  z_1^{r_1}, c) 
+%   \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
+% \end{array}
+% \right\}
+% \\
+\progV(c) & \triangleq &
+% \bigcup
+% \begin{array}{l}
+\left\{ (x^l, w) \in  \mathcal{LV} \times \mathcal{A}_{in}
+\mid
+x^l \in \lvar_{{c}} \land (l, w) \in \absW(c)
+\right\}
+\\
+\progE(c) & \triangleq &
+   \Big\{ (x^i, w, y^j) \in \mathcal{LV} \times 
+   \mathcal{A}_{\kw{in}} \times \mathcal{LV}
+~\mid~
+  \\ & & \quad 
+x^i, y^j \in \lvar(c) \land \flowsto(x^i, y^j, c) \land
+  \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat 
+  n \geq 0 
+  % \\ & & \quad 
+  % \flowsto(x^i,  z_1^{r_1}, c) 
+  \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
+  \\ & & \quad 
+  \land
+  w = \max \left\{ \absclr(\absevent) ~\mid~ \absevent \in \absflow(c) \land \absevent = (i, \_, j) \right\} 
+\Big\}.
+\end{array}
+\] }
+\end{defn}
 
+\todo{Remove: 
 Then, the Following part computes the adaptivity upper bound for a program $c$.
 % Given a program ${c}$, we generate
 \\
@@ -221,9 +326,190 @@ an arithmetic expression $w_i$ where $(v_i, w_i) \in \progW(c)$, is $v_i$'s esti
 %
 Formally defined as follows.
 \begin{defn}[Finite Walk on Program-Based Dependency Graph ($k$)]
+\label{def:prog_finitewalk}
+Given a program $c$'s program-based dependency graph 
+$\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
+a \emph{finite walk} $k$ in $\traceG({c})$ is
+% function $k: \mathcal{T} \to $ 
+% sequence of edges.
+% For a initial trace $\trace_0 \in \mathcal{T}$, 
+% $k(\trace_0)$ is
+a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+for which there is a sequence of vertices 
+$(v_1, \ldots, v_{n})$ such that:
+\begin{itemize}
+    \item $e_i = (v_{i},v_{i + 1}) \in \progE(c)$ for every $1 \leq i < n$.
+    \item every vertex $v_i \in \progV(c)$,
+    and $(v_i, w_i) \in \progW(c)$, 
+      $v_i$ appears in $(v_1, \ldots, v_{n})$ at most 
+  $w_i$
+    times.  
+\end{itemize}
+%
+The length of $k$ is the number of vertices in its vertex sequence, i.e., $\len(k) = a$.
+\end{defn}
+We abuse the notation $\walks(\progG(c))$ represents the walks over the program-based dependency graph for $c$.
+Different from the walks on a program $c$'s execution based graph,
+$k \in \walks(\traceG(c))$, 
+$k \in \walks(\progG(c))$ doesn't rely on initial trace.
+The occurrence times of every $v_i $ in $k$'s vertex sequence is bound by 
+an arithmetic expression $w_i$ where $(v_i, w_i) \in \progW(c)$, is $v_i$'s estimated weight. 
+% Notice here, for a walk in $\progG(c)$, the occurrence times of every vertex in vertices sequence, 
+%  and its 
+The length of a finite walk $k \in \walks(\progG(c))$ is an arithmetic expression
+as well, i.e., $\len(k) \in \mathcal{A}_{in}$
+\\
+Then the query length of a finite walk in  $\progG(c)$ is an arithmetic expression as well as follows,
+%  $\qlen(k) \in \mathcal{A}_{in}$ as well. 
+% The adaptivity upper bound 
+% is estimated as
+% Then the adaptivity bound based on program analysis for ${c}$ 
+% is the number of query vertices on a finite walk in $\progG({c})$. This finite walk satisfies:
+% \begin{itemize}
+% \item the number of query vertices on this walk is maximum
+% \item the visiting times of each vertex $v$ on this walk is bound by its reachability bound $\weights(v)$.
+% \end{itemize}
+\begin{defn}[Query Length of the Finite Walk on Program-Based Dependency Graph ($\qlen$)]
+\label{def:static-qlen}
+Given 
+% labelled weighted graph $G = (\vertxs, \edges, \weights, \qflag)$, 
+a program $c$'s execution-based dependency graph 
+$\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
+  and a \emph{finite walk} $k \in \walks(\progG(c))$,
+The query length of $k$, $\qlen(k) \in \mathcal{A}_{in}$ 
+% is a function $\qlen(k): \mathcal{T} \to \mathbb{N}$, such that with an initial trace  $\trace_0 \in \mathcal{T}$, 
+% $\qlen(k)(\trace_0)$ 
+is the number of vertices which correspond to query variables in the vertices sequence of this walk $k$
+$(v_1, \ldots, v_{n})$ as follows, 
+\[
+  \qlen(k) = |\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)|.
+\]
+% , where $\trace_0 \in \mathcal{T}$ is the initial trace and $\big(v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)$ is a subsequence of $(v_1, \ldots, v_{n})$.
+%  $k$'s vertex sequence.
+% \mg{If I understand where you want to go, why don't you just use the cardinality of the set above, rather than taking the length of a subsequence?}
+% \jl{because the same vertex could have multiple occurrence in the sequence, and we will count all the occurrence instead of just once.
+% So the cardinality of set doesn't work.}
+\end{defn}
+% is computed as the maximum query length over all finite walks in $\walks(\progG({c}))$, and computed 
+% It is formally defined in \ref{def:prog_adapt}.
+% defined formally as follows.
+%
+%
+\begin{defn}
+[{Program-Based Adaptivity}].
+\label{def:prog_adapt}
+\\
+{
+Given a program ${c}$ and its program-based graph 
+$\progG({c})$
+%  = (\vertxs, \edges, \weights, \qflag)$,
+%
+the program-based adaptivity for $c$ is 
+% a function $\progA({c}): \mathcal{T} \to\mathbb{N} $,
+% for an initial trace $\trace_0 \in \mathcal{T}$,
+defined as%
+\[
+\progA({c})
+\triangleq \max
+\left\{ \qlen(k) \ \mid \  k \in \walks(\progG(c))\right \}.
+\]
+}
+\end{defn}
+Based on our soundness of the program-based adaptivity, our program-based adaptivity is a sound upper bound of its adaptivity in Definition~\ref{def:trace_adapt}. 
+\begin{thm}[Soundness of \THESYSTEM]
+  \label{thm:sound_progadapt}
+  For every program $c$, 
+  % for any initial trace $\trace_0$, 
+  its program-based adaptivity is a sound upper bound of its adaptivity.
+    $$  \progA(c) \geq A(c)$$
+\end{thm}
+For $\progA(c) \geq A(c)$ comparing between function and arithmetic expression,
+we are specifically comparing, $\forall \trace \in \mathcal{T} \sthat  
+\config{A(c), \trace} \earrow n \implies n \geq A(c)(\trace) $.
+To estimate a sound and precise upper bound on adaptivity, we develop an adaptivity estimation algorithm called $\pathsearch$ (in Apdix Algorithm~I), which uses both the deep first search and breath first search strategy to find the walk. We also show that the estimated adaptivity from our $\pathsearch$ is sound with respect to the program-based adaptivity. 
+\begin{thm}[Soundness of $\pathsearch$]
+  \label{thm:sound_adaptalg}
+  For every program $c$.
+  % for any initial trace $\trace_0$,
+    $$\pathsearch(\progG({c})) \geq \progA(c).$$
+\end{thm}
+}
+\subsubsection{Adaptivity Upper Bound Computation}
+%  Weighted Data Dependency Graph Generation}
+\label{sec:static-adapt-comput}
+% \subsubsection{Adaptivity Upper Bound Computation}
+%  from refined weighted-labeled data-flow graph}
+This phase computes the adaptivity upper bound for a program $c$.
+% Given a program ${c}$, we generate
+\\
+With
+% its 
+$c$'s program-based data dependency graph $\progG({c})$ approximated above,
+%
+its adaptivity upper bound 
+% Defined in Definition~\ref{def:prog_adapt} as 
+%
+is estimated as
+% Then the adaptivity bound based on program analysis for ${c}$ 
+% is the number of query vertices on a finite walk in $\progG({c})$. This finite walk satisfies:
+% \begin{itemize}
+% \item the number of query vertices on this walk is maximum
+% \item the visiting times of each vertex $v$ on this walk is bound by its reachability bound $\weights(v)$.
+% \end{itemize}
+the maximum query length over all finite walks in $\walks(\progG({c}))$ formally in Definition~\ref{def:prog_adapt}, 
+and computed 
+% is computed as the maximum query length over all finite walks in $\walks(\progG({c}))$, and computed 
+in Algorithm~\ref{alg:adpt_alg}.
+%
+% It is formally defined in \ref{def:prog_adapt}.
+% defined formally as follows.
+%
+% %
+% \begin{defn}
+% [{Program-Based Adaptivity}].
+% \label{def:prog_adapt}
+% \\
+% {
+% Given a program ${c}$ and its program-based graph 
+% $\progG({c})$
+% %  = (\vertxs, \edges, \weights, \qflag)$,
+% %
+% the program-based adaptivity for $c$ is defined as%
+% \[
+% \progA({c}) 
+% \triangleq \max
+% \left\{ \qlen(k)\ \mid \  k\in \walks(\progG({c}))\right \}.
+% \]
+% }
+% \end{defn} 
+
+% We use $\walks(\progG(c))$ represents the walks over the program-based dependency graph for $c$.
+Different from the finite walk on a program $c$'s execution based graph,
+%  $\traceG(c)$, 
+% $k \in \walks(\progG(c))$ 
+the finite walk in $\progG(c)$ doesn't rely on initial trace.
+The occurrence times of every $v_i $ in $k$'s vertex sequence is bound by 
+an arithmetic expression $w_i$ where $(v_i, w_i) \in \progV(c)$, is $v_i$'s estimated weight. 
+% Then $\qlen(k) \in \mathcal{A}_{in}$ as well. 
+% The full definition for $\walks(\progG(c))$ and $\qlen$ over $\walks(\progG(c))$ is in Apdix.
+%
+Formally defined as follows.
+\begin{defn}[Finite Walk on Program-Based Dependency Graph ($k$)].
   \label{def:prog_finitewalk}
+  \\
+%   Given a program $c$'s execution-based dependency graph $\traceG({c})(\trace)$, 
+%   a \emph{finite walk} $fw$ in $\traceG({c})(\trace)$ is a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+%   for which there is a sequence of vertices $(v_1, \ldots, v_{n})$ such that:
+%   \begin{itemize}
+%       \item $e_i = (v_{i},v_{i + 1})$ for every $1 \leq i < n$.
+%       \item every vertex $v \in \traceV({c}) $ appears in $(v_1, \ldots, v_{n})$ at most 
+%       \wq{$\traceW({c})(\trace)$} times.  
+%   \end{itemize}
+%   %
+%   The length of $fw$ is the number of vertices in its vertex sequence, i.e., $\len(k) = n$.
   Given a program $c$'s program-based dependency graph 
-  $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
+  $\progG({c}) = (\progV(c), \progE(c))$
+  % , \progW(c), \progF(c))$, 
   a \emph{finite walk} $k$ in $\traceG({c})$ is
   % function $k: \mathcal{T} \to $ 
   % sequence of edges.
@@ -233,12 +519,18 @@ Formally defined as follows.
   for which there is a sequence of vertices 
   $(v_1, \ldots, v_{n})$ such that:
   \begin{itemize}
-      \item $e_i = (v_{i},v_{i + 1}) \in \progE(c)$ for every $1 \leq i < n$.
-      \item every vertex $v_i \in \progV(c)$,
-      and $(v_i, w_i) \in \progW(c)$, 
+      \item 
+      \highlight{
+        $e_i = (v_{i},w_i, v_{i + 1}) \in \progE(c)$ for every $1 \leq i < n$,
+        and occurrence times of $e_i$ smaller than $w_i$.
+        }
+      \item 
+      \highlight{
+        every vertex $(v_i, w_i) \in \progV(c)$,
        $v_i$ appears in $(v_1, \ldots, v_{n})$ at most 
+    %   \wq{$\traceW({c})(\trace)$} 
     $w_i$
-      times.  
+      times. } 
   \end{itemize}
   %
   The length of $k$ is the number of vertices in its vertex sequence, i.e., $\len(k) = a$.
@@ -248,7 +540,7 @@ Different from the walks on a program $c$'s execution based graph,
  $k \in \walks(\traceG(c))$, 
 $k \in \walks(\progG(c))$ doesn't rely on initial trace.
 The occurrence times of every $v_i $ in $k$'s vertex sequence is bound by 
-an arithmetic expression $w_i$ where $(v_i, w_i) \in \progW(c)$, is $v_i$'s estimated weight. 
+an arithmetic expression $w_i$ where $(v_i, w_i) \in \progV(c)$, is $v_i$'s estimated weight. 
 % Notice here, for a walk in $\progG(c)$, the occurrence times of every vertex in vertices sequence, 
 %  and its 
  The length of a finite walk $k \in \walks(\progG(c))$ is an arithmetic expression
@@ -265,33 +557,40 @@ an arithmetic expression $w_i$ where $(v_i, w_i) \in \progW(c)$, is $v_i$'s esti
 % \item the visiting times of each vertex $v$ on this walk is bound by its reachability bound $\weights(v)$.
 % \end{itemize}
 \begin{defn}[Query Length of the Finite Walk on Program-Based Dependency Graph ($\qlen$)]
-  \label{def:static-qlen}
+  \label{def:qlen}
+  % Given 
+  % % labelled weighted graph $G = (\vertxs, \edges, \weights, \qflag)$, 
+  % a program $c$'s execution-based dependency graph $\traceG(c)(\trace)$
+  %  and a \emph{finite walk} $k$ in $\traceG(c)(\trace)$ with its vertex sequence $(v_1, \ldots, v_{n})$, 
+  % %  the length of $k$ w.r.t query is defined as:
+  % The query length of $k$ is the number of vertices which correspond to query variables in $(v_1, \ldots, v_{n})$ as follows, 
+  % \[
+  %   \qlen(k) = \len\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)
+  % \]
+  % , where $\big(v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)$ is a subsequence of $(v_1, \ldots, v_{n})$.
   Given 
   % labelled weighted graph $G = (\vertxs, \edges, \weights, \qflag)$, 
   a program $c$'s execution-based dependency graph 
   $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
    and a \emph{finite walk} $k \in \walks(\progG(c))$,
+  %  $k$ in $\traceG(c)(\trace)$
+  %  $k \in \walks(\traceG(c))$. 
+  %  with its vertex sequence $(v_1, \ldots, v_{n})$, 
+  %  the length of $k$ w.r.t query is defined as:
   The query length of $k$, $\qlen(k) \in \mathcal{A}_{in}$ 
   % is a function $\qlen(k): \mathcal{T} \to \mathbb{N}$, such that with an initial trace  $\trace_0 \in \mathcal{T}$, 
   % $\qlen(k)(\trace_0)$ 
-  is the number of vertices which correspond to query variables in the vertices sequence of this walk $k$
+  is the number of vertices which correspond to query variables in the vertices sequence of the this walk $k$
   $(v_1, \ldots, v_{n})$ as follows, 
   \[
-    \qlen(k) = |\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)|.
+    \qlen(k) = |\big( v \mid v \in (v_1, \ldots, v_{n}) \land v \in \qvar(c) \big)|.
   \]
-  % , where $\trace_0 \in \mathcal{T}$ is the initial trace and $\big(v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)$ is a subsequence of $(v_1, \ldots, v_{n})$.
-  %  $k$'s vertex sequence.
-  % \mg{If I understand where you want to go, why don't you just use the cardinality of the set above, rather than taking the length of a subsequence?}
-  % \jl{because the same vertex could have multiple occurrence in the sequence, and we will count all the occurrence instead of just once.
-  % So the cardinality of set doesn't work.}
   \end{defn}
 % is computed as the maximum query length over all finite walks in $\walks(\progG({c}))$, and computed 
+%
 % It is formally defined in \ref{def:prog_adapt}.
 % defined formally as follows.
 %
-\subsubsection{Program-Based Adaptivity Computation}
-%  Weighted Data Dependency Graph Generation}
- \label{sec:static-adapt-comput}
 %
 \begin{defn}
 [{Program-Based Adaptivity}].
@@ -322,7 +621,7 @@ Based on our soundness of the program-based adaptivity, our program-based adapti
      $$  \progA(c) \geq A(c)$$
 \end{thm}
 For $\progA(c) \geq A(c)$ comparing between function and arithmetic expression,
-we are specifically comparing, $\forall \trace \in \mathcal{T} \sthat  
+we are specifically comparing, $\forall \trace \in \mathcal{T} \sthat
 \config{A(c), \trace} \earrow n \implies n \geq A(c)(\trace) $.
 To estimate a sound and precise upper bound on adaptivity, we develop an adaptivity estimation algorithm called $\pathsearch$ (in Apdix Algorithm~I), which uses both the deep first search and breath first search strategy to find the walk. We also show that the estimated adaptivity from our $\pathsearch$ is sound with respect to the program-based adaptivity. 
 \begin{thm}[Soundness of $\pathsearch$]
@@ -331,7 +630,7 @@ To estimate a sound and precise upper bound on adaptivity, we develop an adaptiv
     % for any initial trace $\trace_0$,
      $$\pathsearch(\progG({c})) \geq \progA(c).$$
 \end{thm}
-The full details of all the soundness can be found in the appendix.
+The full details of all the soundness can be found in the Appendix~\ref{apdx:adapt_soundness}.
 % The following algorithm finds the walk with the longest query length on a program $c$'s execution-based dependency graph 
 % $\progG(c)$
 % %  = (\vertxs, \edges, \weights, \qflag)$, 
@@ -514,59 +813,111 @@ While, in most of our cases, the programs' Program-Based Dependency Graphs are h
 Look at the simple example in Figure~\ref{fig:alg_adaptsearch_simplewhile}, where $k$ is the input variable from domain $\mathbb{N}$.
 %  in Figure~\ref{} in Section~\ref{sec:overview},
 \begin{figure}
-\centering
-{
-% \footnotesize
-\begin{subfigure}{.25\textwidth}
-\begin{centering}
-$ 
-\begin{array}{l}
-  \kw{whileSim(k)} \triangleq \\
-  \clabel{ \assign{j}{k} }^{0} ; \\
-  \clabel{ \assign{x}{\query(\chi[0])} }^{1} ; \\
-      \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ \\
-      \Big(
-       \clabel{\assign{x}{\query(\chi[x]) }}^{3}  ; \\
-      \clabel{\assign{j}{j-1}}^{4}       \Big)
-  \end{array}
-$
-\caption{}
-\end{centering}
-\end{subfigure}
-\quad
-  \begin{subfigure}{.6\textwidth}
+  \centering
+  {
+  % \footnotesize
+  \begin{subfigure}{.25\textwidth}
   \begin{centering}
-  \begin{tikzpicture}[scale=\textwidth/18cm,samples=200]
-\draw[] (0, 7) circle (0pt) node
-{\textbf{$x^1: {}^{1}_{1}$}};
-\draw[] (0, 4) circle (0pt) node
-{{ $x^3: {}^{k}_{1}$}};
-% Counter Variables
-\draw[] (5, 9) circle (0pt) node {{$j^2: {}^{1}_{0}$}};
-\draw[] (5, 6) circle (0pt) node {{ $j^4: {}^{k}_{0}$}};
-%
-% Value Dependency Edges:
-\draw[ ultra thick, -latex, densely dotted,] (0, 4.5)  -- (0, 6.5) ;
-\draw[ ultra thick, -latex, densely dotted,] (0.5, 4.2) arc (150:-180:1);
-\draw[ thick, -Straight Barb] (5.5, 6.2) arc (150:-150:1);
-\draw[ thick, -latex] (5, 6.5)  -- (5, 8.5) ;
-% Control Dependency
-\draw[ thick,-latex] (1.5, 7)  -- (4, 9) ;
-\draw[ thick,-latex] (1.5, 4)  -- (4, 9) ;
-\draw[ thick,-latex] (1.5, 7)  -- (4, 6) ;
-\draw[ thick,-latex] (1.5, 4)  -- (4, 6) ;
-\end{tikzpicture}
-\caption{}
+  $ 
+  \begin{array}{l}
+    \kw{whileSim(k)} \triangleq \\
+    \clabel{ \assign{j}{k} }^{0} ; \\
+    \clabel{ \assign{x}{\query(\chi[0])} }^{1} ; \\
+        \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ \\
+        \Big(
+         \clabel{\assign{x}{\query(\chi[x]) }}^{3}  ; \\
+        \clabel{\assign{j}{j-1}}^{4}       \Big)
+    \end{array}
+  $
+  \caption{}
   \end{centering}
   \end{subfigure}
-}
-% \end{wrapfigure}
-% \end{equation*}
-\vspace{-0.4cm}
- \caption{(a) Simple While Loop Example, (b) The Program-Based Dependency Graph generated from $\THESYSTEM$.}
-\label{fig:alg_adaptsearch_simplewhile}
-\vspace{-0.5cm}
-\end{figure}
+  \quad
+    \begin{subfigure}{.6\textwidth}
+    \begin{centering}
+    \begin{tikzpicture}[scale=\textwidth/18cm,samples=200]
+  \draw[] (0, 7) circle (0pt) node
+  {\textbf{$x^1: {}^{1}_{1}$}};
+  \draw[] (0, 4) circle (0pt) node
+  {{ $x^3: {}^{k}_{1}$}};
+  % Counter Variables
+  \draw[] (5, 9) circle (0pt) node {{$j^2: {}^{1}_{0}$}};
+  \draw[] (5, 6) circle (0pt) node {{ $j^4: {}^{k}_{0}$}};
+  %
+  % Value Dependency Edges:
+  \draw[ ultra thick, -latex, densely dotted,] (0, 4.5)  -- node[left]{\highlight{$k$}} (0, 6.5) ;
+  \draw[ ultra thick, -latex, densely dotted,] (0.5, 4.2) arc (150:-180:1);
+  \draw[] (2, 4) node []{\highlight{$k$}};
+  \draw[ thick, -Straight Barb] (5.5, 6.2) arc (150:-150:1);
+  \draw[] (7, 6) node []{\highlight{$k$}};
+  \draw[ thick, -latex] (5, 6.5)  -- node[right]{\highlight{$k$}} (5, 8.5) ;
+  % Control Dependency
+  \draw[ thick,-latex] (1.5, 7)  -- node[above]{\highlight{$k$}} (4, 9) ;
+  \draw[ thick,-latex] (1.5, 4)  -- node[above]{\highlight{$k$}} (4, 9) ;
+  \draw[ thick,-latex] (1.5, 7)  -- node[below]{\highlight{$k$}} (4, 6) ;
+  \draw[ thick,-latex] (1.5, 4)  -- node[below]{\highlight{$k$}} (4, 6) ;
+  \end{tikzpicture}
+  \caption{}
+    \end{centering}
+    \end{subfigure}
+  }
+   \caption{(a) Simple While Loop Example, (b) The Program-Based Dependency Graph generated from $\THESYSTEM$.}
+  \label{fig:alg_adaptsearch_simplewhile}
+  \end{figure}
+  % \begin{figure}
+% \centering
+% {
+% % \footnotesize
+% \begin{subfigure}{.25\textwidth}
+% \begin{centering}
+% $ 
+% \begin{array}{l}
+%   \kw{whileSim(k)} \triangleq \\
+%   \clabel{ \assign{j}{k} }^{0} ; \\
+%   \clabel{ \assign{x}{\query(\chi[0])} }^{1} ; \\
+%       \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ \\
+%       \Big(
+%        \clabel{\assign{x}{\query(\chi[x]) }}^{3}  ; \\
+%       \clabel{\assign{j}{j-1}}^{4}       \Big)
+%   \end{array}
+% $
+% \caption{}
+% \end{centering}
+% \end{subfigure}
+% \quad
+%   \begin{subfigure}{.6\textwidth}
+%   \begin{centering}
+%   \begin{tikzpicture}[scale=\textwidth/18cm,samples=200]
+% \draw[] (0, 7) circle (0pt) node
+% {\textbf{$x^1: {}^{1}_{1}$}};
+% \draw[] (0, 4) circle (0pt) node
+% {{ $x^3: {}^{k}_{1}$}};
+% % Counter Variables
+% \draw[] (5, 9) circle (0pt) node {{$j^2: {}^{1}_{0}$}};
+% \draw[] (5, 6) circle (0pt) node {{ $j^4: {}^{k}_{0}$}};
+% %
+% % Value Dependency Edges:
+% \draw[ ultra thick, -latex, densely dotted,] (0, 4.5)  -- (0, 6.5) ;
+% \draw[ ultra thick, -latex, densely dotted,] (0.5, 4.2) arc (150:-180:1);
+% \draw[ thick, -Straight Barb] (5.5, 6.2) arc (150:-150:1);
+% \draw[ thick, -latex] (5, 6.5)  -- (5, 8.5) ;
+% % Control Dependency
+% \draw[ thick,-latex] (1.5, 7)  -- (4, 9) ;
+% \draw[ thick,-latex] (1.5, 4)  -- (4, 9) ;
+% \draw[ thick,-latex] (1.5, 7)  -- (4, 6) ;
+% \draw[ thick,-latex] (1.5, 4)  -- (4, 6) ;
+% \end{tikzpicture}
+% \caption{}
+%   \end{centering}
+%   \end{subfigure}
+% }
+% % \end{wrapfigure}
+% % \end{equation*}
+% \vspace{-0.4cm}
+%  \caption{(a) Simple While Loop Example, (b) The Program-Based Dependency Graph generated from $\THESYSTEM$.}
+% \label{fig:alg_adaptsearch_simplewhile}
+% \vspace{-0.5cm}
+% \end{figure}
 % Analysis Results: $ \progA(\kw{whileRec}(k)) = 1 + k$
 %
 If we traverse on the program-based dependency graph, and decrease the weight of $x^3$ (the weight $k$ is symbolic) by one after every visit,
@@ -1249,7 +1600,7 @@ The soundness is formally guaranteed in Lemma~\ref{lem:sound_adaptalg_scc} in Ap
   \begin{figure}
     \centering
     {\footnotesize
-    \begin{subfigure}{.5\textwidth}
+    \begin{subfigure}{.4\textwidth}
     \begin{centering}
     % 
     $ 
@@ -1275,48 +1626,48 @@ The soundness is formally guaranteed in Lemma~\ref{lem:sound_adaptalg_scc} in Ap
     \end{centering}
     \end{subfigure}
     \quad
-    \begin{subfigure}{.42\textwidth}
+    \begin{subfigure}{.52\textwidth}
       \begin{centering}
       \begin{tikzpicture}[scale=\textwidth/18cm,samples=200]
-% Variables Initialization
-\draw[] (-5, 1) circle (0pt) node{{ $a^0: {}^1_{0}$}};
-\draw[] (-5, 7) circle (0pt) node{{ $x^1: {}^{1}_{0}$}};
-% Variables Inside the Loop
-   \draw[] (0, 7) circle (0pt) node{{ $y^6: {}^{k}_{0}$}};
-   \draw[] (0, 1) circle (0pt) node{{ $x^9: {}^{k}_{0}$}};
-   % Counter Variables
-   \draw[] (5, 9) circle (0pt) node {{$i^0: {}^{1}_{0}$}};
-   \draw[] (5, 6) circle (0pt) node {{ $i^4: {}^{k}_{0}$}};
-   \draw[] (5, 3) circle (0pt) node {{$j^0: {}^{1}_{0}$}};
-   \draw[] (5, 0) circle (0pt) node {{ $j^8: {}^{k}_{0}$}};
-   %
-   % Value Dependency Edges:
-   \draw[ ultra thick, -latex, densely dotted,] (0, 7.5) arc (220:-100:1.5);
-   \draw[ thick, -latex] (5, 6.5)  -- (5, 8.5) ;
-   \draw[ thick, -latex] (5, 0.5)  -- (5, 2.5) ;
-   \draw[ ultra thick, -latex, densely dotted,] (1., 0.5) arc (120:-200:1.5);
-   % Value Dependency Edges on Initial Values:
-   \draw[ thick, -latex,] (-0.5, 1)  -- (-4.5, 1) ;
-   \draw[ thick, -latex,] (-0.5, 7)  -- (-4.5, 7) ;
-   %
-   \draw[ ultra thick, -latex, densely dotted,] (-0.5, 1.5)  to  [out=-220,in=220]  (-0.5, 7);
-   \draw[ ultra thick, -latex, densely dotted,]  (0.5, 7) to  [out=-60,in=60] (0.5, 1) ;
-   % Control Dependency
-  %  \draw[ thick,-latex] (1.5, 7)  -- (4, 9) ;
-  %  \draw[ thick,-latex] (1.5, 4)  -- (4, 9) ;
-  \draw[ thick, -latex, ] (6.5, 6.5) arc (150:-150:1);
-  \draw[ thick, -latex, ] (6.5, 0.5) arc (150:-150:1);
-  \draw[ thick,-latex] (1.5, 7)  -- (4, 6) ;
-   \draw[ thick,-latex] (1.5, 1)  -- (4, 6) ;
-   \draw[ thick,-latex] (1.5, 1)  -- (4, 1) ;
+      % Variables Initialization
+      \draw[] (-5, 1) circle (0pt) node{{ $a^0: {}^1_{0}$}};
+      \draw[] (-5, 7) circle (0pt) node{{ $x^1: {}^{1}_{0}$}};
+      % Variables Inside the Loop
+      \draw[] (0, 7) circle (0pt) node{{ $y^6: {}^{k}_{0}$}};
+      \draw[] (0, 1) circle (0pt) node{{ $x^9: {}^{k}_{0}$}};
+      % Counter Variables
+      \draw[] (5, 9) circle (0pt) node {{$i^0: {}^{1}_{0}$}};
+      \draw[] (5, 6) circle (0pt) node {{ $i^4: {}^{k}_{0}$}};
+      \draw[] (5, 3) circle (0pt) node {{$j^0: {}^{1}_{0}$}};
+      \draw[] (5, 0) circle (0pt) node {{ $j^8: {}^{k}_{0}$}};
+      % Value Dependency Edges:
+      \draw[ ultra thick, -latex, densely dotted,] (0, 7.5) arc (220:-100:1.5);
+      \draw[] (1, 8) node [] {\highlight{$k$}};
+      \draw[ thick, -latex] (5, 6.5)  -- node[left]{\highlight{{$k$}}}(5, 8.5) ;
+      \draw[ thick, -latex] (5, 0.5)  -- node[left]{\highlight{{$k$}}}(5, 2.5) ;
+      \draw[ ultra thick, -latex, densely dotted,] (1., 0.5) arc (120:-200:1.5);
+      \draw[] (1, 0) node [] {\highlight{$k$}};
+      % Value Dependency Edges on Initial Values:
+      \draw[ thick, -latex,] (-0.5, 1)  -- node[above]{\highlight{{$k$}}}(-4.5, 1) ;
+      \draw[ thick, -latex,] (-0.5, 7)  -- node[above]{\highlight{{$k$}}}(-4.5, 7) ;
+      %
+      \draw[ ultra thick, -latex, densely dotted,] (-0.5, 1.5)  to  [out=-220,in=220]  
+      node[left]{\highlight{{$k$}}}(-0.5, 7);
+      \draw[ ultra thick, -latex, densely dotted,]  (0.5, 7) to  [out=-60,in=60] 
+      node[right]{\highlight{{$k$}}}(0.5, 1) ;
+      % Control Dependency
+      \draw[ thick, -latex, ] (6.5, 6.5) arc (150:-150:1);
+      \draw[] (7.5, 6) node [] {\highlight{$k$}};
+      \draw[ thick, -latex, ] (6.5, 0.5) arc (150:-150:1);
+      \draw[] (7.5, 0) node [] {\highlight{$k$}};
+      \draw[ thick,-latex] (1.5, 7)  -- node[below]{\highlight{{$k$}}}(4, 6) ;
+      \draw[ thick,-latex] (1.5, 1)  -- node[right]{\highlight{{$k$}}}(4, 6) ;
+      \draw[ thick,-latex] (1.5, 1)  -- node[above]{\highlight{{$k$}}}(4, 1) ;
    \end{tikzpicture}
    \caption{}
       \end{centering}
       \end{subfigure}
     }
-    % \end{wrapfigure}
-    % \end{equation*}
-    \vspace{-0.4cm}
      \caption{(a) Nested While Loop Example, (b) Execution-Based Dependency Graph, (c) The Static Program-Based Dependency graph.}
     \label{fig:alg_adaptsearch_nestedwhile}
     \vspace{-0.5cm}

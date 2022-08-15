@@ -268,32 +268,43 @@ by generating the set of feasible data-flow between labeled variables as follows
    \end{defn}
 %
 This \emph{Feasible Data-Flow} relation is a sound approximation 
-of the \emph{variable may-Dependency} relation over labeled variables for every program.
+of the variable \emph{May-Dependency} relation over labeled variables for every program.
 The soundness is proved
 in Appendix~\ref{apdx:flowsto_soundness}.
 %
-\paragraph*{Edges Estimation}
-Then I define the estimated directed edges
+\paragraph*{Data Dependency Relation Estimation}
+%
+For any program $c$ and two labeled variables $x^i, y^j$  in this program, 
+$x^i, y^j$  is in the estimated dependency relation if and only if they satisfy
+$\flowsto(x^i, y^j, c)$.
+
+We also define a set of estimated directed edges for the program.
+As introduce in the third step in Section~\ref{sec:static-overview},
+this set is used in Section~\ref{sec:static-adapt} to estimate
+the execution-based dependency graph.
 % for each vertex in $\progV(c)$,
-between vertices in $\progV(c)$,
-as a set of pairs 
+This estimated directed edges set is defined as a set of triples 
 % $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{LV} \times EXPR(\constdom))$ 
-$\progE(c) \in \mathcal{P}(\in \mathcal{LV} \times \mathcal{LV})$
+$\progE(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{A}_{\lin} \times \mathcal{LV})$,
+Each directed edge is defined between vertices $({x}_1^{i}, w_1)$  
+and $({x}_2^{j}, w_2)$ 
+where ${x}_1^{i}, {x}_2^{j} \in \lvar(c)$, and they are in the estimated dependency relation
 % is the set of pairs 
 % The weight for each vertex in $\progV(c)$ is computed 
-indicating a directed edge from the first vertex to the second one in each pair
+% indicating a directed edge from the first vertex to the second one in each pair
 as follows,
 \highlight{
   \[
-    \progE(c) \triangleq 
+    \progE^0(c) \triangleq 
     \left\{ 
-    ({x}_1^{i}, {x}_2^{j}) \in \mathcal{LV} \times \mathcal{LV}
+    ({x}_1^{i}, w, {x}_2^{j}) \in \mathcal{LV} \times 
+    \mathcal{A}_{\kw{in}} \times \mathcal{LV}
     ~ \middle\vert ~
     \begin{array}{l}
-      {x}_1^{i}, {x}_2^{j} \in \progV(c)
+      {x}_1^{i}, {x}_2^{j} \in \lvar(c)
     \land
       % \\
-      \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  
+      \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat
       n \geq 0 \land
       \\
       \flowsto(x^i,  z_1^{r_1}, c) 
@@ -302,9 +313,44 @@ as follows,
     \right\}
     \]
 }
-This estimated directed edge set $\progE(c)$ is a sound approximation of the 
-edge set in $c$'s execution-based dependency graph, which is proved 
+The weight for every edge will be computed as next step in Section~\ref{sec:alg_weightgen}.
+We prove that this estimated directed edge set $\progE(c)$ is a sound approximation of the 
+edge set in $c$'s Execution-Based Dependency Graph 
 in Appendix~\ref{apdx:adapt_soundness}.
+
+% \paragraph*{Edges Estimation}
+% Then I define the estimated directed edges
+% % for each vertex in $\progV(c)$,
+% between vertices in $\progV(c)$,
+% as a set of pairs 
+% % $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{LV} \times EXPR(\constdom))$ 
+% $\progE(c) \in \mathcal{P}(\in \mathcal{LV} \times \mathcal{LV})$
+% % is the set of pairs 
+% % The weight for each vertex in $\progV(c)$ is computed 
+% indicating a directed edge from the first vertex to the second one in each pair
+% as follows,
+% \highlight{
+%   \[
+%     \progE(c) \triangleq 
+%     \left\{ 
+%     ({x}_1^{i}, {x}_2^{j}) \in \mathcal{LV} \times \mathcal{LV}
+%     ~ \middle\vert ~
+%     \begin{array}{l}
+%       {x}_1^{i}, {x}_2^{j} \in \progV(c)
+%     \land
+%       % \\
+%       \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  
+%       n \geq 0 \land
+%       \\
+%       \flowsto(x^i,  z_1^{r_1}, c) 
+%       \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
+%     \end{array}
+%     \right\}
+%     \]
+% }
+% This estimated directed edge set $\progE(c)$ is a sound approximation of the 
+% edge set in $c$'s execution-based dependency graph, which is proved 
+% in Appendix~\ref{apdx:adapt_soundness}.
 %  \begin{defn}[Feasible Data-Flow]
 %   \label{def:feasible_flowsto}
 %     {\footnotesize

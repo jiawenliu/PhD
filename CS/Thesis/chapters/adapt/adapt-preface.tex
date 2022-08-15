@@ -18,12 +18,14 @@ for the program,
 I'm interested in analyzing the depth of the chain of queries in a program, i.e., the program's \emph{adaptivity} property.
 
 There are some works on analyzing this \emph{adaptivity} property based on an analysis of the dependency graph between different queries.
-But their works are limited in some aspects.
-In the next few chapters, I present a new program analysis framework that can help data analysts design adaptive data analyses controlling their generalization errors.
+But their works are limited in many aspects.
+In the next few chapters,
+I present a new program analysis framework that can better help data analysts
+design adaptive data analyses controlling their generalization errors than previous works.
 
 The new analysis framework consider adaptive data analyses implemented as while-like programs.
 %  and we design a program analysis which can help with identifying which technique to use to control their generalization error. 
-More specifically, we formalize the intuitive notion of \emph{adaptivity} as a more accurate quantitative property of programs than previous works.
+It formalizes the intuitive notion of \emph{adaptivity} as a more accurate quantitative property of programs than previous works.
 We do this because the adaptivity level of a data analysis is a key measure to choose the right technique. 
 Based on this definition, we design a new program analysis for soundly approximating this quantity.
 The program analysis generates a representation of the data analysis as a weighted dependency graph,

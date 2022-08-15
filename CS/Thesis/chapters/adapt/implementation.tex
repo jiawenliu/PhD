@@ -4,8 +4,8 @@ I implemented $\THESYSTEM$ as a tool which takes a labeled command as input
 % labeled command 
 and outputs an upper bound on the program adaptivity and on the number of query requests.
 This implementation consists of an 
-abstract control flow graph generation, weight estimation (as presented in Section~\ref{sec:alg_weightgen}),
-edge estimation (as presented in Section~\ref{sec:alg_edgegen}) in Ocaml, 
+abstract control flow graph generation, weight estimation (as presented in Section~\ref{sec:static-quantity}),
+edge estimation (as presented in Section~\ref{sec:static-dep}) in Ocaml, 
 and the adaptivity computation algorithm shown in Section~\ref{sec:alg_adaptcompute} in Python.
 The OCaml program takes the labeled command as input and outputs the program-based dependency graph,
 feeds into the python program and the python program provides the adaptivity upper bound and the query number as the final output.

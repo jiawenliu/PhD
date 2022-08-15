@@ -1,10 +1,10 @@
 % In this section, I present my 
 % execution-based adaptivity analysis as the first part of the full-spectrum adaptivity analysis as in Figure~\ref{fig:structure}. 
-In this Chapter, based on the language and the trace-based operational semantics in Chapter~\ref{ch:language},
+In this Chapter, based on the language and the trace-based operational semantics in Chapter~\ref{sec:language},
 I present an execution-based program adaptivity analysis in this section.
 It is the first part of the full-spectrum adaptivity analysis as in Figure~\ref{fig:structure}. 
 This analysis formalizes the intuitive \emph{adaptivity} through three steps in 
-Section~\ref{sec:dynamic-analysis}.
+Section~\ref{sec:dynamic-datadep}, Section~\ref{sec:dynamic-reachability} and ~\ref{sec:dynamic-adapt}.
 % ,~\ref{sec:dynamic-reachability}
 % % I  an execution based program analysis in this section.
 % and~\ref{sec:dynamic-adapt}.
@@ -13,7 +13,8 @@ Then through an example in Section~\ref{sec:dynamic-examples}, I show that the f
 adaptivity matches the program's intuitive \emph{adaptivity}.
 
 \paragraph*{Execution-Based Adaptivity Analysis Outline}
-To formalize this intuition as a quantitative program property, I develop an execution-based analysis
+% To formalize this intuition as a quantitative program property, I develop an
+This improved execution-based analysis is developed
 % I first consider all the possible evaluations of a program --- I do this by 
 % I use a trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
 % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 

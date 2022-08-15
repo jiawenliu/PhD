@@ -1,115 +1,17 @@
-In order to analyze this property, there is mainly three challenges introduced in Section~\ref{sec:intro-challenge}.
-Then targeting to the three challenges, I give a technique overview of the adaptivity analysis framework in Section~\ref{sec:intro-overview}.
 
-\subsection{Challenges of Analyzing Adaptivity}
-\label{sec:intro-challenge}
-There are mainly three challenges in order to analyze this adaptivity property, 
-and the full-spectrum analysis of this property is 
-% In this proposal, I will first focus on analyzing 
-% this adaptivity property for the program based on solving 
-developed w.r.t. the three challenges accordingly.
-
-\begin{enumerate}
- \item
- \textbf{Adaptive Data Analysis Formalization}
-
-The first challenge is \emph{how to define formally} a model for adaptive data analysis which is general enough to support the methods I discussed above and would permit to formulate the notion of adaptivity these methods use. 
-I take the approach of designing a programming framework for submitting queries to some \emph{mechanism} giving access 
-to the data mediated by one of the techniques which are mentioned before, 
-including the mechanism of adding Gaussian noise, 
-the mechanism that randomly selects a subset of the data, 
-and the mechanism that uses the reusable holdout technique, etc. 
-In this approach, a program models an \emph{analyst} asking a sequence of queries to the mechanism. 
-The mechanism runs the queries on the data applying one of the methods discussed above and returns the result to the program. The program can then use this result to decide which query to run next. 
-% Overall, I am interested in controlling the generalization of the results of the queries which are returned by the mechanism, by means of adaptivity. 
-
-% \textbf{Methodology}
-Motivated by this, I present a while-like language 
-named {\tt Query While} language with extensions on query requests in Chapter~\ref{ch:language}.
-
-\item 
-\textbf{Adaptivity Formalization}
-
-The second challenge is \emph{how to define the adaptivity of a given program}.
-Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
-For example, as shown in \cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
-If one feature's correlation changes, the classifier depending on features is also affected. 
-This notion of dependency builds on the execution trace as a \emph{causal history}. 
-In particular, I am interested in the history or provenance of a query up until this is executed, 
-% I am not then concerned about how the result is used --- except for 
-simultaneously in tracking whether the result of the query may further cause some other query. 
-This is because I'm focusing on the generalization error which could be propagated by queries.
-% and not their post-processing. % 
-
-To formalize this intuitive \emph{adaptivity} as a quantitative program property, 
-I develop an execution-based analysis in Chapter~\ref{ch:dynamic}.
-% \textbf{Methodology}
-% % I first consider all the possible evaluations of a program --- I do this by 
-% % I use a trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% % Through two aspects: the execution-based analysis and static-based program analysis.
-% % In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
-% % property of programs. This analysis is developed 
-%  This execution-based analysis is designed in three steps through different methodologies as follows,
-%  \begin{enumerate}
-%  \item The first step is to analyze the \emph{dependency relation} between every query, 
-%  through the methodology of semantic data dependency analysis.
-%  %
-%  Specifically through a trace semantics recording the execution history of programs on given input,
-%  % --- and I create a dependency graph, 
-%  the dependency between different variables (query is also assigned to a variable) is explicitly tracked and 
-%  analyzed.
-% %   and 
-% %   which variable is associated with a query request. 
-% % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% % In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
-% % property of programs. This analysis is developed 
-% % \\
-%  \item The second step is to analyze the \emph{dependency quantity} 
-% %  analysis, 
-% based on the \emph{dependency relation} above.
-% This analysis is developed through the methodology of execution-based reachability bound analysis.
-% % \\
-%  \item The last step is the intuitive \emph{adaptivity} quantity analysis, 
-%  according to the two analysis results above, specifically \emph{dependency relation} and \emph{dependency quantity}.
-%  This step 
-% %  is developed through 
-% gives the formal \emph{adaptivity} definition as the analysis result. \\
-%  Specifically, this analysis is developed through creating a dependency graph firstly. 
-%  In this graph, the dependency between different variables (query is also assigned to a variable) 
-%  is explicit and track which variable is associated with a query request. 
-%  This dependency comes from the \emph{dependency relation} from the first step analysis.
-%  \\
-% Then, I enrich this graph with 
-% weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
-% This weight comes from the \emph{dependency quantity} from the second step analysis results.
-% \\
-%  The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-%  \end{enumerate}
-\item 
-\textbf{Adaptivity Estimation}
-
-The third challenge is \emph{how to estimate the adaptivity of a given program}. 
-The adaptive data analysis model I consider and our definition of adaptivity suggest that for this task 
-I can use a program analysis that is based on some form of dependency analysis.
- This analysis needs to take into consideration:
-1) the fact that, in general, a query $Q$ is not a monolithic block but rather it may depend, through the use of variables and values, on other parts of the program. 
-Hence, it needs to consider some form of data flow analysis. 
-2) the fact that, in general, the decision on whether to run a query or not may depend on some other value. Hence, 
- it needs to consider some form of control flow analysis.
-3) the fact that. in general, I am not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
-Hence, it needs to consider some quantitative information about the program dependencies. % {A quick example is that: I store the result of query $Q_1$ in variable $x$ and use variable $y$ to record the result of query $Q_2$. I want to construct the third query $Q_3$ which relies on the value stored in $x$, let us say, $Q_3$ will ask for the sum of the first column of a table if $x$ is positive and the sum of the second column otherwise. In this situation, I need data flow analysis. On the other hand, if I need the value of $y$ to help us decide whether I should ask $Q_3$, for example, I ask the third query if $y$ is odd, and do not ask if $y$ is even. Naturally, to be able to handle this case, control flow analysis comes into play. Formally speaking, }
-
-To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
-I develop a static program analysis in Chapter~\ref{ch:static}, named {\THESYSTEM}.
-%%%%% To reason about%
-\end{enumerate}
-% \\
-%
-\subsection{Technique Overview}
-\label{sec:intro-overview}
+\subsection{Reachability Bound Analysis}
+\label{sec:intro-methodology-reachability}
 \subsubsection{Execution-Based Program Analysis}
-\label{sec:intro-exe}
+% \label{sec:intro-exe}
+
+\subsubsection{Static Program Analysis}
+% \label{sec:intro-exe}
+
+
+\subsection{Adaptivity Analysis}
+\label{sec:intro-methodology-adapt}
+\subsubsection{Execution-Based Program Analysis}
+% \label{sec:intro-exe}
 % \begin{enumerate}
 %  \item
 %  \textbf{Adaptive Data Analysis Formalization}
@@ -176,43 +78,9 @@ This requires us to design new analysis techniques in order to formalize this qu
 \end{enumerate}
 %
 \paragraph{Methodology Overview}
-% To formalize this intuition as a quantitative program property, 
-% in Chapter~\ref{ch:dynamic} I develop an execution-based analysis
-% % I first consider all the possible evaluations of a program --- I do this by 
-% % I use a trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% % Through two aspects: the execution-based analysis and static-based program analysis.
-% % In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
-% % property of programs. This analysis is developed 
-%  in three steps through different methodologies in each step as follows,
  To formalize this intuitive \emph{adaptivity} as a quantitative program property, 
-I develop an execution-based analysis in Section~\ref{sec:adapt-exe}.
-% I first consider all the possible evaluations of a program --- I do this by 
-% I use a trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% Through two aspects: the execution-based analysis and static-based program analysis.
-% In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
-% property of programs. This analysis is developed 
+I develop an execution-based analysis in Chapter~\ref{ch:dynamic}.
  This execution-based analysis is designed in three steps through different methodologies as follows,
-%  \begin{enumerate}
-%  \item The dependency relation between every query, through the methodology of semantic data dependency analysis.
-%  \\
-%  Specifically through a trace semantics recording the execution history of programs on some given input
-%  % --- and I create a dependency graph, 
-%  the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% % In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
-% % property of programs. This analysis is developed 
-% % \\
-%  \item The dependency quantity analysis, through the methodology of execution-based data reachability, bound analysis.
-% % \\
-%  \item The adaptivity quantity analysis, based on the two analysis results above, gives the formal \emph{adaptivity} model 
-%  for program.
-%  \\
-%  Specifically, I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-%  I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
-%  The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-%  \end{enumerate}
 \begin{enumerate}
    \item First step is to analyze the \emph{dependency relation} between every query, 
    through the methodology of semantic data dependency analysis.
@@ -296,7 +164,7 @@ through static program analysis.
 % If one feature's correlation changes, the classifier depending on features is also affected. 
 % The adaptive data analysis model I consider and our definition of adaptivity suggest that for this task I can use a program analysis that is based on some form of dependency analysis. This analysis needs to take into consideration:
 There are three sub-research goals in estimating \emph{adaptivity} statically.
-Each goal aims to resolve a fact introduced in the \textbf{Adaptivity Estimation} challenge in Section~\ref{sec:adapt-motivation}.
+Each goal aims to resolve a fact introduced in the \textbf{Adaptivity Estimation} challenge in Section~\ref{sec:intro-motivation}.
 \\
 subgoal-1) Designing data flow analysis algorithm, aims to estimate whether a query may dependent on the other queries. 
 This analysis needs to consider the monolithic blocks of program, through the use of variables and values, on other parts of the program.
@@ -335,7 +203,7 @@ and the complexity. No need to mention the adaptivity analysis.
 
 \paragraph{Methodology}
 To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
-I develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static}.
+I develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{ch:static}.
 %  which 
 % {\THESYSTEM} combines data flow and control flow analysis with reachability bound analysis~\cite{GulwaniZ10}. 
 % This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve by directly using the data and control flow analyses or the ones that one would achieve by directly using reachability bound analysis techniques alone. Specifically as follows in the same 3 aspects as the execution-based analysis 
@@ -355,14 +223,15 @@ A sound estimated result is given in each part, which is summarized as follows.
 % \item The program adaptivity estimation, through newly designed algorithms based on the results estimated above, 
 % computing the adaptivity upper bound soundly 
 % and accurately.
-\item The {\THESYSTEM} analyzes the data \emph{dependency relation} through the static data flow analysis technique in Section~\ref{sec:static-dep}.
+\item The {\THESYSTEM} analyzes the data \emph{dependency relation} through the static data flow analysis technique
+in Section~\ref{sec:alg_weightedgegen}.
 This analysis corresponds to the first step in execution-based adaptivity analysis. 
 The estimated result produced from 
 this step is proved as a sound upper bound for the \emph{dependency relation} from execution-based analysis.
 \item 
 % Still , 
 Corresponding to the second step in execution-based adaptivity analysis, the \emph{dependency quantity} 
-is estimated by {\THESYSTEM} through the static program reachability bound analysis techniques, in Section~\ref{sec:static-quantity}.
+is estimated by {\THESYSTEM} through the static program reachability bound analysis techniques, in Section~\ref{sec:alg_weightedgegen}.
 % This analysis corresponds to the second step in execution-based adaptivity analysis. 
 The estimated result produced from 
 this step is proved as a sound upper bound for the \emph{dependency quantity} from execution-based analysis as well.
@@ -384,5 +253,3 @@ Then, based on this graph, {\THESYSTEM}
 computes the adaptivity upper bound soundly 
 and accurately through a newly designed algorithm.
 \end{enumerate}
-
-

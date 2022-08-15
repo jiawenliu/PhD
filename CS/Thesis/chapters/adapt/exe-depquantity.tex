@@ -1,7 +1,8 @@
 For a program $c$, there are two data \emph{dependency quantities} we are considering.
 The first quantity is the reachability times of each labeled variable during the program execution.
 The second quantity is the reachability time for every pair of labeled variables with variable \emph{may-dependency} relation.
-\paragraph*{Variable Reachability}
+% \paragraph*{Variable Reachability}
+\paragraph{The Dependency Quantity for Labeled Variables}
 The reachability time of a labeled variable indicates the evaluation times of the assignment command assigning a value to this variable.  
 \begin{defn}[Reachability of Labeled Variable]
   \label{def:adapt-var_reachability}
@@ -28,7 +29,8 @@ computed by the counter operator $w(\trace) = \vcounter(\vtrace', l)$.
 
 In most data analysis programs $c$ we are interested, there are usually some user input variables, such as $k$ in $\kw{twoRounds}$. 
 We denote $\mathcal{T}_0(c)$ as the set of initial traces in which all the input variables in $c$ are initialized, it is also reflected in $\traceW({c})$.    
-\paragraph*{Dependent Variables Reachability}
+\paragraph{Dependency Quantity for the Pair of Labeled Variables}
+% \paragraph*{Dependent Variables Reachability}
 %
 % For a program $c$ I compute the reachability bound for every labeled variable overall $c$'s execution traces,
 % w.r.t. an initial trace as follows,
@@ -61,5 +63,5 @@ $ rb(x^i, y^j)$ is a function $w: \mathcal{T}_0(c) \to \mathbb{N}$,
     it is the maximum length of the difference sequence between all pairs of the witness traces $\trace_1, \trace_2$ 
     satisfying the dependency relation.
 
-\paragraph*{Dependency Relation Quantity through The Two Rounds Example}
+\paragraph*{The Dependency Quantity through The Two Rounds Example}
 \input{examples/twoRounds_exe-weight.tex}
