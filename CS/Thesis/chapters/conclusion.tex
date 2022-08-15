@@ -1,6 +1,13 @@
-In this chapter, I conclude this dissertation, mainly studying two adaptivity of data analysis programs.
+In this chapter, I conclude this dissertation, mainly studying the program analysis area, 
+with focus on the \emph{Reachability-Bound} problem
+and program analysis of \emph{Adaptivity} for data analysis programs.
 
-In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
+\section{Reachability-Bound Problem Analysis}
+\label{sec:conclude-reachability}
+
+\section{Reachability-Bound Problem Analysis}
+\label{sec:conclude-adapt}
+In the execution-based analysis, I formalize the intuitive notion of \emph{adaptivity} as a quantitative 
    property of programs. This analysis is developed in three steps through different methodologies in each step. 
    \\
 	a. The dependency relation between every query, through the methodology of semantic data dependency analysis.
@@ -26,41 +33,41 @@ In the execution-based analysis, I will formalize the intuitive notion of \emph{
    \\
 I implement my program analysis and show that it can help to analyze the adaptivity of several concrete data analyses with different adaptivity structures.
 
-Then, through two observations as follows,
-\\
-1. traditional program's resource cost analysis they failed to consider the case where the program's cost could decrease 
- implicitly, 
- \\
- 2. and 
- % when there isn't a dependency relation between variables.
- the resource consumption during the program 
- execution increases and particularly decreases implicitly in the same way as the program's adaptivity, 
- % Specifically, in line 5 
- % where the list is re-written and the heap consumption is decreased implicitly. 
- % This implicit decrease 
- % of the cost works exactly the same as program's adaptivity decrease.
- I'm interested in improving the accuracy of program's general resource cost analysis
- by generalizing my \emph{adaptivity} analysis framework.
- %  onto the program's resource cost analysis. 
- % Use this framework,
- Through the generalized \emph{adaptivity} analysis framework.
- I will give
- a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
- to the worst case cost analysis in traditional way.
- For this work, the analysis framework design is expected to be done with the implementation start off before final defense.
+% Then, through two observations as follows,
+% \\
+% 1. traditional program's resource cost analysis they failed to consider the case where the program's cost could decrease 
+%  implicitly, 
+%  \\
+%  2. and 
+%  % when there isn't a dependency relation between variables.
+%  the resource consumption during the program 
+%  execution increases and particularly decreases implicitly in the same way as the program's adaptivity, 
+%  % Specifically, in line 5 
+%  % where the list is re-written and the heap consumption is decreased implicitly. 
+%  % This implicit decrease 
+%  % of the cost works exactly the same as program's adaptivity decrease.
+%  I'm interested in improving the accuracy of program's general resource cost analysis
+%  by generalizing my \emph{adaptivity} analysis framework.
+%  %  onto the program's resource cost analysis. 
+%  % Use this framework,
+%  Through the generalized \emph{adaptivity} analysis framework.
+%  I will give
+%  a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
+%  to the worst case cost analysis in traditional way.
+%  For this work, the analysis framework design is expected to be done with the implementation start off before final defense.
 
 
- Finally, based on the study on traditional way of performing data flow and control analysis,
- I identify the similarity between the traditional way of performing data flow and control analysis, and the 
- adaptivity analysis.  
- Specifically I identify the similarity between 
- solving the feasible path problem in the analysis by reducing to CFL-reachability problems,
- and the way of computing the adaptivity in my static analysis framework.
- Motivated by this observation, 
- % I'm insterested
- % the, There are similarity between
- % solving the data flow problem by reducing to CFL-reachability problem,
- % resource analysis through reducing to CFL-reachability problem, 
- I'm interested in showing that
- CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework. 
- This work is planed to start off before final defense and develop further sophisticated after.
+%  Finally, based on the study on traditional way of performing data flow and control analysis,
+%  I identify the similarity between the traditional way of performing data flow and control analysis, and the 
+%  adaptivity analysis.  
+%  Specifically I identify the similarity between 
+%  solving the feasible path problem in the analysis by reducing to CFL-reachability problems,
+%  and the way of computing the adaptivity in my static analysis framework.
+%  Motivated by this observation, 
+%  % I'm insterested
+%  % the, There are similarity between
+%  % solving the data flow problem by reducing to CFL-reachability problem,
+%  % resource analysis through reducing to CFL-reachability problem, 
+%  I'm interested in showing that
+%  CFL-reachability problems can be solved by reducing it into my adaptivity analysis framework. 
+%  This work is planed to start off before final defense and develop further sophisticated after.

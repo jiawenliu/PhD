@@ -22,7 +22,7 @@ the program's resource cost.
 % by taking the program's implicit resource cost into consideration, comparing 
 % to the worst case cost analysis in traditional way.
 % \\
-\subsection{Background and Related Work}
+\subsection*{Background and Related Work}
 There are mainly two categories of methodology in the static program resource cost analysis areas, 
 through type-system based  and data-flow/control-flow analysis based. 
 They can be summarized briefly as follows, but to the best of my knowledge,
@@ -52,7 +52,7 @@ or a combination of program abstraction and invariant inferring~\cite{GulwaniZ10
 In general, these techniques give the approximated upper bound of the program's total running time or resource cost.
 However, they failed to consider the case where the program's cost could decrease when there isn't a dependency relation between variables.
 
-\subsection{Motivation}
+\subsection*{Motivation}
 \label{subsubsec:furthers-cost-example}
 As shown in the Example~\ref{ex:heapcost} above, the heap resource consumption during the program 
 execution is accumulating in the same way as the program's adaptivity. 
@@ -65,7 +65,7 @@ which are all considered as increases in traditional resource analysis
 method.
 \input{examples/heap_cost}
 
-\subsection{Analysis Framework via $\THESYSTEM$ Overview}
+\subsection*{Analysis Framework via $\THESYSTEM$ Overview}
 \label{sec:generalcost-methodology}
 As discussed in Section~\ref{subsubsec:furthers-cost-example}
 % shown in the Example~\ref{ex:heapcost} above, the heap resource consumption during the program 

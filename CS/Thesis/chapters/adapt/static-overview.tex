@@ -17,13 +17,15 @@ Execution-Based Dependency Graph (in Definition~\ref{def:trace_graph}). The cons
 
 
 \begin{enumerate}
-\item  Vertices are the assigned variables with unique labels, which is extracted directly from the program, see Section~\ref{sec:alg_vertexgen}
-without extra static analysis technique.git 
+\item  Vertices are the assigned variables with unique labels, which is extracted directly from the program, see Section~\ref{sec:static-adapt}
+without extra static analysis technique.
 \item Query annotations are also decided directly from the program, when there is a query request, the associated variables which are the results of the query requests are marked in the form of a flag, $0$ means no query, $1$ represents query related. See Section~\ref{sec:alg_vertexgen}.
-\item Every vertice has a weight, which tells the maximal times this vertices can be visited in realistic execution. This weight is estimated by a reachability bound analysis on each vertice, See Section~\ref{sec:alg_weightgen}.
-\item The edges between vertices considers both control flow and data flow, See
-Section~\ref{sec:alg_edgegen}
-\item  Finally, with all the ingredients ready, we construct the final approximated program-based dependency graph in Section~\ref{sec:alg_graphgen}
+\item Every 
+vertex has a weight, which tells the maximal times that this vertex can be reached in realistic execution.
+This weight is estimated by a reachability bound analysis on each vertex, See Section~\ref{sec:static-quantity}.
+\item The edges between vertices consider both control flow and data flow, generated in
+Section~\ref{sec:static-dep}
+\item  Finally, with all the ingredients ready, we construct the final approximated program-based dependency graph in Section~\ref{sec:static-adapt}
 \end{enumerate}
 
 % the algorithm  without extra static analysis technique.
