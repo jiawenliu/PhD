@@ -1,0 +1,95 @@
+\begin{example}[Variable \emph{May-Dependency} Quantity in The Two Rounds Data Analysis Example Program]
+    In the same $\kw{towRounds(k)}$ example Program,    the analyst asks in total $k+1$ queries to the mechanism in two phases.
+    %
+    \[         \begin{array}{l}
+      \kw{towRounds(k)} \triangleq \\
+             \clabel{ \assign{a}{0}}^{0} ;
+              \clabel{\assign{j}{k} }^{1} ;\\
+              \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~
+              \Big(
+               \clabel{\assign{x}{\query(\chi[j] \cdot \chi[k])} }^{3}  ;
+               \clabel{\assign{j}{j-1}}^{4} ;
+              \clabel{\assign{a}{x + a}}^{5}       \Big);\\
+              \clabel{\assign{l}{\query(\chi[k]*a)} }^{6}
+          \end{array}
+          \]    %
+    % Queries are of the form $q(e)$ where $e$ is an expression with a special variable $\chi$ representing a possible row. Mainly $e$ represents a function from $X$ to some domain $U$, for example $U$ could be $[-1,1]$ or $[0,1]$. This function characterizes the linear query I are interested in running. As an example, $x \leftarrow q(\chi[2])$ computes an approximation, according to the used mechanism, of the empirical mean of the second attribute, identified by $\chi[2]$. Notice that I don't materialize the mechanism but I assume that it is implicitly run when I execute the query. 
+    % \jl{We use $\chi$ to abstract a possible row in the database and }
+    % queries are of the form $\query(\qexpr)$, where $\qexpr$ is a special expression 
+    With the initial trace
+    $[(k, in, 2, \bullet)]$ and following execution trace, 
+    \\
+    $
+    \trace_1 \triangleq 
+    \left[\begin{array}{l}
+    % \trace_0 \tracecat
+     (a, 0, 0, \bullet),
+    (j, 1, 2, \bullet),
+    (j>0, 2, \etrue, \bullet),
+    (x, 3, v_1, \chi[2]*\chi[2]),
+    (j, 4, 1, \bullet),
+    (a, 5, v_1, \bullet),\\
+    (j>0, 2, \etrue, \bullet),
+    (x, 3, v_2, \chi[1]*\chi[2]),
+    (j, 4, 0, \bullet),
+    (a, 5, v_1 + v_2, \bullet),
+    (j>0, 4, \efalse, \bullet),\\
+    (l, 6, v_3, \chi[2]*( v_1 + v_2))
+    \end{array} \right]
+    $,
+    the \emph{may-dependency} quantity for every variable
+    is computed as follows,
+   %   where $k$ is the 
+   %  initial value of input variable $k$ given by user,
+   %  we observe the execution trace as
+   \\
+   $rb(a^0) ((k, in, 2, \bullet))  = \vcounter(\trace_1) = 1$
+   \\
+   $\cdots$
+  \\
+   $rb(x^3) ((k, in, 2, \bullet))  = \vcounter(\trace_1) = 2$
+    \\
+    $\cdots$
+    \\
+
+    Then, for arbitrary initial trace $\trace_0 \in \mathcal{T}_0(\kw{twoRounds(k)})$,
+    the \emph{may-dependency} quantity for every variable under $\trace_0$ is a function
+    as follows,
+    \\
+    $rb(a^0) (\trace_0)  = 1$
+    \\
+    $\cdots$
+    \\
+    $rb(x^3) (\trace_0)  = \max\{0, \env(\trace_0) k \} $
+    % \\
+    % We modify the value assigned to $x$ when evaluating the command $ \clabel{\assign{x}{\query(\chi[j] \cdot \chi[k])} }^{3}$
+    % in the first iteration.
+    % By manipulating the event in the trace, 
+    % the event $(x, 3, v_1, \chi[2]*\chi[2])$
+    % is modified into $(x, 3, v_1', \chi[2]*\chi[2])$ where $v_1 \neq v_1'$.
+    % Then, through executing the program from the execution point after executing line $3$, we observe another execution trace as follows,
+    % \\
+    % $
+    % \left[\begin{array}{l}
+    % % \trace_0 \tracecat
+    %  (a, 0, 0, \bullet),
+    % (j, 1, 2, \bullet),
+    % (j>0, 2, \etrue, \bullet),
+    % \highlight{(x, 3, v_1', \chi[2]*\chi[2])},
+    % (j, 4, 1, \bullet),
+    % (a, 5, v_1, \bullet),\\
+    % (j>0, 2, \etrue, \bullet),
+    % (x, 3, v_2, \chi[1]*\chi[2]),
+    % (j, 4, 0, \bullet),
+    % \highlight{(a, 5, v_1' + v_2, \bullet),}
+    % (j>0, 4, \efalse, \bullet),\\
+    % (l, 6, v_3, \chi[2]*( v_1' + v_2))
+    % \end{array} \right]
+    % $.   
+    % \\
+    % In this trace, the event $(a, 5, v_1' + v_2, \bullet),$  is different from $(a, 5, v_1 + v_2, \bullet),$ in the first 
+    % trace.
+    % \\
+    % This change satisfies the Definition~\ref{def:event_dep}, so there exists the variable \emph{may-dependency} relation 
+    % between variable $x^3$ and $a^5$.
+\end{example}
