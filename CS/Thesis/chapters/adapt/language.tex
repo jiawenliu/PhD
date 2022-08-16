@@ -1,10 +1,15 @@
-In this chapter, 
-I formally introduce the language I will focus on for writing data analyses.  
+\highlight{
+    In this part, 
+I formally introduce the new language I will focus on for writing data analyses.  
 This is an extended standard while language with some primitives for calling queries.
-It also extends the expressiveness of previous language design for adaptivity analysis.
-After defining the syntax of the language and showing an example, 
-I will define its trace-based operational semantics. 
-This is the main technical ingredient I will use to define the program's adaptivity.
+It improves the expressiveness of previous language design for adaptivity analysis in a large scale.
+This part first gives the syntax of the language in Section~\ref{sec:language-syntax} with
+analysis on the improvements of this language.
+Then in Section~\ref{sec:language-os}, it presents the trace-based operational semantics. 
+This is the main technical ingredient I will use to define the program's adaptivity formally.
+Section~\ref{sec:language-examples} in the last part presents a manual example demonstrating the language and the operational semantics
+rules.
+}
 \subsection{Syntax of {\tt Query While} Language}
 \label{sec:language-syntax}
 \input{chapters/adapt/syntax}

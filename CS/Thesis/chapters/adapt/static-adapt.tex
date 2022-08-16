@@ -631,6 +631,24 @@ To estimate a sound and precise upper bound on adaptivity, we develop an adaptiv
      $$\pathsearch(\progG({c})) \geq \progA(c).$$
 \end{thm}
 The full details of all the soundness can be found in the Appendix~\ref{apdx:adapt_soundness}.
+
+\highlight{\paragraph*{Improvements Analysis}
+Comparing to previous works,
+this new adaptivity approximation is more precise and efficient.
+% language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
+\todo{Add details}
+\begin{itemize}
+  %   \item \textbf{Improvements on Expressiveness}
+  %   \\
+  % This language is extended over the standard while language. 
+  % In this sense, it supports all the general data analysis.
+  \item \textbf{Improvements on Efficiency}
+  \\
+  Also, it extends the standard while language with.
+  \item \textbf{Improvements on Accuracy}
+  \end{itemize}
+  }
+
 % The following algorithm finds the walk with the longest query length on a program $c$'s execution-based dependency graph 
 % $\progG(c)$
 % %  = (\vertxs, \edges, \weights, \qflag)$, 
@@ -785,7 +803,8 @@ The full details of all the soundness can be found in the Appendix~\ref{apdx:ada
 % %  for this program, 
 % % that 
 % \\
-As indicated by our definition of prograpm-based adaptivity, the key point is to find the walks in the program-based dependency graph. We develop some walk-finding algorithms,  Algorithm~\ref{alg:adpt_alg} and Algorithm~\ref{alg:adaptscc}, which use both the deep first search and breath first search strategy.  
+\paragraph*{Adaptivity Computation Through Path Search Algorithm}
+As indicated by our definition of program-based adaptivity, the key point is to find the walks in the program-based dependency graph. We develop some walk-finding algorithms,  Algorithm~\ref{alg:adpt_alg} and Algorithm~\ref{alg:adaptscc}, which use both the deep first search and breath first search strategy.  
 
 By Definition~\ref{def:finitewalk}, this finite walk isn't easy to find. We first discuss two challenges when we try to find the walks in the dependency graph, and show that how we solve them using our algorithms.
 
@@ -1786,3 +1805,5 @@ The soundness is formally guaranteed in Lemma~\ref{lem:sound_adaptalg_scc} in Ap
     For every program $c$, given its \emph{Program-Based Dependency Graph} $\progG$,
      $$\pathsearch(\progG) \geq \progA(\progG).$$
 \end{thm}
+
+

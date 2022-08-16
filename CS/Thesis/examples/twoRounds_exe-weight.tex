@@ -36,7 +36,13 @@
     (j>0, 4, \efalse, \bullet),\\
     (l, 6, v_3, \chi[2]*( v_1 + v_2))
     \end{array} \right]
-    $,
+    $.
+    Based on these observations, we analyze the \emph{may-dependency} quantity for every labeled variable,
+    and pairs of dependent variables as follows.
+\begin{itemize}
+    \item \textbf{The Dependency Quantity for Labeled Variables}
+    \\
+    For the specific two execution traces above,
     the \emph{may-dependency} quantity for every variable
     is computed as follows,
    %   where $k$ is the 
@@ -61,6 +67,33 @@
     $\cdots$
     \\
     $rb(x^3) (\trace_0)  = \max\{0, \env(\trace_0) k \} $
+    \item \textbf{Dependency Quantity for the Pair of Labeled Variables}
+    For the specific two execution traces above,
+    the \emph{may-dependency} quantity for every variable
+    is computed as follows,
+   %   where $k$ is the 
+   %  initial value of input variable $k$ given by user,
+   %  we observe the execution trace as
+   \\
+   $rb(a^0) ((k, in, 2, \bullet))  = \vcounter(\trace_1) = 1$
+   \\
+   $\cdots$
+  \\
+   $rb(x^3) ((k, in, 2, \bullet))  = \vcounter(\trace_1) = 2$
+    \\
+    $\cdots$
+    \\
+
+    Then, for arbitrary initial trace $\trace_0 \in \mathcal{T}_0(\kw{twoRounds(k)})$,
+    the \emph{may-dependency} quantity for every variable under $\trace_0$ is a function
+    as follows,
+    \\
+    $rb(a^0) (\trace_0)  = 1$
+    \\
+    $\cdots$
+    \\
+    $rb(x^3) (\trace_0)  = \max\{0, \env(\trace_0) k \} $
+\end{itemize}
     % \\
     % We modify the value assigned to $x$ when evaluating the command $ \clabel{\assign{x}{\query(\chi[j] \cdot \chi[k])} }^{3}$
     % in the first iteration.

@@ -1,6 +1,9 @@
 In the previous works on estimating the adaptivity, they design a program analysis framework through constructing a variable-based weighted dependency graph.
-Before they analyze and generate this graph, they first re-write the program from the loop language into
+% Before they analyze and generate this graph, 
+In order to improve the analysis accuracy,
+they first re-write the program from the loop language into
 a Static Single Assignment (SSA) version of loop language.
+% This can improve the accuracy in the variable re-assigning cases.
 The following parts summarize the SSA version of the loop language with their program analysis framework,
 followed by the limitations of their analysis method.
 \subsection*{SSA-Language}
@@ -28,15 +31,18 @@ $\ssa{x_1}$ from $\bar{\ssa{x_1}}$ collected in the then branch or the correspon
 The size of these three lists are required to be the same.
 And the loop command also has similar part $ [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$ focusing on the loop body.
 
-Then they transform the operational semantics rules with all the operations defined under the loop language introduced in Section~\ref{sec:prework-language}. The transformation computation can be found in \todo{Thesis}.
-\\
+Then they transform the operational semantics rules with all the operations defined under the loop language introduced in Section~\ref{sec:prework-language}.
 Based on the transformed language, they also redefine the formal adaptivity for the transformed program equivalent to the
-loop language-based definition. The complete definition is also in \todo{Thesis}.
+loop language-based definition. The complete definition is in \todo{Thesis}.
 %
 \subsection*{Program Analysis Algorithm}
-This part summarizes the previous analysis algorithm for estimating the adaptivity for a program. 
-This algorithm is based on the SSA version of the loop language, and
-consists of three auxiliary algorithms: a variable estimation algorithm $\mathsf{VE}$, a matrix-vector based graph generating algorithm $\mathsf{GG}$ to generate the weighted variable-based dependency graph, and a path-searching algorithm $\mathsf{PS}$ to find the most weighted path in the graph.
+Then they estimate the adaptivity for a program based on rewriting it into SSA form.
+This part summarizes
+%  the previous analysis algorithm for estimating the adaptivity for a program. 
+their analysis algorithm.
+It is based on the SSA version of the loop language, and
+consists of three auxiliary algorithms:
+a variable estimation algorithm $\mathsf{VE}$, a matrix-vector based graph generating algorithm $\mathsf{GG}$ to generate the weighted variable-based dependency graph, and a path-searching algorithm $\mathsf{PS}$ to find the most weighted path in the graph.
 %
 \begin{enumerate}
     \item \textbf{{Variable Estimation Algorithm}}
@@ -48,7 +54,11 @@ The $\mathsf{VE}$ specifies the nodes of their variable-based dependency graph. 
     \\
     Their variable estimation for the while loop is low-efficient. As shown in rule \textbf{ag-loop},
     they unfold every iteration of the while loop, and create new annotated variables for every iteration.
-    This rule causes a major limitation of their static analysis.
+    This rule causes a major efficiency limitation of their static analysis.
+    It also causes a critical expressiveness limitation. By the premise in the rule \textbf{ag-loop},
+    the arithmetic expression is required to be a natural number.
+    This rule limits the program cannot even
+    have loop with arithmetic expression like $10 + 4$ in the guard.
 {\footnotesize
 \begin{figure}
  \begin{mathpar}
@@ -107,7 +117,8 @@ The matrix $M$ records the may-dependency between annotated variables in the glo
 
 To be precise, the $i$th row, $j$th column of the matrix $M$, written $M[i][j]$, is  $1$ when there may be a dependency from variable $ G[i]$ to $G[j]$. Dually, $M[i][j] =0$ means no dependency. In a similar way, $V[i]=1$ means the variable $G[i]$ is assigned with a query request.
 Figure~\ref{fig:prework-static_alg2} shows some selected rules of this algorithm.
-The rule \textbf{ad-loop} is still as low-efficient as the rule \textbf{ag-loop} in Figure~\ref{fig:prework-static_ag1} for the same reason.
+The rule \textbf{ad-loop} is still as low-efficient and expressiveness-limited as the rule \textbf{ag-loop} in Figure~\ref{fig:prework-static_ag1} for the same reason.
+This will be analyzed in detail in the limitation part.
 %
 \begin{figure}
 {\footnotesize
@@ -237,8 +248,9 @@ They use standard longest path search algorithm to compute the adaptivity bound 
     However, this rewriting is low-efficient and unnecessary.
     The re-assignment problem can be resolved efficiently and accurately through many state-of-art static program analysis techniques, such as the
     variable reachable analysis, etc..
-    \item  Their variable estimation algorithm is low-efficient by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1}.
-    This rule unfolds every iteration of the while loop, and create new annotated variables for every iteration.
+    \item  Their variable estimation algorithm is low-efficient by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1},
+    and rule \textbf{ad-loop} in Figure~\ref{fig:prework-static_alg2}.
+    These two rules unfold every iteration of the while loop, and create new annotated variables for every iteration.
     This operation increased the complexity of the program analysis by exponential factors. 
     \item For the same reason as above, their \textbf{Graph Generation} algorithm is low-efficient as well.
     \end{enumerate}
@@ -250,6 +262,26 @@ They use standard longest path search algorithm to compute the adaptivity bound 
     This is caused by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1}.
     This rule unfolds every iteration of the while loop, and create new annotated variables for every iteration.
     In order to guarantee the termination of the analysis, they have to limit the loop with constant number of loop iteration.
+    Specifically in rule \textbf{ag-loop} and \textbf{ad-loop},
+    % Their variable estimation for the while loop is low-efficient. As shown in rule \textbf{ag-loop},
+    % they unfold every iteration of the while loop, and create new annotated variables for every iteration.
+    % This rule causes a major efficiency limitation of their static analysis.
+    % It also causes a critical expressiveness limitation. 
+    the premise in these two rules require
+    the arithmetic expression
+    %  is required 
+    to be a natural number. 
+    This rule limits the program cannot even
+    have loop with arithmetic expression like $10 + 4$ in the guard.
+    Concretely, a simple example program with loop iterating $5$ times as follows isn't allowed in their work.
+    \[
+      {\assign{x}{5}};
+      \assign{z}{q(x)};
+      \eloop (x ) \edo 
+      \{
+        \assign{z}{q(x + z)};
+        \}\}
+      \] 
     \item For the same reason as above, their \textbf{Graph Generation} algorithm is limited as well.
     \end{enumerate}
     \item \textbf{Accuracy Limitations}

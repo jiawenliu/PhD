@@ -5,11 +5,10 @@ I firstly define the execution-based dependency graph, then formalize the \emph{
 % \wq{Just a few sentences here, some overview of this subsection. See 4.2 for instance.}
 \paragraph{Execution Based Dependency Graph}
 \label{para:execution-base-graph-def}
+\todo{remove:
 Based on the variable \emph{may-dependency} relation,
 % gives us the edges, 
 we define the execution-based dependency graph.
-% \wq{Just a few sentences here, some overview of this subsection. See 4.2 for instance.}
-\todo{remove:
 \begin{defn}[Execution Based Dependency Graph]
 \label{def:trace_graph}
 Given a program ${c}$,
@@ -179,7 +178,7 @@ We denote $\mathcal{T}_0(c)$ as the set of initial traces in which all the input
   }
 
 \paragraph{Trace-based Adaptivity}
-Then, the \emph{adaptivity} is still formalized as the 
+Then, the \emph{adaptivity} is formalized as the 
 length of the longest finite walk. 
 Differently from the previous one, I restrict 
 the occurrence of every edge in a finite walk no more than its weight as well. Formally as follows,
@@ -347,3 +346,24 @@ The definition of adaptivity is then presented in Def~\ref{def:trace_adapt} belo
   A(c)(\trace_0) = \max \big 
   \{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \} $$
   \end{defn}
+
+
+
+\highlight{\paragraph*{Improvements Analysis}
+Comparing to previous works,
+this new adaptivity definition is more elegant and efficient.
+It is more scalable to general program, and it provides the program with preciser formal definition for \emph{Adaptivity} than previous definition,
+specifically as follows.
+% language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
+\todo{Add details}
+\begin{itemize}
+    \item \textbf{Improvements on Expressiveness}
+    \\
+  This language is extended over the standard while language. 
+  In this sense, it supports all the general data analysis.
+  \item \textbf{Improvements on Efficiency}
+  \\
+  Also, it extends the standard while language with.
+  \item \textbf{Improvements on Accuracy}
+  \end{itemize}
+  }

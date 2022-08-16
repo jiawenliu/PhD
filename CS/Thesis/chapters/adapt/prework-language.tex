@@ -1,5 +1,5 @@
-Previous works formalized the adaptive data analysis into a very limited while-like language named loop language,
-which is presented in \todo{Thesis~\cite{}}.
+Previous works formalized the adaptive data analysis into a while-like language named loop language with  limited expressiveness.
+It is presented in \todo{Thesis~\cite{}}.
 \subsection*{Syntax}
 Figure~\ref{fig:prework_syntax} is a selection of the syntax from their loop language.
 {\small
@@ -52,19 +52,26 @@ and access to values at a certain index in $\chi$, as $\chi[\aexpr]$.
 \paragraph*{Limitations of The Language Syntax}
 This language is limited in the following three senses,
 \begin{enumerate}
-\item  It supports limited query expressions.
+% \item  It supports limited query expressions.
+% %
+\item  It doesn't support the program which contains while loop with non-deterministic iterations.
+In the other words, it only supports the simple loop programs with
+constant (or arithmetic expression which is evaluated to constant) number of iterations.
+However, the adaptive data analysis programs with non-constant (or non-deterministic) iteration numbers are very common.
 %
-\item  It doesn't support the program contains general while loop with arbitrary iterations.
-In the other words, it only supports the loop programs with
-constant (or arithmetic expression evaluating to constant) number of iterations.
-However, the adaptive data analysis programs with non-constant (even non-deterministic) iteration numbers are common.
-%
-\item  It doesn't support the programs which contain the user inputs. This is also common in the data analysis area.
+\item  It doesn't support the program which contains the user inputs.
+This kind of program is also common in the data analysis area.
 \end{enumerate}
 %
 \subsection*{Trace-Based Operational Semantics}
-In the previous program formalization work, their operational semantics is defined based on labeled command and trace with come special operators as follows.
-
+In the previous works of adaptive data analysis program formalization,
+their operational semantics is defined based on labeled command and trace with some special operators.
+Below is a summary of their designs.
+\paragraph*{Labeled Commands}
+They first annotate each command with a label $l$,
+a natural number standing for the line of code where the command appears.
+They associate the label $l$ to the conditional predicate $\bexpr$ in the if statement,
+and to the loop counter $\aexpr$ in the loop statement.
 \[
 \begin{array}{llll}
      \mbox{Labeled commands} & c & ::= &   [\assign x \expr]^{l} ~|~  [\assign x q(e_q)]^{l}
@@ -73,7 +80,12 @@ In the previous program formalization work, their operational semantics is defin
 \end{array}
 \]
 % Each command is now labeled 
-They first annotate each command with a label $l$, a natural number standing for the line of code where the command appears. Notice that we associate the label $l$ to the conditional predicate $\bexpr$ in the if statement, and to the loop counter $\aexpr$ in the loop statement. We will also use  Loop map $w$ as defined below.  
+\paragraph*{Loop Map}
+Then, they have the Loop map, which is a map from the label $l$ to the iteration number $n$.
+%   Because statements in the loop share the same line number,  varied iterations , the label $l$ is not enough to distinguish statements.
+  A mapping $[k \to n]$ gives accurate information on which loop a statement is in by its key $k$ (label at loop counter),
+  and which iteration $n$ the statement belongs to.
+  % For example, the loop map $w=[3:1, 4:2]$ indicates that the statement is currently in a nested loop, the outer loop starting from label $3$ and in its first iteration, the statement is now in the inner loop starting from label $4$ and in the second iteration. We use $\emptyset$ to represent an empty map, indicating the statement is not in any loop.
 \[
 \begin{array}{llll}
  \mbox{Loop Map} & w & \in & \mbox{Label} \to \mathbb{N} \\
@@ -84,25 +96,31 @@ They first annotate each command with a label $l$, a natural number standing for
 \mbox{Trace} & t & ::= & [] ~|~ q(v_q)^{(l, w) } :: t \\
 \end{array}
 \]
- Then, they have the Loop map, which is a map from the label $l$ to the iteration number $n$.
-%   Because statements in the loop share the same line number,  varied iterations , the label $l$ is not enough to distinguish statements.
-  A mapping $[k \to n]$ gives accurate information on which loop a statement is in by its key $k$ (label at loop counter),
-  and which iteration $n$ the statement belongs to.
-  % For example, the loop map $w=[3:1, 4:2]$ indicates that the statement is currently in a nested loop, the outer loop starting from label $3$ and in its first iteration, the statement is now in the inner loop starting from label $4$ and in the second iteration. We use $\emptyset$ to represent an empty map, indicating the statement is not in any loop.
+%  Then, they have the Loop map, which is a map from the label $l$ to the iteration number $n$.
+% %   Because statements in the loop share the same line number,  varied iterations , the label $l$ is not enough to distinguish statements.
+%   A mapping $[k \to n]$ gives accurate information on which loop a statement is in by its key $k$ (label at loop counter),
+%   and which iteration $n$ the statement belongs to.
+%   % For example, the loop map $w=[3:1, 4:2]$ indicates that the statement is currently in a nested loop, the outer loop starting from label $3$ and in its first iteration, the statement is now in the inner loop starting from label $4$ and in the second iteration. We use $\emptyset$ to represent an empty map, indicating the statement is not in any loop.
 
-  The memory in their language is standard, which is a map from variables to values.
-  Distinctly, queries can be uniquely annotated as $\mathcal{AQ}$, and the annotation $(l,w)$ considers the location of the query by line number $l$ and which iteration the query is at when it appears in a loop statement, specified by $w$.
- 
+ \paragraph*{Annotated Query} 
+ They 
+distinctively design the annotated query, in order to analyze the relation between queries. This is a key extension for analyzing the \emph{adaptivity}
+Through this annotation, queries can be uniquely annotated as $\mathcal{AQ}$,
+  and the annotation $(l,w)$ considers the location of the query
+  by line number $l$ and which iteration the query is at when it appears in a loop statement, specified by $w$.
   %% trace
-  A trace $t$ is a list of annotated queries accumulated along with the execution of the program. 
+\paragraph{Trace} 
+A trace $t$ is a list of annotated queries accumulated along with the execution of the program. 
 %   A trace can be regarded as the program history, where this history 
   It consists of the queries asked by the analyst during the execution of the program,
 %   We 
 collected through
   a trace-based small-step operational semantics based on transitions of the form $ \config{m,c, t, w} \to \config{m', \eskip, t', w'} $.
-
-Figure~\ref{fig:evaluation} is a selection of rules of the trace-based operational semantics from \todo{Thesis~\cite{} citation}.
-Only the rules related to query requests and the while loop evaluations are shown here.
+  \paragraph{Memory}
+  The memory in their language is standard, which is a map from variables to values.
+  \paragraph*{Operational Semantics Rules}
+Figure~\ref{fig:evaluation} is a selection of rules of their trace-based operational semantics from \todo{Thesis~\cite{} citation}.
+Only the rules related to query requests and the while loop evaluations are selected here.
 The rule $\textbf{l-query-e}$ evaluates the argument $\expr_q$ of a query request $q(\expr_q)$ using the query evaluation $\qarrow$.
 When the query expression is in the normal form, this query will be answered.
 The rule $\textbf{l-query-v}$ modifies the starting memory $m$ to $m[v_q/x]$ using the answer $v$ of the query $q(v_q)$ from the mechanism, with the trace expanded by appending the query $q(v_q)$ with the current annotation $(l,w)$.
@@ -261,13 +279,44 @@ When $v_N$ reaches $0$, the loop exits and the loop map $w$ eliminates the label
 \paragraph*{Limitations of The Trace-Based Operational Semantics}
 This operational semantics is limited in the following aspects:
 \begin{itemize}
-    \item Dependency information are lost in their trace generated through the operational semantic rules.
-    The trace only tracks the query requests. This lost the information of the variables
-    which are assigned by query values even they are not assigned by query requests. 
-    \item The operational-semantics causes a similar limitation as their syntax. The loop iteration number can only be constant number or an arithmetic expression evaluated to an integer. This is limited by their trace generated through the operational semantics rules.
-    Their trace tracks the annotated query, which requires an integer annotation explicitly indicating the iteration number of the loop.
-    %  annotatation of the  the query request executed in the program
-    % with integer indicating the while loops. 
-    \item There are four components in their configuration in order to evaluate the program. 
-    The update operations for this quadruple-configuration is low-efficient. Especially the update operation of the while map.
+  \item \textbf{Expressiveness Limitation}
+  \\
+  The operational-semantics causes a similar limitation as their syntax.
+  The loop iteration number can only be constant number or an arithmetic expression evaluated to a nature number.
+  This is caused by their operational semantics rule design, trace design and their annotated query design.
+  In the rule \rname{l-loop}, a nature number $v_N$ is required on the premise tracking the iteration times.
+  This requires that the loop iteration number has to be a nature number or evaluated to a nature number in advance to execute the loop.
+  Then in their trace and annotated query design,
+  % generated through the operational semantics rules.
+  the trace tracks the annotated query, which requires an integer annotation explicitly indicating the iteration number of the loop.
+  %  annotatation of the  the query request executed in the program
+  % with integer indicating the while loops. 
+  \\
+  For example, in the following program with a simple while loop,
+  \[
+    {\assign{x}{20}};
+    \assign{y}{100};
+    \ewhile (x < y) \edo 
+    \{
+      \assign{x}{x + 1};
+      \assign{y}{y - 2};
+      \}\}
+    \] 
+  the number of iterations cannot be evaluated to a nature number in advance of entering this loop. 
+    The iteration number is only
+  able to be decided during executing this while loop body.
+  This program represents a class of data analysis program with non-constant loop iterations
+  which is very common in data analysis. However, it isn't supported by their design.
+  \item \textbf{Accuracy Limitation}
+  \\
+  This operational semantics design causes in-precision in formalizing the \emph{adaptivity}.
+  Because there is information loss in their trace generated through the operational semantic rules.
+  The trace only tracks the query requests. This lost the information of the variables
+    which are assigned by query values even they are not assigned by query requests. However, these variables
+    are critical in analyzing the \emph{adaptivity}.
+    This will be analyzed in detail in the limitation in Section~\ref{sec:prework-formalization}.
+  \item \textbf{Efficiency Limitation}
+  \\
+  There are four components in their configuration in order to evaluate the program. 
+    The update operations for this quadruple-configuration is low-efficient, especially the update operation of the while map.
 \end{itemize}

@@ -1,16 +1,21 @@
 % In this section, I present my 
 % execution-based adaptivity analysis as the first part of the full-spectrum adaptivity analysis as in Figure~\ref{fig:structure}. 
-In this Chapter, based on the language and the trace-based operational semantics in Chapter~\ref{sec:language},
-I present an execution-based program adaptivity analysis in this section.
-It is the first part of the full-spectrum adaptivity analysis as in Figure~\ref{fig:structure}. 
-This analysis formalizes the intuitive \emph{adaptivity} through three steps in 
-Section~\ref{sec:dynamic-datadep}, Section~\ref{sec:dynamic-reachability} and ~\ref{sec:dynamic-adapt}.
+In this section, 
+I formally present a new execution-based program adaptivity analysis based on the language and the trace-based operational semantics introduced above.
+As in Figure~\ref{fig:structure}, this is the second major part of this adaptivity analysis framework
+built on the language design. 
+It is more advanced than previous works
+in both the accuracy and efficiency aspects.
+This analysis formalizes the intuitive \emph{adaptivity} through three steps.
+In Section~\ref{sec:dynamic-datadep}, I first give the new data dependency definition.
+Then Section~\ref{sec:dynamic-reachability} presents the dependency quantity analysis for the dependency relation.
+The  Section~\ref{sec:dynamic-adapt} gives the formal \emph{adaptivity} definition.
 % ,~\ref{sec:dynamic-reachability}
 % % I  an execution based program analysis in this section.
 % and~\ref{sec:dynamic-adapt}.
-Then through an example in Section~\ref{sec:dynamic-examples}, I show that the formalized
+Through an example in Section~\ref{sec:dynamic-examples}, I show that the formalized
 % can give the 
-adaptivity matches the program's intuitive \emph{adaptivity}.
+adaptivity matches the program's intuitive \emph{adaptivity} more precisely and efficiently than previous works.
 
 \paragraph*{Execution-Based Adaptivity Analysis Outline}
 % To formalize this intuition as a quantitative program property, I develop an

@@ -6,7 +6,7 @@ and outputs an upper bound on the program adaptivity and on the number of query 
 This implementation consists of an 
 abstract control flow graph generation, weight estimation (as presented in Section~\ref{sec:static-quantity}),
 edge estimation (as presented in Section~\ref{sec:static-dep}) in Ocaml, 
-and the adaptivity computation algorithm shown in Section~\ref{sec:alg_adaptcompute} in Python.
+and the adaptivity computation algorithm shown in Section~\ref{sec:static-adapt} in Python.
 The OCaml program takes the labeled command as input and outputs the program-based dependency graph,
 feeds into the python program and the python program provides the adaptivity upper bound and the query number as the final output.
 
@@ -116,7 +116,7 @@ For the other programs, the complete program can be found in Appendix.
         %
         \begin{algorithm}
         \footnotesize
-        \caption{A two-round analyst strategy for random data (The example in  \cite{dwork2015preserving})}
+        \caption{A two-round analyst strategy for random data (The example in  \cite{dwork2015generalization})}
         \label{alg:twoRound}
         \begin{algorithmic}
         \REQUIRE Mechanism $\mathcal{M}$ with a hidden data set $D \in \{-1,+1\}^{n\times (k+1)} \subset \dbdom$.
@@ -141,7 +141,7 @@ For the other programs, the complete program can be found in Appendix.
     %
     \begin{algorithm}
     \footnotesize
-    \caption{A multi-round analyst strategy for random data base \cite{dwork2015preserving}}
+    \caption{A multi-round analyst strategy for random data base \cite{dwork2015generalization}}
     \label{alg:multiRound}
     \begin{algorithmic}
     \REQUIRE Mechanism $\mathcal{M}$ with a hidden state $X\in [N]^{n}$ sampled u.a.r., control set size $c$

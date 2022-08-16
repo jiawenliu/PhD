@@ -1,5 +1,7 @@
-The operational semantics is defined based on the event, trace as well as the 
-environment, which are introduced firstly as follows.
+\highlight{Improved significantly from previous work in terms of complexity,
+this operational semantics is defined based on only the event and trace with an efficient 
+environment operator as follows.
+}
 \paragraph{Event}
 An event tracks useful information about each step of the evaluation, as a quadruple. Its first element is either 
 an assigned variable (from an assignment command) or a boolean expression (from the guard of if or while command), follows by 
@@ -125,10 +127,17 @@ which consists of a command $c$ to be evaluated and a starting trace $\trace$,
 evaluates to another configuration with the trace updated along with the evaluation of the command $c$ to the normal form of the command $\eskip$.
 %
 \\
-There are some useful operators: the trace concatenation operator $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$, combines two traces.
+Some useful operators are defined below w.r.t. the trace.
+\\
+The \emph{Trace Concatenation} operator $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$ concatenate two traces
+as the standard list concatenation formally
+in Definition~\ref{def:trace_cat}.
+The concatenation preserves the order of every element in the two traces.
+%  combines two traces.
 % I also have the operator $\tlabel : \mathcal{T} \to \ldom$, which gives the set of labels in every event belonging to a trace. 
 % The full definitions of these above operators can be found in the appendix.
-\begin{defn}[Trace Concatenation, $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$]
+\begin{defn}[Trace Concatenation: $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$]
+  \label{def:trace_cat}
   Given two traces $\trace_1, \trace_2 \in \mathcal{T}$, the trace concatenation operator 
   $\tracecat$ is defined as:
   \[
@@ -198,7 +207,7 @@ There are some useful operators: the trace concatenation operator $\tracecat: \m
   %   \end{array}
   %   \right.
   % \end{equation}
-The belongs to operator $\in : \eventset \to \mathcal{T} \to \{\etrue, \efalse \} $ and its opposite $\not\in$
+The \emph{Belongs To} operator $\in : \eventset \to \mathcal{T} \to \{\etrue, \efalse \} $ and its opposite $\not\in$
 express whether an event belongs to a trace, formally as follows in Definition~\ref{def:event_belong}.
 \begin{defn}[An Event Belongs to A Trace]
   \label{def:event_belong}
@@ -282,7 +291,10 @@ express whether an event belongs to a trace, formally as follows in Definition~\
   % &&
   % \end{array}
   % \]
-  We introduce a counting operator $\vcounter : \mathcal{T} \to \mathbb{N} \to \mathbb{N}$ whose behavior is defined as follows,
+The \emph{Occurrence Counter} $\vcounter : \mathcal{T} \to \mathbb{N} \to \mathbb{N}$ counts the 
+occurrence of a label in a trace,
+% whose behavior is defined 
+formally as follows in Definition~\ref{def:trace_cnt}.
   % \[
   % \begin{array}{lll}
   % \vcounter(\trace :: (x, l, v, \bullet) ) l \triangleq \vcounter(\trace) l + 1
@@ -302,26 +314,29 @@ express whether an event belongs to a trace, formally as follows in Definition~\
   % \end{array}
   % \]
   \begin{defn}[Occurrence Counter]
+    \label{def:trace_cnt}
     \[
-  \begin{array}{lll}
-  \vcounter(\trace :: (x, l, v, \bullet), l ) \triangleq \vcounter(\trace, l) + 1
-  &
-  \vcounter(\trace  ::(b, l, v, \bullet), l) \triangleq \vcounter(\trace, l) + 1
-  &
-  \vcounter(\trace  :: (x, l, v, \qval), l) \triangleq \vcounter(\trace, l) + 1
-  \\
-  \vcounter(\trace  :: (x, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
-  &
-  \vcounter(\trace  :: (b, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
-  &
-  \vcounter(\trace  :: (x, l', v, \qval), l) \triangleq \vcounter(\trace, l), l' \neq l
-  \\
-  \vcounter({[]}, l) \triangleq 0
-  &&
-  \end{array}
-  \]
+      \begin{array}{ll}
+      \vcounter(\trace :: (\_, l, \_, \_), l ) \triangleq \vcounter(\trace, l) + 1
+      &
+      \vcounter(\trace  ::(b, l, v, \bullet), l) \triangleq \vcounter(\trace, l) + 1
+      \\
+      \vcounter(\trace  :: (x, l, v, \qval), l) \triangleq \vcounter(\trace, l) + 1
+      &
+      % \vcounter(\trace :: (\_, l', \_, \_), l ) \triangleq \vcounter(\trace, l), l' \neq l 
+      % &
+      \vcounter(\trace  :: (x, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
+      \\
+      \vcounter(\trace  :: (b, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
+      &
+      \vcounter(\trace  :: (x, l', v, \qval), l) \triangleq \vcounter(\trace, l), l' \neq l
+      \\
+      \vcounter({[]}, l) \triangleq 0
+      \end{array}
+      \]
 \end{defn}
-Another operator $\llabel : \mathcal{T} \to \mathcal{VAR} \to \{\mathbb{N}\}\cup \{\bot\}$,
+The \emph{Latest Label}
+operator $\llabel : \mathcal{T} \to \mathcal{VAR} \to \{\mathbb{N}\}\cup \{\bot\}$,
 takes a trace and a variable as input and returns the label of the latest assignment event which assigns value to that variable. 
   % We introduce an operator $\llabel : \mathcal{T} \to \mathcal{VAR} \to \ldom \cup \{\bot\}$, which 
   % takes a trace and a variable and returns the label of the latest assignment event which assigns value to that variable.
@@ -812,3 +827,20 @@ In these rules, the evaluation of the guard generates a testing event and the tr
 
 % \todo{Make sure the operational semantics is big step, and correct assn rules.}
 % \jl{
+
+
+  \highlight{\paragraph*{Improvements through Examples}
+Comparing to previous works,
+this language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
+\todo{Add details}
+\begin{itemize}
+    \item \textbf{Improvements on Expressiveness}
+    \\
+  This language is extended over the standard while language. 
+  In this sense, it supports all the general data analysis.
+  \item \textbf{Improvements on Efficiency}
+  \\
+  Also, it extends the standard while language with.
+  \item \textbf{Improvements on Accuracy}
+  \end{itemize}
+  }

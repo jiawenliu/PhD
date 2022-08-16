@@ -4,7 +4,7 @@ The second quantity is the reachability time for every pair of labeled variables
 % \paragraph*{Variable Reachability}
 \paragraph{The Dependency Quantity for Labeled Variables}
 The reachability time of a labeled variable indicates the evaluation times of the assignment command assigning a value to this variable.  
-\begin{defn}[Reachability of Labeled Variable]
+\begin{defn}[Reachability Time of Labeled Variable]
   \label{def:adapt-var_reachability}
 The reachability for every labeled variable overall $c$'s execution traces,
 w.r.t. an initial trace $\vtrace \in \mathcal{T}_0(c)$ is defined as follows,
@@ -29,12 +29,13 @@ computed by the counter operator $w(\trace) = \vcounter(\vtrace', l)$.
 
 In most data analysis programs $c$ we are interested, there are usually some user input variables, such as $k$ in $\kw{twoRounds}$. 
 We denote $\mathcal{T}_0(c)$ as the set of initial traces in which all the input variables in $c$ are initialized, it is also reflected in $\traceW({c})$.    
+%
 \paragraph{Dependency Quantity for the Pair of Labeled Variables}
 % \paragraph*{Dependent Variables Reachability}
 %
 % For a program $c$ I compute the reachability bound for every labeled variable overall $c$'s execution traces,
 % w.r.t. an initial trace as follows,
-\begin{defn}[Reachability of Dependent Variables]
+\begin{defn}[Reachability Time of Dependent Variables]
   \label{def:adapt-depvar_reachability}
   The execution-based reachability time for every pair of 
   labeled in the
@@ -62,6 +63,22 @@ $ rb(x^i, y^j)$ is a function $w: \mathcal{T}_0(c) \to \mathbb{N}$,
     where given an initial trace $\trace_0$,
     it is the maximum length of the difference sequence between all pairs of the witness traces $\trace_1, \trace_2$ 
     satisfying the dependency relation.
+
+    \highlight{\paragraph*{Improvements Analysis}
+    Previous works do not have any quantity analysis on the dependency relation.
+    Comparing to them, this part is stronger in following senses.
+    % It is more scalable to general program, and it provides the program with preciser formal definition for \emph{Adaptivity} than previous definition,
+    % specifically as follows.
+    % language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
+    \todo{Add details}
+    \begin{itemize}
+      \item \textbf{Improvements on Efficiency}
+      \\
+      It is also efficient.
+      \item \textbf{Improvements on Accuracy}
+      This quantity analysis can help to improve the precision of the adaptivity formalization.
+      \end{itemize}
+      }
 
 \paragraph*{The Dependency Quantity through The Two Rounds Example}
 \input{examples/twoRounds_exe-weight.tex}
