@@ -450,7 +450,8 @@ and accurately.
 
 
 \subsection{Further Works}
-\subsubsection{Towards Adaptivity Analysis Framework Extension}
+\subsubsection{Towards Automated and Accurate Adaptivity Analysis Framework}
+
 \label{subsec:intro-improve}
 Based on the implementation and experimental results of the program analysis framework,
 %  on the $\THESYSTEM$,
@@ -469,8 +470,11 @@ developing a new path sensitive reachability bound analysis technique.
 % \item In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
 % compute a tighter adaptivity upper bound as well.
 \end{enumerate}
+\subsubsection{Towards Path-Sensitive Reachability-Bound Analysis}
+\label{sec:intro-reachability}
+
 \subsubsection{Towards Accurate Program Non-Monotonic Quantitative Property Analysis}
-\label{subsec:intro-cost}
+\label{sec:intro-cost}
 Moving towards the area of program's quantitative property analysis,
 % Then, motivated by the two following aspects, 
 there are two interesting observations as follows.
@@ -519,45 +523,45 @@ the analysis technique requires explicit abstraction or data structure de-alloca
 %  compared 
 %  to the worst-case cost analysis in the traditional way.
 
-\subsubsection{Towards Solving the CFL-Reachability Problem}
-\label{subsec:intro-cfl}
-Still in the area of program resource cost analysis,
-the traditional methodology of performing data flow and control analysis and 
-computing the program resource cost is
-% Finally, based on the study on the traditional way of performing data flow and control analysis,
-to reduce the analysis problem into the CFL-reachability problems.
-% Finally, based on the study on the traditional way of performing data flow and control analysis,
-According to this, 
-I identify 
-% the similarity between the traditional way of performing data flow and control analysis and the 
-that there are some similarities between the traditional way of estimating the program resource cost and 
-the adaptivity.
-%  Specifically, I identify the similarity between 
-%  solving the feasible path problem in the analysis by reducing 
-Specifically, there are similarities between solving the CFL-reachability problems they reduced to,
-%  CFL-reachability problems,
- and the way of computing the adaptivity in 
-%  my static analysis framework.
-the third step of $\THESYSTEM$.
- Motivated by this, 
- % I am Interested
- % the, There are similarities between
- % solving the data flow problem by reducing to CFL-reachability problem,
- % resource analysis through reducing to CFL-reachability problem, 
- I am interested in showing that
- CFL-reachability problems can be solved by reducing to my adaptivity analysis framework.
-% I identify the similarity between the traditional way of performing data flow and control analysis and the 
-%  adaptivity analysis. 
-%  Specifically, I identify the similarity between 
-%  solving the feasible path problem in the analysis by reducing CFL-reachability problems,
-%  and the way of computing the adaptivity in my static analysis framework.
-%  Motivated by this observation, 
-%  % I am interested
+% \subsubsection{Towards Solving the CFL-Reachability Problem}
+% \label{subsec:intro-cfl}
+% Still in the area of program resource cost analysis,
+% the traditional methodology of performing data flow and control analysis and 
+% computing the program resource cost is
+% % Finally, based on the study on the traditional way of performing data flow and control analysis,
+% to reduce the analysis problem into the CFL-reachability problems.
+% % Finally, based on the study on the traditional way of performing data flow and control analysis,
+% According to this, 
+% I identify 
+% % the similarity between the traditional way of performing data flow and control analysis and the 
+% that there are some similarities between the traditional way of estimating the program resource cost and 
+% the adaptivity.
+% %  Specifically, I identify the similarity between 
+% %  solving the feasible path problem in the analysis by reducing 
+% Specifically, there are similarities between solving the CFL-reachability problems they reduced to,
+% %  CFL-reachability problems,
+%  and the way of computing the adaptivity in 
+% %  my static analysis framework.
+% the third step of $\THESYSTEM$.
+%  Motivated by this, 
+%  % I am Interested
 %  % the, There are similarities between
 %  % solving the data flow problem by reducing to CFL-reachability problem,
 %  % resource analysis through reducing to CFL-reachability problem, 
 %  I am interested in showing that
-%  CFL-reachability problems can be solved by reducing them to my adaptivity analysis framework.
+%  CFL-reachability problems can be solved by reducing to my adaptivity analysis framework.
+% % I identify the similarity between the traditional way of performing data flow and control analysis and the 
+% %  adaptivity analysis. 
+% %  Specifically, I identify the similarity between 
+% %  solving the feasible path problem in the analysis by reducing CFL-reachability problems,
+% %  and the way of computing the adaptivity in my static analysis framework.
+% %  Motivated by this observation, 
+% %  % I am interested
+% %  % the, There are similarities between
+% %  % solving the data flow problem by reducing to CFL-reachability problem,
+% %  % resource analysis through reducing to CFL-reachability problem, 
+% %  I am interested in showing that
+% %  CFL-reachability problems can be solved by reducing them to my adaptivity analysis framework.
 
 
 \subsection{Proposal Structure}
@@ -579,6 +583,6 @@ in Section~\ref{sec:furthers}.
  This proposed work is planned to be done before the final defense.
 \item A proposed accurate program resource cost analysis framework generalized from {\THESYSTEM} in Section~\ref{sec:generalization}. 
 The analysis framework design is expected to be done with the implementation start off before the final defense.
-\item A proposed plan for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework in Section~\ref{sec:cfl_reduction},
-expected to start before final defense and developing further after.
+% \item A proposed plan for solving the CFL-reachability problem via reduction into the {\THESYSTEM} framework in Section~\ref{sec:cfl_reduction},
+% expected to start before final defense and developing further after.
 \end{enumerate}

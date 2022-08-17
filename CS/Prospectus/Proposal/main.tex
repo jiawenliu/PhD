@@ -33,34 +33,100 @@
 \input{chapters/introduction}
 % \clearpage
 
-\section{The {\tt Query While} Language for Adaptive Data Analysis}
+\section*{\redd{PART I \quad  Program Analysis Framework for Adaptive Data Analysis}}
+\addcontentsline{toc}{section}{\protect\numberline{}\redd{PART I \quad  Program Analysis Framework for Adaptive Data Analysis}}%
+
+\section{Introduction}
+\label{sec:adapt-intro}
+\input{chapters/adapt-introduction}
+
+\section{Previous Works on Adaptivity Analysis}
+\subsection{The Language Design}
+\label{sec:prework-language}
+\input{chapters/prework-language}
+%
+\subsection{The Adaptivity Formalization}
+\label{sec:prework-formalization}
+\input{chapters/prework-formalization}
+%
+\subsection{The Adaptivity Estimation}
+\label{sec:prework-static}
+\input{chapters/prework-static}
+
+\section{\todo{combine into sections below} New Program Analysis Framework for Adaptivity Analysis}
+\label{sec:furthers}
+\input{chapters/furthers}
+
+\section{The Extended {\tt Query While} Language for Adaptive Data Analysis}
 \label{sec:language}
 \input{chapters/language}
 % \clearpage
 
-\section{The Execution-Based Program Analysis for Adaptivity}
+\section{The Execution-Based Program Analysis with Accuracy Improvement for Adaptivity}
 \label{sec:dynamic}
 \input{chapters/dynamic}
 
-\section{The Static Program Analysis for Adaptivity}
+\section{The Automated and Accurate Static Program Analysis for Adaptivity}
 \label{sec:static}
 \input{chapters/static}
 % \clearpage
 
 
-\section{Adaptivity Analysis Framework Extension}
-\label{sec:furthers}
-\input{chapters/furthers}
+
 % \clearpage
+
+\section*{\redd{PART II \quad  REACHABILITY BOUND ANALYSIS}}
+\addcontentsline{toc}{section}{\protect\numberline{}\redd{PART I \quad  Path-Sensitive Reachability-Bound Analysis}}%
+
+\section{Introduction}
+\label{sec:reachability-intro}
+\subsection{Reachability-Bound Problem}
+\label{sec:reachability-background}
+
+\subsection{Motivations}
+\label{sec:reachability-motivation}
+
+\subsection{Outline}
+\label{sec:reachability-outline}
+
+\section{Methodology}
+\label{sec:reachability-analysis}
+
+\subsection{{Program Model}}
+\label{sec:language}
+% \subsection{Language}
+% \subsection{Trace-Based Operational Semantics}
+% \input{language}
+% %
+% %
+\subsection{{Reachability Bound Formalization}}
+\label{sec:execution_rb}
+% \input{execution_reachabilitybound}
+% % 
+% \section{Path Sensitive Reachability Bound Analysis}
+% \label{sec:static_rb}
+% \input{static_reachabilitybound}
+% % % % 
+\subsection{Program Abstraction and Refinement}
+\label{sec:reachability-program_refine}
+% \subsection{Constraint Program Refinement}
+
+\subsection{Path Sensitive Reachability Bound Analysis}
+\label{sec:reachability-analysis}
+
+
+
+\section*{\redd{PART II \quad  Program Non-Monotonic Quantitative Property Analysis}}
+\addcontentsline{toc}{section}{\protect\numberline{}\redd{PART I \quad  Towards Accurate Program Non-Monotonic Quantitative Property Analysis}}%
 
 \section{Towards Accurate Program Non-Monotonic Quantitative Property Analysis}
 \label{sec:generalization}
 \input{chapters/generalization}
 % \clearpage
 
-\section{Towards Solving the CFL-Reachability Problem}
-\label{sec:cfl_reduction}
-\input{chapters/cfl_reduction}
+% \section{Towards Solving the CFL-Reachability Problem}
+% \label{sec:cfl_reduction}
+% \input{chapters/cfl_reduction}
 % \clearpage
 
 \section{Status and Plan}

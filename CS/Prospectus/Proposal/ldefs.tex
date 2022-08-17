@@ -25,12 +25,8 @@
 % \setlength{\textwidth}{6.875in}
 
 % \renewcommand{\oddsidemargin}{0.5in}
-%%%%%%%%%%%%%%%%%% LINK STYLE:
-\hypersetup{
-  colorlinks=true,
-  linkcolor=blue!50!red,
-  urlcolor=green!70!black
-}
+\newcommand{\todo}[1]{\textcolor[rgb]{1,0.0,0}{\textbf{[[ #1 ]]}}}
+\newcommand{\redd}[1]{\textcolor[rgb]{1,0.0,0}{#1 }}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Theorem, Definition and Proof
 \newtheorem{lem}{Lemma}[section]
@@ -262,6 +258,16 @@
 \newcommand{\efun}{~\kw{fun}~}
 \newcommand{\ecall}{~\kw{call}~}
 
+%%%%%%%%%%%%%%%% Pre-Works
+\newcommand{\fname}{~\kw{f}~}
+\newcommand{\eloop}{\;\kw{while}\;}
+\newcommand{\vall}{w}
+\newcommand{\valr}{v}
+\newcommand{\codom}{\kw{codom}}
+\newcommand{\ssa}[1]{{\bf{{#1}}}}
+\newcommand{\ag}[2]{\mathsf{VE}{(#1)}\to {(#2)}}
+\newcommand{\gp}[2]{\mathsf{GG}{(#1)}\to {(#2)}}
+\newcommand{\funct}[2]{\mathsf{GG}{(#1)}\to {(#2)}}
 
 % Domains
 \newcommand{\qdom}{\mathcal{QD}}
