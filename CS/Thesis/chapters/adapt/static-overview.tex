@@ -1,8 +1,14 @@
-In order to have an accurate upper bound of the  adaptivity of a program $c$,
-we design a program analysis framework {\THESYSTEM}.
-It can be divided as the following steps:
-
-1) to construct a weighted dependency graph based on $c$. 2) to find a path in this graph, which is used to estimate an upper bound on the adaptivity of $c$.
+% In order to have an accurate upper bound of the  adaptivity of a program $c$,
+% we design a
+This part gives the architecture overview for this 
+% The 
+new program analysis framework, named {\THESYSTEM}.
+% It 
+Specifically, it can be divided as the following steps:
+1) statically analyzes the program's data dependency relation;
+2) statically analyzes the program's dependency quantity properties;
+3) constructs a weighted dependency graph based on $c$ using the two analysis results above; 
+4) then finds a path in this graph, which is used to estimate an upper bound on the adaptivity of $c$.
 \begin{figure}
   \centering    
 \includegraphics[width=1.0\columnwidth]{adapfun.png}

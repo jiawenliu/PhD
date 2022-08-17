@@ -119,6 +119,13 @@ These new definitions help in formally capturing the intuitive \emph{adaptivity}
     \]
 \end{defn}
 }
+\highlight{
+  The new analysis compares the difference for all the
+  query request evaluation, the non-query assignment evaluation, and the boolean evaluation.
+  In this way, all the evaluation information related to the dependency is captured.
+  Comparing to the previous works on formalizing adaptivity, which only observe the query difference,
+  the new definitions help in analyzing and formalizing the adaptivity more precisely.
+}
 % A program $c$'s query variables is a subset of 
 % its labeled variables, $\qvar(c) \subseteq \lvar(c)$. We have the operator $\tlabel : \mathcal{T} \to \ldom$, which gives the set of labels in every event belonging to the trace.
 % Then I introduce a counting operator $\vcounter : \mathcal{T} \to \mathbb{N} \to \mathbb{N}$, 
@@ -408,8 +415,9 @@ variables satisfy the \emph{variable may-dependency} relation, in Definition~\re
     definition explicitly relies on two specific witness traces from execution.
     % \\
 \highlight{This externalization of the two witness traces also helps in analyzing the dependency quantity through the same 
-witness traces as the \emph{may-dependency} relation. In this way, the in-accuracy in formalizing the \emph{adaptivity}
-is reduced.}
+witness traces as the \emph{may-dependency} relation. 
+In this way, the in-accuracy in formalizing the \emph{adaptivity}
+is reduced further.}
 
 % \begin{defn}[Variable May-Dependency].
 %   \label{def:var_dep}
@@ -432,24 +440,33 @@ is reduced.}
 %   \end{array}
 % \]  %
 % \end{defn}
-
-
 \highlight{\paragraph*{Improvements Analysis}
 Comparing to previous works,
 this new dependency definition is more precise and efficient.
 % language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
-\todo{Add details}
 \begin{itemize}
   %   \item \textbf{Improvements on Expressiveness}
+  \item \textbf{Improvements on Accuracy}
+  \\
+  The accuracy is improved in the following senses.
+  \\
+  By Definition~\ref{def:vseq} and \ref{def:diffseq}, all the information related to the dependency is able to be observed.
+  In this sense, the dependency can be analyzing more accurately.
+  \\
+  By Definition~\ref{def:var_dep}, 
+  all the dependency information for variables is captured, including queries. 
+  According to this, the adaptivity can be formalized more accurately.
+\\
+Moreover, the Definition~\ref{def:var_dep} externalized the witness traces. This externalization
+helps in analyzing the dependency quantity precisely and improving the adaptivity formalization accordingly.
   %   \\
   % This language is extended over the standard while language. 
   % In this sense, it supports all the general data analysis.
   \item \textbf{Improvements on Efficiency}
   \\
-  Also, it extends the standard while language with.
-  \item \textbf{Improvements on Accuracy}
+  The efficiency improvements come from the language design, where the program evaluation efficiency is improved. 
+  Then efficiency of this execution-based analysis is improved accordingly.
   \end{itemize}
   }
-
 \paragraph*{Dependency Relation through The Two Rounds Example}
 \input{examples/twoRounds_dep.tex}

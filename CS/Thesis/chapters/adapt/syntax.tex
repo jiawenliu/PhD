@@ -451,15 +451,40 @@ Every labeled variable in a program is unique, formally as follows with proof in
 \end{lem}
 
 \highlight{\paragraph*{Improvements through Examples}
-\todo{}
 It is expressive in two following aspects.
 \begin{itemize}
-  \item \textbf{Improvements from Previous Works}
+  \item \textbf{Improvements from Standard While Language}
   \\
-This language is extended over the standard while language. 
-In this sense, it supports all the general data analysis.
-\item \textbf{Improvements from Standard While Language}
-\\
-Also, it extends the standard while language with.
+  It also extends the standard while language with query requests. 
+  The general data analysis program with query requests on data  are supported in this {\tt Query While} language.
+  The program can access the database through a special  interface $\chi$ encapsulated by the identifier $\query$ (for example the program below) in the new language.
+  \[
+    {\assign{x}{20}};
+    \assign{y}{\query(\chi[2])};
+    \ewhile (x < 100) \edo 
+    \{
+      \assign{x}{x + 1};
+      \assign{y}{\query(\chi[x]*\chi[n])};
+      \}\}
+    \] 
+%
+    \item \textbf{Improvements from Previous Works}
+  \\
+This {\tt Query While} language is also more expressive than the language designed in previous works.
+The previous language only supports the data analysis with constant number of loop iterations.
+Comparing to it, in the new language design,
+the general data analysis program with non-deterministic loop iterations
+(for example the program below as shown in Section~\ref{sec:prework-language})
+is supported.
+\[
+  {\assign{x}{20}};
+  \assign{y}{40};
+  \ewhile (x < y) \edo 
+  \{
+    \assign{x}{x + 1};
+    \assign{y}{y - 2};
+    \}\}
+  \] 
+Previous work does not support data analysis program with user inputs, which is supported in the new language as well.
 \end{itemize}
 }

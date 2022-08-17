@@ -68,13 +68,13 @@
     $
         \begin{array}{l}
             \kw{multipleRoundsSingle(k)}\\
-               \clabel{ \assign{j}{k}}^{0} ; 
+               \clabel{ \assign{j}{k}}^{0} ; \\
                 \clabel{\assign{z}{\query(0)} }^{1} ;   \\          
                 \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ \\
                 \Big(
                  \clabel{\assign{y}{\query(\chi[z]+y)} }^{3}  ; \\
-              \eif(\clabel{ j \neq 2}^{4}, 
-              \clabel{ \assign{y}{0}}^{5} ,\clabel{\eskip}^{6})\\
+              \eif(\clabel{ j \neq 2}^{4}, \\
+              \qquad \clabel{ \assign{y}{0}}^{5},\clabel{\eskip}^{6});\\
               \clabel{\assign{j}{j - 1}}^{7}
          \Big);\\
             \end{array}

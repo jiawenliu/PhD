@@ -1,24 +1,53 @@
+The new data dependency relation analysis algorithm
+is performed on basis of the standard control flow graph.
+\highlight{Improved from previous analysis,
+this new analysis algorithm combines the reaching definition analysis into the standard data flow analysis.
+It designs an improved version of data flow analysis named feasible 
+data-flow, estimating a tighter bound on the data dependency relation. 
+}
+%  of the program, called abstract control flow graph.
+In this part, I first show how to generate the standard abstract control flow graph in
+Section~\ref{sec:static-cfg}
+Then in Section~\ref{sec:static-feasible_flowsto}, 
+I present the new feasible 
+data-flow analysis
+%  reachability-bound analysis algorithm adapted from the newly-designed
+% technique in Chapter~\ref{sec:reachability-analysis} 
+for estimating the data dependency relation.
+Section~\ref{sec:static-dep_compute}
+uses the reachability-bound analysis results estimating the dependency quantity
+over labeled variables.
+%  and
+% Section~\ref{sec:static-quantity-edge} uses the same information
+% estimating the dependency quantity for the pairs of dependent variables.
+In Appendix~\ref{apdx:flowsto_soundness_extend},
+this static algorithm is proved as the sound approximation of the variable \emph{may-dependency} relation
+in the execution-based analysis in Section~\ref{sec:dynamic-datadep}.
+%  before the introduction of  the edge and weight estimation.  
 
-% \subsection{Data Dependency Relation Analysis}
-% \label{sec:alg_edgegen}
-% % \wq{
-   I show how to estimate the directed edges in the static analysis dependency graph.
- I develop a variant of data flow analysis, called Feasible Data-Flow Generation, which 
+\subsubsection{Standard Control Flow graph}
+\label{sec:static-cfg}
+\input{chapters/adapt/static-cfg}
+
+
+
+
+\subsubsection{Feasible Data-Flow Analysis}
+\label{sec:static-feasible_flowsto}
+I develop a variant of data flow analysis, called Feasible Data-Flow Generation, which 
 considers both the control flow and data flow and
 is a sound approximation of the edges in the execution based dependency graph.
-% }
 
 % \wq{
-  Also, worth to mention, I use the result of reaching definition on the abstract control flow graph in feasible 
-data-flow generation to have a more precise approximation. Let us see a simple example, a program $ [x = 0]^{1}; [x=2]^{2};  [y = x+1]^{3}$. The standard data flow analysis 
-tells us that both the labeled variable $x^{1}$ and $x${2} may flow to $y^{3}$, which will result in an unnecessary edge ($x^{1}, y^{3}$). The result of reaching definition 
-can help us eliminate this kind of edge by telling us, at line $3$, only variable $x^{2}$ is reachable. 
+\highlight{Improved from previous analysis,
+this new analysis algorithm combines the reaching definition analysis on the control flow graph in feasible 
+data-flow generation to have a more precise approximation. 
+}
 % }
-
 
 % In this step, through 
 % % the vertices and edges in 
-% $c$'s abstract contrl flow graph $\absG(c)$,
+% $c$'s abstract contrl flow graph $\cfgG(c)$,
 %  $\THESYSTEM$ performs a feasible data-flow analysis 
 %  using the reachable definition algorithm,
 % %  and then Then I generated the set of feasible data-flow between labeled variables based on that.
@@ -31,30 +60,17 @@ can help us eliminate this kind of edge by telling us, at line $3$, only variabl
 % the value assigned to that variable
 % in the assignment command associated to that label is reachable at the entry point of  executing the command of label $l$.
 % \\
-In the first step, 
-it performs the standard reaching definition analysis given a program $c$, 
+It first defines some operations and then
+% In the first step, 
+% it 
+performs the standard reaching definition analysis given a program $c$, 
 on 
 % its every label $l$
-every label in $\absV(c)$.  This step generates set of all the reachable variables at location of label $l$ in the program $c$.
-The $\live(l, c)$ represent the analysis result, which is the set of 
-reachable labeled variables in program $c$ at the location of label $l$.
-For every labelled variable $x^l$ in this set, 
-the value assigned to that variable
-in the assignment command associated to that label is reachable at the entry point of  executing the command of label $l$.
+every label in $\cfgV(c)$.  
 % \\
 % it performs the standard reaching definition analysis given a program $c$, on its every label $l$.
 % \\
 % Another operator \mathsf{blocks} 
-The block, 
-is either the command of the form of assignment, skip, or a test of the form of $[b]^{l}$, 
-% and $block$ of program $c$ is 
-denoted by $\mathsf{blocks}(c)$
-the set of all the blocks 
-in program $c$, where  $\mathsf{blocks}: \cdom \to \mathcal{P}(\cdom \cup \clabel{\bexpr}^{l})$.
-Then it generates the set of feasible data-flow between labeled variables with detail in Definition~\ref{def:feasible_flowsto}, 
-based on $\live(l, c)$ for every label in a program $c$ and its blocks $\mathsf{blocks}$.
-\\
-The details are as follows.
 %
 % Performing a feasible data-flow analysis through the reachable definition algorithm. 
 %  By generating set of all the reachable variables at location of label $l$ in the program $c$.
@@ -118,54 +134,63 @@ The details are as follows.
 %  \end{array}
 %  \]
  
- \paragraph{Reaching definition analysis}
- \todo{extend and formalize}
 %  Define block B to be either the command of the form of assignment, skip, or test of the form of $[b]^{l}$.\\
 %  Define $\mathsf{blocks}$ : command -> Powerset(Block)
-A block  is either the command of the form of assignment, skip, or test of the form of $[b]^{l}$.\\
-The operator $\mathsf{blk} : \cdom \to blocks$ gives all the blocks in program $c$.
+\paragraph*{Blocks and Defs}
+The block, 
+is either the command of the form of assignment, skip, or a test of the form of $[b]^{l}$, 
+% and $block$ of program $c$ is 
+denoted by $\mathsf{blocks}(c)$
+the set of all the blocks 
+in program $c$, where  $\mathsf{blocks}: \cdom \to \mathcal{P}(\cdom \cup \clabel{\bexpr}^{l})$.
+Then it generates the set of feasible data-flow between labeled variables with detail in Definition~\ref{def:feasible_flowsto}, 
+based on $\live(l, c)$ for every label in a program $c$ and its blocks $\mathsf{blocks}$.
 \\
-%  \[
-%  \begin{array}{ll}
-%     blocks([x := e]^{l})  & = \{[x := e]^{l}\}  \\
-%      block([x := q(e)]^{l})  & = \{[x := q(e)]^{l}\}  \\
-%      blocks([skip]^{l})  & = \{[skip]^{l}\} \\
-%      blocks([if [b]^l then C_1 else C_2]^{l})  & = {[b]^{l}} \cup blocks(C_1) \cup blocks(C_2) \\
-%      blocks([while [b]^l do C]^{l})  & = \{[b]^{l}\} \cup blocks(C) \\
-%      blocks(C_1 ; C_2)  & = blocks(C_1) \cup  blocks(C_2) \\
-%  \end{array}
-%  \]
- Set $?$ to be undefined:
- \\
+The details are as follows.
+
+The operator $\mathsf{blk} : \cdom \to \mathsf{blocks}$ gives all the blocks in program $c$.
+\\
+ \[
+ \begin{array}{ll}
+  \mathsf{blk}(\clabel{\assign{x}{\expr}}{}^l)  & = \{(\clabel{\assign{x}{\expr}}{}^l)\}  \\
+  \mathsf{blk}(\clabel{\assign{x}{\query(\qexpr)}}{}^l)  & = \{(\clabel{\assign{x}{\query(\qexpr)}}{}^l)\}  \\
+  \mathsf{blk}([\eskip]^{l})  & = \{[\eskip]^{l}\} \\
+  \mathsf{blk}(\eif [b]^l \ethen c_1 \eelse c_2)  & = {[b]^{l}} \cup \mathsf{blk}(c_1) \cup \mathsf{blk}(c_2) \\
+  \mathsf{blk}(\ewhile [b]^l \edo c)  & = \{[b]^{l}\} \cup \mathsf{blk}(c) \\
+  \mathsf{blk}(C_1 ; C_2)  & = \mathsf{blk}(c_1) \cup  \mathsf{blk}(c_2) \\
+ \end{array}
+ \]
 %  $label^{?}$ is label $\cup \{?\}$.\\
 %  Define $\mathsf{kill}$: $blocks \to \mathcal{P}(\mathcal{VAR} \times LABEL \cup \{?\})$, which produces the set of labelled variables of assignment destroyed by the block.
-The operator $\mathsf{kill}$: $blocks \to \mathcal{P}(\mathcal{VAR} \times \ldom \cup \{?\})$ produces the set of labelled variables of assignment destroyed by the block.
+\paragraph*{Kills and Gens}
+The operator $\mathsf{kill}$: $\mathsf{blocks} \to \mathcal{P}(\mathcal{VAR} \times \ldom \cup \{?\})$ produces the set of labelled variables of assignment destroyed by the block.
  \\
   % Define $\mathsf{gen}$: $blocks \to \mathcal{P}(\mathcal{VAR} \times LABEL \cup \{?\})$, which generates the set of labelled variables generated by the block.
-  The operator $\mathsf{gen}$: $blocks \to \mathcal{P}(\mathcal{VAR} \times \ldom \cup \{?\})$ generates the set of labelled variables generated by the block.
+  The operator $\mathsf{gen}$: $\mathsf{blocks} \to \mathcal{P}(\mathcal{VAR} \times \ldom \cup \{?\})$ generates the set of labelled variables generated by the block.
   \\
   % Define $defs(x)(c): \mathcal{VAR} \to LABEL$, gives all the labels where assigns value to variable x in the target program $c$. 
   % The operator  $defs(c): \mathcal{VAR} \to \ldom$ gives all the labels where assigns value to variable in $c$. 
-%  \[
-%  \begin{array}{ll}
-%     kill([x := e]^{l})  & = \{ (x, ?) \} \cup \{ (x, l') | l' \in defs(x) \} \\
-%      kill([x := q(e)]^{l})  & = \{ (x, ?) \} \cup \{ (x, l') | l' \in defs(x) \}  \\
-%      kill([skip]^{l})  & = \emptyset \\
-%      kill([ [b]^l ]^{l})  & =  \emptyset
-%  \end{array}
-%  ~~
-%   \begin{array}{ll}
-%       gen([x := e]^{l})  & = \{ (x, l) \}  \\
-%      gen([x := q(e)]^{l})  & = \{ (x, l) \}  \\
-%      gen([skip]^{l})  & = \emptyset \\
-%      gen([ [b]^l ]^{l})  & =  \emptyset 
-%  \end{array}
-%  \]
+ \[
+ \begin{array}{ll}
+  \mathsf{kill}(\clabel{\assign{x}{\expr}}{}^l)  & = \{ (x, ?) \} \cup \{ (x, l') | l' \in defs(x) \} \\
+  \mathsf{kill}(\clabel{\assign{x}{\query(\qexpr)}}{}^l)  & = \{ (x, ?) \} \cup \{ (x, l') | l' \in defs(x) \}  \\
+  \mathsf{kill}([\eskip]^{l})  & = \emptyset \\
+  \mathsf{kill}([ [b]^l ]^{l})  & =  \emptyset
+ \end{array}
+ ~~
+  \begin{array}{ll}
+    \mathsf{gen}(\clabel{\assign{x}{\expr}}{}^l)  & = \{ (x, l) \}  \\
+    \mathsf{gen}(\clabel{\assign{x}{\query(\qexpr)}}{}^l)  & = \{ (x, l) \}  \\
+    \mathsf{gen}([\eskip]^{l})  & = \emptyset \\
+    \mathsf{gen}([ [b]^l ]^{l})  & =  \emptyset 
+ \end{array}
+ \]
+ The $?$ is a placeholder for the unknown label need to be comptued.
 %  Define $in(l)$, $out(l)$: LABEL$ \to \mathcal{VAR} \times LABEL \cup \{?\}$ for every block in program $c$ is computed as follows,
 %  \[
 %  \begin{array}{lll}
-%     in(l)  & = \{ (x, ?) | x^l \in \lvar_c \land  l = \absinit(c) \}  
-%     \cup \{ out(l')|  | (l',\_, l) \in \absE \land  l \neq \absinit(c)\}  \\
+%     in(l)  & = \{ (x, ?) | x^l \in \lvar_c \land  l = \cfginit(c) \}  
+%     \cup \{ out(l')|  | (l',\_, l) \in \cfgE \land  l \neq \cfginit(c)\}  \\
 %      out(l)  & =  gen(B^{l}) \cup \{ in(l) \setminus kill(B^l)  \} & B^l \in blocks(c)   
 %  \end{array}
 %  \]
@@ -176,17 +201,18 @@ The operator $\mathsf{kill}$: $blocks \to \mathcal{P}(\mathcal{VAR} \times \ldom
 % Define $defs(x)(c): \mathcal{VAR} \to \ldom$, gives all the labels where assigns value to variable x in the target program $c$.
 % \\
 %  Define $in(l)$, $out(l)$: $ \ldom \to \mathcal{VAR} \times LABEL \cup \{?\}$ for every block in program $c$ is computed as follows,
+\paragraph*{In and Out}
 The operator  $in(l)$, $out(l)$: $ \ldom \to \mathcal{LV} \cup \{?\}$ for every block in program $c$ is defined as follows,
  \[
  \begin{array}{ll}
-    % in(l)  & = \{ (x, ?) | x^l \in \lvar_c \land  l = \absinit(c) \}  
-    in(l)  & = \{ x^{?} | x^l \in \lvar_c \land  l = \absinit(c) \}  
-    \cup \{ out(l')|  | (l',\_, l) \in \absE(c) \land  l \neq \absinit(c)\}  \\
-     out(l)  & =  gen(B^{l}) \cup \{ in(l) \setminus kill(B^l)  \}  
+    % in(l)  & = \{ (x, ?) | x^l \in \lvar_c \land  l = \cfginit(c) \}  
+    in(l)  & = \{ x^{?} | x^l \in \lvar_c \land  l = \cfginit(c) \}  
+    \cup \{ out(l')|  | (l',\_, l) \in \cfgE(c) \land  l \neq \cfginit(c)\}  \\
+     out(l)  & =  \mathsf{gen}(B^{l}) \cup \{ in(l) \setminus \mathsf{kill}(B^l)  \}  
  \end{array}
  \]
-computing $in(l)$ and $out(l)$ for every $B^l \in blocks(c) $, and repeating these two steps
-until the $in(l)$ and $out(l)$ are stabilized for every $B^l \in blocks(c) $
+computing $in(l)$ and $out(l)$ for every $B^l \in \mathsf{blk}(c) $, and repeating these two steps
+until the $in(l)$ and $out(l)$ are stabilized for every $B^l \in \mathsf{blk}(c) $
 %  I use $\live_{in}(l,c)$ and $\live_{out}(l, c)$ denote the stabilized results for the command of label $l$ in program $c$. 
  I use $\live(l,c)$ to represent 
 % $\live_{in}(l,c)$ in the other part of the paper.
@@ -194,19 +220,27 @@ denote the stabilized result of $in(l)$ at label $l$ in program $c$.
 % The $\live_{in}(l,c)$ and $\live_{out}(l, c)$ is computed by the Standard worklist algorithm. (For simplicity, I use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.}
 \\
 % The $\live_{in}(l,c)$ and $\live_{out}(l, c)$ 
+\paragraph{Reaching definition computation}
+This step generates set of all the reachable variables at location of label $l$ in the program $c$.
+The $\live(l, c)$ represent the analysis result, which is the set of 
+reachable labeled variables in program $c$ at the location of label $l$.
+For every labelled variable $x^l$ in this set, 
+the value assigned to that variable
+in the assignment command associated to that label is reachable at the entry point of  executing the command of label $l$.
+
 The stabilized $in(l)$ and $out(l)$ for program $c$, as well as $\live(l, c)$,
 is computed by the standard worklist algorithm with detail as below. 
 % For simplicity, I use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.
 \begin{enumerate}
-    \item initial in[l]=out[l]=$\emptyset$
-    \item initial in[entry label] = $\emptyset$
-    \item initialize a work queue, contains all the blocks in C
+    \item Initializing in[l]=out[l]=$\emptyset$
+    \item Initializing in[entry label] = $\emptyset$
+    \item Initializing a work queue, contains all the blocks in $c$
     \item while |W| != 0 \\
          pop l in W\\
           old = out[l]\\
-          in(l) =  out(l') where $(l',\_, l) \in \absE(c)$\\
-           out(l) = gen($b^l$) $\cup$ (in(l) - kill($b^l$) ) where $b^l$ in $\mathsf{blk}(c)$   \\
-          if (old != out(l)) W= W $\cup$ \{l'| (l,l') in $(l',\_, l) \in \absE(c)$\}\\
+          in(l) =  out(l') where $(l',\_, l) \in \cfgE(c)$\\
+           out(l) = $\mathsf{gen}$($b^l$) $\cup$ (in(l) - $\mathsf{kill}$($b^l$) ) where $b^l$ in $\mathsf{blk}(c)$   \\
+          if (old != out(l)) W= W $\cup$ \{l'| (l,l') in $(l',\_, l) \in \cfgE(c)$\}\\
           end while
 \end{enumerate}
 %
@@ -216,7 +250,7 @@ is computed by the standard worklist algorithm with detail as below.
 % The $\live_{in}(l,c)$ and $\live_{out}(l, c)$ is computed by the Standard worklist algorithm. (For simplicity, I use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.
 %%
 \paragraph{Feasible Data-Flow Generation}
-by using the results of Reaching definition analysis results, specifically $\live(l, c)$ for every label in a program $c$, I refine the vertices and edges in the $\absG$ graph 
+by using the results of Reaching definition analysis results, specifically $\live(l, c)$ for every label in a program $c$, I refine the vertices and edges in the $\cfgG$ graph 
 by generating the set of feasible data-flow between labeled variables as follows,
 %
 %   \[
@@ -272,16 +306,22 @@ of the variable \emph{May-Dependency} relation over labeled variables for every 
 The soundness is proved
 in Appendix~\ref{apdx:flowsto_soundness}.
 %
-\paragraph*{Data Dependency Relation Estimation}
+\subsubsection{Data Dependency Relation Estimation}
+\label{sec:static-dep_compute}
 %
 For any program $c$ and two labeled variables $x^i, y^j$  in this program, 
 $x^i, y^j$  is in the estimated dependency relation if and only if they satisfy
 $\flowsto(x^i, y^j, c)$.
 
-We also define a set of estimated directed edges for the program.
 As introduce in the third step in Section~\ref{sec:static-overview},
 this set is used in Section~\ref{sec:static-adapt} to estimate
 the execution-based dependency graph.
+As introduced in third step of this analysis framework in Section~\ref{sec:static-overview},
+this information will be used in constructing the program-based dependency graph, to estimate the execution-based dependency graph for the program.
+For easy understanding,
+I reveal the estimated directed edges construction below
+% vertex and weight construction of this estimated graph below
+and presents the formal definition later. 
 % for each vertex in $\progV(c)$,
 This estimated directed edges set is defined as a set of triples 
 % $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{LV} \times EXPR(\constdom))$ 
@@ -313,7 +353,8 @@ as follows,
     \right\}
     \]
 }
-The weight for every edge will be computed as next step in Section~\ref{sec:alg_weightgen}.
+The weight $w$ for every edge in this definition is a placeholder.
+It will be computed in Section~\ref{sec:static-quantity}.
 We prove that this estimated directed edge set $\progE(c)$ is a sound approximation of the 
 edge set in $c$'s Execution-Based Dependency Graph 
 in Appendix~\ref{apdx:adapt_soundness}.
@@ -409,7 +450,6 @@ Also, from the reaching definition analysis, I know $a^5 \in \live(6, \kw{twoRou
 Then I have $\flowsto(l^6, a^5, c)$ and construct the edge $(l^6, a^5)$.
 And the same way for constructing the rest edges. Also, the edge $(x^3,j^5)$ in the same graph represents the control flow, 
 caught by the $\flowsto$ relation.
-
 % Still looking at the Figure~3(c) in main paper, 
 % and taking the edge $(l^6, a^5)$ for example.
 % By $\flowsto(l^6, a^5, c)$, I can see $a$ is used directly in the query expression $\chi[k]*a$,
@@ -419,12 +459,12 @@ caught by the $\flowsto$ relation.
 % Then I have $\flowsto(l^6, a^5, c)$ and construct the edge $(l^6, a^5)$.
 % And same way for constructing the rest edges. Also, the edge $(x^3,j^5)$ in the same graph represents the control flow, caught by our $\flowsto$ relation.
 %
-
-\highlight{\paragraph*{Improvements Analysis}
-Comparing to previous works,
-this new dependency definition is more precise and efficient.
+  \subsubsection{Improvements Analysis}
+  \label{sec:static-dep-improvements}
+  \highlight{
+    This new data dependency estimation algorithm is more precise and efficient than previous static analysis.
 % language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
-\todo{Add details}
+% \todo{Add details}
 \begin{itemize}
   %   \item \textbf{Improvements on Expressiveness}
   %   \\
@@ -432,7 +472,22 @@ this new dependency definition is more precise and efficient.
   % In this sense, it supports all the general data analysis.
   \item \textbf{Improvements on Efficiency}
   \\
-  Also, it extends the standard while language with.
+  New analysis architecture does not rewrite the program into SSA version.
+\\
+  New analysis technique does not pre-collect the variables generated during the program.
+\\
+  New analysis technique does unfold the while loop and perform analysis for each iteration of the loop, 
+  instead, it only performs the analysis on the while body once.
+  \\
+In the three senses above, the efficiency is improved significantly.
   \item \textbf{Improvements on Accuracy}
+  Comparing to previous dependency estimation method,
+  new analysis technique uses the reachable definition algorithm.
+  This algorithm improves the accuracy 
+  on the approximating the data dependency relation.
+  Let us see a simple example, a program $ [x = 0]^{1}; [x=2]^{2};  [y = x+1]^{3}$. 
+The standard data flow analysis 
+tells us that both the labeled variable $x^{1}$ and $x${2} may flow to $y^{3}$, which will result in an unnecessary edge ($x^{1}, y^{3}$). The result of reaching definition 
+can help us eliminate this kind of edge by telling us, at line $3$, only variable $x^{2}$ is reachable. 
   \end{itemize}
   }

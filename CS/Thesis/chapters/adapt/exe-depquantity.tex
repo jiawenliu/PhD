@@ -66,19 +66,24 @@ $ rb(x^i, y^j)$ is a function $w: \mathcal{T}_0(c) \to \mathbb{N}$,
 
     \highlight{\paragraph*{Improvements Analysis}
     Previous works do not have any quantity analysis on the dependency relation.
-    Comparing to them, this part is stronger in following senses.
+    Comparing to them, this part helps in formalizing adaptivity precisely and efficiently in following senses.
     % It is more scalable to general program, and it provides the program with preciser formal definition for \emph{Adaptivity} than previous definition,
     % specifically as follows.
     % language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
-    \todo{Add details}
     \begin{itemize}
+      \item \textbf{Improvements on Accuracy}
+      \\
+      This quantity analysis can be combined with the
+      dependency analysis.
+      In this sense, the adaptivity is formalized more precisely with the two information than previous works using
+      only the dependency information.
       \item \textbf{Improvements on Efficiency}
       \\
-      It is also efficient.
-      \item \textbf{Improvements on Accuracy}
-      This quantity analysis can help to improve the precision of the adaptivity formalization.
+      The reachability times for every variable and every pair of labeled variables does not require
+      unfolding the while loop for all possible executions.
+      They are designed as functions w.r.t. the input initial traces.
+      In this sense, the counting and unfolding is only required when necessary.
       \end{itemize}
       }
-
 \paragraph*{The Dependency Quantity through The Two Rounds Example}
 \input{examples/twoRounds_exe-weight.tex}

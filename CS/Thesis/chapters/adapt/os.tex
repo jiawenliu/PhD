@@ -3,6 +3,12 @@ this operational semantics is defined based on only the event and trace with an 
 environment operator as follows.
 }
 \paragraph{Event}
+\highlight{
+  In previous semantics design, trace tracking only the annotated query.
+  This caused the in-accuracy issue in formalizing the adaptivity later because key dependency
+  information is lost in that sense.
+  In order to address that issue, the new trace-based operational semantics
+  design the event. }
 An event tracks useful information about each step of the evaluation, as a quadruple. Its first element is either 
 an assigned variable (from an assignment command) or a boolean expression (from the guard of if or while command), follows by 
  the label associated to this event, the value evaluated either from the expression assigned to the variable,
@@ -108,7 +114,17 @@ $$
   \end{defn}
 % %
 \paragraph{Trace}
-A trace $\trace \in \mathcal{T} $ is a list of events, 
+\highlight{
+  Based on the event recording all the program's evaluations for expressions, 
+ the trace designed in the new trace-based operational semantics
+ now tracks all these events.
+%  only the annotated query.
+%   % This caused the in-accuracy issue in formalizing the adaptivity later because key dependency
+%   % information is lost in that sense.
+%   In order to address that issue, the new trace-based operational semantics
+%   design the event. 
+ }
+The trace $\trace \in \mathcal{T} $ is a list of events, 
 collecting the events generated along the program execution. 
 \[
 \begin{array}{llll}
@@ -412,6 +428,14 @@ takes a trace and a variable as input and returns the label of the latest assign
   \end{coro}
 %  
 \paragraph{Environment}
+\highlight{
+  In the new trace-based operational semantics, the environment is simply an efficient operator.
+  Since the trace records all the program's evaluations for assignments, 
+  the value assigned to variables can be recovered from trace directly.
+  In this sense, in the new trace-based operational semantics,
+  the environment is designed more efficiently by reading value from trace directly as follows.
+  % the trace designed in the new trace-based operational semantics
+}
 An environment is standard, a map from variables to values.
 $\env : {\mathcal{T}}  \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\bot\}$, 
 which maps a trace and a variable to the latest value assigned to this variable on the trace is defined as follows.
@@ -436,6 +460,14 @@ iteration the query is at when it appears in a loop statement, specified by $w$.
  %% trace
 
  \paragraph*{Operational Semantics}
+ \highlight{
+  The new operational semantics only contains
+  two components in its configuration.
+  It is built on the improvements in both the trace and environment designs.
+  Because all evaluation information is stored in the trace in the form of the event,
+   and the variable values is recovered from it through $\env$ operator,
+  only the trace and program is necessary during the evaluation.
+ }
  The complete operational semantic evaluation rules are presented in Figure~\ref{fig:os},
  with the evaluation rules for expressions in Figure~\ref{fig:expr_eval}.
 
@@ -829,18 +861,28 @@ In these rules, the evaluation of the guard generates a testing event and the tr
 % \jl{
 
 
-  \highlight{\paragraph*{Improvements through Examples}
+  \highlight{\paragraph*{Improvements}
 Comparing to previous works,
 this language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
-\todo{Add details}
 \begin{itemize}
     \item \textbf{Improvements on Expressiveness}
     \\
-  This language is extended over the standard while language. 
-  In this sense, it supports all the general data analysis.
+  Based on the expressiveness improvements from the syntax of the {\tt Query While} language,
+  the new operational semantics design is also improved with the same features.
+  The general data analysis with nondeterministic iterations and user inputs is fully supported.
+  \item \textbf{Improvements on Accuracy}
+  \\
+  In previous operational semantics design, trace tracking only the annotated query.
+  Key information is lost for analyzing the adaptivity, which causes the in-accuracy in formalizing the adaptivity.
+  Comparing to it, the new trace-based operational semantics tracks all the labeled variables with its
+  assigned value in the trace.
+  In this sense, all the information is preserved for analyzing and formalizing the adaptivity.
   \item \textbf{Improvements on Efficiency}
   \\
-  Also, it extends the standard while language with.
-  \item \textbf{Improvements on Accuracy}
-  \end{itemize}
+  The new operational semantics rules only update the configuration by appending event with $O(1)$ complexity.
+  Comparing to the exponential complexity in previous operational semantics rules, this improved the efficiency
+  significantly.
+  % Built on the new trace design and environment design, the configuration in the
+  % new operational semantics contains only the trace and program.
+\end{itemize}
   }

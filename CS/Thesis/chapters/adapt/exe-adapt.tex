@@ -176,7 +176,27 @@ We denote $\mathcal{T}_0(c)$ as the set of initial traces in which all the input
   it is the maximum length of the difference sequence between all pairs of the witness traces $\trace_1, \trace_2$ 
   satisfying the dependency relation.
   }
-
+  \highlight{\paragraph*{Improvements Analysis}
+    Previous works do not have any quantity analysis on the dependency relation.
+    Comparing to them, this part helps in formalizing adaptivity precisely and efficiently in following senses.
+    % It is more scalable to general program, and it provides the program with preciser formal definition for \emph{Adaptivity} than previous definition,
+    % specifically as follows.
+    % language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
+    \begin{itemize}
+      \item \textbf{Improvements on Accuracy}
+      \\
+      This quantity analysis can be combined with the
+      dependency analysis.
+      In this sense, the adaptivity is formalized more precisely with the two information than previous works using
+      only the dependency information.
+      \item \textbf{Improvements on Efficiency}
+      \\
+      The reachability times for every variable and every pair of labeled variables does not require
+      unfolding the while loop for all possible executions.
+      They are designed as functions w.r.t. the input initial traces.
+      In this sense, the counting and unfolding is only required when necessary.
+      \end{itemize}
+      }
 \paragraph{Trace-based Adaptivity}
 Then, the \emph{adaptivity} is formalized as the 
 length of the longest finite walk. 
@@ -355,15 +375,44 @@ this new adaptivity definition is more elegant and efficient.
 It is more scalable to general program, and it provides the program with preciser formal definition for \emph{Adaptivity} than previous definition,
 specifically as follows.
 % language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
-\todo{Add details}
 \begin{itemize}
     \item \textbf{Improvements on Expressiveness}
     \\
-  This language is extended over the standard while language. 
-  In this sense, it supports all the general data analysis.
+    The new adaptivity can provide the adaptivity quantity for
+    general data analysis with both user inputs
+    and the nondeterministic iterations while loops.
+    For these data analysis, previous works cannot provide them with any useful information.
+    %
+    This improvement is benefited from the new language design in Section~\ref{sec:adapt-language}.
   \item \textbf{Improvements on Efficiency}
   \\
-  Also, it extends the standard while language with.
+  The efficiency is improved in the following two senses.
+  \\
+  1. Benefited from the quantity analysis 
+      the new adaptivity definition does not require
+      unfolding the while loop for all possible executions.
+      It is designed as functions w.r.t. the input initial traces as well.
+      In this sense, the computing is only required when necessary.
+      \\
+      2. Benefit from operational semantics, the adaptivity computing based on the execution
+      is faster than the previous adaptivity computing. That adaptivity is computed based on the low-efficient operational semantics.
   \item \textbf{Improvements on Accuracy}
-  \end{itemize}
+  \\
+  The accuracy is improved in the following senses,
+  \\
+  It matches the true intuitive \emph{adaptivity} for the program in the sense that it is defined w.r.t. a program.
+  The precision is improved when comparing to the previous adaptivity definition. The previous adaptivity definition,
+  relies on a specific
+  execution trace and isn't the true intuitive \emph{adaptivity} for the program.
+  % which only defines the adaptivity 
+  % for a program .
+  % , this new formalization matches the true intuitive \emph{adaptivity}.
+  \\
+  1. Benefited from quantity analysis, the new adaptivity combines the dependency relation and the dependency
+  quantity in the dependency graph.
+  Then the adaptivity is more accurate than previous one considering only the dependency relation. 
+  \\
+  2. Benefited from operational semantics, the new adaptivity is defined over all the dependency information.
+  In this sense, it is more accurate than previous one based on only the query information.
+\end{itemize}
   }

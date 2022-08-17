@@ -632,23 +632,6 @@ To estimate a sound and precise upper bound on adaptivity, we develop an adaptiv
 \end{thm}
 The full details of all the soundness can be found in the Appendix~\ref{apdx:adapt_soundness}.
 
-\highlight{\paragraph*{Improvements Analysis}
-Comparing to previous works,
-this new adaptivity approximation is more precise and efficient.
-% language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
-\todo{Add details}
-\begin{itemize}
-  %   \item \textbf{Improvements on Expressiveness}
-  %   \\
-  % This language is extended over the standard while language. 
-  % In this sense, it supports all the general data analysis.
-  \item \textbf{Improvements on Efficiency}
-  \\
-  Also, it extends the standard while language with.
-  \item \textbf{Improvements on Accuracy}
-  \end{itemize}
-  }
-
 % The following algorithm finds the walk with the longest query length on a program $c$'s execution-based dependency graph 
 % $\progG(c)$
 % %  = (\vertxs, \edges, \weights, \qflag)$, 
@@ -803,6 +786,13 @@ this new adaptivity approximation is more precise and efficient.
 % %  for this program, 
 % % that 
 % \\
+\highlight{
+Comparing to previous work, 
+new analysis also provides an efficient and accurate algorithm computing the adaptivity over the
+program-based dependency graph.
+However, previous static analysis only perform the standard path search algorithm on the estimated graph.
+It is low-efficient because the longest weight path is NP hard and standard algorithm is $O(n^n)$ complexity.
+}
 \paragraph*{Adaptivity Computation Through Path Search Algorithm}
 As indicated by our definition of program-based adaptivity, the key point is to find the walks in the program-based dependency graph. We develop some walk-finding algorithms,  Algorithm~\ref{alg:adpt_alg} and Algorithm~\ref{alg:adaptscc}, which use both the deep first search and breath first search strategy.  
 
