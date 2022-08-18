@@ -51,7 +51,7 @@ reachability-bound of the location?
 % \\
 % \textbf{Introduce} each step of the new technique/algorithm:
 % \\
-According to the importance, the paper (\cite{GulwaniZ10}) brought up this reachability-bound problem as
+According to the importance, the paper (\cite{GulwaniZ10}) brought up the reachability-bound problem as
 finding a symbolic worst-case bound on the number of times a given control location 
 inside a procedure is visited in terms of the inputs to that procedure.
 % \subsection{Motivations \todo{30\% ==> Enrich}}
@@ -65,10 +65,11 @@ inside a procedure is visited in terms of the inputs to that procedure.
     However, their solution doesn't solve the reachability
     bound in a path-sensitive way.
     \\
-    There are many works in the program complexity analysis area, estimating the path-sensitive loop bound
+    There are many works in the program complexity analysis and cost analysis area
     \cite{GustafssonEL05, HumenbergerJK18}, 
     \cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}, 
-    However, their analysis either aims only to the loop bound inference or only to the worst case running time estimation.
+    However, their analysis either aims only to estimate the loop bound
+    or only the worst case running time.
     None of them solve the reachability-bound problem directly, or path-sensitively.
     \\
     Motivated by the importance and existing technique limitation,
