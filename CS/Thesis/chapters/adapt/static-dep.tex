@@ -220,7 +220,7 @@ denote the stabilized result of $in(l)$ at label $l$ in program $c$.
 % The $\live_{in}(l,c)$ and $\live_{out}(l, c)$ is computed by the Standard worklist algorithm. (For simplicity, I use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.}
 \\
 % The $\live_{in}(l,c)$ and $\live_{out}(l, c)$ 
-\paragraph{Reaching definition computation}
+\paragraph{Reaching Definition Computation}
 This step generates set of all the reachable variables at location of label $l$ in the program $c$.
 The $\live(l, c)$ represent the analysis result, which is the set of 
 reachable labeled variables in program $c$ at the location of label $l$.
@@ -250,7 +250,7 @@ is computed by the standard worklist algorithm with detail as below.
 % The $\live_{in}(l,c)$ and $\live_{out}(l, c)$ is computed by the Standard worklist algorithm. (For simplicity, I use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.
 %%
 \paragraph{Feasible Data-Flow Generation}
-by using the results of Reaching definition analysis results, specifically $\live(l, c)$ for every label in a program $c$, I refine the vertices and edges in the $\cfgG$ graph 
+By using the results of Reaching definition analysis results, specifically $\live(l, c)$ for every label in a program $c$, I refine the vertices and edges in the $\cfgG$ graph 
 by generating the set of feasible data-flow between labeled variables as follows,
 %
 %   \[

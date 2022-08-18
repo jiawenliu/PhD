@@ -1,0 +1,206 @@
+The language is model is defined in the same way as Section~\ref{sec:adapt-language} by removing the query extension, summarized as follows.
+
+\subsubsection{Syntax}
+The selected syntax is shown as follows,
+\[
+\begin{array}{llll}
+% \\ 
+%
+\mbox{Arithmetic Expression} 
+& \aexpr & ::= & 
+n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr 
+~|~ \elog \aexpr ~|~ \esign \aexpr ~|~ \max(a, a) ~|~ \min(a, a)
+\\
+%
+\mbox{Boolean Expression} & \bexpr & ::= & 
+%
+\etrue ~|~ \efalse ~|~ \neg \bexpr
+ ~|~ \bexpr \oplus_b \bexpr
+%
+~|~ \aexpr \sim \aexpr 
+\\
+%
+\mbox{Expression} & \expr & ::= & v ~|~ \aexpr ~|~ \bexpr ~|~ [\expr, \dots, \expr]
+\\ 
+%
+\mbox{Value} 
+& v & ::= & { n ~|~ \etrue ~|~ \efalse ~|~ [] ~|~ [v, \dots, v]} 
+\\
+%
+\mbox{Label} 
+& l & \in & \mathbb{N} \cup \{\lin, \lex\} \\
+\mbox{Labeled Command} 
+& {c} & ::= & [\assign {{x}}{ {\expr}}]^{l}
+~|~ {\ewhile [ \bexpr ]^{l} \edo {c} }
+ \\
+ &&&
+~|~ {c};{c} 
+~|~ \eif([\bexpr]{}^l , {c}, {c}) 
+~|~ [\eskip]^l 
+% \\
+% %
+\end{array}
+\]
+\subsubsection{Trace-based Operational Semantics}
+\paragraph{Event}
+%   Its first element is either 
+% an assigned variable (from an assignment command) or a boolean expression (from the guard of if or while command), follows by 
+%  the label associated with this event, the value evaluated either from the expression assigned to the variable,
+% or the boolean expression in the guard.
+%  The last element stores the query information, which is a query value whose default is $\bullet$. I declare event projection operator $\pi_i$ which projects the $i$th element from an event.
+\[
+\begin{array}{llll}
+\mbox{Event} 
+& \event & ::= & 
+\mbox{Assignment Event}  ({x}, l, v) 
+~|~ \mbox{Testing Event}(\bexpr, l, v) 
+% \mbox{Trace} & \trace
+% & ::= & [] ~|~ \trace :: \event
+\end{array}
+\]
+\paragraph*{Trace}
+The trace $\trace \in \mathcal{T} $ is a list of events same as Section~\ref{sec:adapt-language}.
+\[
+\begin{array}{llll}
+\mbox{Trace} & \trace
+& ::= & [] ~|~ \trace :: \event
+\end{array}
+\]
+\paragraph*{Environment}
+The function $\env : {\mathcal{T}} \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\bot\}$, which maps a trace and a variable to the latest value assigned to this variable on the trace is defined as follows.
+%
+\paragraph{Operational Semantics}
+The operational semantics rules are also defined in the same way as Section~\ref{sec:adapt-language} by removing the query rules.
+A selection of rules of the trace-based operational semantics is presented in Figure~\ref{fig:reachability-os}. 
+%
+\begin{figure}
+ \begin{mathpar}
+ \boxed{
+ \mbox{Command $\times$ Trace}
+ \xrightarrow{}
+ \mbox{Command $\times$ Trace}
+ }
+ \and
+ \boxed{\config{{c, \trace}}
+ \xrightarrow{} 
+ \config{{c', \trace'}}
+ }
+ \\
+ % \inferrule
+ % {
+ % \empty
+ % }
+ % {
+ % \config{\clabel{\eskip}^l, \trace } 
+ % \xrightarrow{} 
+ % \config{\clabel{\eskip}^l, \trace}
+ % }
+ % ~\textbf{skip}
+ %
+ % \and
+ %
+ \inferrule
+ {
+ \config{\trace, \expr} \earrow v 
+ \and
+ \event = ({x}, l, v)
+ }
+ {
+ \config{[\assign{{x}}{\expr}]^{l}, \trace } 
+ \xrightarrow{} 
+ \config{\clabel{\eskip}^l, \trace \traceadd \event}
+ }
+ ~\textbf{assn}
+ %
+ \and
+ %
+ \inferrule
+ {
+\config{ \trace, b} \barrow \etrue
+ \and 
+ \event = (b, l, \etrue)
+ }
+ {
+ \config{{\ewhile [b]^{l} \edo c, \trace}}
+ \xrightarrow{} 
+ \config{{
+ c; \ewhile [b]^{l} \edo c),
+ \trace \traceadd \event}}
+ }
+ ~\textbf{while-t}
+ %
+ %
+ \quad
+ %
+ \inferrule
+ {
+ \config{\trace, b} \barrow \efalse
+ \and 
+ \event = (b, l, \efalse)
+ }
+ {
+ \config{{\ewhile [b]^{l}, \edo c, \trace}}
+ \xrightarrow{} 
+ \config{{
+ \clabel{\eskip}^l,
+ \trace \traceadd \event}}
+ }
+ ~\textbf{while-f}
+ %
+ %
+ \and
+ %
+ %
+ \inferrule
+ {
+ \config{{c_1, \trace}}
+ \xrightarrow{}
+ \config{{\clabel{\eskip}^l, \trace'}}
+ \and 
+ \config{{\clabel{\eskip}^l; c_2, \trace'}} \xrightarrow{} \config{{ \clabel{\eskip}^l, \trace''}}
+ }
+ {
+ \config{{c_1; c_2, \trace}} 
+ \xrightarrow{} 
+ \config{{\clabel{\eskip}^l, \trace''}}
+ }
+ ~\textbf{seq}
+ %
+ % \and
+ % %
+ % \inferrule
+ % {
+ % \config{{c_2, \trace}}
+ % \xrightarrow{}
+ % \config{{c_2', \trace'}}
+ % }
+ % {
+ % \config{{\clabel{\eskip}^l; c_2, \trace}} \xrightarrow{} \config{{ c_2', \trace'}}
+ % }
+ % ~\textbf{seq2}
+ %
+ \quad
+ %
+ %
+ \inferrule
+ {
+ \trace, b \barrow \etrue
+ \and 
+ \event = (b, l, \etrue)
+ }
+ {
+ \config{{
+ \eif([b]^{l}, c_1, c_2), 
+ \trace}}
+ \xrightarrow{} 
+ \config{{c_1, \trace \traceadd \event}}
+ }
+ ~\textbf{if-t}
+ %
+ \end{mathpar}
+ % \end{subfigure}
+ \vspace{-0.5cm}
+ \caption{Trace-based Operational Semantics Rules for Reachability-Bound Analysis.}
+ \label{fig:reachability-os}
+ \end{figure}
+ %

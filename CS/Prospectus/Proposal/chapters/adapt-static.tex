@@ -1,0 +1,51 @@
+According to the third challenge introduced in Section~\ref{sec:adapt-challenge},
+i.e., estimating the \emph{adaptivity} quantity,
+and the limitation in previous \emph{adaptivity} estimating analysis in Section~\ref{sec:prework-static},
+I develop a new static program analysis in formalizing this intuitive \emph{adaptivity} quantity
+precisely, efficiently and automatically.
+In summary, this new static adaptivity analysis has three parts as shown in Figure~\ref{fig:adaptfun}
+\begin{itemize}
+    \item In Section~\ref{sec:static-datadep},
+    the data \emph{dependency relation} analysis through the static data flow analysis technique.
+    \item In Section~\ref{sec:static-quantity}, the \emph{dependency quantity} analysis through the static program reachability bound analysis techniques.
+    \item The static analysis for adaptivity is presented in Section~\ref{sec:static-quantity}.
+    % the program adaptivity estimation, 
+    In this analysis, I construct a program-based dependence graph for approximating the execution-based graph in Section~\ref{sec:dynamic-adapt}.
+    Then, based on this graph, I design an algorithm
+    %  based on the results estimated above, 
+    computing the adaptivity upper bound soundly 
+    and accurately.
+    \end{itemize}
+
+    % 1) statically analyzes the program's data dependency relation;
+    % 2) statically analyzes the program's dependency quantity properties;
+    % 3) constructs a weighted dependency graph based on $c$ using the two analysis results above; 
+    % 4) then finds a path in this graph, which is used to estimate an upper bound on the adaptivity of $c$.
+    \begin{figure}
+      \centering    
+    \includegraphics[width=1.0\columnwidth]{figures/adapfun.png}
+      \vspace{-0.3cm}
+      \caption{The overview of {\THESYSTEM}}
+      \label{fig:adaptfun}
+      \vspace{-0.5cm}
+    \end{figure}
+    
+\subsubsection{Static Data Dependency Analysis}
+\label{sec:static-datadep}
+\input{chapters/static-dep}
+
+\subsubsection{Static Data Dependency Quantity Analysis}
+\label{sec:static-quantity}
+\input{chapters/static-quantity}
+
+\subsubsection{Adaptivity Estimation}
+\label{sec:static-adapt}
+\input{chapters/static-adapt}
+
+% \subsection{Static Analyzed Adaptivity through An Example}
+% \label{subsec:static-examples}
+% % \input{examples/multipleRounds}
+% \input{chapters/static-example}
+%
+% \subsection{Implementation}
+% \label{subsec:static-implementation}

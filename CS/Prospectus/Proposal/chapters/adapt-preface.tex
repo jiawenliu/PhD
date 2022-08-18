@@ -1,0 +1,33 @@
+
+Data analyses are usually designed to identify some property of the population 
+from which the data are drawn, generalizing beyond the specific data sample. 
+For this reason, data analyses are often designed in a way that guarantees that they produce a low generalization error.
+That is, they are designed so that the result of a data analysis run on sample data does not differ too much from the result one would achieve by running the analysis over the entire population. 
+
+An adaptive data analysis can be seen as a process composed of multiple queries interrogating some data, where the choice of which query to run next may rely on the results of previous queries. 
+The generalization error of individual query/analysis can be controlled by using an array of well-established statistical techniques.
+However, when queries are arbitrarily composed, the different errors can propagate through the chain of different queries and bring high generalization errors. 
+To address this issue, data analysts are designing several techniques that not only guarantee bounds on the generalization errors of single queries, but also guarantee bounds on the generalization error of the composed analyses. 
+The choice of which of these techniques to use, 
+often depends on the chain of queries that an adaptive data analysis can generate.
+Specifically, the total number of queries and the depth of the chain of queries is of great significance 
+to guarantee the generalization error, 
+when the composed data analyses are adaptive. 
+So in order to give a precise guarantee of generalization error
+for the program,
+I'm interested in analyzing the depth of the chain of queries in a program, i.e., the program's \emph{adaptivity} property.
+
+There are some works on analyzing this \emph{adaptivity} property based on an analysis of the dependency graph between different queries.
+But their works are limited in many aspects.
+In the next few chapters,
+I propose a new automated program analysis framework that can better help data analysts
+design adaptive data analyses controlling their generalization errors than previous works.
+
+
+
+% Given an input program implementing an adaptive data analysis, 
+% our program analysis generates an upper bound on the total number of queries that the data analysis will run, and more interestingly also an upper bound on the depth of the chain of queries.
+% These two measures can be used to select the right technique to guarantee a bound on the generalization error of the data analysis.
+
+% Our program analysis is based on an analysis of the dependency graph between different queries, representing the potential chain an adaptive data analysis may generate.
+% We show how the proposed program analysis can help to analyze the generalization error of several concrete data analyses with different adaptivity.

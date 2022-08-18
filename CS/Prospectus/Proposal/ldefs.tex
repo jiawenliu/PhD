@@ -3,7 +3,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%% Extra Ldefs:
-
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!red,
+  urlcolor=green!70!black
+}
+\setcounter{tocdepth}{5}
 % \renewcommand{\textfraction}{0.1}
 % \renewcommand{\topfraction}{0.95}
 % \renewcommand{\bottomfraction}{0.95}
@@ -551,3 +556,15 @@
 \newcommand{\wqside}[1]{}
 \newcommand{\rname}[1]{$\textbf{#1}$}
 \fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Path Sensitive Reachability Bound Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\tpath}{\kw{tp}}
+\newcommand{\rprog}{\kw{rp}}
+\newcommand{\absstate}{\kw{rstate}}
+\newcommand{\rpchoose}{\kw{choose}}
+\newcommand{\rprepeat}{\kw{repreat}}
+\newcommand{\rpseq}{\kw{seq}}
+\newcommand{\exeRB}{\kw{RB_{exe}}}

@@ -1,21 +1,15 @@
 
-Then based on the analysis results in Section~\ref{sec:static-datadep} and 
-Section~\ref{sec:static-quantity},
-this step first constructs
-the program-based dependency graph and then estimated the adaptivity formalized through Section~\ref{sec:adapt-exe}.
-
-\paragraph{Program-Based Data Dependency Graph Generation}
-Specifically based on the estimated $\flowsto$ and $\rb_{\kw{prog}}(c)$,
-from Section~\ref{sec:static-datadep} and 
-Section~\ref{sec:static-quantity},
-the program-based dependency graph is defined as follows.
-%  %
-% {
-%    \[
-%      \progG(c) = (\progV(c), \progE(c), \progW(c), \progF(c))
-%      \]
-%  }
-%  with $\progV(c), \progE(c), \progW(c)$ and $ \progF(c)$ as computed in each steps above.
+Then based on the analysis results in Section~\ref{subsubsec:static-datadep} and 
+Section~\ref{subsubsec:static-reachability},
+specifically the estimated $\progE(c)$ and $\progW(c)$,
+the program-based dependency graph is constructed as follows:
+ %
+{
+   \[
+     \progG(c) = (\progV(c), \progE(c), \progW(c), \progF(c))
+     \]
+ }
+ with $\progV(c), \progE(c), \progW(c)$ and $ \progF(c)$ as computed in each steps above.
  % and $\progF(c) =\left\{(x^l, n)  \in  \mathcal{LV} \times \{0, 1\} 
  % ~ \middle\vert ~
  % x^l \in \lvar_{c},
@@ -27,77 +21,8 @@ the program-based dependency graph is defined as follows.
  % the execution-based dependency graph. It has the same
  % vertices and query annotations, but approximated edges and weights.  
  % The algorithm computation is 
-%  Its formal definition can be found in the appendix.
-\begin{defn}
-    [Program-Based Dependency Graph]
-    \label{def:prog_graph}
-    % [Program-Based Weighted Data Dependency Graph Generation Algorithm]
-    % \label{def:analyz_dcfg}
-    Given a program $c$, with its abstract weighted control flow graph $\absG(c) = (\absV, \absE, \absW)$ and 
-    feasible data flow relation $\flowsto(x^i, y^j, c)$ for every $x^i, y^j \in \lvar_c$, its Program-Based Weighted Data Dependency Graph
-    $\progG(c) = (\progV, \progE, \progW, \progF)$,
-    is generated as follows,
-    {\footnotesize
-    \[
-    \begin{array}{rlcl}
-    \text{Vertices} &
-    \progV & := & \left\{ 
-    x^l \in \mathcal{LV} 
-    ~ \middle\vert ~
-    x^l \in \lvar_{c}
-    \right\}
-    \\
-    \text{Directed Edges} &
-    \progE & := & 
-    \left\{ 
-    ({x}_1^{i}, {x}_2^{j}) \in \mathcal{LV} \times \mathcal{LV}
-    ~ \middle\vert ~
-    \begin{array}{l}
-    {x}_1^{i}, {x}_2^{j} \in \vertxs
-    \land
-    % \\
-    \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \st  
-    n \geq 0 \land
-    \\
-    \flowsto(x^i,  z_1^{r_1}, c) 
-    \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
-    \end{array}
-    \right\}
-    \\
-    \text{Weights} &
-    \progW & := &
-    % \bigcup
-    % \begin{array}{l}
-    \left\{ (x^l, w) \in  \mathcal{LV} \times \mathcal{A}_{in}
-    \mid
-    x^l \in \lvar_{{c}} \land (l, w) \in \absW(c)
-    \right\}
-    % \end{array} 
-    \\
-    \text{Query Annotation} &
-    \progF & := & 
-    \left\{(x^l, n)  \in  \mathcal{LV} \times \{0, 1\} 
-    ~ \middle\vert ~
-    x^l \in \lvar_{c},
-    n = 1 \iff x^l \in \qvar_{c} \land n = 0 \iff  x^l \in \qvar_{c} .
-    \right\}
-    \end{array}
-    \] }
-    \end{defn}
-
-\highlight{
-Comparing to previous works, this program-based graph program-based graph has a similar topology structure as 
-% the one
-% of 
-the Execution-Based Dependency Graph. It has the same
-vertices and query annotations, but approximated edges and weights.  
-Benefited from the same topology structure and the extra quantity analysis, this new approximated dependency capture
-the dependency and quantity information more precise than the previous
-estimated dependency graph.
-In this sense, it helps in estimating a tighter bound on the adaptivity than before.
-}
-\paragraph{Adaptivity Estimation}
- Then this analysis step estimates the adaptivity upper bound for a program $c$ by the maximum query length over all finite walks in the program-based data dependency graph $\progG({c})$, defined  formally in Definition~\ref{def:prog_adapt}. 
+ Its formal definition can be found in the appendix.
+ We compute the adaptivity upper bound for a program $c$ by the maximum query length over all finite walks in the program-based data dependency graph $\progG({c})$, defined  formally in Definition~\ref{def:prog_adapt}. 
  %
  We use $\walks(\progG(c))$ to represent the walks over the program-based dependency graph for $c$.
  Different from the walks on $\traceG(c)$, $k \in \walks(\progG(c))$ doesn't rely on the initial trace.
@@ -162,15 +87,6 @@ In this sense, it helps in estimating a tighter bound on the adaptivity than bef
  \end{thm}
  The full proofs and details of the algorithm and the soundness can be found in the appendix.
  
- \highlight{
-    The key point is to find the walks in the program-based dependency graph. I also develop a walk-finding algorithms with full details in appendix.
-Comparing to previous work, 
-new analysis also provides an efficient and accurate algorithm computing the adaptivity over the
-program-based dependency graph.
-However, previous static analysis only perform the standard path search algorithm on the estimated graph.
-It is low-efficient because the longest weight path is NP hard and standard algorithm is $O(n^n)$ complexity.
-}
-
 % The key novelty of AdaptSearch is its walk finding part, we first discuss two challenges when we try to find the walks in the program-based dependency graph, and show that how we solve them using my algorithms.
 
 % \textbf{Non-Termination Challenge:}

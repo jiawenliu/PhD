@@ -55,50 +55,6 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 ~|~ {c};{c} 
 ~|~ \eif([\bexpr]{}^l , {c}, {c}) 
 ~|~ [\eskip]^l 
-% &&& \text{\mg{Is skip missing a label?}}
-% \\
-% &&& \text{\jl{I intentionally removed leabel for skip before}}
-% \\%
-% &&& \text{\jl{but I realized I need it after implementation}}
-% \\%
-% &&& \text{\jl{I haven't yet updated it here, thanks for reminding}}
-% \\
-% \mbox{Event} 
-% & \event & ::= & 
-% ({x}, l, v) ~|~ ({x}, l, \qval, v) ~~~~~~~~~~~ \mbox{Assignment Event} \\
-% &&& ~|~(\bexpr, l, v) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \mbox{Testing Event}
-% \\
-% \mbox{Event} 
-% & \event & ::= & 
-% ({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval) 
-% % ~~~~~~~~~~~ \mbox{Assignment Event} 
-% % \\
-% % &&& 
-% ~|~(\bexpr, l, v, \bullet) 
-% % ~~~~
-% % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-% % \mbox{Testing Event}
-% \\
-% \\
-% &&& \text{\mg{I think it would be better to use quadruples for events, where the}}\\
-% &&& \text{\mg{first element is either a variable or a boolean expression and }}\\
-% &&& \text{\mg{the last is either a query value or some default value $\bullet$}}\\
-%
-% \mbox{Trace} & \trace
-% & ::= & \cdot | \trace \cdot \event | \trace \tracecat \trace 
-% \\
-%
-% \mbox{Trace} & \trace
-% & ::= & [] ~|~ \event:: \trace ~|~ \trace \tracecat \trace \\
-% \mbox{Trace} & \trace
-% & ::= & [] ~|~ \trace :: \event
-% \\
-% &&& \text{\mg{I don't understand why you need both :: and ++ as constructors.}}\\
-% &&& \text{\jl{Because append is to the left but I are adding element to the left in the OS}}\\
-% &&& \text{\jl{I was too sticky to the convention, it is a good idea to append to the left and just use $::$}}
-% %
-% \mbox{Event Signature} & \sig
-% & ::= & (x, l, n) | (x, l, n, \query) | (b, l, n)
 % \\
 % %
 \end{array}
@@ -108,30 +64,49 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 % for the set of variables,
 % values, query values, commands, databases, and the codomain of queries, respectively.
 % %
-An standard expression $\expr$,
-is
-% can be 
-either a standard arithmetic expression or a boolean expression or a list of expressions.
-% An arithmetic expression can be a constant $n$ denoting integer, a variable $x$ from some countable set $\mathcal{VAR}$, binary operation $\oplus_a$ such as addition, product, subtraction, etc, over arithmetic expressions, and also log and sign operation. 
+\highlight{
+    This {\tt Query While} language enriches previous language design with standard while loop and user inputs.
+    It is more expressive than the language designed in previous works.
+The previous language only supports the data analysis with constant number of loop iterations.
+Comparing to it, in the new language design,
+the general data analysis program with non-deterministic loop iterations
+(for example the program below as shown in Section~\ref{sec:prework-language})
+is supported.
+\[
+  {\assign{x}{20}};
+  \assign{y}{40};
+  \ewhile (x < y) \edo 
+  \{
+    \assign{x}{x + 1};
+    \assign{y}{y - 2};
+    \}\}
+  \] 
+Previous work does not support data analysis program with user inputs, which is supported in the new language as well.
+}
+% An standard expression $\expr$,
+% is
+% % can be 
+% either a standard arithmetic expression or a boolean expression or a list of expressions.
+% % An arithmetic expression can be a constant $n$ denoting integer, a variable $x$ from some countable set $\mathcal{VAR}$, binary operation $\oplus_a$ such as addition, product, subtraction, etc, over arithmetic expressions, and also log and sign operation. 
+% % %
+% % A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq,=,<,$ etc.
+% % Additionally, I also introduce a list in expression.
+% The key extension is
+% %  language supports 
+% the primitives for queries, where a specific query is specified by a query expression $\qexpr$. 
+% A query expression contains the necessary information for a query request, 
+% for example, $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
+% Query expressions combine access to the database with other expressions, 
+% for example, $\chi[3] + 5$ represents a query that asks the value from column 3 of each database raw $\chi$, 
+% adds 5 to each of these values, and then computes the average of these values.
+% % the expression also includes the special variable $\chi$ representing a row of the database, and access to values at a certain index in $\chi$, as $\chi[\aexpr]$. Additionally, list over expressions is supported and $[]$ stands for the empty list. The access to elements in the list can be achieved through $x[\aexpr]$ when variable $x$ is referred to as a list. The value $v$ now contains the natural number $n$, the boolean primitives $\etrue$ and $\efalse$, the special row $\chi$ and access to it $\chi[v]$, the empty list $[]$ and non-empty list $[v, \dots, v]$.
+% % 
 % %
-% A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq,=,<,$ etc.
-% Additionally, I also introduce a list in expression.
-The key extension is
-%  language supports 
-the primitives for queries, where a specific query is specified by a query expression $\qexpr$. 
-A query expression contains the necessary information for a query request, 
-for example, $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
-Query expressions combine access to the database with other expressions, 
-for example, $\chi[3] + 5$ represents a query that asks the value from column 3 of each database raw $\chi$, 
-adds 5 to each of these values, and then computes the average of these values.
-% the expression also includes the special variable $\chi$ representing a row of the database, and access to values at a certain index in $\chi$, as $\chi[\aexpr]$. Additionally, list over expressions is supported and $[]$ stands for the empty list. The access to elements in the list can be achieved through $x[\aexpr]$ when variable $x$ is referred to as a list. The value $v$ now contains the natural number $n$, the boolean primitives $\etrue$ and $\efalse$, the special row $\chi$ and access to it $\chi[v]$, the empty list $[]$ and non-empty list $[v, \dots, v]$.
-% 
-%
- A labeled command $c$ is just a command with a label --- I assume that labels are unique so that they can help to identify uniquely every subexpression. 
-% I have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement $\ewhile \bexpr \edo {c} $.
- The main novelty of the syntax is the query request command $\assign{x}{\query(\qexpr)}$. 
- For instance, if a data analyst wants to ask a simple linear query that returns the first element of the row, 
- they can simply use the command $ \assign{x}{\query(\chi[1])}$ in their data analysis program.
+%  A labeled command $c$ is just a command with a label --- I assume that labels are unique so that they can help to identify uniquely every subexpression. 
+% % I have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement $\ewhile \bexpr \edo {c} $.
+%  The main novelty of the syntax is the query request command $\assign{x}{\query(\qexpr)}$. 
+%  For instance, if a data analyst wants to ask a simple linear query that returns the first element of the row, 
+%  they can simply use the command $ \assign{x}{\query(\chi[1])}$ in their data analysis program.
 % \wq{Shall I distinguish command and labeled command, they are now both $c$. }
 % \jl{I'm not sure, I don't want to programmer to add the label when writing the program. The label is just added by us for analysis. but I'm worried it is too complicated if use two notations for command and labeled command }
 %
@@ -149,7 +124,7 @@ adds 5 to each of these values, and then computes the average of these values.
 % ~|~ [\eskip]^l 
 % \end{array}
 % \]
-I use 
-%$\mathcal{LVAR} = \mathcal{VAR} \times \mathcal{L} $ 
-$\mathcal{LV}$ to represent the universe of all the labeled variables.
+% I use 
+% %$\mathcal{LVAR} = \mathcal{VAR} \times \mathcal{L} $ 
+% $\mathcal{LV}$ to represent the universe of all the labeled variables.
  

@@ -1,0 +1,105 @@
+The $\lvar_c \in \mathcal{P}(\ldom)$,
+represents the set of labels
+% assigned variables and labeles variables 
+for a labeled command $c$ defined as follows,
+% defined in Definition~\ref{def:lvar} and 
+% \ref{def:avar}.
+%
+\begin{defn}[Program Labels
+(
+% $\lvar_{c} \subseteq \mathcal{VAR} \times \mathbb{N}$ or 
+$\lvar : \cdom \to \mathcal{P}(\ldom)$]
+\label{def:lvar}
+{\small
+$$
+  \lvar(c) \triangleq
+  \left\{
+  \begin{array}{ll}
+      \{l\}                  
+      & {c} = [{\assign x e}]^{l} 
+      \\
+      \lvar({c_1}) \cup \lvar({{c_2}})  \cup \{l\} 
+      & {c} = {c_1};{c_2}
+      \\
+      \lvar(c_1) \cup \lvar({{c_2}}) \cup \{l\} 
+      & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
+      \\
+      \lvar({{c}'}) \cup \{l\} 
+      & {c}   = \ewhile ([\bexpr]^{l}, {c}')
+\end{array}
+\right.
+$$
+}
+\end{defn}
+%
+% Every label and every labeled command in a program is unique, formally as follows with proof in Appendix~\ref{apdx:lemma_sec123}.
+\begin{lem}[Uniqueness of the Program Labels]
+  \label{lem:label_unique}
+  For every program $c \in \cdom$ and every two labels such that
+  $i, j \in \lvar(c)$, then $i \neq j$.
+  \[
+    \forall c \in \cdom, i, j \in \ldom \st i, j \in \lvar(c)\implies i \neq j.
+    \]
+\end{lem}
+%
+The free variables
+showing up in $c$, which aren't defined before be used, are actually the input variables of this program.
+%
+\begin{defn}[Execution Based Reachability Bound]
+  \label{def:exe_rb}
+  Given a program ${c}$,
+its \emph{Execution-Base Reachability Bound} 
+$\exeRB({c})$ is defined as follows,
+% over all possible traces,
+%
+\highlight{
+\[
+\begin{array}{l}
+  % \text{Vertices} &
+  \exeRB({c}) \triangleq
+  \Big\{ 
+  (l, w) 
+  ~ \vert ~ 
+  w : \mathcal{T} \to \mathbb{N}
+  \land
+  l \in \lvar(c) 
+  \\ \qquad \qquad \qquad \qquad
+  \land
+  \forall \trace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} \st
+  \config{{c}, \trace} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+  \implies w(\trace_0) = \vcounter(\vtrace, l) 
+\Big\}
+\end{array}
+\]
+}
+\end{defn}
+% In most data analysis programs c we are interested, there are usually some user input variables,
+% such as $k$ in Example~\ref{ex:whileOdd}. We denote 
+$\mathcal{T}_0(c)$ is the set of initial traces in which all the input variables in
+$c$ are initialized
+% There are two components in this definition. 
+\highlight{
+The $\exeRB(c)$  is a set of pairs, $(l, w) \in \ldom \times (\mathcal{T} \to \mathbb{N})$,
+with a labeled as the first component and
+its weight $w$ the second component.
+Weight $w$ for
+% a labeled variable 
+$l$ is a function $w : \mathcal{T} \to \mathbb{N}$
+mapping from an initial trace to a natural number.
+When program executes under an initial trace $\trace_0$,
+$\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\vtrace} $, 
+it generates an execution trace $\trace$.
+% Overall possible execution traces generated under $\trace_0$,
+This natural number is the
+%  maximum 
+evaluation times of the command with label $l$ in
+% all possible execution traces generated under $\trace_0$. 
+this execution trace, 
+% This is 
+computed by the counter operator $w(\trace_0) = \vcounter(\vtrace, l)$.
+}
+For example in the execution-based dependency graph of $\kw{twoRounds}$ in
+ Figure~3(b), the weights of vertices in the while loop are  
+ $w_k : \trace_0 \to \env(\trace) k$.
+$w_k$ is function return the value of the input variable $k$ from the initial trace $\trace_0$.
+It depends on the value of the user input $k$ specified in the initial trace $\trace_0$.

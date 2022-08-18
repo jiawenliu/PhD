@@ -131,154 +131,156 @@ The rules for loop modify the loop map $w$. In the rule $\textbf{l-loop}$, the l
 When $v_N$ reaches $0$, the loop exits and the loop map $w$ eliminates the label $l$ of this loop statement by $w \setminus l$ in the rule $\textbf{l-loop-exit}$. 
 % 
 \begin{figure}
-    \begin{mathpar}
-    \boxed{ \config{m, c, t,w} \xrightarrow{} \config{m', c',  t', w'} \; }
-    \\
-    % \inferrule
-    % {
-    %  \config{m, \expr } \xrightarrow{}  \config{m, \expr' }
-    % }
-    % {
-    % \config{m, [\assign x \expr]^{l},  t,w} \xrightarrow{} \config{m, [\assign x \expr']^{l}, t,w}
-    % }
-    % ~\textbf{l-assn1}
-    % \and
-    % %
-    % \inferrule
-    % {
-    % }
-    % {
-    % \config{m, [\assign x v]^{l},  t,w} \xrightarrow{} \config{m[v/x], [\eskip]^{l}, t,w}
-    % }
-    % ~\textbf{l-assn2}
-    % %
-    % \and
-    {\inferrule
-    {
-     \config{m, \aexpr} \aarrow \config{m, \aexpr'}
-    }
-    {
-    \config{m, \eloop ~ [\aexpr]^{l}  ~ \edo ~ c ,  t, w }
-    \xrightarrow{} \config{m, \eloop ~ [\aexpr']^{l} ~ \edo ~ c ,  t, (w + l) }
-    }
-    ~\textbf{l-loop-a}
-    }
-    %
-    \and
-    %
-    {\inferrule
-    {
-     \valr_N > 0
-    }
-    {
-    \config{m, \eloop ~ [\valr_N]^{l}  ~ \edo ~ c ,  t, w }
-    \xrightarrow{} \config{m, c ;  \eloop ~ [(\valr_N-1)]^{l} ~ \edo ~ c ,  t, (w + l) }
-    }
-    ~\textbf{l-loop}
-    }
-    %
-    \and
-    %
-    {
-    \inferrule
-    {
-     \valr_N = 0
-    }
-    {
-    \config{m,  \eloop ~ [\valr_N]^{l} ~ \edo ~ c  ,  t, w }
-    \xrightarrow{} \config{m, [\eskip]^{l} ,  t, (w \setminus l) }
-    }
-    ~\textbf{l-loop-exit}
-    }
-    %
-    \and
-    % {  Memory \times Com  \times Trace \times WhileMap \Rightarrow^{} Memory \times Com  \times Trace \times WhileMap}
-    \inferrule
-    {
-    \config{m,\expr_q} \qarrow \config{m,\expr_q'}
-    }
-    {
-    \config{m, [\assign{x}{q(\expr_q)}]^l, t, w} \xrightarrow{}  \config{m, [\assign{x}{q(\expr_q')}]^l, t, w}
-    }
-    ~\textbf{l-query-e}
-    \and
-    \inferrule
-    {
-    q(v_q) = v
-    }
-    {
-    \config{m, [\assign{x}{q(v_q)}]^l, t, w} \xrightarrow{} \config{m[ v/ x], \eskip,  t \mathrel{++} [q(v_q)^{(l,w )}],w }
-    }
-    ~\textbf{l-query-v}
-    %
-    \and
-    %
-    %
-    % \inferrule
-    % {
-    % \config{m, c_1,  t,w} \xrightarrow{} \config{m', c_1',  t',w'}
-    % }
-    % {
-    % \config{m, c_1; c_2,  t,w} \xrightarrow{} \config{m', c_1'; c_2, t',w'}
-    % }
-    % ~\textbf{l-seq1}
-    % %
-    % \and
-    % %
-    % \inferrule
-    % {
-    % }
-    % {
-    % \config{m, [\eskip]^{l} ; c_2,  t,w} \xrightarrow{} \config{m, c_2,  t,w}
-    % }
-    % ~\textbf{l-seq2}
-    % %
-    % %
-    % \and
-    % %
-    \inferrule
-    {
-    \config{ m, \bexpr} \barrow \bexpr'
-    }
-    {
-    \config{m, \eif([\bexpr]^{l}, c_1, c_2),  t,w} 
-    \xrightarrow{} \config{m,  \eif([\bexpr']^{l}, c_1, c_2),  t,w}
-    }
-    ~\textbf{l-if}
-    %
-    \and
-    %
-    \inferrule
-    {
-    }
-    {
-    \config{m, \eif([\etrue]^{l}, c_1, c_2),t,w} 
-    \xrightarrow{} \config{m, c_1,  t,w}
-    }
-    ~\textbf{l-if-t}
-    \and
-    %
-    \inferrule
-    {
-    }
-    {
-    \config{m,  \eif([\efalse]^{l}, c_1, c_2),  t,w} 
-    \xrightarrow{} \config{m, c_2,  t,w}
-    }
-    ~\textbf{l-if-f}
-    %
-    % %
-    %
-    \end{mathpar}
+{\footnotesize
+  \begin{mathpar}
+  \boxed{ \config{m, c, t,w} \xrightarrow{} \config{m', c',  t', w'} \; }
+  \\
+  % \inferrule
+  % {
+  %  \config{m, \expr } \xrightarrow{}  \config{m, \expr' }
+  % }
+  % {
+  % \config{m, [\assign x \expr]^{l},  t,w} \xrightarrow{} \config{m, [\assign x \expr']^{l}, t,w}
+  % }
+  % ~\textbf{l-assn1}
+  % \and
+  % %
+  % \inferrule
+  % {
+  % }
+  % {
+  % \config{m, [\assign x v]^{l},  t,w} \xrightarrow{} \config{m[v/x], [\eskip]^{l}, t,w}
+  % }
+  % ~\textbf{l-assn2}
+  % %
+  % \and
+  {\inferrule
+  {
+    \config{m, \aexpr} \aarrow \config{m, \aexpr'}
+  }
+  {
+  \config{m, \eloop ~ [\aexpr]^{l}  ~ \edo ~ c ,  t, w }
+  \xrightarrow{} \config{m, \eloop ~ [\aexpr']^{l} ~ \edo ~ c ,  t, (w + l) }
+  }
+  ~\textbf{l-loop-a}
+  }
+  %
+  \and
+  %
+  {\inferrule
+  {
+    \valr_N > 0
+  }
+  {
+  \config{m, \eloop ~ [\valr_N]^{l}  ~ \edo ~ c ,  t, w }
+  \xrightarrow{} \config{m, c ;  \eloop ~ [(\valr_N-1)]^{l} ~ \edo ~ c ,  t, (w + l) }
+  }
+  ~\textbf{l-loop}
+  }
+  %
+  \and
+  %
+  {
+  \inferrule
+  {
+    \valr_N = 0
+  }
+  {
+  \config{m,  \eloop ~ [\valr_N]^{l} ~ \edo ~ c  ,  t, w }
+  \xrightarrow{} \config{m, [\eskip]^{l} ,  t, (w \setminus l) }
+  }
+  ~\textbf{l-loop-exit}
+  }
+  %
+  \and
+  % {  Memory \times Com  \times Trace \times WhileMap \Rightarrow^{} Memory \times Com  \times Trace \times WhileMap}
+  \inferrule
+  {
+  \config{m,\expr_q} \qarrow \config{m,\expr_q'}
+  }
+  {
+  \config{m, [\assign{x}{q(\expr_q)}]^l, t, w} \xrightarrow{}  \config{m, [\assign{x}{q(\expr_q')}]^l, t, w}
+  }
+  ~\textbf{l-query-e}
+  \and
+  \inferrule
+  {
+  q(v_q) = v
+  }
+  {
+  \config{m, [\assign{x}{q(v_q)}]^l, t, w} \xrightarrow{} \config{m[ v/ x], \eskip,  t \mathrel{++} [q(v_q)^{(l,w )}],w }
+  }
+  ~\textbf{l-query-v}
+  %
+  \and
+  %
+  %
+  % \inferrule
+  % {
+  % \config{m, c_1,  t,w} \xrightarrow{} \config{m', c_1',  t',w'}
+  % }
+  % {
+  % \config{m, c_1; c_2,  t,w} \xrightarrow{} \config{m', c_1'; c_2, t',w'}
+  % }
+  % ~\textbf{l-seq1}
+  % %
+  % \and
+  % %
+  % \inferrule
+  % {
+  % }
+  % {
+  % \config{m, [\eskip]^{l} ; c_2,  t,w} \xrightarrow{} \config{m, c_2,  t,w}
+  % }
+  % ~\textbf{l-seq2}
+  % %
+  % %
+  % \and
+  % %
+  \inferrule
+  {
+  \config{ m, \bexpr} \barrow \bexpr'
+  }
+  {
+  \config{m, \eif([\bexpr]^{l}, c_1, c_2),  t,w} 
+  \xrightarrow{} \config{m,  \eif([\bexpr']^{l}, c_1, c_2),  t,w}
+  }
+  ~\textbf{l-if}
+  %
+  \and
+  %
+  \inferrule
+  {
+  }
+  {
+  \config{m, \eif([\etrue]^{l}, c_1, c_2),t,w} 
+  \xrightarrow{} \config{m, c_1,  t,w}
+  }
+  ~\textbf{l-if-t}
+  \and
+  %
+  \inferrule
+  {
+  }
+  {
+  \config{m,  \eif([\efalse]^{l}, c_1, c_2),  t,w} 
+  \xrightarrow{} \config{m, c_2,  t,w}
+  }
+  ~\textbf{l-if-f}
+  %
+  % %
+  %
+  \end{mathpar}
+  }
         \caption{Trace-based operational semantics of loop language.}
         \label{fig:evaluation}
     \end{figure}
     %
     % explanation of rules
-    
+ \highlight{
 \paragraph*{Limitations of The Trace-Based Operational Semantics}
 This operational semantics is limited in the following aspects:
-\begin{enumerate}
+\begin{itemize}
   \item \textbf{Expressiveness Limitation}
   \\
   The operational-semantics causes a similar limitation as their syntax.
@@ -319,4 +321,5 @@ This operational semantics is limited in the following aspects:
   \\
   There are four components in their configuration in order to evaluate the program. 
     The update operations for this quadruple-configuration is low-efficient, especially the update operation of the while map.
-\end{enumerate}
+\end{itemize}
+}   

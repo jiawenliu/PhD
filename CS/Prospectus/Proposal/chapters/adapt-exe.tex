@@ -1,0 +1,44 @@
+According to the second challenge introduced in Section~\ref{sec:adapt-challenge},
+i.e., formalizing the intuitive \emph{adaptivity} quantity,
+and the limitation in previous \emph{adaptivity} formalization analysis in Section~\ref{sec:prework-formalization},
+I develop a new execution-based program analysis in formalizing this intuitive \emph{adaptivity} quantity
+precisely and efficiently.
+%
+
+In summary, this new execution-based program analysis has three steps as follows,
+\begin{enumerate}
+\item The first step on \emph{dependency relation} analysis is presented in Section~\ref{sec:dynamic-datadep}.
+In this step, I define the variable \emph{may-dependency} relation based on the trace semantics in Section~\ref{sec:language-os}.
+\item In the second step in Section~\ref{sec:dynamic-reachability}, I analyze the \emph{dependency quantity} through the methodology of execution-based reachability bound analysis.
+%  As 
+% %  analysis, 
+% based on the \emph{dependency relation} above.
+% This analysis is developed through the methodology of execution-based reachability bound analysis.
+% \\
+\item The last step is the intuitive \emph{adaptivity} quantity analysis presented in Section~\ref{sec:dynamic-adapt}.
+According to the two analysis results above, specifically \emph{dependency relation} and \emph{dependency quantity},
+I define the formal \emph{adaptivity} model in definition~\ref{def:trace_adapt} through 
+constructing a dependency graph.
+\end{enumerate}
+
+\subsubsection{Data Dependency Analysis}
+\label{sec:dynamic-datadep}
+\input{chapters/exe-dep}
+
+\subsubsection{Data Dependency Quantity Analysis}
+\label{sec:dynamic-reachability}
+\input{chapters/exe-depquantity}%
+\subsubsection{Adaptivity Formalization}
+\label{sec:dynamic-adapt}
+\input{chapters/exe-adapt}%
+%
+% \subsection{Adaptivity through An Example}
+% \label{subsec:dynamic-examples}
+% \input{examples/twoRounds}
+%
+
+% \input{~/dynamic/relatedwork.tex}
+%
+% \subsection{Implementation}
+% \label{subsec:dynamic-implementation}
+%

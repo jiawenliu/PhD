@@ -298,6 +298,17 @@ x^i, y^j \in \lvar(c) \land \flowsto(x^i, y^j, c) \land
 \] }
 \end{defn}
 
+\highlight{
+Comparing to previous works, this program-based graph program-based graph has a similar topology structure as 
+% the one
+% of 
+the Execution-Based Dependency Graph. It has the same
+vertices and query annotations, but approximated edges and weights.  
+Benefited from the same topology structure and the extra quantity analysis, this new approximated dependency capture
+the dependency and quantity information more precise than the previous
+estimated dependency graph.
+In this sense, it helps in estimating a tighter bound on the adaptivity than before.
+}
 \todo{Remove: 
 Then, the Following part computes the adaptivity upper bound for a program $c$.
 % Given a program ${c}$, we generate
@@ -434,7 +445,7 @@ To estimate a sound and precise upper bound on adaptivity, we develop an adaptiv
     $$\pathsearch(\progG({c})) \geq \progA(c).$$
 \end{thm}
 }
-\subsubsection{Adaptivity Upper Bound Computation}
+\subsubsection{Adaptivity Estimation}
 %  Weighted Data Dependency Graph Generation}
 \label{sec:static-adapt-comput}
 % \subsubsection{Adaptivity Upper Bound Computation}

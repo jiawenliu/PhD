@@ -13,7 +13,7 @@
 \begin{document}
 
 \title{{\em Dissertation Prospectus}
-\\ {A Program Analysis Framework for Adaptive Data Analysis}
+\\ {Program Quantitative Property Analysis}
 % , 
 % \\ with Generalization on Program Quantitative Property Analysis
 }
@@ -33,14 +33,17 @@
 \input{chapters/introduction}
 % \clearpage
 
-\section*{\redd{PART I \quad  Program Analysis Framework for Adaptive Data Analysis}}
-\addcontentsline{toc}{section}{\protect\numberline{}\redd{PART I \quad  Program Analysis Framework for Adaptive Data Analysis}}%
-
-\section{Introduction}
+\section*{\redd{PART I \quad  Program Analysis Framework for Adaptive Data Analysis (In Improvement)} }
+\addcontentsline{toc}{section}{\protect\numberline{}
+\redd{PART I \quad  Program Analysis Framework for Adaptive Data Analysis (In Improvement)}}%
+\input{chapters/adapt-preface}
+\section{Introduction \todo{90\%==>simplify+typos}}
 \label{sec:adapt-intro}
 \input{chapters/adapt-introduction}
 
-\section{Previous Works on Adaptivity Analysis}
+\section{Previous Works on Adaptivity Analysis \todo{99\%==>typos}}
+\label{sec:prework}
+\input{chapters/prework-preface}
 \subsection{The Language Design}
 \label{sec:prework-language}
 \input{chapters/prework-language}
@@ -53,73 +56,61 @@
 \label{sec:prework-static}
 \input{chapters/prework-static}
 
-\section{\todo{combine into sections below} New Program Analysis Framework for Adaptivity Analysis}
-\label{sec:furthers}
-\input{chapters/furthers}
+\section{New Program Analysis Framework for Adaptivity Analysis \todo{99\%==>typos}}
+\label{sec:adapt-analysis}
+% \input{chapters/furthers}
 
-\section{The Extended {\tt Query While} Language for Adaptive Data Analysis}
-\label{sec:language}
-\input{chapters/language}
-% \clearpage
-
-\section{The Execution-Based Program Analysis with Accuracy Improvement for Adaptivity}
-\label{sec:dynamic}
-\input{chapters/dynamic}
-
-\section{The Automated and Accurate Static Program Analysis for Adaptivity}
-\label{sec:static}
-\input{chapters/static}
-% \clearpage
+\subsection{The New Language for Adaptive Data Analysis}
+\label{sec:adapt-language}
+% \subsubsection{Introduction \todo{Combine with 5.2.2 From thesis}}
+% \subsubsection{Methodology \todo{Combine with 5.2.2 From thesis, and some technique details from 7.1}}
+\input{chapters/adapt-language}
 
 
+\subsection{The New Execution-Based Program Analysis for Adaptivity}
+\label{sec:adapt-exe}
+\input{chapters/adapt-exe}
+% \input{chapters/dynamic}
 
-% \clearpage
+\subsection{The New Automated and Accurate Static Program Analysis for Adaptivity}
+\label{sec:adapt-static}
+\input{chapters/adapt-static}
 
-\section*{\redd{PART II \quad  REACHABILITY BOUND ANALYSIS}}
-\addcontentsline{toc}{section}{\protect\numberline{}\redd{PART I \quad  Path-Sensitive Reachability-Bound Analysis}}%
+\subsection{New Program Analysis Framework through An Example}
+\label{sec:adapt-example}
+\input{examples/twoRounds}
 
-\section{Introduction}
+\section*{\redd{PART II \quad  Path-Sensitive Reachability-Bound Analysis (In Preparation)}}
+\addcontentsline{toc}{section}{\protect\numberline{}
+\redd{PART II \quad  Path-Sensitive Reachability-Bound Analysis (In Preparation)}}%
+
+\section{Introduction\todo{90\% ==> Refine and typos}}
 \label{sec:reachability-intro}
-\subsection{Reachability-Bound Problem}
-\label{sec:reachability-background}
-
-\subsection{Motivations}
-\label{sec:reachability-motivation}
-
-\subsection{Outline}
-\label{sec:reachability-outline}
+\input{chapters/reachability-intro}
 
 \section{Methodology}
 \label{sec:reachability-analysis}
 
-\subsection{{Program Model}}
+\subsection{{Language Model}\todo{99\%}}
 \label{sec:language}
-% \subsection{Language}
-% \subsection{Trace-Based Operational Semantics}
-% \input{language}
+\input{chapters/reachability-language}
 % %
 % %
-\subsection{{Reachability Bound Formalization}}
-\label{sec:execution_rb}
-% \input{execution_reachabilitybound}
+\subsection{{Execution-Based Reachability-Bound}\todo{95\% ==> typos}}
+\label{sec:reachability-exe}
+\input{chapters/reachability-exe}
 % % 
-% \section{Path Sensitive Reachability Bound Analysis}
-% \label{sec:static_rb}
-% \input{static_reachabilitybound}
 % % % % 
-\subsection{Program Abstraction and Refinement}
-\label{sec:reachability-program_refine}
-% \subsection{Constraint Program Refinement}
-
-\subsection{Path Sensitive Reachability Bound Analysis}
-\label{sec:reachability-analysis}
+\subsection{{Static Reachability-Bound Analysis}\todo{60\% ==> Simplify}}
+\label{sec:reachability-static}
+\input{chapters/reachability-static}
 
 
+\section*{\redd{PART III \quad  Program Non-Monotonic Quantitative Property Analysis}(In Preparation)}
+\addcontentsline{toc}{section}
+{\protect\numberline{}\redd{PART III \quad  Program Non-Monotonic Quantitative Property Analysis}(In Preparation)}%
 
-\section*{\redd{PART II \quad  Program Non-Monotonic Quantitative Property Analysis}}
-\addcontentsline{toc}{section}{\protect\numberline{}\redd{PART I \quad  Towards Accurate Program Non-Monotonic Quantitative Property Analysis}}%
-
-\section{Towards Accurate Program Non-Monotonic Quantitative Property Analysis}
+\section{Towards Accurate Program Non-Monotonic Quantitative Property Analysis \todo{70\% ==> More detail}}
 \label{sec:generalization}
 \input{chapters/generalization}
 % \clearpage
@@ -129,25 +120,9 @@
 % \input{chapters/cfl_reduction}
 % \clearpage
 
-\section{Status and Plan}
-The program analysis framework presented in Section~\ref{sec:dynamic} and Section~\ref{sec:static} 
-based on the language in Section~\ref{sec:language}
- is submitted as a paper to POPL'2023 and implemented as well. 
- Below is the timeline plan for the proposed extensions of this work
- from Sections~\ref{sec:furthers}, \ref{sec:generalization} and \ref{sec:cfl_reduction}.
-\begin{itemize}
-\item September 05, 2022: Finishing the execution-based dependency analysis extension and implementation,
-\item September 20, 2022: For the static adaptivity analysis extension, 
-finishing the \emph{Path Sensitive Reachability Bound Algorithm} design and implementation, 
-\item September 30, 2022: Finishing the \emph{Path Sensitive Reachability Bound Algorithm} implementation and formalization, 
-and applying this algorithm into the program analysis framework.
-\item October 15, 2022:  Generalizing this program analysis framework onto program's different quantitative properties analysis.
-% and the reduction of CFL-Reachability problem.
-\item November 05, 2022: Finalizing the \emph{Path Sensitive Reachability Bound Algorithm} and submitting the paper to PLDI 2023
-\item November 20, 2022: Finishing the thesis and starting the work on solving the CFL-reachability problem.
-\item December 05, 2022: Defend
-\end{itemize}
-
+\section{Status and Plan \todo{100\%}}
+\label{sec:status-plan}
+\input{chapters/status-and-plan}
 
 \bibliographystyle{plain}
 \bibliography{main.bib}
