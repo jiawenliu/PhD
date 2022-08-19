@@ -1,17 +1,24 @@
 \paragraph{Program Abstract Execution Control Flow Graph}
-In the same way as in Section~\ref{sec:static-quantity}
-
+For a program $c$, this analysis first generate its abstract execution control flow graph notated as follows,
+\[\absG(c) =(\absV(c), \absE(c), \absW(c)).\]
+This graph is generated in the same way as in Section~\ref{sec:static-quantity}, with few adopts for the simplified while language.
+The adopted abstract control flow graph removes the query related components and
+enriches the edge annotations with abstracted boolean expression.
 \paragraph{Program Rephrase and Refinement}
 In order to analyze the reachability bound path-sensitively, we first rewrite this program through two steps.
 \\
-\textbf{1) Program Rephrase through Path Collection on Abstract CFG}
-This step simply collect all the simple loop free transition path
-$\tpath \in \paths(\absG(c))$, (a simple path) on this program's abstract control flow graph $\absG(c)$.
+\begin{enumerate}
+\item \textbf{ Program Rephrase through Path Collection on Abstract CFG}
+This step simply collects all the simple loop free transition path
+% $\tpath \in \paths(\absG(c))$, (a simple path) 
+on this program's abstract control flow graph $\absG(c)$, notated as follows,
+\[ \tpath \in \paths(\absG(c)). \]
 Then it rewrites the program in the form of simple paths.
-\\
-\textbf{2) Program Refinement} This step adopts the program refinement from \cite{GulwaniJK09}.
-It refines the rephrased program above path-sensitively and generate   refined program
+% \\
+\item \textbf{ Program Refinement} This step adopts the program refinement from \cite{GulwaniJK09}.
+It refines the rephrased program above path-sensitively and generate   refined program 
 $\rprog \in \mathcal{RP}$.
+\end{enumerate}
 % \begin{enumerate}
 %   \item \emph{Program Rephrase through Path Collection on Abstract CFG}.
 %   \\
@@ -60,60 +67,81 @@ $\rprog \in \mathcal{RP}$.
 For the refined program $\rprog \in \mathcal{RP}$, the \emph{Outside-In Algorithm}
 computes the path-sensitive local bound 
 % for the refined program $\rprog$ recursively 
-$rLB: \rprog \to \mathcal{A}_{in}$ as follows,
+$rLB: \rprog \to \mathcal{A}_{in}$ through following computations.
 % \\
 %  $rLB: \rprog \to \mathcal{A}_{in}$
-\\
-The \emph{Refined Abstract State}: 
+\begin{enumerate}
+\item \textbf{{Refined Abstract State}}: 
 $\absstate \in \mathcal{P}(\dcdom^{\top})$ : conjunctions of difference constraints.
-\\
-The \emph{Initial Refined Abstract State}: $rInit : \rprog \to \absstate $.
-% % , computed as follows,
-% % \[
-% %   rInit(\rprog) \triangleq 
-% %   \bigwedge_{x \in VAR(\rprog)}
-% %   \left\{ 
-% %   x = v ~\middle\vert~ 
-% %   v = arg\max_{l_1}\left\{ 
-% %     v~\middle\vert~ 
-% %     (v, \absevent) \in \reset(x) 
-% %     \land \absevent = (l_1, dc, l_2)
-% %     \land l_1 \leq \absinit(rprog)
-% %     \right\}
-% %   \right\}
-% %   \]
-% \\
-% The $rInit : \rprog \to \absstate $  can also be computed using $INIT(c, l_0, \absinit(\rprog))$ algorithm in \cite{GulwaniJK09}. 
-% $INIT(c, l_0, \absinit(\rprog))$ computes the equivalent results.
-\\
-The \emph{Final Refined Abstract State} $rFinal : \rprog \to \absstate $.
-% \[
-%   rFinal(\rprog) \triangleq 
-%   \bigwedge_{x \in VAR(\rprog)}
-%   \left\{ 
-%     \varinvar(x)
-%   \right\} \land \neg Invariant(\rprog)
-%   \]
-\\
-The \emph{Variable Grade Decedent}: $varGD : \rprog \to \mathcal{A}_{in}$, is the set of the variables' variation in one iteration;
-\\
-Given a refined program $\rprog$, its path-sensitive local reachability bound is computed as follows,
-\\
-$rLB(\rpchoose\{\rprog_i\}) =  \max\{rLB(\rprog_i)\}$
-\\
-$rLB(\rprepeat\{\rprog\}) =  \frac{rInit(\rprog) - rFinal(\rprog)}{varGD(\rprog)}$
-\\
+\item  \textbf{Initial Refined Abstract State}: $rInit : \rprog \to \absstate $.
+\item \textbf{Variable Grade Decedent}: $varGD : \rprog \to \mathcal{A}_{in}$, is the set of the variables' variation in one iteration;
+\item \textbf{Local Bound Computation}: 
+\[
+  \begin{array}{ll}
+    rLB(\rpchoose\{\rprog_i\}) =  \max\{rLB(\rprog_i)\}
+    &
+    rLB(\rprepeat\{\rprog\}) =  \frac{rInit(\rprog) - rFinal(\rprog)}{varGD(\rprog)}
+    \\
+    rLB(\rpseq(\rprog_1, \rprog_2)) =  rLB(\rprog_1)+ rLB( \rprog_2)
+    &
+    rLB(\tpath) =  1
+  \end{array}
+\]
+\end{enumerate}
 $rLB(\rprepeat\{\rprog\})$ can also be computed using the algorithm 
 $\kw{BOUNDFINDERD(INITD(c, l_0, \absinit(\rprog)), NEXTD(c, l_0, \absinit(\rprog), V_{\lin} )}$ 
 in paper~\cite{GulwaniJK09} with equivalent results.
-\\
-$rLB(\rpseq(\rprog_1, \rprog_2)) =  rLB(\rprog_1)+ rLB( \rprog_2)$
-\\
-$rLB(\tpath) =  1$.
-\\
-The computations details of the operations: $rInit(\rprog)$,
+The computations detail of the operations: $rInit(\rprog)$,
 $rFinal(\rprog)$ and $rNext(\tpath)$
 are in the appendix.
+% \\
+% The \emph{Refined Abstract State}: 
+% $\absstate \in \mathcal{P}(\dcdom^{\top})$ : conjunctions of difference constraints.
+% \\
+% The \emph{Initial Refined Abstract State}: $rInit : \rprog \to \absstate $.
+% % % , computed as follows,
+% % % \[
+% % %   rInit(\rprog) \triangleq 
+% % %   \bigwedge_{x \in VAR(\rprog)}
+% % %   \left\{ 
+% % %   x = v ~\middle\vert~ 
+% % %   v = arg\max_{l_1}\left\{ 
+% % %     v~\middle\vert~ 
+% % %     (v, \absevent) \in \reset(x) 
+% % %     \land \absevent = (l_1, dc, l_2)
+% % %     \land l_1 \leq \absinit(rprog)
+% % %     \right\}
+% % %   \right\}
+% % %   \]
+% % \\
+% % The $rInit : \rprog \to \absstate $  can also be computed using $INIT(c, l_0, \absinit(\rprog))$ algorithm in \cite{GulwaniJK09}. 
+% % $INIT(c, l_0, \absinit(\rprog))$ computes the equivalent results.
+% \\
+% The \emph{Final Refined Abstract State} $rFinal : \rprog \to \absstate $.
+% % \[
+% %   rFinal(\rprog) \triangleq 
+% %   \bigwedge_{x \in VAR(\rprog)}
+% %   \left\{ 
+% %     \varinvar(x)
+% %   \right\} \land \neg Invariant(\rprog)
+% %   \]
+% \\
+% The \emph{Variable Grade Decedent}: $varGD : \rprog \to \mathcal{A}_{in}$, is the set of the variables' variation in one iteration;
+% \\
+% Given a refined program $\rprog$, its path-sensitive local reachability bound is computed as follows,
+% \\
+% $rLB(\rpchoose\{\rprog_i\}) =  \max\{rLB(\rprog_i)\}$
+% \\
+% $rLB(\rprepeat\{\rprog\}) =  \frac{rInit(\rprog) - rFinal(\rprog)}{varGD(\rprog)}$
+% \\
+% $rLB(\rprepeat\{\rprog\})$ can also be computed using the algorithm 
+% $\kw{BOUNDFINDERD(INITD(c, l_0, \absinit(\rprog)), NEXTD(c, l_0, \absinit(\rprog), V_{\lin} )}$ 
+% in paper~\cite{GulwaniJK09} with equivalent results.
+% \\
+% $rLB(\rpseq(\rprog_1, \rprog_2)) =  rLB(\rprog_1)+ rLB( \rprog_2)$
+% \\
+% $rLB(\tpath) =  1$.
+% \\
 % \begin{itemize}
 % \item For a refined program $\rprog$, its initial refined abstract $rInit(\rprog) \in \mathcal{P}(\absstate)$ is computed as follows,
 % \[
@@ -176,25 +204,27 @@ For the refined program $\rprog \in \mathcal{RP}$, the \emph{Inside-Out Algorith
 computes the path-sensitive global bound for every transition path in this program $\rprog$ through following steps.
 
 \begin{enumerate}
-  \item \emph{Local Repeat Chain Bound}.
+  \item \textbf{Local Repeat Chain Bound}.
   \\
   For every transition path $\tpath$, its \emph{Local Repeat Chain Bound} is the 
   path sensitive local bound for it, inside its closet while loop.
   % It is computed 
   It is computed in two steps as follows.
-\\
-\textbf{1) Repeat Chain Set} It first collects the \emph{Repeat Chain Set}
-for each transition path  $rp\mathcal{C}(LOOP, \tpath) \in \mathcal{P}(\mathcal{P}(\rprog))$.
-\\
-\textbf{2) Local Repeat Chain Bound}  Then for each transition path $\tpath$,
-it computes
-% and a transition path $\tpath \in \rprog$ in a refined program $\rprog$,
-the  \emph{Local Repeat Chain Bound} $rpLB(LOOP, \tpath)$ as a symbolic expression in $\mathcal{A}_{\lin}$, w.r.t.
-its closest enclosed loop $LOOP \in \rprog$.
-\[rpLB(LOOP, \tpath) = \max \left\{ \prod\limits_{\rprog_i \in ch}  rLB(\rprog_i) 
-  ~\middle\vert~ ch \in rp\mathcal{C}(LOOP_l, \tpath) \right\}
-  \]
+  \begin{enumerate}
+    \item 
+    \textbf{Repeat Chain Set} It first collects the \emph{Repeat Chain Set}
+    for each transition path  $rp\mathcal{C}(LOOP, \tpath) \in \mathcal{P}(\mathcal{P}(\rprog))$.
+    \item
+    \textbf{Local Repeat Chain Bound}  Then for each transition path $\tpath$,
+    it computes
+    % and a transition path $\tpath \in \rprog$ in a refined program $\rprog$,
+    the  \emph{Local Repeat Chain Bound} $rpLB(LOOP, \tpath)$ as a symbolic expression in $\mathcal{A}_{\lin}$, w.r.t.
+    its closest enclosed loop $LOOP \in \rprog$.
+    \[rpLB(LOOP, \tpath) = \max \left\{ \prod\limits_{\rprog_i \in ch}  rLB(\rprog_i) 
+      ~\middle\vert~ ch \in rp\mathcal{C}(LOOP_l, \tpath) \right\}
+      \]
 %
+\end{enumerate}
 The computation details are in the appendix.
 %   \begin{enumerate}
 % \item \emph{Repeat Chain Set}
@@ -272,22 +302,22 @@ The computation details are in the appendix.
 % % For $chain \in rpchain(\tpath)$:
 % where $lpchains(\tpath)$ is set of $lpchains(\tpath)$ containing all the loop chains of $\tpath$.
 %
-\item \emph{Nested Loop Bound}.
-\\
+\item \textbf{Nested Loop Bound}
 For every transition path $\tpath \in \rprog$, 
 its \emph{Nested Loop Bound} $lpLB(LOOP_i, \tpath) \in \mathcal{A}_{\lin}$ is the global path-sensitive bound within each while loop $LOOp_i$ it is nested in.
 % {Collect Loop Chains for Nested Loop}
 It is computed in two steps as follows.
-\\
-\textbf{1) Loop Chain Set} It first collects the \emph{Loop Chain Set}
-for each transition path ($lp\mathcal{C}(\tpath) \in \mathcal{P}(\mathcal{P}(\rprog))$).
-\\
-\textbf{2) Nested Loop Bound}  Then for each transition path $\tpath$,
-it computes
-% and a transition path $\tpath \in \rprog$ in a refined program $\rprog$,
-the \emph{Nested Loop Bound} $lpLB(LOOP_i, \tpath)$ as a symbolic expression in $\mathcal{A}_{\lin}$, w.r.t.
-its $LOOP_i \in \rprog$  in its Loop Chain.
-\\
+\begin{enumerate}
+  \item 
+  \textbf{Loop Chain Set} It first collects the \emph{Loop Chain Set}
+  for each transition path ($lp\mathcal{C}(\tpath) \in \mathcal{P}(\mathcal{P}(\rprog))$).
+  \item
+  \textbf{ Nested Loop Bound}  Then for each transition path $\tpath$,
+  it computes
+  % and a transition path $\tpath \in \rprog$ in a refined program $\rprog$,
+  the \emph{Nested Loop Bound} $lpLB(LOOP_i, \tpath)$ as a symbolic expression in $\mathcal{A}_{\lin}$, w.r.t.
+  its $LOOP_i \in \rprog$  in its Loop Chain.
+\end{enumerate}
 The computation details are in the appendix.
 % This expression is the path-sensitive
 % reachability estimation for the number of $LOOP_i$'s execution iterations
@@ -417,7 +447,7 @@ The computation details are in the appendix.
 % \frac{chsInit(\rprog_i, \tpath) - chsFinal(\rprog_i, \tpath)}{varGD(\rprog_i, \tpath)}$
 % \\
 % \end{enumerate}
-\item \emph{Global Loop Bound}.
+\item \textbf{Global Loop Bound}.
 \\
 For every transition path $\tpath \in \rprog$, its \emph{Global Loop Bound} $tRB(\tpath) \in \mathcal{A}_{in}$ is 
 % Compute 
