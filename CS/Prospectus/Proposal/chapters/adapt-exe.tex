@@ -1,34 +1,43 @@
 According to the second challenge introduced in Section~\ref{sec:adapt-challenge},
 i.e., formalizing the intuitive \emph{adaptivity} quantity,
-and the limitation in previous \emph{adaptivity} formalization analysis in Section~\ref{sec:prework-formalization},
-I develop a new execution-based program analysis in formalizing this intuitive \emph{adaptivity} quantity
-precisely and efficiently.
+and the limitation in previous \emph{adaptivity} formalization in Section~\ref{sec:prework-formalization},
+% I develop a new execution-based program analysis in formalizing this intuitive \emph{adaptivity} quantity
+% precisely and efficiently.
+I develop a more precise
+%  execution-based program analysis in formalizing 
+definition for this intuitive \emph{adaptivity} quantity.
+% precisely.
 %
-
-In summary, this new execution-based program analysis has three steps as follows,
+%
+In summary, this new
+%  execution-based program analysis has 
+definition is defined through three steps as follows,
 \begin{enumerate}
-\item The first step on \emph{dependency relation} analysis is presented in Section~\ref{sec:dynamic-datadep}.
-In this step, I define the variable \emph{may-dependency} relation based on the trace semantics in Section~\ref{sec:language-os}.
-\item In the second step in Section~\ref{sec:dynamic-reachability}, I analyze the \emph{dependency quantity} through the methodology of execution-based reachability bound analysis.
+\item The first step in Section~\ref{sec:dynamic-datadep} defines \emph{dependency relation} used for formalizing adaptivity in step three.
+In this step, I define the variable \emph{may-dependency} relation based on the trace semantics from Section~\ref{sec:language-os}.
+\item In the second step in Section~\ref{sec:dynamic-reachability}, I compute the \emph{dependency quantity} through 
+trace semantics also.
+% the methodology of execution-based reachability bound analysis.
 %  As 
 % %  analysis, 
 % based on the \emph{dependency relation} above.
 % This analysis is developed through the methodology of execution-based reachability bound analysis.
 % \\
-\item The last step is the intuitive \emph{adaptivity} quantity analysis presented in Section~\ref{sec:dynamic-adapt}.
-According to the two analysis results above, specifically \emph{dependency relation} and \emph{dependency quantity},
-I define the formal \emph{adaptivity} model in definition~\ref{def:trace_adapt} through 
+\item The last step in Section~\ref{sec:dynamic-adapt} gives the formal definition for the intuitive \emph{adaptivity} quantity. 
+%   is the intuitive \emph{adaptivity} quantity definition presented .
+According to the two definitions above, specifically \emph{dependency relation} and \emph{dependency quantity},
+I define the formal \emph{adaptivity} in definition~\ref{def:trace_adapt} through 
 constructing a dependency graph.
 \end{enumerate}
 
-\subsubsection{Data Dependency Analysis}
+\subsubsection{Data Dependency Definition}
 \label{sec:dynamic-datadep}
 \input{chapters/exe-dep}
 
-\subsubsection{Data Dependency Quantity Analysis}
+\subsubsection{Data Dependency Quantity Definition}
 \label{sec:dynamic-reachability}
 \input{chapters/exe-depquantity}%
-\subsubsection{Adaptivity Formalization}
+\subsubsection{Adaptivity Definition}
 \label{sec:dynamic-adapt}
 \input{chapters/exe-adapt}%
 %

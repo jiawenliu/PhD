@@ -13,8 +13,10 @@
 \begin{document}
 
 \title{{\em Dissertation Prospectus}
-\\ {Program Quantitative Property Analysis}
+\\
+% \\ {Program Execution Property Analysis with Application in Quantitative Property Analysis}
 % , 
+{Program Analysis for Quantitative Reachability Property}
 % \\ with Generalization on Program Quantitative Property Analysis
 }
 
@@ -28,7 +30,7 @@
 \tableofcontents{}
 
 \clearpage
-\section{Introduction}
+\section{Introduction \todo{85\%==>refine}}
 \label{sec:introduction}
 \input{chapters/introduction}
 % \clearpage
@@ -48,7 +50,7 @@
 \label{sec:prework-language}
 \input{chapters/prework-language}
 %
-\subsection{The Adaptivity Formalization}
+\subsection{The Adaptivity Definition}
 \label{sec:prework-formalization}
 \input{chapters/prework-formalization}
 %
@@ -67,18 +69,38 @@
 \input{chapters/adapt-language}
 
 
-\subsection{The New Execution-Based Program Analysis for Adaptivity}
+\subsection{The New Adaptivity Definition}
 \label{sec:adapt-exe}
 \input{chapters/adapt-exe}
 % \input{chapters/dynamic}
 
-\subsection{The New Automated and Accurate Static Program Analysis for Adaptivity}
+\subsection{The New Program Analysis for Adaptivity Estimation}
 \label{sec:adapt-static}
 \input{chapters/adapt-static}
 
 \subsection{New Program Analysis Framework through An Example}
 \label{sec:adapt-example}
 \input{examples/twoRounds}
+
+\subsection{Further Improvements \todo{keep or not}}
+\label{sec:adapt-further}
+% Based on the implementation and experimental results of the program analysis framework,
+%  on the $\THESYSTEM$,
+I plan to focus on the following two further improvements.
+%  in my full-spectrum analysis.
+\begin{enumerate}
+    % \item In the adaptive data analysis formalization, I plan to extend the {\tt Query While} Language with inter-procedure call.
+    \item In the execution-based \emph{adaptivity},
+    I plan to improve the precision of the \emph{adaptivity} formalization w.r.t. the program's intuitive adaptivity rounds.
+%  in the formal  model 
+% and extend this analysis with inter-procedure call.
+\item In static \emph{adaptivity} analysis, I plan to give a tighter estimated upper bound on \emph{adaptivity}.
+%  give a tighter estimated upper bound 
+Specifically, I will focus on improving the accuracy of the static \emph{dependency quantity} analysis in the second step through 
+developing a new path sensitive reachability bound analysis technique in PART II. 
+% \item In the third step of static program analysis, I will improve the accuracy of the adaptivity computation algorithm,
+% compute a tighter adaptivity upper bound as well.
+\end{enumerate}
 
 \section*{\redd{PART II \quad  Path-Sensitive Reachability-Bound Analysis (In Preparation)}}
 \addcontentsline{toc}{section}{\protect\numberline{}
@@ -92,7 +114,7 @@
 \label{sec:reachability-analysis}
 
 \subsection{{Language Model}\todo{99\%}}
-\label{sec:language}
+\label{sec:reachability-language}
 \input{chapters/reachability-language}
 % %
 % %
@@ -113,7 +135,7 @@
 \addcontentsline{toc}{section}
 {\protect\numberline{}\redd{PART III \quad  Program Non-Monotonic Quantitative Property Analysis}(In Preparation)}%
 
-\section{Towards Accurate Program Non-Monotonic Quantitative Property Analysis \todo{70\% ==> More detail}}
+\section{Towards Program Non-Monotonic Quantitative Property Analysis \todo{92\% ==> Intro Refine}}
 \label{sec:generalization}
 \input{chapters/generalization}
 % \clearpage

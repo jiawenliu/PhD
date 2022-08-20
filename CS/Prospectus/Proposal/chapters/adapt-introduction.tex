@@ -190,7 +190,7 @@ This is because I'm focusing on the generalization error which could be propagat
 % and not their post-processing. % 
 
 To formalize this intuitive \emph{adaptivity} as a quantitative program property, 
-I propose an execution-based analysis in Section~\ref{sec:adapt-exe}.
+I present an adaptivity definition in Section~\ref{sec:adapt-exe} based on the language and semantics.
 % \textbf{Methodology}
 % % I first consider all the possible evaluations of a program --- I do this by 
 % % I use a trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
@@ -261,7 +261,7 @@ In summary, this new program analysis framework is
 developed w.r.t. the three challenges accordingly,
 through the three parts:
 the language formalization,
-the execution-based analysis and the static-based program analysis.
+the formal adaptivity definition and the static program analysis algorithm estimating adaptivity.
 
 
 \subsection{Outline}
@@ -273,9 +273,9 @@ The rest parts of this section is organized as follows.
    in Section~\ref{sec:adapt-analysis}.
    This new program analysis framework has three major components:
    \begin{enumerate}
-      \item A while-like language extended with query request feature, named {\tt Query While} Language, 
-      used to implement the adaptive data analysis in Section~\ref{sec:adapt-language};
-      \item A formal adaptivity model through execution-based adaptivity analysis in Section~\ref{sec:adapt-exe};
+      \item A while-like language extended with query request feature, named {\tt Query While} Language  in Section~\ref{sec:adapt-language}, 
+      used to implement the adaptive data analysis;
+      \item A formal adaptivity definition in Section~\ref{sec:adapt-exe};
       \item A static program analysis algorithm, named {\THESYSTEM} through static adaptivity analysis in Section~\ref{sec:adapt-static}.
    \end{enumerate}
 \end{enumerate}
