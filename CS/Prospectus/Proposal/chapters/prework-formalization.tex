@@ -5,8 +5,8 @@ by the weaknesses of this formalization method.
 They build their dependency graph over annotated queries, in order to construct the edge between queries for this graph, they first
 define a query \emph{May-Dependency} relation. Below is a summary of this definition from
 % Below is the formal definition of query may dependency based on their trace-based operational semantics 
-from \todo{Thesis}.
-The notations $\in_q$ and $\not\in_q$ a query belongs to the trace or not respectively, with the full details in \todo{Thesis}.
+from Thesis~\cite{weihao22}.
+The notations $\in_q$ and $\not\in_q$ a query belongs to the trace or not respectively, with the full details in Thesis~\cite{weihao22}.
 \begin{defn}[Query may dependency]
 One query $q({v_q}_1)$ may depend on another query $q({v_q}_2)$ in a program $c$, with a starting loop maps $w$, a starting memory $m$, hidden database $D$, denoted as \\
 $\mathsf{DEP}(q({v_q}_1)^{(l_1, w_1)}, q({v_q}_2)^{(l_2, w_2)}, c,w, m, D)$ is defined below. 
@@ -57,7 +57,7 @@ The previous trace before the execution of $c$ is excluded when constructing the
 % they can construct a corresponding dependency graph. 
 
 \subsection*{Adaptivity Formalization}
-Below is the definition of adaptivity from \todo{Thesis}, by means of the query-based dependency graph. 
+Below is the definition of adaptivity from Thesis~\cite{weihao22}, by means of the query-based dependency graph. 
 \begin{defn}[Adaptivity in {loop} language]
 Given a program $c$, and a memory $m$, a database $D$, a starting loop map $w$, the adaptivity of the dependency graph $G(c, D,m,w) = (V, E)$ is the length of the longest path in this graph. We denote the path from $q({v_q})^{(l,w)}$ to $q({v_q}')^{(l',w')}$ as $p(q({v_q})^{(l,w)}, q({v_q}')^{(l',w')} )$. The adaptivity denoted as $A(c, D, m, w)$.
 %

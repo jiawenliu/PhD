@@ -30,7 +30,7 @@
 \tableofcontents{}
 
 \clearpage
-\section{Introduction \todo{85\%==>refine}}
+\section{Introduction}
 \label{sec:introduction}
 \input{chapters/introduction}
 % \clearpage
@@ -39,11 +39,12 @@
 \addcontentsline{toc}{section}{\protect\numberline{}
 \redd{PART I \quad  Program Analysis Framework for Adaptive Data Analysis (In Improvement)}}%
 \input{chapters/adapt-preface}
-\section{Introduction \todo{90\%==>simplify+typos}}
+\section{Introduction}
 \label{sec:adapt-intro}
 \input{chapters/adapt-introduction}
 
-\section{Previous Works on Adaptivity Analysis \todo{99\%==>typos}}
+\section{Previous Works on Adaptivity Analysis}
+%  \todo{99\%==>typos}}
 \label{sec:prework}
 \input{chapters/prework-preface}
 \subsection{The Language Design}
@@ -58,7 +59,8 @@
 \label{sec:prework-static}
 \input{chapters/prework-static}
 
-\section{New Program Analysis Framework for Adaptivity Analysis \todo{99\%==>typos}}
+\section{New Program Analysis Framework for Adaptivity Analysis}
+% \todo{99\%==>typos}
 \label{sec:adapt-analysis}
 % \input{chapters/furthers}
 
@@ -82,19 +84,24 @@
 \label{sec:adapt-example}
 \input{examples/twoRounds}
 
-\subsection{Further Improvements \todo{keep or not}}
+\subsection{Limitation and Further Improvements}
 \label{sec:adapt-further}
 % Based on the implementation and experimental results of the program analysis framework,
 %  on the $\THESYSTEM$,
-I plan to focus on the following two further improvements.
+There are still some limitations in this new program analysis framework on adaptivity.
+I plan to focus on the following two improvements.
 %  in my full-spectrum analysis.
 \begin{enumerate}
     % \item In the adaptive data analysis formalization, I plan to extend the {\tt Query While} Language with inter-procedure call.
-    \item In the execution-based \emph{adaptivity},
+    \item The \emph{adaptivity} definition in Definition~\ref{def:trace_adapt} is still not precise enough to catch the intuitive
+    in some cases.
+    % In the execution-based \emph{adaptivity},
     I plan to improve the precision of the \emph{adaptivity} formalization w.r.t. the program's intuitive adaptivity rounds.
 %  in the formal  model 
 % and extend this analysis with inter-procedure call.
-\item In static \emph{adaptivity} analysis, I plan to give a tighter estimated upper bound on \emph{adaptivity}.
+\item In static \emph{adaptivity} analysis, the estimated adaptivity from {\THESYSTEM} is imprecise for the programs with
+multiple-path loops.
+I plan to give a tighter estimated upper bound on \emph{adaptivity}.
 %  give a tighter estimated upper bound 
 Specifically, I will focus on improving the accuracy of the static \emph{dependency quantity} analysis in the second step through 
 developing a new path sensitive reachability bound analysis technique in PART II. 
@@ -106,28 +113,33 @@ developing a new path sensitive reachability bound analysis technique in PART II
 \addcontentsline{toc}{section}{\protect\numberline{}
 \redd{PART II \quad  Path-Sensitive Reachability-Bound Analysis (In Preparation)}}%
 
-\section{Introduction\todo{95\% ==> Refine and typos}}
+\section{Introduction}
+%\todo{95\% ==> Refine and typos}
 \label{sec:reachability-intro}
 \input{chapters/reachability-intro}
 
 \section{Methodology}
 \label{sec:reachability-analysis}
 
-\subsection{{Language Model}\todo{99\%}}
+\subsection{{Language Model}}
+%\todo{99\%}
 \label{sec:reachability-language}
 \input{chapters/reachability-language}
 % %
 % %
-\subsection{{Execution-Based Reachability-Bound}\todo{98\% ==> typos}}
+\subsection{{Execution-Based Reachability-Bound}}
+%\todo{98\% ==> typos}
 \label{sec:reachability-exe}
 \input{chapters/reachability-exe}
 % % 
 % % % % 
-\subsection{{Static Reachability-Bound Analysis}\todo{98\% ==> typos}}
+\subsection{{Static Reachability-Bound Analysis}}
+%\todo{98\% ==> typos}
 \label{sec:reachability-static}
 \input{chapters/reachability-static}
 
-\subsection{The Path-Sensitive Reachability-Bound Analysis through An Example\todo{98\% ==> typos}}
+\subsection{The Path-Sensitive Reachability-Bound Analysis through An Example}
+%\todo{98\% ==> typos}
 \label{sec:reachability-example}
 \input{examples/whileOdd}
 
@@ -135,7 +147,8 @@ developing a new path sensitive reachability bound analysis technique in PART II
 \addcontentsline{toc}{section}
 {\protect\numberline{}\redd{PART III \quad  Program Non-Monotonic Quantitative Property Analysis}(In Preparation)}%
 
-\section{Towards Program Non-Monotonic Quantitative Property Analysis \todo{92\% ==> Intro Refine}}
+\section{Towards Program Non-Monotonic Quantitative Property Analysis }
+%\todo{92\% ==> Intro Refine}
 \label{sec:generalization}
 \input{chapters/generalization}
 % \clearpage
@@ -145,7 +158,8 @@ developing a new path sensitive reachability bound analysis technique in PART II
 % \input{chapters/cfl_reduction}
 % \clearpage
 
-\section{Status and Plan \todo{100\%}}
+\section{Status and Plan}
+% \todo{100\%}
 \label{sec:status-plan}
 \input{chapters/status-and-plan}
 

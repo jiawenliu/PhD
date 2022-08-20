@@ -18,9 +18,20 @@
  % Gap
  % Unfortunately, this depth which relies on the program(implementation) itself is costly in human efforts, and how to statically obtain this information is not well studied to support data analysts.
 % \todo{Intro The Program Analysis On non-functional Property}
-
-Many program properties can be 
-studied by exploiting the quantitative reachability
+Some program property can be expressed in form of reachability,
+such as
+whether the output relies on user input, whether the secrete data is leaked in security area, 
+or whether some pieces of code are executed, etc.
+Reachability can tell us the existence of these properties.
+%  such as whether the output relies on user input.
+% for example whether the secrete data is leaked in security area.
+However, it cannot tell us how many times or how long these properties hold for programs.
+For example, it can not tell us how many data is leaked, which is also crucial in security. This requires extra analysis
+on the program's quantitative property. 
+To this end, I'm interested in studying the program's quantitative reachability in this proposal. 
+By exploiting the quantitative reachability,
+many program properties can be 
+studied based on it
 % expressed
 % in a 
 % through quantitative reachability
