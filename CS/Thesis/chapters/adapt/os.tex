@@ -468,10 +468,18 @@ iteration the query is at when it appears in a loop statement, specified by $w$.
    and the variable values is recovered from it through $\env$ operator,
   only the trace and program is necessary during the evaluation.
  }
+
  The complete operational semantic evaluation rules are presented in Figure~\ref{fig:os},
  with the evaluation rules for expressions in Figure~\ref{fig:expr_eval}.
 
- The rule $\textbf{assn}$ evaluates a standard assignment $\assign{x}{\expr}$, the expression $\expr$ is first evaluated by our expression evaluation $\config{\trace, \expr} \earrow v $, presented below. And the result $v$ of evaluating $\expr$ is used to construct a new event $\event = (x, l, v,\bullet)$ and attach to the previous trace.  
+The rule $\textbf{assn}$ evaluates a standard assignment $\assign{x}{\expr}$, the expression $\expr$ is first evaluated by our expression evaluation $\config{\trace, \expr} \earrow v $, presented below.
+% And the result $v$ of evaluating $\expr$ is used to construct a new event $\event = (x, l, v,\bullet)$ and attach to the previous trace. 
+\highlight{Different from previous in this rule, the result $v$ of evaluating $\expr$ is used to construct a new event $\event = (x, l, v,\bullet)$
+and attach it to the previous trace. }
+The expression evaluation rules rely on the evaluation of 
+arithmetic expressions $\config{\trace,\aexpr} \aarrow v $ 
+and boolean expressions $\config{\trace, \bexpr} \barrow v $ in Figure~\ref{fig:expr_eval}.
+% \begin{mathpar} 
 \begin{figure}
 \begin{mathpar}
 \boxed{ \config{\trace,\aexpr} \aarrow v \, : \, \mbox{Trace  $\times$ Arithmetic Expr $\Rightarrow$ Arithmetic Value} }
@@ -634,12 +642,9 @@ iteration the query is at when it appears in a loop statement, specified by $w$.
  \caption{Trace-based Operational Semantics Evaluation Rules for Expression.}
  \label{fig:expr_eval}
 \end{figure}
-
-The expression evaluation rules rely on the evaluation of 
-arithmetic expressions $\config{\trace,\aexpr} \aarrow v $ 
-and boolean expressions $\config{\trace, \bexpr} \barrow v $.
-
- The step trace-based operational semantics has the form of $ \config{c, \trace} \xrightarrow{} { \config{c', \trace'}}$. 
+%
+%
+The step trace-based operational semantics has the form of $ \config{c, \trace} \xrightarrow{} { \config{c', \trace'}}$. 
 It reads the configuration $\config{c, \trace}$ consisting of a labeled command $c$ and a pre-trace $\trace$, 
 and evaluates it to another configuration, 
 in which $c$ is evaluated to $c'$ and trace $\trace$ is updated to $\trace'$. 
@@ -855,12 +860,8 @@ Also, the generated event stores both the query value $\alpha$ here, and the res
 The rules for if and while both have two versions, 
 when the boolean expressions in the guards are evaluated to true and false, respectively. 
 In these rules, the evaluation of the guard generates a testing event and the trace is updated as well by appending this event.
-
-
 % \todo{Make sure the operational semantics is big step, and correct assn rules.}
 % \jl{
-
-
   \highlight{\paragraph*{Improvements}
 Comparing to previous works,
 this language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.

@@ -32,7 +32,7 @@
     {\small
         \[
         \begin{array}{l}
-            \kw{linearRegressionGD(k, rate)} \triangleq \\
+            \kw{linearRegressGD(k, r)} \triangleq \\
                    \clabel{ a \leftarrow 0}^{0} ; 
                    \clabel{ c \leftarrow 0}^{1} ; 
                     \clabel{\assign{j}{\kw{k}} }^{2} ; \\
@@ -41,8 +41,8 @@
                     \Big(
                         \clabel{\assign{da}{\query(-2 * (\chi[1] - (\chi[0]\times a + c)) \times (\chi[0]))} }^{4}  ; \\
                         \clabel{\assign{dc}{\query(-2 * (\chi[1] - (\chi[0]\times a + c)))} }^{5}  ; \\
-                        \clabel{\assign{a}{a - \kw{rate} * da} }^{6}  ; 
-                        \clabel{\assign{c}{c - \kw{rate} * dc} }^{7}  ; \\
+                        \clabel{\assign{a}{a - \kw{r} * da} }^{6}  ; 
+                        \clabel{\assign{c}{c - \kw{r} * dc} }^{7}  ; \\
                      \clabel{\assign{j}{j-1}}^{8} 
                   %   \clabel{a \leftarrow x :: a}^{6} 
                     \Big);
@@ -164,7 +164,7 @@
     \label{fig:linear_regression}
 \end{figure}
 %
-Analysis Result: $ \progA(\kw{linearRegressionGD(k, rate)}) = k$
+Analysis Result: $ \progA(\kw{linearRegressGD(k, r)}) = k$
 \end{example} 
 %
  

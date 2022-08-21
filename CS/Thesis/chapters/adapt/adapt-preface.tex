@@ -20,18 +20,20 @@ I'm interested in analyzing the depth of the chain of queries in a program, i.e.
 There are some works on analyzing this \emph{adaptivity} property based on an analysis of the dependency graph between different queries.
 But their works are limited in many aspects.
 In the next few chapters,
-I present a new automated program analysis framework that can better help data analysts
+I propose a new automated program analysis framework that can better help data analysts
 design adaptive data analyses controlling their generalization errors than previous works.
 
-The new analysis framework consider adaptive data analyses implemented as while-like programs.
+
+The new analysis framework considers adaptive data analyses implemented as while-like programs.
 %  and we design a program analysis which can help with identifying which technique to use to control their generalization error. 
 It formalizes the intuitive notion of \emph{adaptivity} as a
-more precise quantitative property of programs than previous works, via a new
-execution-based analysis.
+more precise quantitative property of programs than previous works based on the program's semantics.
+% via a new
+% execution-based analysis.
 We do this because the adaptivity level of a data analysis is a key measure to choose the right technique. 
-Based on this formalization, I design a new static analysis for soundly approximating this quantity automatically.
-The static analysis generates a weighted dependency graph as the representation of the data analysis program,
-where the weight is an upper bound on the number of times each variable can be reached.
+Based on this definition, I design a new program analysis framework for soundly approximating this quantity automatically.
+This analysis framework generates a weighted dependency graph as the representation of the data analysis program,
+where the weight is an upper bound on the number of times each variable can be reached during the program execution.
 Then it uses a path search strategy to guarantee an upper bound on the adaptivity. 
 We implement our program analysis and show that it can help to analyze the adaptivity of several
 concrete data analyses with different adaptivity structures, automatically and accurately.

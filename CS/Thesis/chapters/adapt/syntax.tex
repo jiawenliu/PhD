@@ -222,7 +222,26 @@ For clarity, the following notations are used to represent the set of correspond
 % &&\text{\mg{I don't think you need to hard code [-1,1] here}}\\
 \end{array}
 \]
-\paragraph*{Standard Expression}
+\highlight{
+ This {\tt Query While} language enriches previous language design with standard while loop and user inputs.
+ It is more expressive than the language designed in previous works.
+The previous language only supports the data analysis with the constant number of loop iterations.
+Compared to it, in the new language design,
+the general data analysis program with non-deterministic loop iterations
+(for example the program below as shown in Section~\ref{sec:prework-language})
+is supported.
+\[
+ {\assign{x}{20}};
+ \assign{y}{40};
+ \ewhile (x < y) \edo 
+ \{
+ \assign{x}{x + 1};
+ \assign{y}{y - 2};
+ \}\}
+ \] 
+Previous work does not support a data analysis program with user inputs, which is supported in the new language as well.
+}
+\paragraph{Standard Expression}
 The expressions are either the standard one or the extended one.
 A standard expression is
 % can be 
@@ -238,7 +257,7 @@ $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$
 Query expressions combine access to the database with other expressions, 
 for example, $\chi[3] + 5$ represents a query which asks the value from the column 3 of each database raw $\chi$, adds 5 to each of these values, 
 and then computes the average of these values.
-\paragraph*{Query Expression}
+\paragraph{Query Expression}
 The key extension is
 %  language supports 
 the primitive for queries, where a specific query is specified by a query expression $\qexpr$. 
@@ -268,7 +287,7 @@ data base $\chi$'s number of raw.
 % We only support the first-order function definition and function call. 
 
 % %
-\paragraph*{Labeled Command}
+\paragraph{Labeled Command}
  A labeled command $c$ is just a command with a label --- I assume that labels are unique, so that they can help to identify uniquely every subexpression. 
 %  I have $\eskip$, assignment $\assign{x}{\expr}$, the composition of two commands $c;c$, an if statement $\eif(\bexpr, c, c)$, a while statement  $\ewhile \bexpr \edo {c} $.
  The main novelty of the syntax is the query request command $\assign{x}{\query(\qexpr)}$. 
@@ -291,7 +310,7 @@ data base $\chi$'s number of raw.
 % ~|~ [\eskip]^l 
 % \end{array}
 % \]
-\paragraph*{Labeled Variables}
+\paragraph{Labeled Variables}
 The labeled variables and assigned variables are set of variables annotated by a label. 
 We use  
 %$\mathcal{LVAR} = \mathcal{VAR} \times \mathcal{L} $ 
@@ -375,7 +394,7 @@ $$
 % is a subset of the program's assigned variables, where every variable in this set is assigned by a query in the program.
 % \mg{The set of query variables of a program is the set of variables set to the result of a query in the program.}\\
 % In the same way, in order to 
-\paragraph*{Query Variables}
+\paragraph{Query Variables}
 Distinctively, a key definition for the extension of the query primitives 
 is the set of query variables for a program $c$.
 This definition is the key point to track the query requests in the Following full-spectrum adaptivity analysis.
@@ -450,7 +469,7 @@ Every labeled variable in a program is unique, formally as follows with proof in
     \]
 \end{lem}
 
-\highlight{\paragraph*{Improvements through Examples}
+\highlight{\paragraph{Improvements through Examples}
 It is expressive in two following aspects.
 \begin{itemize}
   \item \textbf{Improvements from Standard While Language}
