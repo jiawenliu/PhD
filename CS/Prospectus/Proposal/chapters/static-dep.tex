@@ -1,81 +1,81 @@
 \highlight{Improved from previous analysis,
 this new analysis algorithm combines the reaching definition analysis into the standard data flow analysis.
 It designs an improved version of data flow analysis named feasible 
-data-flow, estimating a tighter bound on the data dependency relation. 
+data flow, estimating a tighter bound on the data dependency relation. 
 }
 \paragraph{Standard Reaching Definition Analysis}
-This analysis first perform the standard reaching definition algorithm and compute the result as $\live(l, c)$ for every label $l$ in a program $c$.
-The $\live(l, c)$ represent the analysis result, which is the set of 
+This analysis first performs the standard reaching definition algorithm and computes the result as $\live(l, c)$ for every label $l$ in a program $c$.
+The $\live(l, c)$ represents the analysis result, which is the set of 
 reachable labeled variables in program $c$ at the location of label $l$.
-For every labelled variable $x^l$ in this set, 
+For every labeled variable $x^l$ in this set, 
 the value assigned to that variable
-in the assignment command associated to that label is reachable at the entry point of  executing the command of label $l$.
+in the assignment command associated with that label is reachable at the entry point of executing the command of label $l$.
 
 \paragraph{Feasible Data-Flow Analysis}
-Then this analysis perform the feasible data-flow analysis by using both control and data flow in the following $\flowsto$ relation.
+Then this analysis performs the feasible data-flow analysis by using both control and data flow in the following $\flowsto$ relation.
 % which uses the results of reaching definition analysis, as $\live(l, c)$ for every label $l$ in a program $c$. 
 % $\mathsf{FV}$ computes the set of free variables in an expression. 
 % $\mathsf{blk}$ returns a list of labeled computation blocks of a labeled command $c$.
 %
-%   \[
-%  \begin{array}{ll}
-%     dcdg([x := e]^{l})  & = \{ (y^i, x^l) | y \in VAR(e) \land (y,i) \in \live_{in}(l) \}  \\
-%      dcdg([x := q(e)]^{l})  & = \{ (y^i, x^l) | y \in VAR(e) \land (y,i) \in \live_{in}(l) \}  \\
-%      dcdg([skip]^{l})  & = \emptyset \\
-%      dcdg([if [b]^l then C_1 else C_2)  & =  dcdg(c_1) \cup dcdg(c_2)\\ & \cup \{(x^i,y^j) | x \in VAR(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(c_1) \} \\
-%      &\cup \{(x^i,y^j) | x \in VAR(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(c_2) \} \\
-%      dcdg([while [b]^l do c)  & =  dcdg(c) \cup \{(x^i,y^j) | x \in VAR(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(C) \} \\
-%      dcdg(c_1 ;c_2)  & = dcdg(c_1) \cup  dcdg(c_2) \\
-%  \end{array}
-%  \]
+% \[
+% \begin{array}{ll}
+% dcdg([x := e]^{l}) & = \{ (y^i, x^l) | y \in VAR(e) \land (y,i) \in \live_{in}(l) \} \\
+% dcdg([x := q(e)]^{l}) & = \{ (y^i, x^l) | y \in VAR(e) \land (y,i) \in \live_{in}(l) \} \\
+% dcdg([skip]^{l}) & = \emptyset \\
+% dcdg([if [b]^l then C_1 else C_2) & = dcdg(c_1) \cup dcdg(c_2)\\ & \cup \{(x^i,y^j) | x \in VAR(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(c_1) \} \\
+% &\cup \{(x^i,y^j) | x \in VAR(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(c_2) \} \\
+% dcdg([while [b]^l do c) & = dcdg(c) \cup \{(x^i,y^j) | x \in VAR(b) \land (x,i) \in \live_{in}(l) \land ([y = \_]^j) \in blocks(C) \} \\
+% dcdg(c_1 ;c_2) & = dcdg(c_1) \cup dcdg(c_2) \\
+% \end{array}
+% \]
 %
 \begin{defn}[Feasible Data-Flow]
-  \label{def:feasible_flowsto}
-  Given a program $c$ and two labeled variables $x^i, y^j$  in this program, 
-  $\flowsto(x^i, y^j, c)$ is 
-    {\small
-    \[
-   \begin{array}{ll}
-    \flowsto(x^i, y^j, \clabel{\assign{y}{\expr}}{}^l)  
-    & \triangleq (x^i, y^j) \in \left\{ (x^i, y^l) | x \in \mathsf{FV}(\expr) 
-    % \land (y,i) \in \live(l, \clabel{\assign{x}{\expr}}^l) \}  \\
-    \land x^i \in \live(l, \clabel{\assign{y}{\expr}}^l) \right\}  \\
-    \flowsto(x^i, y^j, \clabel{\assign{y}{\query(\qexpr)}}{}^l)  
-    & \triangleq (x^i, y^j) \in \left\{ (x^i, y^l) | x \in \mathsf{FV}(\qexpr) 
-    % \land (y,i) \in \live(l,\clabel{\assign{x}{\query(\qexpr)}}^l) \}  \\
-    \land x^i \in \live(l,\clabel{\assign{y}{\query(\qexpr)}}^l) \right\}  \\
-    \flowsto(x^i, y^j, [\eskip]^{l})  & = \emptyset \\
-    \flowsto(x^i, y^j, \eif ([b]^l, c_1, c_2))  & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\ 
-        & \lor (x^i, y^j) \in
-        \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
-      %  (x,i) 
-      x^i \in \live(l, \eif ([b]^l, c_1, c_2)) \land  y^j \in \lvar(c_1) \right\} \\
-    %   ([y = \_]^j) \in \mathsf{blk}(c_1) \} \\
-       &\lor (x^i, y^j) \in \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
-      %  (x,i) 
-      x^i\in \live(l, \eif ([b]^l, c_1, c_2))  \land  y^j \in \lvar(c_2)  \right\} \\
-    %   \land ([y = \_]^j) \in \mathsf{blk}(c_2) \} \\
-       \flowsto(x^i, y^j, \ewhile [b]^l \edo c_w)  & \triangleq  \flowsto(x^i, y^j, c_w)  \lor
-       \\ & 
-       (x^i, y^j) \in  \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
-      %  (x,i) 
-      x^i \in \live(l,   \ewhile [b]^l \edo c_w) \land  y^j \in \lvar(c_w) \right\} \\
-    %   ([y = \_]^j) \in \mathsf{blk}(c_w) \} \\
-       \flowsto(x^i, y^j, c_1 ;c_2)  & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\
-   \end{array}
-   \]
-   }
-   \end{defn}
+ \label{def:feasible_flowsto}
+ Given a program $c$ and two labeled variables $x^i, y^j$ in this program, 
+ $\flowsto(x^i, y^j, c)$ is 
+ {\small
+ \[
+ \begin{array}{ll}
+ \flowsto(x^i, y^j, \clabel{\assign{y}{\expr}}{}^l) 
+ & \triangleq (x^i, y^j) \in \left\{ (x^i, y^l) | x \in \mathsf{FV}(\expr) 
+ % \land (y,i) \in \live(l, \clabel{\assign{x}{\expr}}^l) \} \\
+ \land x^i \in \live(l, \clabel{\assign{y}{\expr}}^l) \right\} \\
+ \flowsto(x^i, y^j, \clabel{\assign{y}{\query(\qexpr)}}{}^l) 
+ & \triangleq (x^i, y^j) \in \left\{ (x^i, y^l) | x \in \mathsf{FV}(\qexpr) 
+ % \land (y,i) \in \live(l,\clabel{\assign{x}{\query(\qexpr)}}^l) \} \\
+ \land x^i \in \live(l,\clabel{\assign{y}{\query(\qexpr)}}^l) \right\} \\
+ \flowsto(x^i, y^j, [\eskip]^{l}) & = \emptyset \\
+ \flowsto(x^i, y^j, \eif ([b]^l, c_1, c_2)) & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\ 
+ & \lor (x^i, y^j) \in
+ \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+ % (x,i) 
+ x^i \in \live(l, \eif ([b]^l, c_1, c_2)) \land y^j \in \lvar(c_1) \right\} \\
+ % ([y = \_]^j) \in \mathsf{blk}(c_1) \} \\
+ &\lor (x^i, y^j) \in \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+ % (x,i) 
+ x^i\in \live(l, \eif ([b]^l, c_1, c_2)) \land y^j \in \lvar(c_2) \right\} \\
+ % \land ([y = \_]^j) \in \mathsf{blk}(c_2) \} \\
+ \flowsto(x^i, y^j, \ewhile [b]^l \edo c_w) & \triangleq \flowsto(x^i, y^j, c_w) \lor
+ \\ & 
+ (x^i, y^j) \in \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+ % (x,i) 
+ x^i \in \live(l, \ewhile [b]^l \edo c_w) \land y^j \in \lvar(c_w) \right\} \\
+ % ([y = \_]^j) \in \mathsf{blk}(c_w) \} \\
+ \flowsto(x^i, y^j, c_1 ;c_2) & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\
+ \end{array}
+ \]
+ }
+ \end{defn}
 %
 This \emph{Feasible Data-Flow} relation is a sound approximation 
 of the \emph{variable may-Dependency} relation over labeled variables for every program.
-The soundness is proved in full paper.
+The soundness is proved in the full paper.
 % in the appendix.
 % ~\ref{apdx:flowsto_soundness}.
 % %
 % \paragraph*{Edge Estimation for Step 3}
 % Based on the \emph{Feasible Data-Flow} relation,
-% we  estimate a set of directed edges, which is 
+% we estimate a set of directed edges, which is 
 % used to construct the estimated program-based dependency graph for step 3.
 % % for each vertex in $\progV(c)$,
 % The set of directed edges between labeled variables is defined
@@ -85,36 +85,37 @@ The soundness is proved in full paper.
 % % is the set of pairs 
 % % The weight for each vertex in $\progV(c)$ is computed 
 % Each pair of vertices indicates a directed edge from the first vertex to the second one
-% %  in each pair
+% % in each pair
 % formally as follows.
 % {
-%   \[
-%     \begin{array}{ll}
-%     \progE(c) \triangleq &
-%     % \left
-%     \{ 
-%     (y^j, x^i) 
-%     % \in \mathcal{LV} \times \mathcal{LV}
-%     ~ \vert ~
-%     % \begin{array}{l}
-%       y^j, x^i \in \progV(c)
-%     \land
-%       % \\
-%       \exists n,
-%     %   \in \mathbb{N}, 
-%       z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \st 
-%     %   
-%     \\ 
-%     & \qquad \qquad
-%       n \geq 0 \land
-%     %   \\
-%       \flowsto(x^i,  z_1^{r_1}, c) 
-%       \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
-%     % \end{array}
-%     % \right
-%     \}
-%     \end{array}
-%     \]
+% \[
+% \begin{array}{ll}
+% \progE(c) \triangleq &
+% % \left
+% \{ 
+% (y^j, x^i) 
+% % \in \mathcal{LV} \times \mathcal{LV}
+% ~ \vert ~
+% % \begin{array}{l}
+% y^j, x^i \in \progV(c)
+% \land
+% % \\
+% \exists n,
+% % \in \mathbb{N}, 
+% z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \st 
+% % 
+% \\ 
+% & \qquad \qquad
+% n \geq 0 \land
+% % \\
+% \flowsto(x^i, z_1^{r_1}, c) 
+% \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
+% % \end{array}
+% % \right
+% \}
+% \end{array}
+% \]
 % }
 % This estimated directed edge set $\progE(c)$ is a sound approximation of the 
-% edge set in $c$'s execution-based dependency graph, which is proved in full paper.
+% edge set in $c$'s execution-based dependency graph, which is proved in the full paper.
+

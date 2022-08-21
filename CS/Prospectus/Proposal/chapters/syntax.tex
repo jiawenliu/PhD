@@ -65,23 +65,23 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 % values, query values, commands, databases, and the codomain of queries, respectively.
 % %
 \highlight{
-    This {\tt Query While} language enriches previous language design with standard while loop and user inputs.
-    It is more expressive than the language designed in previous works.
-The previous language only supports the data analysis with constant number of loop iterations.
-Comparing to it, in the new language design,
+ This {\tt Query While} language enriches previous language design with standard while loop and user inputs.
+ It is more expressive than the language designed in previous works.
+The previous language only supports the data analysis with the constant number of loop iterations.
+Compared to it, in the new language design,
 the general data analysis program with non-deterministic loop iterations
 (for example the program below as shown in Section~\ref{sec:prework-language})
 is supported.
 \[
-  {\assign{x}{20}};
-  \assign{y}{40};
-  \ewhile (x < y) \edo 
-  \{
-    \assign{x}{x + 1};
-    \assign{y}{y - 2};
-    \}\}
-  \] 
-Previous work does not support data analysis program with user inputs, which is supported in the new language as well.
+ {\assign{x}{20}};
+ \assign{y}{40};
+ \ewhile (x < y) \edo 
+ \{
+ \assign{x}{x + 1};
+ \assign{y}{y - 2};
+ \}\}
+ \] 
+Previous work does not support a data analysis program with user inputs, which is supported in the new language as well.
 }
 % An standard expression $\expr$,
 % is

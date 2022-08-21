@@ -1,16 +1,16 @@
 Another challenging program quantitative property is the \emph{non-monotonic} quantitative property.
-This kind of property includes the memory usage in the presence of garbage collection,
-number of channel connections established that are later closed,
-or resources requested to a virtual host which are released after using them. 
+This kind of property includes memory usage in the presence of garbage collection,
+number of channel connections established that is later closed,
+or resources requested to a virtual host which is released after using them. 
 The non-monotonic quantitative property is significantly different from the traditional monotonic quantitative property,
 such as the program execution time, energy consumption,
-%  etc. w.r.t. the physical resources,
+% etc. w.r.t. the physical resources,
 or the information leakage, etc. with different measurements in different areas.
 % ).
 These traditional quantitative properties only accumulate during the program execution. 
 However, the non-monotonic quantitative property could also decrease along the computation.
-So it is challenging to give a precise bound via computing the bound on this quantity just for the worst-case or the final execution state in traditional way.
-% And  to compute the bound on the quantity.
+So it is challenging to give a precise bound via computing the bound on this quantity just for the worst-case or the final execution state in the traditional way.
+% And to compute the bound on the quantity.
 
 This section first covers the background of the current research on the non-monotonic
 quantitative property analysis in Section~\ref{sec:nonmonotonic-intro}.
@@ -43,7 +43,7 @@ Then it introduced the new methodology for analyzing the non-monotonic quantitat
 
 % \paragraph*{Background and Related Work}
 Non-cumulative resources are first acquired and then released.
-Typical examples are memory usage in the presence of garbage collection, maximum number of connections established simultaneously, the size of the stack of activation records, etc.
+Typical examples are memory usage in the presence of garbage collection, the maximum number of connections established simultaneously, the size of the stack of activation records, etc.
 The problem is nowadays also very relevant in virtualized systems, as in cloud computing, 
 in which resources are acquired when needed and released after being used.
 It is recognized that non-cumulative resources introduce new challenges in resource analysis [5,12].
@@ -53,17 +53,17 @@ but rather the upper bound on the cost can happen at any intermediate step.
 
 % \todo
 {
-    In program quantitative property analysis area, the methodologies are mainly based on
-    two different kinds of analysis techniques, type-system-based and the  data-flow/control-flow analysis based.
-%     There are mainly two categories of methodology in the static program resource cost analysis areas, 
+ In the program quantitative property analysis area, the methodologies are mainly based on
+ two different kinds of analysis techniques, type-system-based and the data-flow/control-flow analysis based.
+% There are mainly two categories of methodology in the static program resource cost analysis areas, 
 % through type-system based and data-flow/control-flow analysis based. 
-% They can be summarized as follows, but to the best of my knowledge,
+% They can be summarized as follows but to the best of my knowledge,
 % all these works in the two categories fail to recognize the case where program resource consumption is decreased implicitly.
 \paragraph*{Type-System Based}
-In type-system based analysis methodology,
+In type-system-based analysis methodology,
 they design the effect systems~\cite{cciccek2017relational,radivcek2017monadic,qu2019relational},
 Hoare-Logic~\cite{gaboardi2021graded}, or amortized type system~\cite{hoffmann_jost_2022}.
-They statically estimate a sound upper bound for program's cost.
+They statically estimate a sound upper bound for the program's cost.
 However, they all aim to compute the bound for the traditional resource cost accumulatively
 without considering the cost decreasing. 
 % Existing
@@ -71,25 +71,25 @@ without considering the cost decreasing.
 % effect systems, 
 % % control-flow analysis, and data-flow analysis~\cite{ryder1988incremental}. 
 % % The idea of statically estimating a sound upper bound for the adaptivity from the semantics is indirectly inspired by prior 
-% Previous work on cost analysis via effect systems~\cite{cciccek2017relational,radivcek2017monadic,qu2019relational} statically estimating a sound upper bound for program's cost accumulatingly.
+% Previous work on cost analysis via effect systems~\cite{cciccek2017relational,radivcek2017monadic,qu2019relational} statically estimating a sound upper bound for the program's cost accumulating.
 % % The idea of defining adaptivity using data flow is inspired by the work of graded 
 % Hoare logic~\cite{gaboardi2021graded}, and amortized type system~\cite{hoffmann_jost_2022}.
-% The only way to save the cost into the potential
+% The only way to save the cost on the potential
 % type, as 
 % The type system in~\cite{GustafssonEL05} and
 The amortized type-system designed in \cite{hoffmann_jost_2022} considers a perfect garbage collection
-% is through explicit abstraction or data structure de-allocation.
+% through explicit abstraction or data structure de-allocation.
 % data structure deallocation 
 % and they 
-estimates the cost decreasing situation by save the cost into the potential type through destructive pattern match.
-However, their language model don't have the specific models of garbage collection and they cannot give the 
+estimates the cost decreasing situation by saving the cost into the potential type through destructive pattern match.
+However, their language model doesn't have the specific models of garbage collection and they cannot give the 
 % That is to say, they cannot deal with the case where the cost (for example the adaptivity) decreases when there isn't a dependency relation between variables.
 \paragraph*{Data-flow/Control-flow Analysis Based}
 % Existing static program analysis works via 
-The control flow or data flow analysis based methodologies,
+The control flow or data flow analysis-based methodologies,
 % in program resource cost analysis 
 % mainly falls into two areas, 
-are mainly aims to estimate the program complexity or worst case execution time. 
+are mainly aimed to estimate the program complexity or worst-case execution time. 
 The techniques are based on
 % type system~\cite{CicekBG0H17, RajaniG0021}, Hoare logic~\cite{CarbonneauxHS15}, 
 abstract interpretation~\cite{GustafssonEL05, HumenbergerJK18},
@@ -102,11 +102,11 @@ However, they are all focusing on analyzing the traditional accumulative cost of
 Some work~\cite{AlbertFR14, BrabermanGHY14, HofmannJ03} in analyzing the memory usage can compute the peak bound specific models of garbage collection,
 while they don't give a generic framework to estimate the non-cumulative quantitative property.
 \\
-The work in paper "Non-cumulative Resource Analysis" gave a generic resource analysis framework for an imperative language enriched with instructions to acquire and release resources. 
+The work in \cite{AlbertFR15} gave a generic resource analysis framework for an imperative language enriched with instructions to acquire and release resources. 
 However, they failed in the path-sensitive case. Their method is also imprecise in the sense that they over-approximate the
-set of acquire instructions globally for the local execution location.
+set of acquiring instructions globally for the local execution location.
 }
-Motivated by the importance of analyzing this property, and the limitations from existing work, I propose a new
+Motivated by the importance of analyzing this property, and the limitations of existing work, I propose a new
 automatic and accurate program analysis framework.
 This new framework will give
 a quantitative estimation bound on the non-monotonic property more accurate and efficient
@@ -119,13 +119,13 @@ than existing works.
 The new analysis framework is based on adopting the program analysis framework for adaptivity in Section~\ref{sec:adapt-analysis} and combining the new path-sensitive reachability bound algorithm in Section~\ref{sec:reachability-analysis}.
 The reason for this adoption is that there is 
 % According to this high 
-similarity between the program's non-monotonic quantitative property
-%  cost and the 
+the similarity between the program's non-monotonic quantitative property
+% cost and the 
 program's adaptivity property. This similarity is analyzed in detail in Example~\ref{ex:heapcost}.
 % I plan to adopt the similar analysis procedure as in Section~\ref{sec:adapt-analysis}
-%  and 
+% and 
 % Section~\ref{sec:static},
-This new analysis framework extends the  $\query$ identifier,
+This new analysis framework extends the $\query$ identifier,
 enriches the dependency graph with a different finite walk definition, and then estimates
 the non-monotonic quantitative property through the new finite walk definition.
 % This motivates the generalization of 
@@ -136,7 +136,7 @@ Specifically as follows:
 % \\
 \subsubsection{Language Generalization} Since the interesting property 
 to be analyzed isn't the \emph{adaptivity},
-the {\tt Query While} Language will be generalized into standard while language with two identifiers, $\alloc$ and $\release$.
+the {\tt Query While} Language will be generalized into standard while language with two identifiers, $\alloc$, and $\release$.
 \[
 \begin{array}{llll}
 \mbox{Label} 
@@ -159,55 +159,55 @@ Formalize the program resource cost through an execution-based program analysis 
 In this formalization, instead of formalizing the intuitive \emph{adaptive}, the resource cost will be the
 target quantitative property of a program.
 \begin{enumerate}
-    \item The data dependency and dependency quantity are analyzed in the same way by adopting to the extended language.
-    \item In formalizing the non-monotonic quantity, there are two changes as follows.
-    \\
-    \textbf{Data-dependency Graph}.
-    \\
-    The new execution-based dependency graph $\traceNMG(c)$ for the program with non-monotonic quantitative property is defined in the
-    similar way as in Definition~\ref{def:trace_graph} with four components.
-    The query annotation is replaced by operator annotation $traceOP$ for whether the variable is assigned by $\alloc$ or $\release$ as follows.
-    \highlight{
-        \[
-    \traceOP  \triangleq
-    \left\{(x^l, n)  \in  \mathcal{LV} \times \{-1, 0, 1\} 
-    ~ \middle\vert ~
-    x^l \in \lvar_{c},
-    n \triangleq \left\{
-    \begin{array}{ll}
-        1 & x^l \in \allocvar_{c} \\
-        0 & x^l \in \releasevar_{c}  \\
-        0 & o.w.
-    \end{array} \right.
-    \right\}
-    \]
-    }
-    % \textbf{Finite Walk}. Given the same analysis results on the dependency relation and dependency quantity, 
-    % the finite walk is defined in the same way as in Section~\ref{sec:adapt-analysis}. However, with the new annotation on each vertex, the length of a finite walk requires changes accordingly.
-    % \\
-    % 3. 
-    \textbf{Non-Monotonic Length of a Finite Walk}.
-    \\
-    Given the same analysis results on the dependency relation and dependency quantity, 
-    the finite walk ($k \in \walks(\traceNMG(c))$) is defined in the same way as in Definition~\ref{def:finitewalk}. However, with the new annotation on each vertex, the length of a finite walk requires changes accordingly.
-    \highlight{
-        \begin{defn}[Non-Monotonic Length of the Finite Walk($\NMlen$)]
-        \label{def:NMlen}
-        Given 
-        the new execution-based dependency graph $\traceNMG({c}) = (\_, \_, \_, \traceOP({c}))$ of a program $c$,
-         and a \emph{finite walk} 
-         $k \in \walks(\traceNMG(c))$. 
-        The query length of $k$ is a function $\NMlen(k): \mathcal{T} \to \mathbb{N}$, such that with an initial trace  $\trace_0 \in \mathcal{T}_0(c)$, $\NMlen(k)(\trace_0)$ is
-        the number of vertices which correspond to query variables in the vertices sequence of the walk $k(\trace_0)$
-        $(v_1, \ldots, v_{n})$ as follows, 
-        \[
-          \NMlen(k)(\trace_0) = 
-          \left\vert \big( v \mid v \in (v_1, \ldots, v_{n}) \land (v, 1) \in \traceOP(c) \big) \right \vert
-          - 
-          \left\vert \big( v \mid v \in (v_1, \ldots, v_{n}) \land (v, -1) \in \traceOP(c) \big) \right \vert.
-        \]
-        \end{defn}}
-    % 3. \textbf{Non-Monotonic Quantity}
+ \item The data dependency and dependency quantity are analyzed in the same way by adopting the extended language.
+ \item In formalizing the non-monotonic quantity, there are two changes as follows.
+ \\
+ \textbf{Data-dependency Graph}.
+ \\
+ The new execution-based dependency graph $\traceNMG(c)$ for the program with non-monotonic quantitative property is defined in the
+ similar way as in Definition~\ref{def:trace_graph} with four components.
+ The query annotation is replaced by operator annotation $traceOP$ for whether the variable is assigned by $\alloc$ or $\release$ as follows.
+ \highlight{
+ \[
+ \traceOP \triangleq
+ \left\{(x^l, n) \in \mathcal{LV} \times \{-1, 0, 1\} 
+ ~ \middle\vert ~
+ x^l \in \lvar_{c},
+ n \triangleq \left\{
+ \begin{array}{ll}
+ 1 & x^l \in \allocvar_{c} \\
+ 0 & x^l \in \releasevar_{c} \\
+ 0 & o.w.
+ \end{array} \right.
+ \right\}
+ \]
+ }
+ % \textbf{Finite Walk}. Given the same analysis results on the dependency relation and dependency quantity, 
+ % the finite walk is defined in the same way as in Section~\ref{sec:adapt-analysis}. However, with the new annotation on each vertex, the length of a finite walk requires changes accordingly.
+ % \\
+ % 3. 
+ \textbf{Non-Monotonic Length of a Finite Walk}.
+ \\
+ Given the same analysis results on the dependency relation and dependency quantity, 
+ the finite walk ($k \in \walks(\traceNMG(c))$) is defined in the same way as in Definition~\ref{def:finitewalk}. However, with the new annotation on each vertex, the length of a finite walk requires changes accordingly.
+ \highlight{
+ \begin{defn}[Non-Monotonic Length of the Finite Walk($\NMlen$)]
+ \label{def:NMlen}
+ Given 
+ the new execution-based dependency graph $\traceNMG({c}) = (\_, \_, \_, \traceOP({c}))$ of a program $c$,
+ and a \emph{finite walk} 
+ $k \in \walks(\traceNMG(c))$. 
+ The query length of $k$ is a function $\NMlen(k): \mathcal{T} \to \mathbb{N}$, such that with an initial trace $\trace_0 \in \mathcal{T}_0(c)$, $\NMlen(k)(\trace_0)$ is
+ the number of vertices which correspond to query variables in the vertices sequence of the walk $k(\trace_0)$
+ $(v_1, \ldots, v_{n})$ as follows, 
+ \[
+ \NMlen(k)(\trace_0) = 
+ \left\vert \big( v \mid v \in (v_1, \ldots, v_{n}) \land (v, 1) \in \traceOP(c) \big) \right \vert
+ - 
+ \left\vert \big( v \mid v \in (v_1, \ldots, v_{n}) \land (v, -1) \in \traceOP(c) \big) \right \vert.
+ \]
+ \end{defn}}
+ % 3. \textbf{Non-Monotonic Quantity}
 \end{enumerate}
 % \\
 \subsubsection{Non-Monotonic Resource Cost Estimation through Generalized $\THESYSTEM$}
@@ -224,25 +224,25 @@ be performed on a generalized $\THESYSTEM$. $\THESYSTEM$ will be generalized spe
  \item Then, generalized $\THESYSTEM$ will construct a similar program-based dependency graph 
  in the same way as in Section~\ref{sec:static-adapt}. In the same way as defining $\traceOP$, 
  the estimated graph is enriched with the new annotation for describing the non-monotonic property.
-%  but without query annotation. 
-%  \item According to the formalized resource cost quantity from the execution-based analysis above,
-%  generalized $\THESYSTEM$ will add extra annotation on this graph accordingly.
+% but without query annotation. 
+% \item According to the formalized resource cost quantity from the execution-based analysis above,
+% generalized $\THESYSTEM$ will add extra annotation on this graph accordingly.
  \item Then, based on the dependency quantity analysis result, the adaptivity quantity in Definition~\ref{def:prog_adapt}
  will be modified for describing this resource cost quantity, through the new non-monotonic length definition (similar to Definition~\ref{def:NMlen}) on the finite walk.
- \item Then in the last step, I will design new longest walk computation algorithm for computing this quantity.
-%   will be adopted to search for the longest 
-%  walk under the modified restriction and compute the bound for 
-%  this resource cost quantity.
+ \item Then in the last step, I will design a new longest walk computation algorithm for computing this quantity.
+% will be adopted to search for the longest 
+% walk under the modified restriction and compute the bound for 
+% of this resource cost quantity.
 \end{enumerate}
 
 \subsubsection{Non-Monotonic Quantitative Property through An Example}
 \label{sec:nonmonotonic-example}
 The Example~\ref{ex:heapcost} shows that in general 
-resource cost analysis, the modified $\THESYSTEM$  can give a better cost upper bound than the traditional 
+resource cost analysis, the modified $\THESYSTEM$ can give a better cost upper bound than the traditional 
 data-flow or control-flow analysis. It also shows that the heap resource consumption during the program 
 execution is accumulating in the same way as the program's adaptivity. 
 They also decrease in a very similar way,
-with the only difference that heap requires operator for decreasing but adaptivity doesn't.
+with the only difference that the heap requires an operator for decreasing but adaptivity doesn't.
 This observation explained the similarity between
 the adaptivity property and the non-monotonic quantitative property. This is the underlining idea that we can generalize the Adaptivity analysis framework work for analyzing the non-monotonic property.
 \input{examples/nested_while}

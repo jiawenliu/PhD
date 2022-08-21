@@ -56,14 +56,14 @@ The $\mathsf{VE}$ specifies the nodes of their variable-based dependency graph. 
     This algorithm adds all the program variables in its SSA form to the global variable list $G$.
     % $\mathsf{VE}$ has the form $\ag{G; w; \ssa{c}}{ G'; w'} $, as shown in . The input of $\mathsf{VE}$ is a list of annotated variables $G$ collected before the program $\ssa{c}$, a loop map $w$ consistent with previous estimation, and an input SSA program $\ssa{c}$. The output of the algorithm is the updated global list $G'$, along with the updated loop maps $w$, for later estimation.  
     \\
-\highlight{
-    Their variable estimation for the while loop is low-efficient. As shown in rule \textbf{ag-loop},
-    they unfold every iteration of the while loop, and create new annotated variables for every iteration.
-    This rule causes a major efficiency limitation of their static analysis.
-    It also causes a critical expressiveness limitation. By the premise in the rule \textbf{ag-loop},
-    the arithmetic expression is required to be a natural number.
-    This rule limits the program cannot even
-    have loop with arithmetic expression like $10 + 4$ in the guard.}
+    \highlight{
+        Their variable estimation for the while loop is low-efficient. As shown in rule \textbf{ag-loop},
+        they unfold every iteration of the while loop and create new annotated variables for every iteration.
+        This rule causes a major efficiency limitation in their static analysis.
+        It also causes a critical expressiveness limitation. By the premise in the rule \textbf{ag-loop},
+        the arithmetic expression is required to be a natural number.
+        This rule limits the program cannot even
+        have a loop with an arithmetic expression like $10 + 4$ in the guard.}
 \begin{figure}
 {\footnotesize
  \begin{mathpar}
@@ -229,56 +229,56 @@ They use standard longest path search algorithm to compute the adaptivity bound 
 \subsection*{Limitations}
 \highlight{
 \begin{enumerate}
-    \item  \textbf{Efficiency Limitations}
-    \begin{enumerate}
-    \item
-    In order to address the issue of re-assignment of different query requesting results to the same variable, they re-write the program from the loop language into SSA form.
-    However, this rewriting is low-efficient and unnecessary.
-    The re-assignment problem can be resolved efficiently and accurately through many state-of-art static program analysis techniques, such as the
-    variable reachable analysis, etc..
-    \item  Their variable estimation algorithm is low-efficient by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1},
-    and rule \textbf{ad-loop} in Figure~\ref{fig:prework-static_alg2}.
-    These two rules unfold every iteration of the while loop, and create new annotated variables for every iteration.
-    This operation increased the complexity of the program analysis by exponential factors. 
-    \item For the same reason as above, their \textbf{Graph Generation} algorithm is low-efficient as well.
-    \end{enumerate}
-    %
-    \item \textbf{Expressiveness Limitations}
-    \begin{enumerate}
-    \item Their variable estimation algorithm is unable to analyze the programs with
-    non-constant (or non-deterministic) loop iteration numbers.
-    This is caused by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1}.
-    This rule unfolds every iteration of the while loop, and create new annotated variables for every iteration.
-    In order to guarantee the termination of the analysis, they have to limit the loop with constant number of loop iteration.
-    Specifically in rule \textbf{ag-loop} and \textbf{ad-loop},
-    % Their variable estimation for the while loop is low-efficient. As shown in rule \textbf{ag-loop},
-    % they unfold every iteration of the while loop, and create new annotated variables for every iteration.
-    % This rule causes a major efficiency limitation of their static analysis.
-    % It also causes a critical expressiveness limitation. 
-    the premise in these two rules require
-    the arithmetic expression
-    %  is required 
-    to be a natural number. 
-    This rule limits the program cannot even
-    have loop with arithmetic expression like $10 + 4$ in the guard.
-    Concretely, a simple example program with loop iterating $5$ times as follows isn't allowed in their work.
-    \[
-      {\assign{x}{5}};
-      \assign{z}{q(x)};
-      \eloop (x ) \edo 
-      \{
-        \assign{z}{q(x + z)};
-        \}\}
-      \] 
-    \item For the same reason as above, their \textbf{Graph Generation} algorithm is limited as well.
-    \end{enumerate}
-    \item \textbf{Accuracy Limitations}
-    \begin{enumerate}
-        \item The estimated adaptivity from this framework is loose.
-        It over-approximate in the cases where there isn't semantic dependency between variables even though the variables
-        is explicitly used in the query request.
-        \item This program analysis framework is naive in the sense that all the three steps are standard.
-    And the framework is simply a straightforward composition of the three steps.
-    \end{enumerate}
+ \item \textbf{Efficiency Limitations}
+ \begin{enumerate}
+ \item
+ In order to address the issue of re-assignment of different queries requesting results to the same variable, they re-write the program from the loop language into SSA form.
+ However, this rewriting is low-efficient and unnecessary.
+ The re-assignment problem can be resolved efficiently and accurately through many state-of-art static program analysis techniques, such as the
+ variable reachable analysis, etc..
+ \item Their variable estimation algorithm is low-efficient by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1},
+ and rule \textbf{ad-loop} in Figure~\ref{fig:prework-static_alg2}.
+ These two rules unfold every iteration of the while loop and create new annotated variables for every iteration.
+ This operation increased the complexity of the program analysis by exponential factors. 
+ \item For the same reason as above, their \textbf{Graph Generation} algorithm is low-efficient as well.
+ \end{enumerate}
+ %
+ \item \textbf{Expressiveness Limitations}
+ \begin{enumerate}
+ \item Their variable estimation algorithm is unable to analyze the programs with
+ non-constant (or non-deterministic) loop iteration numbers.
+ This is caused by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1}.
+ This rule unfolds every iteration of the while loop, and creates new annotated variables for every iteration.
+ In order to guarantee the termination of the analysis, they have to limit the loop with the constant number of loop iterations.
+ Specifically in rule \textbf{ag-loop} and \textbf{ad-loop},
+ % Their variable estimation for the while loop is low-efficient. As shown in rule \textbf{ag-loop},
+ % they unfold every iteration of the while loop and create new annotated variables for every iteration.
+ % This rule causes a major efficiency limitation of their static analysis.
+ % It also causes a critical expressiveness limitation. 
+ the premise in these two rules requires
+ the arithmetic expression
+ % is required 
+ to be a natural number. 
+ This rule limits the program cannot even
+ have a loop with an arithmetic expression like $10 + 4$ in the guard.
+ Concretely, a simple example program with a loop iterating $5$ times as follows isn't allowed in their work.
+ \[
+ {\assign{x}{5}};
+ \assign{z}{q(x)};
+ \eloop (x ) \edo 
+ \{
+ \assign{z}{q(x + z)};
+ \}\}
+ \] 
+ \item For the same reason as above, their \textbf{Graph Generation} algorithm is limited as well.
+ \end{enumerate}
+ \item \textbf{Accuracy Limitations}
+ \begin{enumerate}
+ \item The estimated adaptivity from this framework is loose.
+ It over-approximates in the cases where there isn't semantic dependency between variables even though the variables
+ are explicitly used in the query request.
+ \item This program analysis framework is naive in the sense that all three steps are standard.
+ And the framework is simply a straightforward composition of the three steps.
+ \end{enumerate}
 \end{enumerate}
 }

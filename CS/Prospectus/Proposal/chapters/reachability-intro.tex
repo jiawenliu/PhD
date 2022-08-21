@@ -13,14 +13,14 @@ of data in programs, such as information leakage or uncertainty propagation.
 % \\
 % \textbf{Where it is required? How useful it can be? What impact it can bring?}
 % \\
-In some quantitative property analysis area, this problem is important in helping give a precise analysis result.
+In some quantitative property analysis areas, this problem is important in helping give a precise analysis result.
 For example, in the data analysis area as in PART I, the reachability-bound on each location helps
-in give a precise bound on the adaptive data analysis program's adaptivity quantity through static analysis.
+in giving a precise bound on the adaptive data analysis program's adaptivity quantity through static analysis.
 In the security protection area,
 how much secret information is leaked by a program depends on the number of times a certain operation that leaks the data,
 either by direct or indirect information flow, is executed [23].
 In the privacy protection area, the amount of perturbation in the output data values resulting
-from a small perturbation or uncertainty in the input values depends on the number of times additive error propagation operators are applied.
+from a small perturbation or uncertainty in the input, values depend on the number of times additive error propagation operators are applied.
 This is the quantitative version of the boolean problem of continuity studied in [7]. 
 Estimating such quantitative properties again requires addressing a similar question as above:
 How many times is a given control location inside the program that performs certain operations executed,
@@ -31,13 +31,13 @@ In the physical resource cost analysis area, it is important to give a precise e
 on the program's resource cost bound w.r.t. the program's inputs.
 For example, in memory-constrained environments such as embedded systems,
 it is important to bound the amount of memory required to run certain applications.
-In real-time systems, it is important to bound the worst-case execution-time of the program.
+In real-time systems, it is important to bound the worst-case execution time of the program.
 Applications running on low-power devices or low-bandwidth environments must use up little power or bandwidth respectively. 
 With the advent of cloud computing, where users would be charged per program execution,
 predicting resource usage characteristics would be a crucial component of accurate bid placement by cloud providers. 
-One of the challenge in bounding this cost precisely is that, the resource consumption is location-sensitive.
+One of the challenges in bounding this cost precisely is that the resource consumption is location-sensitive.
 In other words, different location has different resource cost as well as different execution times.
-This brings us one of the fundamental questions that needs to be answered for computing such resource bounds:
+This brings us to one of the fundamental questions that need to be answered for computing such resource bounds:
 How many times is a given control location inside the program that consumes these resources executed, i.e., the
 reachability-bound of the location?
 % This is 
@@ -47,7 +47,7 @@ reachability-bound of the location?
 % \\
 % \textbf{Short Summary} of existing works and limitations
 % \\
-% \textbf{Short Summary} of the new technique/algorithm: major steps/technique used,  major outcome
+% \textbf{Short Summary} of the new technique/algorithm: major steps/technique used, major outcome
 % \\
 % \textbf{Introduce} each step of the new technique/algorithm:
 % \\
@@ -58,43 +58,43 @@ inside a procedure is visited in terms of the inputs to that procedure.
 % \label{sec:reachability-motivation}
 % \textbf{Introduce} new technique/ results or experimental results. 
 % Summary of comparison with existing works. \cite{GulwaniJK09} \cite{Sumit2010rechability}, \cite{sinn2017complexity}
-    % \cite{GulwaniZ10, SinnZV17,GulwaniJK09, GulwaniMC09, abs-2203-04243}. 
-    In that paper,
-    they give a two-steps solution by combining the abstract interpretation based iterative technique
-    and the non-iterative proof-rules based technique.
-    However, their solution doesn't solve the reachability
-    bound in a path-sensitive way.
-    \\
-    There are many works in the program complexity analysis and cost analysis area
-    \cite{GustafssonEL05, HumenbergerJK18}, 
-    \cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}, 
-    However, their analysis either aims only to estimate the loop bound
-    or only the worst case running time.
-    None of them solve the reachability-bound problem directly, or path-sensitively.
-    \\
-    Motivated by the importance and existing technique limitation,
-    I plan to design a path-sensitive reachability-bound analysis in this section.
-    This analysis aims to solve the 
-    reachability-bounds problem path-sensitively.
-    % for every labeled command taking the different paths inside while loop into consideration.
-    This analysis has three parts as follows, similar to the new program analysis framework in PART I.
-    \begin{enumerate}
-      \item A standard while language with trace-based operational semantics in Section~\ref{sec:reachability-language};
-      \item A semantics definition for the reachability-bound problem in Section~\ref{sec:reachability-exe};
-      \item The path-sensitive reachability-bounds algorithm in Section~\ref{sec:reachability-static}.
-   \end{enumerate}
+ % \cite{GulwaniZ10, SinnZV17,GulwaniJK09, GulwaniMC09, abs-2203-04243}. 
+ In that paper,
+ they give a two-steps solution by combining the abstract interpretation-based iterative technique
+ and the non-iterative proof-rules-based technique.
+ However, their solution doesn't solve the reachability
+ bound in a path-sensitive way.
+ \\
+ There are many works in the program complexity analysis and cost analysis area
+ \cite{GustafssonEL05, HumenbergerJK18}, 
+ \cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}, 
+ However, their analysis either aims only to estimate the loop bound
+ or only the worst-case running time.
+ None of them solve the reachability-bound problem directly, or path-sensitively.
+ \\
+ Motivated by the importance and existing technique limitation,
+ I plan to design a path-sensitive reachability-bound analysis in this section.
+ This analysis aims to solve the 
+ reachability-bounds problem path-sensitively.
+ % for every labeled command taking the different paths inside while loop into consideration.
+ This analysis has three parts as follows, similar to the new program analysis framework in PART I.
+ \begin{enumerate}
+ \item A standard while language with trace-based operational semantics in Section~\ref{sec:reachability-language};
+ \item A semantics definition for the reachability-bound problem in Section~\ref{sec:reachability-exe};
+ \item The path-sensitive reachability-bounds algorithm in Section~\ref{sec:reachability-static}.
+ \end{enumerate}
 % \subsection{Outline}
 % \label{sec:reachability-outline}
 % The rest parts of this section is organized as follows. 
 % \begin{enumerate}
-%    \item The previous works on adaptive data analysis are introduced in Section~\ref{sec:prework}.
-%    \item The proposed new program analysis framework for the adaptivity of Adaptive Data Analysis is presented 
-%    in Section~\ref{sec:adapt-analysis}.
-%    This new program analysis framework has three major components:
-%    \begin{enumerate}
-%       \item A while-like language extended with query request feature, named {\tt Query While} Language, 
-%       used to implement the adaptive data analysis in Section~\ref{sec:adapt-language};
-%       \item A formal adaptivity model through execution-based adaptivity analysis in Section~\ref{sec:adapt-exe};
-%       \item A static program analysis algorithm, named {\THESYSTEM} through static adaptivity analysis in Section~\ref{sec:adapt-static}.
-%    \end{enumerate}
+% \item The previous works on adaptive data analysis are introduced in Section~\ref{sec:prework}.
+% \item The proposed new program analysis framework for the adaptivity of Adaptive Data Analysis is presented 
+% in Section~\ref{sec:adapt-analysis}.
+% This new program analysis framework has three major components:
+% \begin{enumerate}
+% \item A while-like language extended with query request feature, named {\tt Query While} Language, 
+% used to implement the adaptive data analysis in Section~\ref{sec:adapt-language};
+% \item A formal adaptivity model through execution-based adaptivity analysis in Section~\ref{sec:adapt-exe};
+% \item A static program analysis algorithm, named {\THESYSTEM} through static adaptivity analysis in Section~\ref{sec:adapt-static}.
+% \end{enumerate}
 % \end{enumerate}

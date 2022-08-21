@@ -6,7 +6,7 @@
 % adaptive data analysis, 
 % and the motivation of reasoning about the \emph{adaptivity} quantity property 
 % for adaptive data analysis.
-% %  in Section~\ref{sec:intro-motivation}.
+% % in Section~\ref{sec:intro-motivation}.
 % % analyzing 
 % In order to analyze this quantity property for the adaptive data analysis, there are 3 challenges
 % % problems encountered.
@@ -29,16 +29,16 @@
 % and plan to finish these improvements 
 % before the final defense.
 % %
-%  % Next, based on the implementation and experimental results, I proposed two significant 
-%  % further features can be improved for my analysis framework, and plan to finish the improvement 
-%  % before the final defense.
-%  %
-%  Then, in Section~\ref{sec:intro-cost}, through two observations, 
-%  I introduce the motivations and methodologies
-%  for 
-% %  the accurate 
+% % Next, based on the implementation and experimental results, I proposed two significant 
+% % further features can be improved for my analysis framework, and plan to finish the improvement 
+% % before the final defense.
+% %
+% Then, in Section~\ref{sec:intro-cost}, through two observations, 
+% I introduce the motivations and methodologies
+% for 
+% % the accurate 
 % analyzing program's \emph{non-monotonic} quantitative property accurately.
-%   with implicit cost decreases.
+% with implicit cost decreases.
 % \\
 % 1. traditional program's resource cost analysis failed to consider the case where the program's cost could decrease 
 % implicitly, 
@@ -60,60 +60,60 @@
 % a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, comparing 
 % to the worst case cost analysis in a traditional way.
 % \paragraph{Background and Motivation\todo{Rewrite into Program Analysis of the Quantitative Property}}
-%  \label{sec:intro-background}
-Program analysis analyzes behaviours of a computer program.
-One of the most significant behaviours with respect to programs is the execution correctness behaviour, which determines whether a program executes correctly without getting stuck because of bugs.
+% \label{sec:intro-background}
+Program analysis analyzes the behaviors of a computer program.
+One of the most significant behaviors with respect to programs is the execution correctness behavior, which determines whether a program executes correctly without getting stuck because of bugs.
  The execution correctness can be proved by showing the functional correctness property of the program with the help of some formal verification methods such as type system and program logic.
- Many attentions in programming language community have focused on the functional correctness property, while not enough efforts were put on, a variety of those non-function properties, considering its wide potential applications in modern society. 
- A few decades ago, computer programs were only used for research or business purpose and the expectation of computer program was just executing correctly without bugs. 
+ Much attention in the programming language community has focused on the functional correctness property, while not enough effort was put on, a variety of those non-function properties, considering its wide potential applications in modern society. 
+ A few decades ago, computer programs were only used for research or business purpose and the expectation of computer programs was just to execute correctly without bugs. 
  However, the expectation has also changed along with the popularity of mobile devices and wide applications of big data. 
  It is not enough for these programs running on mobile phones or those programs handling big data, 
  to just run without bugs. 
  The non-functional execution properties come into play in the new era.
 
- We think programs on mobile devices of great significance in today's life.
- In order to provide people with high quality
+ We think programs on mobile devices are of great significance in today's life.
+ To provide people with high-quality
  service through mobile devices,
-we choose to study the non-functional properties on programs.
- Skeleton:
+we choose to study the non-functional properties of programs.
+% Skeleton:
 Importance of the Program Execution Property in different areas.
 
 
 % In Machine Learning Area, the Adaptivity Quantity is significant
 % ==> Major Work I
 % \\
-Existing high quality
+Existing high-quality
 service through mobile devices relies heavily on the data analysis results
-%  machine learning algorithm analysis results over data,
+% machine learning algorithm analysis results over data,
 for providing users with personalized accurate services. This brings my attention on the
 % The 
-first non-functional execution behaviour in these data analysis programs, i.e., the quality of the data analysis results.
-%  in their machine leanring algorithms.
-%   comes from the machine learning area which is popular and widespreadly applied in our daily mobile life.
+first non-functional execution behavior in these data analysis programs, i.e., the quality of the data analysis results.
+% in their machine learning algorithms.
+% comes from the machine learning area which is popular and widespread applied in our daily mobile life.
 % In this area,
 % The first execution property 
-% the data collected from large amount of mobile users also deserves our attention.
-We look at data analysis which analyzes sample data to get some generalized properties of the big data where the sample is drawn from.
-The generalization property of data analysis program over sample data with respect to the population is one of the important non-functional properties of programs.
+% the data collected from a large number of mobile users also deserves our attention.
+We look at data analysis which analyzes sample data to get some generalized properties of the big data which the sample is drawn from.
+The generalization property of a data analysis program over sample data with respect to the population is one of the important non-functional properties of programs.
 The generalization error measures the difference of property from the sample data and population, showing the reliability of the data analysis of showing the true properties of the population. 
 High generalization error makes the analysis result of these programs not reliable.
-% It could be useful to have program 
+% It could be useful to have the program 
 % This generalization error 
 Fortunately, studies found that some quantitative properties of data analysis programs can help to control the generalization error, especially when the data analysis is adaptive.
 These properties are the first non-functional execution properties we are interested in
 analyzing.
 % \\
-% We use static analysis technique to best exploit the benefit of these non-functional quantitative properties in resource usage and data analysis. However, to fully utilize the aforementioned benefits of the static analysis on these quantitative properties, the appropriate implementation is inevitable. To this end, we also take one step in algorithmizing a refinement type and effect system, which is used to statically estimate the properties on resource usage. In precise, the resource is the evaluation cost of programs in this proposal.
+% We use the static analysis technique to best exploit the benefit of these non-functional quantitative properties in resource usage and data analysis. However, to fully utilize the aforementioned benefits of the static analysis on these quantitative properties, the appropriate implementation is inevitable. To this end, we also take one step in algorithmizing a refinement type and effect system, which is used to statically estimate the properties of resource usage. In precise, the resource is the evaluation cost of programs in this proposal.
 
 % ==> Major Work II
 % In Resource Cost Analysis Area, the Reachability-Bound is significant.
 % \\
-High quality
-service in people's mobile device life do not just relies on the accuracy of service but also the
- efficiency of the service. 
-This brings my attention on another non-functional execution property, the program's resource cost.
-% non-functional properties on resource usage, one of the most useful properties with respect to mobile devices. 
-Suppose we are playing an online game on our smartphones, what do we care about? We care about the performance of the game, in another word, if it runs fast. We care about whether the game crashed due to out of memory, and so on. Additionally, resource usage is the key for embedded systems or wearable devices. In this sense, the study on the non-functional properties on resource usage is of great practical value. We observe that the non-functional properties on resource usage are usually quantitative, specifying certain bounds on the target resource to guarantee the performance. For instance, an update on a mobile app does not significantly slow down the performance if this update will not use resources exceeding certain bounds specified before.
+High-quality
+service in people's mobile device life does not just rely on the accuracy of service but also the
+ the efficiency of the service. 
+This brings my attention to another non-functional execution property, the program's resource cost.
+% non-functional properties on resource usage, one of the most useful properties concerning mobile devices. 
+Suppose we are playing an online game on our smartphones, what do we care about? We care about the performance of the game, in another word, if it runs fast. We care about whether the game crashed due to being out of memory, and so on. Additionally, resource usage is the key for embedded systems or wearable devices. In this sense, the study of the non-functional properties of resource usage is of great practical value. We observe that the non-functional properties of resource usage are usually quantitative, specifying certain bounds on the target resource to guarantee performance. For instance, an update on a mobile app does not significantly slow down the performance of this update and will not use resources exceeding certain bounds specified before.
 
 
 % We use combinations of 
@@ -122,17 +122,17 @@ execution-based and static-based
 analysis techniques into the new
 analysis frameworks to best exploit the benefit of these non-functional properties in data analysis and resource usage. However, to fully utilize the aforementioned benefits of the new analysis frameworks on these non-functional properties, the appropriate implementation is inevitable. 
 To this end, we also take one step in algorithmizing the analysis frameworks
-%  through
+% through
 % program analysis framework, 
 which is used to formalize and statically estimate these properties.
 
-Last but not least, these non-functional properties are not limited to static analysis. We are not only interested in programs implementing specific algorithm, but also willing to study these lower bound and upper bound of the algorithm itself.
-% To this end, we use formal verification method to study standard algorithms such as sorting, searching in a comparison-based computation model.
+Last but not least, these non-functional properties are not limited to static analysis. We are not only interested in programs implementing the specific algorithm, but also willing to study these lower bound and upper bound of the algorithm itself.
+% To this end, we use the formal verification method to study standard algorithms such as sorting and searching in a comparison-based computation model.
 
 % \todo{
-%     In program quantitative property analysis area, the methodologies are mainly based on
-%     two different kinds of analysis techniques, type-system-based and the  data-flow/control-flow analysis based.
-% %     There are mainly two categories of methodology in the static program resource cost analysis areas, 
+% In program quantitative property analysis area, the methodologies are mainly based on
+% two different kinds of analysis techniques, type-system-based and the data-flow/control-flow analysis based.
+% % There are mainly two categories of methodology in the static program resource cost analysis areas, 
 % % through type-system based and data-flow/control-flow analysis based. 
 % % They can be summarized as follows, but to the best of my knowledge,
 % % all these works in the two categories fail to recognize the case where program resource consumption is decreased implicitly.
@@ -192,34 +192,34 @@ Last but not least, these non-functional properties are not limited to static an
 % improving the accuracy of the program's general resource cost analysis
 % by generalizing this \emph{adaptivity} analysis framework.
 % \begin{itemize}
-%  \item 
-% %  In the traditional program's resource cost and quantitative property analysis,
-%  There are two research areas in the traditional program's resource cost and quantitative property analysis.
-% %  of program cost analysis, 
+% \item 
+% % In the traditional program's resource cost and quantitative property analysis,
+% There are two research areas in the traditional program's resource cost and quantitative property analysis.
+% % of program cost analysis, 
 % One area is type-system based and the other is data-flow/control-flow analysis based. 
 % In the type-system design-based areas (\cite{GustafssonEL05}, \cite{hoffmann_jost_2022}), 
 % the analysis technique requires explicit abstraction or data structure de-allocation in order to save or reduce the cost.
-%  The
-%  works in both of these two areas fail to recognize the case where program resource consumption or quantitative properties 
-%  are decreased implicitly or increased \emph{non-monotonically}.
-%  \item This kind of resource consumption or quantitative properties during the program 
-%  execution increase and particularly decrease implicitly in the same way as the program's adaptivity. 
-%  This is explained in detail through an example in Section~\ref*{sec:generalization}.
+% The
+% works in both of these two areas fail to recognize the case where program resource consumption or quantitative properties 
+% are decreased implicitly or increased \emph{non-monotonically}.
+% \item This kind of resource consumption or quantitative properties during the program 
+% execution increase and particularly decrease implicitly in the same way as the program's adaptivity. 
+% This is explained in detail through an example in Section~\ref*{sec:generalization}.
 % \end{itemize}
-%  Based on the observations above, 
-%  I plan to develop
-%  an accurate program \emph{non-monotonic} quantitative property analysis framework through generalizing 
-%  my \emph{adaptivity} analysis framework.
-%  This framework can give more accurate cost bound than traditional worst-case resource cost estimation methods,
-%  by taking the program's implicit resource cost decreasing into consideration.
-%  compared 
-%  to the worst-case cost analysis in the traditional way.
+% Based on the observations above, 
+% I plan to develop
+% an accurate program \emph{non-monotonic} quantitative property analysis framework through generalizing 
+% my \emph{adaptivity} analysis framework.
+% This framework can give more accurate cost bound than traditional worst-case resource cost estimation methods,
+% by taking the program's implicit resource cost decreasing into consideration.
+% compared 
+% to the worst-case cost analysis in the traditional way.
 
 \paragraph*{Proposal Structure}
 To sum up, this proposal covers the following topic in each following part.
 \begin{enumerate}
-    \item A program analysis framework for analyzing the adaptivity for adaptive data analysis in \redd{PART I}.
-    \item A path-sensitive reachability-bound analysis algorithm for computing the accurate reachability-bound in \redd{PART II}
+ \item A program analysis framework for analyzing the adaptivity for adaptive data analysis in \redd{PART I}.
+ \item A path-sensitive reachability-bound analysis algorithm for computing the accurate reachability-bound in \redd{PART II}
 % \item A while-like language extended with query request feature, named {\tt Query While} Language, 
 % used to implement 
 % the adaptive data analysis in Section~\ref{sec:language}.
@@ -228,10 +228,10 @@ To sum up, this proposal covers the following topic in each following part.
 % \item Three proposed further features to be improved for the adaptivity analysis framework,
 % % based on the 
 % % % formal adaptivity model and {\THESYSTEM}, 
-% %  full-spectrum 
+% % full-spectrum 
 % in Section~\ref{sec:furthers}.
-% %  presented in Section~\ref{sec:language},~\ref{sec:dynamic} and~\ref{sec:static},
-%  This proposed work is planned to be done before the final defense.
+% % presented in Section~\ref{sec:language},~\ref{sec:dynamic} and~\ref{sec:static},
+% This proposed work is planned to be done before the final defense.
 \item A proposed automated program non-monotonic quantitative quantity analysis framework in \redd{PART III}.
 % generalized from {\THESYSTEM} in Section~\ref{sec:generalization}. 
 % The analysis framework design is expected to be done with the implementation start off before the final defense.

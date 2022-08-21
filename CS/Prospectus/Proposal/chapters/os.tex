@@ -1,19 +1,19 @@
 \highlight{
-    Improved from previous work,
+ Improved from previous work,
 this new operational semantics is defined based on only the event and trace with an efficient 
 environment operator.
 }
 % \\
 \paragraph*{Event}
 \highlight{
-    The new trace-based operational semantics
-  design the event tracking all the expression evaluation information as a quadruple.
-  }
-%   Its first element is either 
+ The new trace-based operational semantics
+ design the event tracking all the expression evaluation information as a quadruple.
+ }
+% Its first element is either 
 % an assigned variable (from an assignment command) or a boolean expression (from the guard of if or while command), follows by 
-%  the label associated with this event, the value evaluated either from the expression assigned to the variable,
+% the label associated with this event, the value evaluated either from the expression assigned to the variable,
 % or the boolean expression in the guard.
-%  The last element stores the query information, which is a query value whose default is $\bullet$. I declare event projection operator $\pi_i$ which projects the $i$th element from an event.
+% The last element stores the query information, which is a query value whose default is $\bullet$. I declare event projection operator $\pi_i$ which projects the $i$th element from an event.
 \[
 \begin{array}{llll}
 \mbox{Event} 
@@ -183,15 +183,15 @@ collecting the events generated along the program execution.
 \]
  $\mathcal{T} $ represents the set of traces. 
  \highlight{
-  Based on the event recording all the program's evaluations for expressions, 
+ Based on the event recording all the program's evaluations for expressions, 
  the trace designed in the new trace-based operational semantics
  now tracks all these events.
- This new definition helps in formalizing the adaptivity more precise than before, with only query information in the trace.
-%  only the annotated query.
-%   % This caused the in-accuracy issue in formalizing the adaptivity later because key dependency
-%   % information is lost in that sense.
-%   In order to address that issue, the new trace-based operational semantics
-%   design the event. 
+ This new definition helps in formalizing the adaptivity more precisely than before, with only query information in the trace.
+% only the annotated query.
+% % This caused the in-accuracy issue in formalizing the adaptivity later because key dependency
+% % information is lost in that sense.
+% In order to address that issue, the new trace-based operational semantics
+% design the event. 
  }
 % \\
 % There are some useful operators: the trace concatenation operator $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$, combines two traces.
@@ -594,52 +594,52 @@ The function $\env : {\mathcal{T}} \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\b
 % is updated during the evaluation,
 \paragraph*{Operational Semantics}
 \highlight{
-    The new operational semantics only contains
-    two components in its configuration.
-    It is built on the improvements in both the trace and environment designs.
-    Because all evaluation information is stored in the trace in the form of the event,
-     and the variable values is recovered from it through $\env$ operator,
-    only the trace and program is necessary during the evaluation.
-   }
+ The new operational semantics only contains
+ two components in its configuration.
+ It is built on the improvements in both the trace and environment designs.
+ Because all evaluation information is stored in the trace in the form of the event,
+ and the variable values are recovered from it through $\env$ operator,
+ only the trace and program are necessary during the evaluation.
+ }
 
 A selection of rules of the trace-based operational semantics is presented in Figure~\ref{fig:os}. 
 % \todo{Make sure the operational semantics is a big step and correct assn rules.}
 % \jl{
 In the rule \rname{assn}, the expression $\expr$ evaluation, i.e., $\config{\trace, \expr} \earrow v $ is standard, so the rules are omitted.
-%  presented below. 
+% presented below. 
 \highlight{Different from previous in this rule, the result $v$ of evaluating $\expr$ is used to construct a new event $\event = (x, l, v,\bullet)$
-as and attach it to the previous trace. }
+and attach it to the previous trace. }
 % \begin{mathpar}
 % % \boxed{ \config{\trace, \expr} \earrow v \, : \, \mbox{Trace $\times$ Expression $\Rightarrow$ Value} }
 % % \\
 % \inferrule{ 
-%  \config{\trace, \aexpr} \aarrow v
+% \config{\trace, \aexpr} \aarrow v
 % }{
-%  \config{\trace, \aexpr} 
-%  \earrow v
+% \config{\trace, \aexpr} 
+% \earrow v
 % }
 % \and
 % \inferrule{ 
-%  \config{\trace, \bexpr} \barrow v
+% \config{\trace, \bexpr} \barrow v
 % }{
-%  \config{\trace, \bexpr} 
-%  \earrow v
+% \config{\trace, \bexpr} 
+% \earrow v
 % }
 % \and
 % \inferrule{ 
-%  \config{\trace, \expr_1} \earrow v_1
-%  \cdots
-%  \config{\trace, \expr_n} \earrow v_n
+% \config{\trace, \expr_1} \earrow v_1
+% \cdots
+% \config{\trace, \expr_n} \earrow v_n
 % }{
-%  \config{\trace, [\expr_1, \cdots, \expr_n]} 
-%  \earrow [v_1, \cdots, v_n]
+% \config{\trace, [\expr_1, \cdots, \expr_n]} 
+% \earrow [v_1, \cdots, v_n]
 % }
 % \and
 % \inferrule{ 
-%  \empty
+% \empty
 % }{
-%  \config{\trace, v} 
-%  \earrow v
+% \config{\trace, v} 
+% \earrow v
 % }
 % \end{mathpar}
 % The expression evaluation rules also rely on the evaluation of arithmetic expressions $\config{\trace,\aexpr} \aarrow v $ and boolean expressions $\config{\trace, \bexpr} \barrow v $. The full rules can be found in the appendix.
@@ -739,7 +739,7 @@ as and attach it to the previous trace. }
 % }
 % \end{mathpar}
 % % }
-Another distinguish is the rule $\textbf{query}$. It
+Another distinction is the rule $\textbf{query}$. It
 evaluates a query requesting command $\clabel{\assign{x}{\query(\qexpr)}}^l$ in two steps.
 The query expression $\qexpr$ is first evaluated into a query value $\qval$ by following the rules below.
 Then, by sending this query request $\query(\qval)$ to a hidden mechanism, this query is evaluated to a result value returned from it, $v = \query(\qval)$.
