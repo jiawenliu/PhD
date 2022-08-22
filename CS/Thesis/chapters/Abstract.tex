@@ -65,8 +65,11 @@ The first reachability quantitative property
  In adaptive data analysis, the choice of queries can depend on the results of its previous queries. 
  Hence, there form chains of queries in which every query relies on its previous ones.
  Reasoning about adaptivity is useful in controlling the generalization error of adaptive data analysis, which usually propagates sharply along with the chain. 
- Many researchers have found that the generalization error can be controlled well by choosing the appropriate statistic technique according to the adaptivity. Nevertheless, the adaptivity is not always clear to data analysts when they need it. To solve this dilemma, we propose a program analysis algorithm based on dependency graphs, to provide an upper bound on adaptivity to assist data analysts.
-This part mainly developed by first defining the \emph{adaptivity} for 
+ Many researchers have found that the generalization error can be controlled well by choosing the appropriate statistic technique according to the adaptivity.
+ Nevertheless, the adaptivity is not always clear to data analysts when they need it. 
+To solve this dilemma, we present a program analysis algorithm based on dependency graphs,
+to provide an upper bound on adaptivity to assist data analysts.
+This part is developed by first defining the \emph{adaptivity} for 
  the adaptive data analysis
  and then designing
  a program analysis framework for estimating the \emph{adaptivity}.
@@ -105,7 +108,8 @@ In estimating some quantitative property
 % this problem is important in computing a precise analysis result.
 in the data analysis area, for example, the \emph{adaptivity}
 % For example, in the data analysis area 
-in PART I, the reachability-bound on each program control location
+introduced above
+the reachability-bound on each program control location
 % helps
 % in 
 can improve the precision of the estimated bound on the adaptive data analysis program's \emph{adaptivity}.
@@ -115,10 +119,9 @@ in estimating the program's information leakage or uncertainty propagation, etc.
 Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
 % None of them solve the reachability-bound problem directly, or path-sensitively.
 However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively.
-To solve these issues and improve the analysis results on this problem, I propose a new algorithm
-aiming to find a precise symbolic worst-case reachability-bound on the program's every control location
-% than existing works, 
-in part II.
+To solve these issues and improve the analysis results on this problem, I present a new algorithm
+aiming to find a precise symbolic worst-case reachability-bound on the program's every control location.
+% than existing works,.
 % through static analysis.
 
 % in terms of the inputs to that procedure.
@@ -140,7 +143,7 @@ or the information leakage, etc. with different measurements in different areas.
 % ).
 These traditional quantitative properties only accumulate during the program execution. 
 However, the non-monotonic quantitative property could also decrease along the computation.
-To give a precise estimation on this {non-monotonic} quantity, I propose a program analysis framework in PART III.
+To give a precise estimation on this {non-monotonic} quantity, I propose a future work on designing the program analysis framework.
 This new framework will give
 a symbolic bound on the program's non-monotonic quantitative property more accurately and efficiently
 than existing works.

@@ -55,20 +55,24 @@ through both the  static program analysis techniques and execution-based analysi
     \\
     Section~\ref{sec:adapt-language} present a more expressive while-like language than previous works. This extended language supports more general adadptive data analysis.
     \\
-    Section~\ref{sec:adapt-exe}  develops an execution-based analysis method which can
+    Section~\ref{sec:adapt-exe} presents the new definition for
+    %   develops an execution-based analysis method which can
     % The second challenge is 
-    \emph{define} the intuitive \emph{adaptivity} rounds for a given data analysis program formally and accurately.
+    % \emph{define} 
+    the intuitive \emph{adaptivity} rounds for a given data analysis program through a formal semantics model.
     % Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect
-    This execution-based analysis is designed in three steps. The Section~\ref{sec:dynamic-datadep} analyzes the \emph{dependency relation} between every query, 
-    through the methodology of semantic data dependency analysis. In Section~\ref{sec:dynamic-reachability}, it analyzes the \emph{dependency quantity} 
+    It is defined in three steps. 
+    The Section~\ref{sec:dynamic-datadep} reasons the \emph{dependency relation} between every query, 
+    through the methodology of semantic data dependency analysis.
+    In Section~\ref{sec:dynamic-reachability}, it analyzes the \emph{dependency quantity} 
     %  analysis, 
     based on the \emph{dependency relation} above.
-    This analysis is developed through the methodology of execution-based reachability bound analysis.
+    This step is developed through the methodology of execution-based reachability bound analysis.
     The last step in Section~\ref{sec:dynamic-adapt} is the intuitive \emph{adaptivity} quantity analysis, 
-   according to the two analysis results above, specifically \emph{dependency relation} and \emph{dependency quantity}.
+   according to the two definitions above, specifically \emph{dependency relation} and \emph{dependency quantity}.
     This step 
   %  is developed through 
-    gives the formal \emph{adaptivity} definition as the analysis result. 
+    gives the formal \emph{adaptivity} definition. 
     \\
     Section~\ref{sec:adapt-static} develops an improved static program adaptivity analysis framework, named {\THESYSTEM}.
     This analysis combines data flow and control flow analysis with reachability bound analysis.
@@ -90,81 +94,84 @@ through both the  static program analysis techniques and execution-based analysi
     
 
     \paragraph{Chapter~\ref{sec:adapt-implementation}} presents five manual examples demonstrating this framework in Section~\ref{sec:adapt-example},
-    and the exeprimental results on some real world data analysis algorithms in Section~\ref{sec:adapt-eval}.
+    and the experimental results on some real world data analysis algorithms in Section~\ref{sec:adapt-eval}.
     % It includes a variant of two round data analysis algorithm, an adaptive multiple rounds data analysis algorithm and an example showing the over-approximate of our approach (Section~\ref{sec:adapt-example-over}). 
     
     \paragraph{Chapter~\ref{sec:adapt-relatedwork}} discusses the related works from three perspectives:
     Static program analysis (Section~\ref{sec:relatedwork-static}), dynamic program analysis (Section~\ref{sec:relatedwork-exe}) and generalization in adaptive data analysis (Section~\ref{sec:relatedwork-adapt}).  
 
-    \item \redd{PART \romannum{3} \quad  CONCLUSION and Future Works}
+    \item \redd{PART \romannum{3} \quad  Conclusion and Future Works}
     \paragraph*{Chapter~\ref{sec:conclusion}}
-    Concludes the Two Studies.
-    \\
-    \textbf{Reachability-Bound Analysis}
-    \\
-    \textbf{Adaptivity Analysis}
+    Concludes the two works, i.e., Program Analysis Framework for Adaptive Data Analysis
+    and the Path-Sensitive Reachability-Bound Analysis of this dissertation.
 
     \paragraph*{Chapter~\ref{sec:future}}
-    Discusses the future directions on studying the two quantitative properties: relative cost and adaptivity.
-    \\
-    \textbf{Program Non-Monotonic Resource Cost Analysis}
-        Moving towards the area of general program resource cost analysis,
-        % Then, motivated by the two following aspects, 
-        there are two interesting observations as follows.
-        % I'm interested 
-        These two observations motivated me in 
-        % improving the accuracy of the program's general resource cost analysis
-        improving the accuracy of the program's general resource cost analysis
-        by generalizing this full-spectrum \emph{adaptivity} analysis.
-        \begin{itemize}
-        \item Firstly, in a traditional program's resource cost analysis,
-        There are two categories of program cost analysis, type-system based and data-flow/control-flow analysis based. 
-        In the type-system design-based works, they \cite{GustafssonEL05} and \cite{hoffmann_jost_2022}, explicit abstraction or data structure de-allocation in order to save or reduce the cost.
+    Discusses two future directions.
+    The first direction based on studying the reachability quantitative properties,
+   is {The Program Non-Monotonic Quantitative Property Analysis} in Section~\ref{sec:future-cost}.
+   The second direction combines with the research in complexity theory area, I plan to reason
+   about the Solving the CFL Reachability Problem in Section~\ref{sec:future-cfl}.
+    % % relative cost and adaptivity.
+    % \\
+    % \textbf{Program Non-Monotonic Resource Cost Analysis}
+    %     Moving towards the area of general program resource cost analysis,
+    %     % Then, motivated by the two following aspects, 
+    %     there are two interesting observations as follows.
+    %     % I'm interested 
+    %     These two observations motivated me in 
+    %     % improving the accuracy of the program's general resource cost analysis
+    %     improving the accuracy of the program's general resource cost analysis
+    %     by generalizing this full-spectrum \emph{adaptivity} analysis.
+    %     \begin{itemize}
+    %     \item Firstly, in a traditional program's resource cost analysis,
+    %     There are two categories of program cost analysis, type-system based and data-flow/control-flow analysis based. 
+    %     In the type-system design-based works, they \cite{GustafssonEL05} and \cite{hoffmann_jost_2022}, explicit abstraction or data structure de-allocation in order to save or reduce the cost.
         
-        Both of the
-        works in these two areas fail to recognize the case where program resource consumption is decreased implicitly.
-        \item The resource consumption during the program 
-        execution increases and particularly decreases implicitly in the same way as the program's adaptivity. 
-        This is explained in detail through an example in Section~\ref*{sec:generalcost-backgroung}.
-        \end{itemize}
-        Based on the observations above, in Chapter~\ref{ch:generalization},
-        %  Based on the observations above, and through the generalized \emph{adaptivity} analysis framework.
-        %  I will give
-        %  a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, compared 
-        %  to the worst-case cost analysis in the traditional way.
-        I develop
-        an accurate program general resource cost analysis framework through generalizing my full-spectrum \emph{adaptivity} analysis.
-        This framework can give more accurate cost bound than traditional worst-case resource cost estimation methods,
-        by taking the program's implicit resource cost into consideration.
-            \\
-            \textbf{Solving the CFL Reachability Problem}
-        Still in the area of general program resource cost analysis,
-        the traditional methodology of performing data flow and control analysis and 
-        computing the program resource cost is
-        % Finally, based on the study on the traditional way of performing data flow and control analysis,
-        to reduce the analysis problem into the CFL-reachability problems.
-        % Finally, based on the study on the traditional way of performing data flow and control analysis,
-        According to this, 
-        I identify x
-        % the similarity between the traditional way of performing data flow and control analysis and the 
-        the similarities between the traditional way of estimating the program resource cost and 
-        the adaptivity.
-        %  Specifically, I identify the similarity between 
-        %  solving the feasible path problem in the analysis by reducing 
-        Specifically, there are similarities between solving the CFL-reachability problems they reduced to,
-        %  CFL-reachability problems,
-        and the way of computing the adaptivity in 
-        %  my static analysis framework.
-        the third step of $\THESYSTEM$.
-        Motivated by this, 
-        % I'm Interested
-        % the, There are similarities between
-        % solving the data flow problem by reducing to CFL-reachability problem,
-        % resource analysis through reducing to CFL-reachability problem, 
-        I'm interested in showing that
-        CFL-reachability problems can be solved by reducing to my adaptivity analysis framework.
+    %     Both of the
+    %     works in these two areas fail to recognize the case where program resource consumption is decreased implicitly.
+    %     \item The resource consumption during the program 
+    %     execution increases and particularly decreases implicitly in the same way as the program's adaptivity. 
+    %     This is explained in detail through an example in Section~\ref*{sec:generalcost-backgroung}.
+    %     \end{itemize}
+    %     Based on the observations above, in Chapter~\ref{ch:generalization},
+    %     %  Based on the observations above, and through the generalized \emph{adaptivity} analysis framework.
+    %     %  I will give
+    %     %  a more accurate resource cost estimation by taking the program's implicit resource cost into consideration, compared 
+    %     %  to the worst-case cost analysis in the traditional way.
+    %     I develop
+    %     an accurate program general resource cost analysis framework through generalizing my full-spectrum \emph{adaptivity} analysis.
+    %     This framework can give more accurate cost bound than traditional worst-case resource cost estimation methods,
+    %     by taking the program's implicit resource cost into consideration.
+    %         \\
+    %         \textbf{Solving the CFL Reachability Problem}
+    %     Still in the area of general program resource cost analysis,
+    %     the traditional methodology of performing data flow and control analysis and 
+    %     computing the program resource cost is
+    %     % Finally, based on the study on the traditional way of performing data flow and control analysis,
+    %     to reduce the analysis problem into the CFL-reachability problems.
+    %     % Finally, based on the study on the traditional way of performing data flow and control analysis,
+    %     According to this, 
+    %     I identify x
+    %     % the similarity between the traditional way of performing data flow and control analysis and the 
+    %     the similarities between the traditional way of estimating the program resource cost and 
+    %     the adaptivity.
+    %     %  Specifically, I identify the similarity between 
+    %     %  solving the feasible path problem in the analysis by reducing 
+    %     Specifically, there are similarities between solving the CFL-reachability problems they reduced to,
+    %     %  CFL-reachability problems,
+    %     and the way of computing the adaptivity in 
+    %     %  my static analysis framework.
+    %     the third step of $\THESYSTEM$.
+    %     Motivated by this, 
+    %     % I'm Interested
+    %     % the, There are similarities between
+    %     % solving the data flow problem by reducing to CFL-reachability problem,
+    %     % resource analysis through reducing to CFL-reachability problem, 
+    %     I'm interested in showing that
+    %     CFL-reachability problems can be solved by reducing to my adaptivity analysis framework.
 
     \item \redd{PART \romannum{4} \quad  APPENDIX}
+    The Appendix contains the complete examples, theorems and proofs for the two works of this dissertation.
 \end{enumerate}
 
 \textbf{Previous Published Materials}
