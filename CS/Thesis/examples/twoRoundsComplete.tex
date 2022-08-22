@@ -1,0 +1,40 @@
+
+\begin{example}[Complete Two Rounds Algorithm]
+    \label{ex:twoRoundsComplete}
+    \[
+    %
+        \kw{twoRounds(k)} \triangleq
+    \begin{array}{l}
+           \clabel{ a \leftarrow []}^{1} ; \\
+            \clabel{\assign{j}{k} }^{2} ; \\
+            \ewhile ~ \clabel{j > 0}^{3} ~ \edo ~ \\
+            \Big(
+             \clabel{\assign{x}{\query(\chi[k - j]\cdot \chi[k])} }^{4}  ; \\
+             \clabel{\assign{j}{j-1}}^{5} ;\\
+            \clabel{a \leftarrow x :: a}^{6}       \Big);\\
+            \clabel{l \leftarrow (\kw{sign}\big (\sum_{i\in [k]} \chi[i]\times\ln\frac{1+a[i]}{1-a[i]} \big ))}^{7}\\
+        \end{array}
+    \]
+    %
+    \begin{algorithm}
+    \footnotesize
+    \caption{A two-round analyst strategy for random data (The example in  \cite{dwork2015generalization})}
+    \label{alg:twoRound}
+    \begin{algorithmic}
+    \REQUIRE Mechanism $\mathcal{M}$ with a hidden data set $D \in \{-1,+1\}^{n\times (k+1)} \subset \dbdom$.
+    \STATE  {\bf for}\ $j\in [k]$\ {\bf do}.  
+    \STATE \qquad {\bf define} $q_j(d)=d(j)\cdot d(k)$ where $d \in \{D(i) ~|~ i = 0, \cdots, n\} \subseteq \{-1,+1\}^{k+1}$.
+    \STATE \qquad {\bf let} $a_j=\mathcal{M}(q_j)$ 
+    \STATE \qquad \COMMENT{In the line above, $\mathcal{M}$ computes approx. the exp. value  of $q_j$ over $D$. So, $a_j\in [-1,+1]$.}
+    \STATE {\bf define} $q_{k}(d)= d(k) \cdot \kw{sign}\big (\sum_{i\in [k]} x(i) \cdot \ln\frac{1+a_i}{1-a_i} \big )$ where $x\in \{-1,+1\}^{k+1}$.
+    \STATE\COMMENT{In the line above,  $\kw{sign}(y)=\left \{ \begin{array}{lr} +1 & \kw{if}\ y\geq 0\\ -1 &\kw{otherwise} \end{array} \right . $.}
+    \STATE {\bf let} $a_{k+1}=\mathcal{M}(q_{k+1})$
+    \STATE\COMMENT{In the line above,  $\mathcal{M}$ computes approx. the exp. value  of $q_{k+1}$ over $X$. So, $a_{k+1}\in [-1,+1]$.}
+    \RETURN $a_{k+1}$.
+    \ENSURE $a_{k+1}\in [-1,+1]$
+        % \ENSURE 
+    \end{algorithmic}
+    \end{algorithm}
+    %
+%
+    \end{example}

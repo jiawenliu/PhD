@@ -1,0 +1,81 @@
+
+    \begin{example}[Complete Multiple Round Algorithm]
+    %
+    \begin{algorithm}
+    \footnotesize
+    \caption{A multi-round analyst strategy for random data base \cite{dwork2015generalization}}
+    \label{alg:multiRound}
+    \begin{algorithmic}
+    \REQUIRE Mechanism $\mathcal{M}$ with a hidden state $X\in [N]^{n}$ sampled u.a.r., control set size $c$
+    \STATE Define control dataset $C = \{0,1, \cdots, c - 1\}$
+    \STATE Initialize $Nscore(i) = 0$ for $i \in [N]$, $I = \emptyset$ and $Cscore(C(i)) = 0$ for $i \in [c]$
+    \STATE  {\bf for}\ $j\in [k]$\ {\bf do} 
+    \STATE \qquad {\bf let} $p=\uniform(0,1)$ 
+    \STATE \qquad {\bf define} $q (x) = \bernoulli ( p )$ .
+    \STATE \qquad {\bf define} $qc (x) = \bernoulli ( p )$ .
+    \STATE \qquad {\bf let} $a = \mathcal{M}(q)$ 
+    \STATE \qquad {\bf for}\ $i \in [N]$\ {\bf do}
+    \STATE \qquad \qquad $Nscore(i) = Nscore(i) + (a - p)*(q (i) - p)$ if $i \notin I$
+    \STATE \qquad {\bf for}\ $i \in [c]$\ {\bf do}
+    \STATE \qquad \qquad $Cscore(C(i)) = Cscore(C(i)) + (a - p)*(qc (i) - p)$
+    \STATE \qquad {\bf let} $I = \{i | i\in [N] \land Nscore(i) > \max(Cscore)\}$
+    \STATE \qquad {\bf let} $D = D \setminus I$ 
+    \RETURN $D$.
+    \end{algorithmic}
+    \end{algorithm}
+    %
+    {\small
+    \begin{figure}
+        \begin{subfigure}{0.8\textwidth}
+        \begin{centering}
+        $
+    \kw{multiRounds(k, c, N)} \triangleq
+    \begin{array}{l}
+        \clabel{\assign{j}{N}}^0 ; 
+         \clabel{\assign{cs}{0}}^1; 
+         \clabel{\assign{ns}{0}}^2;
+         \clabel{\assign{I}{0}}^3; 
+         \clabel{\assign{w}{k}}^{4} ;\\
+         \ewhile ~ \clabel{j > 0}^{5} ~ \edo ~ \\
+         \Big(
+         \clabel{\assign{j}{j-1}}^{6} ;
+         \clabel{\assign{cs}{0 + cs}}^7; 
+         \clabel{\assign{ns}{0 + ns}}^8
+         \Big); \\
+    
+         \ewhile ~ \clabel{w > 0}^{9} ~ \edo ~ \\
+        \Big(
+        \clabel{\assign{w}{w-1}}^{10} ;
+        \left[p \leftarrow c \right]^{11}; 
+        \left[q \leftarrow c \right]^{12}; 
+        \left[ a \leftarrow \query (\chi[I]) \right]^{13};\\
+        \clabel{\assign{i}{N}}^{14} ; 
+        \ewhile ~ \clabel{i > 0}^{15} ~ \edo ~ \\
+        \Big(
+        \clabel{\assign{i}{i-1}}^{16} ;
+        \clabel{\assign{cs(i)}{cs(i) + (a - p) * (q - p)}}^{17}; \\
+        \eif (\clabel{ I < i}^{18}, \clabel{\assign{ns(i)}{{ns(i) + (a - p) * (q - p)}}}^{19},
+        \clabel{\assign{ns}{ns(i)}}^{20}    )
+        \Big); \\
+        \clabel{\assign{i2}{N}}^{21} ; \\
+        \ewhile ~ \clabel{i2 > 0}^{22} ~ \edo ~ \\
+        \Big(
+        \clabel{\assign{i2}{i2-1}}^{23} ;
+        \eif (\clabel{ns(i2) > \kw{max}(cs)}^{24}, 
+        \clabel{\assign{I}{i + I}}^{25},
+        \clabel{\assign{I}{I}}^{26})
+        \Big)
+        \Big) 
+    \end{array}
+       $
+       \caption{}
+        \end{centering}
+        \end{subfigure}
+        \vspace{-0.3cm}
+        \caption{(a) The labeled program implementing the multiple round algorithm (b)The same program in the SSA version}
+        \vspace{-0.5cm}
+        \label{fig:multiround_complete}
+        \end{figure}
+    }
+    %
+    \end{example}
