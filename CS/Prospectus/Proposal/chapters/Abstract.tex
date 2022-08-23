@@ -18,19 +18,27 @@
  % Gap
  % Unfortunately, this depth which relies on the program(implementation) itself is costly in human efforts, and how to statically obtain this information is not well studied to support data analysts.
 % \todo{Intro The Program Analysis On non-functional Property}
-Some program properties can be expressed in the form of reachability,
+Some program properties can be expressed in terms of reachability,
 such as
-whether the output relies on user input, whether the secret data is leaked in the security analysis area, 
+whether the output relies on user input, whether the secret data is leaked, 
 whether some pieces of code are executed, etc.
-Reachability can tell us the existence of these properties.
-% such as whether the output relies on user input.
-% for example whether the secret data is leaked in the security area.
-However, it cannot tell us how many times or how long these properties hold for programs.
-For example, it can not tell us how much data is leaked, which is also crucial in security. This requires extra analysis
-of the program's quantitative property. 
-To this end, I'm interested in studying the program's quantitative reachability in this proposal. 
-By exploiting the quantitative reachability,
-many program properties can be 
+However, it is not enough to describe these properties just
+%  in terms of reachability,
+from the perspective of reachability,
+% Meanwhile, 
+there are also some other important information related these properties from the quantitative aspect.
+For example, the amount of the leaked data, which is crucial in the security analysis area;
+the times that some pieces of code are executed, which is important in resource cost analysis area; etc.
+% Reachability can tell us the existence of these properties.
+For the properties that have both reachable and quantitative information, they are
+% This kind of properties are 
+program's quantitative reachability properties.
+% which are programs properties that can be expressed in terms of both reachability and quantity.
+Providing both the reachability information and tight quantitative bounds on 
+these properties is useful to improve software design for different potential applications.
+Moreover, 
+by exploiting the quantitative reachability properties,
+other different program properties beyond them can also be 
 studied based on it
 % expressed
 % in a 
@@ -40,23 +48,80 @@ such as the number of function calls,
 program execution steps,
 lines of executed codes,
 the power consumption, memory usage, etc. 
-Controlling these quantities can improve program reliability, security, privacy, usability, etc.
- For instance, in security, whether and how the program's output is influenced by the user's input
- can be studied based on the 
- quantitative reachability
- of user-defined input w.r.t. the output of the program.
+Controlling
+these quantities
+% can improve program reliability, security, privacy, usability, etc.
+%  For instance, in security, whether and how the program's output is influenced by the user's input
+%  can be studied based on the 
+%  quantitative reachability
+%  of user-defined input w.r.t. the output of the program.
 % the performance in terms of the execution time of two pieces of code for the same task can be used to decide which one to use. 
-Providing tight bounds on these quantities is useful to improve software design for different potential applications. In this proposal, I will focus on analyzing several quantitative reachability properties of programs that can be used to improve programs' performance, along different axes.
+% and 
+can improve program reliability, security, privacy, usability, etc.
+To this end, I'm interested in
+%  designing the program analysis on 
+analyzing the program's quantitative reachability properties.
+Reachability analysis can help us to determine whether a program holds some of these properties.
+% such as whether the output relies on user input.
+% for example whether the secret data is leaked in the security area.
+However, it cannot tell us
+%  how many times or how long these properties hold for the program.
+the quantitative information of these properties.
+For example, it can not tell us how much data is leaked, or
+% , which is crucial in the security analysis area.
+% It can not tell us 
+how many times some pieces of code are executed, etc.
+% which is important in resource cost analysis area.
+To have more useful analysis results on the reachability quantitative properties,
+we need to perform extra analysis
+% of the program's quantitative property. 
+to get the quantitative information
+(in additional to the boolean information describing the reachability).
+%  in this proposal.
+% the reachability and quantity aspescts of the property.
+In this proposal, I focus on designing
+the program analysis framework analyzing several quantitative reachability properties of programs
+%  that can be used to improve the programs' performance, along different axes.
+which can provide useful analysis results on both the reachability and quantity aspects.
 
 The first reachability quantitative property
- I focus on is the adaptivity of programs in adaptive data analysis.
- This is intuitively defined as the depth of the chain of dependent queries. 
- In adaptive data analysis, the choice of queries can depend on the results of its previous queries. 
- Hence, there form chains of queries in which every query relies on its previous ones.
- Reasoning about adaptivity is useful in controlling the generalization error of adaptive data analysis, which usually propagates sharply along with the chain. 
- Many researchers have found that the generalization error can be controlled well by choosing the appropriate statistic technique according to the adaptivity. Nevertheless, the adaptivity is not always clear to data analysts when they need it. To solve this dilemma, we propose a program analysis algorithm based on dependency graphs, to provide an upper bound on adaptivity to assist data analysts.
-This part mainly developed by first defining the \emph{adaptivity} for 
- the adaptive data analysis
+ I focus on is the adaptivity of the program in the adaptive data analysis.
+ In this area, a data analysis is designed for identifying  properties for unknown populations / distributions 
+ through data samples.
+ %  ?= is widely 
+%  used in research and industrial areas.
+It can be modeled as a process composed of 
+multiple queries interrogating some data.
+%  This is intuitively defined as the depth of the chain of dependent queries. 
+ In an adaptive data analysis, the choice of queries can depend on the results of their previous queries. 
+ Hence, these dependent queries form trees in which every query relies on its previous ones.
+% the generalization error is propagated through the reliance between the choices of queries.
+The \emph{adaptivity} is intuitively defined as the maximum depth of the trees that are formed by these dependent queries
+in an adaptive data analysis.
+% (i.e., how many queries are relied on others) in the analysis plays a key role in reducing the generalization error.
+When generalizing the analysis result from data samples to the unknown populations, 
+the generalization error is the key issue on which researchers are focusing to reduce.
+% Many researchers have found that the generalization error can be controlled well
+% %  by choosing the appropriate statistic technique 
+% according to the adaptivity. 
+%  Hence, reasoning about 
+ Many researchers have found that the
+ \emph{adaptivity} is useful for controlling the generalization error of an adaptive data analysis,
+ which usually propagates sharply along with the dependent queries. 
+ However, when the data analysts implement the adaptive
+ data analysis as programs and execute them,
+the programs' \emph{adaptivity} are not always clear to them
+when they want to use them to control the programs' generalization errors.
+In order to assist them automatically control the generalization error using the adaptivity information,
+%   when they need it. 
+%  To solve this dilemma, I
+ I propose a program analysis framework
+%   based on dependency graphs,
+ to provide an upper bound on \emph{adaptivity}
+%   to assist data analysts 
+in PART I.
+This part is developed by first defining the \emph{adaptivity} for 
+ the program that implements an adaptive data analysis
  and then designing
  a program analysis framework for estimating the \emph{adaptivity}.
 % Next, based on the implementation and experimental results of my \emph{adaptivity} analysis framework, 
@@ -94,7 +159,7 @@ In estimating some quantitative property
 % this problem is important in computing a precise analysis result.
 in the data analysis area, for example, the \emph{adaptivity}
 % For example, in the data analysis area 
-in PART I, the reachability-bound on each program control location
+of data analysis in PART I, the reachability-bound on each program control location
 % helps
 % in 
 can improve the precision of the estimated bound on the adaptive data analysis program's \emph{adaptivity}.
@@ -104,7 +169,9 @@ in estimating the program's information leakage or uncertainty propagation, etc.
 Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
 % None of them solve the reachability-bound problem directly, or path-sensitively.
 However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively.
-To solve these issues and improve the analysis results on this problem, I propose a new algorithm
+To solve these issues
+%  and improve the analysis results on this problem,
+I propose a new algorithm
 aiming to find a precise symbolic worst-case reachability-bound on the program's every control location
 % than existing works, 
 in part II.
@@ -117,23 +184,23 @@ in part II.
 
 % a static analysis framework for 
 % \todo
-{
- The third challenging quantitative reachability property I'm interested in is the program's {non-monotonic} quantitative property.
- This kind of property includes memory usage in the presence of garbage collection,
-number of channel connections established that are later closed,
-or resources requested to a virtual host which is released after using them. 
-The non-monotonic quantitative property is significantly different from the traditional monotonic quantitative property,
-such as the program execution time, energy consumption,
-% etc. w.r.t. the physical resources,
-or the information leakage, etc. with different measurements in different areas.
-% ).
-These traditional quantitative properties only accumulate during the program execution. 
-However, the non-monotonic quantitative property could also decrease along the computation.
-To give a precise estimation on this {non-monotonic} quantity, I propose a program analysis framework in PART III.
-This new framework will give
-a symbolic bound on the program's non-monotonic quantitative property more accurately and efficiently
-than existing works.
-}
+% {
+%  The third challenging quantitative reachability property I'm interested in is the program's {non-monotonic} quantitative property.
+%  This kind of property includes memory usage in the presence of garbage collection,
+% number of channel connections established that are later closed,
+% or resources requested to a virtual host which is released after using them. 
+% The non-monotonic quantitative property is significantly different from the traditional monotonic quantitative property,
+% such as the program execution time, energy consumption,
+% % etc. w.r.t. the physical resources,
+% or the information leakage, etc. with different measurements in different areas.
+% % ).
+% These traditional quantitative properties only accumulate during the program execution. 
+% However, the non-monotonic quantitative property could also decrease along the computation.
+% To give a precise estimation on the {non-monotonic} quantity, I propose a program analysis framework in PART III.
+% This new framework will give
+% a symbolic bound on the program's non-monotonic quantitative property more accurately and efficiently
+% than existing works.
+% }
 % analysis via
 % the generalization of the \emph{adaptivity} analysis framework.
 %

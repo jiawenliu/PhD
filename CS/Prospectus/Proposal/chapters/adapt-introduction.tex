@@ -21,7 +21,8 @@ the limitations of previous works.
 The last part in Section~\ref{sec:adapt-outline} is an outline of this chapter with the contributions of this work.
 
  \subsection{Adaptive Data Analysis}
- \label{sec:adapt-background}The adaptive data analysis designed for identifying  properties for unknown populations / distributions 
+ \label{sec:adapt-background}
+ The adaptive data analysis designed for identifying  properties for unknown populations / distributions 
  through data samples is widely 
  used in research and industrial areas.
  % , including machine learning areas, etc.. 
@@ -41,14 +42,12 @@ The last part in Section~\ref{sec:adapt-outline} is an outline of this chapter w
  Below I introduce in detail the adaptive data analysis procedure,
  and the significance of this \emph{adaptivity} quantity in effecting the generalization error.
  
- \paragraph{Adaptive Data Analysis Procedure}
+ \textbf{The Adaptive Data Analysis Procedure.}
  % \label{sec:intro-exelimitation}
- 
  % Data analyses are usually designed to identify some property of the population 
  % from which the data are drawn, generalizing beyond the specific data sample. 
  % For this reason, data analyses are often designed in a way that guarantees that they produce a low generalization error.
  % That is, they are designed so that the result of a data analysis run on sample data does not differ too much from the result one would achieve by running the analysis over the entire population. 
- 
  % An adaptive data analysis can be seen as a process composed of multiple queries interrogating some data, where the choice of which query to run next may rely on the results of previous queries. 
  % The generalization error of individual query/analysis can be controlled by using an array of well-established statistical techniques.
  % However, when queries are arbitrarily composed, the different errors can propagate through the chain of different queries and bring high generalization errors. 
@@ -61,7 +60,6 @@ The last part in Section~\ref{sec:adapt-outline} is an outline of this chapter w
  % So in order to give a precise guarantee of generalization error
  % for the program,
  % I'm interested in analyzing the depth of the chain of queries in a program, i.e., the program's \emph{adaptivity} property.
- 
  Consider a dataset $X$ consisting of $n$ independent samples from some unknown population $\dist$. How can I ensure that the conclusions are drawn from $X$ \emph{generalize} to the population $\dist$? Despite decades of research in statistics and machine learning on methods for ensuring generalization, there is an increased recognition that many scientific findings generalize poorly (e.g. 
  \cite{Ioannidis05,GelmanL13}
  ). While there are many reasons a conclusion might fail to generalize, one that is receiving increasing attention is \emph{adaptivity}, which occurs when the choice of method for analyzing the dataset depends on previous interactions with the same dataset~\cite{GelmanL13}.

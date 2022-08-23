@@ -65,66 +65,66 @@ Given a program $c$, and a memory $m$, a database $D$, a starting loop map $w$, 
 %
 $$A(c, D, m, w) = \max\limits_{q({v_q})^{(l,w)},q({v_q}')^{(l',w')} \in V } |p(q({v_q})^{(l,w)}, q({v_q}')^{(l',w')} )| $$
 \end{defn}
-\subsection*{Limitations}
-Limited by their language design and the dependency graph construction,
-this adaptivity definition is weak in the following aspects.
-\highlight{
- \begin{enumerate}
- \item \textbf{Expressiveness Limitation}
- \\
- The definition isn't general enough to give the formal adaptivity for the adaptive data analysis programs with non-constant
- while loops.
- However, programs containing while loops of non-deterministic iteration times are very common in the adaptive data analysis area.
- This is caused by the expressiveness limitation in their language design and operational semantics design as analyzed
- in Section~\ref{sec:prework-language}.
- \\
- In the following example program similar to the one in Section~\ref{sec:prework-language} with two extra query request commands,
- \[
- {\assign{x}{0}};
- \assign{y}{5};
- \assign{z}{q(x + y)};
- \ewhile (x < y) \edo 
- \{
- \assign{x}{x + 1};
- \assign{y}{y - 1};
- \assign{z}{q(x+y+z)};
- \}\}
- \] 
- the number of iterations cannot be evaluated to a nature number in advance of entering this loop for the same reason. 
- The iteration number is only
- able to be decided during executing this while loop body.
- % This program represents a class of data analysis programs with non-constant loop iterations, which is very common in data analysis. However, it isn't supported by their design.
- \\
- Limited by this, they cannot give the adaptivity for this program even though the adaptivity in this program is 4, which is straightforward to observe.
- % a trace generated for this program
- \item \textbf{Accuracy Limitation}
- \\
- The in-accuracy of this \emph{adaptivity} definition is caused by both their language design and their graph construction.
- \\
- As analyzed in Section~\ref{sec:prework-language}, the information in non-query requesting variables are lost.
- The dependency that passes through these variables is lost, and the adaptivity is lost as well.
- \\
- The other reason for this in-accuracy comes from their graph definition.
- This dependency graph definition relies on a specific memory, while-map, and a specific execution trace.
- It limits the adaptivity defined for the adaptive data analysis program to be w.r.t. one specific
- execution.
- In the other words, this adaptivity definition doesn't correspond to the \emph{adaptivity} for this program,
- but for the program in a certain execution.
- % to The trace only tracks the query requests. This lost the information of the variables
- % which are assigned by query values even if they are not assigned by query requests. 
- \item \textbf{Efficiency Limitation}
- \\
- This definition is in-efficient in the sense that it requires the full unfolding of every iteration for the while loop.
- There are two reasons for this unfolding operation.
- The first one comes from the low efficiency of their trace-based operational semantics,
- which requires the trace to track the loop iteration number in the annotated query.
- The other comes from their dependency graph generation, which requires every query request evaluated during the program execution
- as the graph nodes.
- Both of the two processes generate unnecessary and duplicate nodes during the while iterations.
- % annotatation of the the query request executed in the program
- % with integer indicating the while loops. 
-\end{enumerate}
-}
+% \subsection*{Limitations}
+% Limited by their language design and the dependency graph construction,
+% this adaptivity definition is weak in the following aspects.
+% \highlight{
+%  \begin{enumerate}
+%  \item \textbf{Expressiveness Limitation}
+%  \\
+%  The definition isn't general enough to give the formal adaptivity for the adaptive data analysis programs with non-constant
+%  while loops.
+%  However, programs containing while loops of non-deterministic iteration times are very common in the adaptive data analysis area.
+%  This is caused by the expressiveness limitation in their language design and operational semantics design as analyzed
+%  in Section~\ref{sec:prework-language}.
+%  \\
+%  In the following example program similar to the one in Section~\ref{sec:prework-language} with two extra query request commands,
+%  \[
+%  {\assign{x}{0}};
+%  \assign{y}{5};
+%  \assign{z}{q(x + y)};
+%  \ewhile (x < y) \edo 
+%  \{
+%  \assign{x}{x + 1};
+%  \assign{y}{y - 1};
+%  \assign{z}{q(x+y+z)};
+%  \}\}
+%  \] 
+%  the number of iterations cannot be evaluated to a nature number in advance of entering this loop for the same reason. 
+%  The iteration number is only
+%  able to be decided during executing this while loop body.
+%  % This program represents a class of data analysis programs with non-constant loop iterations, which is very common in data analysis. However, it isn't supported by their design.
+%  \\
+%  Limited by this, they cannot give the adaptivity for this program even though the adaptivity in this program is 4, which is straightforward to observe.
+%  % a trace generated for this program
+%  \item \textbf{Accuracy Limitation}
+%  \\
+%  The in-accuracy of this \emph{adaptivity} definition is caused by both their language design and their graph construction.
+%  \\
+%  As analyzed in Section~\ref{sec:prework-language}, the information in non-query requesting variables are lost.
+%  The dependency that passes through these variables is lost, and the adaptivity is lost as well.
+%  \\
+%  The other reason for this in-accuracy comes from their graph definition.
+%  This dependency graph definition relies on a specific memory, while-map, and a specific execution trace.
+%  It limits the adaptivity defined for the adaptive data analysis program to be w.r.t. one specific
+%  execution.
+%  In the other words, this adaptivity definition doesn't correspond to the \emph{adaptivity} for this program,
+%  but for the program in a certain execution.
+%  % to The trace only tracks the query requests. This lost the information of the variables
+%  % which are assigned by query values even if they are not assigned by query requests. 
+%  \item \textbf{Efficiency Limitation}
+%  \\
+%  This definition is in-efficient in the sense that it requires the full unfolding of every iteration for the while loop.
+%  There are two reasons for this unfolding operation.
+%  The first one comes from the low efficiency of their trace-based operational semantics,
+%  which requires the trace to track the loop iteration number in the annotated query.
+%  The other comes from their dependency graph generation, which requires every query request evaluated during the program execution
+%  as the graph nodes.
+%  Both of the two processes generate unnecessary and duplicate nodes during the while iterations.
+%  % annotatation of the the query request executed in the program
+%  % with integer indicating the while loops. 
+% \end{enumerate}
+% }
 % This operational semantics is limited in the following aspects:
 % \begin{itemize}
 %  \item \textbf{Expressiveness Limitation}

@@ -1,0 +1,204 @@
+This section analyzes the limitations of previous works and motivation for developing a new
+program analysis for the adaptivity of the adaptive data analysis.
+% Limited by their language design, the adaptivity definition and the techniques in
+% their adaptivity estimation, t
+The weaknesses are mainly lay in three aspects, the expressiveness, accuracy and efficiency
+throughout their analysis framework.
+% \highlight{
+%     \paragraph{Limitations of The Language Syntax}
+% \begin{enumerate}
+% % \item  It supports limited query expressions.
+% % %
+% \item  It doesn't support the program which contains while loop with non-deterministic iterations.
+% In the other words, it only supports the simple loop programs with
+% constant (or arithmetic expression which is evaluated to constant) number of iterations.
+% However, the adaptive data analysis programs with non-constant (or non-deterministic) iteration numbers are very common.
+% %
+% \item  It doesn't support the program which contains the user inputs.
+% This kind of program is also common in the data analysis area.
+% \end{enumerate}
+% }
+\highlight{
+\paragraph{Limitations in The Language Model}
+\begin{itemize}
+ \item \textbf{Expressiveness Limitation}
+%  \\
+ \begin{enumerate}
+    % \item  It supports limited query expressions.
+    % %
+    \item  The language syntax doesn't support the program which contains while loop with non-deterministic iterations.
+    In the other words, it only supports the simple loop programs with
+    constant (or arithmetic expression which is evaluated to constant) number of iterations.
+    However, the adaptive data analysis programs with non-constant (or non-deterministic) iteration numbers are very common.
+    %
+    \item  The language syntax doesn't support the program which contains the user inputs.
+    This kind of program is also common in the data analysis area.
+    \item 
+    The operational semantics design
+    %  causes a similar limitation as their syntax.
+    % The 
+    restrict the loop iteration number only be a constant number or an arithmetic expression evaluated to a nature number.
+    This is caused by the operational semantics rule design, trace definition, and the annotated query definition.
+    In the rule \rname{l-loop}, a nature number $v_N$ is required on the premise of tracking the iteration times.
+    This requires that the loop iteration number has to be a nature number or evaluated to a nature number in advance to execute the loop.
+    Then in their trace and annotated query design,
+    % generated through the operational semantics rules.
+    the trace tracks the annotated query, which requires an integer annotation explicitly indicating the iteration number of the loop.
+    % annotatation of the the query request executed in the program
+    % with integer indicating the while loops. 
+    % \\
+    For example, in the following program with a simple while loop,
+    \[
+    {\assign{x}{20}};
+    \assign{y}{100};
+    \ewhile (x < y) \edo 
+    \{
+    \assign{x}{x + 1};
+    \assign{y}{y - 2};
+    \}
+    \] 
+    the number of iterations cannot be evaluated to a nature number in advance of entering this loop. 
+    The iteration number is only
+    able to be decided during executing this while loop body.
+    This program represents a class of data analysis programs with non-constant loop iterations
+    which is very common in data analysis. However, it isn't supported by their design.
+    \end{enumerate}
+ \item \textbf{Accuracy Limitation}
+ \\
+ This operational semantics design causes in-precision in formalizing the \emph{adaptivity}.
+ Because there is information loss in their trace generated through the operational semantic rules.
+ The trace only tracks the query requests. This lost the information of the variables
+ which are assigned by query values even if they are not assigned by query requests. However, these variables
+ are critical in analyzing the \emph{adaptivity}.
+ This will be analyzed in detail in the limitation in Section~\ref{sec:prework-formalization}.
+ \item \textbf{Efficiency Limitation}
+ \\
+ There are four components in their configuration in order to evaluate the program. 
+ The update operations for this quadruple configuration are low-efficient, especially the update operation of the while map.
+\end{itemize}
+}  
+
+\highlight{
+\paragraph{Limitations in The Adaptivity Definition}
+Their adaptivity definition is also limited by the three aspects, the expressiveness, accuracy and efficiency.
+ \begin{enumerate}
+ \item \textbf{Expressiveness Limitation}
+ \\
+ The definition isn't general enough to give the formal adaptivity for the adaptive data analysis programs with non-constant
+ while loops.
+ However, programs containing while loops of non-deterministic iteration times are very common in the adaptive data analysis area.
+ This is caused by the expressiveness limitation in their language design and operational semantics design as analyzed
+ in Section~\ref{sec:prework-language}.
+%  \\
+ In the following example program
+%   similar to the one in Section~\ref{sec:prework-language} 
+with two query request commands,
+ \[
+ {\assign{x}{0}};
+ \assign{y}{5};
+ \assign{z}{q(x + y)};
+ \ewhile (x < y) \edo 
+ \{
+ \assign{x}{x + 1};
+ \assign{y}{y - 1};
+ \assign{z}{q(x+y+z)};
+ \}
+ \] 
+ the number of iterations cannot be evaluated to a nature number in advance of entering this loop for the same reason. 
+ The iteration number is only
+ able to be decided during executing this while loop body.
+ % This program represents a class of data analysis programs with non-constant loop iterations, which is very common in data analysis. However, it isn't supported by their design.
+%  \\
+ Limited by this, they cannot give the adaptivity for this program even though the adaptivity in this program is 4, which is straightforward to observe.
+ % a trace generated for this program
+ \item \textbf{Accuracy Limitation}
+ \\
+ The in-accuracy of this \emph{adaptivity} definition is caused by both their language design and their data dependency graph design.
+%  \\
+%  As analyzed in Section~\ref{sec:prework-language}, 
+Limited by their operational semantics design, the information in non-query requesting variables are lost.
+ The dependency that passes through these variables is lost, and the adaptivity is lost as well.
+ \\
+ The other cause of this in-accuracy is the design of their data dependency graph.
+ This dependency graph definition relies on a specific memory, while-map, and a specific execution trace.
+ It limits the adaptivity defined for the adaptive data analysis program to be w.r.t. one specific
+ execution.
+ In the other words, this adaptivity definition doesn't correspond to the \emph{adaptivity} for this program,
+ but for the program in a certain execution.
+ % to The trace only tracks the query requests. This lost the information of the variables
+ % which are assigned by query values even if they are not assigned by query requests. 
+ \item \textbf{Efficiency Limitation}
+ \\
+ This definition is in-efficient in the sense that it requires the full unfolding of every iteration for the while loop.
+ There are two reasons for this unfolding operation.
+ The first one comes from the low efficiency of their trace-based operational semantics,
+ which requires the trace to track the loop iteration number in the annotated query.
+ The other comes from their dependency graph generation, which requires every query request evaluated during the program execution
+ as the graph nodes.
+ Both of the two processes generate unnecessary and duplicate nodes during the while iterations.
+ % annotatation of the the query request executed in the program
+ % with integer indicating the while loops. 
+\end{enumerate}
+}
+\highlight{
+    \paragraph{Limitations in The Adaptivity Estimation}
+    % The adaptivity estimation algorithm is mainly limited by its efficiency and the accuracy with weakness
+    % % It is also weak 
+    % in terms of expressiveness as well.
+\begin{enumerate}
+    \item \textbf{Expressiveness Limitations}
+%  \begin{enumerate}
+%  \item 
+\\
+Limited by both of their \textbf{variable estimation} algorithm and the \textbf{graph generation} algorithm,
+their static analysis algorithm is unable to analyze the programs with
+ non-constant (or non-deterministic) loop iteration numbers.
+ This is caused by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1}.
+ This rule unfolds every iteration of the while loop, and creates new annotated variables for every iteration.
+ In order to guarantee the termination of the analysis, they have to limit the loop with the constant number of loop iterations.
+ Specifically in rule \textbf{ag-loop} and \textbf{ad-loop},
+ % Their variable estimation for the while loop is low-efficient. As shown in rule \textbf{ag-loop},
+ % they unfold every iteration of the while loop and create new annotated variables for every iteration.
+ % This rule causes a major efficiency limitation of their static analysis.
+ % It also causes a critical expressiveness limitation. 
+ the premise in these two rules requires
+ the arithmetic expression
+ % is required 
+ to be a natural number. 
+ This rule limits the program cannot even
+ have a loop with an arithmetic expression like $10 + 4$ in the guard.
+ Concretely, a simple example program with a loop iterating $5$ times as follows isn't allowed in their work.
+ \[
+ {\assign{x}{5}};
+ \assign{z}{q(x)};
+ \eloop (x ) \edo 
+ \{
+ \assign{z}{q(x + z)};
+ \}
+ \] 
+%  \item For the same reason as above, their \textbf{Graph Generation} algorithm is limited as well.
+%  \end{enumerate}
+ \item \textbf{Efficiency Limitations}
+ \begin{enumerate}
+ \item
+ In order to address the issue of re-assignment of different queries requesting results to the same variable, they re-write the program from the loop language into SSA form.
+ However, this rewriting is low-efficient and unnecessary.
+ The re-assignment problem can be resolved efficiently and accurately through many state-of-art static program analysis techniques, such as the
+ variable reachable analysis, etc..
+ \item Their variable estimation algorithm is low-efficient by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1},
+ and rule \textbf{ad-loop} in Figure~\ref{fig:prework-static_alg2}.
+ These two rules unfold every iteration of the while loop and create new annotated variables for every iteration.
+ This operation increased the complexity of the program analysis by exponential factors. 
+ \item For the same reason as above, their \textbf{Graph Generation} algorithm is low-efficient as well.
+ \end{enumerate}
+ %
+ \item \textbf{Accuracy Limitations}
+ \begin{enumerate}
+ \item The estimated adaptivity from this framework is loose.
+ It over-approximates in the cases where there isn't semantic dependency between variables even though the variables
+ are explicitly used in the query request.
+ \item This program analysis framework is naive in the sense that all three steps are standard.
+ And the framework is simply a straightforward composition of the three steps.
+ \end{enumerate}
+\end{enumerate}
+}

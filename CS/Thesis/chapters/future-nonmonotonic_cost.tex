@@ -201,10 +201,13 @@ target quantitative property of a program.
  the number of vertices which correspond to query variables in the vertices sequence of the walk $k(\trace_0)$
  $(v_1, \ldots, v_{n})$ as follows, 
  \[
- \NMlen(k)(\trace_0) = 
- \left\vert \big( v \mid v \in (v_1, \ldots, v_{n}) \land (v, 1) \in \traceOP(c) \big) \right \vert
- - 
- \left\vert \big( v \mid v \in (v_1, \ldots, v_{n}) \land (v, -1) \in \traceOP(c) \big) \right \vert.
+     \begin{array}{l}
+        \NMlen(k)(\trace_0) = 
+        \left\vert \big( v \mid v \in (v_1, \ldots, v_{n}) \land (v, 1) \in \traceOP(c) \big) \right \vert
+        \\ \qquad \qquad \qquad
+        - 
+        \left\vert \big( v \mid v \in (v_1, \ldots, v_{n}) \land (v, -1) \in \traceOP(c) \big) \right \vert.
+    \end{array}
  \]
  \end{defn}}
  % 3. \textbf{Non-Monotonic Quantity}
