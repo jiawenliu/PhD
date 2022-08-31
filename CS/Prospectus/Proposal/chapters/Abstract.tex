@@ -18,10 +18,13 @@
  % Gap
  % Unfortunately, this depth which relies on the program(implementation) itself is costly in human efforts, and how to statically obtain this information is not well studied to support data analysts.
 % \todo{Intro The Program Analysis On non-functional Property}
-Some program properties can be expressed in terms of reachability,
+\wqside{First of all, is "reachability property of program" something common?  }
+ Some program properties can be expressed in terms of reachability,
 such as
 whether the output relies on user input, whether the secret data is leaked, 
 whether some pieces of code are executed, etc.
+
+\wq{Reachability has wide applications in program analysis. For instance, in security program analysis area, static analysis tool zoncolan finds security issues in facebook's codebase by monitoring any sensitive user data reaching any third-party code. In liveness analysis, reachability is used to statically analyze whether some pieces of code will be executed. In data analysis area, reachablity-based program analysis can tell data analysts whether certain query uses the results of some other queries. As we may already observe, the reachability-based program analysis can answer the question of "whether or not" a program has some property, but has troubles in describing "the degree" of the property. In our previous example, our data analysts use program analysis and knows some query relies on others in their programs. However, to improve their data analysis programs, they also want to know "the degree" of the reliance between queries: a query which relies on two other queries relies more "intensely" than another one which only uses the result of one other query.            }
 However, it is not enough to describe these properties just
 %  in terms of reachability,
 from the perspective of reachability,
