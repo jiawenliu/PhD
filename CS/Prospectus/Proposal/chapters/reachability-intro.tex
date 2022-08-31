@@ -1,5 +1,18 @@
 % \subsection{Reachability-Bound Problem \todo{60\% ==> Refine and Entrich}}
 % \label{sec:reachability-back}
+
+\wq{Reachability has wide applications in program analysis. 
+For instance, in security program analysis area, 
+static analysis tool "Zoncolan" finds security issues in Meta's codebase by monitoring any sensitive user data reaching any third-party code.
+In liveness analysis, reachability is used to statically analyze whether some pieces of code will be executed. 
+In data analysis area, reachability-based program analysis can tell data analysts whether certain query uses the results of some other queries.
+As we may already observe, the reachability-based program analysis can answer the question of "whether or not" a program has some property,
+but has troubles in describing "the degree" of the property. 
+In our previous example, our data analysts use program analysis and knows some query relies on others in their programs. 
+However, to improve their data analysis programs, 
+they also want to know "the degree" of the reliance between queries: a query which relies on two other queries relies more 
+"intensely" than another one which only uses the result of one other query.
+}
 \highlight{The number of times a given control location 
 inside a procedure is visited during the program execution
 is an importance reachability quantitative property for programs.

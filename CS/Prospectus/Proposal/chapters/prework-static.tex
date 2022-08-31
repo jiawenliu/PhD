@@ -8,7 +8,7 @@ a Static Single Assignment (SSA) version of loop language, then estimate the ada
 % This can improve the accuracy in the variable re-assigning cases.
 % The following parts summarize the SSA version of the loop language with their program analysis framework,
 % followed by the limitations of their analysis method.
-\subsection*{SSA-Language}
+\subsection{SSA-Language Transformation}
 In order to distinguish different query requests in the case where they are assigned to
 %  the issue of re-assignment of query requesting results to 
 the same variable, they re-write the program from the loop language into SSA form.
@@ -37,7 +37,7 @@ Then they transform the operational semantics rules with all the operations defi
 Based on the transformed language, they also redefine the formal adaptivity for the transformed program equivalent to the
 loop language-based definition. The complete definition is in Thesis~\cite{weihao22}.
 %
-\subsection*{Program Analysis Algorithm}
+\subsection{Program Analysis Algorithm}
 Then they estimate the adaptivity for a program based on rewriting it into SSA form.
 This part summarizes
 %  the previous analysis algorithm for estimating the adaptivity for a program. 
@@ -57,8 +57,9 @@ The $\mathsf{VE}$ specifies the nodes of their variable-based dependency graph. 
     % $\mathsf{VE}$ has the form $\ag{G; w; \ssa{c}}{ G'; w'} $, as shown in . The input of $\mathsf{VE}$ is a list of annotated variables $G$ collected before the program $\ssa{c}$, a loop map $w$ consistent with previous estimation, and an input SSA program $\ssa{c}$. The output of the algorithm is the updated global list $G'$, along with the updated loop maps $w$, for later estimation.  
     % \\
     \highlight{
-        This variable estimation method is low-efficient, especially for the while loop. Specifically in rule \textbf{ag-loop} as in Figrue~\ref{fig:prework-static_alg1},
-        they unfold every iteration of the while loop and create new annotated variables for every iteration.
+        This algorithm is inefficient.
+        The rule \textbf{ag-loop} in Figrue~\ref{fig:prework-static_alg1}
+        unfolds every iteration of the while loop and create new annotated variables for every iteration.
         This rule causes a major efficiency limitation in their static analysis.
         It also causes a critical expressiveness limitation. By the premise in the rule \textbf{ag-loop},
         the arithmetic expression is required to be a natural number.
@@ -122,11 +123,9 @@ The matrix $M$ records the may-dependency between annotated variables in the glo
 This weight is $1$ when the variable is assigned with a query request and $0$ otherwise. 
 % To be precise, the $i$th row, $j$th column of the matrix $M$, written $M[i][j]$, is  $1$ when there may be a dependency from variable $ G[i]$ to $G[j]$. Dually, $M[i][j] =0$ means no dependency. In a similar way, $V[i]=1$ means the variable $G[i]$ is assigned with a query request.
 % Figure~\ref{fig:prework-static_alg2} shows some selected rules of this algorithm.
-\highlight{The same key rules is selected in Figure~\ref{fig:prework-static_alg2}.
-The rule \textbf{ad-loop} is as low-efficient and expressiveness-limited as the rule \textbf{ag-loop}
-%  in Figure~\ref{fig:prework-static_alg1} 
-for the same reason.
-This will be analyzed in detail in the limitation part.
+\highlight{
+    Some key rules are selected in Figure~\ref{fig:prework-static_alg2} and the complete definition is in Thesis~\cite{weihao22}.
+    The rule \textbf{ad-loop} is inefficient and expressiveness-limited for the same reason as the rule \textbf{ag-loop}.
 }
 %
 \begin{figure}
