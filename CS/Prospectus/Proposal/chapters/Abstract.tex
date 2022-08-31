@@ -19,7 +19,7 @@
  % Unfortunately, this depth which relies on the program(implementation) itself is costly in human efforts, and how to statically obtain this information is not well studied to support data analysts.
 % \todo{Intro The Program Analysis On non-functional Property}
 % \wqside{First of all, is "reachability property of program" something common?  }
- Some program properties can be expressed in terms of reachability,
+Many program properties can be expressed in terms of reachability,
 such as
 whether the output relies on user input, whether the secret data is leaked, 
 whether some pieces of code are executed, etc.
@@ -66,31 +66,45 @@ can improve other features of the program including reliability, security, priva
 To this end, I'm interested in
 %  designing the program analysis on 
 analyzing the program's quantitative reachability properties.
-Analyzing these properties is challenging.
-The techniques for analyzing the reachability can help us to determine whether a program holds some of these properties.
+\highlight{
+    Analyzing the quantitative reachability properties is challenging.
+The techniques for analyzing the reachability can only help us to determine whether a program holds some of these properties.
+However, they cannot tell us the quantitative information of these properties.
 % such as whether the output relies on user input.
-% for example whether the secret data is leaked in the security area.
-However, they cannot tell us
+% for example whether the secret data is leaked in the security 
+For instance, the reachability analysis tool
+"Zoncolan" finds security issues in Meta's codebase by monitoring whether any sensitive user data is reached by the third-party code.
+However, it can not tell us how much data is leaked.
+% area.
+% However, they cannot tell us
 %  how many times or how long these properties hold for the program.
-the quantitative information of these properties.
-For example, it can not tell us how much data is leaked, or
+% the quantitative information of these properties.
+% For example, 
+% it can not tell us how much data is leaked, or
+The liveness analysis techniques can tell us whether some pieces of code will be executed, but not
 % , which is crucial in the security analysis area.
 % It can not tell us 
-how many times some pieces of code are executed, etc.
+how many times some pieces of code are executed.
 % which is important in resource cost analysis area.
-To have useful analysis results on the reachability quantitative properties,
+% In data analysis area,
+% reachability-based program analysis 
+Dependency analysis can tell us whether the execution of a certain code is determined by some other codes.
+However, during multiple executions,
+it cannot tell us how many times this dependency relation holds.
+To have useful analysis results on the quantitative reachability property,
 we need to perform extra analysis
 % of the program's quantitative property. 
 to get the quantitative information
 (in additional to the boolean information describing the reachability).
 %  in this proposal.
 % the reachability and quantity aspescts of the property.
-In this proposal, I focus on designing
-the program analysis framework analyzing several quantitative reachability properties of programs
+In this sense, I'm interested in designing
+the new program analysis framework analyzing several quantitative reachability properties of programs
 %  that can be used to improve the programs' performance, along different axes.
 which can provide useful analysis results on both the reachability and quantity aspects.
+}
 
-The first reachability quantitative property
+The first quantitative reachability property
  I focus on is the adaptivity of the program in the adaptive data analysis.
  In this area, a data analysis is designed for identifying  properties for unknown populations 
  through data samples.
@@ -158,8 +172,8 @@ the number of times a given control location
  inside a procedure is visited during the program execution.
 %  The number of times a given control location 
 % inside a procedure is visited during the program execution
-% is an importance reachability quantitative property for programs.
-Finding a tight bound on this reachability quantitative property is
+% is an importance quantitative reachability property for programs.
+Finding a tight bound on this quantitative reachability property is
 useful in different applications, such as
 bounding 
 resources consumed by a program such as time, memory,

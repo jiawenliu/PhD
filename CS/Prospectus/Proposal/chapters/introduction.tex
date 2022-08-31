@@ -66,17 +66,24 @@ One of the most significant behaviors with respect to programs is the execution 
  The execution correctness can be proved by showing the functional correctness property of the program with the help of some formal verification methods such as type system and program logic.
  Much attention in the programming language community has focused on the functional correctness property, while not enough effort was put on, a variety of those non-function properties, considering its wide potential applications in modern society. 
  A few decades ago, computer programs were only used for research or business purpose and the expectation of computer programs was just to execute correctly without bugs. 
- However, the expectation has also changed along with the popularity of mobile devices and wide applications of big data. 
- It is not enough for these programs running on mobile phones or those programs handling big data, 
- to just run without bugs. 
- The non-functional properties
- come into play in the new era.
-
- We think programs on mobile devices are of great significance in today's life.
- To provide people with high-quality
+ 
+ \highlight{
+However, the expectation has also changed along with the popularity of mobile devices and wide applications of big data. 
+To provide people with high-quality
  service through mobile devices,
-we choose to study the non-functional properties of programs,
-specifically the reachability quantitative property in this proposal.
+ it is not enough for these programs running on mobile phones or those programs handling big data, 
+ to just run without bugs. 
+ These programs are also expected to run efficiently, produce accurate outputs, do not leak the data, etc.,
+ when running on mobile device and handling the big data.
+%  \\
+ In this sense, the non-functional properties
+ come into play in the new era.
+ }
+%  We think programs on mobile devices are of great significance in today's life.
+% %  To provide people with high-quality
+% %  service through mobile devices,
+% we choose to study the non-functional properties of programs,
+% specifically the reachability quantitative property in this proposal.
 % Skeleton:
 % Importance of the Program Execution Property in different areas.
 
@@ -85,10 +92,14 @@ specifically the reachability quantitative property in this proposal.
 % ==> Major Work I
 % \\
 \highlight{
-    Existing high-quality
-service through mobile devices relies heavily on the data analysis results.
+For a large amount of mobile devices applications
+such as video or music player, game, shopping, etc.,
+a high-quality
+service 
+aims to provide the users with accurate personalized services.
 % machine learning algorithm analysis results over data,
-These analysis results are used to provide the users with accurately personalized services.
+Accurate personalized services relies heavily on the data analysis results.
+% These analysis results are used to provide the users with accurately personalized services.
 This brings my attention on the
 % The 
 first non-functional behavior of the data analysis programs, 
@@ -105,7 +116,7 @@ where the sample is drawn.
 Then, these generalized results are used to provide
 users who come from the unknown population with personalized services.
 Some users occasionally receive inaccurate services,
-because they are not in the sample data but still provided with the personalized services by using the generalized analysis results.
+because they are not in the sample data but still provided with the services by using the generalized analysis results.
 In these situations, the generalization error comes into play. 
 It measures the difference of the analysis results between the sample data and population data, 
 % The generalization error measures the difference of property from the sample data and population, 
@@ -129,23 +140,45 @@ analyzing.
 % In Resource Cost Analysis Area, the Reachability-Bound is significant.
 % \\
 \highlight{
-    High-quality
-service in people's mobile device life does not just rely on the accuracy of service but also
-the efficiency of the service. 
-This brings my attention to another non-functional property, the program's resource cost.
+A high-quality
+service in people's mobile device life does not
+just mean the accuracy of service but also
+the performance, the privacy, etc., of the service. 
 % non-functional properties on resource usage, one of the most useful properties concerning mobile devices. 
+% Suppose we are playing an online game on our smartphones, what do we care about? 
+% We care about the performance of the game, in another word, if it runs fast.
+% We care about whether the game crashed due to being out of memory, and so on.
 Suppose we are playing an online game on our smartphones, what do we care about? 
-We care about the performance of the game, in another word, if it runs fast.
-We care about whether the game crashed due to being out of memory, and so on.
-Additionally, resource usage is the key for embedded systems or wearable devices.
-In this sense, the study of the non-functional properties of resource usage is of great practical value.
-We observe that the non-functional properties of resource usage are usually
-related to two aspects, reachability and quantity.
-Providing information on these reachability quantitative properties
-can help to control the reachability of some resources and improve the program reliability,
-or specify certain bounds on the target resource to guarantee performance. 
-For instance, an update on a mobile app does not significantly slow down the performance
-of this update and will not use resources exceeding certain bounds specified before.
+In games such as racing, 
+we care about the performance of the game, in another word, if it runs fast, if it crashes due to being out of memory, and so on.
+% We care about whether the game crashed due to being out of memory, and so on.
+In some other strategy games, we also care about whether my strategy is leaked to other party, i.e., the privacy quality of the game.
+% \\
+% Additionally, resource usage is the key for embedded systems or wearable devices.
+% In this sense, the study of the non-functional properties of resource usage is of great practical value.
+% We observe that the non-functional properties of resource usage or data leakage are usually
+% related to two aspects, reachability and quantity.
+% \\
+We observe that performance of the program is usually related to resource cost, which is
+% to how fast the program runs, which largely 
+mainly determined by
+whether some pieces of code are executed and how times these codes are executed.
+From the same perspective, we observe that whether the data is leaked is also related to whether certain pieces of the program code are executed,
+and how many times these codes are executed.
+% \\
+This brings my attention to another two non-functional properties, the reachability and execution times of the certain program codes.
+The two properties combined is a reachability quantitative property because it has both the reachable and quantitative aspects.
+% \todo{the program's resource cost and the data leakage}.
+% \\
+% Providing information 
+Specifying certain bounds
+on this reachability quantitative property
+can help to control the usage of some resources and the data.
+%  and improve the program reliability,
+% or specify certain bounds on the target resource to 
+In this sense, it can help to guarantee both the performance and safety properties for the high-quality services on mobile device.
+% For instance, an update on a mobile app does not significantly slow down the performance
+% of this update and will not use resources exceeding certain bounds specified before.
 }
 
 % We use combinations of 

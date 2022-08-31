@@ -1,22 +1,21 @@
 % \subsection{Reachability-Bound Problem \todo{60\% ==> Refine and Entrich}}
 % \label{sec:reachability-back}
-
-\wq{Reachability has wide applications in program analysis. 
-For instance, in security program analysis area, 
-static analysis tool "Zoncolan" finds security issues in Meta's codebase by monitoring any sensitive user data reaching any third-party code.
-In liveness analysis, reachability is used to statically analyze whether some pieces of code will be executed. 
-In data analysis area, reachability-based program analysis can tell data analysts whether certain query uses the results of some other queries.
-As we may already observe, the reachability-based program analysis can answer the question of "whether or not" a program has some property,
-but has troubles in describing "the degree" of the property. 
-In our previous example, our data analysts use program analysis and knows some query relies on others in their programs. 
-However, to improve their data analysis programs, 
-they also want to know "the degree" of the reliance between queries: a query which relies on two other queries relies more 
-"intensely" than another one which only uses the result of one other query.
-}
+% \wq{Reachability has wide applications in program analysis. 
+% For instance, in security program analysis area, 
+% static analysis tool "Zoncolan" finds security issues in Meta's codebase by monitoring any sensitive user data reaching any third-party code.
+% In liveness analysis, reachability is used to statically analyze whether some pieces of code will be executed. 
+% In data analysis area, reachability-based program analysis can tell data analysts whether certain query uses the results of some other queries.
+% As we may already observe, the reachability-based program analysis can answer the question of "whether or not" a program has some property,
+% but has troubles in describing "the degree" of the property. 
+% In our previous example, our data analysts use program analysis and knows some query relies on others in their programs. 
+% However, to improve their data analysis programs, 
+% they also want to know "the degree" of the reliance between queries: a query which relies on two other queries relies more 
+% "intensely" than another one which only uses the result of one other query.
+% }
 \highlight{The number of times a given control location 
 inside a procedure is visited during the program execution
-is an importance reachability quantitative property for programs.
-Finding a tight bound on this reachability quantitative property is
+is an importance quantitative reachability property for programs.
+Finding a tight bound on this quantitative reachability property is
 useful in different applications, such as
 bounding 
 resources consumed by a program such as time, memory,
@@ -24,12 +23,16 @@ network-traffic, power,
 or helping to estimate other quantitative properties (as opposed to boolean properties)
 of data in programs, such as information leakage or uncertainty propagation.
 This bound is referred as the reachability-bound in the program analysis area,
+which is firstly proposed by the paper~\cite{GulwaniZ10}.
 % Motivated by this, this part aims to 
-and finding a symbolic worst-case bound on this reachability quantitative property
+In this paper, finding a symbolic worst-case bound on this quantitative reachability property
 in terms of the inputs to that procedure,
-is referred as the reachability-bound problem. This name is firstly proposed by the paper~\cite{GulwaniZ10},
-and solving this problem is very helpful in improving the program's performs from different aspects.
-}% The reachability-bound problem is
+is defined as the \emph{reachability-bound problem}.
+% This name is firstly proposed by the paper~\cite{GulwaniZ10},
+% and s
+Solving this problem is very helpful in improving the program analysis results in different areas.
+%  performs from different aspects.
+% }% The reachability-bound problem is
 % the problem of finding a symbolic worst-case bound on the number of times a given control location 
 % inside a procedure is visited in terms of the inputs to that procedure.
 % This concept is first proposed in \cite{GulwaniZ10}, to help to bound the
@@ -39,12 +42,12 @@ and solving this problem is very helpful in improving the program's performs fro
 % network-traffic, power, 
 % or help to estimate some quantitative properties (as opposed to boolean properties)
 % of data in programs, such as information leakage or uncertainty propagation.
-
 % Skeleton and Plan: Background and Importance of analyzing the reachability bound.
 % \\
 % \textbf{Where it is required? How useful it can be? What impact it can bring?}
 % \\
-\highlight{In some quantitative property analysis areas, solving this problem is important in helping give a precise analysis result.
+% \highlight{
+    % In many program analysis areas, solving this problem is important in helping give a precise analysis result.
 For example, in the data analysis area as in PART I, the reachability-bound on each location helps
 in giving a precise bound on the adaptive data analysis program's adaptivity quantity through static analysis.
 In the security protection area,
@@ -70,7 +73,7 @@ In other words, different location has different resource cost as well as differ
 This brings us to one of the fundamental questions that need to be answered for computing such resource bounds:
 How many times is a given control location inside the program that consumes these resources executed,
 i.e., solving the reachability-bound problem.
-To these reasons, I'm interested in analysis this reachability quantitative property
+To these reasons, I'm interested in analysis this quantitative reachability property
 and provide an accurate solution for the reachability-bound problem.
 }% This is 
 % \\
@@ -98,10 +101,13 @@ and provide an accurate solution for the reachability-bound problem.
  In the paper \cite{GulwaniZ10} that introduces this concept,
  they give a two-steps solution by combining the abstract interpretation-based iterative technique
  and the non-iterative proof-rules-based technique.
- However, their solution doesn't solve the reachability
- bound in a path-sensitive manner.
+ However, their solution
+%  doesn't solve the reachability
+%  bound in a path-sensitive manner.
+does not solve this problem in a path-sensitive manner.
+It over-approximates the reachability-bound on different paths inside a while loop.
 %  \\
- There are many works in the program complexity analysis and cost analysis area
+ There are also many works in the program complexity analysis and cost analysis area
  \cite{GustafssonEL05, HumenbergerJK18}, 
  \cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14} inferring the tight bound
  on program's overall complexity or resource cost.
