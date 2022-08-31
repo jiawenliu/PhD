@@ -22,24 +22,27 @@ Some program properties can be expressed in terms of reachability,
 such as
 whether the output relies on user input, whether the secret data is leaked, 
 whether some pieces of code are executed, etc.
-However, it is not enough to describe these properties just
+However, it is not useful enough to describe these properties only
 %  in terms of reachability,
 from the perspective of reachability,
 % Meanwhile, 
-there are also some other important information related these properties from the quantitative aspect.
+there are also
+%  some other 
+important information related to these properties from the quantitative aspect.
 For example, the amount of the leaked data, which is crucial in the security analysis area;
 the times that some pieces of code are executed, which is important in resource cost analysis area; etc.
 % Reachability can tell us the existence of these properties.
-For the properties that have both reachable and quantitative information, they are
+The properties that have both reachable and quantitative information are
 % This kind of properties are 
 program's quantitative reachability properties.
 % which are programs properties that can be expressed in terms of both reachability and quantity.
-Providing both the reachability information and tight quantitative bounds on 
-these properties is useful to improve software design for different potential applications.
+Providing both the reachable information and quantitative bounds on 
+these program properties is useful to improve software design for different potential applications.
 Moreover, 
-by exploiting the quantitative reachability properties,
+by exploiting the program's quantitative reachability properties,
 other different program properties beyond them can also be 
-studied based on it
+studied,
+%  based on it
 % expressed
 % in a 
 % through quantitative reachability
@@ -57,14 +60,15 @@ these quantities
 %  of user-defined input w.r.t. the output of the program.
 % the performance in terms of the execution time of two pieces of code for the same task can be used to decide which one to use. 
 % and 
-can improve program reliability, security, privacy, usability, etc.
+can improve other features of the program including reliability, security, privacy, usability, etc.
 To this end, I'm interested in
 %  designing the program analysis on 
 analyzing the program's quantitative reachability properties.
-Reachability analysis can help us to determine whether a program holds some of these properties.
+Analyzing these properties is challenging.
+The techniques for analyzing the reachability can help us to determine whether a program holds some of these properties.
 % such as whether the output relies on user input.
 % for example whether the secret data is leaked in the security area.
-However, it cannot tell us
+However, they cannot tell us
 %  how many times or how long these properties hold for the program.
 the quantitative information of these properties.
 For example, it can not tell us how much data is leaked, or
@@ -72,7 +76,7 @@ For example, it can not tell us how much data is leaked, or
 % It can not tell us 
 how many times some pieces of code are executed, etc.
 % which is important in resource cost analysis area.
-To have more useful analysis results on the reachability quantitative properties,
+To have useful analysis results on the reachability quantitative properties,
 we need to perform extra analysis
 % of the program's quantitative property. 
 to get the quantitative information
@@ -86,14 +90,14 @@ which can provide useful analysis results on both the reachability and quantity 
 
 The first reachability quantitative property
  I focus on is the adaptivity of the program in the adaptive data analysis.
- In this area, a data analysis is designed for identifying  properties for unknown populations / distributions 
+ In this area, a data analysis is designed for identifying  properties for unknown populations 
  through data samples.
  %  ?= is widely 
 %  used in research and industrial areas.
 It can be modeled as a process composed of 
-multiple queries interrogating some data.
+multiple queries interrogating the data.
 %  This is intuitively defined as the depth of the chain of dependent queries. 
- In an adaptive data analysis, the choice of queries can depend on the results of their previous queries. 
+ In an adaptive data analysis, the choice of some queries can depend on the results of their previous queries. 
  Hence, these dependent queries form trees in which every query relies on its previous ones.
 % the generalization error is propagated through the reliance between the choices of queries.
 The \emph{adaptivity} is intuitively defined as the maximum depth of the trees that are formed by these dependent queries
@@ -112,7 +116,7 @@ the generalization error is the key issue on which researchers are focusing to r
  data analysis as programs and execute them,
 the programs' \emph{adaptivity} are not always clear to them
 when they want to use them to control the programs' generalization errors.
-In order to assist them automatically control the generalization error using the adaptivity information,
+In order to assist them automatically and efficiently controling the generalization error using the adaptivity information,
 %   when they need it. 
 %  To solve this dilemma, I
  I propose a program analysis framework
@@ -123,7 +127,7 @@ in PART I.
 This part is developed by first defining the \emph{adaptivity} for 
  the program that implements an adaptive data analysis
  and then designing
- a program analysis framework for estimating the \emph{adaptivity}.
+ a program analysis framework for estimating the program's \emph{adaptivity}.
 % Next, based on the implementation and experimental results of my \emph{adaptivity} analysis framework, 
 % I propose three significant 
 % further features can be improved in this framework.
@@ -145,33 +149,61 @@ This part is developed by first defining the \emph{adaptivity} for
 
 
 % Another execution property which is also significant is the non-monotonic quantitative property.
-The second quantitative reachability property that I'm interested in is the program's reachability-bound.
-This property is a worst-case bound on the number of times a given control location 
+The second quantitative reachability property that I'm interested in is 
+% the program's reachability-bound.
+% % This property is a worst-case bound on 
+the number of times a given control location 
  inside a procedure is visited during the program execution.
-This execution property has broad
-applications in analyzing other program property beyond quantitative reachability.
+%  The number of times a given control location 
+% inside a procedure is visited during the program execution
+% is an importance reachability quantitative property for programs.
+Finding a tight bound on this reachability quantitative property is
+useful in different applications, such as
+bounding 
+resources consumed by a program such as time, memory,
+network-traffic, power, 
+or helping to estimate other quantitative properties (as opposed to boolean properties)
+of data in programs, such as information leakage or uncertainty propagation.
+This bound is referred as the reachability-bound by \cite{GulwaniZ10} in the first place.
+Computing the
+% the program's reachability-bound.
+% This property is 
+reachability-bound on this property
+%  is referred as reachability-bound problem
+% in \cite{GulwaniZ10}.
+% This property 
+has broad
+applications is very helpful in improving the program's performs from different aspects.
+%  in analyzing other program property beyond the quantitative reachability property.
 For example in the resource cost analysis, this quantitative reachability property
 can help to provide a tighter
 % improve the precision of the 
 bound on the resources consumed by a program such as time, memory,
 network traffic, power, etc.
-In estimating some quantitative property
-% this problem is important in computing a precise analysis result.
-in the data analysis area, for example, the \emph{adaptivity}
-% For example, in the data analysis area 
-of data analysis in PART I, the reachability-bound on each program control location
+In the data analysis area,
+% In analyzing some quantitative properties
+% % this problem is important in computing a precise analysis result.
+% in the data analysis area, 
+% such as the \emph{adaptivity}
+% % For example, in the data analysis area 
+% in PART I, 
+the reachability-bound on each program control location
 % helps
 % in 
-can improve the precision of the estimated bound on the adaptive data analysis program's \emph{adaptivity}.
+can help to improve the precision of the estimated bound on the program's \emph{adaptivity} as introduced in PART I.
 In the security analysis area, this reachability-bound helps to improve the accuracy
 in estimating the program's information leakage or uncertainty propagation, etc.
 % , it can also help to improve the accuracy.
+However, computing a tight reachability-bound for a given program control location is challenging.
 Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
 % None of them solve the reachability-bound problem directly, or path-sensitively.
-However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively.
-To solve these issues
+However, there isn't a general analysis algorithm that
+computes the reachability-bound
+%  solves this problem 
+directly or path-sensitively.
+To leverage these limitations,
 %  and improve the analysis results on this problem,
-I propose a new algorithm
+I propose a path-sensitive reachability-bound algorithm
 aiming to find a precise symbolic worst-case reachability-bound on the program's every control location
 % than existing works, 
 in part II.

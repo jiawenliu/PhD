@@ -69,64 +69,103 @@ One of the most significant behaviors with respect to programs is the execution 
  However, the expectation has also changed along with the popularity of mobile devices and wide applications of big data. 
  It is not enough for these programs running on mobile phones or those programs handling big data, 
  to just run without bugs. 
- The non-functional execution properties come into play in the new era.
+ The non-functional properties
+ come into play in the new era.
 
  We think programs on mobile devices are of great significance in today's life.
  To provide people with high-quality
  service through mobile devices,
-we choose to study the non-functional properties of programs.
+we choose to study the non-functional properties of programs,
+specifically the reachability quantitative property in this proposal.
 % Skeleton:
-Importance of the Program Execution Property in different areas.
+% Importance of the Program Execution Property in different areas.
 
 
 % In Machine Learning Area, the Adaptivity Quantity is significant
 % ==> Major Work I
 % \\
-Existing high-quality
-service through mobile devices relies heavily on the data analysis results
+\highlight{
+    Existing high-quality
+service through mobile devices relies heavily on the data analysis results.
 % machine learning algorithm analysis results over data,
-for providing users with personalized accurate services. This brings my attention on the
+These analysis results are used to provide the users with accurately personalized services.
+This brings my attention on the
 % The 
-first non-functional execution behavior in these data analysis programs, i.e., the quality of the data analysis results.
+first non-functional behavior of the data analysis programs, 
+i.e., the accuracy quality of the data analysis results.
 % in their machine learning algorithms.
 % comes from the machine learning area which is popular and widespread applied in our daily mobile life.
 % In this area,
 % The first execution property 
 % the data collected from a large number of mobile users also deserves our attention.
-We look at data analysis which analyzes sample data to get some generalized properties of the big data which the sample is drawn from.
-The generalization property of a data analysis program over sample data with respect to the population is one of the important non-functional properties of programs.
-The generalization error measures the difference of property from the sample data and population, showing the reliability of the data analysis of showing the true properties of the population. 
-High generalization error makes the analysis result of these programs not reliable.
+We look at data analysis which analyzes sample data to get some generalized results
+% with respect to the population
+on the population data
+where the sample is drawn.
+Then, these generalized results are used to provide
+users who come from the unknown population with personalized services.
+Some users occasionally receive inaccurate services,
+because they are not in the sample data but still provided with the personalized services by using the generalized analysis results.
+In these situations, the generalization error comes into play. 
+It measures the difference of the analysis results between the sample data and population data, 
+% The generalization error measures the difference of property from the sample data and population, 
+showing the reliability of the data analysis and reflecting the quality of the service based on it.
+% of showing the true properties of the population. 
+High generalization error makes the analysis results
+%  of these programs 
+not reliable.
+This generalization error of a data analysis program over sample data with respect to the population
+is one of the important program's reachability quantitative properties.
 % It could be useful to have the program 
 % This generalization error 
 Fortunately, studies found that some quantitative properties of data analysis programs can help to control the generalization error, especially when the data analysis is adaptive.
-These properties are the first non-functional execution properties we are interested in
+These properties are the first reachability quantitative properties we are interested in
 analyzing.
 % \\
+}
 % We use the static analysis technique to best exploit the benefit of these non-functional quantitative properties in resource usage and data analysis. However, to fully utilize the aforementioned benefits of the static analysis on these quantitative properties, the appropriate implementation is inevitable. To this end, we also take one step in algorithmizing a refinement type and effect system, which is used to statically estimate the properties of resource usage. In precise, the resource is the evaluation cost of programs in this proposal.
 
 % ==> Major Work II
 % In Resource Cost Analysis Area, the Reachability-Bound is significant.
 % \\
-High-quality
-service in people's mobile device life does not just rely on the accuracy of service but also the
- the efficiency of the service. 
-This brings my attention to another non-functional execution property, the program's resource cost.
+\highlight{
+    High-quality
+service in people's mobile device life does not just rely on the accuracy of service but also
+the efficiency of the service. 
+This brings my attention to another non-functional property, the program's resource cost.
 % non-functional properties on resource usage, one of the most useful properties concerning mobile devices. 
-Suppose we are playing an online game on our smartphones, what do we care about? We care about the performance of the game, in another word, if it runs fast. We care about whether the game crashed due to being out of memory, and so on. Additionally, resource usage is the key for embedded systems or wearable devices. In this sense, the study of the non-functional properties of resource usage is of great practical value. We observe that the non-functional properties of resource usage are usually quantitative, specifying certain bounds on the target resource to guarantee performance. For instance, an update on a mobile app does not significantly slow down the performance of this update and will not use resources exceeding certain bounds specified before.
-
+Suppose we are playing an online game on our smartphones, what do we care about? 
+We care about the performance of the game, in another word, if it runs fast.
+We care about whether the game crashed due to being out of memory, and so on.
+Additionally, resource usage is the key for embedded systems or wearable devices.
+In this sense, the study of the non-functional properties of resource usage is of great practical value.
+We observe that the non-functional properties of resource usage are usually
+related to two aspects, reachability and quantity.
+Providing information on these reachability quantitative properties
+can help to control the reachability of some resources and improve the program reliability,
+or specify certain bounds on the target resource to guarantee performance. 
+For instance, an update on a mobile app does not significantly slow down the performance
+of this update and will not use resources exceeding certain bounds specified before.
+}
 
 % We use combinations of 
-We combine the
-execution-based and static-based
-analysis techniques into the new
-analysis frameworks to best exploit the benefit of these non-functional properties in data analysis and resource usage. However, to fully utilize the aforementioned benefits of the new analysis frameworks on these non-functional properties, the appropriate implementation is inevitable. 
-To this end, we also take one step in algorithmizing the analysis frameworks
+% We combine the
+% execution-based and static-based
+\highlight{We design new program
+analysis frameworks
+%  into the new
+% analysis frameworks 
+to best exploit the benefit of these reachability quantitative properties in data analysis and resource usage.
+However, to fully utilize the aforementioned benefits of the new analysis frameworks on these reachability quantitative properties, 
+the appropriate implementation is inevitable. 
+To this end, we also take one step in algorithmizing and implementing the program analysis frameworks,
 % through
 % program analysis framework, 
-which is used to formalize and statically estimate these properties.
+which is used to automatically estimate these properties.
+}
 
-Last but not least, these non-functional properties are not limited to static analysis. We are not only interested in programs implementing the specific algorithm, but also willing to study these lower bound and upper bound of the algorithm itself.
+Last but not least, these reachability quantitative properties are not limited to static analysis.
+We are not only interested in programs implementing the specific algorithm, but also willing to study these lower bound and upper bound of the algorithm itself.
 % To this end, we use the formal verification method to study standard algorithms such as sorting and searching in a comparison-based computation model.
 
 % \todo{
@@ -216,10 +255,10 @@ Last but not least, these non-functional properties are not limited to static an
 % to the worst-case cost analysis in the traditional way.
 
 \paragraph*{Proposal Structure}
-To sum up, this proposal covers the following topic in each following part.
+To sum up, this proposal covers the following topic in each part.
 \begin{enumerate}
- \item A program analysis framework for analyzing the adaptivity for adaptive data analysis in \redd{PART I}.
- \item A path-sensitive reachability-bound analysis algorithm for computing the accurate reachability-bound in \redd{PART II}.
+ \item \redd{PART I}: A program analysis framework for analyzing the adaptivity for the program that implements an adaptive data analysis.
+ \item \redd{PART II} A path-sensitive reachability-bound analysis algorithm for computing the program's accurate reachability-bound.
 % \item A while-like language extended with query request feature, named {\tt Query While} Language, 
 % used to implement 
 % the adaptive data analysis in Section~\ref{sec:language}.

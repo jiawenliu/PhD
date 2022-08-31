@@ -1,6 +1,6 @@
 \begin{example}[twoRounds]
    \label{ex:twoRounds}
-    In this example program $\kw{towRounds(k)}$, the analyst asks in total $k+1$ queries to the mechanism in two phases.
+    In this example program $\kw{towRounds(k)}$, the analyst asks in total $k+1$ queries in two phases.
     In the first phase, the analyst asks $k$ queries and stores the answers that are provided by the mechanism. 
     In the second phase, the analyst constructs a new query based on the results of the previous $k$ queries and sends this query to the mechanism. More specifically, I assume that, in this example, the domain $\dbdom$ 
     contains at least $k$ numeric attributes, which I index just by natural numbers. 
@@ -14,7 +14,7 @@
     %
     {Since statistical query computes the empirical mean of a function on rows, I use $\chi$ to abstract a possible row in the database and }
     queries are of the form $\query(\qexpr)$, where $\qexpr$ is a special expression 
-    (as in the syntax in Section~\ref{sec:language})
+    (as in the syntax in Section~\ref{sec:adapt-language})
     {
     % from $X$ to some domain $U$, 
     % for example $U$ 
@@ -22,7 +22,8 @@
       This function characterizes the linear query I are interested in running. 
       As an example, $x \leftarrow \query(\chi[j] \cdot \chi[k])$ computes an approximation, according to the used mechanism, of the empirical mean of the product of the $j^{th}$ attribute and $k^{th}$ attribute, identified by $\chi[j] \cdot \chi[k]$. Notice that I don't materialize the mechanism but I assume that it is implicitly run when I execute the query. } 
 
-      The graph in Figure~\ref{fig:twoRounds_example}(b). This graph is built by considering all the possible execution traces of the program in   Figure~\ref{fig:twoRounds_example}(a).
+      The execution-based dependency graph is presented in Figure~\ref{fig:twoRounds_example}(b).
+      %  This graph is built by considering all the possible execution traces of the program in   Figure~\ref{fig:twoRounds_example}(a).
       Each vertex in this graph has a superscript representing its weight, and a subscript $1$ or $0$ telling if the vertex corresponds to a query or not. I will call this subscript a query annotation. 
       For example the vertex $l^{6}:{}^{w_1}_1$, 
       % the superscript $1$ represents the weight $1$, and the subscript for the query annotation.
@@ -35,14 +36,17 @@
       It has as weight a function $w_k$ that for every initial state returns the value that $k$ has in this state, since this is also the number the while loop will be iterated. 
       The node $j^{4}:{}^{w_k}_0$ has as a subscript $0$ representing a non-query assignment.
       
-      
-      Since the edges between two vertices represent the fact that one program variable may depend on the other,
+      The edges between two vertices represent the \emph{may-dependency} relation between two variables.
+      %  fact that one program variable may depend on the other,
       % the queries that are executed and the edges between two nodes represent the fact that one query may depend on the other. 
-      I can define the program adaptivity with respect to a initial trace by means of a walk traversing the graph, visiting each vertex no more than its weight with respect to the initial trace, and visiting as many query nodes as possible.
+      % I can define the program adaptivity with respect to an initial trace by means of a walk traversing the graph,
+      % visiting each vertex no more than its weight with respect to the initial trace, and visiting as many query nodes as possible.
       % In the walk that passes the most times of query nodes, the total visiting times of this walk on 
       % these query nodes is defined as adaptivity.
+      According to the adaptivity definition in \ref{def:trace_adapt},
+      we are looking for the walk with the longest query length for the adaptivity.
       %
-      So, looking again at the example, we can see that
+      In this example, we can see that
       % if the input variable $k$ is less than $1$ in an initial trace $\trace_1$, then it is easy to see the weight of vertex $x^3$, $w_3(\trace_1) < 1$ and I can only find a walk with one vertex $l^{6}$, according to  the definition of finite walk in Definition~\ref{def:finitewalk}. So the adaptivity for $\trace_1$, as the number of query vertices along the walk, is $1$. It is easy to understand because when $k <1$, the while loop will not be executed and only one query is asked in total. However, in reality, people want the adaptivity of this example when $k \geq 1$. With this initial trace, it is easy to see that 
       in the walk along the dotted arrows,  $l^{6} \to a^5 \to x^3 $, there are $2$ vertices with query annotation $1$ and that this number is maximal, i.e. I cannot find another walk having more than $2$ vertices with query annotation $1$, under the assumption that $k \geq 1$. So the adaptivity of the program in Figure~\ref{fig:twoRounds_example}(a)  is $2$,
       % longest walk in the graph in Figure~\ref{fig:twoRounds_example}(b), which I mark with a red dashed arrow, is $2$, 
