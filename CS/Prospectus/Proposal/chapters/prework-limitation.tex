@@ -31,8 +31,8 @@ There are three limitations as follows.
     This language model doesn't support programs with non-deterministic while loop.
     %  the program which contains while loop with non-deterministic iterations.
     % In the other words, it only supports the programs with the loops of constant iteration numbers,
-    It only supports the loops with constant iteration numbers.
-    Because the expression in the loop guard has to be a constant number
+    It only allows the while loops in the program to iterate a fixed number of times.
+    This is because the expression in the loop guard has to be a constant number
     % constant 
     or an arithmetic expression
     %  in the guard which 
@@ -149,11 +149,11 @@ There are three limitations as follows.
     \begin{itemize}
         \item There are two reasons for the inaccuracy of adaptivity definition.
     \\
-    The first reason comes from the operational semantics design, in which the important information is lost.
+    The first reason comes from the trace in the operational semantics, where some important information is lost.
     %   in-precision in formalizing the \emph{adaptivity}.
     %  generation.
     %   generated through the operational semantic rules.
-    The trace only tracks the query requests, which losses the execution history of the variables
+    The trace only tracks the query requests, so it loses the execution history of the variables
     that use the query results but not assigned by query requests.
     %   even if they are not assigned by query requests. 
     These variables
@@ -178,7 +178,7 @@ There are three limitations as follows.
 %  This will be analyzed in detail in the limitation in Section~\ref{sec:prework-formalization}.
  \item \textbf{Efficiency Limitation}
  \begin{enumerate}
-    \item In the operational semantics has four components in the configuration when evaluating the program. 
+    \item The operational semantics has four components in the configuration when evaluating the program. 
     % The updating operations for this quadruple configuration are inefficient, especially the update operation of the while map.   
     Updating this quadruple configuration (especially the while map) is inefficient.   
     \item
