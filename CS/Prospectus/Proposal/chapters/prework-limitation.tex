@@ -36,9 +36,9 @@ There are three limitations as follows.
     % constant 
     or an arithmetic expression
     %  in the guard which 
-    that has to be evaluated into a constant $V_N$ before executing the loop body.
+    that is evaluated into a constant $V_N$ before executing the loop body.
     % ) number of iterations.
-    However, the adaptive data analysis programs with loop of non-deterministic iteration times are very common.
+    However, the adaptive data analysis programs with loops of non-deterministic iteration times are very common.
     % \\
     %
     The syntax doesn't support the programs with user inputs either, which are also common in the data analysis area.
@@ -148,32 +148,36 @@ There are three limitations as follows.
  The adaptivity definition and the estimated adaptivity are both inaccurate.
     \begin{itemize}
         \item There are two reasons for the inaccuracy of adaptivity definition.
-    \\
-    The first reason comes from the trace in the operational semantics, where some important information is lost.
+    % \\
+    The first reason comes from the trace in the operational semantics.
+    % , where some important information is lost.
     %   in-precision in formalizing the \emph{adaptivity}.
     %  generation.
     %   generated through the operational semantic rules.
-    The trace only tracks the query requests, so it loses the execution history of the variables
+    A trace only tracks the query requests, so it loses the execution history of the variables
     that use the query results but not assigned by query requests.
     %   even if they are not assigned by query requests. 
     These variables
     are critical in analyzing the \emph{adaptivity}.
-    \\
+    % \\
     The second cause is the dependency graph definition.
     Because the dependency graph relies on a specific memory, while-map, and a specific execution trace,
     % It limits 
     the \emph{adaptivity} then is also defined w.r.t. one specific
     execution.
-    In this sense, this adaptivity definition doesn't correspond to the \emph{adaptivity} for this program,
-    but for the program in a certain execution.
+    In this sense, this adaptivity definition isn't the \emph{adaptivity} of the adaptive data analysis
+    implemented by this program,
+    but only its \emph{adaptivity} in a certain execution.
     \item
-    The estimated adaptivity from this framework is loose.
-    It composes three standard static estimation algorithms. 
+    The adaptivity bound computed from this framework is loose.
+    Because the adaptivity estimation algorithm composes three standard static analysis techniques straightforwardly.
     %   in the sense that all three steps are standard.
     %  And the framework is simply a straightforward composition of the three steps.
     % The naive \textbf{graph generation} 
-    However, the standard \textbf{graph generation}  algorithm over-approximate the data dependency relation in a large scale.
-    Then, the standard path search algorithm also over-approximates the adaptivity bound (i.e., the longest weighted path) on the over-approximated dependency graph. 
+    The \textbf{graph generation} algorithm that uses the standard data-flow analysis technique
+    over-approximates the data dependency relation in a large scale.
+    And the standard path search algorithm also over-approximates the longest weighted path on this over-approximated dependency graph. 
+    In this sense, the estimated adaptivity is a loose bound on the defined adaptivity.
  \end{itemize}
 %  This will be analyzed in detail in the limitation in Section~\ref{sec:prework-formalization}.
  \item \textbf{Efficiency Limitation}
@@ -197,7 +201,7 @@ There are three limitations as follows.
 %    These two rules 
    unfold every iteration of the while loop.
     % and create new annotated variables for every iteration.
-   This operation increased the complexity of the program analysis exponentially. 
+   This operation increased the algorithms' complexity exponentially. 
    %  \item For the same reason as above, their \textbf{Graph Generation} algorithm is low-efficient as well.
     \end{enumerate}
 \end{itemize}

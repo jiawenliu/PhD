@@ -2,7 +2,7 @@
 % \subsection{Motivation of Reasoning about Adaptivity}
 % % 
 % In Section~\ref{sec:intro-background},
-% I introduce the background and limitation of the 
+% I introduce the background and limitations of the 
 % adaptive data analysis, 
 % and the motivation of reasoning about the \emph{adaptivity} quantity property 
 % for adaptive data analysis.
@@ -13,7 +13,7 @@
 % introduced.
 % % I introduce these three problems
 % % and the full-spectrum analysis methodologies developed according to these problems 
-% Targeting to the three challenges, I introduce the methodologies 
+% Targeting the three challenges, I introduce the methodologies 
 % of the program analysis framework for the adaptive data analysis's adaptivity property
 % accordingly, in Section~\ref{sec:intro-adapt}.
 % Concretely, 
@@ -21,7 +21,7 @@
 % this analysis framework is developed through the language formalization,
 % the execution-based analysis, and the static-based program analysis.
 % %
-% Based on the implementation and experimental results on this analysis framework, 
+% Based on the implementation and experimental results of this analysis framework, 
 % I propose three significant 
 % further features can be improved 
 % % in the analysis methodologies 
@@ -61,49 +61,59 @@
 % to the worst case cost analysis in a traditional way.
 % \paragraph{Background and Motivation\todo{Rewrite into Program Analysis of the Quantitative Property}}
 % \label{sec:intro-background}
-Program analysis analyzes the properties of a computer program
-% \wq{computer programs with respect to some properties, such as correctness, by analyzing the execution correctness behavior  } .
-One of the most significant properties with respect to programs is the execution correctness,
+Program analysis analyzes the properties of a computer program.
+% \wq{computer programs with respect to some properties, such as correctness, by analyzing the execution correctness behavior } .
+One of the most significant properties with respect to programs is the execution safety,
 which determines whether a program executes correctly without getting stuck because of bugs.
- The execution correctness can be proved
-%  \wq{prove a behaviour?} 
+ The execution safety can be analyzed
+% \wq{prove a behaviour?} 
  by showing the functional correctness property of the
-%   \wq{the?} p
-program with the help of some formal verification methods such as type systems and program logic.
-%  Much attention in the programming language community has focused on the functional correctness property,
-%  while not enough effort was put on, a variety of those non-function properties, 
-%  considering its wide potential applications in modern society.
-% %  \wq{i think you can remove the next sentence.}
-%  A few decades ago,
-% %  computer programs were only used for research or business purpose and 
-%  the expectation of computer programs was just to execute correctly without bugs. 
-\highlight{
-    Much attention in the programming language community has focused on the functional correctness property.
-    However, the expectation on the computer programs has changed along with the popularity of mobile devices and wide applications of big data. 
-A variety of non-function properties are more important in modern society than the functional correctness property.
+% \wq{the?} p
+program 
+with the help of
+% some 
+program analysis methods
+% such as
+% and formal verification methods
+such as control-flow and data-flow analysis and
+type systems.
+% Much attention in the programming language community has focused on the functional correctness property,
+% while not enough effort was put on, a variety of those non-function properties, 
+% considering its wide potential applications in modern society.
+% % \wq{i think you can remove the next sentence.}
+% A few decades ago,
+% % computer programs were only used for research or business purpose and 
+% the expectation of computer programs was just to execute correctly without bugs. 
+% \highlight{
+ Much attention in the programming language community has focused on the functional correctness property.
+ However, the expectation of computer programs has changed along with the popularity of mobile devices and wide applications of big data. 
+% A variety of non-functional program properties are more important in modern society than functional correctness property.
 % considering its wide potential applications in modern society.
 % while not enough effort was put on, 
-%  \wq{i think you can remove the next sentence.}
+% \wq{i think you can remove the next sentence.}
 % A few decades ago,
-% %  computer programs were only used for research or business purpose and 
+% % computer programs were only used for research or business purpose and 
 % the expectation of computer programs was just to execute correctly without bugs. 
-}
- \highlight{
+% }
+%  \highlight{
 % However, the expectation has also changed along with the popularity of mobile devices and wide applications of big data. 
-For example, to provide people with high-quality
- service through mobile devices,
- it is not enough for these programs running on mobile phones or those programs handling big data, 
+It is not enough for these programs running on mobile phones or those programs handling big data, 
  to just run without bugs. 
- These programs are also expected to run efficiently, produce accurate outputs, do not leak the data, etc.,
- when running on mobile device and handling the big data.
-%  \\
+ These programs are also expected to run efficiently, produce accurate outputs, do not leak secret data, etc.,
+% For example, 
+ to guarantee people's daily life
+ quality in modern society.
+% service in daily life through these programs.
+% through mobile devices.
+% when running on a mobile device and handling big data.
+% \\
  In this sense, the non-functional properties
  come into play in the new era.
-%  \wq{I think you can remove this paragraph.}
- }
-%  We think programs on mobile devices are of great significance in today's life.
-% %  To provide people with high-quality
-% %  service through mobile devices,
+% \wq{I think you can remove this paragraph.}
+%  }
+% We think programs on mobile devices are of great significance in today's life.
+% % To provide people with high-quality
+% % service through mobile devices,
 % we choose to study the non-functional properties of programs,
 % specifically the reachability quantitative property in this proposal.
 % Skeleton:
@@ -113,81 +123,108 @@ For example, to provide people with high-quality
 % In Machine Learning Area, the Adaptivity Quantity is significant
 % ==> Major Work I
 % \\
-\highlight{
-For a large amount of mobile devices applications
-such as video or music player, game, shopping, etc.,
-a high-quality
-service
+% \highlight{
+People's daily life
+quality is closely related to the experience of using the applications on their mobile devices.
+A large number of mobile device applications
+such as video or music players, online games, shopping, etc.,
+provide users with personalized recommendations.
+So the mobile devices experience
+%  of using applications 
+% service
 % \wq{which service?}
-% aims to provide the users with accurate personalized recommendation.
-is determined largely by the accuracy of the personalized recommendation results for every user.
+% aims to provide users with an accurate personalized recommendation.
+is determined largely by
+the recommendation accuracy when using applications.
+% of their personalized recommendation results.
+% for every user.
 % \wq{Previous sentence is not easy to follow.}
 % machine learning algorithm analysis results over data,
 % Accurate personalized services 
-The accuracy of the recommendation results relies heavily on the
+The accuracy of the recommendation
+% results 
+relies heavily on the
 % \wq{the?} 
-data analysis results over big data.
+outputs of the programs which implement some
+data analysis over big data.
 % These analysis results are used to provide the users with accurately personalized services.
 This brings my attention to
 % on\wq{(to?)} 
-one of the non-functional properties of the
+some non-functional properties
+that can help to improve the output accuracy of
 % \wq{remove the?} 
-data analysis programs,
+the programs that implement a data analysis.
 % \wqside{the first behaviour of programs, it sounds weird by using the first? then, what is the second?}
-i.e., the accuracy quality.
-%  of the
-% \wq{do you specify certain result, if so, use the} data analysis results.
+% i.e., the accuracy quality.
+% of the
+% \wq{do you specify certain results, if so, use the} data analysis results.
 % in their machine learning algorithms.
-% comes from the machine learning area which is popular and widespread applied in our daily mobile life.
+% comes from the machine learning area which is popular and widely applied in our daily mobile life.
 % In this area,
 % The first execution property 
 % the data collected from a large number of mobile users also deserves our attention.
 We look at the scenario
-%  
+% 
 % \wq{the scenario?} 
 where a data analysis program
-analyzes some sample data to get some generalized results
+analyzes a sample data
+and computes some generalized results
 % with respect to the population
-on the population data
+on the unknown population data
 where the sample is drawn.
-Then, these generalized results are used to provide
-users who come from the unknown population with personalized services.
-Some users occasionally receive inaccurate services,
-because they are not in the sample data but still provided with the services by using the generalized analysis results.
+Then, these generalized results are used to provide the
+users who come from the unknown population with personalized recommendations.
+Some users occasionally receive inaccurate recommendations,
+because they are not in the sample data but get services by using the
+same
+%  generalized 
+analysis results.
 In these situations, the generalization error comes into play. 
-It measures the difference of the analysis results between the sample data and population data, 
+It measures the difference between the 
+% in the analysis results between the sample data and population data, 
+data analysis result on a sample data 
+and the ideal analysis result expected to be
+achieved by
+%  running the 
+analyzing the entire population.
 % The generalization error measures the difference of property from the sample data and population, 
-showing the reliability of the data analysis and reflecting the quality of the service based on it.
+This error shows the reliability of the data analysis and reflecting the accuracy of the personalized recommendations.
+%  based on it.
 % of showing the true properties of the population. 
 High generalization error makes the analysis results
-%  of these programs 
-not reliable and reduces its accuracy quality in a large scale.
+% of these programs 
+not reliable and reduces the accuracy on a large scale.
 % This generalization error of a data analysis program over sample data with respect to the population
 % is one of the important program's reachability quantitative properties.
 % \wq{of programs?}.
 % It could be useful to have the program 
 % This generalization error 
 Studies found that some reachability quantitative properties of data analysis programs can help to control the generalization error, especially when the data analysis is adaptive.
-These properties are the first reachability quantitative properties we are interested in
-analyzing in this proposal.
+These reachability quantitative properties are the 
+% first reachability quantitative properties 
+program's non-functional properties
+we are interested in
+analyzing in this proposal to help improve a data analysis program's output accuracy and guarantee people's daily life quality.
 % \wq{in the dissertation}.
 % \\
-}
+% }
 % We use the static analysis technique to best exploit the benefit of these non-functional quantitative properties in resource usage and data analysis. However, to fully utilize the aforementioned benefits of the static analysis on these quantitative properties, the appropriate implementation is inevitable. To this end, we also take one step in algorithmizing a refinement type and effect system, which is used to statically estimate the properties of resource usage. In precise, the resource is the evaluation cost of programs in this proposal.
 
 % ==> Major Work II
 % In Resource Cost Analysis Area, the Reachability-Bound is significant.
 % \\
-\highlight{
-A high-quality
-service in people's mobile device life
+% \highlight{
+% A high-quality
+% service in people's mobile device life
+High-quality modern daily life
 % \wq{mobile device life sounds ...} 
-is not
-determined only by the accuracy of recommendation results,
+is not only
+determined by the accuracy of
+recommendation results through some mobile device applications,
 but also
 the performance, 
 % the\wq{remove the?} 
-privacy, etc., of the service. 
+privacy, etc., of the software on a mobile device or a computer. 
 % non-functional properties on resource usage, one of the most useful properties concerning mobile devices. 
 % Suppose we are playing an online game on our smartphones, what do we care about? 
 % We care about the performance of the game, in another word, if it runs fast.
@@ -202,7 +239,7 @@ other parties, i.e., the privacy quality of the game.
 % Additionally, resource usage is the key for embedded systems or wearable devices.
 % In this sense, the study of the non-functional properties of resource usage is of great practical value.
 % We observe that the non-functional properties of resource usage or data leakage are usually
-% related to two aspects, reachability and quantity.
+% related to two aspects, reachability, and quantity.
 % \\
 We observe that the performance of
 % the\wq{remove} 
@@ -213,14 +250,16 @@ whether some lines of code are executed and how times they
 % \wq{"Code" in the sense of "computer code" is a mass noun, and so has no plural. 
 % It would be "lines of code". 
 % In other senses (such as "code" meaning an encrypted system of communication or an encrypted message), 
-% it is a countable noun and can be pluralised as normal. }
+% it is a countable noun and can be pluralized as normal. }
 are executed.
 From the same perspective, we observe that whether the data is leaked is also related to
 whether certain pieces of the program code are executed,
-and the execution times of them.
+and their execution times.
 % \\
-This brings my attention to another non-functional property,
-the reachability and execution times of certain lines of program code.
+This brings my attention to other non-functional properties,
+the
+reachability and 
+execution times of certain lines of program code.
 % \wq{previous sentence is not clear. }
 % \todo{the program's resource cost and the data leakage}.
 % \\
@@ -229,27 +268,27 @@ the reachability and execution times of certain lines of program code.
 % on this reachability quantitative property
 Estimating the reachability for certain lines of program code and the bound on their execution times
 can help to control the usage of some resources.
-%  and the data\wq{the data? which data?}.
-%  and improve the program reliability,
+% and the data\wq{the data? which data?}.
+% and improve the program reliability,
 % or specify certain bounds on the target resource to 
 In this sense, it can help to guarantee both the performance and safety properties for
-the high-quality services
+people's high-quality daily life.
 % \wq{service is plural?} 
-on mobile devices.
-To this end, the execution times of certain pieces of codes is
-the second reachability quantitative property I plan to analysis in this proposal.
-% \wq{s}.
+% on mobile devices.
+% To this end, the execution times of certain pieces of code are
+% the second reachability quantitative property I plan to analyze in this proposal.
 % For instance, an update on a mobile app does not significantly slow down the performance
 % of this update and will not use resources exceeding certain bounds specified before.
-}
+% }
 
 % We use combinations of 
 % We combine the
 % execution-based and static-based
-\highlight{We design new program
+% \highlight{
+    We design the new program
 analyses
-%  frameworks\wq{you have two frameworks?}
-%  into the new
+% frameworks\wq{you have two frameworks?}
+% into the new
 % analysis frameworks 
 to best exploit the benefit of these reachability quantitative properties in data analysis and resource usage.
 However, to fully utilize the aforementioned benefits of the new analyses on these reachability quantitative properties, 
@@ -259,8 +298,8 @@ To this end, we also take one step in algorithmizing and implementing the progra
 % program analysis framework, 
 which is used to statically analyze these properties and provide programmers with both the reachability estimation
 and quantitative bounds on them.
-% \wq{estimate a property? maybe estimate is not a right word here}
-}
+% \wq{estimate a property? maybe estimate is not the right word here}
+% }
 
 Last but not least, these reachability quantitative properties are not limited to static analysis.
 We are not only interested in programs implementing
@@ -304,7 +343,7 @@ specific algorithms, but also willing to study these lower bound and upper bound
 % While some work in paper [][][]in the context of memory usage for specific models of garbage collection [5,8,12],
 % they don't give a generic framework to estimate the non-cumulative quantitative property.
 % \\
-% The work in paper "Non-cumulative Resource Analysis" gave a generic resource analysis framework for a today’s imperative language enriched with instructions to acquire and release resources. 
+% The work in paper "Non-cumulative Resource Analysis" gave a generic resource analysis framework for today’s imperative language enriched with instructions to acquire and release resources. 
 % However, they failed in the path-sensitive case. Their method is also imprecise in the sense that they over-approximate the
 % set of acquire instructions globally for the local execution location.
 % }
@@ -321,7 +360,7 @@ specific algorithms, but also willing to study these lower bound and upper bound
 
 % \paragraph{Towards Accurate Program Non-Monotonic Quantitative Property Analysis (In Preparation)}
 % \label{sec:intro-cost}
-% Moving towards the area of program's quantitative property analysis,
+% Moving towards the area of the program's quantitative property analysis,
 % % Then, motivated by the two following aspects, 
 % there are two interesting observations as follows.
 % % I am interested 
@@ -356,7 +395,7 @@ specific algorithms, but also willing to study these lower bound and upper bound
 \paragraph*{Proposal Structure}
 To sum up, this proposal covers the following topic in each part.
 \begin{enumerate}
- \item \redd{PART I}: A program analysis framework for analyzing the adaptivity for the program that implements an adaptive data analysis.
+ \item \redd{PART I}: A program analysis framework for analyzing the adaptivity of the program that implements an adaptive data analysis.
  \item \redd{PART II} A path-sensitive reachability-bound analysis algorithm for computing the program's accurate reachability-bound.
 % \item A while-like language extended with query request feature, named {\tt Query While} Language, 
 % used to implement 
