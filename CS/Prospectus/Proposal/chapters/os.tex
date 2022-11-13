@@ -505,7 +505,7 @@ The function $\env : {\mathcal{T}} \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\b
  \event = (b, l, \efalse, \bullet)
  }
  {
- \config{{\ewhile [b]^{l}, \edo c, \trace}}
+ \config{{\ewhile [b]^{l} \edo c, \trace}}
  \xrightarrow{} 
  \config{{
  \clabel{\eskip}^l,
@@ -517,20 +517,45 @@ The function $\env : {\mathcal{T}} \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\b
  \and
  %
  %
- \inferrule
- {
- \config{{c_1, \trace}}
- \xrightarrow{}
- \config{{\clabel{\eskip}^l, \trace'}}
- \and 
- \config{{\clabel{\eskip}^l; c_2, \trace'}} \xrightarrow{} \config{{ \clabel{\eskip}^l, \trace''}}
- }
- {
- \config{{c_1; c_2, \trace}} 
- \xrightarrow{} 
- \config{{\clabel{\eskip}^l, \trace''}}
- }
- ~\textbf{seq}
+%  \inferrule
+%  {
+%  \config{{c_1, \trace}}
+%  \xrightarrow{}
+%  \config{{\clabel{\eskip}^l, \trace'}}
+%  \and 
+%  \config{{\clabel{\eskip}^l; c_2, \trace'}} \xrightarrow{} \config{{ \clabel{\eskip}^l, \trace''}}
+%  }
+%  {
+%  \config{{c_1; c_2, \trace}} 
+%  \xrightarrow{} 
+%  \config{{\clabel{\eskip}^l, \trace''}}
+%  }
+%  ~\textbf{seq}
+\inferrule
+{
+\config{{c_1, \trace}}
+\xrightarrow{}
+\config{{c_1',  \trace'}}
+}
+{
+\config{{c_1; c_2, \trace}} 
+\xrightarrow{} 
+\config{{c_1'; c_2, \trace'}}
+}
+~\textbf{seq1}
+%
+\quad
+%
+\inferrule
+{
+  \config{{c_2, \trace}}
+  \xrightarrow{}
+  \config{{c_2',  \trace'}}
+}
+{
+\config{{\clabel{\eskip}^l; c_2, \trace}} \xrightarrow{} \config{{ c_2', \trace'}}
+}
+~\textbf{seq2}
  %
  % \and
  % %

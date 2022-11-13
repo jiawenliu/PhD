@@ -36,14 +36,14 @@ Then this analysis performs the feasible data-flow analysis by using both contro
  {\small
  \[
  \begin{array}{ll}
- \flowsto(x^i, y^j, \clabel{\assign{y}{\expr}}{}^l) 
- & \triangleq (x^i, y^j) \in \left\{ (x^i, y^l) | x \in \mathsf{FV}(\expr) 
+ \flowsto(x^i, y^j, \clabel{\assign{y}{\expr}}{}^j) 
+ & \triangleq (x^i, y^j) \in \left\{ (x^i, y^j) | x \in \mathsf{FV}(\expr) 
  % \land (y,i) \in \live(l, \clabel{\assign{x}{\expr}}^l) \} \\
- \land x^i \in \live(l, \clabel{\assign{y}{\expr}}^l) \right\} \\
- \flowsto(x^i, y^j, \clabel{\assign{y}{\query(\qexpr)}}{}^l) 
- & \triangleq (x^i, y^j) \in \left\{ (x^i, y^l) | x \in \mathsf{FV}(\qexpr) 
+ \land x^i \in \live(l, \clabel{\assign{y}{\expr}}^j) \right\} \\
+ \flowsto(x^i, y^j, \clabel{\assign{y}{\query(\qexpr)}}{}^j) 
+ & \triangleq (x^i, y^j) \in \left\{ (x^i, y^j) | x \in \mathsf{FV}(\qexpr) 
  % \land (y,i) \in \live(l,\clabel{\assign{x}{\query(\qexpr)}}^l) \} \\
- \land x^i \in \live(l,\clabel{\assign{y}{\query(\qexpr)}}^l) \right\} \\
+ \land x^i \in \live(l,\clabel{\assign{y}{\query(\qexpr)}}^j) \right\} \\
  \flowsto(x^i, y^j, [\eskip]^{l}) & = \emptyset \\
  \flowsto(x^i, y^j, \eif ([b]^l, c_1, c_2)) & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\ 
  & \lor (x^i, y^j) \in

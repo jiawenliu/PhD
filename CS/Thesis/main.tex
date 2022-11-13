@@ -240,63 +240,14 @@ my loving grandmother \\ Xiuqin Yang
 
 \clearpage
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% REACHABILITY BOUND ANALYSIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter*{\redd{PART \romannum{1} \quad  REACHABILITY BOUND ANALYSIS} \todo{ ==> 10\%}}
-
-\chapter{Introduction \todo{Add details after PLDI}}
-\label{sec:reachability-intro}
-\section{Reachability Bound Problem}
-\label{sec:reachability-background}
-
-\section{Motivation and Overview}
-\label{sec:reachability-motivation}
-
-\section{Chapter Outline}
-\label{sec:reachability-outline}
-
-\chapter{Path-Sensitive Reachability Bound Analysis}
-\label{sec:reachability-analysis}
-
-\section{{Program Model}}
-\label{sec:language}
-\subsection{Language}
-\subsection{Trace-Based Operational Semantics}
-% \input{language}
-% %
-% %
-\subsection{{Reachability Bound Formalization}}
-\label{sec:execution_rb}
-% \input{execution_reachabilitybound}
-% % 
-% \section{Path Sensitive Reachability Bound Analysis}
-% \label{sec:static_rb}
-% \input{static_reachabilitybound}
-% % % % 
-\section{Program Abstraction and Refinement}
-\label{sec:reachability-program_refine}
-% \subsection{Constraint Program Refinement}
-
-\section{Path Sensitive Reachability Bound Analysis}
-\label{sec:reachability-analysis}
-\subsection{Outside-In Algorithm}
-\label{sec:outsidein}
-\subsection{Inside-Out Algorithm}
-\label{sec:insideout}
-
-
-
-\chapter{Examples and Experimental Results}
-\label{sec:reachability-example}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ADAPTIVITY ANALYSIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter*{\redd{PART \romannum{2} \quad  PROGRAM ANALYSIS FRAMEWORK FOR ADAPTIVE DATA ANALYSIS}}
+\chapter*{\redd{PART \romannum{1} \quad  PROGRAM ANALYSIS FRAMEWORK FOR ADAPTIVE DATA ANALYSIS}}
 \input{chapters/adapt/adapt-preface}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -375,17 +326,14 @@ my loving grandmother \\ Xiuqin Yang
 
 
 \clearpage
-\section{The Program Analysis for Adaptivity Estimation - {\THESYSTEM}}
+\section{The Program Analysis for Adaptivity - {\THESYSTEM}}
 \label{sec:adapt-static}
 \input{chapters/adapt/static-preface}
 
-\subsection{Analysis Architecture}
+\subsection{Algorithm Overview}
 \label{sec:static-overview}
 \input{chapters/adapt/static-overview}
 
-% \subsection*{Abstract Execution Control Flow graph}
-% \label{sec:abscfg}
-% \input{chapters/adapt/static-abscfg}
 
 \subsection{Static Data Dependency Analysis}
 \label{sec:static-dep}
@@ -400,17 +348,11 @@ my loving grandmother \\ Xiuqin Yang
 \label{sec:static-adapt}
 \input{chapters/adapt/static-adapt}
 
-% \subsection{Improvements Analysis}
-% \label{sec:adapt-static-improves}
-% \input{chapters/adapt/static-improves}
 
 \subsection{Estimated Adaptivity through Examples}
 \label{sec:static-examples}
 \input{chapters/adapt/static-examples}
 
-% \section{ \todo{Integrated into sections above} The Program Analysis Framework Improvement}
-% \input{chapters/adapt/improved}
-% \clearpage
 
 \clearpage
 \chapter{Example and Experimental Result \todo{==>100\% emphasis on improvements and passes on details}}
@@ -425,18 +367,67 @@ my loving grandmother \\ Xiuqin Yang
 \chapter{Related Works\todo{progress-95\% need passes on details}}
 \label{sec:adapt-relatedwork}
 
-\section{The Execution-Based Program Analysis}
+\section{The Program Semantics Analysis}
 \label{sec:relatedwork-exe}
 \input{chapters/adapt/relatedwork-exe}
 
 
-\section{Static Analysis}
+\section{The Static Program Analysis}
 \label{sec:relatedwork-static}
 \input{chapters/adapt/relatedwork-static}
 
 \section{Generalization in Adaptive Data Analysis}
 \label{sec:relatedwork-adapt}
 \input{chapters/adapt/relatedwork-adapt}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% REACHABILITY BOUND ANALYSIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter*{\redd{PART \romannum{2} \quad  REACHABILITY BOUND ANALYSIS} \todo{ ==> 10\%}}
+
+\chapter{Introduction \todo{Add details after PLDI}}
+\label{sec:reachability-intro}
+\section{Reachability Bound Problem}
+\label{sec:reachability-background}
+
+\section{Motivation and Overview}
+\label{sec:reachability-motivation}
+
+\section{Chapter Outline}
+\label{sec:reachability-outline}
+
+\chapter{Path-Sensitive Reachability Bound Analysis}
+\label{sec:reachability-analysis}
+
+\section{{Program Model}}
+\label{sec:language}
+\subsection{Language}
+\subsection{Trace-Based Operational Semantics}
+% \input{language}
+% %
+% %
+\subsection{{Reachability Bound Formalization}}
+\label{sec:execution_rb}
+% % % % 
+\section{Program Abstraction and Refinement}
+\label{sec:reachability-program_refine}
+% \subsection{Constraint Program Refinement}
+
+\section{Path Sensitive Reachability Bound Analysis}
+\label{sec:reachability-analysis}
+\subsection{Outside-In Algorithm}
+\label{sec:outsidein}
+\subsection{Inside-Out Algorithm}
+\label{sec:insideout}
+
+
+
+\chapter{Examples and Experimental Results}
+\label{sec:reachability-example}
+
+
 
 % \cleardoublepage
 \chapter*{\redd{PART \romannum{3} \quad Epilogue}}

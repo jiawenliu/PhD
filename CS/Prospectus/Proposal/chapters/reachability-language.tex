@@ -139,7 +139,7 @@ A selection of rules of the trace-based operational semantics is presented in Fi
  \event = (b, l, \efalse)
  }
  {
- \config{{\ewhile [b]^{l}, \edo c, \trace}}
+ \config{{\ewhile [b]^{l} \edo c, \trace}}
  \xrightarrow{} 
  \config{{
  \clabel{\eskip}^l,
@@ -151,20 +151,45 @@ A selection of rules of the trace-based operational semantics is presented in Fi
  \and
  %
  %
- \inferrule
- {
- \config{{c_1, \trace}}
- \xrightarrow{}
- \config{{\clabel{\eskip}^l, \trace'}}
- \and 
- \config{{\clabel{\eskip}^l; c_2, \trace'}} \xrightarrow{} \config{{ \clabel{\eskip}^l, \trace''}}
- }
- {
- \config{{c_1; c_2, \trace}} 
- \xrightarrow{} 
- \config{{\clabel{\eskip}^l, \trace''}}
- }
- ~\textbf{seq}
+%  \inferrule
+%  {
+%  \config{{c_1, \trace}}
+%  \xrightarrow{}
+%  \config{{\clabel{\eskip}^l, \trace'}}
+%  \and 
+%  \config{{\clabel{\eskip}^l; c_2, \trace'}} \xrightarrow{} \config{{ \clabel{\eskip}^l, \trace''}}
+%  }
+%  {
+%  \config{{c_1; c_2, \trace}} 
+%  \xrightarrow{} 
+%  \config{{\clabel{\eskip}^l, \trace''}}
+%  }
+%  ~\textbf{seq}
+\inferrule
+{
+\config{{c_1, \trace}}
+\xrightarrow{}
+\config{{c_1',  \trace'}}
+}
+{
+\config{{c_1; c_2, \trace}} 
+\xrightarrow{} 
+\config{{c_1'; c_2, \trace'}}
+}
+~\textbf{seq1}
+%
+\and
+%
+\inferrule
+{
+  \config{{c_2, \trace}}
+  \xrightarrow{}
+  \config{{c_2',  \trace'}}
+}
+{
+\config{{\clabel{\eskip}^l; c_2, \trace}} \xrightarrow{} \config{{ c_2', \trace'}}
+}
+~\textbf{seq2}
  %
  % \and
  % %
