@@ -1,0 +1,521 @@
+[ x <- query ( 0 ) ] 0 ;
+[ y <- query ( x ) ] 1 ;
+[ z <- query ( y ) ] 2 ;
+[ a <- + ( x, 0 ) ] 3 ;
+[ b <- + ( a, z ) ] 4 ;
+[ c <- + ( a, b ) ] 5 ;
+[ w <- query ( a ) ] 6 ;
+[ x <- query ( b ) ] 7 ;
+[ y <- query ( c ) ] 8 ;
+[ z <- query ( z ) ] 9 ;
+[ w <- query ( z ) ] 10 ;
+[ d <- + ( x, w ) ] 11 ;
+[ e <- + ( c, z ) ] 12 ;
+[ f <- + ( a, b ) ] 13 ;
+[ x <- query ( 0 ) ] 14 ;
+[ y <- query ( x ) ] 15 ;
+[ z <- query ( y ) ] 16 ;
+[ x <- query ( z ) ] 17;
+[ g <- + ( f, w ) ] 18 ;
+[ h <- + ( c, x ) ] 19 ;
+[ i <- + ( w, e ) ] 20 ;
+[ z <- query ( x ) ] 21 ;
+if [ > (x , 0) ] 22    
+then { [ y <- query ( 0 ) ] 23 }
+else { [ w <- query ( 0 ) ] 24 };
+[ x <- - (y, w) ] 25 ;
+[ j <- 5 ] 26 ;
+[ x <- query ( chi : x : ) ] 27 ;
+while [  > (j, 0) ] 28 do {
+[ j <- - ( j, 1 )  ] 29 ;
+if [ < (j , 5) ] 30   
+then { [ y <- query ( chi : x :) ] 31 }
+else { [ w <- query ( chi : x : ) ] 32 } ;
+[ x <- query ( chi : y : ) ] 33
+};
+[ y <- query ( x ) ] 34 ;
+[ z <- query ( + (x, y) ) ] 35 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 36;
+[ z <- query ( w ) ] 37 ;
+[ g <- + ( f, z ) ] 38 ;
+[ h <- + ( c, x ) ] 39 ;
+[ i <- + ( w, g ) ] 40 ;
+[ z <- query ( x ) ] 41 ;
+[ e <- + ( c, z ) ] 42 ;
+[ f <- + ( a, i ) ] 43 ;
+[ x <- query ( 0 ) ] 44 ;
+[ y <- query ( x ) ] 45 ;
+[ z <- query ( y ) ] 46 ;
+[ z <- query ( z ) ] 47;
+[ x <- / (k, 2 ) ] 48 ;
+if [ > (x , 0) ] 49    
+then { [ y <- query ( z ) ] 50 }
+else { [ y <- query ( 0 ) ] 51 } ;
+[ i <- k ] 52 ;
+[ x <- query ( y ) ] 53 ;
+[ y <- query ( x ) ] 54 ;
+while [  > (i , 0) ] 55 do {
+[ i <- - (i, 1) ] 56 ;
+[ y <- query ( + (z, y) ) ] 57 ;
+[ j <- k ] 58 ;
+while [  > (j , 0) ] 59 do 
+{ [ j <- - (j, 1) ] 60 ;
+[ x <- query ( + ( x, y) ) ] 61 }
+ } ;
+ [ j <- N ] 62 ;
+[ l <- x ] 63 ;
+[ cs <- -1 ] 64 ;
+[ ns <- -1 ] 65 ;
+while [  < (0, j) ] 66 do {
+[ j <- - ( j, 1 ) ] 67;
+[ cs <- + ( cs, 0 ) ] 68 ;
+[ ns <- + ( ns, 0 ) ] 69 };
+[w <- k] 70;
+while [< (0, w)] 71 do {
+    [ w <- - ( w, 1 ) ] 72 ;
+    [ p <- c ] 73;
+    [ q <- c ] 74;
+    [ a <- query ( l ) ] 75 ;
+    [ i <- N ] 76;
+    while [ < (0, i) ] 77 do {
+        [ i <- - (i, 1) ] 78;
+        [ csi <- + (csi, * (- (a, p), - (q, p))) ] 79;
+        if [ > (i , I) ] 80    
+            then { [ nsi <- + (nsi, * (- (a, p), - (q, p)) ) ] 81 }
+            else { [ nsi <- nsi ] 82 }
+            };
+    [ i2 <- N ] 83;
+    while [ < (0, i2) ] 84 do {
+        [ i2 <- - (i2, 1) ] 85;
+        if [ > (ns , I) ] 86    
+            then { [ l <- + ( l , i2 ) ] 87 }
+            else { [ l <- l ] 88 }
+        }
+ };
+[ x <- query ( cs ) ] 89 ;
+[ y <- query ( x ) ] 90 ;
+[ z <- query ( ns ) ] 91 ;
+[ w <- query ( z ) ] 92 ;
+[ a <- x ] 93 ;
+[ c <- z ] 94 ;
+[ j <- k ] 95 ;
+while [  < (0, j) ] 96 do {
+[ da <- query ( * ( a , c ) ) ] 97 ;
+[ dc <- query ( * ( a , c ) ) ] 98 ;
+[ a <- - (a, da) ] 99 ;
+[ c <- - (c, dc) ] 100 ;
+[ j <- - (j, 1 ) ] 101 
+ };
+[ x <- query ( 0 ) ] 102 ;
+[ y <- query ( cs ) ] 103 ;
+[ z <- query ( c ) ] 104 ;
+[ w <- query ( z ) ] 105 ;
+[ x <- query ( 0 ) ] 106 ;
+[ y <- query ( x ) ] 107 ;
+[ z <- query ( y ) ] 108 ;
+[ w <- query ( z ) ] 109 ;
+[ x <- query ( 0 ) ] 110 ;
+[ y <- query ( x ) ] 111 ;
+[ z <- query ( + (x, y) ) ] 112 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 113 ;
+[ z <- query ( w ) ] 114 ;
+[ x <- query ( e ) ] 115 ;
+if [ > (x , 0) ] 116    
+then { [ y <- query ( 0 ) ] 117 }
+else { [ w <- query ( 0 ) ] 118 } ;
+[ a <- x ] 119 ;
+[ c <- z ] 120 ;
+[ j <- k ] 121 ;
+[ cs <- + ( cs, 0 ) ] 122 ;
+[ ns <- + ( ns, 0 ) ] 123 ;
+ [ i <- k ] 124 ;
+[ x <- query ( 0 ) ] 125 ;
+[ y <- query ( cs ) ] 126 ;
+while [  > (i , 0) ] 127 do {
+[ i <- - (i, 1) ] 128 ;
+[ j <- k ] 129 ;
+if [ > (x , 0) ] 130   
+then { [ y <- query ( + ( chi : x : , chi : y : )  ) ] 131 }
+else { [ y <- query ( chi : x : ) ] 132 } ;
+while [  > (j , 0) ] 133 do 
+{ [ j <- - (j, 1) ] 134 ;
+[ x <- query ( + ( x, y) ) ] 135 }
+ };
+[ x <- query ( z ) ] 136 ;
+[ y <- query ( cs ) ] 137 ;
+[ z <- query ( c ) ] 138 ;
+[ w <- query ( z ) ] 139 ;
+[ y <- query ( x ) ] 140 ;
+[ z <- query ( + (x, y) ) ] 141 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 142 ;
+[ z <- query ( 0 ) ] 143 ;
+if [ > (x , 0) ] 144    
+then { [ y <- query ( x ) ] 145 }
+else { [ w <- query ( z ) ] 146 } ;
+[ y <- query ( cs ) ] 147 ;
+[ z <- query ( c ) ] 148 ;
+[ w <- query ( z ) ] 149 ;
+[ x <- query ( w ) ] 150 ;
+[ y <- query ( x ) ] 151 ;
+[ z <- query ( y ) ] 152 ;
+[ w <- query ( z ) ] 153 ;
+[ x <- query ( 0 ) ] 154 ;
+[ y <- query ( x ) ] 155 ;
+[ z <- query ( + (x, y) ) ] 156 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 157 ;
+[ z <- query ( 0 ) ] 158 ;
+[ x <- query ( w ) ] 159 ;
+[ i <- k ] 160 ;
+[ x <- query ( chi : cs : ) ] 161 ;
+while [  > (i , 0) ] 162 do {
+[ i <- - (i, 1) ] 163 ;
+[ j <- k ] 164 ;
+[ y <- query ( chi : x : ) ] 165 ;
+while [  > (j , 0) ] 166 do 
+{ [ j <- - (j, 1) ] 167 ;
+[ x <- query ( chi : x : ) ] 168 }
+ };
+ [ x <- query ( cs ) ] 169 ;
+[ y <- query ( x ) ] 170 ;
+[ z <- query ( ns ) ] 171 ;
+[ w <- query ( z ) ] 172 ;
+[ a <- x ] 173 ;
+[ c <- z ] 174 ;
+[ j <- k ] 175 ;
+while [  < (0, j) ] 176 do {
+[ da <- query ( * ( a , c ) ) ] 177 ;
+[ dc <- query ( * ( a , c ) ) ] 178 ;
+[ a <- - (a, da) ] 179 ;
+[ c <- - (c, dc) ] 180 ;
+[ j <- - (j, 1 ) ] 181 
+ };
+[ x <- query ( 0 ) ] 182 ;
+[ y <- query ( cs ) ] 183 ;
+[ z <- query ( c ) ] 184 ;
+[ w <- query ( z ) ] 185 ;
+[ x <- query ( 0 ) ] 186 ;
+[ y <- query ( x ) ] 187 ;
+[ z <- query ( y ) ] 188 ;
+[ w <- query ( z ) ] 189 ;
+[ x <- query ( 0 ) ] 190 ;
+[ y <- query ( x ) ] 191 ;
+[ z <- query ( + (x, y) ) ] 192 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 193 ;
+[ b <- + ( a, z ) ] 194 ;
+[ c <- + ( a, b ) ] 195 ;
+[ w <- query ( a ) ] 196 ;
+[ x <- query ( b ) ] 197 ;
+[ y <- query ( c ) ] 198 ;
+[ z <- query ( z ) ] 199 ;
+[ w <- query ( z ) ] 200 ;
+[ j <- - (w, 1 ) ] 201 ;
+[ x <- query ( 0 ) ] 202 ;
+[ y <- query ( cs ) ] 203 ;
+[ z <- query ( c ) ] 204 ;
+[ w <- query ( z ) ] 205 ;
+[ x <- query ( 0 ) ] 206 ;
+[ y <- query ( x ) ] 207 ;
+[ z <- query ( y ) ] 208 ;
+[ w <- query ( z ) ] 209 ;
+[ x <- query ( 0 ) ] 210 ;
+[ d <- + ( x, w ) ] 211 ;
+[ e <- + ( c, z ) ] 212 ;
+[ f <- + ( a, b ) ] 213 ;
+[ x <- query ( w ) ] 214 ;
+[ y <- query ( x ) ] 215 ;
+[ z <- query ( y ) ] 216 ;
+[ x <- query ( z ) ] 217;
+[ g <- + ( f, w ) ] 218 ;
+[ h <- + ( c, x ) ] 219 ;
+[ i <- + ( w, e ) ] 220 ;
+[ z <- query ( x ) ] 221 ;
+[ cs <- + ( cs, 0 ) ] 222 ;
+[ ns <- + ( ns, 0 ) ] 223 ;
+ [ i <- k ] 224 ;
+[ x <- query ( z ) ] 225 ;
+[ y <- query ( cs ) ] 226 ;
+while [  > (i , 0) ] 227 do {
+[ i <- - (i, 1) ] 228 ;
+[ j <- k ] 229 ;
+if [ > (x , 0) ] 230   
+then { [ y <- query ( + ( chi : x : , chi : y : )  ) ] 231 }
+else { [ y <- query ( chi : x : ) ] 232 } ;
+while [  > (j , 0) ] 233 do 
+{ [ j <- - (j, 1) ] 234 ;
+[ x <- query ( + ( x, y) ) ] 235 }
+ };
+[ x <- query ( z ) ] 236 ;
+[ y <- query ( cs ) ] 237 ;
+[ z <- query ( c ) ] 238 ;
+[ w <- query ( z ) ] 239 ;
+[ y <- query ( x ) ] 240 ;
+[ z <- query ( + (x, y) ) ] 241 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 242 ;
+[ z <- query ( 0 ) ] 243 ;
+if [ > (x , 0) ] 244    
+then { [ y <- query ( x ) ] 245 }
+else { [ w <- query ( z ) ] 246 } ;
+[ y <- query ( cs ) ] 247 ;
+[ z <- query ( c ) ] 248 ;
+[ w <- query ( z ) ] 249 ;
+[ x <- query ( w ) ] 250 ;
+[ y <- query ( x ) ] 251 ;
+[ z <- query ( w ) ] 252 ;
+[ w <- query ( z ) ] 253 ;
+[ x <- query ( 0 ) ] 254 ;
+[ y <- query ( x ) ] 255 ;
+[ z <- query ( + (x, y) ) ] 256 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 257 ;
+[ z <- query ( 0 ) ] 258 ;
+[ x <- query ( w ) ] 259 ;
+[ i <- k ] 260 ;
+[ x <- query ( chi : cs : ) ] 261 ;
+while [  > (i , 0) ] 262 do {
+[ i <- - (i, 1) ] 263 ;
+[ j <- k ] 264 ;
+[ y <- query ( chi : x : ) ] 265 ;
+while [  > (j , 0) ] 266 do 
+{ [ j <- - (j, 1) ] 267 ;
+[ x <- query ( chi : x : ) ] 268 }
+ };
+ [ x <- query ( cs ) ] 269 ;
+[ y <- query ( x ) ] 270 ;
+[ z <- query ( ns ) ] 271 ;
+[ w <- query ( z ) ] 272 ;
+[ a <- x ] 273 ;
+[ c <- z ] 274 ;
+[ j <- k ] 275 ;
+while [  < (0, j) ] 276 do {
+[ da <- query ( * ( a , c ) ) ] 277 ;
+[ dc <- query ( * ( a , c ) ) ] 278 ;
+[ a <- - (a, da) ] 279 ;
+[ c <- - (c, dc) ] 280 ;
+[ j <- - (j, 1 ) ] 281 
+ };
+[ x <- query ( a ) ] 282 ;
+[ y <- query ( cs ) ] 283 ;
+[ z <- query ( c ) ] 284 ;
+[ w <- query ( z ) ] 285 ;
+[ x <- query ( w ) ] 286 ;
+[ y <- query ( x ) ] 287 ;
+[ z <- query ( y ) ] 288 ;
+[ w <- query ( z ) ] 289 ;
+[ x <- query ( 0 ) ] 290 ;
+[ y <- query ( x ) ] 291 ;
+[ z <- query ( + (x, y) ) ] 292 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 293 ;
+[ z <- query ( 0 ) ] 294 ;
+[ x <- query ( w ) ] 295 ;
+if [ > (x , 0) ] 296    
+then { [ y <- query ( 0 ) ] 297 }
+else { [ w <- query ( 0 ) ] 298 } ;
+[ a <- x ] 299 ;
+[ c <- z ] 300 ;
+[ j <- k ] 301 ;
+[ cs <- + ( cs, 0 ) ] 302 ;
+[ ns <- + ( ns, 0 ) ] 303 ;
+ [ i <- k ] 304 ;
+[ x <- query ( 0 ) ] 305 ;
+[ y <- query ( cs ) ] 306 ;
+while [  > (i , 0) ] 307 do {
+[ i <- - (i, 1) ] 308 ;
+[ j <- k ] 309 ;
+if [ > (x , 0) ] 310   
+then { [ y <- query ( + ( chi : x : , chi : y : )  ) ] 311 }
+else { [ y <- query ( chi : x : ) ] 312 } ;
+while [  > (j , 0) ] 313 do 
+{ [ j <- - (j, 1) ] 314 ;
+[ x <- query ( + ( x, y) ) ] 315 }
+ };
+[ x <- query ( c ) ] 316 ;
+[ y <- query ( cs ) ] 317 ;
+[ z <- query ( c ) ] 318 ;
+[ w <- query ( z ) ] 319 ;
+[ y <- query ( x ) ] 320 ;
+[ z <- query ( + (x, y) ) ] 321 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 322 ;
+[ z <- query ( 0 ) ] 323 ;
+if [ > (x , 0) ] 324    
+then { [ y <- query ( w ) ] 325 }
+else { [ w <- query ( z ) ] 326 } ;
+[ y <- query ( cs ) ] 327 ;
+[ z <- query ( c ) ] 328 ;
+[ w <- query ( z ) ] 329 ;
+[ x <- query ( 0 ) ] 330 ;
+[ y <- query ( x ) ] 331 ;
+[ z <- query ( y ) ] 332 ;
+[ w <- query ( z ) ] 333 ;
+[ x <- query ( y ) ] 334 ;
+[ y <- query ( x ) ] 335 ;
+[ z <- query ( + (x, y) ) ] 336 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 337 ;
+[ z <- query ( 0 ) ] 338 ;
+[ x <- query ( w ) ] 339 ;
+[ i <- k ] 340 ;
+[ x <- query ( chi : cs : ) ] 341 ;
+while [  > (i , 0) ] 342 do {
+[ i <- - (i, 1) ] 343 ;
+[ j <- k ] 344 ;
+[ y <- query ( chi : x : ) ] 345 ;
+while [  > (j , 0) ] 346 do 
+{ [ j <- - (j, 1) ] 347 ;
+[ x <- query ( chi : x : ) ] 348 }
+ };
+ [ x <- query ( cs ) ] 349 ;
+[ y <- query ( x ) ] 350 ;
+[ z <- query ( ns ) ] 351 ;
+[ w <- query ( z ) ] 352 ;
+[ a <- x ] 353 ;
+[ c <- z ] 354 ;
+[ j <- k ] 355 ;
+while [  < (0, j) ] 356 do {
+[ da <- query ( * ( a , c ) ) ] 357 ;
+[ dc <- query ( * ( a , c ) ) ] 358 ;
+[ a <- - (a, da) ] 359 ;
+[ c <- - (c, dc) ] 360 ;
+[ j <- - (j, 1 ) ] 361 
+ };
+[ x <- query ( 0 ) ] 362 ;
+[ y <- query ( cs ) ] 363 ;
+[ z <- query ( c ) ] 364 ;
+[ w <- query ( z ) ] 365 ;
+[ x <- query ( 0 ) ] 366 ;
+[ y <- query ( x ) ] 367 ;
+[ z <- query ( y ) ] 368 ;
+[ w <- query ( z ) ] 369 ;
+[ x <- query ( 0 ) ] 370 ;
+[ y <- query ( x ) ] 371 ;
+[ z <- query ( + (x, y) ) ] 372 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 373 ;
+[ z <- query ( 0 ) ] 374 ;
+[ x <- query ( w ) ] 375 ;
+if [ > (x , 0) ] 376    
+then { [ y <- query ( x ) ] 377 }
+else { [ w <- query ( 0 ) ] 378 } ;
+[ a <- x ] 379 ;
+[ c <- z ] 380 ;
+[ j <- k ] 381 ;
+[ cs <- + ( cs, 0 ) ] 382 ;
+[ ns <- + ( ns, 0 ) ] 383 ;
+ [ i <- k ] 384 ;
+[ x <- query ( 0 ) ] 385 ;
+[ y <- query ( cs ) ] 386 ;
+while [  > (i , 0) ] 387 do {
+[ i <- - (i, 1) ] 388 ;
+[ j <- k ] 389 ;
+if [ > (x , 0) ] 390   
+then { [ y <- query ( + ( chi : x : , chi : y : )  ) ] 391 }
+else { [ y <- query ( chi : x : ) ] 392 } ;
+while [  > (j , 0) ] 393 do 
+{ [ j <- - (j, 1) ] 394 ;
+[ x <- query ( + ( x, y) ) ] 395 }
+ };
+[ x <- query ( 0 ) ] 396 ;
+[ y <- query ( cs ) ] 397 ;
+[ z <- query ( c ) ] 398 ;
+[ w <- query ( z ) ] 399 ;
+[ y <- query ( x ) ] 400 ;
+[ z <- query ( + (x, y) ) ] 401 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 402 ;
+[ z <- query ( 0 ) ] 403 ;
+if [ > (x , 0) ] 404    
+then { [ y <- query ( w ) ] 405 }
+else { [ w <- query ( z ) ] 406 } ;
+[ y <- query ( cs ) ] 407 ;
+[ z <- query ( c ) ] 408 ;
+[ w <- query ( z ) ] 409 ;
+[ x <- query ( 0 ) ] 410 ;
+if [ > (w , 0) ] 411    
+then { [ y <- w ] 412 }
+else { [ w <- query ( z ) ] 413 } ;
+[ x <- query ( w ) ] 414 ;
+[ y <- query ( x ) ] 415 ;
+[ z <- query ( y ) ] 416 ;
+[ x <- query ( z ) ] 417;
+[ g <- + ( f, w ) ] 418 ;
+[ h <- + ( c, x ) ] 419 ;
+[ i <- + ( w, e ) ] 420 ;
+[ z <- query ( x ) ] 421 ;
+[ cs <- + ( cs, 0 ) ] 422 ;
+[ ns <- + ( ns, 0 ) ] 423 ;
+ [ i <- k ] 424 ;
+[ x <- query ( z ) ] 425 ;
+[ y <- query ( cs ) ] 426 ;
+while [  > (i , 0) ] 427 do {
+[ i <- - (i, 1) ] 428 ;
+[ j <- k ] 429 ;
+if [ > (x , 0) ] 430   
+then { [ y <- query ( + ( chi : x : , chi : y : )  ) ] 431 }
+else { [ y <- query ( chi : x : ) ] 432 } ;
+while [  > (j , 0) ] 433 do 
+{ [ j <- - (j, 1) ] 434 ;
+[ x <- query ( + ( x, y) ) ] 435 }
+ };
+[ x <- query ( z ) ] 436 ;
+[ y <- query ( cs ) ] 437 ;
+[ z <- query ( c ) ] 438 ;
+[ w <- query ( z ) ] 439 ;
+[ y <- query ( w ) ] 440 ;
+[ z <- query ( + (x, y) ) ] 441 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 442 ;
+[ z <- query ( 0 ) ] 443 ;
+if [ > (x , 0) ] 444    
+then { [ y <- query ( x ) ] 445 }
+else { [ w <- query ( z ) ] 446 } ;
+[ y <- query ( cs ) ] 447 ;
+[ z <- query ( c ) ] 448 ;
+[ w <- query ( z ) ] 449 ;
+[ x <- query ( w ) ] 450 ;
+[ y <- query ( x ) ] 451 ;
+[ z <- query ( w ) ] 452 ;
+[ w <- query ( z ) ] 453 ;
+[ x <- query ( 0 ) ] 454 ;
+[ y <- query ( x ) ] 455 ;
+[ z <- query ( + (x, y) ) ] 456 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 457 ;
+[ z <- query ( 0 ) ] 458 ;
+[ x <- query ( w ) ] 459 ;
+[ i <- k ] 460 ;
+[ x <- query ( chi : cs : ) ] 461 ;
+while [  > (i , 0) ] 462 do {
+[ i <- - (i, 1) ] 463 ;
+[ j <- k ] 464 ;
+[ y <- query ( chi : x : ) ] 465 ;
+while [  > (j , 0) ] 466 do 
+{ [ j <- - (j, 1) ] 467 ;
+[ x <- query ( chi : x : ) ] 468 }
+ };
+ [ x <- query ( cs ) ] 469 ;
+[ y <- query ( x ) ] 470 ;
+[ z <- query ( ns ) ] 471 ;
+[ w <- query ( z ) ] 472 ;
+[ a <- x ] 473 ;
+[ c <- z ] 474 ;
+[ j <- k ] 475 ;
+while [  < (0, j) ] 476 do {
+[ da <- query ( * ( a , c ) ) ] 477 ;
+[ dc <- query ( * ( a , c ) ) ] 478 ;
+[ a <- - (a, da) ] 479 ;
+[ c <- - (c, dc) ] 480 ;
+[ j <- - (j, 1 ) ] 481 
+ };
+[ x <- query ( a ) ] 482 ;
+[ y <- query ( cs ) ] 483 ;
+[ z <- query ( c ) ] 484 ;
+[ w <- query ( z ) ] 485 ;
+[ x <- query ( w ) ] 486 ;
+[ y <- query ( x ) ] 487 ;
+[ z <- query ( y ) ] 488 ;
+[ w <- query ( z ) ] 489 ;
+[ x <- query ( 0 ) ] 490 ;
+[ y <- query ( x ) ] 491 ;
+[ z <- query ( + (x, y) ) ] 492 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 493 ;
+[ z <- query ( 0 ) ] 494 ;
+[ x <- query ( w ) ] 495 ;
+if [ > (x , 0) ] 496    
+then { [ y <- query ( 0 ) ] 497 }
+else { [ w <- query ( 0 ) ] 498 } ;
+[ a <- x ] 499 ;
+[ c <- z ] 500 ;
+[ r <- query ( c ) ] 501 

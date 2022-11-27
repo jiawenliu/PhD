@@ -39,26 +39,25 @@ of the $\ewhile$ command with header at label $2$.
 
 \begin{figure} 
     \centering
-    \begin{subfigure}{.2\textwidth}
-    \begin{centering}
-    {\small
-    $
-        \begin{array}{l}
-              \clabel{ \assign{a}{0}}^{0} ;   
-                \clabel{\assign{j}{k} }^{1} ; \\
-                \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ \\
-                \Big(
-                 \clabel{\assign{x}{\query(\chi[j])} }^{3}  ; \\
-                 \clabel{\assign{j}{j-1}}^{4} ;\\
-                \clabel{\assign{a}{x + a}}^{5}       \Big);\\
-                \clabel{\assign{l}{\query(\chi[k]*a)} }^{6}\\
-            \end{array}
-    $
-    }
-    \caption{}
-    \end{centering}
-    \end{subfigure}
-    \begin{subfigure}{.38\textwidth}
+    \begin{subfigure}{1.0\textwidth}
+      \begin{centering}
+      $
+          \begin{array}{l}
+          \kw{towRounds(k)} \triangleq \\
+                 \clabel{ \assign{a}{0}}^{0} ;
+                  \clabel{\assign{j}{k} }^{1} ;\\
+                  \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ 
+                  \Big(
+                   \clabel{\assign{x}{\query(\chi[j] \cdot \chi[k])} }^{3}  ; 
+                   \clabel{\assign{j}{j-1}}^{4} ;
+                  \clabel{\assign{a}{x + a}}^{5}       \Big);\\
+                  \clabel{\assign{l}{\query(\chi[k]*a)} }^{6}
+              \end{array}
+      $
+      \caption{}
+      \end{centering}
+      \end{subfigure}
+    \begin{subfigure}{.47\textwidth}
         \begin{centering}
       \begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
       \draw[] (-7, 10) circle (0pt) node{{ $0$}};
@@ -84,7 +83,7 @@ of the $\ewhile$ command with header at label $2$.
       \caption{}
         \end{centering}
         \end{subfigure}
-        \begin{subfigure}{.38\textwidth}
+        \begin{subfigure}{.5\textwidth}
           \begin{centering}
         %   \todo{abstract-cfg for two round}
         \begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
@@ -111,7 +110,7 @@ of the $\ewhile$ command with header at label $2$.
         \caption{}
           \end{centering}
           \end{subfigure}
-      \caption{(a) The same $\kw{towRounds(k)}$ program as Figure~\ref{fig:overview-example}
+      \caption{(a) The same $\kw{towRounds(k)}$ program as Figure~\ref{fig:twoRounds}
       (b) The abstract control flow graph for $\kw{towRounds(k)}$  (c) The abstract control flow graph with the reachability bound for $\kw{towRounds(k)}$.}
       \label{fig:abscfg_tworound}
     \end{figure}

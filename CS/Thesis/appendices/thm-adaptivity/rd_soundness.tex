@@ -1,0 +1,71 @@
+\begin{thm}[Soundness of the Data-Flow Refinement Algorithm]
+    \label{thm:rd_soundness}
+    \[
+    \forall c \in \cdom, x^i, y^j \in \lvar_c \st 
+    \flowsto(x^i, y^j, c) \iff (x^i, y^j) \in dcdg(c)
+    \]
+    \end{thm}
+\begin{proof}
+    \label{pf:rd_soundness}
+        By induction on the program $c$, we have the following cases:
+        \caseL{$c = \clabel{\assign{x}{\expr}}^l$}
+        We have $\lvar_c = \{x^l\}$, and the only choice for $x^i$ and $y^j$ is $x^l$.
+        \subcaseL{$\implies$}
+        By Definition~\ref{def:flowsto}, and $\flowsto(x^l, x^l, \clabel{\assign{x}{\expr}}^l)$, we know $x \in FV(\expr)$ and $x^l \in \live(l, c)$.
+        \\
+        Then, we have $dcdg(\clabel{\assign{x}{\expr}}^l) = \{(x^l, x^l)\}$ by definition~\ref{def:feasible_flowsto}
+        \\
+        This case is proved.
+        \subcaseL{$\Longleftarrow$}
+        by definition~\ref{def:feasible_flowsto} and $(x^l, x^l) \in dcdg(\clabel{\assign{x}{\expr}}^l)$, we have 
+        $x \in FV(\expr)$ and $x^l \in \live(l, c)$.
+        By Definition~\ref{def:flowsto}, we know $\flowsto(x^l, x^l, \clabel{\assign{x}{\expr}}^l)$.
+        \\
+        This case is proved.
+        \caseL{$c = [\assign{x}{\query(\qexpr)}]^{l'}$}
+        This case is proved in the same way as \textbf{case: $c = [\assign{x}{\expr}]^l$}.
+        \caseL{$\ewhile \clabel{b}^{l_w} \edo c_w$}
+        Take arbitrary $x^i, y^j \in \lvar_{\ewhile \clabel{b}^{l_w} \edo c_w}$, it is sufficient to show the following two directions.
+        \subcaseL{$\implies$}
+        By Definition~\ref{def:flowsto} and $\flowsto(x^i, y^j, \ewhile \clabel{b}^{l_w} \edo c_w)$ we have two sub-cases:
+        \\
+        (1) $\flowsto(x^i, y^j, c_w)$,
+        By induction hypothesis, we have $(x^i, y^j) \in dcfg(c_w)$.
+        \\
+        By Definition~\ref{def:feasible_flowsto}, we know $dcfg(\ewhile \clabel{b}^{l_w} \edo c_w) = dcfg(c_w) \cup \{\cdots\}$.
+        \\
+        Then we have $(x^i, y^j) \in dcfg(\ewhile \clabel{b}^{l_w} \edo c_w)$, this case is proved.
+        \\
+        (2). $\exists \expr \lor \qexpr \st	\clabel{\assign{y}{\expr \lor \query(\qexpr)}}^{j} \in_{c}  {c_w}  
+        \land {x} \in FV(\sbexpr) \land x^i \in \live(l, c)$.
+        \\
+        By $blocks$ definition, we have $ (\clabel{\assign{y}{\expr \lor \query(\qexpr)}}^{j}) \in blocks(c_w)$. 
+        \\
+        Then we know $(x^i, y^j) \in \{(x^i,y^j) | x \in FV(b) \land (x,i) \in \live(l, c) \land ([y = \_]^j) \in blocks(c_w)$, i.e., $(x^i, y^j) \in dcfg(\ewhile \clabel{b}^{l_w} \edo c_w)$.
+        \\
+        This case is proved.
+        \subcaseL{$\Longleftarrow$}
+        By Definition~\ref{def:feasible_flowsto} and $(x^i, y^j) \in dcfg(\ewhile \clabel{b}^{l_w} \edo c_w)$, we have two sub-cases:
+        \\
+        (1) $(x^i, y^j) \in dcfg(c_w)$.
+        \\
+        By induction hypothesis, we have $\flowsto(x^i, y^j, c_w)$. Then we have  $\flowsto(x^i, y^j, \ewhile \clabel{b}^{l_w} \edo c_w)$ by Definition~\ref{def:flowsto}.
+        \\
+        This case is proved.
+        \\
+        (2). $(x^i, y^j) \in \{(x^i,y^j) | x \in FV(b) \land (x,i) \in \live(l, c) \land ([y = \_]^j) \in blocks(c_w) \}$
+        \\
+        By $blocks$ definition, we know there exists $\expr$ or $\qexpr$ such that $ (\clabel{\assign{y}{\expr \lor \query(\qexpr)}}^{j}) \in_c c_w$. 
+        \\
+        Then, we know $\exists \expr \lor \qexpr \st	\clabel{\assign{y}{\expr \lor \query(\qexpr)}}^{j} \in_{c}  {c_w}  
+        \land {x} \in FV(\sbexpr) \land x^i \in \live(l, c)$.
+        \\
+        Then we have $\flowsto(x^i, y^j, \ewhile \clabel{b}^{l_w} \edo c_w)$ by Definition~\ref{def:flowsto}.
+        \\
+        This case is proved.
+        \caseL{$\eif([b]^l, c_t, c_f)$}
+        This case is proved in the same way as \textbf{case: $c = \ewhile [b]^{l} \edo c$}.
+        \caseL{$c = c_{s1};c_{s2}$}
+       By the induction hypothesis on $c_{s1}$ and $c_{s2}$ separately, and the same step as case (2). of \textbf{case: $c = \ewhile [b]^{l} \edo c$},
+       we have this case proved.   
+\end{proof}

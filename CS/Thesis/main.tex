@@ -219,17 +219,17 @@ my loving grandmother \\ Xiuqin Yang
 
 % \mainmatter
 
-\chapter{Introduction\todo{Prograss-(Reachability-10\%: more detail after PLDI), (Adapt-99\%: typos)}}
+\chapter{Introduction\todo{Rewrite-(Reachability-10\%: more detail after CAV)}}
 \label{introduction}
 \input{chapters/intro-preface}
 
 
-\section{Background and Motivation \todo{ ==> 98\%}}
+\section{Background and Motivation \todo{ ==> 98\% Rewrite}}
 \label{sec:intro-background}
 \input{chapters/intro-background}
 
 
-\section{Methodology Overview \todo{ ==> (Reachability-30\%: more detail after PLDI), (Adapt==>99\%: passes on details)}}
+\section{Methodology Overview \todo{ ==> rewrite}}
 \label{sec:intro-methodology}
 \input{chapters/intro-methodology}
 
@@ -251,22 +251,26 @@ my loving grandmother \\ Xiuqin Yang
 \input{chapters/adapt/adapt-preface}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Introduction\todo{progress-99\% passes on typos}}
+\chapter{Introduction}
 \label{sec:adapt-intro}
 \input{chapters/adapt/intro-preface}
-\section{Adaptive Data Analysis\todo{==> 100\% passes on typos}}
+\section{Adaptive Data Analysis and Generalization Error}
 \label{sec:adapt-background}
 \input{chapters/adapt/intro-adaptive_data_analysis}
 
-\section{Overview\todo{==> 100\% passes on typos}}
+\section{Some Results in Adaptive Data Analysis and Challenges}
 \label{sec:adapt-motivation}
-\input{chapters/adapt/intro-motivation_and_overview}
+\input{chapters/adapt/motivation}
 
-\section{Chapter Outline}
+\section{Overview}
+\label{sec:adapt-overview}
+\input{chapters/adapt/overview}
+
+\section{Outline and Contributions}
 \label{sec:adapt-outline}
 \input{chapters/adapt/intro-outline}
 
-\chapter{Previous Works on Adaptivity Analysis\todo{==> 100\% passes on typos}}
+\chapter{Previous Works on Adaptivity Analysis}
 \label{sec:prework}
 \input{chapters/adapt/prework-preface}
 %
@@ -278,16 +282,18 @@ my loving grandmother \\ Xiuqin Yang
 \label{sec:prework-formalization}
 \input{chapters/adapt/prework-formalization}
 %
-\section{The Adaptivity Estimation}
+\section{The Program Analysis for Adaptivity}
 \label{sec:prework-static}
 \input{chapters/adapt/prework-static}
 
-
+\section{Limitations}
+\label{sec:prework-limitations}
+\input{chapters/adapt/prework-limitations}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NEW ADAPTIVITY ANALYSIS FRAMEWORK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{New Adaptivity Analysis Framework\todo{progress-99\% passes on details}}
+\chapter{Adaptivity Analysis Framework - {\THESYSTEM}}
 \label{sec:adapt-analysis}
 \input{chapters/adapt/analysis-preface}
 
@@ -303,12 +309,7 @@ my loving grandmother \\ Xiuqin Yang
 
 \subsection{May-dependency between Variables}
 \label{sec:dynamic-datadep}
-% \input{chapters/adapt/exe-dep}
 \input{chapters/adapt/var-dep}
-
-\subsection{Data Dependency Quantity Definition}
-\label{sec:dynamic-reachability}
-% \input{chapters/adapt/exe-depquantity}%
 
 \subsection{Semantics-based Dependency Graph}
 \label{sec:dynamic-graph}
@@ -316,12 +317,7 @@ my loving grandmother \\ Xiuqin Yang
 
 \subsection{The Adaptivity Definition}
 \label{sec:dynamic-adapt}
-% \input{chapters/adapt/exe-adapt}
 \input{chapters/adapt/adaptivity-definition}
-%
-%
-
-
 
 \subsection{Adaptivity through Examples}
 \label{sec:dynamic-examples}
@@ -329,27 +325,41 @@ my loving grandmother \\ Xiuqin Yang
 
 
 \clearpage
-\section{The Program Analysis for Adaptivity - {\THESYSTEM}}
+\section{The Program Analysis for Adaptivity}
 \label{sec:adapt-static}
 \input{chapters/adapt/static-preface}
 
 \subsection{Algorithm Overview}
 \label{sec:static-overview}
-\input{chapters/adapt/static-overview}
+% \input{chapters/adapt/static-overview}
+\input{chapters/adapt/adaptfun-guide}
 
 
-\subsection{Static Data Dependency Analysis}
-\label{sec:static-dep}
-% \input{chapters/adapt/adaptfun}
-\input{chapters/adapt/static-dep}
+% \subsection{Static Data Dependency Analysis}
+% \label{sec:static-dep}
+% % \input{chapters/adapt/adaptfun}
+% \input{chapters/adapt/static-dep}
 
-\subsection{Static Data Dependency Quantity Analysis}
-\label{sec:static-quantity}
-\input{chapters/adapt/static-quantity}
+% \subsection{Static Data Dependency Quantity Analysis}
+% \label{sec:static-quantity}
+% \input{chapters/adapt/static-quantity}
 
-\subsection{Adaptivity Estimation through Dependency Graph}
-\label{sec:static-adapt}
-\input{chapters/adapt/static-adapt}
+\subsection{Vertex and Query Annotation Estimations}
+\label{sec:alg_vertexgen}
+\input{chapters/adapt/adaptfun-vertexgen}
+
+
+\subsection{Edge and Weight Estimation}
+\label{sec:alg_weightedgegen}
+\input{chapters/adapt/adaptfun-weightedgegen}
+
+\subsection{Graph Construction}
+\label{sec:alg_graphgen}
+\input{chapters/adapt/adaptfun-graphgen}
+
+\subsection{Adaptivity Upper Bound Computation}
+\label{sec:alg_adaptcompute}
+\input{chapters/adapt/adaptfun-adaptcompute}
 
 
 \subsection{Estimated Adaptivity through Examples}
@@ -358,7 +368,7 @@ my loving grandmother \\ Xiuqin Yang
 
 
 \clearpage
-\chapter{Example and Experimental Result \todo{==>100\% emphasis on improvements and passes on details}}
+\chapter{Example and Experimental Results}
 \label{sec:adapt-implementation}
 \section{Examples}
 \label{sec:adapt-example}
@@ -367,21 +377,11 @@ my loving grandmother \\ Xiuqin Yang
 \label{sec:adapt-eval}
 \input{chapters/adapt/implementation}
 
-\chapter{Related Works\todo{progress-95\% need passes on details}}
+\chapter{Related Works}
 \label{sec:adapt-relatedwork}
-
-\section{The Program Semantics Analysis}
-\label{sec:relatedwork-exe}
-\input{chapters/adapt/relatedwork-exe}
+\input{chapters/adapt/relatedwork}
 
 
-\section{The Static Program Analysis}
-\label{sec:relatedwork-static}
-\input{chapters/adapt/relatedwork-static}
-
-\section{Generalization in Adaptive Data Analysis}
-\label{sec:relatedwork-adapt}
-\input{chapters/adapt/relatedwork-adapt}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -447,13 +447,17 @@ my loving grandmother \\ Xiuqin Yang
 %
 \chapter{Future Works\todo{progress-80\% need simplifies and passes on details}}
 \label{sec:future}
-\section{Towards Program Non-Monotonic Resource Cost Analysis\todo{==>95\%}}
+\section{Towards Program Non-Monotonic Resource Cost Analysis \todo{==>95\%}}
 \label{sec:future-cost}
 \input{chapters/future-nonmonotonic_cost}
 
-\section{Towards Solving the CFL Reachability Problem}
-\label{sec:future-cfl}
-\input{chapters/future-cfl_reduction}
+% \section{Towards Solving the CFL Reachability Problem}
+% \label{sec:future-cfl}
+% \input{chapters/future-cfl_reduction}
+
+\section{Accurate Adaptivity Analysis with Practical Application}
+
+\section{Accurate Reachability Bound Analysis}
 
 
 \cleardoublepage
@@ -477,12 +481,6 @@ my loving grandmother \\ Xiuqin Yang
 % \addcontentsline{toc}{chapter}{List of Figures in Appendix}
 \listofappendixfigures
 \endgroup
-% \stoplist[main]{lof}% stops main list of figures
-% \startlist[appendix]{lof}
-% \printlist[appendix]{lof}{}{\chapter*{List of Figures in Appendix}}
-% % \include{chapters/Glossary}
-% \addtocontents{toc}{\protect\newpage}
-% \chapter*{\redd{PART \romannum{1} \quad  REACHABILITY BOUND ANALYSIS}}
 %
 \chapter{Appendix for REACHABILITY BOUND ANALYSIS}
 \label{apdx:reachability}

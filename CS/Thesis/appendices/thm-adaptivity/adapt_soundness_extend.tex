@@ -1,0 +1,153 @@
+  \begin{thm}[Soundness of the \THESYSTEM]
+    \label{thm:adaptfun_soundness}
+  Given a program ${c}$, we have:
+  %
+  \[
+    \forall \trace \in \mathcal{T} \st 
+    \config{\progA(c), \trace} \earrow n \implies n \geq A(c)(\trace)
+  \]
+  \end{thm}
+  %
+\begin{proof}
+Given a program ${c}$, 
+we construct its 
+\\
+program-based graph $\progG({c}) = (\progV, \progE)$
+by Definition~\ref{def:prog_graph}
+\\ and 
+trace-based graph $\traceG({c}) = (\traceV, \traceE)$  by Definition~\ref{def:trace_graph}.
+\\
+The parameter $(c)$ for the components in the two graphs are omitted for concise.
+\\
+%
+According to the Definition \ref{def:prog_adapt} and Definition~\ref{def:trace_adapt}, it is sufficient to show:
+%
+$$
+\forall \trace \in \mathcal{T} \st
+\config{\max\left\{ \qlen(k) \ \mid \  k\in \walks(\progG({c}))\right \}
+, \trace } \earrow n \implies
+n \geq
+\max \big 
+\{ \qlen(k)(\trace) \mid k \in \walks(\traceG(c)) \big \} 
+$$
+%
+%
+Then it is sufficient to show that:
+\[
+  \forall 
+  k_t \in \walks(\traceG({c}),
+  \exists k_p \in \walks(\progG({c})) 
+  \st \forall \trace \in \mathcal{T} \st
+  \qlen(k_p), \trace \earrow n
+   \implies 
+  n \geq \qlen(k_t(\trace))
+  %  \leq \qlen(k_p)
+\]
+%
+Let $k_t\in \walks(\traceG(c))$ be an arbitrary walk in $\traceG(c)$, 
+and $\trace \in \mathcal{T}$ be arbitrary trace.
+\\
+Then, 
+let $(e_{p1}, \cdots, e_{p(n-1)}) $ and
+$(v_1, \cdots, v_n)$ be the edges and vertices sequence  for $k_t(\trace)$.
+\\
+%
+% \\
+By Lemma~\ref{lem:vertex_map} and Lemma~\ref{lem:edge_map}, we know
+%
+\[
+  \forall e_i \in k_t \st e_i = (v_i, w^t_{i}, v_{i + 1}) \implies
+  \exists e_{pi} \st e_{pi} = (v_i, w^p_i, v_{i + 1}) \land e_{pi} \in \progE
+  \]
+  %
+Then we construct a walk $k_p$ with an edge sequence $(e_{p1}, \cdots, e_{p(n-1)}) $ 
+with a vertices sequence $(v_1, \cdots, v_n)$ where 
+$e_{pi} = (v_i, v_{i + 1}) \in \progE$ for all $e_{pi} \in (e_{p1}, \cdots, e_{p(n-1)})$.
+\\
+Let $n \in \mathbb{N}$ such that 
+% \[ 
+$\config{\qlen(k_p), \trace} \earrow n$,
+% \]
+% to show $n \geq A(c)(\trace)$, 
+then, it is sufficient to show
+\[
+  k_p \in \progG(c) \land n \geq \qlen(k_t)(\trace)
+  \] 
+  % following two, 
+% \\
+% (1) 
+To show $k_p \in \progG(c)$, by Definition~\ref{def:finitewalk} for finite walk, 
+we know
+% \[
+%   \forall (v_i, n_i) \in \traceW \st v_i \in (v_1, \cdots, v_n)
+%   \implies \visit((v_1, \cdots, v_n), (v_i)) \leq n_i
+% \]
+\[
+  \forall v_i \in (v_1, \cdots, v_n), (v_i, w_i) \in \traceW(c) 
+  \st
+  \visit((v_1, \cdots, v_n), (v_i)) \leq w_i(\trace)
+\]
+%
+By Lemma~\ref{lem:vertexweights_map}, we know for every 
+\[
+  \forall v_i \in (v_1, \cdots, v_n), (v_i, w_i) \in \progV(c),
+   n_i \in \mathbb{N} 
+  \st
+  \config{w_i, \trace} \earrow n_i
+  \implies
+   w_i(\trace) \leq n_i ~ (\star)
+\]
+% $ v_i \in (v_1, \cdots, v_n)$,
+% $\visit((v_1, \cdots, v_n), (v_i)) \leq \progW(v_i)$.
+% \\
+Then, by Definition~\ref{def:prog_finitewalk}, we know
+the occurrence times for every $v_i \in (v_1, \cdots, v_n)$ 
+is bound by the arithmetic expression $w_i$ where $(v_i, w_i) \in \progV(c)$.
+\\
+Also, by Lemma~\ref{lem:edgeweights_map}, we know for every 
+\[
+  \forall v_i \in (v_1, \cdots, v_n), (v_i, w_i) \in \progV(c),
+   n_i \in \mathbb{N} 
+  \st
+  \config{w_i, \trace} \earrow n_i
+  \implies
+   w_i(\trace) \leq n_i ~ (\star)
+\]
+% $ v_i \in (v_1, \cdots, v_n)$,
+% $\visit((v_1, \cdots, v_n), (v_i)) \leq \progW(v_i)$.
+% \\
+Then, by Definition~\ref{def:prog_finitewalk}, we know
+the occurrence times for every $v_i \in (v_1, \cdots, v_n)$ 
+is bound by the arithmetic expression $w_i$ where $(v_i, w_i) \in \progV(c)$.
+\\
+So we have $k_p \in \walks(\progG)$ proved.
+\\
+In order to show $ n \geq \qlen(k_t)(\trace) $, it is sufficient to show
+\[
+  \begin{array}{l}
+  \forall v_i \in (v_1, \cdots, v_n),
+  (v_i, w_i) \in \progW(c), (v_i, w'_i) \in \traceW(c), n_i \in \mathbb{N} 
+  \st
+  \config{w_i, \trace} \earrow n_i
+  \\
+  \implies
+   \sum\limits_{v_i \in \lvar(c)}
+   w'_i(\trace) 
+   \leq 
+   \sum\limits_{v_i \in \lvar(c)}n_i 
+  \end{array}
+  \]
+% By Lemma~\ref{lem:queryvertex_map} and Definition~\ref{def:qlen}, we know for every $v_i$, $\traceF(c)(v_i) = \progF(c)(v_i) $ 
+% \\
+Then by $(\star)$, we know $  \sum\limits_{v_i \in \lvar(c)} w'_i(\trace) 
+\leq 
+\sum\limits_{v_i \in \lvar(c)}n_i $.
+\\
+Then we have $ n \geq \qlen(k_t)(\trace) $ proved.
+% \kw{image}(f(\av)) \cap {p_{\av_1 \to \av_2}}| = \# \{f(\av) \mid f(\av) \in k_{f(\av_1) \to f(\av_2)}\}$
+\\
+This theorem is proved.
+\end{proof}
+The following are the four lemmas used in the proof of Theorem~\ref{thm:adaptfun_soundness} above,
+showing the correspondence properties between the program based graph and trace based graph.
+\input{theorem/lem_adaptgraph_extend}

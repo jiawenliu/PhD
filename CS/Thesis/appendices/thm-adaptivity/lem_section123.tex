@@ -1,0 +1,180 @@
+% \begin{lem}[Uniqueness of the Labeled Variables]
+%     \label{lem:lvar_unique}
+%     For every program $c \in \cdom$ and every two labeled variables such that
+%     $x^i, y^j \in \lvar(c)$, then $x^i \neq y^j$.
+%     \[
+%       \forall c \in \cdom, x^i, y^j \in \mathcal{L} \st x^i, y^j \in \lvar(c)\implies x^i \neq y^j.
+%       \]
+%   \end{lem}
+  \subsection{Proof of Lemma~\ref{lem:lvar_unique}}
+  \label{apdx:lvar_unique}
+  \begin{proof}
+    This is proved directly by the consistency property of the command label.
+  \end{proof}
+  
+  % \begin{lem}
+  %   [Trace Non-Decreasing]
+  %   % \label{lem:tracenondec}
+  %   For every program $c \in \cdom$ and traces $\trace, \trace' \in \mathcal{T}$, if 
+  %   $\config{c, \trace} \rightarrow^{*} \config{\eskip, \trace'}$,
+  %   then there exists a trace $\trace'' \in \mathcal{T}$ with $\trace \tracecat \trace'' = \trace'$
+  %   %
+  %   $$
+  %   \forall \trace, \trace' \in \mathcal{T}, c \st
+  %   \config{c, \trace} \rightarrow^{*} \config{\eskip, \trace'} 
+  %   \implies \exists \trace'' \in \mathcal{T} \st \trace \tracecat \trace'' = \trace'
+  %   $$
+  %   \end{lem}
+  \subsection{Proof of Lemma~\ref{lem:tracenondec}}
+  \label{apdx:tracenondec}
+      \begin{proof}
+      Taking arbitrary trace $\trace \in \mathcal{T}$, by induction on program $c$, we have the following cases:
+      \caseL{$c = [\assign{x}{\expr}]^{l}$}
+      By the evaluation rule $\rname{assn}$, we have
+      $
+      {
+      \config{[\assign{{x}}{\aexpr}]^{l},  \trace } 
+      \xrightarrow{} 
+      \config{\eskip, \trace :: ({x}, l, v, \bullet)}
+      }$, for some $v \in \mathbb{N}$.
+      \\
+      Picking $\trace' = \trace ::({x}, l, v, \bullet)$ and $\trace'' =  [({x}, l, v, \bullet) ]$,
+      it is obvious that $\trace \tracecat \trace'' = \trace'$.
+      \\
+      This case is proved.
+      \caseL{$c = [\assign{x}{\query(\qexpr)}]^{l'}$}
+      This case is proved in the same way as \textbf{case: $c = [\assign{x}{\expr}]^l$}.
+      \caseL{$\ewhile [b]^{l_w} \edo c$}
+      By the first rule applied to $c$, there are two cases:
+      \subcaseL{$\textbf{while-t}$}
+      If the first rule applied to is $\rname{while-t}$, we have
+      \\
+      $\config{{\ewhile [b]^{l_w} \edo c_w, \trace}}
+        \xrightarrow{} 
+        \config{{
+        c_w; \ewhile [b]^{l_w} \edo c_w,
+        \trace :: (b, l_w, \etrue, \bullet)}}~ (1)
+      $.
+      \\
+      Let $\trace_w' \in \mathcal{T}$ be the trace satisfying following execution:
+      \\
+      $
+      \config{{
+      c_w,
+      \trace :: (b, l_w, \etrue, \bullet)}}
+      \xrightarrow{*} 
+      \config{{
+      \eskip, \trace_w'}}
+    $
+    \\
+    By induction hypothesis on sub program $c_w$ with starting trace 
+    $\trace :: (b, l_w, \etrue, \bullet)$ and ending trace $\trace_w'$, 
+    we know there exist
+    $\trace_w \in \mathcal{T}$ such that $\trace_w' = \trace :: (b, l_w, \etrue, \bullet) \tracecat \trace_w$.
+    \\
+    Then we have the following execution continued from $(1)$:
+    \\
+    $
+    \config{{\ewhile [b]^{l_w} \edo c_w, \trace}}
+        \xrightarrow{} 
+        \config{{
+        c_w; \ewhile [b]^{l_w} \edo c_w,
+        \trace :: (b, l_w, \etrue, \bullet)}}
+        \xrightarrow{*} 
+        \config{\ewhile [b]^{l_w} \edo c_w, \trace :: (b, l_w, \etrue, \bullet) \tracecat \trace_w}
+        ~(2)
+    $
+    By repeating the execution (1) and (2) until the program is evaluated into $\eskip$,
+    with trace $\trace_w^{i'} $ for $i = 1, \cdots, n n \geq 1$ in each iteration, we know 
+    in the $i-th$ iteration,
+     there exists  $\trace_w^i \in \mathcal{T}$ such that  
+    $\trace_w^{i'} = \trace_w^{(i-1)'} :: (b, l_w, \etrue, \bullet) ++ \trace_w^{i'}$
+    \\
+    Then we have the following execution:
+    \\
+    $
+    \config{{\ewhile [b]^{l_w} \edo c_w, \trace}}
+        \xrightarrow{} 
+        \config{{
+        c_w; \ewhile [b]^{l_w} \edo c_w,
+        \trace :: (b, l_w, \etrue, \bullet)}}
+        \xrightarrow{*} 
+        \config{\ewhile [b]^{l_w} \edo c_w, \trace_w^{n'}}
+        \xrightarrow{}^\rname{{while-f}}
+        \config{\eskip, \trace_w^{n'}:: (b, l_w, \efalse, \bullet)}
+    $ and $\trace_w^{n'} = \trace :: (b, l_w, \etrue, \bullet) \tracecat \trace_w^{1} :: \cdots :: (b, l_w, \etrue, \bullet) \tracecat \trace_w^{n} $.
+    \\
+    Picking $\trace' = \trace_w^{n'} :: (b, l_w, \efalse, \bullet)$ and $\trace'' = [(b, l_w, \etrue, \bullet)] \tracecat \trace_w^{1} :: \cdots :: (b, l_w, \etrue, \bullet) \tracecat \trace_w^{n}$,
+    we have 
+    $\trace ++ \trace'' = \trace'$.
+    \\
+    This case is proved.
+      \subcaseL{$\textbf{while-f}$}
+      If the first rule applied to $c$ is $\rname{while-f}$, we have
+      \\
+      $
+      {
+        \config{{\ewhile [b]^{l_w} \edo c_w, \trace}}
+        \xrightarrow{}^\rname{while-f}
+        \config{{
+        \eskip,
+        \trace :: (b, l_w, \efalse, \bullet)}}
+      }$,
+      In this case, picking $\trace' = \trace ::(b, l_w, \efalse, \bullet)$ and $\trace'' =  [(b, l_w, \efalse, \bullet) ]$,
+      it is obvious that $\trace \tracecat \trace'' = \trace'$.
+      \\
+      This case is proved.
+      \caseL{$\eif([b]^l, c_t, c_f)$}
+      This case is proved in the same way as \textbf{case: $c = \ewhile [b]^{l} \edo c$}.
+      \caseL{$c = c_{s1};c_{s2}$}
+     By the induction hypothesis on $c_{s1}$ and $c_{s2}$ separately,
+     we have this case proved.
+    \end{proof}
+    %
+    \subsection{Proof of Lemma~\ref{coro:aqintrace}}
+    \label{apdx:aqintrace}
+    %     \begin{coro}
+    % % \label{coro:aqintrace}
+    % For every event and a trace $\trace \in \mathcal{T}$,
+    % if $\event \in \trace$, 
+    % then there exist another event $\event' \in \eventset$ and traces $\trace_1, \trace_2 \in \mathcal{T}$
+    % such that $\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace $
+    % with 
+    % $\event$ and $\event'$ equivalent but may differ in their query value.
+    % \[
+    %   \forall \event \in \eventset, \trace \in \mathcal{T} \st
+    % \event \in \trace \implies \exists \trace_1, \trace_2 \in \mathcal{T}, 
+    % \event' \in \eventset \st (\event \in \event') \land \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  
+    % \]
+    % \end{coro}
+    \begin{proof}
+    By unfolding the $\aq \aqin t$, we have the following cases:
+    %
+    \caseL{$t = []$} The hypothesis is $\efalse$, this case is proved.
+    %
+    \caseL{$t = \aq'::t' \land \aq' \aqeq \aq $}
+    %
+    Let $t_1 = []$ and $t_2 = t'$, by unfolding the list concatenation operation, we have:
+    %
+    \[
+        t_1 ++ [\aq'] ++ t_2 = [] ++ [\aq'] ++ t' = t
+    \]
+    %
+    Since $\aq' \aqeq \aq$ by the hypothesis, this case is proved.
+    %
+    \caseL{$t = \aq'::t' \land \aq' \aqneq \aq $}
+    %
+    By induction hypothesis on $\aq \aqin t'$, we know:
+    %
+    \[
+        \exists t_1', t_2', \aq''. ~ s.t., ~ (\aq \aqeq \aq'') \land t_1' ++ [\aq''] ++ t_2' = t'	
+    \]
+    %
+    Let $t_1 = \aq'::t_1'$ and $t_2 = t_2'$, by unfolding the list concatenation operation, we have:
+    %
+    \[
+        t_1 ++ [\aq''] ++ t_2 = (\aq':: t_1') ++ [\aq''] ++ t_2' = \aq'::t' = t
+    \]
+    %
+    Since $\aq'' \aqeq \aq$ by the hypothesis, this case is proved.    %
+    \end{proof}

@@ -1,0 +1,139 @@
+
+\begin {table}[H]
+\vspace{-0.5cm}
+    \caption{Experimental results of {\THESYSTEM} implementation}
+    \vspace{-0.5cm}
+        \label{tb:adapt-imp}
+        \begin{center}
+        \centering
+{\scriptsize
+        \begin{tabular}{ r | c | c | c | c | c | c | c  }
+        \multirow{3}{*}{Program $c$} & 
+        \multirow{3}{*}{}
+         & True Value
+         & {$\THESYSTEM$ ( I | II)}
+         & \multicolumn{4}{c}{performance} \\ 
+         \cline{5-8}
+         & & \multirow{2}{*}{ } & \multirow{2}{*}{} & \multirow{2}{*}{lines} & \multicolumn{3}{c}{running time (second)} \\ 
+         \cline{6-8}
+         & & & &  & Ocaml & Weight & $\pathsearch$  \\
+         \hline \hline
+         \multirow{2}{*}{$\kw{twoRounds(k)}$}  
+         & $A$ &  $2$ & $2| 2$  & \multirow{2}{*}{8} & \multirow{2}{*}{0.0005} & \multirow{2}{*}{0.0017 | 0.0002} & \multirow{2}{*}{0.0003} \\
+         \cline{2-4}
+         & $\query$ \#   &  $k + 1$ & $k+1 | k+1$  & & & & \\
+         \hline
+         \multirow{2}{*}{$\kw{multiRounds(k)}$} 
+         & $A$  &  $k$          & $k| \max(1,k)$  &  10 & 0.0012 & 0.0017 | 0.0002 & 0.0002 \\
+         \cline{2-4}
+         & $\query$ \#   & $k $ & $k | -$  & & & & \\
+         \hline
+         \multirow{2}{*}{$\kw{lRGD(k, r)}$}
+         & $A$ & $k$ & $k | \max(1,k) $   &  10 & 0.0015 & 0.0072 | 0.0002 & 0.0002  \\
+         \cline{2-4}
+         & $\query$ \#   & $2k $ & $2k | -$  & & & & \\
+         \hline
+         $  \kw{mROdd(k)}$ 
+         & $A$  &  $1 + k$ &  $2+\max(1,2k) | - $ &  10 & 0.0015 & 0.0061 | 0.0002 & 0.0002 \\
+         \cline{2-4}
+         & $\query$ \#   & $1+2k $ & $1 + 3k | - $  & & & & \\
+         \hline
+         $  \kw{mRSingle(k)}$  
+         & $A$ & $2$ &  $1+ \max(1, k) | -$   &  9 & 0.0011 & 0.0075 | 0.0002 & 0.0002 \\
+         \cline{2-4}
+         & $\query$ \#   & $1 + k$ & $1 + k | 1 + k$ & & & & \\
+         \hline
+         $  \kw{ifCD()}$ 
+         & $A$ & $3$ & $3 | 3$  & 5 & 0.0005 & 0.0003 | 0.0001  & 0.0001 \\
+         \cline{2-4}
+         & $\query$ \#   & 3  &   $3| 4$ & & & & \\
+         \hline
+         $  \kw{while(k)}$ 
+         & $A$ & $1+k/2$ & $1 +\max(1, k/2) |- $  & 7 & 0.0021 & 0.0015| 0.0001 &  0.0001 \\
+         \cline{2-4}
+         & $\query$ \#   &  $1+k/2$ &  $1+k/2 | - $  & & & & \\
+         \hline
+         $  \kw{whileM(k)}$ 
+         & $A$ &  $1 + k$  & $ 2 + \max(1,2k) | -$  &  9 & 0.0017 & 0.0062 | 0.0002 & 0.0001  \\
+         \cline{2-4}
+         & $\query$ \#   & $1+2k $ & $1 + 3k | -$  & & & & \\
+         \hline
+         $  \kw{whileRV(k)}$ 
+         & $A$ & $1 + 2k$ &  $1 + 2k| 1 + \max(1,2k)$  &  9 & 0.0016 & 0.0056| 0.0002 & 0.0001  \\
+         \cline{2-4}
+         & $\query$ \#   & {$2 + 3 k$} & $2 + 3 k| -$   & & & & \\
+         \hline
+         $  {\kw{whileVCD(k)}} $ 
+         & $A$ & ${1 + 2Q}$ &  ${Q_m+\max(1,2Q_m)}$ | - &  6 & 0.0016 & 0.0007 |0.0002 & 0.0001 \\
+         \cline{2-4}
+         & $\query$ \#   &{$2+2Q_m$} & $2+2Q_m$ | -   & & & & \\
+         \hline
+         $ {\kw{whileMPVCD(k)}}$ 
+         & $A$ &  $2 + Q_m$ & $2+2Q_m$ | -  &   9 & 0.0017 & 0.0043 | 0.0002 & 0.0001 \\
+         \cline{2-4}
+         & $\query$ \#   & $2+Q_m$ & $2+2Q_m$ | - & & & & \\
+         \hline
+         $\kw{nestWhileRC(k)}$ 
+         & $A$ & $1 + 3k$ &  $1 + 3k | 2 + 3k + k^2$   &  11 & 0.019 & 0.2669 | 0.0002 & 0.0007 \\
+         \cline{2-4}
+         & $\query$ \#   & $1 + 3k$ &  $1 + 3k | 1 + k + k^2$ & & & & \\
+         \hline
+         $\kw{nestWhileVD(k)}$ 
+         & $A$ & $2 + k^2$ &   $3 + k^2| -$    &  10 & 0.0018 & 0.0126 | 0.0002 & 0.0001  \\
+         \cline{2-4}
+         & $\query$ \#   & $1 + k + k^2$ & $1 + k + k^2|- $ & & & & \\
+         \hline
+         $\kw{nestWhileRV(k)}$ 
+         & $A$ & $1 + k + k^2$ &  $ 2 + k +  k^2 | -$   &  10 & 0.0017 & 0.0186 | 0.0002 & 0.0001  \\
+         \cline{2-4}
+         & $\query$ \#   & {$2 + k + k^2$} &  $2 + k + k^2| -$ & & & & \\
+         \hline
+         $  \kw{nestWhileMV(k)}$ 
+         & $A$ & $1 + 2k $ & $1 + \max(1,2k) | -$  & 10 & 0.0016 & 0.0071 | 0.0002 & 0.0001 \\
+         \cline{2-4}
+         & $\query$ \#   & {$1 + k + k^2$} &  $1 + k + k^2 |-$  & & & & \\
+         \hline
+         \multirow{2}{*}{$\kw{nestWhileMPRV(k)}$}
+         & $A$  &  $1 + k + k^2$ &  $3 + k + k^2| -$  &  10 & 0.019 & 0.0999 | 0.0002 & 0.0002 \\
+         \cline{2-4}
+         & $\query$ \#   & $2 + k + k^2 $ & $2 + 2k + k^2 | - $  & & & & \\
+         \hline
+         $  \kw{mRComplete(k)}$ 
+         & $A$ & $k$ & $ k | -  $   &  27 & 0.0026 & 85.9017 | 0.0003 & 0.0004 \\
+         \cline{2-4}
+         & $\query$ \#   & $k$ & $k |-$   & & & & \\
+         \hline
+         $  \kw{mRCompose(k)}$ 
+         & $A$ & $2k$ & $  2k | -$   &  46 & 0.0036 & 5104 | 0.0003 &  0.0013\\
+         \cline{2-4}
+         & $\query$ \#   & {$2k$} & $ 2k | -$   & & & & \\
+         \hline
+         $  \kw{seqCompose(k)}$ 
+         & $A$ & $12$ & $12  $ | -  &  502 & 0.0426  & 1.2743 | 0.0003 & 0.0223 \\
+         \cline{2-4}
+         & $\query$ \#   & $326$ & $326 | -$   & & & & \\
+         \hline
+         \multirow{2}{*}{$\kw{tRCompose(k)}$} 
+         & $A$ & $2$ &  $ * | 2$   &  42 & 0.0026 & * | 0.0003 & 0.0005\\
+         \cline{2-4}
+         & $\query$ \#   & $1 + 5k + 2 k^2 $ & $* | 1 + 5k + 2 k^2 $  & & & & \\
+         \hline
+         \multirow{2}{*}{$\kw{{jumboS(k)}}$}
+         & $A$ & $ \max(20, 8+k^2)$ &  {$ * | \max(20, 6+k+k^2)$}    &  71 & 0.0035 & *| 0.0003 &  0.0085 \\
+         \cline{2-4}
+         & $\query$ \#   & $37+k+k^2 $ & $* | {44+k+k^2}$  & & & & \\
+         \hline
+         \multirow{2}{*}{$\kw{jumbo(k)}$}
+         & $A$ & $ \max(20, 10+k+k^2 )$    &  $* | \max(20, 12 + k+ k^2)$   &  502 & 0.0691 & * | 0.0009 & 0.018 \\
+         \cline{2-4}
+         & $\query$ \#   & $270 + 22k + 10k^2 $ & $* | 286+26k+10k^2$  & & & & \\
+         \hline
+         \multirow{2}{*}{$\kw{big(k)}$} 
+         & $A$ &  $22+k+k*k$  &  $* |28 + k + k^2 $ &  214 & 0.0175 & * | 0.0004 & 0.002 \\
+         \cline{2-4}
+         & $\query$ \#   & $110+10k+4k^2$ & $* |121+11k+4k^2 $   & & & & \\
+         \hline
+        \end{tabular}
+}
+\end{center}
+\end{table}

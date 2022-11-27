@@ -339,11 +339,11 @@ For every event $\event$ with label $l$, if it is in an execution trace $\trace$
       %
    \[
      \begin{array}{l}
-       \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_, \_) \in \eventset \st
+       \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_, \_) \in \eventset \sthat
    \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
    \land \event \in \trace 
    \\
-   \qquad \implies \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \st 
+   \qquad \implies \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
    \absevent \in \absflow(c)
    \end{array}
    \]
@@ -362,11 +362,11 @@ there is a unique abstract event in the program's abstract events set $\absevent
 %
 \[
   \begin{array}{l}
-    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_) \in \eventset^{\asn} \st
+    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_) \in \eventset^{\asn} \sthat
 \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
 \land \event \in \trace 
 \\
-\qquad \implies \exists! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \st 
+\qquad \implies \exists! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
 \absevent \in \absflow(c)
 \end{array}
 \]

@@ -1,0 +1,328 @@
+  
+\begin{thm}[Soundness of \THESYSTEM]
+	For every program $c$, 
+	its estimated adaptivity is a sound upper bound of its adaptivity.
+	 \[
+	 \forall \trace_0 \in \mathcal{T}_{0}(c), v \in \mathbb{N}^{\infty} \sthat  
+  \config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq c
+  \] 
+  \end{thm}
+  %
+Proof Summary:
+\\
+construct the
+program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+\\
+and trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
+\\
+1. prove the one-on-one mapping from $\progV$ to $\traceV$, in Lemma~\ref{lem:vertex_map};
+\\
+2. prove the total map from $\traceE$ to $\progE$, in Lemma~\ref{lem:edge_map};
+\\
+3. prove that the weight of every vertex in $\traceG$ is bounded by the weight of the same vertex in $\progG$, in 
+Lemma~\ref{lem:weights_map};
+\\
+4. prove the one-on-one mapping from $\progF$ to $\traceF$, in Lemma~\ref{lem:queryvertex_map};
+\\
+5. show every walk in $\walks(\traceG)$ is bounded by a walk in $\walks(\progG)$ of the same $\qlen$.
+\\
+6. get the conclusion that $A(c)$ is bounded by 
+the $\progA(c)$.
+%
+\begin{proof}
+Given a program ${c}$, 
+we construct its 
+\\
+program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+by Definition~\ref{def:prog_graph}
+\\ and 
+trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$  by Definition~\ref{def:trace_graph}.
+\\
+The parameter $(c)$ for the components in the two graphs are omitted for concise.
+\\
+%
+According to the Definition \ref{def:prog_adapt} and Definition~\ref{def:trace_adapt}, it is sufficient to show:
+%
+$$
+\forall \trace \in \mathcal{T} \sthat 
+\config{\max\left\{ \qlen(k) \ \mid \  k\in \walks(\progG({c}))\right \}
+, \trace } \earrow n \implies
+n \geq
+\max \big 
+\{ \qlen(k)(\trace) \mid k \in \walks(\traceG(c)) \big \} 
+$$
+%
+%
+Then it is sufficient to show that:
+\[
+  \forall 
+  k_t \in \walks(\traceG({c}),
+  \exists k_p \in \walks(\progG({c})) 
+  \sthat  \forall \trace \in \mathcal{T} \sthat 
+  \qlen(k_p), \trace \earrow n
+   \implies 
+  n \geq \qlen(k_t(\trace))
+  %  \leq \qlen(k_p)
+\]
+%
+Let $k_t\in \walks(\traceG(c))$ be an arbitrary walk in $\traceG(c)$, 
+and $\trace \in \mathcal{T}$ be arbitrary trace.
+\\
+Then, 
+let $(e_{p1}, \cdots, e_{p(n-1)}) $ and
+$(v_1, \cdots, v_n)$ be the edges and vertices sequence  for $k_t(\trace)$.
+\\
+By Lemma~\ref{lem:vertex_map} and Lemma~\ref{lem:edge_map}, we know
+%
+\[
+  \forall e_i \in k_t \sthat  e_i = (v_i, v_{i + 1}) \implies
+  \exists e_{pi} \sthat  e_{pi} = (v_i, v_{i + 1}) \land e_{pi} \in \progE
+  \]
+  %
+Then we construct a walk $k_p$ with an edge sequence $(e_{p1}, \cdots, e_{p(n-1)}) $ 
+with a vertices sequence $(v_1, \cdots, v_n)$ where 
+$e_{pi} = (v_i, v_{i + 1}) \in \progE$ for all $e_{pi} \in (e_{p1}, \cdots, e_{p(n-1)})$.
+\\
+Let $n \in \mathbb{N}$ such that 
+$\config{\qlen(k_p), \trace} \earrow n$,
+then, it is sufficient to show
+\[
+  k_p \in \progG(c) \land n \geq \qlen(k_t)(\trace)
+  \] 
+To show $k_p \in \progG(c)$, by Definition~\ref{def:finitewalk} for finite walk, 
+we know
+\[
+  \forall v_i \in (v_1, \cdots, v_n), (v_i, w_i) \in \traceW(c) 
+  \sthat 
+  \visit((v_1, \cdots, v_n), (v_i)) \leq w_i(\trace)
+\]
+%
+By Lemma~\ref{lem:weights_map}, we know for every 
+\[
+  \forall v_i \in (v_1, \cdots, v_n), (v_i, w_i) \in \progW(c), n_i \in \mathbb{N} 
+  \sthat 
+  \config{w_i, \trace} \earrow n_i
+  \implies
+   w_i(\trace) \leq n_i ~ (\sthat ar)
+\]
+Then, by Definition~\ref{def:prog_finitewalk}, we know
+the occurrence times for every $v_i \in (v_1, \cdots, v_n)$ 
+is bound by the arithmetic expression $w_i$ where $(v_i, w_i) \in \progW(c)$.
+\\
+So we have $k_p \in \walks(\progG)$ proved.
+\\
+In order to show $ n \geq \qlen(k_t)(\trace) $, it is sufficient to show
+\[
+  \begin{array}{l}
+  \forall v_i \in (v_1, \cdots, v_n),
+  (v_i, w_i) \in \progW(c), (v_i, w'_i) \in \traceW(c), n_i \in \mathbb{N} 
+  \sthat 
+  \config{w_i, \trace} \earrow n_i
+  \\
+  \implies
+   \sum\limits_{\traceF(c)(v_i) = 1}
+   w'_i(\trace) 
+   \leq 
+   \sum\limits_{\progF(c)(v_i) = 1}n_i 
+  \end{array}
+  \]
+By Lemma~\ref{lem:queryvertex_map} and Definition~\ref{def:qlen}, we know for every $v_i$, $\traceF(c)(v_i) = \progF(c)(v_i) $ 
+\\
+Then by $(\sthat ar)$, we know $  \sum\limits_{\traceF(c)(v_i) = 1}
+w'_i(\trace) 
+\leq 
+\sum\limits_{\progF(c)(v_i) = 1}n_i $.
+\\
+Then we have $ n \geq \qlen(k_t)(\trace) $ proved.
+\\
+This theorem is proved.
+\end{proof}
+The following are the four lemmas used above,
+showing the correspondence properties between the program based graph and trace based graph.
+
+\begin{lem}[One-on-One Mapping of vertices from $\traceG$ to $\progG$]
+	\label{lem:vertex_map}
+	Given a program $c$ with its
+	program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	and 
+	trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	then for every $v \in \mathcal{VAR} \times \mathbb{N}$,
+	$v \in \progV$ if and only if $v \in \traceG$.
+	\[
+	\begin{array}{l}
+	\forall c \in \cdom , v \in \mathcal{VAR} \times \mathbb{N} \sthat  
+	\progG({c}) = (\progV, \progE, \progW, \progF)
+	\land 
+	\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)
+	\\ \quad
+	\implies
+	v \in \progV \Longleftrightarrow v \in \traceV
+	\end{array}
+	\]
+	%
+	\end{lem}
+\begin{proof}
+Proof Summary: Proving by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}.
+\\
+Taking arbitrary program $c$,
+by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
+we have   
+\\
+its program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
+\\
+and 
+trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
+\\
+By the two definitions, we also know 
+$\traceV  = \lvar_c$ and $\progV = \lvar_c$.
+\\
+Then we know $\traceV  = \progV$, i.e., 
+for arbitrary $v \in \mathcal{VAR} \times \mathbb{N}$, $v \in \progV \Longleftrightarrow v \in \traceV$.
+\end{proof}
+%
+	\begin{lem}[Mapping from Egdes of $\traceG$ to $\progG$]
+	\label{lem:edge_map}
+	Given a program $c$ with its
+	program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	and 
+	trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	then for every $e = (v_1, v_2) \in \traceE$, there exists an edge 
+	$e' = (v_1', v_2') \in \progE$ with 
+	$v_1 = v_1' \land v_2 = v_2'$.
+	\[
+	\begin{array}{l}
+	\forall c \in \cdom \sthat 
+	 \progG({c}) = (\progV, \progE, \progW, \progF)
+	\land 
+	\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)
+	\\ \quad
+	\implies
+	\forall e = (v_1, v_2) \in \traceE
+	\sthat  
+	\exists e' \in \progE \sthat  e' = (v_1, v_2)
+	\end{array}
+	\]
+	\end{lem}
+\begin{proof}
+Proof Summary: Proving by Lemma~\ref{lem:vertex_map}, Lemma~\ref{thm:flowsto_soundness} Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}
+\\
+Taking arbitrary program $c$,
+by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
+we have   
+\\
+its program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
+\\
+and 
+trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
+\\
+Taking arbitrary edge $e = (x^i, y^j) \in \traceE$, it is sufficient to show $(x^i, y^j) \in \progE$.
+\\
+By Lemma~\ref{lem:vertex_map}, we know $x^i, y^j \in \progV$.
+\\
+By definition of $\traceE$, we know $\vardep(x^i, y^j, c)$.
+\\
+By Theorem~\ref{thm:flowsto_soundness}, we know $ \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  
+n \geq 0 \land
+\flowsto(x^i,  z_1^{r_1}, c) 
+\land \cdots \land \flowsto(z_n^{r_n}, y^j, c) $.
+\\
+Then by definition of $\progE$, we know $(x^i, y^j) \in \progE$. This Lemma is proved.
+\end{proof}
+%
+\begin{lem}[Weights are bounded]
+	\label{lem:weights_map}
+	Given a program $c$ with its
+	program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	and 
+	trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	for every $v \in \traceV$, there is $v \in \progV$ and $\traceW(v) \leq \progW(v)$.
+	\[
+		\begin{array}{l}
+			\forall c \in \cdom 
+			% , (v, n) \in \mathcal{VAR} \times \mathbb{N} \times \mathbb{N}
+			 \sthat  
+			%  \\ \quad
+			 \progG({c}) = (\progV, \progE, \progW, \progF)
+			\land 
+			\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)
+			\\ \quad
+			\implies
+			\forall (x^l, w_{t}) \in \traceW,
+			(x^l, w_{p}) \in \progW, \vtrace, \trace' \in \mathcal{T}, v \in \mathbb{N} \sthat 
+			\config{w_{p}, \trace} \earrow v
+			\implies
+			% \right\} 
+			w_{t}(\trace) \leq v
+		\end{array}
+		\]
+	\end{lem}
+\begin{proof}
+Proof Summary: Proving by Definition~\ref{def:prog_graph}, Definition~\ref{def:trace_graph} and relying on the soundness of Reachability Bound 
+Analysis.
+\\
+Taking arbitrary program $c$,
+by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
+we have   
+\\
+its program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
+\\
+and 
+trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
+\\
+Taking arbitrary 
+% $v \in \traceV$, by Lemma~\ref{lem:vertex_map}, we know $v \in \progV$.
+$(x^l, w_{t}) \in \traceW, (x^l, w_{p}) \in \progW, \vtrace, \trace' \in \mathcal{T}$, satisfying:
+\\
+$\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+\land 
+\config{w_{p}, \trace} \earrow v$
+\\
+By soundness of reachability bound analysis in Theorem~\ref{thm:rb_soundness}, we know 
+% $\traceW(v) \leq \progW(v)$. This lemma is proved.
+$\vcounter(\vtrace', l) \leq v$
+\\
+By definition~\ref{def:trace_graph}, we know $w_t(\trace) = \vcounter(\vtrace', l)$,
+then we have $w_t(\trace) \leq v$ and this is proved.
+\end{proof}
+%
+\begin{lem}[One-on-One Mapping for Query Vertices]
+	\label{lem:queryvertex_map}
+	Given a program $c$ with its
+	program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	and 
+	trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	then for every $(x^i, n) \in \mathcal{VAR} \times \mathbb{N}  \times \{0, 1\} $,
+	 $(x^i, n) \in \traceF$ if and only if $ (x^i, n) \in \progF$.
+	\[
+	\begin{array}{l}
+	\forall c \in \cdom , (x^i, n) \in \mathcal{VAR} \times \mathbb{N}  \times \{0, 1\} 
+	 \sthat  
+	 \\ \quad
+	 \progG({c}) = (\progV, \progE, \progW, \progF)
+	\land 
+	\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)
+	\\ \quad
+	\implies
+	(x^i, n) \in \traceF \Longleftrightarrow  (x^i, n) \in \progF
+	\end{array}
+	\]
+	\end{lem}
+\begin{subproof}
+Proving by Definition~\ref{def:prog_graph}, Definition~\ref{def:trace_graph}.
+\\
+Taking arbitrary program $c$,
+by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
+we have   
+\\
+its program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
+\\
+and 
+trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
+\\
+By the two definitions, we also know $\traceF  = \progF$, 
+i.e., 
+for arbitrary $ (x^i, n) \in \mathcal{VAR} \times \mathbb{N}  \times \{0, 1\} $,
+ $(x^i, n) \in \traceF \Longleftrightarrow  (x^i, n) \in \progF$.
+ \\
+ This lemma is proved.
+\end{subproof}

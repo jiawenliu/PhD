@@ -1,106 +1,76 @@
-\subsection{The Evaluation Results on Implementation}
+\subsection{The Implementation Evaluation Results }
 \label{sec:adapt-impleval}
-The implementation of $\THESYSTEM$ and its experimental 
-results on $18$ examples including these four examples is in Table~\ref{tb:imp}.
-I implemented $\THESYSTEM$ as a tool which takes a labeled command as input  
-% labeled command 
-and outputs an upper bound on the program adaptivity and on the number of query requests.
-This implementation consists of an 
-abstract control flow graph generation, weight estimation (as presented in Section~\ref{sec:static-quantity}),
-edge estimation (as presented in Section~\ref{sec:static-dep}) in Ocaml, 
-and the adaptivity computation algorithm shown in Section~\ref{sec:static-adapt} in Python.
-The OCaml program takes the labeled command as input and outputs the program-based dependency graph,
-feeds into the python program and the python program provides the adaptivity upper bound and the query number as the final output.
 
-I evaluated this implementation on $17$ example programs with the evaluation results shown  in Table~\ref{tb:imp}.
+\jl{
+We implemented $\THESYSTEM$ as a tool which takes a labeled command as input  
+and outputs two upper bounds on the program adaptivity and the number of query requests respectively.
+This implementation consists of an 
+abstract control flow graph generation,
+edge estimation (as presented in Section~\ref{sec:alg_edgegen}), and weight estimation (as presented in Section~\ref{sec:alg_weightgen}) in Ocaml, 
+and the adaptivity computation algorithm shown in Section~\ref{sec:alg_adaptcompute} in Python.
+The OCaml program takes the labeled command as input and outputs the program-based dependency graph and
+the abstract transition graph,
+feeds into the python program and the python program provides the adaptivity upper bound and the query number as the final output.
+}
+
+We evaluated this implementation on $23$ example programs with the evaluation results shown in Table~\ref{tb:adapt-imp}.
 In this table,
 the first column is the name of each program.
 For each program $c$, the second column is its intuitive adaptivity rounds,
-the third column is the $A(c)$ we defined through our formal semantic model above.
-% in Section~\ref{sec:dep_adaptivity}.
-In the third column, we use $k$ represent the weight function $w_k$ (in program's execution-based dependency graph) which return value of variable $k$ 
-from an initial trace $\trace_0$, same for natural numbers.
-The last column is the output of the $\THESYSTEM$ implementation, which consists of two expressions.
+% the third column is the adaptivity $A(c)(\trace_0)$ w.r.t the input initial trace $\trace_0 \in \mathcal{T}_0(c)$ as definition~\ref{def:trace_adapt}.
+% In all these examples, the input variable $k$ specifies the loop iteration numbers.
+% Since $A(c)(\trace_0)$ by definition~\ref{def:trace_adapt} will count the execution times of
+% query request command in the loop, which is indeed same as  the loop iteration numbers,
+% we use $\env(\trace_0) k$ in the third column represent this number, which computes the $k$'s initial value from input initial trace $\trace_0$.
+the third column is the output of the $\THESYSTEM$ implementation, which consists of two expressions.
 The first one is the upper bound for adaptivity and the second one is the 
-upper bound for the total number of query requests in the program.
+upper bound for the total number of query requests in the program. And the last column is the performance evaluation w.r.t. the program size.
 
-The first 3 programs we evaluated are $\kw{twoRounds(k)}$, $ \kw{multiRounds(k)}$, 
-and the $\kw{linearRegressGD(k, rate)}$ which we discussed in overview and above section.
-% Section~\ref{sec:examples}.
-% The same for the third programprograms in the table row 
-For these examples, $A(c)$ 
-% based dynamic analysis 
-give the accurate adaptivity definition, 
-simultaneously the $\THESYSTEM$ outputs the tight bounds for both of the adaptivity and query requesting number as expected.
-% Look at 
-% the $ \kw{linearRegressionGD(k)}$ which we discussed in Section~\ref{sec:examples}, the $\THESYSTEM$ outputs the accurate bound $k$ as expected.
-But for the forth program $\kw{multiRoundOdd(k)}$, $\THESYSTEM$ outputs an over-approximated upper bound $1 + 2*k$ for the $A(c)$, 
-which is consistent with our expectation as discussed in Example~\ref{ex:multipleRoundSingle}. 
-The fifth program is the evaluation results for the example in Example~\ref{ex:multipleRoundSingle}, where $\THESYSTEM$ outputs
-the tight bound for $A(c)$ but $A(c)$ is a loose definition of the program's actual adaptivity rounds.
+\jl{
+The last column is the performance evaluation.
+The time contains three parts. The first part is the running time of the Ocaml code, which parses the program and generates the $\progG(c)$.
+The second and third parts are the running times of the reachability bound analysis algorithm
+and the adaptivity computation algorithm, $\pathsearch(c)$.
+}
+
+    The first $5$ programs are adapted from real world data analysis algorithms.
+    The first two programs $\kw{twoRounds(k)}$, $ \kw{multiRounds(k)}$ are the same as Figure~\ref{fig:twoRounds}(a) and Figure~\ref{fig:multipleRounds}(a).
+    $\THESYSTEM$ computes tight adaptivity bound for the first 3.
+For the forth program $\kw{multiRoundsO(k)}$, $\THESYSTEM$ outputs an over-approximated upper bound $1 + 2*k$ for the $A(c)$, which is consistent with our expectation as discussed in Example~\ref{ex:multiRoundsO}. 
+The fifth program is the evaluation results for the example in Example~\ref{ex:multiRoundsS}, where $\THESYSTEM$ outputs the tight bound for $A(c)$ but $A(c)$ is a loose definition of the program's actual adaptivity rounds.
 %
-The programs in the table from  $\kw{seq()}$ to $ \kw{nestedWhileMPRV(k)}$ are 
-designed for testing the programs under different possible situations.
-These programs contain control dependency, data value dependency,
-the nested while, dependency through multiple variables, dependency across nested loops, and so on. 
-Overall for these examples, our system gives both the accurate adaptivity definition and 
-adaptivity upper bound simultaneously through the dynamic analysis and 
-static analysis.
-The full programs are defined below from Example~\ref{ex:twoRoundsComplete} to Example~\ref{ex:nestedWhileMultiVarRecAcross}.
-%
-For the other programs, the complete program can be found in Appendix.
-\begin {table}[H]
-    \caption{Experimental results of {\THESYSTEM} implementation}
-        \label{tb:adapt-imp}
-        \begin{center}
-        \centering
-{\footnotesize
-        \begin{tabular}{ r | p{12mm} | p{60mm} | p{30mm}}
-         Program $c$ & adaptive \newline rounds & $A(c)$ \newline $w: \mathcal{T}_0(c) \to \mathbb{N}$ & $\THESYSTEM$ \newline $\progA(c)$, $\# \query$ \\ 
-         \hline
-         \hline
-         $  \kw{twoRounds(k)}$ & $2$ & $\trace_0 \to 2$ & $2$, $k$ \\
-         $  \kw{multiRounds(k)}$ & $k$ & $\trace_0 \to \env(\trace_0) k$ & $k$, $k$  \\
-         $  \kw{linearRegressGD(k, r)}$ & $k$ & $k$ & $k$, $2 * k$  \\
-         $  \kw{multiRoundsOdd(k)}$ & $1 + k$ 
-                                    & $
-                                        \trace_0 \to 
-                                        \left\{\begin{array}{ll}
-                                        1 + \env(\trace_0) k & \env(\trace_0) k  \leq 1 \\
-                                        1 + 2 * \lceil{(\env(\trace_0) k)} \rceil / 2 & \env(\trace_0) k \geq 2
-                                        \end{array}\right\}
-                                        $ 
-              & $1 +2 * \lfloor \frac{k}{2} \rfloor$, $1 + 2*k$  \\
-         $  \kw{multiRoundsSin(k)}$    & $2$ 
-                                            & $
-                                                \trace_0 \to 
-                                                \left\{\begin{array}{ll}
-                                                \env(\trace_0) k & \env(\trace_0) k  \leq 1 \\
-                                                2 & \env(\trace_0) k \geq 2
-                                                \end{array}\right\}
-                                                $ 
-                                            & $2 + k$ , $2 + k$  \\
-         $\kw{seq()}$ & $4$ & $4$ & $4$, $4$  \\ 
-         $\kw{seqRV()}$ & $4$ & $4$ & $4$, $4$ \\  
-         $ \kw{ifVD}$ & $3$ & $3$ & $3$, $3$ \\
-         $\kw{ifCD()}$ & $3$ & $3$ & $3$, $3$  \\
-         $ \kw{whileNested(k)}$ & $1+k$ & $1+k$ & $1+k$  \\
-         $ \kw{whileM(k)}$ & $1 + k$ & $1 +2 * \lfloor \frac{k}{2} \rfloor$ & $1 +2 * \lfloor \frac{k}{2} \rfloor$, $1 + 2 * k$  \\
-         $ \kw{whileRV(k)}$ & $1 + 2*k$ & $1 + 2*k$ & $1 + 2*k$, $2 + 3 * k$  \\
-         $ \kw{whileVCD(k)}$ & $1 + 2*k$ & $1 + 2*k$ & $1 + 2 * k$, $2 + 2 * k$  \\
-         $ \kw{whileMPVCD(k)}$ & $2 + k$ & $2 + k$  & $2 + k$, $1 + 2 * k$   \\
-         $ \kw{nestWhileVD(k)}$ & $2 + k^2$ & $2 + k^2$  & $2 + k^2$, $1 + k + k^2$   \\
-         $ \kw{nestedWhileRV(k)}$ & $1 + 2*k$ & $1 + 2*k$ & $1 + 2*k$,  $1 + k + k^2$   \\
-         $ \kw{nestedWhileMR(k)}$ & $1 + k + k^2$ & $1 + k + k^2$  & $1 + k + k^2$,  $2 + k + k^2$  \\
-         $ \kw{nestedWhileMPRV(k)}$ & $1 + k + k^2$ & $1 + k + k^2$  & $1 + k + k^2$,  $2 + k + k^2$  \\
-        \end{tabular}
-}        
-\end{center}
-\end{table}
-        %
- \subsection{The Evaluated Examples}  
- \paragraph{The complete algorithm for the data analysis example with two adaptivity rounds} 
+
+The programs from Tab.~\ref{tb:adapt-imp} line:6-17 all have small size but complex structures, to test the programs under different situations including
+data, control dependency,
+the multiple paths nested loop with related counters, etc.
+Both implementations compute the tight bound for examples in line:6-14
+and over-approximate the adaptivities for $15^{th}$ and $16^{th}$ due to path-insensitivity.
+For the $17^{th}$ one, implementation I gives tight bound bound while II gives loose bound, so we keep both implementations.
+
+The last six programs are composed of some programs above in order to test the performance limitation when the input program is large. 
+From the evaluation results, the performance bottleneck is the reachability bound analysis algorithm.
+By implementing the bound analysis algorithm in Section~\ref{sec:alg_weightgen} (adapted from \cite{sinn2017complexity}), we are unable to evaluate the $\kw{Jumbo}$ in a reasonable time period.
+Alternatively, we implement another light reachability bound analysis algorithm and compute the \emph{adaptivity} for
+$\kw{jumboS}, \kw{jumbo}$ and $\kw{big}$ effectively.
+
+Overall for these examples, our system gives both the accurate adaptivity definition and estimated
+adaptivity upper bound through our formalization and analysis framework $\THESYSTEM$.
+The complete programs are defined below from Example~\ref{ex:twoRoundsComplete} to Example~\ref{ex:nestedWhileMPRV} in the Appendix~\ref{apdx:evaluated_examples}.
+
+\input{tables/adapt-eval}
+
+ \subsection{More Discussions on The Evaluated Examples}  
+ \subsubsection{The Complete Two Rounds Adaptive Data Analysis Algorithm, $\kw{tRComplete}$} 
  \input{examples/twoRoundsComplete}
-
- \paragraph{The complete algorithm for the data analysis example with multiple adaptivity rounds} 
+ %
+ \subsubsection{The Complete Multiple Rounds Adaptive Data Analysis Algorithm, $\kw{mRComplete}$} 
  \input{examples/multipleRoundsComplete}
+ %
+% \subsubsection{$\kw{lRGD}$}
+% \input{examples/linearRegressionGD}
+ %          
+% \subsubsection{The Programs for Examples from line:6 - 15 in Table.\ref{tb:adapt-imp}}
+% \input{examples/evaluated_examples-prog}
+
+% \subsubsection{The Programs for Examples from line:16 - 20 in Table.\ref{tb:adapt-imp}}
+% \input{examples/evaluated_examples-code}

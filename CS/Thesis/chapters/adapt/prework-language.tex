@@ -48,24 +48,10 @@ The arithmetic expressions boolean expressions are standard.
 They extend the expression with the query expression in order to support the query requests in the data analysis.
 The special variable $\chi$ represents a row of the database,
 and access to values at a certain index in $\chi$, as $\chi[\aexpr]$.
-% \\
-\paragraph*{Limitations of The Language Syntax}
-This language is limited in the following three senses,
-\begin{enumerate}
-% \item  It supports limited query expressions.
-% %
-\item  It doesn't support the program which contains while loop with non-deterministic iterations.
-In the other words, it only supports the simple loop programs with
-constant (or arithmetic expression which is evaluated to constant) number of iterations.
-However, the adaptive data analysis programs with non-constant (or non-deterministic) iteration numbers are very common.
-%
-\item  It doesn't support the program which contains the user inputs.
-This kind of program is also common in the data analysis area.
-\end{enumerate}
+But it neither  support while loop with non-deterministic iterations, nor any user input.
 %
 \subsection*{Trace-Based Operational Semantics}
-In the previous works of adaptive data analysis program formalization,
-their operational semantics is defined based on labeled command and trace with some special operators.
+The previous operational semantics is defined based on labeled command and trace with some special operators.
 Below is a summary of their designs.
 \paragraph*{Labeled Commands}
 They first annotate each command with a label $l$,

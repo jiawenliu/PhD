@@ -1,0 +1,352 @@
+
+\subsection{Proof of Lemma~\ref{lem:abscfg_sound}}
+\label{apdx:abscfg_sound}
+\begin{lem}[Soundness of the Abstract Events Computation]
+  For every program $c$ and
+  an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.
+  an initial trace  $\vtrace_0 \in \mathcal{T}_0(c)$,
+  there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
+  % with initial label $l$
+  for every event $\event \in \trace$ having the label $l$, i.e., $\event = (\_, l, \_)$.
+   %
+\[
+  \begin{array}{l}
+    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_) \in \eventset \sthat 
+\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+\land \event \in \trace 
+\\
+\qquad \implies \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat  
+\absevent \in \absflow(c)
+\end{array}
+\]
+\end{lem}
+
+\begin{proof}
+  Taking arbitrary $\trace_0 \in \mathcal{T}$, and an arbitrary event $\event = (\_, l, \_) \in \eventset$, it is sufficient to show:
+  \[
+  \begin{array}{l}
+    \forall \trace \in \mathcal{T} \sthat 
+\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+\land \event \in \trace 
+\\
+\qquad \implies 
+\exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat  
+\absevent \in \absflow(c)
+\end{array}
+\]
+  By induction on program $c$, we have the following cases:
+  \caseL{$c = [\assign{x}{\expr}]^{l'}$}
+  By the evaluation rule $\rname{assn}$, we have
+  $
+  {
+  \config{[\assign{{x}}{\aexpr}]^{l'},  \trace } 
+  \xrightarrow{} 
+  \config{\eskip, \trace \tracecat [({x}, l', v) ]}
+  }$, for some $v \in \mathbb{N}$ and $\trace = [({x}, l', v) ]$.
+  \\
+  There are 2 cases, where $l' = l$ and $l' \neq l$.
+  \\
+  In case of $l' \neq l$, we know $\event \not\eventin \trace$, then this Lemma is vacuously true.
+    \\
+    In case of $l' = l$, by the abstract Execution Trace computation, we know 
+    $\absflow(c) = \absflow'([x := \expr]^{l}; \clabel{\eskip}^{l_e}) = \{(l, \absexpr(\expr), l_e)\}$  
+    \\
+  Then we have $\absevent = (l, \absexpr(\expr), l_e) $ and $\absevent \in \absflow(c)$.
+  \\
+  This case is proved.
+  \caseL{$c = [\assign{x}{\query(\qexpr)}]^{l'}$}
+  This case is proved in the same way as \textbf{case: $c = [\assign{x}{\expr}]^l$}.
+  \caseL{$\ewhile [b]^{l_w} \edo c$}
+  If the rule applied to is $\rname{while-t}$, we have
+  \\
+  $\config{{\ewhile [b]^{l_w} \edo c_w, \trace}}
+    \xrightarrow{} 
+    \config{{
+    c_w; \ewhile [b]^{l_w} \edo c_w,
+    \trace_0 \tracecat [(b, l, \etrue)]}}
+  $.
+  \\
+  Let $\trace_w \in \mathcal{T}$ satisfying following execution:
+  \\
+  $
+  \config{{
+  c_w,
+  \trace_0 \tracecat [(b, l_w, \etrue)]}}
+  \xrightarrow{*} 
+  \config{{
+  \eskip,
+  \trace_0 \tracecat [(b, l_w, \etrue)] \tracecat \trace_w}}
+$
+\\
+Then we have the following execution:
+\\
+$\config{{\ewhile [b]^{l_w} \edo c_w, \trace}}
+\xrightarrow{} 
+\config{{
+c_w; \ewhile [b]^{l_w} \edo c_w,
+\trace_0 \tracecat [(b, l_w, \etrue)]}}
+\xrightarrow{*} 
+\config{{
+  \ewhile [b]^{l_w} \edo c_w,
+\trace_0 \tracecat [(b, l_w, \etrue)] \tracecat \trace_w}}
+\xrightarrow{*} 
+\config{{
+\eskip,
+\trace_0 \tracecat [(b, l_w, \etrue)] \tracecat \trace_w \tracecat \trace_1}}
+$ for some $\trace_1 \in \mathcal{T}$ and $\trace = [(b, l_w, \etrue)] \tracecat \trace_w \tracecat \trace_1$.
+\\
+Then we have 3 cases: 
+(1) $\event \eventeq (b, l_w, \etrue)$, 
+(2) $\event \in \trace_w$ or 
+(3) $\event \in \trace_1$.
+  \\
+In case of (1). $\event \eventeq (b, l_w, \etrue)$, since $\absflow(c) = \absflow'(c;\clabel{\eskip}^{l_e}) = \{(l, \top, \init(c_w))\} \cup \cdots $, we have $\absevent = (l, \top, \init(c_w))$ and this case is proved.
+\\
+In case of (2). $\event \in \trace_w$,
+by induction hypothesis on 
+$c_w$ with the execution 
+  $\config{{
+  c_w,
+  \trace_0 \tracecat [(b, l_w, \etrue)]}}
+  \xrightarrow{*} 
+  \config{{
+  \eskip,
+  \trace_0 \tracecat [(b, l_w, \etrue)] \tracecat \trace_w}}$ and trace $\trace_w$, 
+  we know there is an abstract event of the form 
+  $\absevent' = (l, \_, \_ ) \in \absflow(c_w)$ where $\absflow(c_w) = \absflow'(c_w;\clabel{\eskip}^{l_e})$.
+  \\
+  Let $\absevent' = (l, dc, l')$ for some $dc$ and $l'$ such that $\absevent \in \absflow(c)$.
+  \\
+  By definition of $\absflow'$, we have 
+  $ \absflow'(c_w;\clabel{\eskip}^{l_e}) = 
+  \absflow'(c_w) \cup  \{ (l', dc, l_e) | (l', dc) \in \absfinal(c_w) \} $.
+  \\
+  There are 2 subcases: (2.1) $\absevent' \in \absflow'(c_w)$ or 
+  $ (2.2) \absevent' \in \{ (l', dc, l_e) | (l', dc) \in \absfinal(c_w) \}$.
+  \subcaseL{(2.1)}
+  Since $\absflow(c) = \absflow'(c_w) \cup \{(l', dc, l_w)| (l', dc) \in \absfinal(c_w) \} \cup \cdots $, 
+  we know the abstract event $\absevent' \in \absflow(c)$. 
+  \\
+  This case is proved.
+  \subcaseL{(2.2) $\absevent' \in \{ (l', dc, l_e) | (l', dc) \in \absfinal(c_w) \}$ }
+  In this case, we know $(l, dc) \in \absfinal(c_w)$.
+  \\
+  Since $\absflow(c) = \absflow'(c_w) \cup \{(l', dc, l_w)| (l', dc) \in \absfinal(c_w) \} \cup \cdots $, 
+  we know $(l, dc, l_w) \in \{(l', dc, l_w)| (l', dc) \in \absfinal(c_w) \}$, 
+   i.e., the abstract event $(l, dc, l_w) \in \absflow(c)$ and $(l, dc, l_w)$ has the form $(l, \_, \_)$.
+  \\
+  This case is proved.
+  \\
+  %
+In case of (3). $\event \in \trace_1$, we know either $\event = (b, l_w, \_)$, or $\event \in \trace_w'$ where $\trace_w' \in \mathcal{T}$ is the trace of executing $c_w$ in an iteration.
+\\
+Then this case is proved by repeating the proof in case (1) and case (2).
+  \\
+  If the rule applied to is $\rname{while-f}$, we have
+  \\
+  $
+  {
+    \config{{\ewhile [b]^{l_w} \edo c_w, \trace_0}}
+    \xrightarrow{}^\rname{while-f}
+    \config{{
+    \eskip,
+    \trace_0 \tracecat [(b, l_w, \efalse)]}}
+  }$,
+  In this case, we have $\trace = [(b, l_w, \efalse)]$ and $\event = (b, l_w, \efalse)$ (o.w., $\event \not\eventin \trace$ and this lemma is vacuously true) with $l = l_w$.
+  \\
+  By the abstract execution trace computation, $\absflow(c) = \{(l, \top, \init(c_w))\} \cup \cdots $, 
+  we have $\absevent = (l, \top, \init(c_w))$  and $\absevent \in \absflow(c)$.
+\\
+  This case is proved.
+  \caseL{$\eif([b]^l, c_t, c_f)$}
+  This case is proved in the same way as \textbf{case: $c = \ewhile [b]^{l} \edo c$}.
+  \caseL{$c = c_{s1};c_{s2}$}
+ By the induction hypothesis on $c_{s1}$ and $c_{s2}$ separately, and the same step as case (2). of \textbf{case: $c = \ewhile [b]^{l} \edo c$},
+ we have this case proved.
+\end{proof}
+
+\subsection{Proof of Lemma~\ref{lem:abscfg_uniquex}}
+\label{apdx:abscfg_uniquex}
+\begin{lem}[Uniqueness of the Abstract Events Computation]
+  For every program $c$ and
+  an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.
+  an initial trace  $\vtrace_0 \in \mathcal{T}_0(c)$,
+  there is a unique abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
+  for every assignment event $\event \in \eventset^{\asn}$ in the
+  execution trace having the label $l$, i.e., $\event = (\_, l, \_, \_)$ and  $\event \in \trace$.
+%
+\[
+  \begin{array}{l}
+    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_) \in \eventset^{\asn} \sthat 
+\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+\land \event \in \trace 
+\\
+\qquad \implies \exists! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat  
+\absevent \in \absflow(c)
+\end{array}
+\]
+\end{lem}
+\begin{proof}
+  This is proved trivially by induction on the program $c$.
+\end{proof}
+%
+%
+
+\subsection{Soundness of Weight Estimation, Theorem~\ref{thm:transition_bound_sound}}
+  \label{apdx:weight_soundness}
+  Preliminary Theorem from paper~\cite{sinn2017complexity}.
+  \begin{thm}[Soundness of the Transition Bound]
+    % \label{thm:transition_bound_sound}
+  For each program ${c}$ and an edge $\absevent = (l, \_, \_) \in \absG(c)$, if $l$ is the label of an assignment command,
+  %  label $l \in \lvar(c)$,
+  then its \emph{path-insensitive transition bound} $\absclr(\absevent, c)$ 
+   is a sound upper bound on 
+  %  execution-based reachability bound $w^t$ 
+  the execution times of this assignment command in $c$.
+    \[
+      \begin{array}{l}
+        \forall c \in \cdom, l \in \lvar(c),\trace_0 \in \mathcal{T}_0(c), 
+        \trace \in \mathcal{T}, v \in \mathbb{N}
+         \sthat  
+         \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\vtrace} 
+         \land \config{\absclr(\absevent, c), \trace_0} \aarrow v
+         \land
+        \vcounter(\trace, l) \leq v
+      \end{array}
+      \]
+  \end{thm}
+
+  {
+  \begin{thm}[Soundness of the Weight Estimation]
+    \label{thm:rb_soundness}
+  Given a program ${c}$ with its program-based dependency graph 
+  $\progG = (\progV, \progE, \progW, \progF)$,
+  we have:
+    %
+  \[
+  \forall (x^l, w) \in \progW, \vtrace, \trace' \in \mathbb{T},
+  v \in \mathbb{N}
+   \sthat  
+  % \max \left\{ 
+    % \vcounter(\vtrace') l ~ \middle\vert~
+  % \forall \vtrace, \trace' \in \mathcal{T} \sthat  
+  \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+  \land 
+  \config{\trace, w} \earrow v
+  \land
+  % \right\} 
+  \vcounter(\vtrace', l) \leq v
+  \]
+  \end{thm}
+  }
+\begin{proof}
+  Taking an arbitrary a program ${c}$ with its program-based dependency graph $\progG = (\vertxs, \edges, \weights, \qflag)$, 
+  and an arbitrary pair of labeled variable and weights $(x^l, w) \in \progW$, 
+  and arbitrary $\vtrace, \trace' \in \mathbb{T},
+  v \in \mathbb{N}$ satisfying
+  \\
+  $\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+  \land 
+  \config{\trace, w} \earrow v$
+  %  labelled variable $x^l \in \lvar_c$.
+  \\
+  % By definition of $\progV$ in $\progG(c)$, we know $ x^l \in \vertxs$ and we have. 
+  \\
+  By Definition of $\progW$ in $\progG(c)$, we know 
+  $  w = \absW(l) = \max \{ \absclr(\absevent) | \absevent = (l, \_, \_)\}$.
+  \\
+  By Lemma~\ref{lem:abscfg_sound}, there exists an abstract event in $\absflow(c)$ of form $(\absevent) = (l, \_, \_)$,
+  corresponding to the assignment command associated to labeled variable $x^l$. 
+  \\
+  Let $(\absevent) = (l, dc, l') \in \absflow(c)$ be this event for some $dc$ and $l'$ such that  $(\absevent) = (l, dc, l') \in \absflow(c)$,
+  by the last step of phase 2, we know
+  $
+  \progW(x^l) 
+  \triangleq \absclr(\absevent)
+  $.
+   Then, it is sufficient to show:
+  \[
+  %   \max \left\{ \vcounter(\vtrace') l ~ \middle\vert~
+  % \forall \vtrace \in \mathcal{T} \sthat  \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
+  % \leq 
+  \forall v \in \mathbb{N} \sthat  
+  \config{\absclr(\absevent), \trace} \earrow 
+  \vcounter(\vtrace', l) \leq v
+  \absclr(\absevent)
+  \]
+  % By line:2 of Algorithm~\ref{alg:add_weights}, there are 2 cases:
+  By definition of $\absclr(\absevent)$:
+  \[
+ \begin{array}{ll}
+  \locbound(\absevent) & \locbound(\absevent) \in \constdom \\
+  Incr(\locbound(\absevent)) + 
+  \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\} 
+  & \locbound(\absevent) \notin \constdom
+\end{array}
+\]
+  \caseL{$\locbound(\absevent) \in \constdom$}
+  \\
+  Proved by the soundness of Local bound in Lemma~\ref{lem:local_bound_sound}.
+  \caseL{$\locbound(\absevent) \notin \constdom$}
+To show:
+\[
+  \begin{array}{l}
+    \max \left\{ \vcounter(\vtrace') l ~ \middle\vert~
+\forall \vtrace \in \mathcal{T} \sthat  \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
+\\
+\leq 
+Incr(\locbound(\absevent)) + 
+\sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\} 
+\end{array}
+\]
+  Taking an arbitrary initial trace
+  $\trace_0 \in \mathcal{T}$, 
+  executing $c$ with $\trace_0$, let $\trace$ be the trace after evaluation, i.e., $\config{{c}, \trace_0} \to^{*} \config{\eskip,\vtrace}$, it is sufficient to show:
+  \[ 
+    \begin{array}{l}
+      \vcounter(\vtrace') l \leq 
+    Incr(\locbound(\absevent)) + 
+    \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\}
+  \end{array}
+  \]
+%
+ By the soundness of the (1) Transition Bound and (2) Variable Bound Invariant 
+ in \cite{sinn2017complexity} Theorem 1 (attached above in Theorem~\ref{thm:transition_bound_sound}), 
+This case is proved.
+\end{proof}
+
+\begin{lem}[Soundness of the Local Bound]
+  \label{lem:local_bound_sound}
+Given a program ${c}$, we have:
+%
+\[
+\forall \absevent = (l, dc, l') \sthat  
+\max \left\{ \vcounter(\vtrace') l ~ \middle\vert~
+\forall \vtrace \in \mathcal{T} \sthat  \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
+\leq 
+\locbound(\absevent)
+\]
+\end{lem}
+\begin{proof}
+  \subcaseL{$l \notin SCC(\absG(c))$}
+  In this case, we know variable $x^l$ isn't involved in the body of any $\ewhile$ command. 
+  \\
+  Taking an arbitrary $\vtrace_0 \in \mathcal{T}$, 
+  let $\trace \in \mathcal{T}$ be of resulting trace of executing $c$ with $\trace$, 
+  i.e., $\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace}$,
+  \\
+  we know the
+  assignment command at line $l$ associated with the abstract event $\absevent$ will be executed at most once, i.e.,:
+  %
+  $\vcounter(\vtrace) l \leq 1$
+  \\
+  By $\locbound$ definition, we know $\locbound(\absevent) = 1$.
+  \\
+  This case is proved.
+  \subcaseL{$l \in SCC(\absG(c)) \land \absevent \in \dec(x) $}  in this case, we know $\locbound(\absevent) \triangleq x$.
+  \subcaseL{$l \in SCC(\absG(c)) \land \absevent 
+  \notin \bigcup_{x \in VAR} \dec(x)
+  \land \absevent \notin SCC(\absG(c)/\dec(x)) $}  in this case, we know $\locbound(\absevent) \triangleq x$.
+  \\
+  In the two cases above, the soundness is discussed in \cite{sinn2017complexity} Section 4 of Paragraph \emph{Discussion on Soundness} in Page 25.
+\end{proof}

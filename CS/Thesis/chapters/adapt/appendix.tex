@@ -1,94 +1,38 @@
-\section{Complete Examples Evaluted in Implementation}
-\label{appendix:implementation}
-\input{chapters/appendices/implementation}
-
-\section{Theorems and Proofs}
-%  in Section~\ref{sec:adapt-language},~\refeq{sec:adapt-exe},~\refeq{sec:adapt-static}}
-\label{appendix:thm-adaptivity}
-\subsection{Lemmas in Section~\ref{sec:adapt-language}}
+\section{Proofs of Lemmas for the Language Model}
 \label{apdx:lemma_sec123}
-\input{chapters/appendices/thm-adaptivity/lem_section123}
-\clearpage
-\subsection{Soundness of The New Adaptivity Analysis Framework in Section~\ref{sec:adapt-analysis}}
+\input{appendices/thm-adaptivity/lem_section123}
+\section{Proof of Theorem~\ref{thm:adaptfun_sound}}
 \label{apdx:adapt_soundness}
-\input{chapters/appendices/thm-adaptivity/adapt_soundness}
-\input{chapters/appendices/thm-adaptivity/lem_adaptgraph}
+\input{appendices/thm-adaptivity/adapt_soundness}
 \clearpage
-% \subsection{Soundness of Accurate Full-Spectrum Adaptivity Analysis}
-% \label{apdx:adapt_soundness_extend}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% The extra proofs for improved version.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{chapters/appendices/thm-improved/adapt_soundness_extend}
-\input{chapters/appendices/thm-improved/lem_adaptgraph_extend}
-\clearpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Soundness of $\THESYSTEM$'s Data Dependency Analysis w.r.t. Event Dependency}
-\subsubsection{Proof of the Soundness of $\flowsto$}
+\section{Soundness of Edge Estimation}
 \label{apdx:flowsto_soundness}
-\input{chapters/appendices/thm-adaptivity/flowsto_soundness}
-\clearpage
-\subsubsection{Proof of the Soundness of $\flowsto$ w.r.t. the Event}
+\subsection{Main Theorem}
+\input{appendices/thm-adaptivity/flowsto_soundness}
+%
+\subsection{Soundness of $\flowsto$ w.r.t. the Event}
 \label{apdx:flowsto_event_soundness}
-\input{chapters/appendices/thm-adaptivity/flowsto_event_soundness}
-\input{chapters/appendices/thm-adaptivity/lem_depinversion}
+\input{appendices/thm-adaptivity/flowsto_event_soundness}
 \clearpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% The extra proofs for improved version.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Soundness of {\THESYSTEM}'s Data Dependency Analysis w.r.t. Two Witness Traces}
-\label{apdx:flowsto_soundness_extend}
-\input{chapters/appendices/thm-improved/flowsto_soundness_extend}
-\paragraph*{Arithmetic Inversions}
-The Inversion Lemmas on expression evaluations is in Appendix~\ref{apdx:flowsto_event_soundness}
-\paragraph*{Events and Dependency Inversions}
-The Inversion Lemmas on \emph{may-dependency} relation, trace and event.
-\input{chapters/appendices/thm-improved/lem_depinversion_extend}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Soundness of $\THESYSTEM$'s Data Dependency Quantity Analysis}
+\section{Soundness of The Weight Estimation}
 \label{apdx:reachability_soundness}
-\input{chapters/appendices/thm-adaptivity/reachability_soundness}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%The extra proofs for improved version.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{chapters/appendices/thm-improved/ps_reachability_soundness}
-\input{chapters/appendices/thm-improved/edgeweight_soundness}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{appendices/thm-adaptivity/reachability_soundness}
 \clearpage
-\subsection{Soundness of Adaptivity Computation Algorithm}
+\section{Soundness of Adaptivity Computation Algorithm}
 \label{apdx:adaptalg_soundness}
-\input{chapters/appendices/thm-adaptivity/adaptalg_soundness}
+\input{appendices/thm-adaptivity/adaptalg_soundness}
 % %
-\subsection{Conditional Completeness of Adaptivity Computation Algorithm}
+\section{Conditional Completeness of Adaptivity Computation Algorithm}
 \label{apdx:adaptalg_completeness}
-\input{chapters/appendices/thm-adaptivity/adaptalg_completeness}
-\clearpage
+\input{appendices/thm-adaptivity/adaptalg_completeness}
 
-% \section{Theorems and Proofs in Section~\ref{ch:improved}}
-% \label{appendix:thm-improved}
-% \subsection{Soundness of Accurate Full-Spectrum Adaptivity Analysis}
-% \label{apdx:adapt_soundness_extend}
-% \input{chapters/appendices/thm-improved/adapt_soundness_extend}
-% \input{chapters/appendices/thm-improved/lem_adaptgraph_extend}
-% \clearpage
+\section{The Detail Evaluation Table}
+\label{apdx:eval_table}
+\input{tables/adapt-eval-detail}
+\section{The Programs and Codes of The Evaluated Examples in Table~\ref{tb:adapt-imp}}
+\label{apdx:evaluated_examples}
+\subsection{The Programs for Examples from line:6 - 15 in Table.\ref{tb:adapt-imp}}
+\input{examples/evaluated_examples-prog}
 
-% \subsection{Soundness of Improved $\THESYSTEM$'s Data Dependency Analysis}
-% \label{apdx:flowsto_soundness_extend}
-% \input{chapters/appendices/thm-improved/flowsto_soundness_extend}
-% \paragraph*{Arithmetic Inversions}
-% The Inversion Lemmas on expression evaluations is in Appendix~\ref{apdx:flowsto_event_soundness}
-% \paragraph*{Events and Dependency Inversions}
-% The Inversion Lemmas on \emph{may-dependency} relation, trace and event.
-% \input{chapters/appendices/thm-improved/lem_depinversion_extend}
-% \clearpage
-
-% \subsection{Soundness of Path Sensitive Reachability Bounds Estimation}
-% \label{apdx:ps_reachability_soundness}
-% \input{chapters/appendices/thm-improved/ps_reachability_soundness}
-% \clearpage
-% \subsection{Soundness of Improved $\THESYSTEM$'s Data Dependency Quantity Analysis}
-% \label{apdx:edgeweight_soundness}
-% \input{chapters/appendices/thm-improved/edgeweight_soundness}
-% \clearpage
-
-% \section{Theorems and Proofs in Section~\ref{ch:generalization}}
-% \label{appendix:thm-generalization}
-% \input{chapters/appendices/theorems}
-\clearpage
+\subsection{The Programs for Examples from line:16 - 20 in Table.\ref{tb:adapt-imp}}
+\input{examples/evaluated_examples-code}

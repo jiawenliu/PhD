@@ -1,0 +1,159 @@
+  \begin{thm}[Soundness of the \THESYSTEM]
+    \label{thm:adaptfun_soundness}
+  Given a program ${c}$, we have:
+  %
+  \[
+    \forall \trace \in \mathcal{T} \st 
+    \config{A(c), \trace} \earrow n \implies n \geq A(c)(\trace)
+  \]
+  \end{thm}
+  %
+Proof Summary:
+\\
+construct the
+program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+\\
+and trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
+\\
+1. prove the one-on-one mapping from $\progV$ to $\traceV$, in Lemma~\ref{lem:vertex_map};
+\\
+2. prove the total map from $\traceE$ to $\progE$, in Lemma~\ref{lem:edge_map};
+\\
+3. prove that the weight of every vertex in $\traceG$ is bounded by the weight of the same vertex in $\progG$, in 
+Lemma~\ref{lem:weights_map};
+\\
+4. prove the one-on-one mapping from $\progF$ to $\traceF$, in Lemma~\ref{lem:queryvertex_map};
+\\
+5. show every walk in $\walks(\traceG)$ is bounded by a walk in $\walks(\progG)$ of the same $\qlen$.
+\\
+6. get the conclusion that $A(c)$ is bounded by 
+the $\progA(c)$.
+%
+\begin{proof}
+Given a program ${c}$, 
+we construct its 
+\\
+program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+by Definition~\ref{def:prog_graph}
+\\ and 
+trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$  by Definition~\ref{def:trace_graph}.
+\\
+The parameter $(c)$ for the components in the two graphs are omitted for concise.
+\\
+Taking arbitarty trace such that 
+\[ 
+\config{A(c), \trace} \earrow n\]
+to show $n \geq A(c)(\trace)$, 
+according to the Definition \ref{def:prog_adapt} and Definition~\ref{def:trace_adapt}, it is sufficient to show:
+%
+$$
+\max \big 
+\{ \qlen(k) \mid k \in \walks(\traceG(c)) \big \} 
+\leq
+\max\left\{ \qlen(k) \ \mid \  k\in \walks(\progG({c}))\right \}
+$$
+%
+%
+It is sufficient to show that:
+\[
+  \forall k_t \st 
+  k_t \in \walks(\traceG({c}) \implies
+  \exists k_p \in \walks(\progG({c})) \land 
+  \qlen(k_t(\trace)) \leq \qlen(k_p)
+\]
+%
+Let $k_t = (e_1, \cdots, e_{n-1}) \in \walks(\traceG(c))$ be an arbitrary walk in $\traceG(c)$ with its vertices sequence 
+$(v_1, \cdots, v_n)$.
+\\
+By Lemma~\ref{lem:vertex_map},
+we know 
+% for every $v_1$, there exists a unique image of $v_1$ in vertices set of $\progG(c)$.
+% Let $f_v : \mathcal{LV} \to \mathcal{LV}$ be this mapping function, we have:
+\[
+  \forall v_i \in (v_1, \cdots, v_n) \st v_i \in \progV
+  \]
+%
+% By 3 and 4, we know:
+% $   
+% \forall v_i \in k_t \st \traceF(v_i) = \progF(f_v(v_i))
+% \land 
+% \traceW(v_i) \leq \progW(f_v(v_i))$.
+% \\
+By Lemma~\ref{lem:edge_map}, we know
+%
+\[
+  \forall e_i \in k_t \st e_i = (v_i, v_{i + 1}) \implies
+  \exists e_{pi} \st e_{pi} = (v_i, v_{i + 1}) \land e_{pi} \in \progE
+  \]
+  %
+Then we construct a walk $k_p$ with an edge sequence $(e_{p1}, \cdots, e_{p(n-1)}) $ 
+with a vertices sequence $(v_1, \cdots, v_n)$ where 
+$e_{pi} = (v_i, v_{i + 1}) \in \progE$ for all $e_{pi} \in (e_{p1}, \cdots, e_{p(n-1)})$.
+\\
+By Definition~\ref{def:finitewalk} for finite walk, 
+we know
+% \[
+%   \forall (v_i, n_i) \in \traceW \st v_i \in (v_1, \cdots, v_n)
+%   \implies \visit((v_1, \cdots, v_n), (v_i)) \leq n_i
+% \]
+\[
+  \forall v_i \in (v_1, \cdots, v_n) \st
+  \visit((v_1, \cdots, v_n), (v_i)) \leq \traceW(v_i)
+\]
+%
+By Lemma~\ref{lem:weights_map}, we know for every $ v_i \in (v_1, \cdots, v_n)$,
+$\visit((v_1, \cdots, v_n), (v_i)) \leq \progW(v_i)$.
+\\
+Then, by Definition~\ref{def:finitewalk}, we know $k_p \in \walks(\progG)$.
+\\
+By Lemma~\ref{lem:queryvertex_map} and Definition~\ref{def:qlen}, we know $\qlen(k_t) = \qlen(k_p)$.
+% Taking an arbitrary starting memory $m$ and an arbitrary underlying database $D$,
+% we construct a trace-based graph $\traceG({c}, \text{D}, {m}) = (\vertxs, \edges)$ by the definition \ref{def:trace-based_graph}.
+% %
+% \\
+% %
+% Let $\midG({c},{m},\text{D}) = \{\midV, \midE, \midF\}$ be the intermediate graph by Definition~\ref{def:midgraph}.
+% \\
+% By Lemma~\ref{lem:bie_trace_to_mid}, we know:
+% \[
+%   \forall p, {m}, D, ~ s.t., ~ p \in \paths(\traceG({c}, \text{D}, {m}),
+%   \exists p' \in \paths(\midG({c},{m},\text{D})) \land 
+%   \len(p) = \len_q(p')
+% \]
+% %
+% Then it is sufficient to show that:
+% %
+% \[
+%   \forall p, {m}, D, ~ s.t., ~ p \in \paths(\midG({c}, \text{D}, {m}),
+%   \exists k \in \walks(\progG({c})) \land 
+%   \qlen(p) \leq \qlen(k)
+% \]
+% %
+% We prove a stronger statement instead:
+% \[
+%   \forall p, {m}, D, ~ s.t., ~ p \in \paths(\midG({c}, \text{D}, {m}),
+%   \exists k \in \walks(\progG({c})) \land 
+%   \qlen(p) = \qlen(k) 
+% \]
+%
+%
+% By Lemma~\ref{lem:sujv_mid_to_prog}, let $g$ be the surjective function $g: \progV \to \midV$ s.t.:
+% %
+% $$
+% \forall \av \in \midV. ~ \progF(f(\av)) = \midF(\av) 
+% \land |\kw{image}(f(\av))| \leq W(f(\av)).
+% $$
+%
+%
+% \item(1) $\len(p_{\av_1 \to \av_2}) = \len(k_{f(\av_1) \to f(\av_2)})$
+% %
+% \item(2) $\forall \av \in p_{\av_1 \to \av_2}. ~ f(\av) \in k_{f(\av_1) \to f(\av_2)}$
+% %
+% \item(3) $\forall \av \in p_{\av_1 \to \av_2}. ~ 
+% \kw{image}(f(\av)) \cap {p_{\av_1 \to \av_2}}| = \# \{f(\av) \mid f(\av) \in k_{f(\av_1) \to f(\av_2)}\}$
+\\
+This theorem is proved.
+\end{proof}
+The following are the four lemmas used in the proof of Theorem~\ref{thm:adaptfun_soundness} above,
+showing the correspondence properties between the program based graph and trace based graph.
+\input{lem_adaptgraph}

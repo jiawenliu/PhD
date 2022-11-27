@@ -12,7 +12,7 @@ The functions $\kw{updnscore}(p,a)$,
 $\kw{updcscore}(p,a)$, $\kw{update}(I,ns,cs)$ simplify the computations of updating $ns$, $cs$ and $I$.%
 
 % \jl{
-    Different from $\kw{twoRounds(k)}$ in Figure~\ref{fig:overview-example},
+    Different from $\kw{twoRounds(k)}$ in Figure~\ref{fig:twoRounds},
 the query request, $\clabel{\assign{a}{\query(I)}}^6$ in each loop iteration is not independent. 
 $\query(I)$ in each iteration depends on the tracking list $I$ from all the previous iterations, 
 and $I$ is updated by all the query results in the previous iterations as well. 
@@ -54,21 +54,21 @@ and $k$ is a sound bound.
 %
 \begin{figure}
 \centering
-\begin{subfigure}{0.25\textwidth}
-    \small{
+\begin{subfigure}{0.9\textwidth}
+{
     $
 \begin{array}{l}
 \kw{multipleRounds(k)} \triangleq\\
     \clabel{\assign{j}{k}}^0;
-    \clabel{\assign{I}{[]}}^1; \\
+    \clabel{\assign{I}{[]}}^1;
     \clabel{\assign{ns}{0}}^2; 
     \clabel{\assign{cs}{0}}^3; \\
     \ewhile ~ \clabel{j > 0}^{4} ~ \edo ~ \\
     \Big(
     \clabel{\assign{j}{j-1}}^{5} ;
-    \clabel{\assign{a}{\query(I)}}^6; \\
+    \clabel{\assign{a}{\query(I)}}^6; 
     \clabel{\assign{ns}{\kw{updnscore}(ns, a)}}^7; \\
-    \clabel{\assign{cs}{\kw{updcscore}(cs, a)}}^8; \\
+    \clabel{\assign{cs}{\kw{updcscore}(cs, a)}}^8; 
     \clabel{\assign{I}{\kw{updI}(I, ns, cs)}}^9
     \Big) 
 \end{array}
@@ -76,9 +76,9 @@ and $k$ is a sound bound.
     }
     \caption{}
 \end{subfigure}
-        \begin{subfigure}{.6\textwidth}
+        \begin{subfigure}{0.9\textwidth}
         \begin{centering}
-        \begin{tikzpicture}[scale=\textwidth/25cm,samples=200]
+        \begin{tikzpicture}[scale=\textwidth/25cm,samples=300]
     % Variables Initialization
      \draw[] (-7, 1) circle (0pt) node{{ $I^1: {}^1_{0}$}};
      \draw[] (-7, 7) circle (0pt) node{{$ns^2: {}^{1}_{0}$}};
@@ -144,7 +144,6 @@ and $k$ is a sound bound.
      \caption{}
         \end{centering}
         \end{subfigure}
-    \vspace{-0.4cm}
     \caption{(a) The simplified multiple rounds example (b) The estimated dependency graph by {\THESYSTEM}}
     \label{fig:multipleRounds}
 \end{figure}

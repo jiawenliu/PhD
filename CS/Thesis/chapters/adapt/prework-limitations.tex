@@ -1,0 +1,81 @@
+There are three limitations as follows.
+\highlight{
+% \paragraph{Limitations in The Language Model}
+\begin{itemize}
+ \item \textbf{Expressiveness Limitation}
+%  \\
+%  \begin{enumerate}
+    % \item  It supports limited query expressions.
+    % %
+    % \item  
+    This language model doesn't support programs with non-deterministic while loop.
+    %  the program which contains while loop with non-deterministic iterations.
+    % In the other words, it only supports the programs with the loops of constant iteration numbers,
+    It only allows the while loops in the program to iterate a fixed number of times.
+    This is because the expression in the loop guard has to be a constant number
+    % constant 
+    or an arithmetic expression
+    %  in the guard which 
+    that is evaluated into a constant $V_N$ before executing the loop body.
+    % ) number of iterations.
+    However, the adaptive data analysis programs with loops of non-deterministic iteration times are very common.
+    % \\
+    %
+    The syntax doesn't support the programs with user inputs either, which are also common in the data analysis area.
+ \item \textbf{Accuracy Limitation}.
+ The adaptivity definition and the estimated adaptivity are both inaccurate.
+    \begin{itemize}
+        \item There are two reasons for the inaccuracy of adaptivity definition.
+    % \\
+    The first reason comes from the trace in the operational semantics.
+    % , where some important information is lost.
+    %   in-precision in formalizing the \emph{adaptivity}.
+    %  generation.
+    %   generated through the operational semantic rules.
+    A trace only tracks the query requests, so it loses the execution history of the variables
+    that use the query results but not assigned by query requests.
+    %   even if they are not assigned by query requests. 
+    These variables
+    are critical in analyzing the \emph{adaptivity}.
+    % \\
+    The second cause is the dependency graph definition.
+    Because the dependency graph relies on a specific memory, while-map, and a specific execution trace,
+    % It limits 
+    the \emph{adaptivity} then is also defined w.r.t. one specific
+    execution.
+    In this sense, this adaptivity definition isn't the \emph{adaptivity} of the adaptive data analysis
+    implemented by this program,
+    but only its \emph{adaptivity} in a certain execution.
+    \item
+    The adaptivity bound computed from this framework is loose.
+    Because the adaptivity estimation algorithm composes three standard static analysis techniques straightforwardly.
+    %   in the sense that all three steps are standard.
+    %  And the framework is simply a straightforward composition of the three steps.
+    % The naive \textbf{graph generation} 
+    The \textbf{graph generation} algorithm that uses the standard data-flow analysis technique
+    over-approximates the data dependency relation in a large scale.
+    And the standard path search algorithm also over-approximates the longest weighted path on this over-approximated dependency graph. 
+    In this sense, the estimated adaptivity is a loose bound on the defined adaptivity.
+ \end{itemize}
+%  This will be analyzed in detail in the limitation in Section~\ref{sec:prework-formalization}.
+ \item \textbf{Efficiency Limitation}
+ \begin{enumerate}
+    \item The operational semantics has four components in the configuration when evaluating the program. 
+    % The updating operations for this quadruple configuration are inefficient, especially the update operation of the while map.   
+    Updating this quadruple configuration (especially the while map) is inefficient.   
+    \item
+    The adaptivity estimation algorithm transforms the loop language into SSA form, in order to address the issue of re-assignment of different queries requesting results to the same variable.
+    This transformation is inefficient and unnecessary.
+    The re-assignment problem can be resolved efficiently and accurately through other static program analysis techniques, such as the
+    variable reachable analysis, etc..
+    \item The \textbf{variable estimation} and \textbf{graph generation} algorithms are inefficient.
+    The \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_alg1}
+   and the \textbf{ad-loop} rule in Figure~\ref{fig:prework-static_alg2}
+%    These two rules 
+   unfold every iteration of the while loop.
+    % and create new annotated variables for every iteration.
+   This operation increased the algorithms' complexity exponentially. 
+   %  \item For the same reason as above, their \textbf{Graph Generation} algorithm is low-efficient as well.
+    \end{enumerate}
+\end{itemize}
+}  

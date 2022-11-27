@@ -18,108 +18,78 @@ In this sense, the \emph{adaptivity} rounds (i.e., how many queries are relied o
 Below I introduce in detail the adaptive data analysis procedure,
 and the significance of this \emph{adaptivity} quantity in effecting the generalization error.
 
-\paragraph{Adaptive Data Analysis Procedure}
-% \label{sec:intro-exelimitation}
-
-% Data analyses are usually designed to identify some property of the population 
-% from which the data are drawn, generalizing beyond the specific data sample. 
-% For this reason, data analyses are often designed in a way that guarantees that they produce a low generalization error.
-% That is, they are designed so that the result of a data analysis run on sample data does not differ too much from the result one would achieve by running the analysis over the entire population. 
-
-% An adaptive data analysis can be seen as a process composed of multiple queries interrogating some data, where the choice of which query to run next may rely on the results of previous queries. 
-% The generalization error of individual query/analysis can be controlled by using an array of well-established statistical techniques.
-% However, when queries are arbitrarily composed, the different errors can propagate through the chain of different queries and bring high generalization errors. 
-% To address this issue, data analysts are designing several techniques that not only guarantee bounds on the generalization errors of single queries, but also guarantee bounds on the generalization error of the composed analyses. 
-% The choice of which of these techniques to use, 
-% often depends on the chain of queries that an adaptive data analysis can generate.
-% Specifically, the total number of queries and the depth of the chain of queries is of great significance 
-% to guarantee the generalization error, 
-% when the composed data analyses are adaptive. 
-% So in order to give a precise guarantee of generalization error
-% for the program,
-% I'm interested in analyzing the depth of the chain of queries in a program, i.e., the program's \emph{adaptivity} property.
-
-Consider a dataset $X$ consisting of $n$ independent samples from some unknown population $\dist$. How can I ensure that the conclusions are drawn from $X$ \emph{generalize} to the population $\dist$? Despite decades of research in statistics and machine learning on methods for ensuring generalization, there is an increased recognition that many scientific findings generalize poorly (e.g. 
+Consider a dataset $X$ consisting of $n$ independent samples from some unknown population $\dist$.  How can we ensure that the conclusions drawn from $X$ \emph{generalize} to the population $\dist$?  Despite decades of research in statistics and machine learning on methods for ensuring generalization, there is an increased recognition that many scientific findings generalize poorly (e.g. 
 \cite{Ioannidis05,GelmanL13}
-). While there are many reasons a conclusion might fail to generalize, one that is receiving increasing attention is \emph{adaptivity}, which occurs when the choice of method for analyzing the dataset depends on previous interactions with the same dataset~\cite{GelmanL13}.
-
- Adaptivity can arise from many common practices, such as exploratory data analysis, using the same data set for feature selection and regression, and the re-use of datasets across research projects. Unfortunately, adaptivity invalidates traditional methods for ensuring generalization and statistical validity, which assume that the method is selected independently of the data. The misinterpretation of adaptively selected results has even been blamed for a ``statistical crisis'' in empirical science~\cite{GelmanL13}.
-% ~\cite{GelmanL13}.
-
-A line of work initiated by \cite{DworkFHPRR15}, \cite{HardtU14} posed the question: 
-Can I design \emph{general-purpose} methods that ensure generalization in the presence of adaptivity, together with guarantees on their accuracy? 
-The idea that has emerged in these works is to use randomization to help ensure generalization. 
-Specifically, these works have proposed to mediate the access of an adaptive data analysis to the data utilizing queries from some pre-determined family (I will consider here a specific family of queries often called "statistical" or "linear" queries) that are sent to a 
-\emph{mechanism} which uses some randomized process to guarantee that the result of the query does not depend too much on the specific
-sampled dataset. 
+).  While there are many reasons a conclusion might fail to generalize, one that is receiving increasing attention is \emph{adaptivity}, which occurs when the choice of method for analyzing the dataset depends on previous interactions with the same dataset~\cite{GelmanL13}.
 %
+ Adaptivity can arise from many common practices, such as exploratory data analysis, using the same data set for feature selection and regression, and the re-use of datasets across research projects.  Unfortunately, adaptivity invalidates traditional methods for ensuring generalization and statistical validity, which assume that the method is selected independently of the data. The misinterpretation of adaptively selected results has even been blamed for a ``statistical crisis'' in empirical science~\cite{GelmanL13}.
+%  ~\cite{GelmanL13}.
+
 \begin{figure}
- \centering
- \includegraphics[width=0.7\columnwidth]{figures/data_analysis_model.png}
- \caption{Overview of our Adaptive Data Analysis model.}
- \label{fig:adaptivity-model-overview}
+    \centering
+    \includegraphics[width=0.7\columnwidth]{data_analysis_model.png}
+    \caption{Overview of our Adaptive Data Analysis model.
+    We have a population that we are interested in studying, and a dataset containing individual samples from this population. 
+    The adaptive data analysis we are interested in running has access to the dataset through queries of some pre-determined family (e.g., statistical or linear queries) mediated by a mechanism. 
+    This mechanism uses randomization to reduce the generalization error of the queries issued to the data.}
+    \label{fig:adaptivity-model-overview}
 \vspace{-0.5cm}
 \end{figure}
-This guarantees that the result of the queries generalizes well. 
-This approach is described in Figure~\ref{fig:adaptivity-model-overview}, where
-I have a population that I am interested in studying, and a dataset containing individual samples from this population. The adaptive data analysis I am interested in running has access to the dataset through queries of some pre-determined family (e.g., statistical or linear queries) mediated by a mechanism. 
-This mechanism uses randomization to reduce the generalization error of the queries issued to the data.
-This line of work has identified many new algorithmic techniques for ensuring generalization in adaptive data analysis, leading to algorithms with greater statistical power than all previous approaches. 
-Common methods proposed by these works include the addition of noise to the result of a query, data splitting, etc. 
-Moreover, these works have also identified problematic strategies for adaptive analysis, showing limitations on the statistical power one can hope to achieve. 
-Subsequent works have then further extended the methods and techniques in this approach and further extended the theoretical underpinning of this approach, 
-e.g.~\cite{dwork2015reusable,dwork2015generalization,BassilyNSSSU16,UllmanSNSS18,FeldmanS17,jung2019new,SteinkeZ20,RogersRSSTW20}.
-%
+
+A line of work initiated by \cite{DworkFHPRR15}, \cite{HardtU14} posed the question: Can we design \emph{general-purpose} methods that ensure generalization in the presence of adaptivity, together with guarantees on their accuracy?  
+The idea that has emerged in these works is to use randomization to help ensure generalization. 
+Specifically, these works have proposed to mediate the access of an adaptive data analysis to the data by means of queries from some pre-determined family (we will consider here a specific family of queries often called "statistical" or "linear" queries) that are sent to a  \emph{mechanism} which uses some randomized process to guarantee that the result of the query does not depend too much on the specific
+sampled dataset. 
+This guarantees that the result of the queries generalizes well. This approach is described in Fig.~\ref{fig:adaptivity-model-overview}.  
+This line of work has identified many new algorithmic techniques for ensuring generalization in adaptive data analysis, leading to algorithms with greater statistical power than all previous approaches. Common methods proposed by these works include, the addition of noise to the result of a query, data splitting, etc. Moreover, these works have also identified problematic strategies for adaptive analysis, showing limitations on the statistical power one can hope to achieve. Subsequent works have then further extended the methods and techniques in this approach and further extended the theoretical underpinning of this approach, e.g.~\cite{dwork2015reusable,dwork2015generalization,BassilyNSSSU16,UllmanSNSS18,FeldmanS17,jung2019new,SteinkeZ20,RogersRSSTW20}.
 
 A key development in this line of work is that the best method for ensuring generalization in an adaptive data analysis depends to a large extent on the number of \emph{rounds of adaptivity}, the depth of the chain of queries. 
-As an informal example, the program $x \leftarrow \query_1(D);y \leftarrow \query_2(D,x);z \leftarrow \query_3(D,y)$ has three rounds of adaptivity, since $\query_2$ depends on $D$ not only directly because it is one of its input but also via the result of $\query_1$, 
-which is also run on $D$, and similarly, $\query_3$ depends on $D$ directly but also via the result of $\query_2$, which in turn depends on the result of $\query_1$. 
-The works I discussed above showed that not only does the analysis of the generalization error depend on the number of rounds, 
-but knowing the number of rounds allows one to choose methods that lead to the smallest possible generalization error. 
+As an informal example, the program $x \leftarrow q_1(D);y \leftarrow q_2(D,x);z \leftarrow q_3(D,y)$ has three rounds of adaptivity, since $q_2$  depends on $D$ not only directly because it is one of its input but also via the result of $q_1$, which is also run on $D$, and similarly,  $q_3$ depends on $D$ directly but also via the result of $q_2$, which in turn depends on the result of $q_1$.
+The works we discussed above showed that, not only does the analysis of the generalization error depend on the number of rounds, but knowing the number of rounds actually allows one to choose methods that lead to the smallest possible generalization error - we will discuss this further in Section~\ref{sec:overview}. 
 
-% \mg{Check the following - also the plots need to be on the same scale!}
-For example, these works showed that when an adaptive data analysis uses a large number of rounds 
-of adaptivity then a low generalization error can be achieved by the mechanism that 
-adds Gaussian noise scaled to the number of rounds to each query result.
-When instead an adaptive data analysis uses a small number of rounds of adaptivity then a low generalization error can be achieved by using more specialized methods, such as the data splitting mechanism or the reusable holdout technique from~\cite{DworkFHPRR15}.
-To better understand this idea, I show in Figure~\ref{fig:generalization_errors} two experiments showcasing these situations. 
-More precisely, in Figure~\ref{fig:generalization_errors}(a) shows the results of a real-world analysis
-with two rounds of adaptivity. 
-This analysis can be seen as a classifier that first runs 500 non-adaptive queries on the first 500 attributes of the data, looking for correlations between the attributes and a label, and then runs one last query which depends on all these correlations. 
-Without any mechanism, the generalization error is pretty large, and the lower generalization error is achieved when the data-splitting method is used. 
-In Figure~\ref{fig:generalization_errors}(b) shows the results of a specific analysis
-with four hundred rounds of adaptivity. 
-This analysis can be seen as a classifier that at each step runs an adaptive query based on the result of the previous ones. 
-Again, without any mechanism, the generalization error is pretty large, and the lower generalization error is achieved when the Gaussian noise is used. 
+For example, these works showed that when an adaptive data analysis uses a large number of rounds of adaptivity then a low generalization error can be achieved by a mechanism  
+adding to the result of each query Gaussian noise scaled to the number of rounds. When instead  an adaptive data analysis uses a small number of rounds of adaptivity then a low generalization error can be achieved by using more specialized methods, such as data splitting mechanism or the reusable holdout technique from~\cite{DworkFHPRR15}.
+To better understand this idea, we show in Fig.~\ref{fig:generalization_errors} three experiments showcasing these situations.
+More precisely, in Fig.~\ref{fig:generalization_errors}(a) we show the results of a specific analysis\footnote{We will use formally a program implementing this analysis (Fig.~\ref{fig:overview-example}) as a running example in the rest of the paper.} with two rounds of adaptivity.
+This analysis can be seen as a classifier which first runs 400 non-adaptive queries on the first 400 attributes of the data, looking for correlations between the attributes and a label, and then runs one last query which depends on all these correlations.
+Without any mechanism the generalization error of the last query is pretty large, and the lower generalization error is achieved when the data-splitting method is used.
+Fig.~\ref{fig:generalization_errors}(c) shows how this situation also change with the number of queries. Specifically, it shows the root mean square error of the last \emph{adaptive} query when the numbers queries varies. This also highlight the fact that different mechanisms, for the same analysis, produce results with very different generalization error.
+In Fig.~\ref{fig:generalization_errors}(b), we show the results of a specific analysis\footnote{We will present this analysis formally in Section~\ref{sec:examples}.} with four hundreds rounds of adaptivity.
+At each step, this analysis runs an adaptive query based on the results of the previous ones. Without any mechanism, the generalization error of most of the queries is pretty large, and this error can be lowered by using Gaussian noise. 
 {\small
 \begin{figure}
 \centering
-\begin{subfigure}{.48\textwidth}
+\begin{subfigure}{.32\textwidth}
 \begin{centering}
-\includegraphics[width=0.9\textwidth]{figures/tworound.png}
+\includegraphics[width=1.0\textwidth]{tworound.png}
 \caption{}
 \end{centering}
 \end{subfigure}
-%}
 \quad
-\begin{subfigure}{.48\textwidth}
+\begin{subfigure}{.32\textwidth}
 \begin{centering}
-\includegraphics[width=0.9\textwidth]{figures/multipleround.png}
+\includegraphics[width=1.0\textwidth]{multipleround.png}
 \caption{}
 \end{centering}
 \end{subfigure}
-\vspace{-0.4cm}
+\begin{subfigure}{.32\textwidth}
+\begin{centering}
+\includegraphics[width=1.0\textwidth]{twoRounds-rmse-fourmechs.png}
+\caption{}
+\end{centering}
+\end{subfigure}
+\vspace{-0.5cm}
  \caption{
  The generalization errors of two adaptive data analysis examples, under different choices of mechanisms.
- (a) Data analysis with adaptivity 2, 
- (b) Data analysis with adaptivity 400. 
+ (a) Data analysis with 2 rounds adaptivity, 
+ (b) Data analysis with 400 rounds adaptivity.
+ (c) Same Data analysis as (a) with different query numbers.
 }
 \label{fig:generalization_errors}
-\vspace{-0.5cm}
 \end{figure}
 }
 %gap
+
 This scenario motivates us to explore the design of program analysis techniques that can be used to estimate the number of \emph{rounds of adaptivity} that a program implementing a data analysis can perform. These techniques could be used to help a data analyst in the choice of the mechanism to use,
 and they
 could ultimately be integrated into a tool for adaptive data analysis such as the \emph{Guess and Check} framework by~\cite{RogersRSSTW20}. 
-%

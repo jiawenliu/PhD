@@ -1,0 +1,635 @@
+% \subsection{Inversion Lemmas}
+We first Proved following Inversion Lemmas.
+\input{lem_depinversion}
+\input{lem_alginversion}
+\clearpage
+% \section{Main Soundness Theorem}
+\begin{thm}[Algorithm Soundness w.r.t. $\flowsto$ and $\eventdep$]
+\label{thm:alg_correct}
+\[
+  \begin{array}{l}
+    \forall D \in \dbdom , c \in \cdom, \trace \in \mathcal{T} \st \forall \event_1, \event_2 \in \eventset^{\asn} \st
+    \\ \quad 
+     \exists \trace' \in \mathcal{T} \st \trace = \cdot [\event_1] \tracecat \trace' \tracecat [\event_2]
+     \implies    \forall  z^i, y^j \in \lvar_c, l_h, l_t \st 
+    \\ \qquad 
+     l_h ++ [z^i, y^j] ++ l_t \in \mathcal{A}(\event_1, \event_2, \trace, c, D)
+     \implies \flowsto(z^i, y^j, c) \land \eventdep(\event_1, \event_2, \trace, {c}, D) 
+    %  \land \vardep({x}_1^{l_1}, {x}_2^{l_2}, {c})
+  \end{array}
+\]
+\end{thm}
+
+\begin{proof}[Proof of Theorem.~\ref{thm:alg_correct}].
+\\
+Taking arbitrary $ D \in \dbdom , c \in \cdom$,
+by strong induction on $\trace \in \mathcal{T}$, we have the following cases.
+\begin{case}($\trace = {[]}$)
+\\
+Since for all $\event_1, \event_2 \in \eventset^{\asn}$,
+ $\not\exists \trace' \in \mathcal{T}$,satisfies $
+{[]}  = [\event_1] \tracecat \trace' \tracecat [\event_2]$, the theorem is vacuously true.
+\end{case}
+%
+\begin{case}($\event \in \eventset, \trace = [\event]$)
+\\
+Since for all $\event_1, \event_2 \in \eventset^{\asn}$,
+ $\not\exists \trace' \in \mathcal{T}$,satisfies $
+{[]} = [\event_1] \tracecat \trace' \tracecat [\event_2]$, the theorem is vacuously true.
+\end{case}
+% %
+% \begin{case}($\event_1', \event_2' \in \eventset, \trace_{ih} \in \mathcal{T}, 
+% \trace = \cdot \event_1' \tracecat \trace_{ih} \cdot \event_2' \land 
+% (\event_1 \eventneq \event_1' \lor \event_2 \eventneq \event_2')$)
+% \\
+% By $(\event_1 \eventneq \event_1' \lor \event_2 \eventneq \event_2')$,
+% we know $\not\exists \trace' \in \mathcal{T}$ satisfies $
+% \cdot \event_1' \tracecat \trace_{ih} \cdot \event_2' = \cdot \event_1 \tracecat \trace' \cdot \event_2$.
+% \\
+% The theorem is vacuously true.
+% \end{case}
+%
+%
+\begin{case}
+\label{case:alg_correct_base}
+($\event_1', \event_2' \in \eventset $, $\trace = [\event_1'; \event_2']$)
+\\
+To show:
+% \wq{$\forall l \in \mathcal{A}(\event_1, \event_2, \trace, c, D)$ below?}
+%\jl{yes, there is a typo}
+\[
+\begin{array}{l}
+  \forall \event_1, \event_2 \in \eventset^{\asn} \st
+  \exists \trace' \in \mathcal{T} \st [\event_1'; \event_2'] = [\event_1] \tracecat \trace' \tracecat [\event_2]
+  \implies    
+  \forall  z^i, y^j \in \lvar_c, l_h, l_t \st 
+    \\ \qquad 
+    l_h ++ [z^i, y^j] ++ l_t \in \mathcal{A}(\event_1, \event_2, \cdot {} \event_1' \cdot {} \event_2', c, D)
+   \implies \flowsto(z^i, y^j, c) \land \eventdep^{val}(\event_1, \event_2, \cdot  \event_1 \cdot \event_2, c, D)
+\end{array}
+\]
+%
+Taking arbitrary $ \event_1, \event_2 \in \eventset^{\asn}$, by law of excluded middle, there are 2 cases:
+\\
+$\event_1 = \event_1' \land  \event_2 = \event_2'$
+\\
+$\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$
+\\
+In case of $\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$, since 
+$\not\exists \trace' \in \mathcal{T}$,satisfies $
+\cdot {} \event_1' \cdot {} \event_2'  = \cdot {} \event_1 \tracecat \trace' \cdot \event_2$, 
+the theorem is vacuously true.
+\\
+%
+In case of $\event_1 = \event_1' \land  \event_2 = \event_2'$,
+let $\trace' = \cdot$, we know $\exists \trace' \in \mathcal{T}$ satisfying 
+$[\event_1; \event_2] = [\event_1] \tracecat \trace' \tracecat [\event_2]$.
+\\
+By Inversion Lemma~\ref{lem:inv_alg2}, we have either one of the two following cases:
+\begin{enumerate}
+  \item $\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = 
+  \left\{[\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}] \right \}$ 
+  and $\eventdep^{val}(\event_1, \event_2, \cdot  \event_1 \cdot \event_2, c, D)$.
+  \item  $\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = \{\}$ 
+  and $\neg \eventdep^{val}(\event_1, \event_2, \cdot  \event_1 \cdot \event_2, c, D)$;
+\end{enumerate}
+%
+In case of $\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = \{\}$,
+since $\not\exists  z^i, y^j \in \lvar_c, l_h, l_t \st l_h ++ [z^i, y^j] ++ l_t \in \{\}$, the theorem is vacuously true.
+%
+\\
+Then in the case 1., it is sufficient to show: 
+% \wq{Because $l \in A \implies DEP$ }
+% \jl{yes}
+\[
+  \eventdep^{val}(\event_1, \event_2, [\event_1; \event_2], c, D) 
+  \implies \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+  \land \eventdep^{val}(\event_1, \event_2, \cdot  \event_1 \cdot \event_2, c, D)
+\]
+%
+$\eventdep^{val}(\event_1, \event_2, [\event_1; \event_2], c, D) 
+\implies \eventdep^{val}(\event_1, \event_2, \cdot  \event_1 \cdot \event_2, c, D)$ is trivially true.
+\\
+$ \eventdep^{val}(\event_1, \event_2, [\event_1; \event_2], c, D) 
+\implies \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$ is
+proved in Subproof~\ref{pf:alg_correct_base}.
+\input{base_case_val}
+%
+\end{case}
+%
+\begin{case}
+($\event_1', \event_2' \in \eventset$, $\trace_{ih} \in \mathcal{T}, \trace = [\event_1'] \tracecat \trace_{ih} \tracecat [\event_2'] \land \trace_{ih} \neq {[]}$)
+\\
+The induction hypothesis is as follows:
+%
+\[
+\begin{array}{l}
+  \forall \event_{ih1}, \event_{ih2} \eventin \trace_{ih} \cdot \event_2 \st
+  %  \\ \quad
+   \exists \trace' \in \mathcal{T} \st 
+   \trace[\event_{ih1}:\event_{ih2}] = \event_{ih1} \tracecat \trace' \cdot \event_{ih2}
+   \implies 
+   \forall z^i, y^j \in \lvar_c, l_h, l_t \st 
+    \\ \qquad 
+   l_h ++ [z^i, y^j] ++ l_t  \in \mathcal{A}(\event_{ih1}, \event_{ih2}, \trace[\event_{ih1}:\event_{ih2}], c, D)
+   \\ \qquad 
+   \implies \flowsto(z^i, y^j, c) \land \eventdep(\event_{ih1}, \event_{ih2}, \trace[\event_{ih1}:\event_{ih2}], {c}, D) 
+   % \\ 
+\end{array}
+\]
+%
+To show:
+\[
+\begin{array}{l}
+  % \forall \event_{ih1}, \event_{ih2} \eventin \trace_{ih} \cdot \event_2 \st
+  %  \\ \quad
+  %  \exists \trace' \in \mathcal{T} \st 
+  %  \trace[\event_{ih1}:\event_{ih2}] = \event_{ih1} \tracecat \trace' \cdot \event_{ih2}
+  %  \implies 
+  %  \forall z^i, y^j \in \lvar_c, l_h, l_t \st 
+  %   \\ \qquad 
+  %  l_h ++ [z^i, y^j] ++ l_t  \in \mathcal{A}(\event_{ih1}, \event_{ih2}, \trace[\event_{ih1}:\event_{ih2}], c, D)
+  %  \implies \flowsto(z^i, y^j, c)
+  %  \\
+  %  \implies
+  \forall \event_1, \event_2 \in \eventset^{\asn} \st
+    \exists \trace' \in \mathcal{T} \st \trace = \event_1 \tracecat \trace' \cdot \event_2
+   \implies \forall  z^i, y^j \in \lvar_c, l_h, l_t \st
+   \\ \quad \qquad 
+   l_h ++ [z^i, y^j] ++ l_t \in \mathcal{A}(\event_1, \event_2, \trace, c, D)
+   \implies \flowsto(z^i, y^j, c)  \land \eventdep(\event_1, \event_2, \event_1' \tracecat \trace_{ih} \cdot \event_2', {c}, D) 
+\end{array}
+\]
+%
+Taking arbitrary $ \event_1, \event_2 \in \eventset^{\asn}$, by law of excluded middle, there are 2 cases:
+\\
+$\event_1 = \event_1' \land  \event_2 = \event_2'$
+\\
+$\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$
+\\
+In case of $\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$, since 
+$\not\exists \trace' \in \mathcal{T}$,satisfies $
+\cdot {} \event_1' {}\tracecat \trace_{ih} \cdot {} \event_2'  = \cdot {} \event_1 \tracecat \trace' \cdot \event_2$, 
+the theorem is vacuously true.
+\\
+%
+In case of $\event_1 = \event_1' \land  \event_2 = \event_2'$,
+let $\trace' = \trace_{ih}$, we know $\exists \trace' \in \mathcal{T}$ satisfying 
+$\event_1'  {}\tracecat \trace_{ih} \cdot {} \event_2' = \event_1 \tracecat \trace' \cdot \event_2$.
+\\
+Taking arbitrary $z^i, y^j \in \lvar_c, l_h, l_t$ such that 
+$l_h ++ [z^i, y^j] ++ l_t \in \mathcal{A}(\event_1, \event_2, \trace, c, D)$.
+\\
+By definition of $\mathcal{A}(\event_1, \event_2, \trace, c, D)$,
+we know there exists a preimage $l_e \in (\kw{dfs} \eapp \trace \eapp c \eapp  D )$.
+\\
+By and definition of the 
+$\kw{setfilter}$ function,
+having the form $l_e = [\event_1, \cdots, \event_2]$. 
+\\
+\begin{subproof}[Subproof of $\eventdep(\event_1, \event_2, \event_1 \tracecat \trace_{ih} \cdot \event_2, {c}, D) $].
+  \\
+  To show:
+\[  
+\eventdep(\event_1, \event_2, \event_1 \tracecat \trace_{ih} \cdot \event_2, {c}, D) 
+\]
+Since $l_e$ has the form $l_e = [\event_1, \cdots, \event_2] $, 
+we know there exist a list $l^{ih}_e \in List(\eventset)$
+where $l_e = [\event_1] ++ l^{ih}_e ++ [\event_2]$.
+\\
+By the form of $l^{ih}_e$, there are following 4 cases:
+
+% \begin{case}
+  ($\not\exists \event \in \eventset^{\asn} \st \event \in l^{ih}_e $)
+  \begin{subsubcase}($l^{ih}_e = []$)
+    \\
+    By definition of $\uplus$, we know $\eventdep^{val}(\event_1, \event_{2}, \trace[\event_1:\event_{2}], c, D)$.
+    This case is proved.
+      \end{subsubcase}
+  \begin{subsubcase}
+    \label{case:dep_0asn_ntest}
+    ($l^{ih}_e =[\event_{b_1}, \cdots, \event_{b_n}]$, $ n \in \mathbb{N}, \event_{b_1}, \cdots, \event_{b_n} \in \eventset^{\test}$)
+    \\
+    This case is proved by definition of $\uplus$, the Control Dependency Transitivity Lemma~\ref{lem:ctl_trans} and the \emph{Event May-Dependency} Definition~\ref{def:var_dep}.
+  \end{subsubcase}
+% \end{case}
+% \begin{case}
+  ($\exists \event_{ih} \in \eventset^{\asn} \st \event_{ih} \in l^{ih}_e $)
+  \begin{subsubcase}
+    \label{case:dep_asn_0test}
+    ($l^{ih}_e = \event_{ih}::l'^{ih}_e$)
+    \\
+    In this case, we have $l_e = \event_1::\event_{ih}::l'^{ih}_e ++ [\event_2]$.
+\\
+By definition of $\uplus$, we know $\eventdep^{val}(\event_1, \event_{ih}, \trace[\event_1:\event_{ih}], c, D)$ and 
+$\event_{ih}::l'^{ih}_e ++ [\event_2] \in \kw{dfs}(\trace[\event_{ih}:\event_2], c, D)$.
+\\
+Then we know $\pi_1(\event_{ih})^{\pi_2(\event_{ih})}:: 
+(\emap \cdots l'^{ih}_e) ++ [\pi_1(\event_{2})^{\pi_2(\event_{2})}] \in \mathcal{A}(\event_{ih}, \event_2, \trace[\event_{ih}:\event_2], c, D)$ by definition of $\mathcal{A}$.
+\\
+And $\eventdep^{val}(\event_{ih}, \event_2, \trace[\event_{ih}:\event_2], c, D)$ by the induction hypothesis.
+\\
+By the \emph{Value May-Dependent} Definition~\ref{def:event_valdep} and \emph{Event May-Dependent} Definition~\ref{def:var_dep}, we know:
+\[
+  \eventdep(\event_1, \event_2, \event_1 \tracecat \trace_{ih} \cdot \event_2, {c}, D) 
+  \]
+This sub-goal is proved.
+  \end{subsubcase}
+  %
+  \begin{subsubcase}($l^{ih}_e =[\event_{b_1}, \cdots, \event_{b_n}]++ \event_{ih}::l'^{ih}_e$, $ n \in \mathbb{N}, \event_{b_1}, \cdots, \event_{b_n} \in \eventset^{\test}$)
+    This case is roved by the Control Dependency Transitivity Lemma~\ref{lem:ctl_trans} and the conclusion from Case~\ref{case:dep_0asn_ntest} and Case.~\ref{case:dep_asn_0test}.
+  \end{subsubcase}
+% \end{case} 
+\end{subproof}
+To show:
+\[  
+\flowsto(\pi_1(\event_z)^{\pi_2(\event_y)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+% \land 
+% \eventdep(\event_1, \event_2, \event_1 \tracecat \trace_{ih} \cdot \event_2, {c}, D) 
+\]
+By definition of the $\emap$ and $\kw{setmap}$ function, we know there exist 
+two assignment events
+$\event_z, \event_y \in \eventset^{\asn}$ in $l_e$,
+such that $ \pi_1(\event_z)^{\pi_2(\event_y)} = z^i \land \pi_1(\event_y)^{\pi_2(\event_y)} = y^j$
+and $l_e$ having the form:
+\\
+\[
+ \exists  n \in \mathbb{N}, \event_{b_1}, \cdots, \event_{b_n} \in \eventset^{\test}, l_{he}, l_{te} \in List(\eventset) \st 
+  n \geq 0 \land l_e = l_{he} ++ [\event_z, \event_{b_1}, \cdots, \event_{b_n}, \event_y] ++ l_{te}
+\]
+, with $0$ or more testing events between $\event_z, \event_y$ in $l_e$.
+\\
+There are 2 cases.
+\begin{subcase}[$\event_z \eventneq \event_1$].
+% Let $\event_z, \event_y \in \eventset^{\asn}, l_h, l_t$ be arbitrary events and lists such that:
+% \[
+%   l = l_h ++ [\event_z, \event_y] ++ l_t 
+% \]
+% %
+% Then it is sufficient to show $\flowsto(\pi_1(\event_z)^{\pi_2(\event_y)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)$.
+% \\
+% By definition of $\kw{dfs}$, we have:
+%
+% \[
+%   l_h ++ [\event_z, \event_y] ++ l_t  \in 
+%      \bigcup\limits_{l \in \kw{dfs}(\trace_{ih} \cdot \event_2, c, D) }
+%   \left(  \eif \event_1 \stackrel{\trace}{\uplus} l \neq [] 
+%   \ethen \left\{ \event_1 \stackrel{\trace}{\uplus} l \right\} \eelse \left\{ l \right\}
+%   \right)
+% \]
+% %
+% \todo{which is sound and correct and easy to prove}
+%
+\\
+Since $\event_z \neq \event_1$, we know $\event_z, \event_y \in \trace_{ih} \cdot \event_2$.
+\\
+By definition of $\kw{dfs}$ and $\uplus$,  we also have:
+\[
+  [\event_z, \event_{b_1}, \cdots, \event_{b_n}, \event_y] ++ l_{te} \in (\kw{dfs} \eapp {\trace[\event_z: \event_2] } \eapp c \eapp D)
+\]
+%
+Then, by definition of $\mathcal{A}$, we know:
+\[
+  [\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_y)^{\pi_2(\event_y)}] ++ (\emap \cdots l_t )
+  \in\mathcal{A}(\event_z, \event_2, \trace[\event_z: \event_2], c, D)
+\]
+% Let $\trace_{tl}$ be a subtrace  of $\trace$, such that: 
+% $\trace[\event_z:] = \cdot \event_z \tracecat \trace_{tl}$, we know $\trace_{tl}$ is also a subtrace  of $\trace_{ih} \cdot \event_2$.
+% \\
+% Unfolding $\kw{dfs}(\trace, c, D)$, by $l_h ++ [\event_z, \event_y] ++ l_t  \in\kw{dfs}(\trace, c, D)$, we have:
+% \[
+% \begin{array}{l}
+%   \exists l_{h}' \st l_{h}' ++ [\event_y] ++ l_t \in \kw{dfs}( \trace_{tl}, c, D) \st
+%   (\event_z \stackrel{\trace[\event_z:]}{\uplus} l_{h}' ++ [\event_y] ++ l_t) = \{[\event_z, \event_y] ++ l_t\} 
+%   \end{array}
+% \]
+% %
+% Then
+% we have
+% \[
+%   [\event_z, \event_y] ++ l_t 
+%   \in \kw{dfs}(\trace[\event_z:], c, D)
+% \]
+%
+%
+By induction hypothesis on $\event_z, \event_2, \trace[\event_z: \event_2]$,
+ and 
+ \\
+ $[\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_y)^{\pi_2(\event_y)}] ++ (\emap \cdots l_t )
+ \in\mathcal{A}(\event_z, \event_2, \trace[\event_z: \event_2], c, D)$ we know:
+\[
+  \flowsto(\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+\]
+This case is proved.
+%
+\end{subcase}
+% Unfolding $\mathcal{A}(\event_1, \event_2, \trace, c, D)$, it is sufficient to show following 4 cases:
+\begin{subcase}[$\event_z \eventeq \event_1$].
+  \label{case:asn_ind}
+\\
+Since $l_e$ has the form $l_e = [\event_1, \cdots, \event_2] $, 
+and $l_e = l_{he} ++ [\event_z, \event_{b_1}, \cdots, \event_{b_n}, \event_y] ++ l_{te}$, 
+then by $\event_z \eventeq \event_1$, we know $l_{he} = []$, i.e., $l_e = [\event_1, \event_{b_1}, \cdots, \event_{b_n}, \event_y] ++ l_{te}$
+\\
+By definition of $\kw{dfs}$, we have
+%
+\[
+  [\event_1, \event_{b_1}, \cdots, \event_{b_n}, \event_y] ++ l_{te}  \in 
+  \left(  (\kw{dfs} \eapp {\trace_{ih} \cdot \event_2} \eapp c \eapp D ) \cup
+  \bigcup\limits_{l \in (\kw{dfs} \eapp {\trace_{ih} \cdot \event_2} \eapp c \eapp D) }(\uplus \eapp \event_1 \eapp \trace \eapp l)
+  \right)
+\]
+% $l_{he} ++ [\event_z, \event_y] ++ l_{te}  \in (\kw{dfs} \eapp {\trace_{ih} \cdot \event_2} \eapp c \eapp D )$
+% \\
+% or $l_{he} ++ [\event_z, \event_y] ++ l_{te}  \in  
+% \bigcup\limits_{l \in \kw{dfs} \eapp {\trace_{ih} \cdot \event_2} \eapp c \eapp D } (\uplus \eapp \event_1 \eapp \trace \eapp l)$
+% \\
+% In case of $l_{he} ++ [\event_z, \event_y] ++ l_{te}  \in (\kw{dfs} \eapp {\trace_{ih} \cdot \event_2} \eapp c \eapp D )$, we know 
+% $\flowsto(\pi_1(\event_z)^{\pi_2(\event_y)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)$ by induction hypothesis.
+% \\
+%
+By the form of $l_e$, we know
+$[\event_1, \event_{b_1}, \cdots, \event_{b_n}, \event_y] ++ l_{te}  \in  
+\bigcup\limits_{l \in (\kw{dfs} \eapp {\trace_{ih} \cdot \event_2} \eapp c \eapp D) } (\uplus \eapp \event_1 \eapp \trace \eapp l)$.
+\\
+By number of testing events between $\event_1, \event_y$ in $l_e$, it is sufficient to show following 3 cases:
+\begin{equation}
+\begin{array}{l}
+  l_e = [\event_1, \event_y] ++ l_{te}
+   \implies \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+  %  \land 
+  %  \eventdep(\event_1, \event_2, \event_1 \tracecat \trace_{ih} \cdot \event_2, {c}, D) 
+\end{array}
+\end{equation}
+%
+\begin{equation}
+  \begin{array}{l}
+    \forall \event_b \in \eventset^{\test} \st 
+    l_e = [\event_1, \event_b, \event_y] ++ l_{te}
+    \\ \quad
+    \implies \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+  %    \land 
+  %  \eventdep(\event_1, \event_2, \event_1 \tracecat \trace_{ih} \cdot \event_2, {c}, D) 
+\end{array}
+  \end{equation}
+%
+%
+\begin{equation}
+\begin{array}{l}
+  \forall n \in \mathbb{N}, \event_{b_1}, \cdots, \event_{b_n} \in \eventset^{\test}\st
+  %  \\ \quad 
+   n > 1 \implies
+   l_e = {[\event_1, \event_{b_1}, \cdots, \event_{b_n}, \event_y]} ++ l_{te}
+   \\ \quad
+  \implies \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+  % \land 
+  % \eventdep(\event_1, \event_2, \event_1 \tracecat \trace_{ih} \cdot \event_2, {c}, D) 
+\end{array}
+\end{equation}
+%
+\begin{subsubcase}(No testing event : $l_e = [\event_1, \event_y] ++ l_{te}$)
+\\
+% Unfolding $\kw{dfs}(\trace, c, D)$, let $l$ be arbitrary $l \in  \kw{dfs}(\trace, c, D)$, it is sufficient to show 
+% \[
+%    \forall \event_z, \event_y \in \eventset^{\asn}, l_h, l_t \st 
+%    l = l_h ++ [\event_z, \event_y] ++ l_t 
+%    \implies \flowsto(\pi_1(\event_z)^{\pi_2(\event_y)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+% \] 
+To show:
+\[  
+  l_e = [\event_1, \event_y] ++ l_{te}
+  \implies
+\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+% \land 
+% \eventdep(\event_1, \event_2, \event_1 \tracecat \trace_{ih} \cdot \event_2, {c}, D) 
+\]
+By definition of $\uplus$, we know there exists $l^{ih}_{he}$ such that:
+\[
+\begin{array}{l}
+  l^{ih}_{he} ++ [\event_y] ++ l_{te} \in (\kw{dfs} \eapp {\trace_{ih} \cdot \event_2} \eapp c \eapp D )
+  \land
+  \left(\uplus \eapp \event_1 \eapp \trace \eapp ( l^{ih}_{he} ++ [\event_y] ++ l_{te}) \right) 
+  = \{[\event_1, \event_y] ++ l_{te}\}
+\end{array}
+\]
+% Let $\event_y \in \eventset^{\asn}, l_h, l_t$ be arbitrary events and lists such that:
+% \[                                                                                                                                                                                                                                                                                                                                                                                                          
+%   l = l_h ++ [\event_z, \event_y] ++ l_t 
+% \]
+% %
+% Unfolding $\kw{dfs}(\trace, c, D)$, we have:
+% %
+% \[
+%   l_h ++ [\event_z, \event_y] ++ l_t  \in 
+%      \bigcup\limits_{l \in \kw{dfs}(\trace_{ih} \cdot \event_2, c, D) }
+%   \left(  \eif \event_1 \stackrel{\trace}{\uplus} l \neq [] 
+%   \ethen \left\{ \event_1 \stackrel{\trace}{\uplus} l \right\} \eelse \left\{ l \right\}
+%   \right)
+%   \]
+% By $\event_z \eventeq \event_1$, we know $l_{he} = []$ and 
+% $\uplus \eapp \event_1 \eapp \trace \eapp  (l^{ih}_{he} ++ [\event_y] ++ l_{te}) 
+% = \{[\event_1, \event_y] ++ l_{te}\}$.
+% \[
+%   [\event_1, \event_y] ++ l_t  \in 
+%   \left( \bigcup\limits_{l \in \kw{dfs}(\trace_{ih} \cdot \event_2, c, D)} 
+%   \event_1 \stackrel{\trace}{\uplus} l \right)
+% \]
+% %
+% Then, we also know
+% \[
+%   \left( \bigcup\limits_{l \in \kw{dfs}(\trace_{ih} \cdot \event_2, c, D)} 
+%   \event_1 \stackrel{\trace}{\uplus} l \right) \neq \emptyset
+% \]
+%
+% \[
+% \begin{array}{l}
+%   \exists l_{ih} \in \kw{dfs}(\trace_{ih}\cdot \event_2, c, D) \st
+%    (\event_1 \stackrel{\trace}{\uplus} l') \neq []
+% \end{array}
+% \]
+% %
+% % Unfolding $\left( \bigcup\limits_{l \in \kw{dfs}(\trace_{ih} \cdot \event_2, c, D)} 
+% %   \event_1 \stackrel{\trace}{\uplus} l \right)$, by 
+% Since $[\event_1, \event_y] ++ l_t $ belongs to this set, let $l' \in \kw{dfs}(\trace_{ih}\cdot \event_2, c, D)$ be the list such that:
+% \[
+% \begin{array}{l}
+%   \exists l_{ih} \in \kw{dfs}(\trace_{ih}\cdot \event_2, c, D) \st
+%    (\event_1 \stackrel{\trace}{\uplus} l_{ih}) = \{[\event_1, \event_y] ++ l_{te}\}
+% \end{array}
+% \]
+%
+\\
+By definition of $\uplus$, we have:
+\[
+\begin{array}{l}
+  \eventdep^{val}(\event_1, \event_y, \trace[\event_1:\event_y], c, D)
+  \land (\forall \event_i \in l^{ih}_{he} \st \neg \eventdep(\event_1, \event_i, \trace[\event_1, \event_i], c, D))
+  \end{array}
+\]
+%
+%
+To show $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)$, 
+%
+unfolding $ (\kw{dfs} \eapp {\trace_{ih} \cdot \event_2} \eapp c \eapp D)$, by law of excluded middle,   there are two cases:
+\\
+$H_f =  \forall \event \in (\trace[\event_1:\event_y]\setminus \{\event_1, \event_y\}) 
+ \land \event \notin l^{ih}_{he} \st
+\neg \eventdep^{val} (\event, \event_y, \trace[\event:\event_y], c, D) \lor \neg \eventdep^{val} (\event, \event_y, \trace[\event:\event_y], c, D)$.
+\\
+$H_t = \exists \event \in (\trace[\event_1:\event_y]\setminus \{\event_1, \event_y\}) 
+\land \event \notin l^{ih}_{he} \st
+\eventdep^{val} (\event, \event_y, \trace[\event:\event_y], c, D) \land \eventdep^{val} (\event, \event_y, \trace[\event:\event_y], c, D)$.
+\\
+We show $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)$ for both of the 2 cases,
+ in Subproof~\ref{pf:midevents_indep}.
+% we have the following proposition proved in Subproof~\ref{pf:midevents_indep}.
+% \[
+%   \forall \event \in (\trace[\event_1:\event_y]\setminus \{\event_1, \event_y\}) 
+%  \land \event \notin l^{ih}_{he} 
+%  \st 
+%  \neg \eventdep^{val} (\event, \event_y, \trace[\event:\event_y], c, D)
+% \]
+%
+\begin{subproof}[Subproof of Case~\ref{case:asn_ind}].
+  \label{pf:midevents_indep}
+  \\
+%   (\todo{Proved by showing contradiction: if $\eventdep^{val} (\event_i, \event_y, \trace[\event_i:\event_y], c, D)$, then $\event_i$ shows up 
+%   in $l_{ih-h}$.})
+%   \\
+%   Taking arbitrary 
+%   $\event \in (\trace[\event_1:\event_y]\setminus \{\event_1, \event_y\}) \land \event \notin l^{ih}_{he}$, by law of excluded middle, 
+%   there are two cases:
+%   \\
+%   $H_f = \neg \eventdep^{val} (\event, \event_y, \trace[\event:\event_y], c, D) \lor \neg \eventdep^{val} (\event, \event_y, \trace[\event:\event_y], c, D)$.
+% \\
+%   $H_t = \eventdep^{val} (\event, \event_y, \trace[\event:\event_y], c, D) \land \eventdep^{val} (\event, \event_y, \trace[\event:\event_y], c, D)$.
+%   \\
+  In the case of $H_f$, since $(\forall \event \in l^{ih}_{he} \st \neg \eventdep(\event_1, \event, \trace[\event_1, \event], c, D))$,
+  we know:
+  \[
+      \forall \event \in (\trace[\event_1:\event_y]\setminus \{\event_1, \event_y\}) \st
+      \neg \eventdep^{val} (\event_1, \event, \trace[\event_1: \event], c, D) 
+      \lor \neg \eventdep^{val} (\event, \event_y,\trace[\event:\event_y], c, D)
+    \]
+    %
+    By Inversion Lemma~\ref{lem:inv_indepevents}, we have
+    \[
+      \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+    \]
+%  \\
+  In the case of $H_t$, without loss of generalization, let $\event$ be the left most event in $\trace$ such that 
+  $\eventdep^{val} (\event, \event_y, \trace[\event:\event_y], c, D) \land \eventdep^{val} (\event, \event_y, \trace[\event:\event_y], c, D)$.
+  \\
+ Then we know:
+  \[
+    \forall \event' \in (\trace[\event_1:\event]\setminus \{\event_1, \event\}) 
+    \st 
+    (\neg \eventdep^{val} (\event', \event, \trace[\event':\event], c, D)
+    \lor 
+    \neg \eventdep^{val} (\event_1, \event', \trace[\event_1: \event'], c, D))
+  \]
+  %
+Then by Lemma~\ref{lem:inv_indepevents}, we know  $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event)^{\pi_2(\event)}, c)$.
+\\
+  By definition of $\kw{dfs}$ and $\uplus$, we also know 
+  \[ 
+    [\event, \event_y] ++ l_{te} \in (\kw{dfs} \eapp {\trace_{ih} \cdot \event_2} \eapp c \eapp D )
+  \]
+  %
+  Then we know $\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)$.
+%
+\\
+By the $\flowsto$ Definition~\ref{def:flowsto}'s transitivity item, we know $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)$.
+
+\end{subproof}
+%
+% Since $l_{h}'$ is subset of $\trace[\event_1:\event_y] \setminus \{\event_1, \event_y\}$, and $(\forall \event_i \in l_{h}' \st \neg \eventdep^{val} (\event_1, \event_i, \trace[\event_1: \event_i], c, D))$,
+% then we know:
+% \[
+%   \forall \event_i \in \trace[\event_1:\event_y] \st
+%   \neg \eventdep^{val} (\event_1, \event_i, \trace[\event_1: \event_i], c, D) 
+%   \lor \neg \eventdep^{val} (\event_i, \event_y,\trace[\event_i:\event_y], c, D)
+% \]
+% %
+% By Inversion Lemma~\ref{lem:inv_indepevents}, we have
+% \[
+%   \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+% \]
+%
+This case is proved.
+%
+\end{subsubcase}
+%
+\end{subcase}
+%
+%
+\begin{subcase}
+  \label{case:flowsto_1test}
+  (One Testing Event: $l_e = {[\event_1, \event_b, \event_y]} ++ l_t$).
+\\
+To show $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) $,
+we prove following two propositions first.
+\[
+  \pi_1(\event_1) \in VAR(\pi_1(\event_y)) \land \llabel(\trace[\event_1:\event_b]) \pi_1(\event_1) = \pi_2(\event_1)
+\]
+% \begin{equation}
+%   \begin{array}{l}
+%     \forall \event_z \in \eventset^{\asn}, \event_y \in \eventset^{\test}, l_h, l_t \st
+%      \\ \quad 
+%      l_h ++ [\event_z, \event_y] ++ l_t \in \kw{dfs}(\trace, c, D)
+%     \implies 
+%   \end{array}
+%   \end{equation}
+  %
+This proposition is proved by Lemma~\ref{lem:inv_indepeventstest} and the Boolean Expression Inversion Generalization Lemma~\ref{lem:inv_expr_gnl}.
+%
+  \begin{equation}
+  \begin{array}{l}
+    \forall z \in VAR(\pi_1(\event_b)) \st i = \llabel(\trace[\event_1:\event_b]) z \implies
+    \flowsto(z^i, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+  \end{array}
+  \end{equation}
+%
+\todo{add Proof main steps, Or a general Lemma}
+\[
+  \begin{array}{l}
+  \forall c \in \cdom, D \in \dbdom, \event_b \in \eventset^{\test}, \event \in \eventset^{\asn} \st 
+  \eventdep^{\ctl}(\event_b, \event, c, D) 
+  \\ \quad 
+  \implies
+  \forall z \in VAR(\pi_1(\event_b)) \st \exists i \in \mathbb{N} \st
+  \flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)
+  \end{array}
+  \]
+This proposition is proved by Inversion Lemma~\ref{lem:inv_event} and the Control Dependency Definition~\ref{def:event_ctldep}.
+%
+\\
+Then by the $\flowsto$ definition~\ref{def:flowsto}, we know $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) $.
+\end{subcase}
+%
+%
+\begin{subcase}[ $l_e = {[\event_1, \event_{b_1}, \cdots, \event_{b_n}, \event_y]} ++ l_t$ ].
+%
+\\
+We proved following lemma for this case:
+\begin{equation}
+  \begin{array}{l}
+    \forall \event_z, \event_y \in \eventset^{\test}, l_h, l_t \st
+     \\ \quad 
+     l_h ++ [\event_z, \event_y] ++ l_t \in \kw{dfs}(\trace, c, D)
+    \implies l_h ++ [\event_z] ++ l_t \in \kw{dfs}(\trace, c, D)
+  \end{array}
+  \end{equation}
+%
+This Lemma is proved by the Control Dependency Transitivity Lemma~\ref{lem:ctl_trans}.
+\\
+Then, we know:
+\[
+  {[\event_1, \event_{b_1}, \event_y]} ++ l_t \in \kw{dfs}(\trace, c, D)
+\]
+Then we know $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) $ from the conclusion of Case~\ref{case:flowsto_1test}.
+\end{subcase}
+%
+\end{case}
+%
+\end{proof}

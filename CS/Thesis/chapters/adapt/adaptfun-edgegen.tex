@@ -176,7 +176,7 @@ satisfying in the transitive closure of $\flowsto$ as follows,
     (y^j, x^i) ~ \vert ~ y^j, x^i \in \progV(c)
     \land
       \exists n,
-      z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \st 
+      z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat 
     \\ & \qquad \qquad
       n \geq 0 \land \flowsto(x^i,  z_1^{r_1}, c) 
       \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
@@ -193,8 +193,8 @@ in Appendix~\ref{apdx:adapt_soundness}.
 $
 	\begin{array}{l}
 	\forall e = (v_1, v_2) \in \traceE(c)
-	\st 
-	\exists e' \in \progE(c) \st e' = (v_1, v_2)
+	\sthat 
+	\exists e' \in \progE(c) \sthat e' = (v_1, v_2)
 	\end{array}
 $
 \end{center} 

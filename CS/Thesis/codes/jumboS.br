@@ -1,0 +1,73 @@
+[ x <- query ( 0 ) ] 0 ;
+[ y <- query ( x ) ] 1 ;
+[ z <- query ( y ) ] 2 ;
+[ a <- + ( x, 0 ) ] 3 ;
+[ b <- + ( a, z ) ] 4 ;
+[ c <- + ( a, b ) ] 5 ;
+[ w <- query ( a ) ] 6 ;
+[ x <- query ( b ) ] 7 ;
+[ y <- query ( c ) ] 8 ;
+[ z <- query ( z ) ] 9 ;
+[ w <- query ( z ) ] 10 ;
+[ d <- + ( x, w ) ] 11 ;
+[ e <- + ( c, z ) ] 12 ;
+[ f <- + ( a, b ) ] 13 ;
+[ x <- query ( 0 ) ] 14 ;
+[ y <- query ( x ) ] 15 ;
+[ z <- query ( y ) ] 16 ;
+[ x <- query ( z ) ] 17;
+[ g <- + ( f, w ) ] 18 ;
+[ h <- + ( c, x ) ] 19 ;
+[ i <- + ( w, e ) ] 20 ;
+[ z <- query ( x ) ] 21 ;
+if [ > (x , 0) ] 22    
+then { [ y <- query ( 0 ) ] 23 }
+else { [ w <- query ( 0 ) ] 24 };
+[ x <- - (y, w) ] 25 ;
+[ j <- 5 ] 26 ;
+[ x <- query ( chi : x : ) ] 27 ;
+while [  > (j, 0) ] 28 do {
+[ j <- - ( j, 1 )  ] 29 ;
+if [ < (j , 5) ] 30   
+then { [ y <- query ( chi : x :) ] 31 }
+else { [ w <- query ( chi : x : ) ] 32 } ;
+[ x <- query ( chi : y : ) ] 33
+};
+[ y <- query ( x ) ] 34 ;
+[ z <- query ( + (x, y) ) ] 35 ;
+[ w <- query ( * (chi : y : , chi : z :) ) ] 36;
+[ z <- query ( w ) ] 37 ;
+[ g <- + ( f, z ) ] 38 ;
+[ h <- + ( c, x ) ] 39 ;
+[ i <- + ( w, g ) ] 40 ;
+[ z <- query ( x ) ] 41 ;
+[ e <- + ( c, z ) ] 42 ;
+[ f <- + ( a, i ) ] 43 ;
+[ x <- query ( 0 ) ] 44 ;
+[ y <- query ( x ) ] 45 ;
+[ z <- query ( y ) ] 46 ;
+[ z <- query ( z ) ] 47;
+[ x <- / (k, 2 ) ] 48 ;
+if [ > (x , 0) ] 49    
+then { [ y <- query ( z ) ] 50 }
+else { [ y <- query ( 0 ) ] 51 } ;
+[ i <- k ] 52 ;
+[ x <- query ( y ) ] 53 ;
+[ y <- query ( x ) ] 54 ;
+while [  > (i , 0) ] 55 do {
+[ i <- - (i, 1) ] 56 ;
+[ y <- query ( + (z, y) ) ] 57 ;
+[ j <- k ] 58 ;
+while [  > (j , 0) ] 59 do 
+{ [ j <- - (j, 1) ] 60 ;
+[ x <- query ( + ( x, y) ) ] 61 }
+ } ;
+ [ j <- N ] 62 ;
+[ l <- x ] 63 ;
+[ cs <- -1 ] 64 ;
+[ ns <- -1 ] 65 ;
+while [  < (0, j) ] 66 do {
+[ j <- - ( j, 1 ) ] 67;
+[ cs <- + ( cs, 0 ) ] 68 ;
+[ ns <- + ( ns, 0 ) ] 69 };
+[w <- k] 70

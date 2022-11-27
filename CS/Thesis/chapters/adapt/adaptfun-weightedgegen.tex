@@ -1,0 +1,18 @@
+The edges and weight are estimated through a combined control, data flow, and loop bound analysis.
+Because these analyses are all performed on basis of the \emph{Abstract Transition Graph} of the program, we first introduce how to generate this \emph{abstract transition graph} in Section~\ref{sec:alg_abscfg}.
+Then Section~\ref{sec:alg_edgegen} presents the edge estimation based on a combined control and data flow analysis algorithm,
+and Section~\ref{sec:alg_weightgen}
+computes the weight through a loop bound analysis.
+
+\subsubsection{Abstract Transition Graph}
+\label{sec:alg_abscfg}
+\input{chapters/adapt/adaptfun-abscfg}
+%
+\subsubsection{Edge Estimation}
+\label{sec:alg_edgegen}
+\input{chapters/adapt/adaptfun-edgegen}
+%
+
+\subsubsection{Weight Estimation}
+\label{sec:alg_weightgen}
+\input{chapters/adapt/adaptfun-weightgen}

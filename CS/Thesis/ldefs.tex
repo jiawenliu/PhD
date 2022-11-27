@@ -67,15 +67,6 @@
 \newtheorem{subsubsubcase}{Case}
 \numberwithin{subsubsubcase}{subsubcase}
 
-\newcommand{\dist}{P}
-\newcommand{\mech}{M}
-\newcommand{\univ}{\mathcal{X}}
-\newcommand{\anyl}{A}
-% \newcommand{\query}{f}
-% \newcommand{\qlen}{k}
-\newcommand{\qrounds}{r}
-\newcommand{\answer}{a}
-\newcommand{\sample}{X}
 
 \newcommand{\sthat}{~.~}
 
@@ -221,6 +212,24 @@
               {procx}{{proc}}1
 }
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Introduction %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\dist}{P}
+\newcommand{\mech}{M}
+\newcommand{\univ}{\mathcal{X}}
+\newcommand{\anyl}{A}
+\newcommand{\qrounds}{r}
+\newcommand{\answer}{a}
+\newcommand{\sample}{X}
+\newcommand{\ex}[2]{{\ifx&#1& \mathbb{E} \else \underset{#1}{\mathbb{E}} \fi \left[#2\right]}}
+\newcommand{\pr}[2]{{\ifx&#1& \mathbb{P} \else \underset{#1}{\mathbb{P}} \fi \left[#2\right]}}
+\newcommand{\var}[2]{{\ifx&#1& \mathrm{Var} \else \underset{#1}{\mathrm{Var}} \fi \left[#2\right]}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\from}{:}
+\newcommand{\sep}{ \ | \ }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Query While Language %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

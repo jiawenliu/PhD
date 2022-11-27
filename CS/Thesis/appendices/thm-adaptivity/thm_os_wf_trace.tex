@@ -1,0 +1,319 @@
+{
+By induction on the program $c$, we have following cases:
+%
+\caseL{ $[\assign x \expr]^{l}$}
+%
+We assume a configuration $\config{m,[\assign x \expr]^{l} , t, w}$ s.t. .
+\\
+From the evaluation rule \rname{assn1} and rule \rname{assn2}, we know there exists an evaluation as follows:
+%
+\[
+	\config{m, [\assign x \expr]^{l}, t, w} \to \config{m', \eskip, t, w}
+\]
+%
+when we assume $\config{m,e} \to^{*} v$. 
+%
+\\
+The resulting trace is $t$. 
+\\
+By unfolding the trace subtraction operation, we know $t - t = []$ is an empty list, which is well formed according to Definition~\ref{def:wf_trace}.
+}
+\caseL{$[\assign{x}{\query(\qexpr)}]^{l}$}
+By repeatedly applying the operational semantics rule \rname{query-e}, we know there exist $\qval$ s.t.,:
+%
+\[
+\config{m, [\assign{x}{\query(\qexpr)}]^{l}, t, w} \to^{*} \config{m', [\assign{x}{\query(\qval)}]^{l}, t, w}
+\]
+%
+According to the evaluation rule \rname{query-v}, we have the following transition:
+\[
+	\config{m', [\assign{x}{\query(\qval)}]^{l}, t, w} \to \config{m', \eskip, t ++ [(\qval, l, w)], w}
+\]
+%
+The resulting trace is $t ++ [(\qval, l, w)]$.
+\\
+By unfolding the trace subtraction operation, we know $(t ++ [(\qval, l, w)]) - t = [(\qval, l, w)]$,
+which is well formed by Definition~\ref{def:wf_trace}.
+%%
+\caseL{$\eif([b]^l, c_1, c_2)$}
+Let $\config{m', \eskip, t, w} ~ (\star)$ be the configuration 
+s.t. $\config{m, \eif([b]^l, c_1, c_2), t, w} \to^{*} \config{m', \eskip, t', w'}$.
+It is sufficient to show that $t' - t$ is well-formed.
+\\
+According to the evaluation rule \rname{if}, we know there exists an evaluation by repeatedly applying \rname{if} 
+%
+\[
+\config{m, \eif([b]^l, c_1, c_2), t, w} \to^{*} \config{m, \eif([v]^l, c_1, c_2), t, w} ~ (1)
+\]
+%
+, where $\config{m, b} \barrow v$ and $v$ is either $\etrue$ or $\efalse$.
+\\
+Considering 2 subcases where $v$ is either $\etrue$ or $\efalse$:
+%
+\subcaseL{$v = \etrue$}
+%
+By applying the evaluation rule \rname{if-t}, we have:
+\[
+\config{m, \eif([\etrue]^l, c_1, c_2), t, w} \to \config{m, c_1, t, w} ~ (t1)
+\]
+%
+By induction hypothesis on $c_1$ with starting memory $m$, trace $t$ and while map $w$, 
+let $\config{m_1, \eskip, t_1, w_1}$ be the configuration s.t.
+\[
+	\config{m, c_1, t, w} \to^{*} \config{m_1, \eskip, t_1, w_1} ~(t2)
+\]
+we know $(t_1 - t)$ is a well formed trace.
+\\
+According to the evaluation $(a)$, $(t1)$ and $(t2)$, we know $\config{m_1, \eskip, t_1, w_1}$ 
+is the assumed configuration $\config{m', \eskip, t', w'}$ such that
+\[
+	\config{m, \eif([b]^l, c_1, c_2), t, w} \to^{*} \config{m_1, \eskip, t_1, w_1}
+\]
+%
+Since $(t_1 - t)$ is well-formed and $t' - t = t_1 - t$, this subcase is proved.
+%
+\subcaseL{$v = \efalse$}
+%
+By applying the evaluation rule \rname{if-f}, we have:
+\[
+\config{m, \eif([\efalse]^l, c_1, c_2), t, w} \to \config{m, c_2, t, w} ~ (f1)
+\]
+%
+By induction hypothesis on $c_1$ with starting memory $m$, trace $t$ and while map $w$, 
+let $\config{m_2, \eskip, t_2, w_2}$ be the configuration s.t.
+\[
+	\config{m, c_2, t, w} \to^{*} \config{m_2, \eskip, t_2, w_2} ~(f2)
+\]
+we know $(t_2 - t)$ is a well formed trace.
+\\
+According to the evaluation $(a)$, $(f1)$ and $(f2)$, we know $\config{m_2, \eskip, t_2, w_2}$ 
+is the assumed configuration $\config{m', \eskip, t', w'}$ in $(\star)$ such that
+\[
+	\config{m, \eif([b]^l, c_1, c_2), t, w} \to^{*} \config{m_2, \eskip, t_2, w_2}
+\]
+%
+Since $(t_2 - t)$ is well-formed and $t' = t_2$, this subcase is proved.
+%
+\caseL{$c_1; c_2$}
+%
+According to the evaluation rule \rname{seq1}, we have the following evaluation by repeatedly applying \rname{seq1} 
+%
+\[
+\config{m, c_1;c_2, t, w} \to^{*} \config{m_1, [\eskip]^l;c_2,  t_1, w_1} ~ (1)
+\]
+%
+where 
+%
+\[
+	\config{m, c_1, t, w} \to^{*} \config{m_1, [\eskip]^l, t_1, w_1]} ~ (2)
+\]
+%
+%
+By induction hypothesis on $c_1$ and $(2)$, we know $(t_1 - t)$ is well-formed.
+%
+According to the evaluation rule \rname{seq2}, we have:
+%
+\[
+\config{m_1, [\eskip]^l;c_2,  t_1, w_1} \to \config{m_1, c_2, t_1, w_1} ~ (3)
+\]
+%   
+%
+By induction hypothesis on $c_2$ and let $\config{m_2, \eskip, t_2, w_2]}$ be the configuration s.t.,:
+%
+\[
+	\config{m_1, c_2, t_1, w_1} \to^{*} \config{m_2, \eskip, t_2, w_2]} ~ (4)
+\]
+%
+we know $(t_2 - t_1)$ is well-formed.
+%
+\\
+According to evaluations $(1), (2), (3)$ and $(4)$, we have following evaluation:
+%
+\[
+	\config{m, c_1;c_2, t, w} \to^{*} \config{m_2, \eskip, t_2, w_2]}
+\]
+%
+It is sufficient to show $(t_2 - t)$ is well-formed.
+%
+Unfolding the definition~\ref{def:wf_trace}, it is sufficient to show that the trace $(t_2 - t)$ holds both the \emph{Uniqueness} and \emph{Ordering} property.
+\\
+Let $t_1' = t_1 - t$ and $t_2' = t_2 - t_1$, unfolding the subtraction operations, we have:
+\[
+	(t_2 - t) = t_1' ++ t_2'
+\]
+%
+%
+\caseL{Uniqueness $(\diamond)$} 
+By the distinction properties of labels in program $c$, 
+\[
+	\forall \aq_1 \in t_1', \aq_2 \in t_2'. ~ \aq_1 \aqneq \aq_2
+\] 
+%
+Since $t = t_1' ++ t_2'$ and both $t_1'$ and $t_2'$ are well-formed, we know:
+\[
+	\forall \aq_1, \aq_2 \in (t_1' ++ t_2'). ~ \aq_1 \aqneq \aq_2
+\]
+%
+THe Uniqueness property for $(t_2 - t)$ is proved.
+%
+\caseL{Ordering $(\square)$}
+%
+By the definition of ordering property, we need to show $\forall \aq_1, \aq_2 \aqin (t_2 - t)$:
+\[
+	(\aq_1 <_{aq} \aq_2) \Longleftrightarrow
+	\exists t^1, t^2, t^3, \aq_1', \aq_2'. ~ s.t.,~ 
+	(\aq_1 \aqeq \aq_1') \land (\aq_2 \aqeq \aq_2') \land t^1 ++ [\aq_1'] ++ t^2 ++ [\aq_2'] ++ t^3 = t
+\]
+%
+Since $(t_2 - t) = t_1' ++ t_2'$, there are 4 cases need to be proved:
+\\
+$(1) ~ \aq_1, \aq_2 \aqin t_1'$
+\\
+$(2) ~ \aq_2, \aq_2 \aqin t_2'$
+\\
+$(3) ~ \aq_2 \aqin t_1', \aq_1 \aqin t_2'$ 
+\\
+$(4) ~ \aq_1 \aqin t_1', \aq_2 \aqin t_2'$
+\\
+Given both $t_1'$ and $t_2'$ are well-formed, we know this property is true in case $(1)$ and $(2)$.
+\\
+By the ordering properties of labels in program $c_1; c_2$,
+we know all the labels in $c_2$ are greater than the labels in $c_1$, i.e.,
+\[
+	\forall \aq_1 \aqin t_1', \aq_2 \aqin t_2'. ~ \aq_1 <_{aq} \aq_2 ~ (a)
+\]
+%
+Then we have the case $(3)$ proved because the premise is $\efalse$ in this case.
+%
+To prove the ordering property in case $(4)$, it is sufficient to show the following 2 implications:
+\[
+	(\aq_1 <_{aq} \aq_2) 
+	\Longrightarrow
+	\exists t^1, t^2, t^3, \aq_1', \aq_2'. ~ s.t.,~ 
+	(\aq_1 \aqeq \aq_1') \land (\aq_2 \aqeq \aq_2') \land t^1 ++ [\aq_1'] ++ t^2 ++ [\aq_2'] ++ t^3 = t
+\]
+%
+\[
+	% \forall \aq_1, \aq_2 \aqin t. ~
+	\exists t^1, t^2, t^3, \aq_1', \aq_2'. ~ s.t.,~ 
+	(\aq_1 \aqeq \aq_1') \land (\aq_2 \aqeq \aq_2') \land t^1 ++ [\aq_1'] ++ t^2 ++ [\aq_2'] ++ t^3 = t
+	 \Longrightarrow
+	(\aq_1 <_{aq} \aq_2)
+\]
+%
+By Corollary~\ref{coro:aqintrace} and the hypothesis $(4)$, we know:
+%
+\[
+	\exists t_{11}, t_{12}, \aq_1'. ~ (\aq_1 \aqeq \aq_1') \land t_{11} ++ [\aq_1'] ++ t_{12} = t_1'
+\]
+%
+\[
+	\exists t_{21}, t_{22}, \aq_2'. ~ (\aq_2 \aqeq \aq_2') \land t_{21} ++ [\aq_2'] ++ t_{22} = t_2'
+\]
+%
+Then according to the list concatenation operations, we have:
+%
+\[
+	\exists t_{11}, t_{12}, \aq_1', t_{21}, t_{22}, \aq_2'. ~ (\aq_1 \aqeq \aq_1') \land (\aq_2 \aqeq \aq_2') \land 
+	t_{11} ++ [\aq_1'] ++ t_{12} ++ t_{21} ++ [\aq_2'] ++ t_{22} = t_1' ++ t_2'
+\]
+%
+Let $t^1 = t_{11}$, $t^2 = t_{12} ++ t_{21}$ and $t^3 = t_{22}$, since $(t_2 - t) = t_1' ++ t_2'$, we have:
+%
+\[
+	\exists t^1, t^2, t^3, \aq_1', \aq_2'. ~ s.t.,~ 
+	(\aq_1 \aqeq \aq_1') \land (\aq_2 \aqeq \aq_2') \land t^1 ++ [\aq_1'] ++ t^2 ++ [\aq_2'] ++ t^3 = (t_2 - t)
+\]
+%
+This case is proved.
+%
+\\
+%
+For the other directions, according to the hypothesis $(4)$ and $(a)$ proved above, we know:
+\[
+	(\aq_1 <_{aq} \aq_2)
+\]
+%
+This case is proved.
+%
+\caseL{$\ewhile [b]^l \edo c'$}
+%
+According to the \rname{while-b} and \rname{ifw-b} rule, we have following evaluation:
+\[
+	\config{m, \ewhile [b]^l \edo c', t, w} \to^{*}
+	\config{m, \eif_w([v]^l, c';\ewhile [b]^l, 2 \edo c', \eskip), t, w} ~ (w1)
+\]
+%
+where $\config{m, b} \barrow^{*} v$ and $v$ is either $\etrue$ or $\efalse$.
+%
+\subcaseL{$v = \etrue$ }
+%
+By evaluation rule \rname{ifw-true}, we have:
+%
+\[
+	\config{m, \eif_w([\etrue]^l, c';\ewhile [b]^l, 2 \edo c', \eskip), t, w} 
+	\to^{*} \config{m, c';\ewhile [b]^l, 2 \edo c', t, [l \mapsto 1]} ~ (w2)
+\]
+%
+By rule \rname{seq1}, we have the following evaluation:
+%
+\[
+	\config{m, c';\ewhile [b]^l, 2 \edo c', t, [l \mapsto 1]} \to^{*} \config{m', \eskip;\ewhile [b]^l, 2 \edo c', t', w'} ~ (w3)
+\] 
+%
+where $\config{m, c', t, [l \mapsto 1]} \to^{*} \config{m', \eskip, t', w'} ~ (w4)$. 
+\\
+%
+By induction hypothesis on $c'$ and the evaluation $(w4)$, we know $t' - t$ is well-formed.
+\\
+By the rule \rname{seq2}, we have:
+%
+\[
+	\config{m', \eskip;\ewhile [b]^l, 2 \edo c', t', w'} \to \config{m', \ewhile [b]^l, 2 \edo c', t', w'} ~ (w5)
+\]
+%
+By the termination of the while loop, we know there exist an evaluation by repeating the evaluation in $(w1), (w2), (w3)$ and $(w5)$:
+%
+\[
+	\config{m', \ewhile [b]^l, 2 \edo c', t', w'} \to^{*} \config{m^n, \eif_w([\efalse]^l, c';\ewhile [b]^l, n + 1, \edo c', \eskip), t^n, w^n}
+\]
+%
+By the conclusion from $(w3)$ and $(w4)$, i.e., $(t' - t)$ is well-formed, 
+we know for every resulting trace $t^i$ in the evaluation of each iteration $i = 2, \ldots, n$, where $n \geq 1$,
+the following invariant holds:
+\\
+$t^i - t^{i - 1}$ is well formed.
+\\
+%
+By evaluation rule \rname{ifw-false}, we have:
+%
+\[
+	\config{m, \eif_w([\efalse]^l, c';\ewhile [b]^l, n + 1 \edo c', \eskip), t^n, w^n} 
+	\to^{*} \config{m, \eskip, t^n, w^n/l}
+\]
+%
+%
+It is sufficient to show $(t^n - t)$ is well-formed.
+\\
+%
+Unfolding the definition~\ref{def:wf_trace}, it is sufficient to show that the trace $(t^n - t)$ holds both the \emph{Uniqueness} and \emph{Ordering} property.
+\\
+Let $t_1 = t' - t$ and $t_i = t^{i} - t^{i - 1}$ for $i = 2, \ldots, n$, unfolding the subtraction operations, we have:
+\[
+	(t^n - t) = t_1 ++ t_2 ++ \ldots ++ t_n
+\]
+\\
+By repeating the proof $(\diamond)$ and $(\square)$ in the sequence case, we have this case proved. 
+%
+\subcaseL{$v = \efalse$}
+%
+By evaluation rule \rname{ifw-false}, we have:
+%
+\[
+	\config{m, \eif_w([\efalse]^l, c';\ewhile [b]^l \edo c', \eskip), t, w} 
+	\to^{*} \config{m, \eskip, t, w/l}
+\]
+%
+%
+Because $t - t = []$, this sub-case is proved.
+%

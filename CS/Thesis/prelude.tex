@@ -1,51 +1,3 @@
-%Packages
-% \usepackage[T1]{fontenc}
-% \usepackage{fourier} 
-% \usepackage[english]{babel} 
-% \usepackage{amsmath,amsfonts} 
-% \usepackage{amsthm} 
-% \usepackage{color}   %May be necessary if you want to color links
-% \usepackage{hyperref}
-% \usepackage{lscape}
-% \usepackage{lipsum}
-% \usepackage{geometry}
-% \usepackage{amsmath}
-% \usepackage{algorithm}
-% \usepackage{algorithmic}
-% \usepackage{amssymb}
-% \usepackage{amsfonts}
-% \usepackage{times}
-% \usepackage{bm}
-% \usepackage{ stmaryrd }
-% \SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
-% \usepackage{ amssymb }
-% \usepackage{ textcomp }
-% \usepackage[normalem]{ulem}
-% % For derivation rules
-% \usepackage{mathpartir}
-% \usepackage{color}
-% \usepackage{a4wide}
-% \usepackage{caption}
-% \usepackage{subcaption}
-% \usepackage{mathpartir}
-% \usepackage{amsmath,amsfonts}
-% \usepackage{ amssymb }
-% \usepackage{color}
-% \usepackage{algorithm}
-% \usepackage{algorithmic}
-% \usepackage{microtype}
-% \usepackage{eucal}
-% \usepackage{url}
-% \usepackage{tikz}
-% \usepackage{xspace}
-% \usepackage{array}
-% \usepackage{listings}
-% \usepackage{import}
-
-% \usetikzlibrary{shapes.geometric}
-% \usetikzlibrary{arrows.meta,arrows}
-% \usetikzlibrary{decorations.text}
-% % % % 
 
 \usepackage[english]{babel} 
 \usepackage{amsthm} 
@@ -97,56 +49,38 @@
    postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
 \tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
 
-%%%% Extra packages
-% \usepackage[T1]{fontenc}
-% \usepackage[latin9]{inputenc}
-% \usepackage{amsmath}
-% \usepackage{amssymb}
-% \usepackage{cancel}
+\usepackage{multirow}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-% \usepackage{typesetting/latex8}
-% \usepackage{times}
-% \usepackage{color}
-% \usepackage{epsfig}
-% \usepackage{graphicx}
-% \usepackage{graphics}
-% \usepackage{amsmath, nicefrac}
-% \usepackage{amssymb, amsthm}
-% \usepackage{wrapfig}
-% \usepackage{algorithm, algorithmic}
-% \usepackage{setspace}
-% \usepackage{caption}
-% \usepackage{float}
-% \usepackage{afterpage}
-% % \usepackage{typesetting/abstract}
-% \usepackage{tabularx}
-% \usepackage{booktabs}
-% \usepackage{calc}
-% \usepackage{multirow}
-% \usepackage{longtable}
-% \usepackage{footnote}
-% \usepackage{threeparttable}
-% \usepackage{colortbl}
-% % \usepackage{tweaklist}
-% \usepackage{fancyhdr}
-% \usepackage[retainorgcmds]{IEEEtrantools}
-% \usepackage{floatflt}
-% \usepackage{xspace}
 
-% \usepackage{endnotes}
-% \usepackage{paralist}
-% % \usepackage{typesetting/shortcuts}
-% \usepackage{tabulary}
-% \usepackage{mdwlist}
-% \usepackage{listings}
-% \usepackage{balance}
-% \usepackage{url}
-% \usepackage{parskip}
-% \usepackage{textcomp}
-% \usepackage{subcaption}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Packages And Definitions For Listing the Code%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{courier}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
-% \usepackage{epstopdf}
-% \usepackage{fancyvrb}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=2pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
 
-% \makeatletter
+\lstset{style=mystyle}
+
+
+%%%%%%%%%%
