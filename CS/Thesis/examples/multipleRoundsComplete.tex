@@ -1,9 +1,13 @@
 
     \begin{example}[Complete Multiple Round Algorithm]
     %
+    Below is the complete \emph{multiple rounds analyst strategy} for random data algorithm. This is instantiated from the
+    \emph{Monitor}, the Algorithm 2 in \cite{RogersRSSTW20}.
+    We instantiate this algorithm to trace the possible population shows in a database.
+    We monitor the score of each person in the database. 
     \begin{algorithm}
     \footnotesize
-    \caption{A multi-round analyst strategy for random data base \cite{dwork2015generalization}}
+    \caption{The complete \emph{multiple rounds analyst strategy} for random data}
     \label{alg:multiRound}
     \begin{algorithmic}
     \REQUIRE Mechanism $\mathcal{M}$ with a hidden state $X\in [N]^{n}$ sampled u.a.r., control set size $c$
@@ -24,12 +28,13 @@
     \end{algorithmic}
     \end{algorithm}
     %
+    We also have the complete implementation of the algorithm above in our language below.
     {\small
     \begin{figure}
-        \begin{subfigure}{0.8\textwidth}
+        \begin{subfigure}{1.0\textwidth}
         \begin{centering}
         $
-    \kw{multiRounds(k, c, N)} \triangleq
+    \kw{mRComplete(k, c, N)} \triangleq
     \begin{array}{l}
         \clabel{\assign{j}{N}}^0 ; 
          \clabel{\assign{cs}{0}}^1; 
@@ -77,5 +82,6 @@
         \label{fig:multiround_complete}
         \end{figure}
     }
+    The evaluation table in Tab.~\ref{tb:adapt-imp} shows that our {\THESYSTEM} works well for this complete implementation.
     %
     \end{example}

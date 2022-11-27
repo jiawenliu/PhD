@@ -1,24 +1,12 @@
 
 \begin{example}[Complete Two Rounds Algorithm]
     \label{ex:twoRoundsComplete}
-    \[
-    %
-        \kw{twoRounds(k)} \triangleq
-    \begin{array}{l}
-           \clabel{ a \leftarrow []}^{1} ; \\
-            \clabel{\assign{j}{k} }^{2} ; \\
-            \ewhile ~ \clabel{j > 0}^{3} ~ \edo ~ \\
-            \Big(
-             \clabel{\assign{x}{\query(\chi[k - j]\cdot \chi[k])} }^{4}  ; \\
-             \clabel{\assign{j}{j-1}}^{5} ;\\
-            \clabel{a \leftarrow x :: a}^{6}       \Big);\\
-            \clabel{l \leftarrow (\kw{sign}\big (\sum_{i\in [k]} \chi[i]\times\ln\frac{1+a[i]}{1-a[i]} \big ))}^{7}\\
-        \end{array}
-    \]
-    %
-    \begin{algorithm}
-    \footnotesize
-    \caption{A two-round analyst strategy for random data (The example in  \cite{dwork2015generalization})}
+
+Below is the complete \emph{two rounds analyst strategy} for random data algorithm. This is instantiated from the
+\emph{Custom Adaptive Analyst Strategy}, the Algorithm 5 in \cite{RogersRSSTW20} by setting the adaptive queries indices parameter, $S$ as the last column $\{ k \}$.
+
+\begin{algorithm}
+    \caption{The complete \emph{two rounds analyst strategy} for random data}
     \label{alg:twoRound}
     \begin{algorithmic}
     \REQUIRE Mechanism $\mathcal{M}$ with a hidden data set $D \in \{-1,+1\}^{n\times (k+1)} \subset \dbdom$.
@@ -32,9 +20,24 @@
     \STATE\COMMENT{In the line above,  $\mathcal{M}$ computes approx. the exp. value  of $q_{k+1}$ over $X$. So, $a_{k+1}\in [-1,+1]$.}
     \RETURN $a_{k+1}$.
     \ENSURE $a_{k+1}\in [-1,+1]$
-        % \ENSURE 
     \end{algorithmic}
     \end{algorithm}
     %
 %
+We also have the complete implementation of the algorithm above in our language below.
+\[
+    \kw{twoRounds(k)} \triangleq
+\begin{array}{l}
+       \clabel{ a \leftarrow []}^{1} ; \\
+        \clabel{\assign{j}{k} }^{2} ; \\
+        \ewhile ~ \clabel{j > 0}^{3} ~ \edo ~ \\
+        \Big(
+         \clabel{\assign{x}{\query(\chi[k - j]\cdot \chi[k])} }^{4}  ; \\
+         \clabel{\assign{j}{j-1}}^{5} ;\\
+        \clabel{a \leftarrow x :: a}^{6}       \Big);\\
+        \clabel{l \leftarrow (\kw{sign}\big (\sum_{i\in [k]} \chi[i]\times\ln\frac{1+a[i]}{1-a[i]} \big ))}^{7}\\
+    \end{array}
+\]
+%
+The evaluation table in Tab.~\ref{tb:adapt-imp} shows that our {\THESYSTEM} works well for this complete implementation.
     \end{example}

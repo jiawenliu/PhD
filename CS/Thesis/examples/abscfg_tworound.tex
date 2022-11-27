@@ -1,0 +1,117 @@
+% The edge $(0 \xrightarrow{a' \leq 0} 1)$ on the top tells us the command 
+% $\clabel{\assign{a}{0}}^0$ is executed with a continuation point $1$ such that the
+% % where the 
+% command $\clabel{\assign{j}{k}}^1$ will be executed next.
+% The annotation $a' \leq 0$ is a difference constraint 
+% computed for
+% % by abstracting
+% the expression $0$ in the assignment command $\assign{a}{0}$.
+% %  from the function $\absexpr(0)$.
+% It represents that the value of $a$ is less than or equal to $0$ after the
+% execution of $\clabel{\assign{a}{0}}^0$ and before executing $\clabel{\assign{j}{k}}^1$.
+% Another example edge $5 \xrightarrow{a' \leq a + x } 2$ describes the execution of
+%  the command
+% $\clabel{\assign{a}{x + a}}^{5}$.
+% This edge has difference constraint $a' \leq a+x $.
+% The $a'$ on the left side represents the value of $a$ after executing this assignment command. 
+% $a' \leq a+x $ denotes the value of $a$ after executing $\assign{a}{x + a}$ is at most $a$'s value plus $x$'s value before this execution.
+The edge $(1 \xrightarrow{j' \leq k} 2)$ on the top tells us the command 
+$\clabel{\assign{j}{k}}^1$ is executed with a continuation point $2$ such that the
+% where the 
+guard $\clabel{j > 0}^2$ will be evaluated next.
+The annotation $j' \leq k$ is a difference constraint 
+computed for
+% by abstracting
+the expression $k$ from the assignment command $\assign{j}{k}$.
+%  from the function $\absexpr(0)$.
+It represents that the value of $j$ is less than or equal to value of input variable $k$ after the
+execution of $\clabel{\assign{a}{0}}^0$ and before executing the loop.
+% Another example edge $5 \xrightarrow{a' \leq a + x } 2$ describes the execution of
+%  the command
+% $\clabel{\assign{a}{x + a}}^{5}$.
+The boolean constraint $j \leq 0 $ on the edge $2 \xrightarrow{j \leq 0} 6$
+represents the negation of the testing guard $j > 0$
+of the $\ewhile$ command with header at label $2$.
+% The edge from $3$ to $4$ comes from the query request command $\clabel{\assign{x}{\query(\chi[j])} }^{3}$.
+% The constraint over this edge, $x' < Q_m$ describes after executing $\assign{x}{\query(\chi[j])}$,
+% % $\clabel{\assign{x}{\query(\chi[j])} }^{3}$, 
+% the query request results stored in $x$ is bounded by $Q_m$. 
+
+\begin{figure} 
+    \centering
+    \begin{subfigure}{.2\textwidth}
+    \begin{centering}
+    {\small
+    $
+        \begin{array}{l}
+              \clabel{ \assign{a}{0}}^{0} ;   
+                \clabel{\assign{j}{k} }^{1} ; \\
+                \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ \\
+                \Big(
+                 \clabel{\assign{x}{\query(\chi[j])} }^{3}  ; \\
+                 \clabel{\assign{j}{j-1}}^{4} ;\\
+                \clabel{\assign{a}{x + a}}^{5}       \Big);\\
+                \clabel{\assign{l}{\query(\chi[k]*a)} }^{6}\\
+            \end{array}
+    $
+    }
+    \caption{}
+    \end{centering}
+    \end{subfigure}
+    \begin{subfigure}{.38\textwidth}
+        \begin{centering}
+      \begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
+      \draw[] (-7, 10) circle (0pt) node{{ $0$}};
+      \draw[] (0, 10) circle (0pt) node{{ $1$}};
+      \draw[] (0, 7) circle (0pt) node{\textbf{$2$}};
+      \draw[] (0, 4) circle (0pt) node{{ $3$}};
+      \draw[] (0, 1) circle (0pt) node{{ $4$}};
+      \draw[] (-7, 1) circle (0pt) node{{ $5$}};
+      % Counter Variables
+      \draw[] (6, 7) circle (0pt) node {\textbf{$6$}};
+      \draw[] (6, 4) circle (0pt) node {{ $\lex$}};
+      %
+      % Control Flow Edges:
+      \draw[  -latex] (-6, 10)  -- node [above] {$\top$}(-1.5, 10);
+      \draw[ -latex] (0, 9.5)  -- node [left] {$j' \leq k$} (0, 7.5) ;
+      \draw[ -latex] (0, 6.5)  -- node [right] {$j > 0 $}  (0, 4.5);
+      \draw[ -latex] (0, 3.5)  -- node [right] {$\top $} (0, 1.5) ;
+      \draw[ -latex] (-0.5, 1)  -- node [above] {$j' \leq j - 1$} (-6, 1) ;
+      \draw[ -latex] (-6, 1.5)  -- node [left] {$\top$} (-0.5, 7)  ;
+      \draw[ -latex] (0.5, 7)  -- node [above] {$ j \leq 0 $}  (5.5, 7);
+      \draw[ -latex] (6, 6.5)  -- node [right] {$\top$} (6, 4.5) ;
+      \end{tikzpicture}
+      \caption{}
+        \end{centering}
+        \end{subfigure}
+        \begin{subfigure}{.38\textwidth}
+          \begin{centering}
+        %   \todo{abstract-cfg for two round}
+        \begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
+        \draw[] (-10, 10) circle (0pt) node{{ $0: 1$}};
+        \draw[] (0, 10) circle (0pt) node{{ $1: 1$}};
+        \draw[] (0, 7) circle (0pt) node{\textbf{$2: k$}};
+        \draw[] (0, 4) circle (0pt) node{{ $3: k$}};
+        \draw[] (0, 1) circle (0pt) node{{ $4: k$}};
+        \draw[] (-10, 1) circle (0pt) node{{ $5: k$}};
+        % Counter Variables
+        \draw[] (6, 7) circle (0pt) node {\textbf{$6: 1$}};
+        \draw[] (6, 4) circle (0pt) node {{ $\lex: 1$}};
+        %
+        % Control Flow Edges:
+      \draw[  -latex] (-8, 10)  -- node [above] {$\top$}(-1.5, 10);
+      \draw[ -latex] (0, 9.5)  -- node [left] {$j' \leq k$} (0, 7.5) ;
+      \draw[ -latex] (0, 6.5)  -- node [right] {$j > 0 $}  (0, 4.5);
+      \draw[ -latex] (0, 3.5)  -- node [right] {$\top $} (0, 1.5) ;
+      \draw[ -latex] (-1.5, 1)  -- node [above] {$j' \leq j - 1$} (-8, 1) ;
+      \draw[ -latex] (-8, 1.5)  -- node [left] {$\top$} (-1.5, 7)  ;
+      \draw[ -latex] (1.5, 7)  -- node [above] {$j \leq 0 $}  (4.5, 7);
+      \draw[ -latex] (6, 6.5)  -- node [right] {$\top$} (6, 4.5) ;
+        \end{tikzpicture}
+        \caption{}
+          \end{centering}
+          \end{subfigure}
+      \caption{(a) The same $\kw{towRounds(k)}$ program as Figure~\ref{fig:overview-example}
+      (b) The abstract control flow graph for $\kw{towRounds(k)}$  (c) The abstract control flow graph with the reachability bound for $\kw{towRounds(k)}$.}
+      \label{fig:abscfg_tworound}
+    \end{figure}

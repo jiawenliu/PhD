@@ -1,0 +1,92 @@
+We can now define the \emph{semantics-based dependency graph} of a program $c$. We want this graph to combines quantitative reachability information with dependency information. 
+
+\jl{
+For a program $c$, there are some notations used in the following definition.
+The labeled variables of $c$,
+$\lvar(c) \subseteq \mathcal{LV}$ contains all the variables in $c$'s assignment commands, with the command labels as superscripts. 
+The set of query-associated variables (in query request assignments),
+$\qvar(c) \subseteq \lvar(c)$ contains all labeled variables in $c$'s query requests. 
+The set of initial traces of $c$,
+$\mathcal{T}_0(c) \subseteq \mathcal{T}$
+contains all possible initial trace of $c$.
+Each initial trace,  $\trace_0 \in \mathcal{T}_0(c)$ contains the initial values of all input variables of $c$. 
+For instance, the initial trace of $\kw{twoRounds(k)}$ example contains the initial value of the input variable $k$.
+}
+\begin{defn}[Semantics-based Dependency Graph]
+\label{def:trace_graph}
+Given a program ${c}$,
+its \emph{semantics-based dependency graph} 
+$\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is defined as follows,
+{\small
+\[
+\begin{array}{lll}
+  \text{Vertices} &
+  \traceV({c}) & := \left\{ 
+  x^l
+  ~ \middle\vert ~ x^l \in \lvar(c)
+  \right\}
+  \\
+  \text{Directed Edges} &
+  \traceE({c}) & := 
+  \left\{ 
+  (x^i, y^j) 
+  ~ \middle\vert ~
+  x^i, y^j \in \lvar(c) \land \vardep(x^i, y^j, c) 
+  \right\}
+  \\
+  \text{Weights} &
+  \traceW({c}) & := 
+  \{ 
+  (x^l, w) 
+  ~ \vert ~ 
+  w : \mathcal{T}_0(c) \to \mathbb{N}
+  \land
+  x^l \in \lvar(c) 
+  \\ & &
+  \quad \land
+  \forall \trace_0 \in \mathcal{T}_0(c), \trace' \in \mathcal{T} \sthat \config{{c}, \trace_0} \to^{*} 
+  \config{\eskip, \trace_0\tracecat\trace'} 
+  \land w(\trace_0) = \vcounter(\trace', l) \}  
+  \\
+  \text{Query Annotations} &
+  \traceF({c}) & := 
+\left\{(x^l, n)  
+~ \middle\vert ~
+ x^l \in \lvar(c) \land
+n = 1 \Leftrightarrow x^l \in \qvar(c) \land n = 0 \Leftrightarrow  x^l \notin \qvar(c)
+\right\}
+\end{array},
+\]
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% The Detailed Version in Explaining the Trace Operators %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% There are some operators: the trace concatenation operator $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$, combines two traces; the counting operator $\vcounter : \mathcal{T} \to \mathbb{N} \to \mathbb{N}$, 
+% which counts the occurrence of of a labeled variable in the trace. The full definitions of these above operators can be found in the appendix.
+% \\
+A semantics-based dependency graph $\traceG({c})= (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ 
+is \emph{well-formed} if and only if $ \{x^l \ |\ (x^l,w)\in \traceW({c})\} = \traceV({c}) $.
+\end{defn}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% The Explanation of Dependency Graph %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\jl{There are four components in this graph.
+\begin{enumerate}
+    \item The vertices $\traceV({c})$ of a program $c$ are all its labeled variables, $\lvar(c)$ which are statically collected.
+    \item $\traceF(c)$ contains the \emph{query annotation} for 
+    every vertex $x^l \in \traceV(c)$. It indicates whether $x^l$ comes from a query request (1) or not (0) by checking if the labeled variable $x^l$ of the vertex is in $\qvar(c)$.
+    \item Edges in $\traceE(c)$ are built from the $\vardep(x^i, y^j, c)$ relation between two labeled variables.
+    This is the key definition in order to formalize the intuitive \emph{may-dependency} relation between queries and the \emph{adaptivity}.
+    \item 
+  The weight function in $\traceW(c)$ for each vertex, $w : \mathcal{T} \to \mathbb{N}$
+maps from a starting trace $\trace_0 \in \mathcal{T}_0(c)$ to a natural number.
+A weight function $w \in \traceW(c)$ is a function that for every starting trace $\trace_0 \in \mathcal{T}_0(c)$ 
+gives the number of times the assignment of the corresponding vertex $x^l$ is visited. Notice that weight functions are total and with range $\mathbb{N}$. This means that if a program $c$ has some non-terminating behavior, the set $\traceW(c)$ will be empty.
+To rule out this situation, we consider as well-formed only graphs which have a weight for every vertex. 
+For each vertex $x^l$, it tracks its visiting times (i.e., the evaluation times of the command with the label $l$) when the program $c$ is evaluated from the initial trace $\trace_0$ into $\eskip$, $\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\trace'} $.
+The visiting times is computed by the counter operator $\vcounter(\trace', l)$
+by counting the occurrence of the label $l$ in $\trace'$.
+As an instance, in the semantics-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight, $w_k$ of the vertex $x^3$ is a function of type $\mathcal{T}_0(\kw{twoRound(k)}) \to \mathbb{N}$.
+Given input $\trace_0$, we execute the program under $\trace_0$ as $\config{\kw{twoRound(k)}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\trace'} $. Then $w_k(\trace_0)$ outputs the occurrence time of the label $3$ in $\trace'$.
+\end{enumerate}
+The main novelty of  the semantics-based dependency graph is the combination of the quantitative and dependency information. 
+It can tell both the dependency between queries via the directed edge, and the times they depend on each other via the weight.
+}

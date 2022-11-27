@@ -1,0 +1,75 @@
+With the four components $\progV(c), \progE(c), \progW(c)$, and $\progF(c)$
+computed in each steps above, this step simply combine the four components into the quantitative dependency graph for program $c$ as follows,
+%
+% \\
+\highlight{
+  \[
+    \progG(c) = (\progV(c), \progE(c), \progW(c), \progF(c)).
+    \]
+}
+We prove that this graph is a sound approximation of the program's semantics-based dependency graph by soundness of each component formally in Appendix.
+
+This estimated graph has a similar topology structure as 
+the Semantics-based Dependency Graph. It has the same
+vertices 
+% and query annotations, 
+but approximated edges and weights.  
+This graph is a sound approximation of the quantitative dependency graph for a program $c$.
+
+It is formally defined in Definition~\ref{def:prog_graph} as follows.
+
+\begin{defn}
+[Estimated Dependency Graph]
+\label{def:prog_graph}
+Given a program $c$, with its abstract weighted control flow graph $\absG(c) = (\absV, \absE)$ and 
+feasible data flow relation $\flowsto(x^i, y^j, c)$ for every $x^i, y^j \in \lvar(c)$, its estimated dependency graph
+is generated as follows.
+
+\[\progG(c) = (\progV(c), \progE(c), \progW(c), \progF(c))\]
+
+{
+\[
+\begin{array}{rlcl}
+\text{Vertices} &
+\progV & := & \left\{ 
+x^l \in \mathcal{LV} 
+~ \middle\vert ~
+x^l \in \lvar_{c}
+\right\}
+\\
+\text{Directed Edges} &
+\progE & := & 
+\left\{ 
+(x^i, y^j) \in \mathcal{LV} \times \mathcal{LV}
+~ \middle\vert ~
+\begin{array}{l}
+x^i, y^j \in \vertxs
+\land
+\exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \st 
+n \geq 0 \land
+\\
+\flowsto(y^j,  z_1^{r_1}, c) 
+\land \cdots \land \flowsto(z_n^{r_n}, x^i, c) 
+\end{array}
+\right\}
+\\
+\text{Weights} &
+\progW & := &
+\left\{ (x^l, w) \in  \mathcal{LV} \times \mathcal{A}_{in}
+\mid
+x^l \in \lvar_{{c}} \land (l, w) \in \absW(c)
+\right\}
+\\
+\text{Query Annotation} &
+\progF & := & 
+\left\{(x^l, n)  \in  \mathcal{LV} \times \{0, 1\} 
+~ \middle\vert ~
+x^l \in \lvar_{c},
+n = 1 \iff x^l \in \qvar_{c} \land n = 0 \iff  x^l \in \qvar_{c} .
+\right\}
+\end{array}
+\] }
+\end{defn}
+The construction of the static analysis dependency graph is of great value of showing some useful properties of the target program,
+such as dependency between variables, the execution upper bound of a certain command,
+while the key novelty is our path searching algorithm, which connects all the information we need in the static anlaysis dependency graph and provides us a sound over-estimation of adaptivity.

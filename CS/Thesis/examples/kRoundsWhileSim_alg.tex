@@ -1,0 +1,50 @@
+\begin{figure}
+    \centering
+    {
+    \small
+    \begin{subfigure}{.4\textwidth}
+    \begin{centering}
+    $ 
+    \begin{array}{l}
+      \kw{whileSim(k)} \triangleq \\
+      \clabel{ \assign{j}{k} }^{0} ;
+      \clabel{ \assign{x}{\query(\chi[0])} }^{1} ; \\
+          \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ \\
+          \Big(
+           \clabel{\assign{x}{\query(\chi[x]) }}^{3}  ; 
+          \clabel{\assign{j}{j-1}}^{4}       \Big)
+      \end{array}
+    $
+    \caption{}
+    \end{centering}
+    \end{subfigure}
+    \quad
+      \begin{subfigure}{.45\textwidth}
+      \begin{centering}
+      \begin{tikzpicture}[scale=\textwidth/22cm,samples=200]
+    \draw[] (0, 7) circle (0pt) node
+    {\textbf{$x^1: {}^{1}_{1}$}};
+    \draw[] (0, 4) circle (0pt) node
+    {{ $x^3: {}^{k}_{1}$}};
+    % Counter Variables
+    \draw[] (10, 7) circle (0pt) node {{$j^2: {}^{1}_{0}$}};
+    \draw[] (10, 4) circle (0pt) node {{ $j^4: {}^{k}_{0}$}};
+    %
+    % Value Dependency Edges:
+    \draw[ ultra thick, -latex, densely dotted,] (0, 4.2)  -- (0, 6.5) ;
+    \draw[ ultra thick, -Straight Barb, densely dotted,] (2, 4.5) arc (150:-180:1);
+    \draw[  -Straight Barb] (11.3, 4.7) arc (150:-150:1);
+    \draw[  -latex] (10, 4.6)  -- (10, 6.5) ;
+    % Control Dependency
+    \draw[ -latex] (1.5, 7)  -- (8, 7) ;
+    \draw[ -latex] (1.5, 4)  -- (8, 7) ;
+    \draw[ -latex] (1.5, 7)  -- (8, 4) ;
+    \draw[ -latex] (1.5, 4)  -- (8, 4) ;
+    \end{tikzpicture}
+    \caption{}
+      \end{centering}
+      \end{subfigure}
+    }
+     \caption{(a) The k adaptivity rounds example with simple while loop (b) The estimated dependency graph generated from $\THESYSTEM$.}
+    \label{fig:kadaptwhile_alg}
+    \end{figure}

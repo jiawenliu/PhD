@@ -291,9 +291,6 @@ my loving grandmother \\ Xiuqin Yang
 \label{sec:adapt-analysis}
 \input{chapters/adapt/analysis-preface}
 
-% \section{Analysis Architecture}
-% \label{ch:adapt-architecture}
-% \include{chapters/adapt/analysis-architecture}
 \clearpage
 \section{The {\tt Query While} Language}
 \label{sec:adapt-language}
@@ -304,21 +301,27 @@ my loving grandmother \\ Xiuqin Yang
 \label{sec:adapt-exe}
 \input{chapters/adapt/exe-preface}
 
-\subsection{Data Dependency Relation Definition}
+\subsection{May-dependency between Variables}
 \label{sec:dynamic-datadep}
-\input{chapters/adapt/exe-dep}
+% \input{chapters/adapt/exe-dep}
+\input{chapters/adapt/var-dep}
 
 \subsection{Data Dependency Quantity Definition}
 \label{sec:dynamic-reachability}
-\input{chapters/adapt/exe-depquantity}%
+% \input{chapters/adapt/exe-depquantity}%
 
-\subsection{Adaptivity Definition through Dependency Graph}
+\subsection{Semantics-based Dependency Graph}
+\label{sec:dynamic-graph}
+\input{chapters/adapt/semantic-graph}
+
+\subsection{The Adaptivity Definition}
 \label{sec:dynamic-adapt}
-\input{chapters/adapt/exe-adapt}%
+% \input{chapters/adapt/exe-adapt}
+\input{chapters/adapt/adaptivity-definition}
 %
-% \subsection{Improvements Analysis}
-% \label{sec:adapt-exe-improves}
-% \input{chapters/adapt/exe-improves}
+%
+
+
 
 \subsection{Adaptivity through Examples}
 \label{sec:dynamic-examples}

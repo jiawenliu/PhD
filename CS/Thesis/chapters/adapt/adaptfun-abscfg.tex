@@ -1,0 +1,396 @@
+This section shows how to generate the abstract transition graph $\absG(c)$ of a
+program $c$ through constructing its vertices and edges.
+
+An \emph{Abstract Transition Graph}, $\absG(c)$ for a program $c$ is composed of
+a vertex set $\absV(c)$ and an edge set $\absE(c)$, $\absG(c) \triangleq (\absV(c), \absE(c))$.
+% For a program $c$, this analysis first generates its abstract execution control flow graph notated as follows,
+% \[\absG(c) =(\absV(c), \absE(c))\]
+%
+\\
+Every 
+vertex $l \in \absV(c)$ is the label of a labeled command in $c$, which is unique.
+We also call the unique label as program point.
+% corresponds to a program point $l$, which is a unique
+% label of a command in this program.
+% $\absV(c)$ is the set of $c$'s all program points,
+\\
+Each edge $(l \xrightarrow{dc} l') \in \absE(c)$ is an abstract transition
+between two program points $l, l'$. 
+There is an edge from $l$ to $l'$ if and only if
+the command with label $l'$ can execute right after the execution of the command with label $l$.
+% if and only if there is a control flow between two program points.
+Each edge is annotated by a constraint $dc \in \dcdom^{\top}$, which is generated from the command with label $l$.
+This constraint describes the abstract execution of the command with $l$. 
+%  before the introduction of the edge and weight estimation.  
+% We discuss the vertices and edge of the
+% abstract transition graph for a program $c$, $\absG(c)$.
+
+\paragraph{Abstract Control Flow Graph Vertices Construction}
+\label{sec:alg_abscfg-vertex}
+Every 
+vertex $l \in \absV(c)$ corresponds to a program point $l$, which is a unique
+label of a command in this program.
+Concretely,
+the vertices of this graph is the set of $c$'s labels with the exit label ${\lex}$ formally as follows,
+\[ 
+  \absV(c) = \lvar(c)\cup\{{\lex}\}
+\]
+%  corresponding to a label command in the program.
+
+\paragraph{Abstract Control Flow Graph Edge Construction}
+\label{sec:alg_abscfg-edge}
+Each edge $(l \xrightarrow{dc} l') \in \absE(c)$ is an abstract transition
+between two program points $l, l'$. 
+There is an edge from $l$ to $l'$ if and only if
+the command with label $l'$ can execute right after the execution of the command with label $l$.
+% if and only if there is a control flow between two program points.
+Each edge is annotated by a constraint $dc$ generated from the command with label $l$.
+This constraint describes the abstract execution of the command with $l$. 
+It is either
+the symbol $\top$, a boolean expression or a \emph{difference
+constraint}~\cite{sinn2017complexity}.
+This step shows how to generate the abstract transition graph $\absG(c)$ of a
+program $c$ through constructing its vertices and edges.
+  \\
+  In the first step, \textbf{Constraint Computation} generates a constraint
+  over the expression for every program's labeled command,
+  which is used as the annotation of an edge.
+  \\
+  In the second step, \textbf{Initial and Final State Computation} generates two sets for each command. 
+  The initial state is a set that contains the
+  program point where this command {starts} executing, 
+  and the final state is a set
+  that contains the constraint of this command
+  and the continuation program points after the execution of this command.
+  \\ 
+  In the third step, \textbf{Abstract Event Computation} generates a set of edges for the program.
+  Each edge is a pair of initial and finial state.
+%
+\paragraph{Constraint Computation}
+In this step, we first show how to compute the constraints for expressions in a program $c$,
+by a program abstraction method adopted from the
+algorithm in Section 6 in~\cite{sinn2017complexity}.
+\\
+Given a program $c$,
+every expression in an assignment command or in the guard of a $\eif$ or $\ewhile$ command
+is transformed into a constraint.
+
+\highlight{Notations:}
+\begin{itemize}
+\item Operator: $\absexpr : \mathcal{A} \cup \mathcal{B} \to DC(\mathcal{V}  \cup \constdom)\cup \booldom \cup \{\top\}$
+%
+\item Constrains, $\dcdom^{\top}$ is composed of the \emph{Difference Constraints} $DC(\mathcal{V}  \cup \constdom)$, the \emph{Boolean Expressions} $\booldom$ and $\top$.
+%
+\begin{itemize}
+\item 
+\jl{
+The difference constraints $DC(\mathcal{V}  \cup \constdom)$ is the set of all the inequality of
+form $x' \leq y + v$ or $x' \leq v$ where $x \in \mathcal{V} $, 
+$y \in \mathcal{V}$ and $v \in \constdom$.
+The \emph{Symbolic Constant} set $\constdom = \mathbb{N} \cup \inpvar \cup{\infty \cup{Q_m}}$
+is the set of natural numbers with $\infty$, the input variables, and a symbol $Q_m$ representing the abstract value of a query request.
+An inequality $x' \leq y + v$ describes that the value of $x$ in the current state is
+at most the value of $y$ in the previous state plus the symbolic constant $v$.
+An inequality $x' \leq v$ describes that the value of $x$ in the current state is
+at most the value $v$.
+When a difference constrain shows up as an edge annotation, $l \xrightarrow{x' \leq y + v} l'$,
+% Then $x'$ 
+it denotes that
+the value of variable $x$
+after executing the command at $l$ is at most
+% and the right-hand side describes 
+the value of variable $y$ plus $v$ before the execution,
+and $l \xrightarrow{x' \leq v} l'$ respectively denotes value of variable $x$
+after executing the command at $l$ is at most
+% and the right-hand side describes 
+the value of the symbolic constant $v$ before the execution.
+For every expression in each of the label command, it is computed in three steps via program abstraction method adopted from the Section~6 in \cite{sinn2017complexity}. 
+}
+%
+\item The Boolean Expressions $b$ from the set $\booldom$.
+$b$ on an edge $l \xrightarrow{b} l'$ describes
+that after evaluating the guard with label $l$,
+$b$ holds and the command with label $l$ will execute right after.
+%
+\item The top constraint, $\top$ denotes true. It is preserved for $\eskip$ command, or commands that don't
+interfere with any counter variable.
+%
+\end{itemize}
+\end{itemize}
+
+\highlight{Computation Steps:}
+\begin{defn}[Constraint Computation]
+  \label{def:constraint_compute}
+  For a program $c$, a boolean expression $\bexpr$ in the guard of a $\eif$ or $\ewhile$ command
+  or an expression $\expr$ and a variable $x$
+  in an assignment command $\assign{x}{\expr}$,
+  % or 
+  % For a boolean expression $\bexpr$ or an arithmetic expression $\aexpr$ and a variable $x$,
+  the constraint $\absexpr(\bexpr, \_)$ or $\absexpr(x - v, x)$ is computed as follows,
+  \[
+    \begin{array}{ll} 
+      \absexpr(x - v, x)  = x' \leq x - v  & x \in \grdvar \land v \in \constdom \\
+      \absexpr(y + v, x)  = x' \leq y + v  & x \in \grdvar \land v \in \constdom \land y \in (\grdvar \cup \constdom) \\
+      \absexpr(v, x)  = x' \leq v  & x \in \grdvar \land v \in (\grdvar \cup \constdom) \\
+      \absexpr(y + v, x)  = x' \leq y + v, 
+      \grdvar = \grdvar \cup \{y\} & x \in \grdvar \land v \in \constdom \land y \notin (\grdvar \cup \constdom)  \\
+      \absexpr(\qexpr, x)  = x' \leq Q_m & x \in \grdvar \land \qexpr \text{ is a query expression}  \\
+      \absexpr(\bexpr, \_) = \bexpr, \grdvar = \grdvar \cup FV(\bexpr) &  x \in \grdvar \land \bexpr \text{ is a boolean expression} \\
+      % \absexpr(\qexpr, x)  = x' \leq 0 + Q_m & x \in \grdvar \land \qexpr \text{ is a query expression}  \\
+      \absexpr(\expr, x) = \top  &  x \notin \grdvar \\
+    \end{array}
+    \]
+    $\absexpr(\expr, x)$ is iteratively updating until stabilized over every guard and assignment command in $c$, and $\absexpr(\expr, x)$
+    denotes the stabilized result in the following paper.
+  \end{defn}
+%
+  $\grdvar$ is the set of variables used in the guard expression of every while command in the program $c$. 
+  In the case 4, if a variable $x$, belonging to the set 
+  $\grdvar$ is updated by a variable $y$, which isn't in this set, 
+  we add $y$ into the set $\grdvar$ and repeat 
+  above procedure  until $\grdvar$ and $\absexpr(\expr, x)$ is stabilized. 
+  % \wq{I do not understand this sentence:-(}
+  \\
+Specifically 
+% understanding the intuition, 
+we handle a 
+% simplified 
+normalized expression, $x > 0$
+in guards of while loop headers, and 
+%  \wq{I do not understand this sentence:-(}
+%  .
+% \\
+% The counter variables only increase, decrease or reset by expression in the form of arithmetic minus and plus (able to extend to max and min.)
+the counter variable $x$ only increase, decrease or reset by 
+% expression in the form of 
+simple arithmetic expression (mainly multiplication, division, minus and plus (able to extend to max and min)). 
+The counter variable $x$ is generalized into norm when the boolean expression $x > 0$
+in $\ewhile$ doesn't have the form $x > 0$.
+The way of normalizing the guards and computing the norms is adopted from the computation step 1 in Section 6.1 in paper \cite{sinn2017complexity}. 
+% \\
+% For more complex expression assignments, where the counter reset, or calculated from $\elog$, 
+% multiplication or division, and expressions involving multiple variables, the constraint is approximated as reset of $\infty$.
+% \\
+% % This simplification \wq{which part we simplify here?} 
+% This approximation strategy
+% doesn't affect our analysis results in our examples. It is easy to extend the normalized expression 
+% into more complex forms as in \cite{sinn2017complexity}, as well as the 
+% counter variable manipulation with more advanced expressions.
+% \\ 
+% The boolean expression in the guard of $\ewhile$ command is normalized into form of $ x > 0$ where $x^l \in \lvar_c$ for some $l$.
+\begin{defn}[Symbolic Expression ($\mathcal{A}_{S}$)]
+  $\mathcal{A}_{S}$ is the set of all the symbolic expressions 
+over $\constdom$.
+% For concise, $\mathcal{A}_{\lin}$ is used as the same meaning of $\mathcal{A}_{\lin}$ in the follows, to denote the arithmetic expression 
+% over the symbolic variables, (i.e., $\mathbb{N}$ with input variables).
+\end{defn}
+The symbolic expression set is a subset of arithmetic expressions over $\mathbb{N}$ with input variables, 
+i.e., $\mathcal{A}_{S} \subseteq \mathcal{A}_{\lin}$.
+
+\paragraph{Abstract Initial and Final State Computation}
+The initial state is the
+program points before executing this command, which is computed by the standard initial state generation method from control flow analysis.
+The final state is a set
+that contains the constraint of this command and the program points after the execution of this command.
+This set is enriched 
+% program's initial and final states 
+from the standard control flow analysis.
+
+%
+\highlight{Notations:}
+\begin{itemize}
+\item The \emph{abstract initial state}: $\absinit(c) \in \ldom$.
+%
+\item The \emph{abstract final state}: $\absfinal(c) \in \mathcal{P}(\ldom \times \dcdom^{\top})$
+\end{itemize}
+
+\highlight{Computation Steps:}
+\begin{itemize}
+  \item The \emph{abstract initial state}, $\absinit(c) \in \mathcal{P}(\ldom)$
+  for a command $c$ is the initial program point corresponds to the unique program label of the first executed command in $c$,
+  computed as follows,
+%
+\[
+  \begin{array}{ll}
+    \absinit(\clabel{\assign{x}{\expr}}{}^l)  & = l  \\
+    \absinit(\clabel{\assign{x}{\query(\qexpr)}}{}^l)  & = l \\
+    \absinit(\clabel{\eskip}^{l})  & = l \\
+    \absinit(\eif [b]^l \ethen c_1 \eelse c_2)  & = l\\
+    \absinit(\ewhile [b]^l \edo c)  & = l \\
+    \absinit(c_1 ; c_2)  & = \absinit(c_1) \\
+ \end{array}
+ \]
+%
+%
+\item The \emph{abstract final state} of the program $c$, 
+$\absfinal(c) \in \mathcal{P}(\ldom \times \dcdom^{\top})$
+is a set of pairs, $(l, dc)$ with a
+program point (i.e., a label), $l$ as the first component and a constraint, 
+$dc$ as the second component.
+% Every pair in $\absfinal(c)$ 
+The program point $l$ corresponds to the labeled command after the execution of $c$,
+and the constraint $dc$ in this pair is computed by $\absexpr$ for the expression in $c$.
+%  in the first step.
+\\
+Given a program $c$, its final state, $\absfinal(c)$ is computed as follows,
+% $\absfinal(c) \in\mathcal{P}(\ldom \times \dcdom^{\top})$,
+% computes the set of Abstract Final State for the command. 
+ \[
+  \begin{array}{ll}
+    \absfinal(\clabel{\assign{x}{\expr}}{}^l)  & = \{(l, \absexpr\eapp (\expr, x))\}  \\
+     \absfinal(\clabel{\assign{x}{\query(\qexpr)}}{}^l)  & = \{
+      (l, x' \leq 0 + Q_m )\}  \\
+     \absfinal(\clabel{\eskip}^{l})  
+     & = \{(l, \top)\} \\
+     \absfinal(\eif [b]^l \ethen c_1 \eelse c_2)  & = \absfinal(c_1) \cup \absfinal(c_2) \\
+     \absfinal(\ewhile [b]^l \edo c)  & = \{(l, \absexpr(\bexpr, \top))\} \\
+     \absfinal(c_1 ; c_2)  & =  \absfinal(c_2) \\
+ \end{array}
+ \]
+ %
+\end{itemize}
+ \paragraph{Abstract Event Computation} Each abstract event is an edge between two vertices in the abstract transition graph.
+ It is generated by computing the initial state and finial state interactively and recursively for a program $c$.
+ 
+ \highlight{Notations / Formal Definitions:}
+ \begin{itemize}
+  \item \emph{Abstract Event}: 
+  $\absevent \in $
+  $\ldom \times \dcdom^{\top} \times \ldom$
+  \item \emph{Abstract Event Computation}: $\absflow \in \cdom \to \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$
+ \end{itemize}
+ Its type is defined as follows,
+ \begin{defn}[Abstract Event]
+   \label{def:abs_event}
+   Abstract Event: 
+   $\absevent \in $
+   $\ldom \times \dcdom^{\top} \times \ldom$
+   is a 
+   % pair of abstract initial state and final state.
+   triple where the first and third components are labels,
+   second component is a constraint from $\dcdom^{\top}$.
+   % the thrid % computed from program's abstract final and initial state, $\absfinal(c)$ and $\absinit(c)$ with formal definition, and algorithm detail in Appendix.
+   %  the constraint and the third corresponds to a final state.
+   \end{defn}
+   In an abstract event $(l, dc, l')$ of a program $c$, 
+   the first label $l \in \ldom$ corresponds to an initial state of $c$, and 
+   the second label $l' \in \ldom$ with the constraint $dc \in \dcdom^{\top}$ correspond to an abstract final state of $c$.
+  The abstract initial state is a label from $\ldom$.
+%  The abstract final state is a pair from $\ldom \times \dcdom^{\top}$,  
+%  where first component is a label from $\ldom$ and the second component is a constraint from $\dcdom^{\top}$.
+ %
+We abuse the notation $\mathcal{P}(\absevent)$ for the power set of all abstract events.
+
+ \highlight{Computation Steps:}
+\\
+The set of the abstract events $\absflow(c)$ for a program $c$
+% .
+%  Its type is formally defined 
+is computed as follows in Definition~\ref{def:absevent_compute}.
+ %
+ \begin{defn}[Abstract Event Computation]
+ \label{def:absevent_compute}
+  $\absflow \in \cdom \to \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$
+  \end{defn}
+ %
+%  The \emph{Abstract Execution Trace} for program $c$ is computed as follows.
+%  \\
+  % We now show how to compute the abstract execution trace. 
+ We first append a $\eskip$ command with 
+%  a symbolic label $l_e$, i.e., $\clabel{\eskip}^{l_e}$ at the end of the program $c$, and compute the $\absflow(c) = \absflow'(c')$ for $c'$, where $c' = c;\clabel{\eskip}^{l_e}$ as follows,
+the label $\lex$, i.e., $\clabel{\eskip}^{\lex}$ at the end of the program $c$, and construct 
+the program $c' = c;\clabel{\eskip}^{\lex}$.
+Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
+ %
+ {
+ \[
+   \begin{array}{ll}
+      \absflow'(\clabel{\assign{x}{\expr}}{}^l)  & = \emptyset  \\
+      \absflow'(\clabel{\assign{x}{\query(\qexpr)}}{}^l)  & = \emptyset  \\
+      \absflow'([\eskip]^{l})  & = \emptyset \\
+      \absflow'(\eif [b]^l \ethen c_t \eelse c_f)  & =  \absflow'(c_t) \cup \absflow'(c_f)
+        \\ & \quad 
+        \cup \left\{(l, \absexpr(\bexpr, \top),  \absinit(c_t) ) \right\}
+        \\ & \quad 
+        \cup \left\{ (l, \absexpr(\neg\bexpr, \top), \absinit(c_f)) \right\} \\
+       \absflow'(\ewhile [b]^l \edo c_w)  & =  \absflow'(c_w) \cup \{(l, \absexpr(\bexpr, \top), \absinit(c_w)) \} 
+       \\ & \quad 
+       \cup \{(l', dc, l)| (l', dc) \in \absfinal(c_w) \} \\
+       \absflow'(c_1 ; c_2)  & = \absflow'(c_1) \cup  \absflow'(c_2) 
+       \\ & \quad 
+       \cup \{ (l, dc, \absinit(c_2)) | (l, dc) \in \absfinal(c_1) \} \\
+   \end{array}
+   \]
+   }
+   Notice $\absflow'([x := \expr]^{l})$, $\absflow'([x := \query(\qexpr)]^{l})$ and $\absflow'([\eskip]^{l})$ are all empty set. 
+   
+ \highlight{Theorem Guarantees:}
+
+For every event $\event$ with label $l$, if it is in an execution trace $\trace$ of the program $c$, 
+   there is an abstract event in program's abstract execution trace of form $(l, \_, \_)$, formally below
+   with the proof in Appendix~\ref{apdx:abscfg_sound}
+   \begin{lem}[Soundness of the Abstract Events]
+     \label{lem:abscfg_sound}
+     For every program $c$ and
+     an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.
+     an initial trace  $\vtrace_0 \in \mathcal{T}_0(c)$,
+     there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
+     for every event $\event \in \trace$ having the label $l$, i.e., $\event = (\_, l, \_, \_)$.
+      %
+   \[
+     \begin{array}{l}
+       \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_, \_) \in \eventset \st
+   \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+   \land \event \in \trace 
+   \\
+   \qquad \implies \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \st 
+   \absevent \in \absflow(c)
+   \end{array}
+   \]
+   \end{lem}
+
+For every program point $l$, if it is the label of an assignment command in a program $c$,
+there is a unique abstract event in the program's abstract events set $\absevent \in \absflow(c)$ of form $(l, \_, \_)$. 
+\begin{lem}[Uniqueness of the Abstract Events Computation]
+  \label{lem:abscfg_uniquex}
+  For every program $c$ and
+  an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.
+  an initial trace $\vtrace_0 \in \mathcal{T}_0(c)$,
+  there is a unique abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
+  for every assignment event $\event \in \eventset^{\asn}$ in the
+  execution trace having the label $l$, i.e., $\event = (\_, l, \_, \_)$ and  $\event \in \trace$.
+%
+\[
+  \begin{array}{l}
+    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_) \in \eventset^{\asn} \st
+\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+\land \event \in \trace 
+\\
+\qquad \implies \exists! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \st 
+\absevent \in \absflow(c)
+\end{array}
+\]
+\end{lem}
+This lemma is proved in Appendix~\ref{apdx:abscfg_uniquex}.
+
+  \paragraph{Edge Construction}
+The edge for $c$'s abstract transition graph is constructed simply by computing the program's abstract events set, $\absflow(c)$ as follows,
+  \[
+    \absE(c) = \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}
+  \]
+\paragraph{Abstract Transition Graph Construction} 
+With the vertices $\absV(c)$ and edges $\absE(c)$ ready, we construct the abstract transition graph, formally in
+Definition~\ref{def:abs_cfg}.
+%
+\begin{defn}[Abstract Transition Graph]
+\label{def:abs_cfg}
+Given a program $c$, 
+its \emph{abstract transition graph} $\absG(c) =(\absV(c), \absE(c))$ is computed as follows,
+\\
+$\absE(c) = \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}$,
+\\
+$\absV(c) = \lvar(c)\cup\{\lex\}$
+\end{defn}
+\paragraph*{Example}
+%
+\input{examples/abscfg_tworound}

@@ -1,0 +1,405 @@
+%
+    \begin{example}[The Complete Gradient Decent Optimization Algorithm]
+        This example is the gradient decent algorithm example is a generalization of the linear regression on a higher degree data relation.
+        It uses gradient decent algorithm to minimize 
+        the mean square loss function
+        for a two-degree relation
+         $y = a_1 \times x_1^2 + a_2 \times x_2 + c$
+        on the dataset of two feature columns and one indicator column.
+     \[
+     %
+     \begin{array}{l}
+     \kw{gradientDecent(step, rate, t, n)} \triangleq \\
+        \clabel{ a_1 \leftarrow 0}^{0} ; \\
+        \clabel{ a_2 \leftarrow 0}^{1} ; \\
+        \clabel{ c \leftarrow 0}^{2} ; \\
+        \clabel{\assign{j}{\kw{step}} }^{3} ; \\
+        \ewhile ~ \clabel{j > 0}^{4} ~ \edo ~ \\
+      \Big(
+          \clabel{\assign{da1}{\query(-2 * (\chi[2] - (\chi[0]^2 \times a_1 + \chi[1] \times a_2 + c)) \times (\chi[0]))} }^{5}  ; \\
+          \clabel{\assign{da2}{\query(-2 * (\chi[2] - (\chi[0]^2 \times a_1 + \chi[1] \times a_2 + c)) \times (\chi[1]))} }^{6}  ; \\  \clabel{\assign{dc}{\query(-2 * (\chi[2] - (\chi[0]^2 \times a_1 + \chi[1] \times a_2 + c)))} }^{5}  ; \\
+          \clabel{\assign{a_1}{a_1 - \kw{rate} * da1} }^{7}  ; \\
+          \clabel{\assign{a_2}{a_2 - \kw{rate} * da2} }^{8}  ; \\
+          \clabel{\assign{c}{c - \kw{rate} * dc} }^{9}  ; \\
+       \clabel{\assign{j}{j-1}}^{10} 
+      \Big);
+  \end{array}
+     \]
+     %
+     %
+        This approach can be generalized to the regression of a variety of 
+        relations in machine learning area.
+   %
+     \end{example}
+%
+
+    \begin{example}[Sequence with Linear Query Dependency]
+        \label{ex:seq}
+        This example algorithm contains only sequence of four query commands.
+        Each of them depends on a previous query.
+        The longest dependency depth, i.e., the adaptivity is expectation to be $4$.
+        %
+        %
+        \[
+        %
+            \kw{seq()} \triangleq 
+        \begin{array}{l} 
+               \clabel{ \assign{x}{\chi[0]}}^{0} ; 
+   \clabel{\assign{y}{\chi[x + 1]} }^{1} ; \\
+   \clabel{\assign{z}{\chi[y + 1]}}^{2}; 
+    \clabel{\assign{w}{\chi[z + 1]} }^{3}
+            \end{array}
+        \]
+        Evaluation Result: $ \progA( \kw{seq()}) = 4$
+        \end{example}
+    %
+    \begin{example}[Sequence with Query Dependency between Related Variables]
+        \label{ex:seqRV}
+        %
+        This example algorithm contains a sequence of four query commands.
+        Each of them depends on one or more of the previous queries.
+        The longest dependency depth, i.e., the adaptivity is expectation to be $4$.
+        %
+        \[
+        %
+            \kw{seqRV()} \triangleq 
+        \begin{array}{l} 
+               \clabel{ \assign{x}{\chi[0]}}^{0} ;
+   \clabel{\assign{y}{\chi[x + 1]} }^{1} ; \\
+   \clabel{\assign{z}{\chi[y + x]}}^{2}; 
+    \clabel{\assign{w}{\chi[z + 1] \cdot \chi[y]} }^{3}
+            \end{array}
+        \]
+        Evaluation Result: $ \progA(\kw{seqMultiVar()}) = 4$
+    \end{example}
+    %
+        \begin{example}[If with Data-Value Dependency Separated]
+            \label{ex:ifVD}
+            This example algorithm contains a $\eif$ command and a query requests
+            in each branch.
+            Only the query in the first branch depend on the query in the command $0$,
+            and the variable in the guard is not assigned by a query request.
+            % Each of them depends on one or more of the previous queries.   %
+            The longest dependency depth, i.e., the adaptivity is expectation to be $3$.
+            \[
+            %
+            \kw{ifVD}(k) \triangleq 
+            \begin{array}{l}
+               \quad \clabel{ \assign{z}{\query(\chi[0])}}^{0} ; 
+               \quad \clabel{\assign{x}{k / 2} }^{1} ; \\
+               \quad \eif(\clabel{x < 0}^2,
+               \quad \clabel{\assign{y}{\query(\chi[z])}}^{3},
+               \quad \clabel{\assign{y}{\query(\chi[0])}}^{4})
+   \end{array}
+            \]
+            Evaluation Result: $ \progA( \kw{ifVD()}) = 3$
+        \end{example}
+    
+            \begin{example}[If with Data-Control Dependency Overlapped]
+   \label{ex:ifCD}
+   %
+   This example algorithm contains a $\eif$ command and a query requests
+   in each branch.
+   The variable in the guard is assigned by a query request in command $1$.
+   The two queries in the branches depend on the second query in command $1$
+   but not depend on the query in the command $0$.
+   Even though the variable $x$ isn't used in the query expression in the query $3$ and $4$,
+   there are still dependency relation because $x$ is in the guard.
+%
+The longest dependency depth, i.e., the adaptivity is expectation to be $3$.
+   \[
+   %
+   \kw{ifCD()} \triangleq 
+   \begin{array}{l}
+\clabel{ \assign{z}{\query(\chi[0])}}^{0} ;
+\clabel{\assign{x}{\query(\chi[z])} }^{1} ; \\
+\eif(\clabel{x < 0}^{2}, 
+\clabel{\assign{y}{\query(\chi[0] + \chi[1])}}^{3}, 
+\clabel{\assign{y}\query{(\chi[0])}}^{4})
+   \end{array}
+   \]
+   %
+   Evaluation Result: $ \progA( \kw{ifCD()}) = 3$
+   \end{example}
+    
+    
+\begin{example}[While with Nested Query Dependency]
+\label{ex:whileNested}
+This example algorithm contains a simple while loop.
+There is one query requests in the loop body at command $3$.
+In each iteration, the query request depend on the query result from previous iteration.
+The longest dependency depth, i.e., the adaptivity is expectation to be $k$.
+%
+\[
+%
+\kw{whileNested}(k) \triangleq
+\begin{array}{l}
+    \clabel{ \assign{j}{k} }^{0} ; 
+    \clabel{ \assign{a}{\query(\chi[0])} }^{1} ; \\
+        \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ \\
+        \Big(
+         \clabel{\assign{x}{\query(\chi[a]) }}^{3}  ; 
+         \clabel{\assign{a}{x + a}}^{4} ;
+        \clabel{\assign{j}{j-1}}^{5}       \Big)
+    \end{array}
+\]
+The Evaluation Result: $ \progA(\kw{whileRec}(k)) = 1 + k$
+   \end{example}
+    %
+            \begin{example}[While with Multi-Path Query Dependency]
+   \label{ex:whileM}
+   %
+   This example algorithm contains a simple while loop and a $\eif$ command in the loop body.
+% There is one query requests in the loop body at command $3$.
+Each branch  has a query request (in the commands $5$ and $6$)
+depend on the query at command $1$ and the query at command $7$.
+Among the $\frac{k}{2}$ iterations,
+% the query at command $7$ depend on the query at line $5$, otherwise not.
+ result from previous iteration.
+The longest dependency depth, i.e., the adaptivity is expectation to be $1 +2 * \lfloor \frac{k}{2} \rfloor$.
+            %
+            \[
+            %
+            \kw{whileM}(k) \triangleq 
+            \begin{array}{l}
+   \clabel{ \assign{j}{k}}^{0} ; 
+   \clabel{ \assign{x}{\query(\chi[0])} }^{1} ; \\
+\ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ \\
+\Big(
+ \clabel{\assign{j}{j-1}}^{3} ;\\
+ \eif(\clabel{j \% 2 == 0}^{4}, 
+ \clabel{\assign{y}{\chi[x]}}^{5}, 
+ \clabel{\assign{w}{\chi[x]}}^{6});\\        
+ \clabel{\assign{x}{\query(\chi(\ln(y)))} }^{7} \Big)
+   \end{array}
+            \]
+            The Evaluation Result: $ \progA(\kw{whileM}(k)) = 1 +2 * \lfloor \frac{k}{2} \rfloor $
+        \end{example}
+    %
+            \begin{example}[While with Query Dependency through Related Variables]
+   \label{ex:whileRV}
+   This example algorithm contains a simple while loop
+    and a sequence of three query requests in the loop body.
+% There is one query requests in the loop body at command $3$.
+In each iteration, every query request depend on one or more
+query results from previous iteration.
+% the query at command $7$ depend on the query at line $5$, otherwise not.
+The longest dependency depth, i.e., the adaptivity is expectation to be $1 +2 * k$.
+   \[
+   %
+   \kw{whileRV}(k) \triangleq 
+   \begin{array}{l}
+   \clabel{\assign{j}{k} }^{0} ; 
+   \clabel{ \assign{x}{\query(\chi[0])}}^{1} ; 
+\clabel{ \assign{y}{\query(\chi[1])}}^{2} ; \\
+    \ewhile ~ \clabel{j > 0}^{3} ~ \edo ~ \\
+    \Big(
+     \clabel{\assign{j}{j-1}}^{4} ;
+     \clabel{\assign{z}{\query(\chi(x + \ln(y)))} }^{5}  ; 
+     \clabel{ \assign{x}{\query(\chi[z])}}^{6} ; 
+     \clabel{ \assign{y}{\query(\chi[z])}}^{7} 
+    \Big)
+\end{array}
+   \]
+   The Evaluation Result: $ \progA(\kw{whileRV}(k)) = 1 + 2 * k $
+            \end{example}
+   %
+   %
+   \begin{example}[While with Query Dependency trhough Control Flow and Data Flow]
+\label{ex:whileVCD}
+%
+This example algorithm contains a simple while loop
+and a sequence of three query requests in the loop body.
+The variable in the guard is assigned by a query request in command $0$.
+In each iteration, the query at $3$ depends on either the query at line $1$, and the query result at line $4$ from the previous iteration.
+%  in the branches depend on the second query in command $1$
+In each iteration, the query at $4$ depends on either the query at line $0$ and the query at line $3$ in the same iteration.
+% Even though the variable $x$ isn't used in the query expression in the query $3$ and $4$,
+The longest dependency depth, i.e., the adaptivity is expectation to be $1 +2 * k$.
+\[
+\kw{whileVCD}() \triangleq
+\begin{array}{l}
+    \clabel{ \assign{x}{\query(\chi[0])} }^{0} ; 
+    \clabel{ \assign{z}{\query(\chi[0])} }^{1} ; \\
+        \ewhile ~ \clabel{x > 0}^{2} ~ \edo ~ \\
+        \Big(
+        \clabel{\assign{x}{\query(\chi(z))} }^{3}  ; 
+        \clabel{\assign{z}{\query(\chi(x))}}^{4}
+      \Big)
+    \end{array}
+\]
+The Evaluation Result: $ \progA(\kw{whileVCD}(k)) = 1 + 2 * k $
+   \end{example}
+    %
+   \begin{example}[While with Multiple Path Query Dependency Dependency]
+\label{ex:whileMPVCD}
+%
+This example algorithm contains a simple while loop and a $\eif$ command in the loop body.
+% There is one query requests in the loop body at command $3$.
+Each branch  has a query request (in the commands $5$ and $6$)
+depend on either the query at command $1$ or the query at command $7$.
+% Among the $\frac{k}{2}$ iterations,
+% % the query at command $7$ depend on the query at line $5$, otherwise not.
+%  result from previous iteration.
+The longest dependency depth, i.e., the adaptivity is expectation to be $2 + k$.
+\[
+    %
+    \kw{whileMPVCD}(k) \triangleq
+    \begin{array}{l}
+        \clabel{ \assign{x}{\query(k)}}^{0} ; 
+        \clabel{\assign{y}{0} }^{1} ; 
+            \ewhile ~ \clabel{x > 0}^{2} ~ \edo ~ \\
+            \Big(
+             \eif(\clabel{y > 0}^{3}, 
+             \clabel{\assign{y}{\query(\chi[12])}}^{4}, 
+             \clabel{\assign{w}{\query(\chi[9])}}^{5});        
+             \\
+             \clabel{\assign{x}{x-1}}^{6}\Big);\\
+             \clabel{\assign{y}{\query(\chi(\ln(y)))} }^{7} 
+        \end{array}
+    \]
+    The Evaluation Result: $ \progA(\kw{whileMPVCD}(k)) = 2 + k $
+\end{example}
+   %
+\begin{example}[Nested While with Nested Query Dependency]
+    \label{ex:nestWhileVD}
+    %
+    This example algorithm contains two nested while loops.
+    The query in the outer loop at line $5$ depends on either the query at line $1$ or
+    the query results at line $8$ from the previous iteration of the inner loop.
+    The longest dependency depth, i.e., the adaptivity is expectation to be $2 + k^2$.
+        %
+    \[
+    %
+    \kw{nestWhileVD}(k) \triangleq 
+    \begin{array}{l}
+        \clabel{ \assign{i}{k} }^{0} ; 
+        \clabel{\assign{x}{\query(\chi[0])}}^{1} ; \\
+            \ewhile ~ \clabel{i > 0}^{2} ~ \edo ~ 
+            \Big(
+             \clabel{\assign{i}{i-1}}^{3} ;
+             \clabel{\assign{j}{k}}^{4} ;
+             \clabel{\assign{y}{\query(\chi(\ln(x)))} }^{5}  ; \\
+             \ewhile ~ \clabel{j > 0}^{6} ~ \edo ~ 
+             \Big(
+              \clabel{\assign{j}{j-1}}^{7};
+              \clabel{\assign{x}{\query(\chi(\ln(x)))} }^{8}
+              \Big) \Big)
+        \end{array}
+    \]
+    The Evaluation Result: $ \progA(\kw{nestWhileVD}(k)) = 2 + k^2 $
+\end{example}
+    
+    \begin{example}[Nested While with Query Dependency through Related Variables]
+        \label{ex:nestedWhileRV}
+        %
+        This example algorithm contains two nested while loops, one query in the outer loop, and one query in the inner loop.
+        The query in the outer loop at line $8$ depends on only the query result at line $7$
+        from the last iteration of the inner loop.
+        %  either the query at line $1$ or
+        However, the query at line $7$ depends on  either the query at line $1$ 
+        the query results at line $8$ from the previous iteration.
+        The longest dependency depth, i.e., the adaptivity is expectation to be $1 + 2 * k $.
+            %
+        \[
+        %
+            \kw{nestWhileRV}(k) \triangleq 
+        \begin{array}{l}
+            \clabel{ \assign{i}{k} }^{0} ; 
+            \clabel{\assign{x}{\query(\chi[0])}}^{1} ; \\
+   \ewhile ~ \clabel{i > 0}^{2} ~ \edo ~ 
+   \Big(
+    \clabel{\assign{i}{i-1}}^{3} ;
+    \clabel{\assign{j}{k}}^{4} ;\\
+    \ewhile ~ \clabel{j > 0}^{5} ~ \edo ~ 
+    \Big(
+     \clabel{\assign{j}{j-1}}^{6};
+     \clabel{\assign{y}{\query(\chi(x) + \chi(1))} }^{7}
+     \Big); \\
+    \clabel{\assign{x}{\query(\chi(\ln(y)))} }^{8}
+     \Big)
+            \end{array}
+        \]
+        The Evaluation Result: $ \progA(\kw{nestWhileRV}(k)) = 1 + 2 * k $
+    \end{example}
+%
+   
+        \begin{example}[Nested While with Nest Query Dependency and Related Variable Accross Outer and Inner Loop]
+            \label{ex:nestedWhileMR}
+            %
+            This example algorithm contains two nested while loops, one query in the outer loop, and one query in the inner loop as well.
+            The two queries depend on both the query results assigned to themselves in previous iteration.
+            The longest dependency depth, i.e., the adaptivity is expectation to be $1 + k + k^2 $.
+            \[
+            %
+            \kw{nestWhileMR}(k) \triangleq 
+            \begin{array}{l}
+                \clabel{\assign{i}{k} }^{0} ; 
+                \clabel{ \assign{x}{\query(\chi[0])}}^{1} ; 
+                \clabel{ \assign{y}{\query(\chi[1])}}^{2} ; 
+                \ewhile ~ \clabel{i > 0}^{3} ~ \edo ~ \\
+                \Big(
+                \clabel{\assign{i}{i-1}}^{4} ;
+                \clabel{\assign{j}{k}}^{5} ;
+                \clabel{\assign{y}{\query(\chi(\ln(x) + y))} }^{6}  ; \\
+                \ewhile ~ \clabel{j > 0}^{7} ~ \edo ~ 
+                \Big(
+                \clabel{\assign{j}{j-1}}^{8};
+                \clabel{\assign{x}{\query(\chi(\ln(y))+\chi[x])} }^{9}
+                \Big) \Big)
+            \end{array}
+            \]
+            The Evaluation Result: 
+            $ \progA(\kw{nestWhileMR}(k)) = 1 + k + k^2$
+            \\
+            Reachability Bound The Evaluation Result: \\
+            weight for Variable: j of label 6 is: 0 + 0 + 1 * k * k\\
+            weight for Variable: y of label 7 is: 0 + 0 + 1 * k * k\\
+            weight for Variable: j of label 4 is: 0 + 1 * k\\
+            weight for Variable: i of label 3 is: 0 + 1 * k\\
+            weight for Variable: x of label 8 is: 0 + 1 * k\\
+            weight for Variable: x of label 1 is: 1\\
+            weight for Variable: i of label 0 is: 1\\
+            \end{example}
+            \begin{example}[Nested While with MultiplePath and Nested Recursive Multiple Variable 
+   Data-Value Dependency Across Outer and Inner Loop]
+   \label{ex:nestedWhileMPRV}
+   %
+   We then show a more complex example with nested while command and nested data-flow across the outer and inner while loop through multiple variables.
+   This example also contains the if command with data dependency occurred through the if guard.
+   The longest dependency depth, i.e., the adaptivity is expectation to be $1 + k + k^2 $.
+   %
+   \[
+   %
+   \kw{nestWhileMPRV}(k) \triangleq 
+   \begin{array}{l}
+\clabel{\assign{i}{k} }^{0} ; 
+\clabel{ \assign{x}{\query(\chi[0])}}^{1} ; 
+\clabel{ \assign{y}{\query(\chi[1])}}^{2} ; \\
+    \ewhile ~ \clabel{i > 0}^{3} ~ \edo ~ 
+    \Big(
+     \clabel{\assign{i}{i-1}}^{4} ;
+     \clabel{\assign{j}{k}}^{5} ;\\
+     \eif(\clabel{x > 0}^6, \clabel{\assign{y}{\query(\chi(\ln(x) + y))} }^{7},
+     \clabel{\assign{y}{\query(\chi(x))} }^{8} )
+      ; \\
+     \ewhile ~ \clabel{j > 0}^{9} ~ \edo ~ 
+     \Big(
+      \clabel{\assign{j}{j-1}}^{10};
+      \clabel{\assign{x}{\query(\chi(\ln(y))+\chi[x])} }^{11}
+      \Big) \Big)
+\end{array}
+   \]
+   \end{example}
+   The Evaluation Result: $ \progA(\kw{nestWhileMPRV}(k)) = 1 + k + k^2$
+   \\
+   Reachability Bound The Evaluation Result: \\
+            weight for Variable: j of label 10 is: 0 + 0 + 1 * k * k \\
+   weight for Variable: x of label 11 is: 0 + 0 + 1 * k * k \\
+   weight for Variable: y of label 7 is: 0 + 1 * k \\
+   weight for Variable: y of label 8 is: 0 + 1 * k \\
+   weight for Variable: j of label 5 is: 0 + 1 * k \\
+   weight for Variable: i of label 4 is: 0 + 1 * k \\
+   weight for Variable: y of label 2 is: 1 \\
+   weight for Variable: x of label 1 is: 1 \\
+   weight for Variable: i of label 0 is: 1 \\

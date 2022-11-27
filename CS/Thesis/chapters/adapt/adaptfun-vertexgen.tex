@@ -1,0 +1,40 @@
+Given a program $c$, the set of vertices $\progV(c)$ and query annotations $\progF(c)$ of the \emph{estimated dependency graph} can be computed by simply
+scanning the program $c$. These set can be computed precisely and correspond to
+the same sets in the semantics-based dependency graph.
+This means that $\progG(c)$ has the same underlying vertex structure as 
+the semantics-based graph $\traceG(c)$. 
+\paragraph{Vertex Estimation}
+The first component of the \emph{estimated dependency graph} is the vertex set, which is identical to the 
+\emph{semantics-based dependency graph}.
+% of every vertex in the static analysis dependency graph are actually identical as the  Semantics-based Dependency Graph, 
+Every vertex is an assigned variable in the program, which comes from an assignment command or query request command with a unique label. 
+These vertices are collected by statically scanning the program, like what we do for vertices of the \emph{semantics-based dependency graph}, as follows.
+%
+\highlight{
+\[
+    \progV(c) \triangleq \left\{ 
+  x^l \in \mathcal{LV}
+  ~ \middle\vert ~
+  x^l \in \lvar(c)
+  \right\}
+  \]
+  }
+  %
+where $\mathcal{A}_{\lin}$ is the set of arithmetic expressions over $\mathbb{N}$ and program's input variables. 
+
+\paragraph{Query Annotation Computation}
+The static scanning of the programs also tells us whether one vertex(assigned variable) is assigned by a query request.
+% We have similar definition when defining the Semantics-based Dependency Graph, 
+Identically to the 
+\emph{semantics-based dependency graph}, $\progF(c)$ is
+a set of pairs $\progF(c) \in \mathcal{P}(\mathcal{LV} \times \{0, 1\} )$ 
+mapping each $x^l \in \progV(c)$ to either $0$ or $1$. 
+$1$ denotes $x^{l}$ is a member of $ \qvar_{c}$, which is the set of program's variables assigned with query requests, 
+and $0$ means $x^{l}$ not in this set. 
+It is defined formally below.
+%
+\[\progF(c) =\left\{(x^l, n)  \in  \mathcal{LV} \times \{0, 1\} 
+~ \middle\vert ~
+x^l \in \lvar_{c},
+n = 1 \iff x^l \in \qvar_{c} \land n = 0 \iff  x^l \not\in \qvar_{c} .
+\right\}\]

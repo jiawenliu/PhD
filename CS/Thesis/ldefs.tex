@@ -408,11 +408,12 @@
 \newcommand{\nnatbiB}{r}
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Dynamic Program Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Semantic Definition %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Execution Based Dependency, Graph and Adaptivity 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Semantics Based Dependency, Graph and Adaptivity 
 \newcommand{\paths}{\mathcal{PATH}}
 \newcommand{\walks}{\mathcal{WK}}
 \newcommand{\progwalks}{\mathcal{WK}^{\kw{prog}}}
@@ -453,17 +454,25 @@
 \newcommand{\func}[2]{\mathsf{AD}(#1) \to (#2)}
 \newcommand{\varCol}{\bf{VetxCol}}
 \newcommand{\graphGen}{\bf{FlowGen}}
-\newcommand{\progG}{\kw{{G_{prog}}}}
-\newcommand{\progV}{\kw{{V_{prog}}}}
-\newcommand{\progE}{\kw{{E_{prog}}}}
-\newcommand{\progF}{\kw{{Q_{prog}}}}
-\newcommand{\progW}{\kw{{W_{prog}}}}
-\newcommand{\progA}{A_{\kw{prog}}}
+\newcommand{\progG}{\kw{{G_{est}}}}
+\newcommand{\progV}{\kw{{V_{est}}}}
+\newcommand{\progE}{\kw{{E_{est}}}}
+\newcommand{\progF}{\kw{{Q_{est}}}}
+\newcommand{\progW}{\kw{{W_{est}}}}
+\newcommand{\progA}{{\kw{A_{est}}}}
 
 \newcommand{\midG}{\kw{{G_{mid}}}}
 \newcommand{\midV}{\kw{{V_{mid}}}}
 \newcommand{\midE}{\kw{{E_{mid}}}}
 \newcommand{\midF}{\kw{{Q_{mid}}}}
+
+
+\newcommand{\cfgG}{\kw{{G_{cfg}}}}
+\newcommand{\cfgV}{\kw{{V_{cfg}}}}
+\newcommand{\cfgE}{\kw{{E_{cfg}}}}
+\newcommand{\cfginit}{{\kw{init}}}
+\newcommand{\cfgfinal}{{\kw{final}}}
+\newcommand{\cfgflow}{{\kw{cfgflow}}}
 
 
 
@@ -495,7 +504,8 @@
 %program abstraction
 \newcommand{\abst}[1]{\kw{abs}{#1}}
 \newcommand{\absexpr}{\abst{\kw{expr}}}
-\newcommand{\absevent}{\stackrel{\scriptscriptstyle{\alpha}}{\event{}}}
+% \newcommand{\absevent}{\stackrel{\scriptscriptstyle{\alpha}}{\event{}}}
+\newcommand{\absevent}{\hat{\event{}}}
 \newcommand{\absfinal}{\abst{\kw{final}}}
 \newcommand{\absinit}{\abst{\kw{init}}}
 \newcommand{\absflow}{\abst{\kw{trace}}}
@@ -506,28 +516,22 @@
 \newcommand{\absW}{\abst{\kw{W}}}
 \newcommand{\locbound}{\kw{locb}}
 \newcommand{\absdom}{\mathcal{ADOM}}
-\newcommand{\inpvar}{\mathcal{VAR}_{\kw{in}}}
-\newcommand{\grdvar}{\mathcal{VAR}_{\kw{guard}}}
 
-%%%%%%%%%%%%%%%%%%%%%%%  Control Flow Graph %%%%%%%%%%%%%%%% 
-\newcommand{\cfgfinal}{{\kw{final}}}
-\newcommand{\cfginit}{{\kw{init}}}
-\newcommand{\cfgflow}{{\kw{flow}}}
-\newcommand{\cfgG}{{\kw{cfgG}}}
-\newcommand{\cfgV}{{\kw{cfgV}}}
-\newcommand{\cfgE}{{\kw{cfgE}}}
+\newcommand{\vardom}{\mathcal{V}}
+\newcommand{\inpvar}{\vardom_{\kw{in}}}
+\newcommand{\grdvar}{\vardom_{\kw{guard}}}
 
-%%%%%%%%%%%%%%%% Reachability Bound Analysis For Adaptivity %%%%%%%%%%%%%%%%
-\newcommand{\absclr}{{\kw{Tclosure}}}
-\newcommand{\varinvar}{{\kw{Vinvar}}}
+\newcommand{\absclr}{{\kw{TB}}}
+\newcommand{\varinvar}{{\kw{VB}}}
 \newcommand{\init}{\kw{init}}
-\newcommand{\constdom}{\mathcal{SMBCST}}
+\newcommand{\constdom}{\mathcal{SC}}
 \newcommand{\dcdom}{\mathcal{DC}}
 \newcommand{\reset}{\kw{re}}
 \newcommand{\resetchain}{\kw{rechain}}
 \newcommand{\inc}{\kw{inc}}
 \newcommand{\dec}{\kw{dec}}
-
+\newcommand{\booldom}{\mathcal{B}}
+\newcommand{\incrs}{\kw{increase}}
 
 
 

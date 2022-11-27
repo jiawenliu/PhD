@@ -1,0 +1,105 @@
+{\small
+\begin{figure}
+\centering
+\begin{subfigure}{1.0\textwidth}
+\begin{centering}
+$
+    \begin{array}{l}
+    \kw{towRounds(k)} \triangleq \\
+           \clabel{ \assign{a}{0}}^{0} ;
+            \clabel{\assign{j}{k} }^{1} ;\\
+            \ewhile ~ \clabel{j > 0}^{2} ~ \edo ~ 
+            \Big(
+             \clabel{\assign{x}{\query(\chi[j] \cdot \chi[k])} }^{3}  ; 
+             \clabel{\assign{j}{j-1}}^{4} ;
+            \clabel{\assign{a}{x + a}}^{5}       \Big);\\
+            \clabel{\assign{l}{\query(\chi[k]*a)} }^{6}
+        \end{array}
+$
+\caption{}
+\end{centering}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+%}
+\qquad
+\begin{centering}
+\begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
+\draw[] (0, 10) circle (0pt) node
+{{ $a^0: {}^{\lambda \trace_0. 1}_{0}$}};
+\draw[] (0, 7) circle (0pt) node
+{\textbf{$x^3: {}^{\lambda \trace_0. \env(\trace_0) k}_{1}$}};
+\draw[] (0, 4) circle (0pt) node {{ $a^5: {}^{\lambda \trace_0. \env(\trace_0) k}_{0}$}};
+\draw[] (0, 1) circle (0pt) node
+{{ $l^6: {}^{\lambda \trace_0. 1}_{1}$}};
+% Counter Variables
+\draw[] (8, 9) circle (0pt) node {\textbf{$j^1: {}^{\lambda \trace_0. 1}_{0}$}};
+\draw[] (8, 6) circle (0pt) node {{ $j^4: {}^{\lambda \trace_0. \env(\trace_0) k}_{0}$}};
+%
+% Value Dependency Edges:
+\draw[ ultra thick, -latex, densely dotted,] (0, 1.5)  -- (0, 3.5) ;
+\draw[ ultra thick, -latex, densely dotted,] (0, 4.5)  -- (0, 6.5) ;
+\draw[ -latex] (0, 4.5)  to  [out=-230,in=230]  (0, 9.5) ;
+\draw[ -Straight Barb] (1.5, 3.8) arc (120:-200:1);
+\draw[ -Straight Barb] (9, 6.5) arc (150:-150:1);
+\draw[ -latex] (8, 6.5)  -- (8, 8.5) ;
+\draw[ -latex] (0, 1.5)  to  [out=-230,in=230]  (0, 9.5) ;
+% Control Dependency
+\draw[ -latex] (2, 7)  -- (6, 9) ;
+\draw[ -latex] (2, 7)  -- (5.5, 6) ;
+\draw[ -latex] (2, 4.5)  -- (6, 9) ;
+\draw[ -latex] (2, 4.5)  -- (5.5, 6) ;
+% Edges Produced By Transitivity
+\draw[ -latex] (2, 1)  -- (6, 9) ;
+\draw[ -latex] (2, 1)  -- (5.5, 6) ;
+\draw[ -latex] (0, 1.5)  to  [out=50,in=-50]  (0, 6.5) ;
+\end{tikzpicture}
+\caption{}
+\end{centering}
+\end{subfigure}
+   \begin{subfigure}{.45\textwidth}
+   \begin{centering}
+   \begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
+\draw[] (0, 10) circle (0pt) node
+{{ $a^0: {}^1_{0}$}};
+\draw[] (0, 7) circle (0pt) node
+{\textbf{$x^3: {}^{k}_{1}$}};
+\draw[] (0, 4) circle (0pt) node
+{{ $a^5: {}^{k}_{0}$}};
+\draw[] (0, 1) circle (0pt) node
+{{ $l^6: {}^{1}_{1}$}};
+% Counter Variables
+\draw[] (6, 9) circle (0pt) node {\textbf{$j^1: {}^{1}_{0}$}};
+\draw[] (6, 6) circle (0pt) node {{ $j^4: {}^{k}_{0}$}};
+%
+% Value Dependency Edges:
+\draw[ ultra thick, -latex, densely dotted,] (0, 1.5)  -- (0, 3.5) ;
+\draw[ ultra thick, -latex, densely dotted,] (0, 4.5)  -- 
+(0, 6.5) ;
+\draw[  -latex] (0, 4.5)  to  [out=-230,in=230]  
+(0, 9.5) ;
+\draw[  -Straight Barb] (1.5, 3.5) arc (120:-200:1);
+\draw[  -Straight Barb] (6.5, 6.5) arc (150:-150:1);
+\draw[  -latex] (6, 6.5)  -- (6, 8.5) ;
+% Control Dependency
+\draw[ -latex] (1.5, 7)  -- (5, 9) ;
+\draw[ -latex] (1.5, 4)  -- (5, 9) ;
+\draw[ -latex] (1.5, 7)  -- (5, 6) ;
+\draw[ -latex] (1.5, 4)  -- (5, 6) ;
+\draw[  -latex] (0, 1.5)  to  [out=-230,in=230]  (0, 9.5) ;
+% Edges Produced By Transitivity
+\draw[ -latex] (2, 1)  -- (5, 9) ;
+\draw[ -latex] (2, 1)  -- (5, 6) ;
+\draw[ -latex] (0, 1.5)  to  [out=50,in=-50]  (0, 6.5) ;
+\end{tikzpicture}
+\caption{}
+   \end{centering}
+   \end{subfigure}
+\vspace{-0.4cm}
+ \caption{(a) The program $\kw{towRounds(k)}$, an example 
+%  of a program 
+with two rounds of adaptivity (b) The corresponding semantics-based dependency graph (c) The estimated dependency graph from $\THESYSTEM$.
+}
+\label{fig:overview-example}
+% \vspace{-0.8cm}
+\end{figure}
+}

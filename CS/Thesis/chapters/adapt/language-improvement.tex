@@ -1,0 +1,89 @@
+\paragraph{language}
+
+\highlight{
+ This {\tt Query While} language enriches previous language design with standard while loop and user inputs.
+ It is more expressive than the language designed in previous works.
+The previous language only supports the data analysis with the constant number of loop iterations.
+Compared to it, in the new language design,
+the general data analysis program with non-deterministic loop iterations
+(for example the program below as shown in Section~\ref{sec:prework-language})
+is supported.
+\[
+ {\assign{x}{20}};
+ \assign{y}{40};
+ \ewhile (x < y) \edo 
+ \{
+ \assign{x}{x + 1};
+ \assign{y}{y - 2};
+ \}\}
+ \] 
+Previous work does not support a data analysis program with user inputs, which is supported in the new language as well.
+}
+
+\paragraph*{Language}
+\highlight{\paragraph{Improvements through Examples}
+It is expressive in two following aspects.
+\begin{itemize}
+  \item \textbf{Improvements from Standard While Language}
+  \\
+  It also extends the standard while language with query requests. 
+  The general data analysis program with query requests on data  are supported in this {\tt Query While} language.
+  The program can access the database through a special  interface $\chi$ encapsulated by the identifier $\query$ (for example the program below) in the new language.
+  \[
+    {\assign{x}{20}};
+    \assign{y}{\query(\chi[2])};
+    \ewhile (x < 100) \edo 
+    \{
+      \assign{x}{x + 1};
+      \assign{y}{\query(\chi[x]*\chi[n])};
+      \}\}
+    \] 
+%
+    \item \textbf{Improvements from Previous Works}
+  \\
+This {\tt Query While} language is also more expressive than the language designed in previous works.
+The previous language only supports the data analysis with constant number of loop iterations.
+Comparing to it, in the new language design,
+the general data analysis program with non-deterministic loop iterations
+(for example the program below as shown in Section~\ref{sec:prework-language})
+is supported.
+\[
+  {\assign{x}{20}};
+  \assign{y}{40};
+  \ewhile (x < y) \edo 
+  \{
+    \assign{x}{x + 1};
+    \assign{y}{y - 2};
+    \}\}
+  \] 
+Previous work does not support data analysis program with user inputs, which is supported in the new language as well.
+\end{itemize}
+}
+
+
+\paragraph*{Semantics}
+\highlight{\paragraph*{Improvements}
+Comparing to previous works,
+this language and operational semantics design improves the expressiveness, efficiency, and the accuracy to a large extend.
+\begin{itemize}
+    \item \textbf{Improvements on Expressiveness}
+    \\
+  Based on the expressiveness improvements from the syntax of the {\tt Query While} language,
+  the new operational semantics design is also improved with the same features.
+  The general data analysis with nondeterministic iterations and user inputs is fully supported.
+  \item \textbf{Improvements on Accuracy}
+  \\
+  In previous operational semantics design, trace tracking only the annotated query.
+  Key information is lost for analyzing the adaptivity, which causes the in-accuracy in formalizing the adaptivity.
+  Comparing to it, the new trace-based operational semantics tracks all the labeled variables with its
+  assigned value in the trace.
+  In this sense, all the information is preserved for analyzing and formalizing the adaptivity.
+  \item \textbf{Improvements on Efficiency}
+  \\
+  The new operational semantics rules only update the configuration by appending event with $O(1)$ complexity.
+  Comparing to the exponential complexity in previous operational semantics rules, this improved the efficiency
+  significantly.
+  % Built on the new trace design and environment design, the configuration in the
+  % new operational semantics contains only the trace and program.
+\end{itemize}
+  }
