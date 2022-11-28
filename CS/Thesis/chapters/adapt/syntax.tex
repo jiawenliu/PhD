@@ -179,9 +179,9 @@ Labeled variables in $c$ is the set of assigned variables.
 %
 \begin{defn}[labelled Variables $\lvar$]
   \label{def:lvar}
-  {\footnotesize
+  {
   $$
-    \lvar_{c} \triangleq
+    \lvar(c) \triangleq
     \left\{
     \begin{array}{ll}
         \{{x}^l\}           
@@ -190,13 +190,13 @@ Labeled variables in $c$ is the set of assigned variables.
         \{{x}^l\}            
         & {c} = [{\assign x \query(\qexpr)}]^{l} 
         \\
-        \lvar({{c_1}}) \cup \lvar{({c_2}} ) 
+        \lvar(c_1) \cup \lvar(c_2) 
         & {c} = {c_1};{c_2}
         \\
-        \lvar_{{c}} \cup \lvar_{{c_2}}
+        \lvar(c) \cup \lvar(c_2)
         & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
         \\
-        \lvar_{{c}'}
+        \lvar(c')
         & {c}   = \ewhile ([\bexpr]^{l}, {c}')
   \end{array}
   \right.

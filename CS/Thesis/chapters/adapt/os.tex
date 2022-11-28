@@ -20,17 +20,22 @@ $ \begin{array}{lllll}
 \end{center}
 An assignment event tracks the execution of an assignment  or a query request and consists of the assigned variable, the label of the command that generates it, the value assigned to the variable, and the normal form of the query expression, $\qval$ if this command is a query request, otherwise a default value $\bullet$.
 A testing event tracks the execution of if and while commands and consists of the guard of the command, the label of the command, the result of evaluating the guard, while the last element is $\bullet$.
-%
-The event projection operators $\pi_i$ projects the $i$th element from an event: 
+
+The event projection operators $\pi_i$ projects the $i^{th}$ element from an event:
+$ \pi_i : 
+\eventset \to \mathcal{VAR}\cup \mbox{Boolean Expression}  \cup \mathbb{N} \cup \mathcal{VAL} \cup \mathcal{QVAL} $.
+Its computation is as follows,
 \\
-$\pi_i : 
-\eventset \to \mathcal{VAR}\cup \mbox{Boolean Expression}  \cup \mathbb{N} \cup \mathcal{VAL} \cup \mathcal{QVAL} $ 
-% \wqside{use b for Boolean expression?}
+$\pi_1(x, l, v, \bullet) = x $ \qquad  $\pi_1({x}, l, v, \qval) = x$ \qquad $ \pi_1(\bexpr, l, v, \bullet) = \bexpr$
 \\
-%
-% %
+$\pi_2(\_, l, \_, \_ ) = l$
+\\
+$\pi_3(\_, \_, v, \_) = v$
+\\
+$\pi_4(\_, \_, \_, \qval) = \qval$ \qquad $\pi_4(\_, \_, \_, \bullet) = \bullet$
+
 \paragraph{Trace}
-  Based on the event recording all the program's evaluations for expressions, 
+Based on the event recording all the program's evaluations for expressions, 
  the trace designed in the new trace-based operational semantics
  now tracks all these events.
 
@@ -244,20 +249,14 @@ takes a trace and a variable as input and returns the label of the latest assign
   %
 %  
 \paragraph{Environment}
-\highlight{
-  In the new trace-based operational semantics, the environment is simply an efficient operator.
+{
+  The environment is simply an efficient operator, $\env$ where $\env(\trace) x$ fetches the latest value assigned to $x$ in the trace $\trace$
   Since the trace records all the program's evaluations for assignments, 
   the value assigned to variables can be recovered from trace directly.
-  In this sense, in the new trace-based operational semantics,
-  the environment is designed more efficiently by reading value from trace directly as follows.
-  % the trace designed in the new trace-based operational semantics
+  In this sense, it is more efficiently by reading value from trace directly rather than using a separate memory recording the variable values.
 }
-An environment is standard, a map from variables to values.
-$\env : {\mathcal{T}}  \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\bot\}$, 
+Formally, the environment operator $\env : {\mathcal{T}}  \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\bot\}$, 
 which maps a trace and a variable to the latest value assigned to this variable on the trace is defined as follows.
-Queries can be uniquely annotated as $\mathcal{AQ}$, and the annotation $(l,w)$ considers the location of the query by line number $l$ and which 
-iteration the query is at when it appears in a loop statement, specified by $w$. A trace $t$ is a list of annotated queries accumulated along the execution of the program. 
-
 \[
 \begin{array}{lll}
 \env(\trace  \traceadd (x, l, v, \bullet)) x \triangleq v
@@ -273,7 +272,6 @@ iteration the query is at when it appears in a loop statement, specified by $w$.
 \env({[]} ) x \triangleq \bot
 \end{array}
 \]
- %% trace
 
  \paragraph*{Operational Semantics}
  The trace based operational semantics is described in terms of a small step evaluation relation

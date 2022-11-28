@@ -27,10 +27,6 @@ They are formally defined as follows.
   Given a program $c$'s estimated dependency graph 
   $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
   a \emph{finite walk} $k$ in $\traceG({c})$ is
-  % function $k: \mathcal{T} \to $ 
-  % sequence of edges.
-  % For a initial trace $\trace_0 \in \mathcal{T}$, 
-  % $k(\trace_0)$ is
   a sequence of edges $(e_1 \ldots e_{n - 1})$ 
   for which there is a sequence of vertices 
   $(v_1, \ldots, v_{n})$ such that:
@@ -199,14 +195,14 @@ In this way, it simply computes the length of the longest path over this DAG.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph*{The Adaptivity Computation Algorithm ($\pathsearch(c, \progG(c))$)}
 \begin{algorithm}
-    \caption{
-    {Adaptivity Computation Algorithm ({$\kw{\pathsearch(c, \progG(c))}$})}
-    \label{alg:adapt}
-    }
-    \begin{algorithmic}[1]
-    \REQUIRE The program $c$, 
-    Its estimated dependency graph: $\progG(c) = (\vertxs, \edges, \weights, \qflag)$
-    \STATE {\bf init} 
+  \caption{
+  {Adaptivity Computation Algorithm ({$\kw{\pathsearch(c, \progG(c))}$})}
+  \label{alg:adapt}
+  }
+  \begin{algorithmic}[1]
+  \REQUIRE The program $c$, 
+  Its estimated dependency graph: $\progG(c) = (\vertxs, \edges, \weights, \qflag)$
+  \STATE {\bf init} 
     % \\
     % current node: $c$, 
     \\
@@ -434,13 +430,6 @@ $k$.
 As highlighted in Line:14, we do not update
 $\kw{querynum}$ and $\kw{flowcapacity}$ when we identify the simple cycle $y^6 \to y^6$.
 This improves the accuracy and still guarantees the soundness.
-% Because
-% % because a second visiting of the same vertex 
-% if a vertex $v$ is visited, then a cycle is identified and  
-% % indicates there is a cycle goes back to this vertex, 
-% the traverse on this cycle is finished.
-%
-% then, when 
 Because in the following recursions, we continuously search for walks heading out from $y^6$, 
 the $\kw{flowcapacity}$ of this simple cycle does not restrict the walks going out of this vertex that do not interleave with the cycle $y^6 \to y^6$.
 However, if we keep updating the minimum weight, then we

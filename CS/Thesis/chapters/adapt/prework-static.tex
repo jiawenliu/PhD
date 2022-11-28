@@ -52,7 +52,7 @@ a variable estimation algorithm $\mathsf{VE}$, a matrix-vector based graph gener
 %
 The $\mathsf{VE}$ specifies the nodes of their variable-based dependency graph. The result of $\mathsf{VE}$ is stored in a global variable list $G$, fed to the next step.
 % \\
-    Figure~\ref{fig:prework-static_ag1} is a selection of the three key rules from their $\mathsf{VE}$ algorithm. 
+    Figure~\ref{fig:prework-static_alg1} is a selection of the three key rules from their $\mathsf{VE}$ algorithm. 
     This algorithm adds all the program variables in its SSA form to the global variable list $G$.
     % $\mathsf{VE}$ has the form $\ag{G; w; \ssa{c}}{ G'; w'} $, as shown in . The input of $\mathsf{VE}$ is a list of annotated variables $G$ collected before the program $\ssa{c}$, a loop map $w$ consistent with previous estimation, and an input SSA program $\ssa{c}$. The output of the algorithm is the updated global list $G'$, along with the updated loop maps $w$, for later estimation.  
     \\
@@ -112,7 +112,7 @@ The $\mathsf{VE}$ specifies the nodes of their variable-based dependency graph. 
 \end{mathpar}
 }
  \caption{The key rule of variable estimation algorithm.  }
-    \label{fig:prework-static_ag1}
+    \label{fig:prework-static_alg1}
 \end{figure}
 %
 \item \textbf{Graph Generating}
@@ -123,7 +123,7 @@ This weight is $1$ when the variable is assigned with a query request and $0$ ot
 % To be precise, the $i$th row, $j$th column of the matrix $M$, written $M[i][j]$, is  $1$ when there may be a dependency from variable $ G[i]$ to $G[j]$. Dually, $M[i][j] =0$ means no dependency. In a similar way, $V[i]=1$ means the variable $G[i]$ is assigned with a query request.
 % Figure~\ref{fig:prework-static_alg2} shows some selected rules of this algorithm.
 \highlight{The same key rules is selected in Figure~\ref{fig:prework-static_alg2}.
-The rule \textbf{ad-loop} is as low-efficient and expressiveness-limited as the rule \textbf{ag-loop} in Figure~\ref{fig:prework-static_ag1} for the same reason.
+The rule \textbf{ad-loop} is as low-efficient and expressiveness-limited as the rule \textbf{ag-loop} in Figure~\ref{fig:prework-static_alg1} for the same reason.
 This will be analyzed in detail in the limitation part.
 }
 %
@@ -236,7 +236,7 @@ They use standard longest path search algorithm to compute the adaptivity bound 
  However, this rewriting is low-efficient and unnecessary.
  The re-assignment problem can be resolved efficiently and accurately through many state-of-art static program analysis techniques, such as the
  variable reachable analysis, etc..
- \item Their variable estimation algorithm is low-efficient by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1},
+ \item Their variable estimation algorithm is low-efficient by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_alg1},
  and rule \textbf{ad-loop} in Figure~\ref{fig:prework-static_alg2}.
  These two rules unfold every iteration of the while loop and create new annotated variables for every iteration.
  This operation increased the complexity of the program analysis by exponential factors. 
@@ -247,7 +247,7 @@ They use standard longest path search algorithm to compute the adaptivity bound 
  \begin{enumerate}
  \item Their variable estimation algorithm is unable to analyze the programs with
  non-constant (or non-deterministic) loop iteration numbers.
- This is caused by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_ag1}.
+ This is caused by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_alg1}.
  This rule unfolds every iteration of the while loop, and creates new annotated variables for every iteration.
  In order to guarantee the termination of the analysis, they have to limit the loop with the constant number of loop iterations.
  Specifically in rule \textbf{ag-loop} and \textbf{ad-loop},

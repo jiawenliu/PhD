@@ -18,7 +18,7 @@ depends on the query $\query(\chi[1])$ via the \emph{control dependency} of the 
 
 To define dependency between program variables we will consider two events that are generated from the same command, hence they have the same variable name or boolean expression and label, but have either different value or different query expression, captured by the following definition. 
 
-\begin{defn}
+\begin{defn}[Events Different in the Value]
 \label{def:diff}
 Two events $\event_1, \event_2 \in \eventset$ differ in their value, or query value,
 denoted as $\diff(\event_1, \event_2)$, if and only if:
@@ -160,7 +160,8 @@ A variable ${x}_2^{l_2} \in \lvar(c)$  \emph{may-dependend} on the
   $\vardep({x}_1^{l_1}, {x}_2^{l_2}, {c})$, iff
 \begin{center}
 $
-{\small   \begin{array}{l}
+{
+\begin{array}{l}
 \exists \event_1, \event_2 \in \eventset^{\asn}, \trace \in \mathcal{T} \sthat
 \pi_{1}{(\event_1)}^{\pi_{2}{(\event_1)}} = {x}_1^{l_1}
 \land

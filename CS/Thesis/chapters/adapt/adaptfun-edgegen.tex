@@ -79,29 +79,30 @@ The operator $\mathsf{blk} : \cdom \to blocks$ gives all the blocks in program $
  \]
 computing $in(l)$ and $out(l)$ for every $B^l \in blocks(c) $, and repeating these two steps
 until the $in(l)$ and $out(l)$ are stabilized for every $B^l \in blocks(c) $
-% We use $\live_{in}(l,c)$ and $\live_{out}(l, c)$ denote the stabilized results for the command of label $l$ in program $c$. 
 We use $\live(l,c)$ to represent 
-% $\live_{in}(l,c)$ in the other part of the paper.
 denote the stabilized result of $in(l)$ at label $l$ in program $c$. 
-% The $\live_{in}(l,c)$ and $\live_{out}(l, c)$ is computed by the Standard worklist algorithm. (For simplicity, we use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.}
-% \\
-% The $\live_{in}(l,c)$ and $\live_{out}(l, c)$ 
+%
 \item The stabilized $in(l)$ and $out(l)$ for program $c$, as well as $\live(l, c)$,
 is computed by the standard work-list algorithm with detail as below. 
 % For simplicity, we use $\live(l,c)$ to represent $\live_{in}(l,c)$ in the other part of the paper.
-\begin{enumerate}
-    \item \textbf{initialize} in[l]=out[l]=$\emptyset$;
-    % \item 
-     in[0] = $\emptyset$
-    \item \textbf{initialize} a work queue $W$, contains all the blocks in $c$
-    \item while $|W|$ != 0 \\
-          pop $l$ in $W$ \\
-          old = out[l] \\
-          $in(l)$ =  $out(l')$ where $(l',\_, l) \in \absE(c)$\\
-          $out(l)$ = $\mathsf{gen}(b^l)$ $\cup$ ($in(l) - kill(b^l)$ ), where $b^l \in \mathsf{blk}(c)$   \\
-          \textbf{if} (old != out(l)) $W = W \cup \{l'| (l,l') \in (l',\_, l) \in \absE(c)\}$ \\
-          end while
-\end{enumerate}
+\begin{algorithm}
+  \caption{
+  {Working List Algorithm ({$\kw{wklist(c, \absG(c)))}$})}
+  \label{alg:adapt}
+  }
+  \begin{algorithmic}[1]
+  \REQUIRE The program $c$, the abstract control flow graph $\absG(c)$.
+  \STATE \textbf{initialize} in[l]=out[l]=$\emptyset$; in[0] = $\emptyset$
+    \\
+     a work queue $W$, contains all the blocks in $c$
+     \STATE {\bf while} $|W|$ != 0 \\
+     \STATE \qquad     pop $l$ in $W$ \\
+     \STATE \qquad     old = out[l] \\
+     \STATE \qquad     $in(l)$ =  $out(l')$ where $(l',\_, l) \in \absE(c)$\\
+     \STATE \qquad     $out(l)$ = $\mathsf{gen}(b^l)$ $\cup$ ($in(l) - kill(b^l)$), where $b^l \in \mathsf{blk}(c)$   \\
+     \STATE \qquad     {\bf if} (old != out(l)) $W = W \cup \{l'| (l,l') \in (l',\_, l) \in \absE(c)\}$ 
+        \end{algorithmic}
+      \end{algorithm}
 \end{enumerate}
 %
 \paragraph{Feasible Data-Flow Computation}

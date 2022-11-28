@@ -37,14 +37,14 @@
             \centering
            %}
            \quad
-           \begin{subfigure}{.35\textwidth}
+           \begin{subfigure}{.3\textwidth}
            \begin{centering}
        {\footnotesize
            $ \begin{array}{l}
                    \kw{multiRoundsS(k)} \triangleq \\
                       \clabel{ \assign{j}{0}}^{0} ; 
-                       \clabel{\assign{z}{\query(0)} }^{1} ;             
-                       \clabel{\assign{p}{0} }^{2} ; \\
+                       \clabel{\assign{z}{\query(0)} }^{1} ;  \\           
+                       \clabel{\assign{p}{0} }^{2} ; 
                        \eif(\clabel{ k = 0}^{3}, \\
                         \quad \clabel{ \assign{y}{\query(z)}}^{4}, \\
                         \quad \clabel{\eskip}^5);\\
@@ -54,7 +54,7 @@
                         \quad \clabel{\assign{j}{j + 1}}^{8}\\
                         \eif(\clabel{ j \neq k - 2}^{9}, \\
                         \quad \quad \clabel{ \assign{p}{0}}^{10} ,\\ 
-                        \quad \quad \clabel{\eskip}^{10})\\
+                        \quad \quad \clabel{\eskip}^{10})
                         \quad \Big);\\
                    \end{array}
            $       
@@ -62,7 +62,7 @@
            \caption{}
            \end{centering}
            \end{subfigure}
-           \begin{subfigure}{.6\textwidth}
+           \begin{subfigure}{.65\textwidth}
                \begin{centering}
                \begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
            % Variables Initialization

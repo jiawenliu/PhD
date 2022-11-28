@@ -59,9 +59,6 @@ n = 1 \Leftrightarrow x^l \in \qvar(c) \land n = 0 \Leftrightarrow  x^l \notin \
 \]
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% The Detailed Version in Explaining the Trace Operators %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% There are some operators: the trace concatenation operator $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$, combines two traces; the counting operator $\vcounter : \mathcal{T} \to \mathbb{N} \to \mathbb{N}$, 
-% which counts the occurrence of of a labeled variable in the trace. The full definitions of these above operators can be found in the appendix.
-% \\
 A semantics-based dependency graph $\traceG({c})= (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ 
 is \emph{well-formed} if and only if $ \{x^l \ |\ (x^l,w)\in \traceW({c})\} = \traceV({c}) $.
 \end{defn}
@@ -73,8 +70,8 @@ is \emph{well-formed} if and only if $ \{x^l \ |\ (x^l,w)\in \traceW({c})\} = \t
     \item The vertices $\traceV({c})$ of a program $c$ are all its labeled variables, $\lvar(c)$ which are statically collected.
     \item $\traceF(c)$ contains the \emph{query annotation} for 
     every vertex $x^l \in \traceV(c)$. It indicates whether $x^l$ comes from a query request (1) or not (0) by checking if the labeled variable $x^l$ of the vertex is in $\qvar(c)$.
-    \item Edges in $\traceE(c)$ are built from the $\vardep(x^i, y^j, c)$ relation between two labeled variables.
-    This is the key definition in order to formalize the intuitive \emph{may-dependency} relation between queries and the \emph{adaptivity}.
+    \item Edges in $\traceE(c)$ are built from the  \emph{variable may-dependency} relation, i.e. $\vardep(x^i, y^j, c)$ in Definition~\ref{def:var_dep} between two labeled variables.
+    This is the key definition in order to formalize the intuitive \emph{adaptivity}, and also ingredients the dependency information of the program.
     \item 
   The weight function in $\traceW(c)$ for each vertex, $w : \mathcal{T} \to \mathbb{N}$
 maps from a starting trace $\trace_0 \in \mathcal{T}_0(c)$ to a natural number.

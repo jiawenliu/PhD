@@ -1,5 +1,6 @@
 \begin{example}[Evaluation Trace for A Two Rounds Data Analysis Example Program]
-    In the following example program $\kw{towRounds(k)}$,    the analyst asks in total $k+1$ queries to the mechanism in two phases.
+    In the following example program $\kw{towRounds(k)}$, the same one as Figure~\ref{fig:overview_tworounds},
+    the analyst asks in total $k+1$ queries to the mechanism in two phases.
     %
     \[         \begin{array}{l}
       \kw{towRounds(k)} \triangleq \\
@@ -20,9 +21,6 @@
     the product of the empirical mean of the first $k$ attributes. 
     The query outside the loop corresponds to the second phase and computes an approximation of the empirical mean where each record is weighted by the sum of the empirical mean of the first $k$ attributes.
     %
-    % Queries are of the form $q(e)$ where $e$ is an expression with a special variable $\chi$ representing a possible row. Mainly $e$ represents a function from $X$ to some domain $U$, for example $U$ could be $[-1,1]$ or $[0,1]$. This function characterizes the linear query I are interested in running. As an example, $x \leftarrow q(\chi[2])$ computes an approximation, according to the used mechanism, of the empirical mean of the second attribute, identified by $\chi[2]$. Notice that I don't materialize the mechanism but I assume that it is implicitly run when I execute the query. 
-    % \jl{We use $\chi$ to abstract a possible row in the database and }
-    % queries are of the form $\query(\qexpr)$, where $\qexpr$ is a special expression 
     With the initial trace
     $\trace_0 = [(k, in, 2, \bullet)]$,
     the trace generated from this example is 
