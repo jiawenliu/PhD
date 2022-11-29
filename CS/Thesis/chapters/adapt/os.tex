@@ -672,7 +672,8 @@ $$
   \land
   \pi_{3}(\event_1) = \pi_{3}(\event_2)
   \land 
-  \pi_{4}(\event_1) =_q \pi_{4}(\event_2)
+  (\pi_{4}(\event_1) = \pi_{4}(\event_2) = \bullet
+  \lor \pi_{4}(\event_1) =_q \pi_{4}(\event_2))
   \]
   %
   As usual, we will denote by $\event_1 \neq \event_2$  the negation of the equivalence.
@@ -680,7 +681,7 @@ $$
 
   
   If we observe the operational semantics rules, we can find that no rule will shrink the trace. 
-So we have the Lemma~\ref{lem:tracenondec} with proof in Appendix~\ref{apdx:lemma_sec123}, 
+So we have the Lemma~\ref{lem:tracenondec} with proof in Appendix~\ref{apdx:tracenondec}, 
 specifically the trace has the property that its length never decreases during the program execution.
 \begin{lem}
 [Trace Non-Decreasing]
@@ -701,7 +702,7 @@ if this event is a query assignment event,
 it is possible that 
 the event showing up in this trace has a different form of query value, 
 but they are equivalent by Definition~\ref{def:query_equal}.
-So we have the following Corollary~\ref{coro:aqintrace} with proof in Appendix~\ref{apdx:lemma_sec123}.
+So we have the following Corollary~\ref{coro:aqintrace} with proof in Appendix~\ref{apdx:aqintrace}.
 \begin{coro}
 \label{coro:aqintrace}
 For every event and a trace $\trace \in \mathcal{T}$,
@@ -713,6 +714,6 @@ $\event$ and $\event'$ equivalent but may differ in their query value.
 \[
   \forall \event \in \eventset, \trace \in \mathcal{T} \sthat 
 \event \in \trace \implies \exists \trace_1, \trace_2 \in \mathcal{T}, 
-\event' \in \eventset \sthat (\event \in \event') \land \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  
+\event' \in \eventset \sthat (\event \in \trace') \land \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  
 \]
 \end{coro}

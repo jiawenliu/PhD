@@ -1,13 +1,12 @@
-% \begin{lem}[Uniqueness of the Labeled Variables]
-%     \label{lem:lvar_unique}
-%     For every program $c \in \cdom$ and every two labeled variables such that
-%     $x^i, y^j \in \lvar(c)$, then $x^i \neq y^j$.
-%     \[
-%       \forall c \in \cdom, x^i, y^j \in \mathcal{L} \st x^i, y^j \in \lvar(c)\implies x^i \neq y^j.
-%       \]
-%   \end{lem}
   \subsection{Proof of Lemma~\ref{lem:lvar_unique}}
   \label{apdx:lvar_unique}
+  \begin{lem}[Uniqueness of the Labeled Variables]
+    Given any program $c \in \cdom$ with its label variable set $\lvar(c)$,
+    every two labeled variables in this set are different.
+    \[
+      \forall c \in \cdom, x^i, y^j \in \lvar(c) \sthat x^i \neq y^j.
+      \]
+  \end{lem}
   \begin{proof}
     This is proved directly by the consistency property of the command label.
   \end{proof}
@@ -27,6 +26,18 @@
   %   \end{lem}
   \subsection{Proof of Lemma~\ref{lem:tracenondec}}
   \label{apdx:tracenondec}
+  \begin{lem}
+    [Trace Non-Decreasing]
+    For every program $c \in \cdom$ and traces $\trace, \trace' \in \mathcal{T}$, if 
+    $\config{c, \trace} \rightarrow^{*} \config{\eskip, \trace'}$,
+    then there exists a trace $\trace'' \in \mathcal{T}$ with $\trace \tracecat \trace'' = \trace'$
+    %
+    $$
+    \forall \trace, \trace' \in \mathcal{T}, c \sthat 
+    \config{c, \trace} \rightarrow^{*} \config{\eskip, \trace'} 
+    \implies \exists \trace'' \in \mathcal{T} \sthat \trace \tracecat \trace'' = \trace'
+    $$
+    \end{lem}
       \begin{proof}
       Taking arbitrary trace $\trace \in \mathcal{T}$, by induction on program $c$, we have the following cases:
       \caseL{$c = [\assign{x}{\expr}]^{l}$}
@@ -133,21 +144,21 @@
     %
     \subsection{Proof of Lemma~\ref{coro:aqintrace}}
     \label{apdx:aqintrace}
-    %     \begin{coro}
-    % % \label{coro:aqintrace}
-    % For every event and a trace $\trace \in \mathcal{T}$,
-    % if $\event \in \trace$, 
-    % then there exist another event $\event' \in \eventset$ and traces $\trace_1, \trace_2 \in \mathcal{T}$
-    % such that $\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace $
-    % with 
-    % $\event$ and $\event'$ equivalent but may differ in their query value.
-    % \[
-    %   \forall \event \in \eventset, \trace \in \mathcal{T} \st
-    % \event \in \trace \implies \exists \trace_1, \trace_2 \in \mathcal{T}, 
-    % \event' \in \eventset \st (\event \in \event') \land \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  
-    % \]
-    % \end{coro}
-    \begin{proof}
+    \begin{coro}
+      % \label{coro:aqintrace}
+      For every event and a trace $\trace \in \mathcal{T}$,
+      if $\event \in \trace$, 
+      then there exist another event $\event' \in \eventset$ and traces $\trace_1, \trace_2 \in \mathcal{T}$
+      such that $\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace $
+      with 
+      $\event$ and $\event'$ equivalent but may differ in their query value.
+      \[
+        \forall \event \in \eventset, \trace \in \mathcal{T} \sthat 
+      \event \in \trace \implies \exists \trace_1, \trace_2 \in \mathcal{T}, 
+      \event' \in \eventset \sthat (\event \in \trace') \land \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  
+      \]
+      \end{coro}
+  \begin{proof}
     By unfolding the $\aq \aqin t$, we have the following cases:
     %
     \caseL{$t = []$} The hypothesis is $\efalse$, this case is proved.
