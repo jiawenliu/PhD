@@ -1,7 +1,7 @@
 
 \subsection{Proof of Lemma~\ref{lem:abscfg_sound}}
 \label{apdx:abscfg_sound}
-\begin{lem}[Soundness of the Abstract Events Computation]
+\begin{lemma}[Soundness of the Abstract Events Computation]
   For every program $c$ and
   an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.
   an initial trace  $\vtrace_0 \in \mathcal{T}_0(c)$,
@@ -19,7 +19,7 @@
 \absevent \in \absflow(c)
 \end{array}
 \]
-\end{lem}
+\end{lemma}
 
 \begin{proof}
   Taking arbitrary $\trace_0 \in \mathcal{T}$, and an arbitrary event $\event = (\_, l, \_) \in \eventset$, it is sufficient to show:
@@ -167,7 +167,7 @@ Then this case is proved by repeating the proof in case (1) and case (2).
 
 \subsection{Proof of Lemma~\ref{lem:abscfg_uniquex}}
 \label{apdx:abscfg_uniquex}
-\begin{lem}[Uniqueness of the Abstract Events Computation]
+\begin{lemma}[Uniqueness of the Abstract Events Computation]
   For every program $c$ and
   an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.
   an initial trace  $\vtrace_0 \in \mathcal{T}_0(c)$,
@@ -185,7 +185,7 @@ Then this case is proved by repeating the proof in case (1) and case (2).
 \absevent \in \absflow(c)
 \end{array}
 \]
-\end{lem}
+\end{lemma}
 \begin{proof}
   This is proved trivially by induction on the program $c$.
 \end{proof}
@@ -195,7 +195,7 @@ Then this case is proved by repeating the proof in case (1) and case (2).
 \subsection{Soundness of Weight Estimation, Theorem~\ref{thm:transition_bound_sound}}
   \label{apdx:weight_soundness}
   Preliminary Theorem from paper~\cite{sinn2017complexity}.
-  \begin{thm}[Soundness of the Transition Bound]
+  \begin{theorem}[Soundness of the Transition Bound]
     % \label{thm:transition_bound_sound}
   For each program ${c}$ and an edge $\absevent = (l, \_, \_) \in \absG(c)$, if $l$ is the label of an assignment command,
   %  label $l \in \lvar(c)$,
@@ -214,7 +214,7 @@ Then this case is proved by repeating the proof in case (1) and case (2).
         \vcounter(\trace, l) \leq v
       \end{array}
       \]
-  \end{thm}
+  \end{theorem}
 
   {
   \begin{thm}[Soundness of the Weight Estimation]
