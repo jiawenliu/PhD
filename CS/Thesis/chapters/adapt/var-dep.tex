@@ -140,11 +140,14 @@ $\event_2 \in \trace_3 \land \event_2 \not\in \trace_3'$ in Eq~\ref{eq:eventdep}
 $\vcounter(\trace', \pi_2(\event_b)) = \vcounter(\trace, \pi_2(\event_b))$ is used to make sure the two executions are
 in the same loop iteration as well.
 Different from Eq~\ref{eq:eventdep}(b) line:3,
-we use a testing event, $\event_b$ here because
-$\vcounter(\trace, \pi_2(\event_2)) = \vcounter(\trace', \pi_2(\event_2'))$ cannot guarantee the disappearance
-when there is no influence through control dependency. Checking only $\event_2$'s occurrence causes false positive.
-And the presence of a test event whose value is affected by the change in $\event_1$
-can guarantee that the computation goes through a control flow guard.
+we use a testing event, $\event_b$ here because checking only $\event_2$'s occurrence and the
+$\vcounter(\trace, \pi_2(\event_2)) = \vcounter(\trace', \pi_2(\event_2'))$
+causes false positive cannot
+% guarantee the disappearance
+when there is no influence through control dependency. 
+% Checking only $\event_2$'s occurrence
+I use the presence of a test event whose value is affected by the change in $\event_1$
+to guarantee that the influence goes through a control flow guard in the first step.
 This is correct because the control dependency can only be passed through the guard of if or while command,
 and this guard must be evaluated into two different values ($\event_b$ and $\neg \event_b$) in the two executions.
 }

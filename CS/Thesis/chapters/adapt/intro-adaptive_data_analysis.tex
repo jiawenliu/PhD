@@ -54,31 +54,31 @@ More precisely, in Fig.~\ref{fig:generalization_errors}(a) we show the results o
 This analysis can be seen as a classifier which first runs 400 non-adaptive queries on the first 400 attributes of the data, looking for correlations between the attributes and a label, and then runs one last query which depends on all these correlations.
 Without any mechanism the generalization error of the last query is pretty large, and the lower generalization error is achieved when the data-splitting method is used.
 Fig.~\ref{fig:generalization_errors}(c) shows how this situation also change with the number of queries. Specifically, it shows the root mean square error of the last \emph{adaptive} query when the numbers queries varies. This also highlight the fact that different mechanisms, for the same analysis, produce results with very different generalization error.
-In Fig.~\ref{fig:generalization_errors}(b), we show the results of a specific analysis\footnote{We will present this analysis formally in Section~\ref{sec:examples}.} with four hundreds rounds of adaptivity.
+In Fig.~\ref{fig:generalization_errors}(b), we show the results of a specific analysis\footnote{We will present this analysis formally in Section~\ref{sec:adapt-example}.} with four hundreds rounds of adaptivity.
 At each step, this analysis runs an adaptive query based on the results of the previous ones. Without any mechanism, the generalization error of most of the queries is pretty large, and this error can be lowered by using Gaussian noise. 
 {\small
 \begin{figure}
 \centering
-\begin{subfigure}{.32\textwidth}
+\begin{subfigure}{.4\textwidth}
 \begin{centering}
 \includegraphics[width=1.0\textwidth]{tworound.png}
 \caption{}
 \end{centering}
 \end{subfigure}
 \quad
-\begin{subfigure}{.32\textwidth}
+\begin{subfigure}{.4\textwidth}
 \begin{centering}
 \includegraphics[width=1.0\textwidth]{multipleround.png}
 \caption{}
 \end{centering}
 \end{subfigure}
-\begin{subfigure}{.32\textwidth}
+\begin{subfigure}{.5\textwidth}
 \begin{centering}
 \includegraphics[width=1.0\textwidth]{twoRounds-rmse-fourmechs.png}
 \caption{}
 \end{centering}
 \end{subfigure}
-\vspace{-0.5cm}
+% \vspace{-0.5cm}
  \caption{
  The generalization errors of two adaptive data analysis examples, under different choices of mechanisms.
  (a) Data analysis with 2 rounds adaptivity, 

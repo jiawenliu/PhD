@@ -62,47 +62,44 @@ The computation steps are as follows,
 \begin{enumerate}
 \item \textbf{Variable Modifications}
 For each variable $x$ in a program $c$, this step computes three edge sets, $\inc(c, x)$, $\dec(c, x)$,
-and $\reset(c, x)$ for $x$.
-Every edge in a set corresponds to a transition in which $x$ is increased,
-%  $\inc(c, x)$,
-decreased
-% $\dec(c, x)$ and 
-or reset
-% $\reset(c, x)$, 
-respectively.
-\\
-$\inc: \cdom \to \mathcal{V} \to \mathcal{P}(\absevent) $
-is the set of the edges where the variable increase, 
-\\
-$\inc(c, x) = \{ \absevent | \absevent = (l, l', x' \leq x + v) \land \absevent \in \absflow(c)\}$
-\\
-$\dec: \mathcal{V} \to \mathcal{P}(\absevent) $
-is the set of abstract events where the variable decrease,
-\\
-$\dec(c, x) = \{\absevent| \absevent = (l, l', x' \leq x - v) \land \absevent \in \absflow(c)\}$
-\\
-$\reset: \cdom \to \mathcal{V} \to \mathcal{P}(\absevent) $
-is the set of the abstract events where the variable is reset,
-\\
-$\reset(c, x) = \{\absevent| \absevent = (l, l', x' \leq y - v) \land x \neq y \land \absevent \in \absflow(c)\}$
-\\
-$\resetchain: \cdom \to \mathcal{V} \to \mathcal{P}(\mathcal{P}(\absevent)) $
-is the set of the chain of abstract events where the variable is reset through the chain.
-\\
-In addition to
-collect the edge set that $x$ is reset on every edge in this set, i.e., compute the $\reset(c, x)$,
-we also compute a set, $\resetchain(c, x)$ contains sequences of edges for $x$
-follow the Definition 20 in \cite{sinn2017complexity}.
-In each sequence, $(e_0, \cdots, e_m) \in \resetchain(c, x)$
-a variable $x_i$ is reset by another variable $x_{i + 1}$ on edge $e_{i}$
-and $x_{i + 1}$ is reset on edge $e_{i + 1}$ recursively
-for every $i = 0, \cdots, m - 1$.
-$x$ is reset on the first edge $e_0$ of every sequence in $\resetchain(c, x)$.
-\highlight{Rephrase: Each edge $e_i$ in a sequence $(e_0, \cdots, e_m) \in \resetchain(c, x)$
-resets a variable $x_i$ by another variable $x_{i + 1}$ such that $x_{i + 1}$
-is reset on edge $e_{i + 1}$ recursively. The first edge $e_0$ of each sequence resets the variable $x$.}
+  and $\reset(c, x)$ for $x$.
+  Every edge in a set corresponds to a transition in which $x$ is increased,
+  %  $\inc(c, x)$,
+  decreased
+  % $\dec(c, x)$ and 
+  or reset
+  % $\reset(c, x)$, 
+  respectively.
+  \\
+  $\inc: \cdom \to \vardom \to \mathcal{P}(\absevent) $
+  is the set of the edges where the variable increase, 
+  %\\
+  \[ \inc(c, x) = \left\{ \absevent | \absevent = (l, x' \leq x + v, l') \land \absevent \in \absflow(c) \right\} \]
+  %\\
+  $\dec: \vardom \to \mathcal{P}(\absevent) $
+  is the set of abstract events where the variable decrease,
+  %\\
+  \[\dec(c, x) = \left\{\absevent| \absevent = (l,  x' \leq x - v, l') \land \absevent \in \absflow(c) \right\}\]
+  %\\
+  $\reset: \cdom \to \vardom \to \mathcal{P}(\absevent) $ is the set of the abstract events where the variable is reset,
 %
-\\
+  \[\reset(c, x) = \left\{ \absevent| \absevent = (l,  x' \leq y - v, l') \land x \neq y \land \absevent \in \absflow(c) \right\}\]
+% $\resetchain: \cdom \to \mathcal{V} \to \mathcal{P}(\mathcal{P}(\absevent)) $
+% is the set of the chain of abstract events where the variable is reset through the chain.
+% \\
+% In addition to
+% collect the edge set that $x$ is reset on every edge in this set, i.e., compute the $\reset(c, x)$,
+% we also compute a set, $\resetchain(c, x)$ contains sequences of edges for $x$
+% follow the Definition 20 in \cite{sinn2017complexity}.
+% In each sequence, $(e_0, \cdots, e_m) \in \resetchain(c, x)$
+% a variable $x_i$ is reset by another variable $x_{i + 1}$ on edge $e_{i}$
+% and $x_{i + 1}$ is reset on edge $e_{i + 1}$ recursively
+% for every $i = 0, \cdots, m - 1$.
+% $x$ is reset on the first edge $e_0$ of every sequence in $\resetchain(c, x)$.
+% \highlight{Rephrase: Each edge $e_i$ in a sequence $(e_0, \cdots, e_m) \in \resetchain(c, x)$
+% resets a variable $x_i$ by another variable $x_{i + 1}$ such that $x_{i + 1}$
+% is reset on edge $e_{i + 1}$ recursively. The first edge $e_0$ of each sequence resets the variable $x$.}
+%
 In the following steps, $c$ is omitted in $\inc(x)$,
 $\dec(x)$ and $\reset(x)$ for concise when the reference of a program $c$ is clear in the context.
 \item {Assigning The Local Bound to An Edge}
@@ -237,6 +234,7 @@ the execution times of this assignment command in $c$.
       \trace \in \mathcal{T}, v \in \mathbb{N}
        \sthat 
        \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\vtrace} 
+       \\ \qquad 
        \land \config{\absclr(\absevent, c), \trace_0} \aarrow v
        \land
       \vcounter(\trace, l) \leq v

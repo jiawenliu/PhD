@@ -23,11 +23,11 @@ similar to the execution-based analysis.
 %     the execution-based dependency graph. Then, I design an algorithm computing the adaptivity upper bound soundly 
 %    and accurately on the program-based dependency graph.
 \begin{itemize}
-   \item In Section~\ref{sec:static-dep},
+   \item In Section~\ref{sec:alg_edgegen},
    the data \emph{dependency relation} is analyzed through the static data flow analysis technique.
-   \item The Section~\ref{sec:static-quantity} presents the \emph{dependency quantity} analysis through
+   \item The Section~\ref{sec:alg_weightgen} presents the \emph{dependency quantity} analysis through
    the static reachability bound analysis techniques developed from the first part of this thesis.
-   \item The static analysis for estimating program's adaptivity is presented in Section~\ref{sec:static-adapt}.
+   \item The static analysis for estimating program's adaptivity is presented in Section~\ref{sec:alg_adaptcompute}.
    % the program adaptivity estimation, 
    In this analysis, I construct a program-based dependence graph for approximating the execution-based graph in Section~\ref{sec:dynamic-adapt}.
    Then, based on this graph, I design an algorithm

@@ -19,6 +19,7 @@ $ \begin{array}{lllll}
 \end{array}$
 \end{center}
 An assignment event tracks the execution of an assignment  or a query request and consists of the assigned variable, the label of the command that generates it, the value assigned to the variable, and the normal form of the query expression, $\qval$ if this command is a query request, otherwise a default value $\bullet$.
+
 A testing event tracks the execution of if and while commands and consists of the guard of the command, the label of the command, the result of evaluating the guard, while the last element is $\bullet$.
 
 The event projection operators $\pi_i$ projects the $i^{th}$ element from an event:
@@ -29,9 +30,9 @@ Its computation is as follows,
 $\pi_1(x, l, v, \bullet) = x $ \qquad  $\pi_1({x}, l, v, \qval) = x$ \qquad $ \pi_1(\bexpr, l, v, \bullet) = \bexpr$
 \\
 $\pi_2(\_, l, \_, \_ ) = l$
-\\
+\qquad
 $\pi_3(\_, \_, v, \_) = v$
-\\
+\qquad
 $\pi_4(\_, \_, \_, \qval) = \qval$ \qquad $\pi_4(\_, \_, \_, \bullet) = \bullet$
 
 \paragraph{Trace}
@@ -39,16 +40,16 @@ Based on the event recording all the program's evaluations for expressions,
  the trace designed in the new trace-based operational semantics
  now tracks all these events.
 
-The trace $\trace \in \mathcal{T} $ is a list of events, 
-collecting the events generated along the program execution. 
-\[
+ A \emph{trace}
+ $\trace$ is a list of \emph{events} generated when executing specific commands. We denote by $\mathcal{T}$ the set of traces and we will use list notation for traces, where $[]$ is the empty trace, the operator $\traceadd$ combines an event and a trace in a new event, 
+ and the operator $\tracecat$ concatenates two traces. 
+ \[
 \begin{array}{llll}
 \mbox{Trace} & \trace
 & ::= & [] ~|~ \trace :: \event
 \end{array}
 \]
-$\mathcal{T} $ represents the set of traces. 
-A trace can be regarded as the program history, 
+A \emph{trace} can be regarded as the program history, 
 which records all the evaluations for assignment commands and guards in $\eif$ and $\ewhile$ command.
 This includes queries asked by the analyst during the execution of the program as well. 
 I collect the trace with a trace-based operational semantics based on transitions 
@@ -249,14 +250,11 @@ takes a trace and a variable as input and returns the label of the latest assign
   %
 %  
 \paragraph{Environment}
-{
-  The environment is simply an efficient operator, $\env$ where $\env(\trace) x$ fetches the latest value assigned to $x$ in the trace $\trace$
+The environment is simply an efficient operator, $\env$ where $\env(\trace) x$ fetches the latest value assigned to $x$ in the trace $\trace$.
   Since the trace records all the program's evaluations for assignments, 
   the value assigned to variables can be recovered from trace directly.
   In this sense, it is more efficiently by reading value from trace directly rather than using a separate memory recording the variable values.
-}
-Formally, the environment operator $\env : {\mathcal{T}}  \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\bot\}$, 
-which maps a trace and a variable to the latest value assigned to this variable on the trace is defined as follows.
+Formally, the environment operator, $\env : {\mathcal{T}}  \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\bot\}$ maps a trace and a variable to the latest value assigned to this variable on the trace, as defined below.
 \[
 \begin{array}{lll}
 \env(\trace  \traceadd (x, l, v, \bullet)) x \triangleq v
@@ -627,7 +625,7 @@ The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval
   %
   \end{mathpar}
   }
-      \caption{Trace-based Operational Semantics for Language.}
+      \caption{Trace-based Operational Semantics for {\tt QWhile} Language.}
       \label{fig:os}
   \end{figure}
 

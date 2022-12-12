@@ -130,7 +130,7 @@ I develop a static program analysis in Section~\ref{sec:adapt-static}, named {\T
 \end{enumerate}
 % \\
 %
-\subsection{Proposed Methodology}
+\subsection{Methodology}
 \label{sec:adapt-intro-overview}
 
 \subsubsection{Language Design}
@@ -314,54 +314,33 @@ with a \emph{quantitative relation} as weight. % analysis,
 %
 Though we have the intuitive \emph{Adaptivity} formally and precisely defined through the semantics-based program analysis,
 it is still not useful enough for programmers.
-The weakness of the semantics-based formalization comes from its in-efficiency.
-It can only give the \emph{Adaptivity} number
-after the program is executed multiple times.
+% The weakness of the semantics-based formalization comes from its in-efficiency.
+Programmer need to execute the program multiple times in order to have the most precise \emph{Adaptivity} following the definition.
 When the query requests, the multiple executions consume a large amount of computation and communication resources.
-This requires us to develop an efficient analysis method, 
-which can provide the programmers with the \emph{Adaptivity} quantity.
+This requires us to develop an efficient static analysis method, 
+which can provide the programmers with the \emph{Adaptivity} quantity before executing the program.
 Because the static program analysis techniques usually don't require the execution of the program,
-they are more efficient than the semantics-based formalization.
+they are very efficient.
 Motivated by this, we develop a static program analysis framework, named {\THESYSTEM}.
-% the through static-based 
-% program analysis techniques.
-% % In order to provide the programmers with useful information in an efficient way,
-% I develop a static program analysis
-% to estimate this adaptivity quantity efficiently.
-% % , also without lose the usefulness of the information. 
-% Through
+
 \paragraph{Research Goal - Adaptivity Estimation}
 Targeting on the third challenge
-% --\textbf{Adaptivity Formalization}--
 for estimating the adaptivity, 
 the major research goal is to develop analysis method which can
-% The second challenge is 
-% give a sound and accurate \emph{upper bound} for the 
 provide the programmers with the \emph{adaptivity} quantity
 soundly, accurately and
 efficiently
 % defined 
 through static program analysis.
-% for a given data analysis program.
-% Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
-% For example, as shown in \cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
-% If one feature's correlation changes, the classifier depending on features is also affected. 
-% The adaptive data analysis model I consider and our definition of adaptivity suggest that for this task I can use a program analysis that is based on some form of dependency analysis. This analysis needs to take into consideration:
 There are three sub-research goals in estimating \emph{adaptivity} statically.
 Each goal aims to resolve a fact introduced in the \textbf{Adaptivity Estimation} challenge in Section~\ref{sec:adapt-motivation}.
 \\
 subgoal-1) Designing a data flow analysis algorithm, aims to estimate whether a query may depend on the other queries. 
 This analysis needs to consider the monolithic blocks of the program, through the use of variables and values, on other parts of the program.
-% the fact that, in general, a query $Q$ is not a monolithic block but rather it may depend, 
-% through the use of variables and values, on other parts of the program. 
-% Hence, it needs to consider some form of data flow analysis. 
 \\
 subgoal-2) Integrating the control flow analysis techniques into the static analysis,
  aims to 
 capture the query dependency soundly
-% in the case
-% fact that, in general, the decision on 
-% where the dependent query might not be executed under the 
 under the control influence.
 % of the first query. 
 % Hence, 
@@ -371,9 +350,7 @@ subgoal-3) Combining the reachability bound analysis techniques into the static 
 % I'm not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
 % Hence, it needs to consider some 
 aims to estimate
-% the quantitative information on the query requests dependencies. 
 the dependency depth for query requests.
-% {A quick example is that: I store the result of query $Q_1$ in variable $x$ and use variable $y$ to record the result of query $Q_2$. I want to construct the third query $Q_3$ which relies on the value stored in $x$, let us say, $Q_3$ will ask for the sum of the first column of a table if $x$ is positive and the sum of the second column otherwise. In this situation, I need data flow analysis. On the other hand, if I need the value of $y$ to help us decide whether I should ask $Q_3$, for example, I ask the third query if $y$ is odd, and do not ask if $y$ is even. Naturally, to be able to handle this case, control flow analysis comes into play. Formally speaking, }
 \paragraph{Limitations of Existing Works}
 \begin{itemize}
  \item \textbf{Limitations in Static Program Analysis Area}
@@ -399,9 +376,6 @@ The previous works from \cite{weihao22}
 % In the previous 
 develop program analysis algorithm for estimating the adaptivity.
 However, this algorithm is low efficiency, and in-precise. It is not automatic either. 
-% The \emph{adaptivity} quantities in many general data analysis programs are unable to be defined in the previous \emph{adaptivity} definition.
-% For the program which is able to be defined,
-% they cannot give the most precise adaptivity definitions matching the intuitive \emph{adaptivity}.
 This analysis algorithm and limitations are introduced with more details in Section~\ref{sec:prework-formalization}.
 \end{itemize}
 
@@ -438,7 +412,6 @@ this step is proved as a sound upper bound for the \emph{dependency quantity} de
 % In 
 The static program adaptivity analysis in this step
 % , specifically estimating 
-estimates the \emph{adaptivity} formalized in the third step of adaptivity formalization in Section~\ref{sec:adaptfun-adaptcompute}.
 According to the third step of semantics-based adaptivity analysis, 
 {\THESYSTEM} in this step also constructs a program-based dependence graph for approximating the semantics-based dependency graph.
 % in Section~\ref{sec:dynamic-adapt}.
