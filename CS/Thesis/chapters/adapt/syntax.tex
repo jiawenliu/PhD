@@ -13,10 +13,6 @@ The syntax is shown as follows,
 & \sim & ::= & < ~|~ \leq ~|~ == 
 \\  
 %
-\mbox{Label} 
-& l & \in & \mathbb{N} \cup \{\lin, \lex\} 
-\\ 
-%
 \mbox{Arithmetic Expression} 
 & \aexpr & ::= & 
 n \in \mathbb{N}^{\infty} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr 
@@ -46,7 +42,12 @@ n \in \mathbb{N}^{\infty} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \mbox{Query Value} & \qval & ::= 
 & {n ~|~ \chi[n] ~|~ \qval \oplus_a  \qval ~|~ n \oplus_a  \chi[n]
     ~|~ \chi[n] \oplus_a  n}
-    \\
+\\
+%
+\mbox{Label} 
+& l & \in & \mathbb{N} \cup \{\lin, \lex\} 
+\\ 
+%
 \mbox{Labeled Command} 
 & {c} & ::= &   [\assign {{x}}{ {\expr}}]^{l} ~|~  [\assign {{x} } {{\query(\qexpr)}}]^{l}
 ~|~ {\ewhile [ \bexpr ]^{l} \edo {c} }
