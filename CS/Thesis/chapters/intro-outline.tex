@@ -68,10 +68,11 @@ The second part focus on solving the Reachability-bound Problem through by progr
     In Section~\ref{sec:reachability-outline}, it presents the structure of this chapter.
 
     \paragraph{Chapter~\ref{sec:reachability-analysis}} presents the {Path-sensitive Reachability Bound analysis} in following sections.
-    In Section~{\ref{sec:psRB-language}} first give the language and program model formally, including the
+
+    In Section~{\ref{sec:psRB-language}}, it first give the language and program model formally, including the
     language syntax in Section~\ref{sec:psRB-language-syntax} and the trace-based operational semantics in Section~\ref{sec:psRB-language-semantics}.
     
-    Section~\ref{sec:psRB-definition} gives the \emph{Reachability-bound} definition.
+    Then Section~\ref{sec:psRB-definition} gives the \emph{Reachability-bound} definition.
 
     Section~\ref{sec:psRB-analysis-alg} presents the new \emph{Path-sensitive reachability-bound} analysis algorithm, named $\kw{psRB}$ through following subsections.
     %
@@ -79,14 +80,13 @@ The second part focus on solving the Reachability-bound Problem through by progr
     In Section~\ref{sec:psRB-progabs}, the first step abstracted the program into an \emph{abstract transition graph}.
     Based on this graph, Section~\ref{sec:psRB-refine} then refines the multi-paths loop in this program and generates a refined program.
     According to the graph and the refined program, Section~\ref{sec:psRB-rank} computes the ranking function for each edge on the graph and estimates the value of each ranking function.
-    \subsection{Loop Bound and Path Local Reachability-bound Computation}
     Section~\ref{sec:psRB-pathlocalrb} and \ref{sec:psRB-looprb} then computes the \emph{loop reachability-bound} and \emph{loop reachability-bound} for each path and loop of this program using the ranking function and the graph.
     Then Section~\ref{sec:psRB-rb} finally gives the \emph{path-sensitive reachability-bound} computation algorithm for each program point.
 
     \paragraph{Chapter~{\ref{sec:psRB-eval}}} first represents ste-by-step examples to illustrate the algorithm clearly in Section~\ref{sec:psRB-example},
     and the implementation and evaluation results on over some real world benchmarks in Section~\ref{sec:psRB-eval}.
     
-    \paragraph{Chapter~\ref{sec:psrB-relatedwork}} discusses the related works in this area.
+    \paragraph{Chapter~\ref{sec:psRB-relatedwork}} discusses the related works in this area.
 
     \item \redd{PART \romannum{3} \quad  Conclusion and Future Works}
     \paragraph*{Chapter~\ref{sec:conclusion}}
