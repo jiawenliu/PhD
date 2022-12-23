@@ -389,7 +389,7 @@ my loving son \\ Taro
 
 \chapter{Introduction \todo{Add details after PLDI}}
 \label{sec:reachability-intro}
-\section{Reachability Bound Problem}
+\section{Reachability-bound Problem}
 \label{sec:reachability-background}
 
 \section{Motivation and Overview}
@@ -398,7 +398,7 @@ my loving son \\ Taro
 \section{Chapter Outline}
 \label{sec:reachability-outline}
 
-\chapter{Path-Sensitive Reachability Bound Analysis}
+\chapter{Path-Sensitive Reachability-bound Analysis}
 \label{sec:reachability-analysis}
 
 \section{{Program Model}}
@@ -408,25 +408,46 @@ my loving son \\ Taro
 % \input{language}
 % %
 % %
-\subsection{{Reachability Bound Formalization}}
+\section{{The Reachability-bound}}
 \label{sec:execution_rb}
 % % % % 
-\section{Program Abstraction and Refinement}
-\label{sec:reachability-program_refine}
-% \subsection{Constraint Program Refinement}
 
-\section{Path Sensitive Reachability Bound Analysis}
+
+\section{Path Sensitive Reachability-bound Analysis}
 \label{sec:reachability-analysis}
-\subsection{Outside-In Algorithm}
-\label{sec:outsidein}
-\subsection{Inside-Out Algorithm}
-\label{sec:insideout}
+% \input{alg-preface}
+%
+\subsection{Main Steps of Path-sensitive Reachability-bound Analysis}
+\label{sec:psRB-preface}
+% \input{alg-preface}
+% \input{alg-psrb}
+\subsection{Abstraction Transition Graph}
+\label{sec:progabs}
+% \input{alg-progabs}
+\subsection{Loop Refinement}
+\label{sec:refine}
+% \input{alg-refine}
+\subsection{Ranking Function Computation and Estimation}
+\label{sec:rank}
+% \input{alg-rank}
+\subsection{Loop Bound and Path Local Reachability-bound Computation}
+\label{sec:pathlocalrb}
+% \input{alg-pathlocalrb}
+\subsection{Loop Reachability-bound Computation}
+\label{sec:looprb}
+% \input{alg-looprb}
+\subsection{Path and Program Point Reachability-bound Computation}
+\label{sec:alg-rb}
 
 
-
-\chapter{Examples and Experimental Results}
+\chapter{Examples}
 \label{sec:reachability-example}
 
+\chapter{Evaluations}
+\label{sec:reachability-eval}
+
+\chapter{Related Works}
+\label{sec:psRB-relatedwork}
 
 
 % \cleardoublepage
@@ -454,7 +475,7 @@ my loving son \\ Taro
 
 \section{Accurate Adaptivity Analysis with Practical Application}
 
-\section{Accurate Reachability Bound Analysis}
+\section{Accurate Reachability-bound Analysis}
 
 
 \cleardoublepage
