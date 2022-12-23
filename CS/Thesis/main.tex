@@ -331,16 +331,6 @@ my loving son \\ Taro
 % \input{chapters/adapt/static-overview}
 \input{chapters/adapt/adaptfun-guide}
 
-
-% \subsection{Static Data Dependency Analysis}
-% \label{sec:static-dep}
-% % \input{chapters/adapt/adaptfun}
-% \input{chapters/adapt/static-dep}
-
-% \subsection{Static Data Dependency Quantity Analysis}
-% \label{sec:static-quantity}
-% \input{chapters/adapt/static-quantity}
-
 \subsection{Vertex and Query Annotation Estimations}
 \label{sec:alg_vertexgen}
 \input{chapters/adapt/adaptfun-vertexgen}
@@ -387,7 +377,7 @@ my loving son \\ Taro
 
 \chapter*{\redd{PART \romannum{2} \quad  REACHABILITY BOUND ANALYSIS} \todo{ ==> 10\%}}
 
-\chapter{Introduction \todo{Add details after PLDI}}
+\chapter{Introduction \todo{Add details}}
 \label{sec:reachability-intro}
 \section{Reachability-bound Problem}
 \label{sec:reachability-background}
@@ -401,20 +391,19 @@ my loving son \\ Taro
 \chapter{Path-Sensitive Reachability-bound Analysis}
 \label{sec:reachability-analysis}
 
-\section{{Program Model}}
-\label{sec:language}
+\section{{Language and Program Model}}
+\label{sec:psRB-language}
 \subsection{Language}
+\label{sec:psRB-language-syntax}
 \subsection{Trace-Based Operational Semantics}
-% \input{language}
+\label{sec:psRB-language-semantics}
 % %
 % %
 \section{{The Reachability-bound}}
-\label{sec:execution_rb}
+\label{sec:psRB-definition}
 % % % % 
-
-
 \section{Path Sensitive Reachability-bound Analysis}
-\label{sec:reachability-analysis}
+\label{sec:psRB-analysis-alg}
 % \input{alg-preface}
 %
 \subsection{Main Steps of Path-sensitive Reachability-bound Analysis}
@@ -422,29 +411,31 @@ my loving son \\ Taro
 % \input{alg-preface}
 % \input{alg-psrb}
 \subsection{Abstraction Transition Graph}
-\label{sec:progabs}
+\label{sec:psRB-progabs}
 % \input{alg-progabs}
 \subsection{Loop Refinement}
-\label{sec:refine}
+\label{sec:psRB-refine}
 % \input{alg-refine}
 \subsection{Ranking Function Computation and Estimation}
-\label{sec:rank}
+\label{sec:psRB-rank}
 % \input{alg-rank}
 \subsection{Loop Bound and Path Local Reachability-bound Computation}
-\label{sec:pathlocalrb}
+\label{sec:psRB-pathlocalrb}
 % \input{alg-pathlocalrb}
 \subsection{Loop Reachability-bound Computation}
-\label{sec:looprb}
+\label{sec:psRB-looprb}
 % \input{alg-looprb}
 \subsection{Path and Program Point Reachability-bound Computation}
-\label{sec:alg-rb}
+\label{sec:psRB-rb}
 
 
+\chapter{Evaluation}
+\label{sec:psRB-eval}
 \chapter{Examples}
-\label{sec:reachability-example}
+\label{sec:psRB-example}
 
-\chapter{Evaluations}
-\label{sec:reachability-eval}
+\section{Implementation}
+\label{sec:psRB-implementation}
 
 \chapter{Related Works}
 \label{sec:psRB-relatedwork}
