@@ -77,7 +77,7 @@ is \emph{well-formed} if and only if $ \{x^l \ |\ (x^l,w)\in \traceW({c})\} = \t
 maps from a starting trace $\trace_0 \in \mathcal{T}_0(c)$ to a natural number.
 A weight function $w \in \traceW(c)$ is a function that for every starting trace $\trace_0 \in \mathcal{T}_0(c)$ 
 gives the number of times the assignment of the corresponding vertex $x^l$ is visited. Notice that weight functions are total and with range $\mathbb{N}$. This means that if a program $c$ has some non-terminating behavior, the set $\traceW(c)$ will be empty.
-To rule out this situation, we consider as well-formed only graphs which have a weight for every vertex. 
+Again as discussed above in Section~\ref{sec:language-os}, we consider as well-formed only graphs which have a weight for every vertex with the terminating programs. 
 For each vertex $x^l$, it tracks its visiting times (i.e., the evaluation times of the command with the label $l$) when the program $c$ is evaluated from the initial trace $\trace_0$ into $\eskip$, $\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\trace'} $.
 The visiting times is computed by the counter operator $\vcounter(\trace', l)$
 by counting the occurrence of the label $l$ in $\trace'$.

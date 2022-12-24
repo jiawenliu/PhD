@@ -41,7 +41,7 @@ Based on the event recording all the program's evaluations for expressions,
  now tracks all these events.
 
  A \emph{trace}
- $\trace$ is a list of \emph{events} generated when executing specific commands. We denote by $\mathcal{T}$ the set of traces and we will use list notation for traces, where $[]$ is the empty trace, the operator $\traceadd$ combines an event and a trace in a new event, 
+ $\trace$ is a list of \emph{events} generated when executing specific commands. We denote by $\mathcal{T}$ the set of all finite traces and we will use list notation for traces, where $[]$ is the empty trace, the operator $\traceadd$ combines an event and a trace in a new event, 
  and the operator $\tracecat$ concatenates two traces. 
  \[
 \begin{array}{llll}
@@ -59,15 +59,16 @@ which consists of a command $c$ to be evaluated and a starting trace $\trace$,
 evaluates to another configuration with the trace updated along with the evaluation of the command $c$ to the normal form of the command $\eskip$.
 %
 \\
-Some useful operators are defined below w.r.t. the trace.
+We denote by $\mathcal{T}$ the set of all finite traces.
+If a program $c$ has some non-terminating behavior, it will produce an infinite trace from $\mathcal{T} \cup \{\infty\}$. 
+In the rest part of this work, we rule out this situation and consider finite trace as well-formed only when the program terminates.
+\\
+Some useful operators are defined below w.r.t. the finite traces.
 \\
 The \emph{Trace Concatenation} operator $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$ concatenate two traces
 as the standard list concatenation formally
 in Definition~\ref{def:trace_cat}.
 The concatenation preserves the order of every element in the two traces.
-%  combines two traces.
-% I also have the operator $\tlabel : \mathcal{T} \to \ldom$, which gives the set of labels in every event belonging to a trace. 
-% The full definitions of these above operators can be found in the appendix.
 \begin{defn}[Trace Concatenation: $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$]
   \label{def:trace_cat}
   Given two traces $\trace_1, \trace_2 \in \mathcal{T}$, the trace concatenation operator 
@@ -331,6 +332,37 @@ The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval
  \end{mathpar}
  }
 
+ If $\config{c, \trace_0} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace_0 \tracecat \trace}$,
+ then the program's execution terminates and produces a finite execution trace $\trace \in \mathcal{T}$. 
+If a program $c$ has some non-terminating behavior, we define its execution as follows.
+\\
+\begin{defn}[Non-terminating and Infinite Trace]
+  \label{def:non-terminating}
+  Given a program $c$ and an initial trace $\trace \in \mathcal{T}_0(c)$,
+  when $c$ executes with $\trace$,  we define the execution of $c$ under $\trace$ is non-terminating and produces an infinite trace $\trace' \in \mathcal{T} \cup \{\infty\}$, as 
+  $\config{c, \trace_0} \uparrow^{\infty} \trace' \in \lim(\uparrow)$
+  where the limit is defined as follows.
+  \[
+    \begin{array}{l}
+      \lim(\uparrow) 
+      \triangleq 
+    \\ \quad
+    \Big\{
+      (\config{c, \trace}, \trace') ~\vert~ 
+      c\in \cdom, \trace \in \mathcal{T}_0(c),
+      \trace' \in \mathcal{T} \cup \{\infty\} 
+      \land \exists \trace_0 \in \mathcal{T}, c_0 \in \cdom \sthat 
+      \config{c, \trace} \to \config{c_0, \trace_0}
+      \\ \qquad \qquad \qquad 
+      \land \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \mathcal{T}, \trace'' \in \mathcal{T} \cup \{\infty\}, c_i, c_{i + 1} \in \cdom \sthat 
+      \config{c_i, \trace_i} \to \config{c_{i + 1}, \trace_{i + 1}} 
+      \land  \trace' = \trace_{i + 1} \tracecat \trace''
+    \Big\}
+    \end{array}
+  \]
+\end{defn}
+In the rest part of this work, we consider as well-formed only the terminating execution and finite trace.
+
  \begin{figure}
   \begin{mathpar}
   \boxed{ \config{\trace,\aexpr} \aarrow v \, : \, \mbox{Trace  $\times$ Arithmetic Expr $\Rightarrow$ Arithmetic Value} }
@@ -474,25 +506,7 @@ The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval
   \xrightarrow{}
   \mbox{Command $\times$ Trace}
   }
-  \and
-  \boxed{\config{{c, \trace}}
-  \xrightarrow{} 
-  \config{{c',  \trace'}}
-  }
   \\
-  \inferrule
-  {
-  \empty
-  }
-  {
-  \config{\clabel{\eskip}^l,  \trace } 
-  \xrightarrow{} 
-  \config{\clabel{\eskip}^l, \trace}
-  }
-  ~\textbf{skip}
-  %
-  \and
-  %
   \inferrule
   {
   \event = ({x}, l, v, \bullet)
@@ -685,12 +699,12 @@ specifically the trace has the property that its length never decreases during t
 [Trace Non-Decreasing]
 \label{lem:tracenondec}
 For every program $c \in \cdom$ and traces $\trace, \trace' \in \mathcal{T}$, if 
-$\config{c, \trace} \rightarrow^{*} \config{\eskip, \trace'}$,
+$\config{c, \trace} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace'}$,
 then there exists a trace $\trace'' \in \mathcal{T}$ with $\trace \tracecat \trace'' = \trace'$
 %
 $$
-\forall \trace, \trace' \in \mathcal{T}, c \sthat 
-\config{c, \trace} \rightarrow^{*} \config{\eskip, \trace'} 
+\forall \trace, \trace' \in \mathcal{T}, c \in \cdom, l \in \lvar(c) \sthat 
+\config{c, \trace} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace'} 
 \implies \exists \trace'' \in \mathcal{T} \sthat \trace \tracecat \trace'' = \trace'
 $$
 \end{lem}

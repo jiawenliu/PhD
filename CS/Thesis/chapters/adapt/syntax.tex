@@ -96,7 +96,7 @@ We use following notations to represent the set of corresponding terms:
 \dbdom  & : & \mbox{{Set of Databases}} 
 \\
 %
-{\mathcal{T}} & : & \mbox{Set of Traces}
+{\mathcal{T}} & : & \mbox{Set of Finite Traces}
 \\
 %
 \qdom & : & \mbox{{Domain of Query Results}}\\
@@ -151,8 +151,6 @@ database $\chi$'s number of raw.
 \[
   \query(\chi[3] + 5) = \frac{1}{n}\sum\limits_{i = 0}^{n}\chi_i[3] + 5
   \]
-
-
 % %
 \paragraph{Labeled Command}
 Commands are the typical ones from while languages with an additional command $\assign{x}{\query(\qexpr)}$ 
@@ -209,60 +207,6 @@ Labeled variables in $c$ is the set of assigned variables.
   expression $\aexpr$, boolean expression $\bexpr$ and query expression $\qexpr$ respectively.
   The free variables
   showing up in $c$, which aren't defined before using, are actually the input variables of this program.
-  
-% \begin{defn}[Assigned Variables ($\avar : \cdom \to \mathcal{P}(\mathcal{V} \times \mathbb{N})$)]
-% \label{def:avar}
-% {\footnotesize
-% $$ \avar_{c} \triangleq
-%   \left\{
-%   \begin{array}{ll}
-%       \{{x}^l\}                   
-%       & {c} = [{\assign x e}]^{l} 
-%       \\
-%       \{{x}^l\}                   
-%       & {c} = [{\assign x \query(\qexpr)}]^{l} 
-%       \\
-%       \avar_{{c_1}} \cup \avar_{{c_2}}  
-%       & {c} = {c_1};{c_2}
-%       \\
-%       \avar_{{c}} \cup \avar_{{c_2}} 
-%       & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
-%       \\
-%       \avar_{{c}'}
-%       & {c}   = \ewhile ([\bexpr]^{l}, {c}')
-% \end{array}
-% \right.
-% $$
-% }
-% \end{defn}
-%
-
-% \begin{defn}[labelled Variables $\lvar$]
-% \label{def:lvar}
-% {\footnotesize
-% $$
-%   \lvar_{c} \triangleq
-%   \left\{
-%   \begin{array}{ll}
-%       \{{x}^l\} \cup FV(\expr)^{\lin}                  
-%       & {c} = [{\assign x e}]^{l} 
-%       \\
-%       \{{x}^l\}   \cup FV(\qexpr)^{\lin}                
-%       & {c} = [{\assign x \query(\qexpr)}]^{l} 
-%       \\
-%       \lvar_{{c_1}} \cup \lvar_{{c_2}}  
-%       & {c} = {c_1};{c_2}
-%       \\
-%       \lvar_{{c}} \cup \lvar_{{c_2}} \cup FV(\bexpr)^{\lin}
-%       & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
-%       \\
-%       \lvar_{{c}'} \cup FV(\bexpr)^{\lin}
-%       & {c}   = \ewhile ([\bexpr]^{l}, {c}')
-% \end{array}
-% \right.
-% $$
-% }
-% \end{defn}
 %
 We also defined the set of query variables for a program $c$,
 it is the set of variables set to the result of a query in the program formally in Definition~\ref{def:qvar}.
