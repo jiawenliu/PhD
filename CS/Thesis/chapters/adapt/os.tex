@@ -296,7 +296,6 @@ Then normal form $\qval$ characterize the linear query that is run against the d
 The query result $v$ is the expected value of the function $\lambda \chi.\qval$ applied to each row of the dataset. 
 We summarize this process with the notation $\query(\qval) = v$ which we use in the rule $\textbf{query}$. 
 Once the answer of the query is computed, the rules record all the needed information in the trace. 
-As usual, we will use $\to^*$ for the reflexive and transitive closure of $\to$. 
  
 The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval$ is defined by the following rules which reduce a query expression to its normal form.
 {\small
@@ -332,6 +331,7 @@ The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval
  \end{mathpar}
  }
 
+ As usual, we will use $\to^*$ for the reflexive and transitive closure of $\to$. 
  If $\config{c, \trace_0} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace_0 \tracecat \trace}$,
  then the program's execution terminates and produces a finite execution trace $\trace \in \mathcal{T}$. 
 If a program $c$ has some non-terminating behavior, we define its execution as follows.
