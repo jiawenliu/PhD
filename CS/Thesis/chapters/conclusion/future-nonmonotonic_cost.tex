@@ -222,16 +222,15 @@ be performed on a generalized $\THESYSTEM$. $\THESYSTEM$ will be generalized spe
 % % the analysis
 % $\THESYSTEM$ framework onto the program's resource cost analysis. 
 \begin{enumerate}
- \item The analysis processes in the first two steps of $\THESYSTEM$ in Section~\ref{sec:static-datadep}
- and Section~\ref{sec:static-quantity} will be adopted exactly the same in the generalized $\THESYSTEM$.
- \item Then, generalized $\THESYSTEM$ will construct a similar program-based dependency graph 
- in the same way as in Section~\ref{sec:static-adapt}. In the same way as defining $\traceOP$, 
+ \item The analysis processes in the first two steps of $\THESYSTEM$ in Section~\ref{sec:adapt-static}
+ and Section~\ref{sec:alg_weightgen} will be adopted exactly the same in the generalized $\THESYSTEM$.
+ \item Then, generalized $\THESYSTEM$ will construct a similar estimated dependency graph 
+ in the same way as in Section~\ref{sec:adapt-static}. 
+ In the same way as defining $\traceOP$, 
  the estimated graph is enriched with the new annotation for describing the non-monotonic property.
-% but without query annotation. 
-% \item According to the formalized resource cost quantity from the execution-based analysis above,
-% generalized $\THESYSTEM$ will add extra annotation on this graph accordingly.
- \item Then, based on the dependency quantity analysis result, the adaptivity quantity in Definition~\ref{def:prog_adapt}
- will be modified for describing this resource cost quantity, through the new non-monotonic length definition (similar to Definition~\ref{def:NMlen}) on the finite walk.
+ \item Then, based on the reachability bound analysis result, the weight in the estimated graph
+ now describes this resource cost quantity,
+  through the new non-monotonic length definition (similar to Definition~\ref{def:NMlen}) on the finite walk.
  \item Then in the last step, I will design a new longest walk computation algorithm for computing this quantity.
 % will be adopted to search for the longest 
 % walk under the modified restriction and compute the bound for 
@@ -249,16 +248,3 @@ with the only difference that the heap requires an operator for decreasing but a
 This observation explained the similarity between
 the adaptivity property and the non-monotonic quantitative property. This is the underlining idea that we can generalize the Adaptivity analysis framework work for analyzing the non-monotonic property.
 \input{examples/nonmono_nested_while}
-% As shown in the Example~\ref{ex:heapcost} above, the heap resource consumption during the program 
-% execution is accumulating in the same way as the program's adaptivity. 
-% Specifically, in the line: 6 and the line : 9
-% the list assigned to $x$ and $y$ is re-written instead of accumulated.
-% So the heap consumption in the loop isn't accumulated recursively, which is 
-% the same as the case where the adaptivity isn't accumulated because of non-dependency between variables.
-% In other words, these operations in the above cases imply implicit cost decreases 
-% which are all considered as increases in the traditional resource analysis 
-% method.
-
-% Following the same system structure as $\THESYSTEM$,
-% by modifying the restriction on the finite walk, compute different resource costs for the program.
-
