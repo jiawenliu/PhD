@@ -24,7 +24,7 @@ A testing event tracks the execution of if and while commands and consists of th
 
 The event projection operators $\pi_i$ projects the $i^{th}$ element from an event:
 $ \pi_i : 
-\eventset \to \mathcal{VAR}\cup \mbox{Boolean Expression}  \cup \mathbb{N} \cup \mathcal{VAL} \cup \mathcal{QVAL} $.
+\eventset \to \mathcal{V}\cup \mbox{Boolean Expression}  \cup \mathbb{N} \cup \mathcal{VAL} \cup \mathcal{QVAL} $.
 Its computation is as follows,
 \\
 $\pi_1(x, l, v, \bullet) = x $ \qquad  $\pi_1({x}, l, v, \qval) = x$ \qquad $ \pi_1(\bexpr, l, v, \bullet) = \bexpr$
@@ -213,10 +213,8 @@ formally as follows in Definition~\ref{def:trace_cnt}.
       \]
 \end{defn}
 The \emph{Latest Label}
-operator $\llabel : \mathcal{T} \to \mathcal{VAR} \to \{\mathbb{N}\}\cup \{\bot\}$,
+operator $\llabel : \mathcal{T} \to \mathcal{V} \to \mathbb{N} \cup \{ \bot\}$,
 takes a trace and a variable as input and returns the label of the latest assignment event which assigns value to that variable. 
-  % We introduce an operator $\llabel : \mathcal{T} \to \mathcal{VAR} \to \ldom \cup \{\bot\}$, which 
-  % takes a trace and a variable and returns the label of the latest assignment event which assigns value to that variable.
   Its behavior is defined as follows,
   \begin{defn}[Latest Label]
     \[
@@ -227,12 +225,6 @@ takes a trace and a variable as input and returns the label of the latest assign
     % &
     ~~~
     \llabel(\trace :: (b, l, v, \bullet)) x \triangleq \llabel(\trace) x
-    % &
-    % \\
-    % \llabel(\trace  :: (y, l, v, \bullet)) x \triangleq \llabel(\trace ) x
-    % &
-    % \llabel(\trace :: (y, l, v, \qval)) x \triangleq \llabel(\trace ) x
-    % &
     ~~~
     \llabel({[]}) x \triangleq \bot
     % \end{array}
@@ -255,7 +247,7 @@ The environment is simply an efficient operator, $\env$ where $\env(\trace) x$ f
   Since the trace records all the program's evaluations for assignments, 
   the value assigned to variables can be recovered from trace directly.
   In this sense, it is more efficiently by reading value from trace directly rather than using a separate memory recording the variable values.
-Formally, the environment operator, $\env : {\mathcal{T}}  \to \mathcal{VAR} \to \mathcal{VAL} \cup \{\bot\}$ maps a trace and a variable to the latest value assigned to this variable on the trace, as defined below.
+Formally, the environment operator, $\env : {\mathcal{T}}  \to \mathcal{V} \to \mathcal{VAL} \cup \{\bot\}$ maps a trace and a variable to the latest value assigned to this variable on the trace, as defined below.
 \[
 \begin{array}{lll}
 \env(\trace  \traceadd (x, l, v, \bullet)) x \triangleq v
@@ -703,7 +695,7 @@ $\config{c, \trace} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace'}$,
 then there exists a trace $\trace'' \in \mathcal{T}$ with $\trace \tracecat \trace'' = \trace'$
 %
 $$
-\forall \trace, \trace' \in \mathcal{T}, c \in \cdom, l \in \lvar(c) \sthat 
+\forall \trace, \trace' \in \mathcal{T}, c \in \cdom, l \in \ldom \sthat 
 \config{c, \trace} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace'} 
 \implies \exists \trace'' \in \mathcal{T} \sthat \trace \tracecat \trace'' = \trace'
 $$

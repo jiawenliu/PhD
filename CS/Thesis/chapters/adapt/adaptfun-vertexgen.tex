@@ -10,31 +10,24 @@ The first component of the \emph{estimated dependency graph} is the vertex set, 
 Every vertex is an assigned variable in the program, which comes from an assignment command or query request command with a unique label. 
 These vertices are collected by statically scanning the program, like what we do for vertices of the \emph{semantics-based dependency graph}, as follows.
 %
-\highlight{
 \[
-    \progV(c) \triangleq \left\{ 
-  x^l \in \mathcal{LV}
-  ~ \middle\vert ~
-  x^l \in \lvar(c)
-  \right\}
-  \]
-  }
-  %
-where $\mathcal{A}_{\lin}$ is the set of arithmetic expressions over $\mathbb{N}$ and program's input variables. 
+    \progV(c) \triangleq \lvar(c)
+\]
 
-\paragraph{Query Annotation Computation}
-The static scanning of the programs also tells us whether one vertex(assigned variable) is assigned by a query request.
-% We have similar definition when defining the Semantics-based Dependency Graph, 
+\paragraph{Query Annotation Estimation}
+The static scanning of the programs also tells us whether a vertex is a variable assigned by the query request.
 Identically to the 
 \emph{semantics-based dependency graph}, $\progF(c)$ is
-a set of pairs $\progF(c) \in \mathcal{P}(\mathcal{LV} \times \{0, 1\} )$ 
+a set of pairs $\progF(c) \in \mathcal{P}(\lvar(c) \times \{0, 1\} )$ 
 mapping each $x^l \in \progV(c)$ to either $0$ or $1$. 
-$1$ denotes $x^{l}$ is a member of $ \qvar_{c}$, which is the set of program's variables assigned with query requests, 
+$1$ denotes $x^{l}$ is a member of $ \qvar(c)$, which is the set of program's variables assigned with query requests, 
 and $0$ means $x^{l}$ not in this set. 
-It is defined formally below.
+It is defined formally below identical to the $\traceF(c)$.
 %
-\[\progF(c) =\left\{(x^l, n)  \in  \mathcal{LV} \times \{0, 1\} 
+\[
+  \progF(c) =\left\{(x^l, n)  \in  \lvar(c) \times \{0, 1\} 
 ~ \middle\vert ~
-x^l \in \lvar_{c},
-n = 1 \iff x^l \in \qvar_{c} \land n = 0 \iff  x^l \not\in \qvar_{c} .
-\right\}\]
+\forall x^l \in \lvar(c) \sthat
+n = 1 \implies x^l \in \qvar(c) \land n = 0 \implies  x^l \not\in \qvar(c) .
+\right\}
+\]

@@ -11,8 +11,8 @@
    %
 \[
   \begin{array}{l}
-    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_) \in \eventset \sthat 
-\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  l, l' \in \absV(c), \event = (\_, l, \_) \in \eventset \sthat 
+\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
 \land \event \in \trace 
 \\
 \qquad \implies \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat  
@@ -26,7 +26,7 @@
   \[
   \begin{array}{l}
     \forall \trace \in \mathcal{T} \sthat 
-\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
 \land \event \in \trace 
 \\
 \qquad \implies 
@@ -41,7 +41,7 @@
   {
   \config{[\assign{{x}}{\aexpr}]^{l'},  \trace } 
   \xrightarrow{} 
-  \config{\eskip, \trace \tracecat [({x}, l', v) ]}
+  \config{\clabel{\eskip}^{l'}, \trace \tracecat [({x}, l', v) ]}
   }$, for some $v \in \mathbb{N}$ and $\trace = [({x}, l', v) ]$.
   \\
   There are 2 cases, where $l' = l$ and $l' \neq l$.
@@ -177,8 +177,8 @@ Then this case is proved by repeating the proof in case (1) and case (2).
 %
 \[
   \begin{array}{l}
-    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_) \in \eventset^{\asn} \sthat 
-\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  l, l' \in \absV(c), \event = (\_, l, \_) \in \eventset^{\asn} \sthat 
+\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
 \land \event \in \trace 
 \\
 \qquad \implies \exists! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat  
@@ -208,7 +208,7 @@ Then this case is proved by repeating the proof in case (1) and case (2).
         \forall c \in \cdom, l \in \lvar(c),\trace_0 \in \mathcal{T}_0(c), 
         \trace \in \mathcal{T}, v \in \mathbb{N}
          \sthat  
-         \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\vtrace} 
+         \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\vtrace} 
          \land \config{\absclr(\absevent, c), \trace_0} \aarrow v
          \land
         \vcounter(\trace, l) \leq v
@@ -230,7 +230,7 @@ Then this case is proved by repeating the proof in case (1) and case (2).
   % \max \left\{ 
     % \vcounter(\vtrace') l ~ \middle\vert~
   % \forall \vtrace, \trace' \in \mathcal{T} \sthat  
-  \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+  \config{{c}, \trace} \to^{*} \config{\clabel{\eskip}^{l'}, \trace\tracecat\vtrace'} 
   \land 
   \config{\trace, w} \earrow v
   \land
@@ -245,10 +245,9 @@ Then this case is proved by repeating the proof in case (1) and case (2).
   and arbitrary $\vtrace, \trace' \in \mathbb{T},
   v \in \mathbb{N}$ satisfying
   \\
-  $\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+  $\config{{c}, \trace} \to^{*} \config{\clabel{\eskip}^{l'}, \trace\tracecat\vtrace'} 
   \land 
   \config{\trace, w} \earrow v$
-  %  labelled variable $x^l \in \lvar_c$.
   \\
   % By definition of $\progV$ in $\progG(c)$, we know $ x^l \in \vertxs$ and we have. 
   \\
@@ -266,9 +265,6 @@ Then this case is proved by repeating the proof in case (1) and case (2).
   $.
    Then, it is sufficient to show:
   \[
-  %   \max \left\{ \vcounter(\vtrace') l ~ \middle\vert~
-  % \forall \vtrace \in \mathcal{T} \sthat  \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
-  % \leq 
   \forall v \in \mathbb{N} \sthat  
   \config{\absclr(\absevent), \trace} \earrow 
   \vcounter(\vtrace', l) \leq v
@@ -292,7 +288,7 @@ To show:
 \[
   \begin{array}{l}
     \max \left\{ \vcounter(\vtrace') l ~ \middle\vert~
-\forall \vtrace \in \mathcal{T} \sthat  \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
+\forall \vtrace \in \mathcal{T} \sthat  \config{{c}, \trace} \to^{*} \config{\clabel{\eskip}^{l'}, \trace\tracecat\vtrace'} \right\} 
 \\
 \leq 
 Incr(\locbound(\absevent)) + 
@@ -301,7 +297,7 @@ Incr(\locbound(\absevent)) +
 \]
   Taking an arbitrary initial trace
   $\trace_0 \in \mathcal{T}$, 
-  executing $c$ with $\trace_0$, let $\trace$ be the trace after evaluation, i.e., $\config{{c}, \trace_0} \to^{*} \config{\eskip,\vtrace}$, it is sufficient to show:
+  executing $c$ with $\trace_0$, let $\trace$ be the trace after evaluation, i.e., $\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'},\vtrace}$, it is sufficient to show:
   \[ 
     \begin{array}{l}
       \vcounter(\vtrace') l \leq 
@@ -322,7 +318,7 @@ Given a program ${c}$, we have:
 \[
 \forall \absevent = (l, dc, l') \sthat  
 \max \left\{ \vcounter(\vtrace') l ~ \middle\vert~
-\forall \vtrace \in \mathcal{T} \sthat  \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
+\forall \vtrace \in \mathcal{T} \sthat  \config{{c}, \trace} \to^{*} \config{\clabel{\eskip}^{l'}, \trace\tracecat\vtrace'} \right\} 
 \leq 
 \locbound(\absevent)
 \]
@@ -333,7 +329,7 @@ Given a program ${c}$, we have:
   \\
   Taking an arbitrary $\vtrace_0 \in \mathcal{T}$, 
   let $\trace \in \mathcal{T}$ be of resulting trace of executing $c$ with $\trace$, 
-  i.e., $\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace}$,
+  i.e., $\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace}$,
   \\
   we know the
   assignment command at line $l$ associated with the abstract event $\absevent$ will be executed at most once, i.e.,:

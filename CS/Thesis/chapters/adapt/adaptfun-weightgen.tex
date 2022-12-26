@@ -1,8 +1,7 @@
 This section presents the quantitative analysis algorithm, which performs over the same \emph{abstract control flow graph}, $\absG(c)$ of a program $c$ as well. 
 As the $\traceW(c)$ defined in Definition~\ref{def:trace_graph}, the weight of every $x^l \in \progV(c)$ is
 the execution times of the command with label $l$. 
-In this sense, to estimate weight of $x^l$, this step first computes an upper bound, the \emph{reachability-bound}\cite{GulwaniZ10} for every $l \in \absV(c)$
-%  in the abstract control flow graph 
+In this sense, to estimate weight of $x^l$, this step first computes an upper bound, the \emph{reachability-bound}~\cite{GulwaniZ10} for every $l \in \absV(c)$
 on the execution times of the command with label $l$. 
 Then, the \emph{reachability-bound} is used to estimate the maximal visiting times of the labeled variable $x^l \in \lvar(c)$
 and 
@@ -11,7 +10,7 @@ the weight of the vertex $x^l \in \progV(c)$.
 The two computation steps are summarized as follows,
 \begin{enumerate}
   \item \textbf{Reachability Bound Analysis}
-  This analysis estimate for each program point $l in \absV(c)$ a symbolic upper bounds on the execution times of the command with label $l$. 
+  This analysis estimate for each program point $l \in \absV(c)$ a symbolic upper bounds on the execution times of the command with label $l$. 
   These symbolic upper bounds are expressions with the input variables as free variables, hence they correspond to the weight functions in the semantics-based dependency graphs. 
   Our reachability-bound algorithm adapts to our setting ideas from previous work~\cite{ZulegerGSV11, SinnZV14, sinn2017complexity}.
   Specifically, it provides an upper bound on the number of times every command can be executed.
@@ -45,16 +44,15 @@ times of the corresponding edge recursively.
 \item The last step uses \emph{reachability-bound} $w$ for edge $l \xrightarrow{dc} l'$ as the bound on the maximum visiting times of the vertex $l \in \absV(c)$ and generates a set $\absW(c)$ contains a pair $(l, w)$ for every $l \in \absV(c)$.
 \end{enumerate}
 
-The algorithm in this step is inspired from the Algorithm.2 in paper~\cite{SinnZV14},
-% which assigns a variable to each edge on which this variable decrease as its ranking function.
-the Algorithm.3 in paper~\cite{ZulegerGSV11},
-and the Definition.25 in Section 4 of paper~\cite{sinn2017complexity}.
+The algorithm in this step is inspired from the Algorithm~2 in paper~\cite{SinnZV14},
+the Algorithm~3 in paper~\cite{ZulegerGSV11},
+and the Definition~25 in Section 4 of paper~\cite{sinn2017complexity}.
 \begin{itemize}
-\item Algorithm.3 in paper~\cite{ZulegerGSV11} assigns a set of variables to each transition in which these variables decrease as the local bound
+\item Algorithm~3 in paper~\cite{ZulegerGSV11} assigns a set of variables to each transition in which these variables decrease as the local bound
 and estimates the maximum value each variable in this set.
-\item Algorithm.2 in paper~\cite{SinnZV14} assigns a variable to each edge on which this variable decrease as its ranking function
+\item Algorithm~2 in paper~\cite{SinnZV14} assigns a variable to each edge on which this variable decrease as its ranking function
 and then estimates the maximum value for the ranking function.
-\item The Definition.25 in paper~\cite{sinn2017complexity}
+\item The Definition~25 in paper~\cite{sinn2017complexity}
 assigns each transition with a variable that decreases in this transition, as the local bound and computes the bound similarly.
 \end{itemize}
 %

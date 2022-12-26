@@ -33,7 +33,7 @@ label of a command in this program.
 Concretely,
 the vertices of this graph is the set of $c$'s labels with the exit label ${\lex}$ formally as follows,
 \[ 
-  \absV(c) = \lvar(c)\cup\{{\lex}\}
+  \absV(c) = \left\{ l ~\vert~ \exists x \in \vardom \sthat x^l \in \lvar(c)  \right\}\cup\{{\lex}\}
 \]
 %  corresponding to a label command in the program.
 
@@ -87,8 +87,8 @@ is transformed into a constraint.
 The difference constraints $DC(\mathcal{V}  \cup \constdom)$ is the set of all the inequality of
 form $x' \leq y + v$ or $x' \leq v$ where $x \in \mathcal{V} $, 
 $y \in \mathcal{V}$ and $v \in \constdom$.
-The \emph{Symbolic Constant} set $\constdom = \mathbb{N} \cup \inpvar \cup{\infty \cup{Q_m}}$
-is the set of natural numbers with $\infty$, the input variables, and a symbol $Q_m$ representing the abstract value of a query request.
+The \emph{Symbolic Constant} domain $\constdom = \mathbb{N} \cup \inpvar \cup \left\{ \infty, Q_m \right\}$
+is the set of all natural numbers with $\infty$, the input variables of all programs (i.e., $\inpvar \subseteq \vardom$), and a symbol $Q_m$ representing the abstract value of a query request.
 An inequality $x' \leq y + v$ describes that the value of $x$ in the current state is
 at most the value of $y$ in the previous state plus the symbolic constant $v$.
 An inequality $x' \leq v$ describes that the value of $x$ in the current state is
@@ -118,25 +118,23 @@ interfere with any counter variable.
 \end{itemize}
 \end{itemize}
 
-\highlight{Computation Steps:}
+\highlight{Computation Steps are summarized below. The computation below is a context free computation skeleton overall the variable and value domain. In a specific computation with given program $c$, these domains will associate to the program $c$.
+}
 \begin{defn}[Constraint Computation]
   \label{def:constraint_compute}
   For a program $c$, a boolean expression $\bexpr$ in the guard of a $\eif$ or $\ewhile$ command
   or an expression $\expr$ and a variable $x$
   in an assignment command $\assign{x}{\expr}$,
-  % or 
-  % For a boolean expression $\bexpr$ or an arithmetic expression $\aexpr$ and a variable $x$,
   the constraint $\absexpr(\bexpr, \_)$ or $\absexpr(x - v, x)$ is computed as follows,
   \[
     \begin{array}{ll} 
       \absexpr(x - v, x)  = x' \leq x - v  & x \in \grdvar \land v \in \constdom \\
-      \absexpr(y + v, x)  = x' \leq y + v  & x \in \grdvar \land v \in \constdom \land y \in (\grdvar \cup \constdom) \\
+      \absexpr(y + v, x)  = x' \leq y + v  & x, y \in \grdvar \land v \in \constdom \\
       \absexpr(v, x)  = x' \leq v  & x \in \grdvar \land v \in (\grdvar \cup \constdom) \\
       \absexpr(y + v, x)  = x' \leq y + v, 
-      \grdvar = \grdvar \cup \{y\} & x \in \grdvar \land v \in \constdom \land y \notin (\grdvar \cup \constdom)  \\
+      \grdvar = \grdvar \cup \{y\} & x \in \grdvar \land y \notin \grdvar \land v \in \constdom \\
       \absexpr(\qexpr, x)  = x' \leq Q_m & x \in \grdvar \land \qexpr \text{ is a query expression}  \\
       \absexpr(\bexpr, \_) = \bexpr, \grdvar = \grdvar \cup FV(\bexpr) &  x \in \grdvar \land \bexpr \text{ is a boolean expression} \\
-      % \absexpr(\qexpr, x)  = x' \leq 0 + Q_m & x \in \grdvar \land \qexpr \text{ is a query expression}  \\
       \absexpr(\expr, x) = \top  &  x \notin \grdvar \\
     \end{array}
     \]
@@ -144,45 +142,28 @@ interfere with any counter variable.
     denotes the stabilized result in the following paper.
   \end{defn}
 %
-  $\grdvar$ is the set of variables used in the guard expression of every while command in the program $c$. 
-  In the case 4, if a variable $x$, belonging to the set 
-  $\grdvar$ is updated by a variable $y$, which isn't in this set, 
-  we add $y$ into the set $\grdvar$ and repeat 
-  above procedure  until $\grdvar$ and $\absexpr(\expr, x)$ is stabilized. 
-  % \wq{I do not understand this sentence:-(}
-  \\
+$\grdvar \subseteq \vardom$ is the domain for all variables used in the guard expression of every while command overall programs. 
+In the case 4, if a variable $x$, belonging to the set 
+$\grdvar$ is updated by a variable $y$, which isn't in this set, 
+we add $y$ into the set $\grdvar$ and repeat 
+above procedure  until $\grdvar$ and $\absexpr(\expr, x)$ is stabilized. 
+\\
 Specifically 
 % understanding the intuition, 
 we handle a 
 % simplified 
 normalized expression, $x > 0$
 in guards of while loop headers, and 
-%  \wq{I do not understand this sentence:-(}
-%  .
-% \\
-% The counter variables only increase, decrease or reset by expression in the form of arithmetic minus and plus (able to extend to max and min.)
 the counter variable $x$ only increase, decrease or reset by 
-% expression in the form of 
 simple arithmetic expression (mainly multiplication, division, minus and plus (able to extend to max and min)). 
 The counter variable $x$ is generalized into norm when the boolean expression $x > 0$
 in $\ewhile$ doesn't have the form $x > 0$.
 The way of normalizing the guards and computing the norms is adopted from the computation step 1 in Section 6.1 in paper \cite{sinn2017complexity}. 
 % \\
-% For more complex expression assignments, where the counter reset, or calculated from $\elog$, 
-% multiplication or division, and expressions involving multiple variables, the constraint is approximated as reset of $\infty$.
-% \\
-% % This simplification \wq{which part we simplify here?} 
-% This approximation strategy
-% doesn't affect our analysis results in our examples. It is easy to extend the normalized expression 
-% into more complex forms as in \cite{sinn2017complexity}, as well as the 
-% counter variable manipulation with more advanced expressions.
-% \\ 
-% The boolean expression in the guard of $\ewhile$ command is normalized into form of $ x > 0$ where $x^l \in \lvar_c$ for some $l$.
-\begin{defn}[Symbolic Expression ($\mathcal{A}_{S}$)]
-  $\mathcal{A}_{S}$ is the set of all the symbolic expressions 
-over $\constdom$.
-% For concise, $\mathcal{A}_{\lin}$ is used as the same meaning of $\mathcal{A}_{\lin}$ in the follows, to denote the arithmetic expression 
-% over the symbolic variables, (i.e., $\mathbb{N}$ with input variables).
+\begin{defn}[Symbolic Expression Domain ($\mathcal{A}_{S}$)]
+  \label{def:symbolic_expr_domain}
+  $\mathcal{A}_{S}$ is the set of all the arithmetic expressions 
+over $\constdom$, $\mathcal{A}_{S} \subseteq \mathcal{A}$
 \end{defn}
 The symbolic expression set is a subset of arithmetic expressions over $\mathbb{N}$ with input variables, 
 i.e., $\mathcal{A}_{S} \subseteq \mathcal{A}_{\lin}$.
@@ -335,12 +316,12 @@ For every event $\event$ with label $l$, if it is in an execution trace $\trace$
      an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.
      an initial trace  $\vtrace_0 \in \mathcal{T}_0(c)$,
      there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
-     for every event $\event \in \trace$ having the label $l$, i.e., $\event = (\_, l, \_, \_)$.
+     for every event $\event \in \trace$ having the same label $l$, i.e., $\event = (\_, l, \_, \_)$.
       %
    \[
      \begin{array}{l}
-       \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_, \_) \in \eventset \sthat
-   \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  l, l' \in \absV(c),  \event = (\_, l, \_, \_) \in \eventset \sthat
+   \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
    \land \event \in \trace 
    \\
    \qquad \implies \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
@@ -362,8 +343,8 @@ there is a unique abstract event in the program's abstract events set $\absevent
 %
 \[
   \begin{array}{l}
-    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  \event = (\_, l, \_) \in \eventset^{\asn} \sthat
-\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} , l, l' \in \absV(c), \event = (\_, l, \_) \in \eventset^{\asn} \sthat
+\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
 \land \event \in \trace 
 \\
 \qquad \implies \exists! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 

@@ -54,7 +54,7 @@ n \in \mathbb{N}^{\infty} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \\
 &&&
 ~|~ {c};{c}  
-~|~ \eif([\bexpr]{}^l , {c}, {c}) 
+~|~ \eif(\clabel{\bexpr}{}^l , {c}, {c}) 
 ~|~ [\eskip]^l\\ 
 \mbox{Event} 
 & \event & ::= & 
@@ -99,7 +99,8 @@ We use following notations to represent the set of corresponding terms:
 {\mathcal{T}} & : & \mbox{Set of Finite Traces}
 \\
 %
-\qdom & : & \mbox{{Domain of Query Results}}\\
+\qdom & : & \mbox{{Domain of Query Results}}
+\\
 \end{array}
 \]
 %
@@ -164,22 +165,27 @@ The server is used as external API for computing the results over the hidden dat
 Each command is annotated with a label $l$, we will use natural numbers as labels and we will use them to record
 the location of each command, so that we can uniquely identify them.
 
-
+\paragraph*{Free Variables and Input Variables}
+  We denote by $\kw{FV}$ the operator $\kw{FV}: \expr \to \mathcal{P}(\mathcal{V})$, which computes the set of free variables in an expression. To be precise,
+  $\kw{FV}(\aexpr)$, $\kw{FV}(\bexpr)$ and $\kw{FV}(\qexpr)$ represent the set of free variables in arithmetic
+  expression $\aexpr$, boolean expression $\bexpr$ and query expression $\qexpr$ respectively.
+  All the free variables
+  showing up in $c$ such that they are never defined before using, are actually the input variables of this program.
+  We denote by $\mathcal{V}_{\lin}$ the domain of all input variables and $\kw{V_{\lin}}(c)$ the set of input variables in a given program $c$.
  
 \paragraph{Labeled Variables}
 The labeled variables and assigned variables are set of variables annotated by a label. 
 We use  
 $\mathcal{LV}$ represents the universe of all the labeled variables and 
-$\lvar(c) \in \mathcal{P}(\mathcal{V} \times \mathcal{L}) \subseteq \mathcal{LV}$,
+$\lvar(c) \in \mathcal{P}(\mathcal{V} \times \ldom) \subseteq \mathcal{LV}$,
 represents the set of labeled variables in program $c$,
 defined in Definition~\ref{def:lvar}.
 Labeled variables in $c$ is the set of assigned variables.
 %
-%
-\begin{defn}[labelled Variables $\lvar$]
+\begin{defn}[labelled Variables of a program $c$, $\lvar(c)$]
   \label{def:lvar}
   {
-  $$
+  \[
     \lvar(c) \triangleq
     \left\{
     \begin{array}{ll}
@@ -187,56 +193,51 @@ Labeled variables in $c$ is the set of assigned variables.
         & {c} = [{\assign x e}]^{l} 
         \\
         \{{x}^l\}            
-        & {c} = [{\assign x \query(\qexpr)}]^{l} 
+        & {c} = \clabel{\assign x \query(\qexpr)}^{l} 
         \\
         \lvar(c_1) \cup \lvar(c_2) 
         & {c} = {c_1};{c_2}
         \\
-        \lvar(c) \cup \lvar(c_2)
-        & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
+        \lvar(c_1) \cup \lvar(c_2)
+        & {c} =\eif(\clabel{\bexpr}^{l}, c_1, c_2) 
         \\
         \lvar(c')
-        & {c}   = \ewhile ([\bexpr]^{l}, {c}')
+        & {c}   = \ewhile (\clabel{\bexpr}^{l}, {c}')
   \end{array}
   \right.
-  $$
+  \]
   }
   \end{defn}
-  $FV: \expr \to \mathcal{P}(\mathcal{V})$, computes the set of free variables in an expression. To be precise,
-  $FV(\aexpr)$, $FV(\bexpr)$ and $FV(\qexpr)$ represent the set of free variables in arithmetic
-  expression $\aexpr$, boolean expression $\bexpr$ and query expression $\qexpr$ respectively.
-  The free variables
-  showing up in $c$, which aren't defined before using, are actually the input variables of this program.
 %
 We also defined the set of query variables for a program $c$,
 it is the set of variables set to the result of a query in the program formally in Definition~\ref{def:qvar}.
-\begin{defn}[Query Variables ($\qvar: \cdom \to \mathcal{P}(\mathcal{LV})$)] 
+\begin{defn}[Query Variables a program $c$, $\qvar(c)$] 
   \label{def:qvar}
 Given a program $c$, its query variables 
 $\qvar(c)$ is the set of variables set to the result of a query in the program.
 It is defined as follows:
-{\footnotesize
-$$
+{
+\[
   \qvar(c) \triangleq
   \left\{
   \begin{array}{ll}
       \{\}                  
-      & {c} = [{\assign x \expr}]^{l} 
+      & {c} = \clabel{\assign x \expr}^{l} 
       \\
       \{{x}^l\}                  
-      & {c} = [{\assign x \query(\qexpr)}]^{l} 
+      & {c} = \clabel{\assign x \query(\qexpr)}^{l} 
       \\
       \qvar(c_1) \cup \qvar(c_2)  
       & {c} = {c_1};{c_2}
       \\
       \qvar(c_1) \cup \qvar(c_2) 
-      & {c} =\eif([\bexpr]^{l}, c_1, c_2) 
+      & {c} =\eif(\clabel{\bexpr}^{l}, c_1, c_2) 
       \\
       \qvar(c')
-      & {c}   = \ewhile ([\bexpr]^{l}, {c}')
+      & {c}   = \ewhile (\clabel{\bexpr}^{l}, {c}')
 \end{array}
 \right.
-$$
+\]
 }
 \end{defn}
 %
