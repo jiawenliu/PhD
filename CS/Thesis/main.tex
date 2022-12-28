@@ -49,8 +49,6 @@
 %define the frequent formulas shorthands for typing -- note that these do not appear as the function in "Rich Text" format in Overleaf, but rather as the "\shorthand"
 \include{prelude}
 \include{ldefs}
-\usepackage{xargs}
-\usepackage{cleveref}
 \newif\ifextra
 \extratrue 
 \newcommand{\THESYSTEM}{\textsf{AdaptFun}}
@@ -66,7 +64,7 @@
 % Setup commands for the bu thesis style file
 
 \title{
-{Static Program Analysis}, 
+{Program Analysis for Quantitative Reachability Properties}
 %  with Generalization on Program Resource Cost
  }
 \author{Jiawen Liu}
@@ -92,9 +90,9 @@ B.A. in Department of Information Science, Central University of Economics and F
 % For each reader, specify appropriate label {First, second, third}, then name, then title. Warning: If you have more than five readers you are out of luck, because it will overflow to a new page. Sometimes you may wish to put part of the title in with the name
 % Do NOT put the chair on your approval page - HG 2018
 \reader{First}{Marco Gaboardi, Ph.D.}{Associate Professor, Computer Science}
-\reader{Second}{ }{}
-\reader{Third}{Assaf Kfoury, Ph.D.}{Professor, Computer Science}
-\reader{Fourth}{ }{}
+\reader{Second}{Assaf Kfoury, Ph.D.}{Professor, Computer Science}
+\reader{Third}{Alley Stoughton, Ph.D.}{Research Professor, Computer Science}
+\reader{Fourth}{Hongwei Xi, Ph.D.}{Associate Professor, Computer Science}
 % \reader{Fifth}{Deepak Garg, Ph.D.}{Associate Professor, MPI-SWS}
 % The Major Professor is the same as the first reader, but must be specified again for the abstract page
 % Just copy and paste the same information
@@ -134,25 +132,24 @@ B.A. in Department of Information Science, Central University of Economics and F
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% DEDICATION			 
-\section*{Dedication}
-\begin{flushright}
-This dissertation is dedicated to \\
-my loving grandmother \\ Xiuqin Yang 
-my loving son \\ Taro 
-\end{flushright}
+% \section*{Dedication}
+% \begin{flushright}
+% This dissertation is dedicated to \\
+% my loving grandmother \\ Xiuqin Yang 
+% my loving son \\ Taro 
+% \end{flushright}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% ACKNOWLEDGEMENTS	 
-\newpage
-\addcontentsline{toc}{chapter}{Acknowledgements}
-\include{chapters/Acknowledgements}
+% \newpage
+% \addcontentsline{toc}{chapter}{Acknowledgements}
+% \include{chapters/Acknowledgements}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% ABSTRACT		 
 \newpage
 \addcontentsline{toc}{chapter}{Abstract}
-\todo{Rewrite}
 \input{chapters/Abstract}
 
 % Now you can include a preface. Again, use something like
@@ -449,6 +446,8 @@ my loving son \\ Taro
 \input{chapters/conclusion/preface}
 \section{Program Adaptivity Analysis}
 \label{sec:conclusionfuture-adapt}
+\subsection{Conclusion}
+\label{sec:conclusion-adapt}
 \input{chapters/conclusion/conclusion-adapt}
 \subsection{Future Works on Accurate Adaptivity Analysis with Practical Application}
 \label{sec:future-adapt}
@@ -456,12 +455,14 @@ my loving son \\ Taro
 
 \section{Path-sensitive Reachability-bound Analysis}
 \label{sec:conclusionfuture-psRB}
+\subsection{Conclusion}
+\label{sec:conclusion-psRB}
 \input{chapters/conclusion/conclusion-psRB}
 \subsection{Future Works on Accurate Reachability-bound Analysis}
 \label{sec:future-psRB}
 \input{chapters/conclusion/future-psRB}
 
-\section{Future Works on Towards Non-Monotonic Resource Cost Program Analysis}
+\section{Towards Non-Monotonic Resource Cost Program Analysis}
 \label{sec:future-cost}
 \input{chapters/conclusion/future-nonmonotonic_cost}
 

@@ -49,13 +49,13 @@ n \in \mathbb{N}^{\infty} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \\ 
 %
 \mbox{Labeled Command} 
-& {c} & ::= &   [\assign {{x}}{ {\expr}}]^{l} ~|~  [\assign {{x} } {{\query(\qexpr)}}]^{l}
-~|~ {\ewhile [ \bexpr ]^{l} \edo {c} }
+& {c} & ::= &   \clabel{\assign{x}{\expr}}^{l} ~|~  \clabel{\assign{x}{\query(\qexpr)}}^{l}
+~|~ {\ewhile \clabel{\bexpr}^{l} \edo {c} }
 \\
 &&&
 ~|~ {c};{c}  
 ~|~ \eif(\clabel{\bexpr}{}^l , {c}, {c}) 
-~|~ [\eskip]^l\\ 
+~|~ \clabel{\eskip}^l\\ 
 \mbox{Event} 
 & \event & ::= & 
     ({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval)  ~~~~~~~~~~~ \mbox{Assignment Event} \\

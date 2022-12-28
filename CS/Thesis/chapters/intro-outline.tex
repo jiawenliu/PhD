@@ -60,21 +60,21 @@ The second part focus on solving the Reachability-bound Problem through by progr
 
     \item \redd{PART \romannum{1} \quad  REACHABILITY BOUND ANALYSIS}
 
-    \paragraph{Chapter~\ref{sec:reachability-intro}} first gives the introduction of the
+    \paragraph{Chapter~\ref{sec:reachability-intro}} gives the introduction of the
     \emph{Reachability-bound} Problem in
     Section~\ref{sec:reachability-background}.
     Then it presents the motivation and existing limitations on this problem and give the overview of the new algorithm in
     Section~\ref{sec:reachability-motivation}.
     In Section~\ref{sec:reachability-outline}, it presents the structure of this chapter.
 
-    \paragraph{Chapter~\ref{sec:reachability-analysis}} presents the {Path-sensitive Reachability Bound analysis} in following sections.
+    \paragraph{Chapter~\ref{sec:reachability-analysis}} presents the {path-sensitive reachability-bound analysis} in following sections.
 
-    In Section~{\ref{sec:psRB-language}}, it first give the language and program model formally, including the
+    In Section~{\ref{sec:psRB-language}}, we first give the language and program model formally, including the
     language syntax in Section~\ref{sec:psRB-language-syntax} and the trace-based operational semantics in Section~\ref{sec:psRB-language-semantics}.
     
-    Then Section~\ref{sec:psRB-definition} gives the \emph{Reachability-bound} definition.
+    Then Section~\ref{sec:psRB-definition} gives the \emph{reachability-bound} definition.
 
-    Section~\ref{sec:psRB-analysis-alg} presents the new \emph{Path-sensitive reachability-bound} analysis algorithm, named $\kw{psRB}$ through following subsections.
+    Section~\ref{sec:psRB-analysis-alg} presents the new \emph{path-sensitive reachability-bound} analysis algorithm, named $\kw{psRB}$ through following subsections.
     %
     Section~\ref{sec:psRB-preface} first gives the main steps of this algorithm as a structural section. There are five steps in this algorithm.
     In Section~\ref{sec:psRB-progabs}, the first step abstracted the program into an \emph{abstract transition graph}.
@@ -88,19 +88,18 @@ The second part focus on solving the Reachability-bound Problem through by progr
     
     \paragraph{Chapter~\ref{sec:psRB-relatedwork}} discusses the related works in this area.
 
-    \item \redd{PART \romannum{3} \quad  Conclusion and Future Works}
-    \paragraph*{Chapter~\ref{sec:conclusion}}
-    Concludes the two works, i.e., Program Analysis Framework for Adaptive Data Analysis
-    and the Path-sensitive Reachability-bound Analysis of this dissertation.
+    \item \redd{PART \romannum{3} \quad  Epilogue}
+    \paragraph*{Chapter~\ref{sec:conclusionfuture}}
+    concludes the works of \redd{PART \romannum{1}} and \redd{PART \romannum{2}}, and gives the future plans based on their limitations respectively in Section~\ref{sec:conclusionfuture-adapt} and Section~\ref{sec:conclusionfuture-psRB}.
 
-    \paragraph*{Chapter~\ref{sec:future}}
-    Discusses two future directions.
-    The first direction based on studying the reachability quantitative properties,
-   is {The Program Non-Monotonic Quantitative Property Analysis} in Section~\ref{sec:future-cost}.
-%    The second direction combines with the research in complexity theory area, I plan to reason
-%    about the Solving the CFL Reachability Problem in Section~\ref{sec:future-cfl}.
- \item \redd{PART \romannum{4} \quad  APPENDIX}
-    The Appendix contains the complete examples, theorems and proofs for the two works of this dissertation.
+    Section~\ref{sec:conclusion-adapt} summarizes the program analysis framework for adaptive data analysis in \redd{PART \romannum{1}}, concludes the contribution and weakness of our analysis algorithm. Then in Section~\ref{sec:future-adapt}, we propose the future work on extending and improving the existing technique.
+
+    Section~\ref{sec:conclusion-psRB} summarizes the main contribution and limitation of our path-sensitive reachability-bound computation algorithm in \redd{PART \romannum{2}}. Then Section~\ref{sec:future-psRB} presents the possible improvement plan for the next step.
+    
+    Section~\ref{sec:future-cost} discusses a possible future direction on studying a general reachability quantitative properties, i.e., {the program's non-monotonic quantitative property}.
+
+   \item \redd{PART \romannum{4} \quad  APPENDIX}
+    The Appendix contains the complete program code for examples, and proofs for lemmas and theorems in \redd{PART \romannum{1}} and \redd{PART \romannum{2}}.
 \end{enumerate}
 
 \textbf{Previous Published Materials}
