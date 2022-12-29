@@ -2,7 +2,7 @@
 \label{sec:relatedwork-adapt-semantics}
 My framework constructs an execution-based dependency graph based on the execution traces of a program. 
 I define semantic dependence on this graph by considering (intraprocedural) data and control 
-dependency~\cite{bilardi1996framework,cytron1991efficiently,pollock1989incremental}.    
+dependency~\cite{bilardi1996framework, CytronFRWZ91, PollockS89, BurkeR90}.    
 One related work  
 \cite{AustinS92} presents a methodology to construct a dynamic dependency graph (DDG) based on the dynamic execution of a program in an imperative language, where edges represent dependency between instructions. Data dependency, control dependency, storage dependency, and resource dependency between instructions are all considered. My execution-based dependency graph only needs data dependency and control dependency between variable assignment results. 
 %
@@ -21,7 +21,7 @@ My definition includes timing channels and empty observation by observing both t
 \section{The Static Program Analysis}
 \label{sec:relatedwork-adapt-static}
 My design of $\THESYSTEM$ in this section is influenced by many areas of static program analysis such as 
-effect systems, control-flow analysis, and data-flow analysis~\cite{ryder1988incremental}. 
+effect systems, control-flow analysis, and data-flow analysis~\cite{BurkeR90}. 
 The idea of statically estimating a sound upper bound for the adaptivity from the semantics is indirectly inspired from prior work on cost analysis via effect systems~\cite{CicekBG0H17, RadicekBG0Z18, QuG019}. The idea of defining adaptivity using data flow is inspired by the work of graded 
 Hoare logic~\cite{GaboardiKOS21}, which reasons about data flows as a resource. 
 %
