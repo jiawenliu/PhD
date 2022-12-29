@@ -37,7 +37,7 @@ named {\tt Query While} language with extensions on query requests in Section~\r
 
 The second challenge is \emph{how to define the adaptivity of a given program}.
 Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
-For example, as shown in \cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
+For example, as shown in \cite{stoc/DworkFHPRR15}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
 If one feature's correlation changes, the classifier depending on features is also affected. 
 This notion of dependency builds on the execution trace as a \emph{causal history}. 
 In particular, I am interested in the history or provenance of a query up until this is executed, 
@@ -157,7 +157,7 @@ the research goal is to develop an analysis method which can
 % The second challenge is 
 \emph{define} the intuitive \emph{adaptivity} rounds for a given data analysis program formally and accurately.
 % Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
-% For example, as shown in \cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
+% For example, as shown in \cite{stoc/DworkFHPRR15}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
 % If one feature's correlation changes, the classifier depending on features is also affected. 
 The intuition behind this \emph{adaptivity} quantity relies on the dependency between the query requests 
 executed in the program, and their dependency depth. 
@@ -342,7 +342,7 @@ efficiently
 through static program analysis.
 % for a given data analysis program.
 % Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
-% For example, as shown in \cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
+% For example, as shown in \cite{stoc/DworkFHPRR15}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
 % If one feature's correlation changes, the classifier depending on features is also affected. 
 % The adaptive data analysis model I consider and our definition of adaptivity suggest that for this task I can use a program analysis that is based on some form of dependency analysis. This analysis needs to take into consideration:
 There are three sub-research goals in estimating \emph{adaptivity} statically.
@@ -420,11 +420,6 @@ It is developed in 3 aspects similar to the execution-based adaptivity analysis
 while through static program analysis techniques. 
 A sound estimated result is given in each part, which is summarized as follows.
 \begin{enumerate}
-% \item The data dependency relation analysis through the static data flow analysis technique.
-% \item The dependency quantity analysis through the static program reachability bound analysis techniques.
-% \item The program adaptivity estimation, through newly designed algorithms based on the results estimated above, 
-% computing the adaptivity upper bound soundly 
-% and accurately.
 \item The {\THESYSTEM} analyzes the data \emph{dependency relation} through the static data flow analysis technique in Section~\ref{sec:static-dep}.
 This analysis corresponds to the first step in execution-based adaptivity analysis. 
 The estimated result produced from 

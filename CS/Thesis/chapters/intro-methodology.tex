@@ -3,8 +3,8 @@
 \subsubsection{Semantics-Based Formalization}
 
 \paragraph{Existing Methodology and Limitations}
-There are many techniques for defining a program's semantics concept property, such are program simulation, 
-semantics analysis, abstract interpretation, etc., which are widely used in defining
+There are many methodologies for semantically formalizing a program's conceptual property, such as abstract interpretation~\cite{CousotH78, CousotC77, Mine06, KincaidCBR18},
+program simulation, etc., which are widely used in defining
 and formalizing the program's properties.
 % dependency analysis. 
 However, it is not straightforward how to apply them to analyzing and formalizing the \emph{adaptivity}
@@ -15,12 +15,12 @@ There are following three limitations among existing semantics analysis techniqu
 \begin{enumerate}
 \item
 The state-of-art methodology in definition the semantics concept of dependency property don't
-consider both control influence and value influence, such as \cite{Cousot19a, DenningD77, AbadiBHR99, Mantel2004, CheneyAA11}.
+consider both control influence and value influence, such as~\cite{Cousot19a, DenningD77, AbadiBHR99, Mantel2004, CheneyAA11}.
 However, both of these
 two influences are included in the intuitive query dependency 
 in adaptive data analysis programs.
 \item In the existing data dependency formalization area, there isn't any technique taking into account
-the dependency depth, specifically the quantitative information of the data dependency property. For example the the works in \cite{GoguenM84, AssafNSTT17, BartheDR11}.
+the dependency depth, specifically the quantitative information of the data dependency property. For example the works in~\cite{GoguenM84, AssafNSTT17, BartheDR11}.
 However, this dependency depth is the key quantity in formalizing the intuitive \emph{adaptivity}.
 \item The intuitive \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
 dependency depth. There is only very limited works related to this non-linear quantity property analysis.
@@ -35,12 +35,12 @@ methodologies.
 \begin{enumerate}
    \item First one is  
    the methodology of semantic data dependency analysis
-   including the method in \cite{Cousot19a, ZanioliC11, CheneyAA11}.
+   including the method in~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
    I combine these methods and define the \emph{dependency relation} between every query.
    \item The second methodology is to define the \emph{dependency-quantity} 
      based on the \emph{data-dependency} above.
    I inspired from some methodology of resource cost analysis techniques such as the resource bound analysis in
-   \cite{AssafNSTT17}.
+  ~\cite{AssafNSTT17}.
    \item Then we inspired from program cost analysis methodology, we construct a dependency graph by combining both the \emph{data-dependency} and \emph{dependency-quantity} property on it. This dependency graph accurately reflects the information of intuitive \emph{adaptivity}.
    \item Based on this graph, we accurately and formally define as a \emph{quantitative reachability} program property.
    \end{enumerate}

@@ -71,7 +71,7 @@ the vertices of this graph is the set of $c$'s labels with an exit label $l_{ex}
 %
 \paragraph*{Expression Abstraction}
 
-The expression assigned to the variable on the left hand of the assignment command is abstracted to an abstract value: (adopted from the expression abstraction method in paper \cite{sinn2017complexity}). The abstract value is expressed in the form of Difference constraint, denotated as $DC : \mathcal{VAR} \cup \constdom \to \mathcal{\mathcal{VAR} \times (\mathcal{VAR} \cup \constdom) } \times (\mathbb{Z} \cup \{\infty\})$.  $\constdom$ is called the Symbolic Constant defined as $\constdom \triangleq \mathbb{N} \cup \inpvar \cup \{\max{(\dbdom)}\} $, which consists of 
+The expression assigned to the variable on the left hand of the assignment command is abstracted to an abstract value: (adopted from the expression abstraction method in paper \cite{SinnZV17}). The abstract value is expressed in the form of Difference constraint, denotated as $DC : \mathcal{VAR} \cup \constdom \to \mathcal{\mathcal{VAR} \times (\mathcal{VAR} \cup \constdom) } \times (\mathbb{Z} \cup \{\infty\})$.  $\constdom$ is called the Symbolic Constant defined as $\constdom \triangleq \mathbb{N} \cup \inpvar \cup \{\max{(\dbdom)}\} $, which consists of 
 natural numbers $\mathbb{N}$,
 the program's input variables $\inpvar$  
 and a constant value $\max(\dbdom)$ for estimating the upper bound of variables which are
@@ -84,13 +84,13 @@ variable and symbolic constants.
 It is a set of the inequality of form $x \leq y + v$ where $x \in \mathcal{VAR} $, 
 $y \in \mathcal{VAR}  \cup \constdom$ and $v \in \mathbb{Z}$. 
 This difference constraint is defined in the same way as
-\cite{sinn2017complexity}. For concise, I use $\dcdom^{\top}$ to represent the $DC(\mathcal{VAR}  \cup \constdom) \cup \{\top\}$ .
+\cite{SinnZV17}. For concise, I use $\dcdom^{\top}$ to represent the $DC(\mathcal{VAR}  \cup \constdom) \cup \{\top\}$ .
 
 
  I show the expression abstraction $\absexpr : \expr \to \mathcal{VAR} \to DC(\mathcal{VAR}  \cup \constdom) \cup \{\top\} $ below.
 
 %  I introduce the following notations and operations first
-% % an expression abstraction method based on the expression abstraction in paper \cite{sinn2017complexity}.
+% % an expression abstraction method based on the expression abstraction in paper \cite{SinnZV17}.
 % \\
 % % is enriched into $\constdom \triangleq \mathbb{N} \cup \inpvar \cup \{\max{(\dbdom)}\} $.
 % T
@@ -162,7 +162,7 @@ normalized guard expression ($ x > 0$ for $x^l \in \lvar_c$)
 the counter variables only increase, decrease or reset by 
 % expression in the form of 
 simple arithmetic expression (mainly multiplication, division, minus and plus (able to extend to max and min)). 
-This is the same as in paper \cite{sinn2017complexity}. 
+This is the same as in paper \cite{SinnZV17}. 
 \\
 For more complex expression assignments, where the counter reset, or calculated from $\elog$, 
 multiplication or division, and expressions involving multiple variables, the constraint is approximated as reset of $\infty$.
@@ -170,7 +170,7 @@ multiplication or division, and expressions involving multiple variables, the co
 % This simplification \wq{which part I simplify here?} 
 This approximation strategy
 doesn't affect our analysis results in our examples. It is easy to extend the normalized expression 
-into more complex forms as in \cite{sinn2017complexity}, as well as the 
+into more complex forms as in \cite{SinnZV17}, as well as the 
 counter variable manipulation with more advanced expressions.
 % \\ 
 % The boolean expression in the guard of $\ewhile$ command is normalized into form of $ x > 0$ where $x^l \in \lvar_c$ for some $l$.
@@ -456,7 +456,7 @@ $\locbound: \absevent \to \mathcal{VAR} \cup \constdom$.
 \end{array}
   \]
   The first case is straightforward. Since variable's visiting time outside of any while loop is at most 1, I do not need to analyze the visiting times of every node in the graph from phase 1.
-  The second and third step is guaranteed by the \emph{Discussion on Soundness} in Section 4 of \cite{sinn2017complexity}.
+  The second and third step is guaranteed by the \emph{Discussion on Soundness} in Section 4 of \cite{SinnZV17}.
   Then soundness proof is in Lemma~\ref{lem:local_bound_sound} in Appendix~\ref{apdx:reachability_soundness}.
 %
 \paragraph*{Invariant Inference and Closure Generation }

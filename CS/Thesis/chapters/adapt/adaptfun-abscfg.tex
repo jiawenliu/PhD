@@ -48,7 +48,7 @@ Each edge is annotated by a constraint $dc$ generated from the command with labe
 This constraint describes the abstract execution of the command with $l$. 
 It is either
 the symbol $\top$, a boolean expression or a \emph{difference
-constraint}~\cite{sinn2017complexity}.
+constraint}~\cite{SinnZV17}.
 This step shows how to generate the abstract transition graph $\absG(c)$ of a
 program $c$ through constructing its vertices and edges.
   \\
@@ -69,7 +69,7 @@ program $c$ through constructing its vertices and edges.
 \paragraph{Constraint Computation}
 In this step, we first show how to compute the constraints for expressions in a program $c$,
 by a program abstraction method adopted from the
-algorithm in Section 6 in~\cite{sinn2017complexity}.
+algorithm in Section 6 in~\cite{SinnZV17}.
 \\
 Given a program $c$,
 every expression in an assignment command or in the guard of a $\eif$ or $\ewhile$ command
@@ -104,7 +104,7 @@ and $l \xrightarrow{x' \leq v} l'$ respectively denotes value of variable $x$
 after executing the command at $l$ is at most
 % and the right-hand side describes 
 the value of the symbolic constant $v$ before the execution.
-For every expression in each of the label command, it is computed in three steps via program abstraction method adopted from the Section~6 in \cite{sinn2017complexity}. 
+For every expression in each of the label command, it is computed in three steps via program abstraction method adopted from the Section~6 in \cite{SinnZV17}. 
 }
 %
 \item The Boolean Expressions $b$ from the set $\booldom$.
@@ -158,7 +158,7 @@ the counter variable $x$ only increase, decrease or reset by
 simple arithmetic expression (mainly multiplication, division, minus and plus (able to extend to max and min)). 
 The counter variable $x$ is generalized into norm when the boolean expression $x > 0$
 in $\ewhile$ doesn't have the form $x > 0$.
-The way of normalizing the guards and computing the norms is adopted from the computation step 1 in Section 6.1 in paper \cite{sinn2017complexity}. 
+The way of normalizing the guards and computing the norms is adopted from the computation step 1 in Section 6.1 in paper \cite{SinnZV17}. 
 % \\
 \begin{defn}[Symbolic Expression Domain ($\mathcal{A}_{S}$)]
   \label{def:symbolic_expr_domain}
