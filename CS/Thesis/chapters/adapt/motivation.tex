@@ -33,7 +33,7 @@ $
 \end{thm}
 In fact, these bounds are tight (up to constant factors) which means that even allowing one extra round of adaptivity leads to an exponential increase in the generalization error, from $\log k$ to $k$.
 
-\cite{DworkFHPRR15} and \cite{BassilyNSSSU16} showed that by using carefully calibrated Gaussian noise in order to limit the dependency of a single query on the specific data instance, one 
+\cite{DworkFHPRR15} and~\cite{BassilyNSSSU16} showed that by using carefully calibrated Gaussian noise in order to limit the dependency of a single query on the specific data instance, one 
 can actually achieve much stronger generalization error as a function of the number of queries, specifically.
 \begin{thm}[\cite{DworkFHPRR15, BassilyNSSSU16}] \label{thm:gaussiannoise} For any distribution $\dist$, any $k$, any $\qrounds \geq 2$ and any \emph{$\qrounds$-round adaptive} statistical queries, if we answer queries with carefully calibrated Gaussian noise we have:
 \begin{center}
@@ -42,7 +42,7 @@ can actually achieve much stronger generalization error as a function of the num
 $  
 \end{center}
 \end{thm}
-More interestingly, \cite{DworkFHPRR15}
+More interestingly,~\cite{DworkFHPRR15}
 also gave a refined bounds that can be achieved with different mechanisms depending on the number of rounds of adaptivity.   \begin{thm}[\cite{DworkFHPRR15}] \label{thm:gaussiannoise2} For any $r$ and $k$, there exists a mechanism such that for any distribution $\dist$, and any $\qrounds \geq 2$ any \emph{$\qrounds$-round adaptive} statistical queries, it satisfies
 \begin{center}
   $
@@ -65,8 +65,6 @@ with respect to the limitations of previous works, in Section~\ref{sec:adapt-int
 
 There are mainly three challenges in order to analyze this adaptivity property, 
 and the full-spectrum analysis of this property is 
-% In this proposal, I will first focus on analyzing 
-% this adaptivity property for the program based on solving 
 developed w.r.t. the three challenges accordingly.
 
 \begin{enumerate}
@@ -81,7 +79,6 @@ the mechanism that randomly selects a subset of the data,
 and the mechanism that uses the reusable holdout technique, etc. 
 In this approach, a program models an \emph{analyst} asking a sequence of queries to the mechanism. 
 The mechanism runs the queries on the data applying one of the methods discussed above and returns the result to the program. The program can then use this result to decide which query to run next. 
-% Overall, I am interested in controlling the generalization of the results of the queries which are returned by the mechanism, by means of adaptivity. 
 
 Motivated by this, I present a new while-like language 
 named {\tt Query While} language with extensions on query requests in Section~\ref{sec:adapt-language}.
@@ -91,14 +88,12 @@ named {\tt Query While} language with extensions on query requests in Section~\r
 
 The second challenge is \emph{how to define the adaptivity of a given program}.
 Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
-For example, as shown in \cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
+For example, as shown in~\cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
 If one feature's correlation changes, the classifier depending on features is also affected. 
 This notion of dependency builds on the execution trace as a \emph{causal history}. 
 In particular, I am interested in the history or provenance of a query up until this is executed, 
-% I am not then concerned about how the result is used --- except for 
 simultaneously in tracking whether the result of the query may further cause some other query. 
 This is because I'm focusing on the generalization error which could be propagated by queries.
-% and not their post-processing. % 
 
 To formalize this intuitive \emph{adaptivity} as a quantitative program property, 
 I analyze the program's execution based on its semantics
@@ -116,8 +111,7 @@ Hence, it needs to consider some form of data flow analysis.
 2) the fact that, in general, the decision on whether to run a query or not may depend on some other value. Hence, 
  it needs to consider some form of control flow analysis.
 3) the fact that. In general, I am not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
-Hence, it needs to consider some quantitative information about the program dependencies. % {A quick example is that: I store the result of query $Q_1$ in variable $x$ and use variable $y$ to record the result of query $Q_2$. I want to construct the third query $Q_3$ which relies on the value stored in $x$, let us say, $Q_3$ will ask for the sum of the first column of a table if $x$ is positive and the sum of the second column otherwise. In this situation, I need data flow analysis. On the other hand, if I need the value of $y$ to help us decide whether I should ask $Q_3$, for example, I ask the third query if $y$ is odd, and do not ask if $y$ is even. Naturally, to be able to handle this case, control flow analysis comes into play. Formally speaking, }
-
+Hence, it needs to consider some quantitative information about the program dependencies. 
 To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
 I develop a static program analysis in Section~\ref{sec:adapt-static}, named {\THESYSTEM}.
 %%%%% To reason about%
@@ -136,7 +130,7 @@ the research goal is to develop
 an expressive language supporting general adaptive data analysis formally.
 
 \paragraph*{Limitations of Previous Works}
-There are previous works from \cite{weihao22} developing language formalizing the adaptive data analysis.
+There are previous works from~\cite{weihao22} developing language formalizing the adaptive data analysis.
 However, these language designs are limited in their expressiveness largely.
 Most of the general data analyses are not supported by the previous language design.
 In Section~\ref{sec:prework-language}, I introduce in detail the previous language design and limitations.
@@ -156,34 +150,20 @@ for analyzing the adaptivity,
 the research goal is to develop an analysis method which can
 % The second challenge is 
 \emph{define} the intuitive \emph{adaptivity} rounds for a given data analysis program formally and accurately.
-% Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
-% For example, as shown in \cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
-% If one feature's correlation changes, the classifier depending on features is also affected. 
 The intuition behind this \emph{adaptivity} quantity relies on the dependency between the query requests 
 executed in the program, and their dependency depth. 
-% This notion of dependency builds on the execution trace as a \emph{causal history}. 
 Following this intuition, we need to formally define whether there is the dependency between query requests during the program
 execution.
-%
-% And the 
 There are different methodologies that can be used to formalize the dependency between two query requests, such as the 
 dynamic analysis, semantics-based analysis, static analysis, etc.
 %
 In order to capture the dependency (also the intuitive \emph{adaptivity}) in the most precise way,
 % I design the semantics-based program analysis method.
 I formalize the adaptivity based on the program's execution.
-%
-% In order to define it in 
-% The most precise way to define this dependency is by observing the actual evaluation of these query requests during the 
-% program execution.
 This semantics-based
 % program analysis method 
 formalization is precise in defining both the dependency relation
-% between query requests,
 and the intuitive \emph{adaptivity} because it is
-% In particular, I'm interested in the history or provenance of a query up until this is executed, I'm not then concerned about how the result is used --- except for tracking whether the result of the query may further cause some other query. 
-% Based on this, I design the adaptivity formalization method through the semantics-based program analysis techniques.
-% These semantics-based analysis techniques are 
 based on observing the actual evaluation of these query requests during the 
 program execution. This is consistent with the intuition of query requests dependency and their dependency depth,
 as well as the intuitive
@@ -216,7 +196,7 @@ This requires us to design new analysis techniques in order to formalize this qu
 \end{enumerate}
 \item \textbf{Limitations in Previous Works on Formalizing Adaptivity} 
 \\
-There are also previous works on formalizing this quantity from \cite{weihao22}. However, these works
+There are also previous works on formalizing this quantity from~\cite{weihao22}. However, these works
 are limited in expressiveness and accuracy significantly.
 The \emph{adaptivity} quantities in many general data analysis programs are unable to be defined in the previous \emph{adaptivity} definition.
 For the program which is able to be defined,
@@ -225,60 +205,24 @@ These previous works and limitations on formalizing the adaptivity are introduce
 \end{itemize}
 %
 \paragraph{Methodology Overview}
-% To formalize this intuition as a quantitative program property, 
-% in Chapter~\ref{ch:dynamic} I develop an semantics-based analysis
-% % I first consider all the possible evaluations of a program --- I do this by 
-% % I use trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% % Through two aspects: the semantics-based analysis and static-based program analysis.
-% % In the semantics-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
-% % property of programs. This analysis is developed 
-% in three steps through different methodologies in each step as follows,
 Given all these limitations and challenges,
 to define this intuitive \emph{adaptivity} more precisely as a quantitative program property, 
-I give a new adaptivity formalization model by analyzing program's exectuion in Section~\ref{sec:adapt-exe}.
-% I first consider all the possible evaluations of a program --- I do this by 
-% I use a trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% Through two aspects: the semantics-based analysis and static-based program analysis.
-% In the semantics-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
-% property of programs. This analysis is developed 
- This semantics-based formalization is designed in three steps through different methodologies as follows,
-% \begin{enumerate}
-% \item The dependency relation between every query, through the methodology of semantic data dependency analysis.
-% \\
-% Specifically through a trace semantics recording the execution history of programs on some given input
-% % --- and I create a dependency graph, 
-% the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% % In the semantics-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
-% % property of programs. This analysis is developed 
-% % \\
-% \item The dependency quantity analysis, through the methodology of semantics-based data reachability, bound analysis.
-% % \\
-% \item The adaptivity quantity analysis, based on the two analysis results above, gives the formal \emph{adaptivity} model 
-% for program.
-% \\
-% Specifically, I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
-% The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% \end{enumerate}
+I give a new adaptivity formalization model by reasoning program's semantics in Section~\ref{sec:adapt-exe}
+summarized as follows.
 \begin{enumerate}
- \item First step is to define the \emph{dependency relation} between every query, 
- through the methodology of semantic data dependency analysis.
+ \item For any variables $x^i, y^j$ in a program $c$, 
+ we first define a \emph{variable may-dependency} relation between them semantically as
+ \[
+   \vardep(x^i, y^j, c).
+  \]
+ Then we reason the \emph{dependency relation} between queries.
  %
  Specifically through a trace semantics recording the execution history of programs on a given input,
- % --- and I create a dependency graph, 
  the dependency between different variables (query is also assigned to a variable) is explicitly tracked and 
  analyzed. This is presented in Section~\ref{sec:dynamic-datadep}.
- % and 
- % which variable is associated with a query request. 
- % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
- % In the semantics-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
- % property of programs. This analysis is developed 
- % \\
- \item The second step in Section~\ref{sec:dynamic-graph} constructs a dependency graph combining the \emph{dependency relation}
-with a \emph{quantitative relation} as weight. % analysis, 
+ \item The second step in Section~\ref{sec:dynamic-graph} constructs a \emph{semantics-based dependency graph} combining the \emph{dependency relation}
+  with a \emph{quantitative relation} as weight. This graph is denoted as $\traceG(c)$ for the program $c$ has an edge set $\traceE(c)$,
+  vertex set $\traceV(c)$, weights $\traceW(c)$ and an annotation set $\traceF(c)$.
  The edges are created by dependency comes from the \emph{dependency relation} defined above.
  The weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
  For each variable (query is also assigned to a variable) 
@@ -293,11 +237,8 @@ with a \emph{quantitative relation} as weight. % analysis,
  % \item 
 \subsubsection{Static Program Analysis}
 \label{sec:adapt-intro-static}
-% \paragraph{Limitations of Existing Execution-Based Program Analysis Techniques}
-%
-Though we have the intuitive \emph{Adaptivity} formally and precisely defined through the semantics-based program analysis,
+Though we have the intuitive \emph{adaptivity} formally and precisely defined through the semantics-based program analysis,
 it is still not useful enough for programmers.
-% The weakness of the semantics-based formalization comes from its in-efficiency.
 Programmer need to execute the program multiple times in order to have the most precise \emph{Adaptivity} following the definition.
 When the query requests, the multiple executions consume a large amount of computation and communication resources.
 This requires us to develop an efficient static analysis method, 
@@ -325,13 +266,8 @@ subgoal-2) Integrating the control flow analysis techniques into the static anal
  aims to 
 capture the query dependency soundly
 under the control influence.
-% of the first query. 
-% Hence, 
-% it needs to consider some form of control flow analysis.
  \\
 subgoal-3) Combining the reachability bound analysis techniques into the static analysis,
-% I'm not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
-% Hence, it needs to consider some 
 aims to estimate
 the dependency depth for query requests.
 \paragraph{Limitations of Existing Works}
@@ -351,12 +287,9 @@ the dependency depth for query requests.
  either only the dependency analysis
  or only the program quantitative property (such as complexity or resource cost),
  but not both of them.
- % No need to mention the adaptivity analysis.
  \end{enumerate}
 \item \textbf{Limitations in Previous Works on Estimating Adaptivity}
-The previous works from \cite{weihao22}
-% ?on estimating this quantity from \cite{weihao22} are limited in the expressiveness, efficiency, and accuracy as well.
-% In the previous 
+The previous works from~\cite{weihao22}
 develop program analysis algorithm for estimating the adaptivity.
 However, this algorithm is low efficiency, and in-precise. It is not automatic either. 
 This analysis algorithm and limitations are introduced with more details in Section~\ref{sec:prework-formalization}.
@@ -365,21 +298,16 @@ This analysis algorithm and limitations are introduced with more details in Sect
 \paragraph{Methodology}
 To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
 I develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static}.
-% which 
-% {\THESYSTEM} combines data flow and control flow analysis with reachability bound analysis~\cite{GulwaniZ10}. 
-% This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve by directly using the data and control flow analyses or the ones that one would achieve by directly using reachability bound analysis techniques alone. Specifically as follows in the same 3 aspects as the semantics-based analysis 
-% while through static program analysis techniques, a sound estimated result will be given in each aspect as follows.
 This analysis combines data flow and control flow analysis with reachability bound analysis.
 % ~\cite{GulwaniZ10}. 
 This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve 
 by directly using the data and control flow analyses or the ones that one would achieve 
 by directly using reachability bound analysis techniques alone. 
-% Specifically as follows in the same 
 It is developed in 3 aspects similar to the semantics-based adaptivity analysis 
 while through static program analysis techniques. 
 A sound estimated result is given in each part, which is summarized as follows.
 \begin{enumerate}
-\item The {\THESYSTEM} analyses the data \emph{dependency relation} through the static data flow analysis technique in Section~\ref{sec:alg_edgegen}.
+\item The {\THESYSTEM} estimates the \emph{variable may-dependency} relation, $\vardep(x^i, y^j, c)$ through the static data flow analysis technique in Section~\ref{sec:alg_edgegen}, and computes the $\flowsto()$ relation correspondingly.
 This analysis corresponds to the first step in semantics-based adaptivity analysis. 
 The estimated result produced from 
 this step is proved as a sound upper bound for the \emph{dependency relation} defined in the adaptivity formalization model from Section~\ref{sec:dynamic-datadep}.
@@ -387,17 +315,15 @@ this step is proved as a sound upper bound for the \emph{dependency relation} de
 % Still , 
 Corresponding to the second step in semantics-based adaptivity analysis, the \emph{dependency quantity} 
 is estimated by {\THESYSTEM} through the static program reachability bound analysis techniques, in Section~\ref{sec:alg_weightgen}.
-% This analysis corresponds to the second step in semantics-based adaptivity analysis. 
 The estimated result produced from 
 this step is proved as a sound upper bound for the \emph{dependency quantity} defined in the adaptivity formalization model.
 \item 
-% The program estimation, 
-% In 
 The static program adaptivity analysis in this step
 % , specifically estimating 
 According to the third step of semantics-based adaptivity analysis, 
 {\THESYSTEM} in this step also constructs a program-based dependence graph for approximating the semantics-based dependency graph.
-% in Section~\ref{sec:dynamic-adapt}.
+It generates the \emph{estimated dependency graph}, $\progG(c)$ for the program $c$ with four components $\progE(c)$,
+vertex set $\progV(c)$, weights $\progW(c)$ and an annotation set $\progF(c)$ repsectively.
 Then, based on this graph, {\THESYSTEM} 
 computes the adaptivity upper bound soundly 
 and accurately through a newly designed algorithm.
