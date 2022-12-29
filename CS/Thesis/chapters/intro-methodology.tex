@@ -29,19 +29,15 @@ This requires us to design new analysis techniques in order to formalize this qu
 \end{enumerate}
 %
 \paragraph{New Methodology}
- To formalize this intuitive \emph{adaptivity} as a \emph{quantitative reachability} program property semantically, 
-I combine three
-methodologies.
+Our semantics-based method formalizes this intuitive \emph{adaptivity} as a \emph{quantitative reachability} program property semantically as follows.
 \begin{enumerate}
-   \item First one is  
-   the methodology of semantic data dependency analysis
-   including the method in~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
-   I combine these methods and define the \emph{dependency relation} between every query.
-   \item The second methodology is to define the \emph{dependency-quantity} 
-     based on the \emph{data-dependency} above.
-   I inspired from some methodology of resource cost analysis techniques such as the resource bound analysis in
-  ~\cite{AssafNSTT17}.
-   \item Then we inspired from program cost analysis methodology, we construct a dependency graph by combining both the \emph{data-dependency} and \emph{dependency-quantity} property on it. This dependency graph accurately reflects the information of intuitive \emph{adaptivity}.
+   \item We firstly semantically define the \emph{dependency relation}, $\vardep(c, x^i, y^j)$ for variables $x^i, y^j$ in the program $c$, inspired from the method in~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
+   This relation can be used to reason about dependence relation between queries.
+
+   \item Then we define the \emph{dependency quantity} 
+     based on the \emph{dependency relation} above, which is inspired from resource cost analysis techniques and resource bound analysis works.
+
+   \item Then we construct a dependency graph by combining both the \emph{dependency relation} and \emph{dependency quantity} property on it. This dependency graph accurately reflects the information of intuitive \emph{adaptivity}.
    \item Based on this graph, we accurately and formally define as a \emph{quantitative reachability} program property.
    \end{enumerate}
    % \item 
@@ -62,7 +58,6 @@ at every execution location.
 either only the dependency analysis
 or only the program quantitative property (such as complexity or resource cost),
 but not both of them.
-% No need to mention the adaptivity analysis.
 \end{enumerate}
 
 \paragraph{New Methodology}
@@ -75,13 +70,13 @@ by directly using reachability bound analysis techniques alone.
 % Specifically as follows in the same 
 \begin{enumerate}
 \item The {\THESYSTEM} first adopts both the static data flow analysis and the control flow analysis techniques for
-estimating the \emph{data-dependency} property.
+estimating the \emph{dependency relation} property.
 \item In the second part, {\THESYSTEM} reasons the
-\emph{dependency-quantity} property of the \emph{adaptivity} through reachability-bound analysis and combines it with the
-\emph{data-dependency} property.
+\emph{dependency quantity} property of the \emph{adaptivity} through reachability-bound analysis and combines it with the
+\emph{dependency relation} property.
 
 \item Then
-{\THESYSTEM} combines the \emph{dependency-quantity} and \emph{data-dependency}
+{\THESYSTEM} combines the \emph{dependency quantity} and \emph{dependency relation}
 perspectives of the \emph{adaptivity} property
 and constructs a \emph{semantic-based dependence} graph. This graph accurately reflects the information related to the intuitive \emph{adaptivity} property.
 %
@@ -91,8 +86,3 @@ and compute the \emph{adaptivity} accurately on this graph.
 
 \subsection{Reachability Bound Analysis}
 \label{sec:intro-methodology-reachability}
-\subsubsection{Execution-Based Program Analysis}
-% \label{sec:intro-exe}
-
-\subsubsection{Static Program Analysis}
-% \label{sec:intro-exe}
