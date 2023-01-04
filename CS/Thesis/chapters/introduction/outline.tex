@@ -4,7 +4,7 @@ through the static program analysis techniques.
 The second part focus on solving the Reachability-bound Problem through by program analysis techniques as well.
 \begin{enumerate}
 
-    \item \redd{PART \romannum{2} \quad  PROGRAM ANALYSIS FRAMEWORK FOR ADAPTIVE DATA ANALYSIS}
+    \item \redd{PART \romannum{1} \quad  PROGRAM ANALYSIS FRAMEWORK FOR ADAPTIVE DATA ANALYSIS}
     shows the work on the program analysis algorithms to study the adaptivity of the adaptive data analysis program.    
 
     \paragraph{Chapter~\ref{sec:adapt-intro}} gives the introduction of adaptive data analysis in Section~\ref{sec:adapt-background} and the challenges (Section~\ref{sec:adapt-motivation}) we face to obtain the adaptivity to control the generalization error of an adaptive data analysis program, with an outline of this part in Section~\ref{sec:adapt-outline}.
@@ -58,38 +58,38 @@ The second part focus on solving the Reachability-bound Problem through by progr
     \paragraph{Chapter~\ref{sec:adapt-relatedwork}} discusses the related works from three perspectives:
     the semantics based dependency  analysis and formalization(Section~\ref{sec:relatedwork-adapt-semantics}), the static program analysis (Section~\ref{sec:relatedwork-adapt-static}), and the works about generalization error in adaptive data analysis (Section~\ref{sec:relatedwork-adapt-error}).  
 
-    \item \redd{PART \romannum{1} \quad  REACHABILITY BOUND ANALYSIS}
+    \item \redd{PART \romannum{2} \quad  REACHABILITY BOUND ANALYSIS}
 
     \paragraph{Chapter~\ref{sec:reachability-intro}} gives the introduction of the
     \emph{Reachability-bound} Problem in
-    Section~\ref{sec:reachability-background}.
-    Then it presents the motivation and existing limitations on this problem and give the overview of the new algorithm in
-    Section~\ref{sec:reachability-motivation}.
-    In Section~\ref{sec:reachability-outline}, it presents the structure of this chapter.
+    Section~\ref{sec:reachability-background}, and
+    then presents the motivation and existing limitations on this problem and give the overview of the new algorithm in
+    Section~\ref{sec:reachability-motivation} and the structure of this part 
+    in Section~\ref{sec:reachability-outline}.
 
-    \paragraph{Chapter~\ref{sec:reachability-analysis}} presents the {path-sensitive reachability-bound analysis} in following sections.
+    \paragraph{Chapter~\ref{sec:reachability-analysis}} presents the {path-sensitive reachability-bound analysis} through the following sections.
 
     In Section~{\ref{sec:psRB-language}}, we first give the language and program model formally, including the
     language syntax in Section~\ref{sec:psRB-language-syntax} and the trace-based operational semantics in Section~\ref{sec:psRB-language-semantics}.
     
     Then Section~\ref{sec:psRB-definition} gives the \emph{reachability-bound} definition.
 
-    Section~\ref{sec:psRB-analysis-alg} presents the new \emph{path-sensitive reachability-bound} analysis algorithm, named $\kw{psRB}$ through following subsections.
+    Section~\ref{sec:psRB-analysis-alg} presents the new \emph{path-sensitive reachability-bound} analysis algorithm, named $\kw{psRB}$ through the following subsections.
     %
     Section~\ref{sec:psRB-preface} first gives the main steps of this algorithm as a structural section. There are five steps in this algorithm.
     In Section~\ref{sec:psRB-progabs}, the first step abstracted the program into an \emph{abstract transition graph}.
     Based on this graph, Section~\ref{sec:psRB-refine} then refines the multi-paths loop in this program and generates a refined program.
     According to the graph and the refined program, Section~\ref{sec:psRB-rank} computes the ranking function for each edge on the graph and estimates the value of each ranking function.
-    Section~\ref{sec:psRB-pathlocalrb} and \ref{sec:psRB-looprb} then computes the \emph{loop reachability-bound} and \emph{loop reachability-bound} for each path and loop of this program using the ranking function and the graph.
+    Section~\ref{sec:psRB-pathlocalrb} and \ref{sec:psRB-looprb} then computes the \emph{path reachability-bound} and \emph{loop reachability-bound} for each path and loop of this program using the ranking function and the graph.
     Then Section~\ref{sec:psRB-rb} finally gives the \emph{path-sensitive reachability-bound} computation algorithm for each program point.
 
-    \paragraph{Chapter~{\ref{sec:psRB-eval}}} first represents ste-by-step examples to illustrate the algorithm clearly in Section~\ref{sec:psRB-example},
+    \paragraph{Chapter~{\ref{sec:psRB-eval}}} first represents step-by-step examples to illustrate the algorithm clearly in Section~\ref{sec:psRB-example},
     and the implementation and evaluation results on over some real world benchmarks in Section~\ref{sec:psRB-eval}.
     
     \paragraph{Chapter~\ref{sec:psRB-relatedwork}} discusses the related works in this area.
 
     \item \redd{PART \romannum{3} \quad  Epilogue}
-    \paragraph*{Chapter~\ref{sec:conclusionfuture}}
+    \paragraph{Chapter~\ref{sec:conclusionfuture}}
     concludes the works of \redd{PART \romannum{1}} and \redd{PART \romannum{2}}, and gives the future plans based on their limitations respectively in Section~\ref{sec:conclusionfuture-adapt} and Section~\ref{sec:conclusionfuture-psRB}.
 
     Section~\ref{sec:conclusion-adapt} summarizes the program analysis framework for adaptive data analysis in \redd{PART \romannum{1}}, concludes the contribution and weakness of our analysis algorithm. Then in Section~\ref{sec:future-adapt}, we propose the future work on extending and improving the existing technique.

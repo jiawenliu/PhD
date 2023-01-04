@@ -16,7 +16,7 @@ My execution-based data dependency relation definition over variables
 is inspired by the method in \citet{Cousot19a}, where the dependency relation is also identified by looking into the differences on two execution traces. 
 However, Cousot excludes timing channels~\cite{SabelfeldM03} and empty observation, which are also not considered as a form of dependency in traditional dependency analysis \citet{DenningD77}.
 My definition includes timing channels and empty observation by observing both the disappearance and value variation.
-  
+
 
 \section{The Static Program Analysis}
 \label{sec:relatedwork-adapt-static}
@@ -38,10 +38,8 @@ However, because of the different domains, we care about assigned variables, and
 Moreover, the state-of-art data-flow analysis techniques do not
 consider the quantitative information on how many times each variable is dependent on the other. 
 My weight estimation is inspired by
-% (specifically in the case if
-% the data-flow is nested in iterations of recursion into consideration). 
- works in program complexity analysis and worst case execution time analysis areas, 
- focusing on analyzing the cost of the entire program. 
+works in program complexity analysis and worst case execution time analysis areas, 
+focusing on analyzing the cost of the entire program. 
 The techniques are based on
 type system~\cite{CicekBG0H17, RajaniG0021}, Hoare logic~\cite{CarbonneauxHS15}, abstract interpretation~\cite{GustafssonEL05, HumenbergerJK18},
 invariant generation through cost equations or ranking functions~\cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}
