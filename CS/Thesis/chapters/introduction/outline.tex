@@ -1,13 +1,14 @@
 There are two main parts of the work in this thesis.
-The first part focus on formalizing and analyzing the \emph{adaptivity} -- a quantity property -- for the programs in data analysis area,
-through the static program analysis techniques.
-The second part focus on solving the Reachability-bound Problem through by program analysis techniques as well.
+The first part focus on formalizing and analyzing the \emph{adaptivity} -- a quantitative reachability property -- for the programs in data analysis area,
+through semantics-based formalization and the static program analysis techniques.
+The second part focus on computing the precise reachability-bound for every program control point.
 \begin{enumerate}
 
     \item \redd{PART \romannum{1} \quad  PROGRAM ANALYSIS FRAMEWORK FOR ADAPTIVE DATA ANALYSIS}
-    shows the work on the program analysis algorithms to study the adaptivity of the adaptive data analysis program.    
+    shows the work on studying and formalizing the \emph{adaptivity} of the adaptive data analysis program.    
 
-    \paragraph{Chapter~\ref{sec:adapt-intro}} gives the introduction of adaptive data analysis in Section~\ref{sec:adapt-background} and the challenges (Section~\ref{sec:adapt-motivation}) we face to obtain the adaptivity to control the generalization error of an adaptive data analysis program, with an outline of this part in Section~\ref{sec:adapt-outline}.
+    \paragraph{Chapter~\ref{sec:adapt-intro}} gives the introduction of adaptive data analysis in Section~\ref{sec:adapt-background} and the challenges in Section~\ref{sec:adapt-motivation} that we are facing to formalize and {obtain} the adaptive data analysis program's adaptivity and control its generalization error,
+    with an outline of this part in Section~\ref{sec:adapt-outline}.
     
     \paragraph{Chapter~\ref{sec:prework}} introduces the previous works on adaptivity analysis.
     It contains a short summary of the language designs in Section~\ref{sec:prework-language} 
@@ -27,33 +28,33 @@ The second part focus on solving the Reachability-bound Problem through by progr
     the intuitive \emph{adaptivity} rounds for a given data analysis program through a formal semantics model.
     It is defined in three steps. 
 %
-    The Section~\ref{sec:dynamic-datadep} reasons the \emph{data-dependency} between every query, 
-    through the methodology of semantic data dependency analysis.
+    The Section~\ref{sec:dynamic-datadep} defines \emph{variable may-dependency} relation in order to the reason the \emph{data-dependency} between every query semantically.
+    % through the methodology of semantic data dependency analysis.
 %
-    In Section~\ref{sec:dynamic-graph}, it analyzes the \emph{dependency-quantity} 
-    based on the \emph{data-dependency} above.
-    Then combines quantitative information with dependency information, it construct a weighted dependency graph,
-    the \emph{semantics-based dependency graph}.
+    In Section~\ref{sec:dynamic-graph}, it analyzes the \emph{dependency-quantity} over variables
+    based on the \emph{variable may-dependency} relations formalized above.
+    Then we combine this quantitative information with \emph{variable may-dependency} relations and construct a weighted dependency graph
+    named \emph{semantics-based dependency graph}.
     %
-    Then in Section~\ref{sec:dynamic-adapt} define the formal \emph{adaptivity} model in definition~\ref{def:trace_adapt} as a quantitative reachability property.
-   Based on the \emph{semantics-based dependency graph} and combines both \emph{data-dependency} and \emph{dependency-quantity} property.
+    Then in Section~\ref{sec:dynamic-adapt}, we present the formal \emph{adaptivity} model in Definition~\ref{def:trace_adapt} as a formal quantitative reachability property.
+   This definition is based on the \emph{semantics-based dependency graph} by combining both \emph{data-dependency} and \emph{dependency-quantity} property, which captures intuitive \emph{adaptivity} accurately.
 
     Section~\ref{sec:adapt-static} develops a static program adaptivity analysis framework, named {\THESYSTEM}.
     This analysis combines both data dependency analysis with resource cost analysis techniques.
     It is developed in as follows in order to accurately approximate the formal \emph{adaptivity} definition
     through static program analysis techniques. 
 
-    In Section~\ref{sec:alg_vertexgen},~\ref{sec:alg_weightedgegen} and~\ref{sec:alg_graphgen}, it constructs the 
-    \emph{estimate dependence} graph for approximating the \emph{semantics-based dependency graph}.
-    Specifically, in Section~\ref{sec:alg_edgegen}, it first represents a combined data-control flow analysis algorithm estimating the data \emph{data-dependency} relation and estimates the edge of this graph.
-    In Section~\ref{sec:alg_weightgen} presents a reachability-bound analysis algorithm. It estimates the \emph{dependency-quantity} information of \emph{adaptivity}, specifically the weight of this graph.
+    In Section~\ref{sec:alg_vertexgen},~\ref{sec:alg_weightedgegen} and~\ref{sec:alg_graphgen}, it constructs an 
+    \emph{estimated dependency} graph for approximating the \emph{semantics-based dependency graph}.
+    Specifically, through Section~\ref{sec:alg_edgegen}, {\THESYSTEM} first uses a combined data-control flow analysis algorithm estimating the data \emph{variable may-dependency} relation in order to estimate the edge of this graph.
+    The Section~\ref{sec:alg_weightgen} presents a reachability-bound analysis algorithm. {\THESYSTEM} then uses this algorithm and estimates the \emph{dependency-quantity} for \emph{adaptivity}, as well as the weight of this graph.
     Then Section~\ref{sec:alg_graphgen} combines all information and constructs the 
-    \emph{estimate dependence} graph.
+    \emph{estimate dependency} graph.
     The Section~\ref{sec:alg_adaptcompute} presents an efficient and accurate path search algorithm. It computes the \emph{adaptive} from the estimated graph.
     % , specifically estimating     
 
-    \paragraph{Chapter~\ref{sec:adapt-implementation}} presents five manual examples demonstrating this framework in Section~\ref{sec:adapt-example},
-    and the experimental results on some real world data analysis algorithms in Section~\ref{sec:adapt-eval}.
+    \paragraph{Chapter~\ref{sec:adapt-implementation}} presents five examples with steps unfolded manually to demonstrate this framework in Section~\ref{sec:adapt-example},
+    and the evaluation results over a benchmark composed of 5 real world data analysis algorithms and 20 synthesized programs in Section~\ref{sec:adapt-eval}.
     
     \paragraph{Chapter~\ref{sec:adapt-relatedwork}} discusses the related works from three perspectives:
     the semantics based dependency  analysis and formalization(Section~\ref{sec:relatedwork-adapt-semantics}), the static program analysis (Section~\ref{sec:relatedwork-adapt-static}), and the works about generalization error in adaptive data analysis (Section~\ref{sec:relatedwork-adapt-error}).  
@@ -96,7 +97,7 @@ The second part focus on solving the Reachability-bound Problem through by progr
 
     Section~\ref{sec:conclusion-psRB} summarizes the main contribution and limitation of our path-sensitive reachability-bound computation algorithm in \redd{PART \romannum{2}}. Then Section~\ref{sec:future-psRB} presents the possible improvement plan for the next step.
     
-    Section~\ref{sec:future-cost} discusses a possible future direction on studying a general reachability quantitative properties, i.e., {the program's non-monotonic quantitative property}.
+    Section~\ref{sec:future-cost} discusses a possible future direction on studying a general quantitative reachability properties, i.e., {the program's non-monotonic quantitative property}.
 
    \item \redd{PART \romannum{4} \quad  APPENDIX}
     The Appendix contains the complete program code for examples, and proofs for lemmas and theorems in \redd{PART \romannum{1}} and \redd{PART \romannum{2}}.
