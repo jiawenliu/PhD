@@ -20,20 +20,46 @@ for providing users with personalized accurate services. This brings my attentio
 % The 
 first execution behavior in these data analysis programs, i.e., the quality of the data analysis results.
 We look at data analysis which analyzes sample data to get some generalized properties of the big data which the sample is drawn from.
-The generalization property of a data analysis program over sample data with respect to the population is one of the important reachability quantitative properties of programs.
+The generalization property of a data analysis program over sample data with respect to the population is one of the important properties of programs.
 The generalization error measures the difference of property from the sample data and population, showing the reliability of the data analysis of showing the true properties of the population. 
 High generalization error makes the analysis result of these programs not reliable.
-Fortunately, studies found that some quantitative properties of data analysis programs can help to control the generalization error, especially when the data analysis is adaptive.
-These properties are the first reachability quantitative properties we are interested in
-analyzing.
+We are interested in analyzing the generalization error related properties in order to improve the data analysis programs analyzing results.
 
 High-quality
 service in people's mobile device life does not just rely on the accuracy of service but also efficiency of the service. 
 This brings my attention to another non-functional execution property, the program's resource cost.
 Suppose we are playing an online game on our smartphones, what do we care about? We care about the performance of the game, in another word, if it runs fast. We care about whether the game crashed due to being out of memory, and so on. Additionally, resource usage is the key for embedded systems or wearable devices. In this sense, the study of the resource usage is of great practical value. We observe that resource usage properties are usually quantitative, specifying certain bounds on the target resource to guarantee performance. For instance, an update on a mobile app does not significantly slow down the performance of this update and will not use resources exceeding certain bounds specified before.
 
+Some program properties mentioned above can be expressed in the form of reachability,
+such as
+whether the output relies on user input, whether the secret data is leaked in the security analysis area, 
+whether some pieces of code are executed, etc.
+Reachability can tell us the existence of these properties.
+However, it cannot tell us how many times or how long these properties hold for programs
+% For example, it can not tell us how much 
+such as the amount of leaked data.
+%  is leaked, which is also crucial in security. 
+This requires extra analysis
+of the program's quantitative property. 
+To this end, this thesis focus on analyzing the program's quantitative reachability. 
+By exploiting the quantitative reachability,
+many program properties can be 
+studied based on it
+such as the number of function calls,
+program execution steps,
+lines of executed codes,
+the power consumption, memory usage, etc. 
+Controlling these quantities can improve program reliability, security, privacy, usability, etc.
+In this thesis, we analyze two quantitative reachability properties of programs that can be used to improve programs' performance.
+
+As the first properties, we want to improve the data analysis results and reduce its generalization error.
+%  High generalization error makes the analysis result of these programs not reliable.
+Fortunately, studies found that some quantitative properties of data analysis programs can help to control the generalization error, especially when the data analysis is adaptive.
+These properties are the first reachability quantitative properties we are interested in
+analyzing.
+
 \highlight{
-    To have precise estimation on program's resource usage,
+To have precise estimation on program's resource usage,
     also improve the analysis for the \emph{adaptivity},
     we look at the program's reachability-bound as the second quantitative reachability property.
 This property is a worst-case bound on the number of times a given control location 

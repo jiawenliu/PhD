@@ -1,27 +1,30 @@
 \begin{abstractpage}
-Some program properties can be expressed in the form of reachability,
-such as
-whether the output relies on user input, whether the secret data is leaked in the security analysis area, 
-whether some pieces of code are executed, etc.
-Reachability can tell us the existence of these properties.
-However, it cannot tell us how many times or how long these properties hold for programs.
-For example, it can not tell us how much data is leaked, which is also crucial in security. This requires extra analysis
-of the program's quantitative property. 
-To this end, this thesis focus on analyzing the program's quantitative reachability. 
-By exploiting the quantitative reachability,
-many program properties can be 
-studied based on it
-such as the number of function calls,
-program execution steps,
-lines of executed codes,
-the power consumption, memory usage, etc. 
-Controlling these quantities can improve program reliability, security, privacy, usability, etc.
-% For instance, in security, whether and how the program's output is influenced by the user's input
-% can be studied based on the 
-% quantitative reachability
-% of user-defined input w.r.t. the output of the program.
-% Providing tight bounds on these quantities is useful to improve software design for different potential applications. In this thesis, I will focus on analyzing 
-In this thesis, we analyze two quantitative reachability properties of programs that can be used to improve programs' performance, along different axes.
+    Program analysis analyzes the behaviors of a computer program.
+    \highlight{
+        As a high level view of the properties mentioned above,
+        all of them shares two sub-properties, "How Much" and "Weather" from different perspectives.
+        We refer to them as \emph{quantitative} and \emph{reachability}.
+        The analysis from one perspective is not precise enough,
+        for example, reachability analysis only tells us whether the output relies on user input, whether the secret data is leaked in the security analysis area, 
+        whether some pieces of code are executed, etc.
+        % Reachability can tell us the existence of these properties.
+        However, it cannot tell us how many times or how long these properties hold for programs
+        % For example, it can not tell us how much 
+        such as the amount of leaked data.
+        The program complexity and cost analysis cannot tell us where the resource is cost, etc.
+        In this sense,
+        this thesis
+        %  is leaked, which is also crucial in security. 
+        analyzes two quantitative reachability properties for program, and presents algorithms that combine two lines of techniques effectively and to better and more precisely control program's execution behavior.
+        % By exploiting the quantitative reachability,
+        % many program properties can be 
+        % studied based on it
+        % such as the number of function calls,
+        % program execution steps,
+        % lines of executed codes,
+        % the power consumption, memory usage, etc. 
+        % Controlling these quantities can improve program reliability, security, privacy, usability, etc.
+        }
 
 The first one is the \emph{adaptivity rounds} of the programs in adaptive data analysis, where the choice queries asked by data analysts may depend on the results of previous queries. If we represent these interactions in adaptive data analysis as a program, we can find some dependence relations of queries such that some queries may rely on the previous queries.
 During these dependence relations, the \emph{adaptivity round} is intuitively defined as the depth of the chain of dependent queries. 
