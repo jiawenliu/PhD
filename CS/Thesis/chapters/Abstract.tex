@@ -1,30 +1,38 @@
 \begin{abstractpage}
-    Program analysis analyzes the behaviors of a computer program.
-    \highlight{
-        As a high level view of the properties mentioned above,
-        all of them shares two sub-properties, "How Much" and "Weather" from different perspectives.
-        We refer to them as \emph{quantitative} and \emph{reachability}.
-        The analysis from one perspective is not precise enough,
-        for example, reachability analysis only tells us whether the output relies on user input, whether the secret data is leaked in the security analysis area, 
-        whether some pieces of code are executed, etc.
-        % Reachability can tell us the existence of these properties.
-        However, it cannot tell us how many times or how long these properties hold for programs
-        % For example, it can not tell us how much 
-        such as the amount of leaked data.
-        The program complexity and cost analysis cannot tell us where the resource is cost, etc.
-        In this sense,
-        this thesis
-        %  is leaked, which is also crucial in security. 
-        analyzes two quantitative reachability properties for program, and presents algorithms that combine two lines of techniques effectively and to better and more precisely control program's execution behavior.
-        % By exploiting the quantitative reachability,
-        % many program properties can be 
-        % studied based on it
-        % such as the number of function calls,
-        % program execution steps,
-        % lines of executed codes,
-        % the power consumption, memory usage, etc. 
-        % Controlling these quantities can improve program reliability, security, privacy, usability, etc.
-        }
+Program analysis analyzes the behaviors of a computer program, such as
+%     safety property where we
+% whether certain piece of code leaks a secret? 
+% how much secret is leaked by a program / some pieces of code?
+the data dependency property where people analyzes
+whether certain data depends on others, how many times certain data is dependent during multiple-executions, etc.,
+the resource usage property where we analyze
+whether a piece of code consumes certain resources, 
+how much certain resource is used by a program / some pieces of code, etc.
+\highlight{
+As a high level view of the properties mentioned above,
+all of them shares two sub-properties, "How Much" and "Weather" from different perspectives.
+We refer to them as \emph{quantitative} and \emph{reachability}, and we name this class of property as \emph{Quantitative Reachability} property.
+The analysis from one perspective is not precise enough,
+for example, reachability analysis only tells us whether the output relies on user input, whether the secret data is leaked in the security analysis area, 
+whether some pieces of code are executed, etc.
+% Reachability can tell us the existence of these properties.
+However, it cannot tell us how many times or how long these properties hold for programs
+% For example, it can not tell us how much 
+such as the amount of leaked data.
+The program complexity and cost analysis cannot tell us where the resource is cost, etc.
+In this sense,
+this thesis
+%  is leaked, which is also crucial in security. 
+analyzes two quantitative reachability properties for program, and presents algorithms that combine two lines of techniques effectively and to better and more precisely control program's execution behavior.
+% By exploiting the quantitative reachability,
+% many program properties can be 
+% studied based on it
+% such as the number of function calls,
+% program execution steps,
+% lines of executed codes,
+% the power consumption, memory usage, etc. 
+% Controlling these quantities can improve program reliability, security, privacy, usability, etc.
+}
 
 The first one is the \emph{adaptivity rounds} of the programs in adaptive data analysis, where the choice queries asked by data analysts may depend on the results of previous queries. If we represent these interactions in adaptive data analysis as a program, we can find some dependence relations of queries such that some queries may rely on the previous queries.
 During these dependence relations, the \emph{adaptivity round} is intuitively defined as the depth of the chain of dependent queries. 
@@ -39,25 +47,24 @@ and then designing
 a program analysis framework for estimating the \emph{adaptivity}. 
 
 As a continuation of the previous problem to get a precise bound when estimating the \emph{adaptivity},
-we look at the program's reachability-bound as the second quantitative reachability property.
-This property is a worst-case bound on the number of times a given control location 
+we look at the second quantitative reachability property,
+The number of times a given control location 
 inside a procedure is visited during the program execution.
-This execution property has broad
-applications in analyzing other program property beyond quantitative reachability.
-For example in the resource cost analysis, this quantitative reachability property
-can help to provide a tighter
-bound on the resources consumed by a program such as time, memory,
-network traffic, power, etc.
-In estimating some quantitative property
-in the data analysis area, for example, when analyzing the program's \emph{adaptivity}
-as introduced above, % on the adaptive data analysis program's \emph{adaptivity}
-the reachability-bound on each program control location
-can improve the precision of the estimated bound.
-In the security analysis area, this reachability-bound helps to improve the accuracy
-in estimating the program's information leakage or uncertainty propagation, etc.
-Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
-However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively and 
-computing a tight reachability-bound for a given program control location is challenging.
+The upper bound on this execution number for 
+a given control location is referred to as the \emph{reachability-bound} by~\cite{GulwaniZ10} in the first place.
+A tight reachability-bound
+can help to improve the analysis result on other program features such as the resource cost, the \emph{adaptivity} of data analysis programs, and the information leakage in security analysis area, etc.
+% For example, in the resource cost analysis, this quantitative reachability property
+% can help to provide a tighter
+% bound on the resources consumed by a program such as time, memory,
+% network traffic, power, etc.
+% In the data analysis area,
+% the reachability-bound on each program control location
+% can help to improve the precision of the data training result. 
+% In security, this reachability-bound helps to improve the accuracy
+% in estimating the program's information leakage or uncertainty propagation, etc.
+Though there are many program analysis algorithms estimates the program's loop bound or overall complexity, there isn't a general analysis algorithm that solves \emph{reachability-bound} for each program location directly or path-sensitively.
+Moreover, computing a tight reachability-bound for a given program control location is challenging.
 Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
 But there isn't a general analysis algorithm that
 computes the reachability-bound
@@ -74,19 +81,4 @@ and combines them effectively.
 The effective combination improves the precision of the estimated reachability-bound comparing to adopt either one of them.
 It allows us to compute precise reachability-bound on each program point path-sensitively.
 We implement a prototype and report on an experimental comparison with state-of-art tools over four different benchmarks.
-% {
-% The third challenging quantitative reachability property I'm interested in is the program's {non-monotonic} quantitative property.
-% This kind of property includes memory usage in the presence of garbage collection,
-% number of channel connections established that are later closed,
-% or resources requested to a virtual host which is released after using them. 
-% The non-monotonic quantitative property is significantly different from the traditional monotonic quantitative property,
-% such as the program execution time, energy consumption,
-% or the information leakage, etc. with different measurements in different areas.
-% These traditional quantitative properties only accumulate during the program execution. 
-% However, the non-monotonic quantitative property could also decrease along the computation.
-% To give a precise estimation on this {non-monotonic} quantity, I propose a future work on designing the program analysis framework.
-% This new framework will give
-% a symbolic bound on the program's non-monotonic quantitative property more accurately and efficiently
-% than existing works.
-% }
 \end{abstractpage}

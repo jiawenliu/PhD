@@ -11,7 +11,7 @@ The non-functional execution properties come into play in the new era.
 We think programs on mobile devices are of great significance in today's life.
 To provide people with high-quality mobile devices
 service through programs,
-we choose to study the non-functional properties, specifically reachability quantitative properties.
+we choose to study the non-functional properties, specifically quantitative reachability properties.
 Importance of the Program Execution Property in different areas.
 
 Existing high-quality
@@ -55,13 +55,12 @@ In this thesis, we analyze two quantitative reachability properties of programs 
 As the first properties, we want to improve the data analysis results and reduce its generalization error.
 %  High generalization error makes the analysis result of these programs not reliable.
 Fortunately, studies found that some quantitative properties of data analysis programs can help to control the generalization error, especially when the data analysis is adaptive.
-These properties are the first reachability quantitative properties we are interested in
+These properties are the first kind quantitative reachability properties we are interested in
 analyzing.
 
 \highlight{
-To have precise estimation on program's resource usage,
-    also improve the analysis for the \emph{adaptivity},
-    we look at the program's reachability-bound as the second quantitative reachability property.
+As the second quantitative reachability property
+we look at the program's reachability-bound.
 This property is a worst-case bound on the number of times a given control location 
 inside a procedure is visited during the program execution.
 This execution property has broad
@@ -86,9 +85,9 @@ aiming to find a precise symbolic worst-case reachability-bound on the program's
 Based on the
 semantics-based formalization method
 and new static-based program analysis techniques,
-we develop new program analysis frameworks to best exploit the benefit of these reachability quantitative properties in data analysis and resource usage. However, to fully utilize the aforementioned benefits of the new analysis frameworks on these non-functional properties, the appropriate implementation is inevitable. 
+we develop new program analysis frameworks to best exploit the benefit of these quantitative reachability properties in data analysis and resource usage. However, to fully utilize the aforementioned benefits of the new analysis frameworks on these non-functional properties, the appropriate implementation is inevitable. 
 To this end, we also take one step in algorithmizing the analysis frameworks
 which is used to formalize and statically estimate these properties.
 
-Last but not least, these reachability quantitative properties are not limited to static analysis. 
+Last but not least, these quantitative reachability properties are not limited to static analysis. 
 We are not only interested in programs implementing the specific algorithm, but also willing to study these lower bound and upper bound of the algorithm itself.
