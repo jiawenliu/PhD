@@ -1,0 +1,22 @@
+As a continuation of the previous problem to get a precise bound when estimating the \emph{adaptivity},
+we look at the program's reachability-bound as the second quantitative reachability property.
+This property is a worst-case bound on the number of times a given control location 
+inside a procedure is visited during the program execution.
+This execution property has broad
+applications in analyzing other program property beyond quantitative reachability.
+For example in the resource cost analysis, this quantitative reachability property
+can help to provide a tighter
+bound on the resources consumed by a program such as time, memory,
+network traffic, power, etc.
+In estimating some quantitative property
+in the data analysis area, for example, when analyzing the program's \emph{adaptivity}
+as introduced above, % on the adaptive data analysis program's \emph{adaptivity}
+the reachability-bound on each program control location
+can improve the precision of the estimated bound.
+In the security analysis area, this reachability-bound helps to improve the accuracy
+in estimating the program's information leakage or uncertainty propagation, etc.
+Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
+However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively.
+To solve these issues and improve the analysis results on this problem, I present a new algorithm
+aiming to find a precise symbolic worst-case reachability-bound on the program's every control location.
+
