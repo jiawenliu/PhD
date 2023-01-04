@@ -7,7 +7,7 @@ Reachability can tell us the existence of these properties.
 However, it cannot tell us how many times or how long these properties hold for programs.
 For example, it can not tell us how much data is leaked, which is also crucial in security. This requires extra analysis
 of the program's quantitative property. 
-To this end, I'm interested in studying the program's quantitative reachability in this thesis. 
+To this end, this thesis focus on analyzing the program's quantitative reachability. 
 By exploiting the quantitative reachability,
 many program properties can be 
 studied based on it
@@ -16,11 +16,12 @@ program execution steps,
 lines of executed codes,
 the power consumption, memory usage, etc. 
 Controlling these quantities can improve program reliability, security, privacy, usability, etc.
-For instance, in security, whether and how the program's output is influenced by the user's input
-can be studied based on the 
-quantitative reachability
-of user-defined input w.r.t. the output of the program.
-Providing tight bounds on these quantities is useful to improve software design for different potential applications. In this thesis, I will focus on analyzing two quantitative reachability properties of programs that can be used to improve programs' performance, along different axes.
+% For instance, in security, whether and how the program's output is influenced by the user's input
+% can be studied based on the 
+% quantitative reachability
+% of user-defined input w.r.t. the output of the program.
+% Providing tight bounds on these quantities is useful to improve software design for different potential applications. In this thesis, I will focus on analyzing 
+In this thesis, we analyze two quantitative reachability properties of programs that can be used to improve programs' performance, along different axes.
 
 The first one is the \emph{adaptivity rounds} of the programs in adaptive data analysis, where the choice queries asked by data analysts may depend on the results of previous queries. If we represent these interactions in adaptive data analysis as a program, we can find some dependence relations of queries such that some queries may rely on the previous queries.
 During these dependence relations, the \emph{adaptivity round} is intuitively defined as the depth of the chain of dependent queries. 
@@ -32,9 +33,10 @@ to provide an upper bound on adaptivity to assist data analysts.
 This part is developed by first defining the \emph{adaptivity} for 
 the adaptive data analysis
 and then designing
-a program analysis framework for estimating the \emph{adaptivity}.
+a program analysis framework for estimating the \emph{adaptivity}. 
 
-The second quantitative reachability property that I'm interested in is the program's reachability-bound.
+As a continuation of the previous problem to get a precise bound when estimating the \emph{adaptivity},
+we look at the program's reachability-bound as the second quantitative reachability property.
 This property is a worst-case bound on the number of times a given control location 
 inside a procedure is visited during the program execution.
 This execution property has broad
@@ -51,10 +53,24 @@ can improve the precision of the estimated bound.
 In the security analysis area, this reachability-bound helps to improve the accuracy
 in estimating the program's information leakage or uncertainty propagation, etc.
 Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
-However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively.
-To solve these issues and improve the analysis results on this problem, I present a new algorithm
-aiming to find a precise symbolic worst-case reachability-bound on the program's every control location.
-
+However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively and 
+computing a tight reachability-bound for a given program control location is challenging.
+Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
+But there isn't a general analysis algorithm that
+computes the reachability-bound
+directly or path-sensitively.
+To leverage these limitations,
+we present a path-sensitive reachability-bound algorithm
+aiming to find a precise symbolic worst-case reachability-bound on the program's every control location in this paper.
+Our algorithm brings together two techniques:
+\begin{itemize}
+\item 1. ranking function based amortized bound analysis through program abstraction, and
+\item 2. loop summarization based multiple loop paths refinement
+\end{itemize}
+and combines them effectively. 
+The effective combination improves the precision of the estimated reachability-bound comparing to adopt either one of them.
+It allows us to compute precise reachability-bound on each program point path-sensitively.
+We implement a prototype and report on an experimental comparison with state-of-art tools over four different benchmarks.
 % {
 % The third challenging quantitative reachability property I'm interested in is the program's {non-monotonic} quantitative property.
 % This kind of property includes memory usage in the presence of garbage collection,
