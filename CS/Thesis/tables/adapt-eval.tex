@@ -7,7 +7,7 @@
         \begin{center}
         \centering
 {\scriptsize
-        \begin{tabular}{ >{\tiny}r | l | c | c | >{\tiny}c | >{\tiny}c | >{\tiny}c | >{\tiny}c  }
+        \begin{tabular}{ >{\tiny}r | c | c | c | >{\tiny}c | >{\tiny}c | >{\tiny}c | >{\tiny}c  }
         \multirow{3}{*}{Program $c$} & 
         \multirow{3}{*}{\emph{adaptivity}}
          & \multicolumn{2}{c|}{$\THESYSTEM$}
@@ -15,13 +15,14 @@
          \cline{3-8}
          & & \multirow{2}{*}{$\pathsearch(c)$ (I | II) } & \multirow{2}{*}{$\query$\# (I | II) } & \multirow{2}{*}{lines} & \multicolumn{3}{c}{running time (second)} \\ 
          \cline{6-8}
-         & & & &  & Ocaml & Weight & $\pathsearch$  \\
+         & & & &  & Ocaml & Weight (I | II) & $\pathsearch$  \\
          \hline \hline
          $  \kw{twoRounds(k)}$ & $2$ &  $2| -$ & $k+1 | -$  & 8 & 0.0005 & 0.0017 | 0.0002 & 0.0003 \\
          $  \kw{multiRounds(k)}$ & $k$ &  $k| \max(1,k)$ & $k| -$  &  10 & 0.0012 & 0.0017 | 0.0002 & 0.0002 \\
          $  \kw{lRGD(k, r)}$ & $k$ & $k | \max(1,k) $ & $ 2k | -$  &  10 & 0.0015 & 0.0072 | 0.0002 & 0.0002  \\
          $  \kw{mROdd(k)}$ & $1 + k$ &  $2+\max(1,2k) | - $ & $1 + 3 k | - $  &  10 & 0.0015 & 0.0061 | 0.0002 & 0.0002 \\
          $  \kw{mRSingle(k)}$    & $2$ &  $1+ \max(1, k) | -$ & $1 + k | 1 + k$  &  9 & 0.0011 & 0.0075 | 0.0002 & 0.0002 \\
+         $  \kw{mRComplete(k, N)}$ & $k$ & $ k | -  $ & $k |-$   &  27 & 0.0026 & 85.9017 | 0.0003 & 0.0004 \\
         %  $  \kw{seq()}$ & $4$ & $4$ & $4$ & 4 & 0.0016 & 0.0002 & 0.0001 \\ 
         %  $  \kw{seqRV()}$ & $4$ & $4$ &  $4$ & 4 & 0.0011 & 0.0003 & 0.0001 \\  
         %  $  \kw{ifVD()}$ & $3$ & $3$ &  $3$ & 5 & 0.0010 & 0.0005  & 0.0001 \\
@@ -39,7 +40,6 @@
          \highlight{$ \kw{whileM(k)}$} & $1 + k$ &  $ 2 + \max(1,2k) | -$ & $1 + 3k | - $  &  9 & 0.0017 & 0.0062 | 0.0002 & 0.0001  \\
          \highlight{$ \kw{whileM2(k)}$} & $1 + k$ &  $ 2 + k | -$ & $1 + 3k | - $  &  9 & 0.0017 & 0.0062 | 0.0002 & 0.0001  \\
          \highlight{$\kw{nestWhileRC(k)}$} & $1 + 3k$ &  $1 + 3k | 2 + 3k + k^2$ &  $1 + 3k | 1 + k + k^2$  &  11 & 0.019 & 0.2669 | 0.0002 & 0.0007 \\
-         $  \kw{mRComplete(k, N)}$ & $k$ & $ k | -  $ & $k |-$   &  27 & 0.0026 & 85.9017 | 0.0003 & 0.0004 \\
         $  \kw{mRCompose(k)}$ & $2k$ & $  2k | -$ & $ 2k | -$   &  46 & 0.0036 & 5104 | 0.0003 &  0.0013\\
          $  \kw{seqCompose(k)}$ & $12$ & $12  $ | - & $326 | -$  &  502 & 0.0426  & 1.2743 | 0.0003 & 0.0223 \\
          $  \kw{tRCompose(k)}$ & $2$ &  $ * | 2$ & $* | 1 + 5k + 2 k^2 $  &  42 & 0.0026 & * | 0.0003 & 0.0005\\

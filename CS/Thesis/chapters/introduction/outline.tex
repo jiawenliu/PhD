@@ -54,7 +54,7 @@ The second part focus on computing the precise reachability-bound for every prog
     % , specifically estimating     
 
     \paragraph{Chapter~\ref{sec:adapt-implementation}} presents five examples with steps unfolded manually to demonstrate this framework in Section~\ref{sec:adapt-example},
-    and the evaluation results over a benchmark composed of 5 real world data analysis algorithms and 20 synthesized programs in Section~\ref{sec:adapt-eval}.
+    and the evaluation results over a benchmark composed of six real world data analysis algorithms and eleven handcrafted programs based on the code pieces extracted from C library and six synthesized programs in Section~\ref{sec:adapt-eval}.
     
     \paragraph{Chapter~\ref{sec:adapt-relatedwork}} discusses the related works from three perspectives:
     the semantics based dependency  analysis and formalization(Section~\ref{sec:relatedwork-adapt-semantics}), the static program analysis (Section~\ref{sec:relatedwork-adapt-static}), and the works about generalization error in adaptive data analysis (Section~\ref{sec:relatedwork-adapt-error}).  
@@ -84,8 +84,8 @@ The second part focus on computing the precise reachability-bound for every prog
     Section~\ref{sec:psRB-pathlocalrb} and \ref{sec:psRB-looprb} then computes the \emph{path reachability-bound} and \emph{loop reachability-bound} for each path and loop of this program using the ranking function and the graph.
     Then Section~\ref{sec:psRB-rb} finally gives the \emph{path-sensitive reachability-bound} computation algorithm for each program point.
 
-    \paragraph{Chapter~{\ref{sec:psRB-eval}}} first represents step-by-step examples to illustrate the algorithm clearly in Section~\ref{sec:psRB-example},
-    and the implementation and evaluation results on over some real world benchmarks in Section~\ref{sec:psRB-eval}.
+    \paragraph{Chapter~{\ref{sec:psRB-eval}}} presents four step-by-step examples to illustrate the algorithm clearly in Section~\ref{sec:psRB-example} firstly,
+    and then shows the implementation and evaluation results over five real world benchmarks in Section~\ref{sec:psRB-eval}.
     
     \paragraph{Chapter~\ref{sec:psRB-relatedwork}} discusses the related works in this area.
 
