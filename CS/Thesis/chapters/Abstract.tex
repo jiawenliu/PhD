@@ -23,20 +23,20 @@ The quantitative analysis such as program complexity and cost analysis only tell
 In this sense,
 this thesis presents algorithms that combine two lines of techniques effectively and shows its effectiveness in
 %  is leaked, which is also crucial in security. 
-analyzing two representative \emph{quantitative-reachability} properties and control program's execution behavior in a higher granularity.
+analyzing two representative \emph{quantitative-reachability} properties and controlling program's execution behavior in a higher granularity.
 }
 
-The first significant property we look into is the \emph{adaptivity rounds} of the programs in adaptive data analysis, which composed of multiple queries asked by data analysts. Among these queries, the choice of some queries may depend on the results of previous queries. If we represent these interactions in adaptive data analysis as a program, we can find some dependence relations of queries such that some queries may rely on the previous queries.
-During these dependence relations, the \emph{adaptivity round} is intuitively the depth of the chain of dependent queries. 
-Reasoning about adaptivity is useful in controlling the generalization error of adaptive data analysis, which usually propagates sharply along with the chain. 
-Many researchers have found that the generalization error can be controlled well by choosing the appropriate statistic technique according to the adaptivity.
-Nevertheless, the adaptivity is not always clear to data analysts when they need it. 
+The first significant property we look into is the \emph{adaptivity rounds} of the programs in adaptive data analysis, which is composed of multiple queries asked by data analysts. Among these queries, the choice of some queries may depend on the results of previous queries, and they form some dependence relations between each other.
+% If we represent these interactions in adaptive data analysis as a program, we can find some dependence relations of queries such that some queries may rely on the previous queries.
+During these dependence relations, the \emph{adaptivity} is intuitively the depth of the chain of dependent queries. 
+Reasoning about adaptivity is useful in controlling the generalization error of adaptive data analysis, which usually propagates sharply along with the dependency chain. 
+Researchers in data analysis area have found that the generalization error can be controlled well by choosing the appropriate statistic technique according to the \emph{adaptivity}.
+Nevertheless, the \emph{adaptivity} is not always clear to data analysts when they need it. 
 To solve this dilemma, we present a program analysis algorithm based on dependency graphs,
 to provide an upper bound on adaptivity to assist data analysts.
-This part is developed by first defining the \emph{adaptivity} for 
-the adaptive data analysis
-and then designing
-a program analysis framework for estimating the \emph{adaptivity}. 
+We first define the \emph{adaptivity} in a formal semantics model,
+and then design
+a program analysis framework combining the dependency analysis and quantitative analysis techniques for statically estimating the \emph{adaptivity}. 
 
 As a continuation of the previous problem, to get a more precise bound on the \emph{adaptivity},
 we look at the second \emph{quantitative-reachability} property -- 
@@ -45,7 +45,7 @@ inside a procedure is visited during the program execution.
 The upper bound on this execution number for 
 a given control location is referred to as the \emph{reachability-bound} by~\cite{GulwaniZ10} in the first place.
 A tight reachability-bound
-can help to improve the analysis result on other program features such as the resource cost, the \emph{adaptivity} of data analysis programs, and the information leakage in security analysis area, etc.
+can help to improve the analysis result on other program features such as the resource cost, the \emph{adaptivity} of data analysis programs, the information leakage in security analysis area, etc.
 % For example, in the resource cost analysis, this \emph{quantitative-reachability} property
 % can help to provide a tighter
 % bound on the resources consumed by a program such as time, memory,
@@ -65,11 +65,11 @@ To leverage these limitations,
 we present a path-sensitive reachability-bound algorithm
 aiming to find a precise symbolic reachability-bound on the program's every control location.
 %  in this paper.
-Our algorithm brings together two techniques:
-\begin{itemize}
-\item 1. ranking function based amortized bound analysis through program abstraction, and
-\item 2. loop summarization based multiple loop paths refinement
-\end{itemize}
+Our algorithm brings together two techniques: 1. the ranking function based amortized bound analysis through program abstraction, and 2. the loop summarization based multiple loop paths refinement,
+% \begin{itemize}
+% \item 1. ranking function based amortized bound analysis through program abstraction, and
+% \item 2. loop summarization based multiple loop paths refinement
+% \end{itemize}
 and combines them effectively. 
 The effective combination improves the precision of the estimated reachability-bound comparing to apply either one of them.
 % It allows us to compute precise reachability-bound on each program point path-sensitively.
