@@ -42,11 +42,11 @@ Our semantics-based formalization defines this intuitive \emph{adaptivity} as a 
    \item Based on this graph, we formally define the \emph{adaptivity} as a \emph{quantitative reachability} program property.
    \end{enumerate}
    % \item 
-\subsubsection{Program Analysis}
+\subsubsection{Program Analysis for Adaptivity}
 \label{sec:intro-static}
 
 \paragraph{Existing Methodology and Limitations}
-There are many static program analysis techniques, which are widely used in dependency analysis. 
+There are many static program analysis techniques, which are widely used in dependency, resource cost, quantitative analysis, etc. 
 However, it is not straightforward how to apply them into analyzing and estimating the adaptivity -- an \emph{quantitative reachability} property carrying two perspective sub-properties.
 \begin{enumerate}
 \item To the best of our knowledge,
@@ -71,7 +71,7 @@ by directly using reachability bound analysis techniques alone.
 \item The {\THESYSTEM} first adopts both the static data flow analysis and the control flow analysis techniques for
 estimating the \emph{dependency relation} property between the program variables.
 \item In the second part, {\THESYSTEM} then reasons the
-\emph{dependency quantity} property of the \emph{adaptivity} through reachability-bound analysis and combines it with the
+\emph{dependency quantity} property of the \emph{adaptivity} through \emph{reachability-bound} analysis and combines it with the
 \emph{dependency relation} property.
 
 \item Then
@@ -96,11 +96,77 @@ network traffic, power, etc.
 In estimating some quantitative property
 in the data analysis area, for example, when analyzing the program's \emph{adaptivity}
 as introduced above, % on the adaptive data analysis program's \emph{adaptivity}
-the reachability-bound on each program control location
+the \emph{reachability-bound} on each program control location
 can improve the precision of the estimated bound.
-In the security analysis area, this reachability-bound helps to improve the accuracy
+In the security analysis area, this \emph{reachability-bound} helps to improve the accuracy
 in estimating the program's information leakage or uncertainty propagation, etc.
 Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
 However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively.
 To solve these issues and improve the analysis results on this problem, I present a new algorithm
-aiming to find a precise symbolic worst-case reachability-bound on the program's every control location.
+aiming to find a precise symbolic worst-case \emph{reachability-bound} on the program's every control location.
+
+
+\subsubsection{Program Abstraction}
+\paragraph{Existing Techniques and Limitation.}
+The program abstraction techniques are widely used in program analysis area to precisely summarize the key property of the program.
+In analyzing the loop bounds, the unified lattice model~\cite{CousotH78}, polyhedra~\cite{CousotC77} and octagons~\cite{Mine06} are used in~\cite{GulwaniZ10} for summarize the loop transition and generating the transition system.
+But none of the three abstraction models can represent the if guard in multipath loop, and solving the transition system using these abstraction models is low-efficient. The wedge abstract developed in~\cite{KincaidCBR18} for generating the non-linear loop invariant
+computing the \emph{reachability-bound} can also be used. While it only works well for the specific targeting problem, and still low-efficient or inaccuracy in summarizing the multipath loops and solving the path-sensitive \emph{reachability-bound} problem. 
+
+\paragraph*{Our Method.}
+In our algorithm, we choose to use the difference constrain based program abstraction model combined with boolean expression abstraction to generate our abstract transition graph. It can represent the program loops path-sensitively which is more accurate than the state-of-art program abstraction models.
+It is based on the difference constrain model in~\cite{SinnZV17} and the size change abstraction in~\cite{SinnZV14}. The efficiency also benefit from our
+semantics model, which is inspired from~\cite{Cousot19a} and~\cite{Cousot19} and has similar intuition with the program model in~\cite{SinnZV17}.
+
+
+\subsubsection{Amortized Complexity Analysis through Ranking Function}
+\paragraph{Existing Techniques and Limitation.}
+This method is originated from Tarjan's influential paper~\cite{PotechinP17} combined with \emph{ranking function} estimation from~\cite{BradleyMS05} and developed in~\cite{ZulegerGSV11,SinnZV14,SinnZV17,LuCT21,AliasDFG10}.
+It does well in nested loops by alternating the loop bound computation with the ranking function estimation. While estimating the ranking function ignores the interleaving between multiple paths in the same loop.
+It over-approximates the bound of each single path as well the loop bound when the path interleaving affects the loop execution.
+\paragraph{Our Method.}
+We utilize the effectiveness of this method by first computing the ranking function $\locbound(\absevent, c)$ for each transition edge $\absevent$, and then estimating the bound on each ranking function, $\varinvar(\locbound(\absevent, c), c)$ and transition edge, $\absclr(\absevent, c)$ alternatively and path-insensitively.
+This alternation lines up with advantage of the \emph{amortized complexity analysis} is efficient and accurate without recursively unrolling the nested loops when composing the bound of different paths.
+But it is not precise enough without considering the effect of the path-interleaving.
+
+\subsubsection{Loop Summarization and Path Refinement}
+\paragraph{Existing Techniques and Limitation.}
+Another line of loop bound analysis through loop summarization and path refinement seek for precise loop path representation~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19}, and compute loop bound over accurate loop summarization~\cite{GulwaniJK09, ZulegerGSV11}.
+They do well in summarizing the loop path and computing the interleaving between paths, as well as computing the precise bound considering the interleaving. However, composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
+\paragraph{Our Method.}
+In order to compute the \emph{reachability-bound} path sensitively, we also deployed the path refinement technique.
+We take advantage from the accuracy of the path refinement techniques by a light-weight path refinement algorithm adapted from~\cite{GulwaniJK09}.
+We compute the refined program $\rprog$ based on the abstract transition graph and then
+effectively combine this methodology with the ranking function estimation.
+The section in the next introduce how we combine them.
+
+\subsubsection{Path and Loop Reachability-bound}
+The \emph{path reachability-bound} and the \emph{loop reachability-bound} are the main novelty of our new path-sensitive reachability-bound algorithm.
+It is computed over the refined program and effectively utilizing the ranking function estimated through the abstract transition graph.
+
+The first key idea is the \emph{path reachability-bound} $\inoutB(\rprog, \tpath)$ for a loop free path $\tpath$ within a loop program $\rprog$. This bound approximate the evaluation times of each loop free path instead of the entire multipath loop.
+\\
+This bound is computed based on the refined loop and using the estimated ranking function for every path, combines two lines of work above. 
+It is benefited from the high accuracy of the path refinement and the ranking function estimation, but reduces the efficiency comparing to simply computing the ranking function.
+
+The second key idea combining two lines of works above is the \emph{loop reachability-bound}, $\lpchB(L:\rprog, \tpath)$.
+It has high accuracy and efficiency by using the estimated ranking function based on the \emph{amortized complexity analysis} methodology over the refined loop paths.
+For each transition path $\tpath$ w.r.t each of the loops $L:\rprog$ in which $\tpath$ is nested,
+$\lpchB(L:\rprog, \tpath)$ 
+\highlight{is a bound on the iterations for
+the outside loop, $L:\rprog$ w.r.t. the innermost loop where $\tpath$ is enclosed,
+such that during these iterations of $L:\rprog$, the innermost loop is ``entered''. 
+This is distinguished from the traditional methods and this quantity isn't considered or computed in any of the previous works.
+Traditional methods only estimate the bound on the inner loop's iteration number
+in one iteration of the outside loop.}
+\\
+In the line of methods based on path refinement and loop summarization, the \emph{Progress Invariant} method in \cite{GulwaniJK09} is only able to compute
+the
+bound on iteration numbers
+of the inner loop in each iteration of outside loop.
+So they have to over-approximate the reachability-bound for locations in the inner loop by multiplication.
+% \\
+In the line of the \emph{amortized complexity analysis} through ranking function, the DC-based algorithm in \cite{SinnZV17}
+is only able to
+compute the combined loop bound and the local bound of each loop
+separately as well.

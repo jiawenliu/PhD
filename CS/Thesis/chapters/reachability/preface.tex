@@ -1,22 +1,31 @@
-As a continuation of the previous problem to get a precise bound when estimating the \emph{adaptivity},
-we look at the program's reachability-bound as the second quantitative reachability property.
-This property is a worst-case bound on the number of times a given control location 
-inside a procedure is visited during the program execution.
-This execution property has broad
-applications in analyzing other program property beyond quantitative reachability.
-For example in the resource cost analysis, this quantitative reachability property
+As a natural continuation,
+%  of the previous problem to get a precise bound when estimating the \emph{adaptivity},
+we look at the program's \emph{reachability-bound} as the second quantitative reachability property in order to get a precise bound when estimating the \emph{adaptivity}.
+It is the upper bound on this execution number for 
+a given control location introduced by~\cite{GulwaniZ10} in the first place.
+A tight \emph{reachability-bound}
+can help to improve the analysis result on other program features.
+For example, in the resource cost analysis, this quantitative reachability property
 can help to provide a tighter
 bound on the resources consumed by a program such as time, memory,
 network traffic, power, etc.
-In estimating some quantitative property
-in the data analysis area, for example, when analyzing the program's \emph{adaptivity}
-as introduced above, % on the adaptive data analysis program's \emph{adaptivity}
-the reachability-bound on each program control location
-can improve the precision of the estimated bound.
-In the security analysis area, this reachability-bound helps to improve the accuracy
+In the data analysis area,
+the \emph{reachability-bound} on each program control location
+can help to improve the precision of the data training result. 
+In security, this \emph{reachability-bound} helps to improve the accuracy
 in estimating the program's information leakage or uncertainty propagation, etc.
+However, computing a tight \emph{reachability-bound} for a given program control location is challenging.
 Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
-However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively.
-To solve these issues and improve the analysis results on this problem, I present a new algorithm
-aiming to find a precise symbolic worst-case reachability-bound on the program's every control location.
-
+But there isn't a general analysis algorithm that
+computes the \emph{reachability-bound}
+directly or path-sensitively.
+To leverage these limitations,
+we present a path-sensitive \emph{reachability-bound} algorithm
+aiming to find a precise symbolic worst-case \emph{reachability-bound} on the program's every control location in this paper.
+Our algorithm brings together two techniques:
+1. ranking function based amortized bound analysis through program abstraction, and
+2. loop summarization based multiple loop paths refinement
+and combines them effectively. 
+The effective combination improves the precision of the estimated \emph{reachability-bound} comparing to adopt either one of them.
+It allows us to compute precise \emph{reachability-bound} on each program point path-sensitively.
+We implement a prototype and report on an experimental comparison with state-of-art tools over four different benchmarks.

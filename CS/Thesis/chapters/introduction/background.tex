@@ -53,49 +53,39 @@ such as the amount of leaked data, the times of the execution, etc., which is th
 %  is leaked, which is also crucial in security. 
 This requires us to describe these properties from two perspectives.
 As introduced in abstract, we refer to the two perspectives as \emph{quantitative} and \emph{reachability}, and this category of properties as \emph{quantitative-reachability} property. 
-% analysis
-% of the program's quantitative property. 
-% To this end, this thesis focus on analyzing the program's \emph{quantitative-reachability}. 
 Analyzing and controlling these properties from two perspectives can better help to improve program reliability, security, privacy, usability, etc., and guarantee the high-quality
-service in people's mobile device life than just from single view. 
-% By exploiting the \emph{quantitative-reachability},
-% many program properties can be 
-% studied based on it
-% such as the number of function calls,
-% program execution steps,
-% lines of executed codes,
-% the power consumption, memory usage, etc. 
-% Controlling these quantities can improve program reliability, security, privacy, usability, etc.
-% In this thesis, we analyze two \emph{quantitative-reachability} properties of programs that can be used to improve programs' performance.
+service through the mobile device people's life than just from single view. 
 
-As the first property, we want to improve the data analysis results and reduce its generalization error.
+As the first property, we want to improve the mobile service quality in people's daily life by improving the data analysis results and reducing its generalization error.
 %  High generalization error makes the analysis result of these programs not reliable.
 Under the light of existing machine learning studies on some \emph{quantitative-reachability} properties of data analysis programs -- the \emph{adaptivity rounds}, which can help to control the generalization error, 
 we look into 
-% especially when the data analysis is adaptive.
 it as the first \emph{quantitative-reachability}.
 
 \highlight{
 As the second \emph{quantitative-reachability} property,
-we study the program's \emph{reachability-bound}.
+we study the program's \emph{reachability-bound} in order to improve the efficiency of the program executed on mobile device and guarantee high-quality service in people's daily life.
 This property is a worst-case bound on the number of times a given control location 
 inside a procedure is visited during the program execution.
 This execution property has broad
-applications in analyzing other program property beyond \emph{quantitative-reachability}.
+applications in analyzing other program property beyond itself.
 For example in the resource cost analysis, this \emph{quantitative-reachability} property
 can help to provide a tighter
 bound on the resources consumed by a program such as time, memory,
 network traffic, power, etc.
 In the data analysis area, for example, when analyzing the program's \emph{adaptivity}
-as introduced above, % on the adaptive data analysis program's \emph{adaptivity}
+as introduced above,
 the \emph{reachability-bound} on each program control location
 can improve the precision of the estimated bound.
 In the security analysis area, this reachability-bound helps to improve the accuracy
 in estimating the program's information leakage or uncertainty propagation, etc.
-Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
-However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively.
-To solve these issues and improve the analysis results on this problem, we present a new algorithm
-combining the reachability and quantitative analysis techniques to effectively find a precise symbolic reachability-bound on the program's every control location.
+However, computing a tight reachability-bound for a given program control location is challenging.
+    Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
+    But there isn't a general analysis algorithm that
+    computes the reachability-bound
+    directly or path-sensitively.
+    To solve these issues and improve the analysis results on this problem, we present a new algorithm
+combining the reachability and quantitative analysis techniques to effectively find a precise symbolic \emph{reachability-bound }on the program's every control location.
 }
 
 Based on the

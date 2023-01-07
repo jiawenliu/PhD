@@ -1,27 +1,80 @@
-Importance of analyzing the reachability bound.
+The programs' execution complexity affects our daily life from many perspectives.
+For example,
+from the privacy and security perspective,
+how much secret information is leaked by a program depends on the number of times a certain operation that leaks the data,
+% either by direct or indirect information flow, 
+is executed~\cite{Malacaria07};
+the amount of perturbation in the output data values resulting
+from a small perturbation or uncertainty in the input,
+values depend on the number of times additive error propagation operators are applied; etc.
+Estimating such quantitative properties requires us to know
+how many times is a given control location inside the program that performs certain operations executed?
+% \\
+From the performance perspective, it is important to give a precise estimation
+on the program's resource cost bound w.r.t. the program's inputs.
+For example, in memory-constrained environments such as embedded systems,
+it is important to bound the amount of memory required to run certain applications.
+In real-time systems, it is important to bound the worst-case execution time of the program.
+Applications running on low-power devices or low-bandwidth environments must use up little power or bandwidth respectively. 
+With the advent of cloud computing, where users would be charged per program execution,
+predicting resource usage characteristics would be a crucial component of accurate bid placement by cloud providers. 
+One of the challenges in bounding this cost precisely is that resource consumption is location-sensitive.
+In other words, different location has different resource cost as well as different execution times.
+To give accurate estimation results on these execution properties,
+% This brings me to one of 
+the fundamental questions that need to be addressed 
+% for computing such resource bounds:
+is estimating the bound on the execution times
+% How many times is 
+a given control location inside the program that consumes these resources.
+For these reasons, we focus on analyzing the bound on the execution times of a program's given control location in this paper.
+This bound is referred to as the \emph{reachability-bound} in the program analysis area,
+which is firstly proposed by the paper~\cite{GulwaniZ10}.
+In this paper, finding a symbolic worst-case bound on this quantitative reachability property
+in terms of the inputs to that procedure
+is referred to as the \emph{reachability-bound problem}.
+
+
+Providing a good solution to this problem is challenging.
+The paper~\cite{GulwaniZ10} that introduces this concept
+gives a two-step solution by combining the abstract interpretation-based iterative technique
+ and the non-iterative proof-rules-based technique.
+ However, their solution
+does not solve this problem in a path-sensitive manner.
+It over-approximates the \emph{reachability-bound}s on different paths inside a while loop.
+% \\
+ There are also many works in analyzing the program complexity~\cite{GustafssonEL05, HumenbergerJK18},
+ or estimating the upper bound on a program's worst-case resource cost
+~\cite{BrockschmidtEFFG16, AlbertAGP08, AliasDFG10, Flores-MontoyaH14}.
+But their analysis
+focus only on estimating 
+the overall complexity 
+by inferring the bounds on the loop iteration numbers,
+ or the worst-case running time and resource cost of the program's entire execution.
+ \\
+ None of them computes the \emph{reachability-bound} on a given program control location directly or path-sensitively.
+ To leverage these limitations,
+we introduce a path-sensitive \emph{reachability-bound} analysis algorithm in this paper, which aims to solve 
+the \emph{reachability-bound}s problem efficiently and path-sensitively.
+Our algorithm is more advanced by combining two lines of complexity analysis techniques.
+ \begin{itemize}
+ \item One line of loop bound analysis works based on the \emph{amortized complexity analysis} originated from Tarjan's influential paper~\cite{PotechinP17} combined with \emph{ranking function} estimation from~\cite{BradleyMS05} and developed in~\cite{ZulegerGSV11,SinnZV14,SinnZV17,LuCT21,AliasDFG10}.
+ They do well in nested loops by alternating the loop bound computation with the ranking function estimation. This alternation lines up with advantage of the \emph{amortized complexity analysis} is efficient and accurate without recursively unrolling the nested loops when composing the bound of different paths.
+ \\
+But they have limitation, estimating the ranking function ignores the interleaving between multiple paths in the same loop.
+It over-approximates the bound of each single path as well the loop bound when the path interleaving affects the loop execution.
+\item 
+Another line of loop bound analysis through loop summarization and path refinement seek for precise loop path representation~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19}, and compute loop bound over accurate loop summarization~\cite{GulwaniJK09, ZulegerGSV11}.
+They do well in summarizing the loop path and computing the interleaving between paths, as well as computing the precise bound considering the interleaving.
 \\
-\textbf{Where it is required? How useful it can be? What impact it can bring?}
-\\
-\textbf{In one area: area-I}
-"One of the fundamental questions that needs to be answered for computing such resource bounds is: 
-How many times is a given control location inside the program that consumes these resources executed?"
-\\
-\textbf{In some other areas, II, III or ...}
-How many times is a given control location inside the program that performs certain operations executed?
-\\
-\textbf{Short Summary} of existing works and limitations
-\\
-\textbf{Short Summary} of the new technique/algorithm: major steps/technique used,  major outcome
-\\
-\textbf{Introduce} each step of the new technique/algorithm:
-\\
-\textbf{Introduce} new technique/ results or experimental results. 
-Summary of comparison with existing works. \cite{GulwaniJK09} \cite{Sumit2010rechability}, \cite{sinn2017complexity}
-\\
-\paragraph{Contributions}
-\begin{itemize}
-  \item New path-sensitive reachability bound algorithm
-  \item efficient bound computation method \cite{GulwaniJK09} 
-  \item implementation and good evaluation results
-\end{itemize}
-Outlines
+Their limitation occurs when composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
+ \end{itemize}
+Our combination improves in both limitations.
+The contributions of this work can be summarized as follows,
+ \begin{itemize}
+   \item the main contribution is the combination of the \emph{amortized program analysis} through ranking function estimation and the path refinement and loop summarization based on \emph{algebraic program analysis} in bound analysis algorithm.
+   \item A path-sensitive \emph{reachability-bound} computation algorithm.
+    This algorithm can compute the evaluation times of each program point accurately and path-sensitively.
+   \item A prototype implementation of this algorithm and an evaluation over 5 different benchmarks.
+    The evaluation results show that we can compute tight bound on the evaluation times of each program point in a program. For program with multi-path loop, we compute different bounds for the points on different paths.
+ \end{itemize}
