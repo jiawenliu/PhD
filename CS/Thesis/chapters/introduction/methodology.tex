@@ -47,7 +47,7 @@ Our semantics-based formalization defines this intuitive \emph{adaptivity} as a 
 
 \paragraph{Existing Methodology and Limitations}
 There are many static program analysis techniques, which are widely used in dependency analysis. 
-However, it is not straightforward when applied to adaptivity analysis.
+However, it is not straightforward how to apply them into analyzing and estimating the adaptivity -- an \emph{quantitative reachability} property carrying two perspective sub-properties.
 \begin{enumerate}
 \item To the best of our knowledge,
 existing static dependency analysis techniques do not consider both control influence and value influence.
@@ -55,7 +55,7 @@ But in order to analyze and estimate the \emph{adaptivity} statically, as discus
 \item The existing static analysis techniques in the complexity or resource cost estimation areas,
 cannot give accurate reachability times on programs 
 at every execution location.
-\item Moreover, existing static analysis techniques and their research focus consider
+\item Moreover, existing program analysis focus
 either only the dependency analysis
 or only the program quantitative property (such as complexity or resource cost),
 but not both of them.
@@ -76,9 +76,7 @@ estimating the \emph{dependency relation} property between the program variables
 
 \item Then
 {\THESYSTEM} combines the estimated \emph{dependency quantity} and \emph{dependency relation}
-% perspectives of the \emph{adaptivity} property
 and constructs an \emph{estimated dependence} graph. 
-% This graph accurately reflects the information related to the intuitive \emph{adaptivity} property.
 %
 \item In the last step, I design a new path search algorithm based on the graph theory 
 and compute the \emph{adaptivity} accurately on this graph.
