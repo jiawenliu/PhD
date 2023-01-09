@@ -70,11 +70,11 @@ They do well in summarizing the loop path and computing the interleaving between
 Their limitation occurs when composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
  \end{itemize}
 Our combination improves in both limitations.
-The contributions of this work can be summarized as follows,
- \begin{itemize}
-   \item the main contribution is the combination of the \emph{amortized program analysis} through ranking function estimation and the path refinement and loop summarization based on \emph{algebraic program analysis} in bound analysis algorithm.
-   \item A path-sensitive \emph{reachability-bound} computation algorithm.
-    This algorithm can compute the evaluation times of each program point accurately and path-sensitively.
-   \item A prototype implementation of this algorithm and an evaluation over 5 different benchmarks.
-    The evaluation results show that we can compute tight bound on the evaluation times of each program point in a program. For program with multi-path loop, we compute different bounds for the points on different paths.
- \end{itemize}
+% The contributions of this work can be summarized as follows,
+%  \begin{itemize}
+%    \item the main contribution is the combination of the \emph{amortized program analysis} through ranking function estimation and the path refinement and loop summarization based on \emph{algebraic program analysis} in bound analysis algorithm.
+%    \item A path-sensitive \emph{reachability-bound} computation algorithm.
+%     This algorithm can compute the evaluation times of each program point accurately and path-sensitively.
+%    \item A prototype implementation of this algorithm and an evaluation over 5 different benchmarks.
+%     The evaluation results show that we can compute tight bound on the evaluation times of each program point in a program. For program with multi-path loop, we compute different bounds for the points on different paths.
+%  \end{itemize}
