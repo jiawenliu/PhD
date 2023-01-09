@@ -8,7 +8,6 @@ whether certain data depends on others, and how many times certain data is depen
 safety property where we care
 whether certain piece of code leaks a secret,
 and how much secret is leaked by a program / some pieces of code?
-\highlight{
 % As a high level view of the properties mentioned above,
 They all share the same two sub-properties, "How Much" and "Whether" from two perspectives.
 We refer to the two perspectives as \emph{quantitative} and \emph{reachability}, and we name this class of properties as \emph{Quantitative-Reachability} property.
@@ -19,12 +18,11 @@ whether some pieces of code are executed, etc.
 but not how many times or how long these properties hold for programs.
 % For example, it can not tell us how much 
 % such as the amount of leaked data.
-The quantitative analysis such as program complexity and cost analysis only tell us the upper bound on the overall worst case cost but not where the resource is cost, etc.
+The quantitative analysis such as program complexity and cost analysis only tell us the upper bound on the overall worst case quantity but not where the resource is cost, where the data is leaked, etc.
 In this sense,
-this thesis presents algorithms that combine two lines of techniques effectively and shows its effectiveness in
+this thesis presents algorithms that complement two lines of techniques effectively and shows its effectiveness in
 %  is leaked, which is also crucial in security. 
 analyzing two representative \emph{quantitative-reachability} properties and controlling program's execution behavior in a higher granularity.
-}
 
 The first significant property we look into is the \emph{adaptivity rounds} of the programs in adaptive data analysis, which is composed of multiple queries asked by data analysts. Among these queries, the choice of some queries may depend on the results of previous queries, and they form some dependence relations between each other.
 % If we represent these interactions in adaptive data analysis as a program, we can find some dependence relations of queries such that some queries may rely on the previous queries.

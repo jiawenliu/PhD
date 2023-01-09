@@ -9,12 +9,12 @@ The execution history and program simulation-based~\cite{Israel56, Kildall73}
 are also widely used in defining
 and formalizing the program's properties. While they have the same limitation as the abstract interpretation and it is not straightforward how to apply them to analyzing and formalizing the \emph{adaptivity}
 for adaptive data analysis program as a \emph{quantitative reachability} property from two perspectives.
-There is also purely syntactic-based methodology originated from~\cite{Weiser84} and developed in \cite{DenningD77} in defining a property (the data dependency relation), but it suffers the limitation of certain language and is not easy to generalize into other setting.
+There is also purely syntactic-based methodology originated from~\cite{Weiser84} and developed in \cite{DenningD77} in defining a property (the data dependency relation), but it suffers the limitation of certain language and is not easy to generalize into other setting, especially the \emph{adaptivity}.
 % dependency analysis. 
 % However, it is not straightforward how to apply them to analyzing and formalizing the \emph{adaptivity}
 % for adaptive data analysis program.
-Because of its nature as a \emph{quantitative reachability} property, it requires us to defining both the dependency property and the quantitative property for the program.
-There are following three limitations among existing semantics analysis techniques in defining these two properties.
+Because of its nature as a \emph{quantitative reachability} property, defining \emph{adaptivity} requires us to defining both the dependency property and the quantitative property for the program.
+And there are mainly three technique difficulties among existing formalization methodologies in defining the \emph{adaptivity} w.r.t. the two sub-properties.
 \begin{enumerate}
 \item
 Existing definitions on the semantics concept of the data / value dependency relation don't
@@ -22,28 +22,29 @@ consider both control influence and value influence, such as~\cite{Cousot19a, De
 However, both of these
 two influences are considered as \emph{may-dependent} in the intuitive query dependency 
 in adaptive data analysis programs.
-\item In the existing data dependency formalization area, there isn't any technique taking into account
+\item In the state-of-art data dependency relation formalization, there isn't any technique taking into account
 the dependency depth, specifically the quantitative information of the data dependency property. For example the works in~\cite{GoguenM84, AssafNSTT17, BartheDR11}.
 However, this dependency depth is the key quantity in formalizing the intuitive \emph{adaptivity}.
 \item The intuitive \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
 dependency depth. There is only very limited works related to this non-linear quantity property analysis.
 The non-monotonic resource cost analysis in~\cite{AlbertFR15} focus on analyzing the peak resource consumption of the heap structure, which is still different from the accumulation of the \emph{adaptivity}.
-This requires us to design new analysis techniques in order to formalize this quantity precisely.
+This requires us to design new formal model in order to define this property precisely.
 % here isn't any research combining the two pieces of information. No need to mention the adaptivity analysis.
 \end{enumerate}
 %
 \paragraph{New Methodology}
-Our semantics-based formalization defines this intuitive \emph{adaptivity} as a \emph{quantitative reachability} program property semantically as follows.
+Our semantics-based formalization model defines this intuitive \emph{adaptivity} as a \emph{quantitative reachability} program property semantically as follows.
 \begin{enumerate}
    \item In the first step, we define the semantic \emph{dependency relation}, $\vardep(c, x^i, y^j)$ over variables $x^i, y^j$ in the program $c$, inspired from the method in~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
-   This relation can be used to reason about dependence relation between queries.
+   This relation capture both the control influence and value influence between data, which are never fully captured in previous dependency relation.
+   This relation can be used to reason about the dependency between queries.
 
-   \item Then we define the \emph{dependency quantity} with respect to each variable $x^i$ in the program
-     based on the \emph{dependency relation} above, which is inspired from the works in the program complexity and resource cost analysis areas.
+   \item Then we define the \emph{dependency quantity} with respect to each variable $x^i$
+     based on the \emph{dependency relation}, which is inspired from the works in the program complexity and resource cost analysis areas. This quantity captures a sub-property of \emph{adaptivity} from the quantitative perspective.
    
-     \item With the two property defined above, we construct a dependency graph by combining both the \emph{dependency relation} and \emph{dependency quantity} on it. This dependency graph accurately reflects the information of the intuitive \emph{adaptivity}.
+     \item With the two property defined above, we construct a dependency graph by combining both the \emph{dependency relation} (as the graph edge) and \emph{dependency quantity} (as the vertex weight) on it. This dependency graph accurately reflects the two perspectives of the intuitive \emph{adaptivity}. Though there are previous works designing the weight dependency graph, none of them able to carry both dependency and dependency depth and apply it into analyzing the \emph{adaptivity}.
    
-   \item Based on this graph, we formally define the \emph{adaptivity} as a \emph{quantitative reachability} program property.
+   \item Based on this graph, we formally define the \emph{adaptivity} as a \emph{quantitative reachability} program property as the longest finite walk. This is also a novel quantity never considered before.
    \end{enumerate}
    % \item 
 \subsubsection{Program Analysis for Adaptivity}
@@ -66,7 +67,7 @@ but not both of them.
 \end{enumerate}
 
 \paragraph{New Methodology}
-I develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static}.
+We develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static}.
 This new methodology combines data flow and control flow analysis with reachability bound analysis.
 This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve 
 by directly using the data and control flow analyzes or the ones that one would achieve 
@@ -80,10 +81,15 @@ estimating the \emph{dependency relation} property between the program variables
 
 \item Then
 {\THESYSTEM} combines the estimated \emph{dependency quantity} and \emph{dependency relation}
-and constructs an \emph{estimated dependence} graph. 
+and constructs an \emph{estimated dependence} graph. This combination is never consider before, and it complements the weakness of both lines of works. In comparison to purely use single analysis, 
+{\THESYSTEM} estimates both the two sub-properties of \emph{adaptivity} from \emph{reachability} and \emph{quantitative} perspectives more accurate.
+Moreover, the combination isn't trivial adoption and addition, we combine them effectively by encoding them on to a dependency graph and compute the \emph{adaptivity} over the graph in the next step.
+
 %
-\item In the last step, I design a new path search algorithm based on the graph theory 
+\item In the last step, we design a new path search algorithm based on the graph theory 
 and compute the \emph{adaptivity} accurately on this graph.
+The computation fully utilize the two perspectives sub-properties estimated above.
+This new algorithm again also complements the NP-hardness of the longest path search problem and computes an accurate symbolic length of the longest finite walk based on an efficient symbolic weighted longest path estimation.
 \end{enumerate}
 
 \subsection{Reachability Bound Analysis}
@@ -128,27 +134,27 @@ semantics model, which is inspired from~\cite{Cousot19a} and~\cite{Cousot19} and
 
 \subsubsection{Amortized Complexity Analysis through Ranking Function}
 \paragraph{Existing Techniques and Limitation.}
-This method is originated from Tarjan's influential paper~\cite{PotechinP17} combined with \emph{ranking function} estimation from~\cite{BradleyMS05} and developed in~\cite{ZulegerGSV11,SinnZV14,SinnZV17,LuCT21,AliasDFG10}.
-It does well in nested loops by alternating the loop bound computation with the ranking function estimation. While estimating the ranking function ignores the interleaving between multiple paths in the same loop.
+This method is originated from Tarjan's influential paper~\cite{PotechinP17} combined with \emph{ranking function} estimation from~\cite{BradleyMS05} and developed in~\cite{ZulegerGSV11, SinnZV14, SinnZV17, LuCT21, AliasDFG10}.
+It does well in nested loops by alternating the loop bound computation with the ranking function estimation. While estimating the ranking function ignores the interleaving between multiple paths of one loop.
 It over-approximates the bound of each single path as well the loop bound when the path interleaving affects the loop execution.
 \paragraph{Our Method.}
 We utilize the effectiveness of this method by first computing the ranking function $\locbound(\absevent, c)$ for each transition edge $\absevent$, and then estimating the bound on each ranking function, $\varinvar(\locbound(\absevent, c), c)$ and transition edge, $\absclr(\absevent, c)$ alternatively and path-insensitively.
 This alternation lines up with advantage of the \emph{amortized complexity analysis} is efficient and accurate without recursively unrolling the nested loops when composing the bound of different paths.
 But it is not precise enough without considering the effect of the path-interleaving.
+In order to compute the \emph{reachability-bound} path sensitively, we also deploy the path refinement technique.
 
 \subsubsection{Loop Summarization and Path Refinement}
 \paragraph{Existing Techniques and Limitation.}
 Another line of loop bound analysis through loop summarization and path refinement seek for precise loop path representation~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19}, and compute loop bound over accurate loop summarization~\cite{GulwaniJK09, ZulegerGSV11}.
 They do well in summarizing the loop path and computing the interleaving between paths, as well as computing the precise bound considering the interleaving. However, composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
 \paragraph{Our Method.}
-In order to compute the \emph{reachability-bound} path sensitively, we also deployed the path refinement technique.
-We take advantage from the accuracy of the path refinement techniques by a light-weight path refinement algorithm adapted from~\cite{GulwaniJK09}.
+Our method take advantage from the accuracy of the path refinement techniques by a light-weight path refinement algorithm adapted from~\cite{GulwaniJK09}.
 We compute the refined program $\rprog$ based on the abstract transition graph and then
-effectively combine this methodology with the ranking function estimation.
+effectively combine this methodology with the \emph{amortized complexity analysis} above through ranking function estimation.
 % The next methodology introduced in the next part 
 
 \subsubsection{Path and Loop Reachability-bound}
-The \emph{path reachability-bound} and the \emph{loop reachability-bound} are the main novelty of our new path-sensitive reachability-bound algorithm.
+The \emph{path reachability-bound} and the \emph{loop reachability-bound} are the main novelty of our new path-sensitive reachability-bound algorithm build on the traditional methods.
 It is computed over the refined program and effectively utilizing the ranking function estimated through the abstract transition graph.
 These two bounds combines the two lines of techniques effectively and complements the weakness in both lines.
 
