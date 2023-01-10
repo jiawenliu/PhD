@@ -50,24 +50,17 @@ the vertices of this graph is the set of $c$'s labels with an exit label $l_{ex}
   \absV(c) = labels(c)\cup\{l_{ex}\}
   \]
 %  corresponding to a label command in the program.
-
-% \wq{
-  The edge in the abstract control flow graph comes from the abstract execution trace of the program. 
+The edge in the abstract control flow graph comes from the abstract execution trace of the program. 
   The abstract execution trace, an abstract representation of the execution, consists of a list of abstract transitions. 
   Then, every abstract transition in the abstraction execution trace corresponds to an edge in the abstract control flow graph. In another word, the edge $(l_1, dc, l_2)$ in the abstract control flow graph, represents an abstract transition 
  from $l_1$ to $l_2$, with a set of difference constraints $dc$. 
  Also notice, the difference constraints generated during the abstract transition appears in the edge as annotation.
-%  }
 
-% over program's abstract execution 
-
-
-% \wq{
-  Overall, the vertices can be easily collected and the key point of construction of the abstract execution control flow graph for a program is the abstract execution trace, 
+ Overall, the vertices can be easily collected and the key point of construction of the abstract execution control flow graph for a program is the abstract execution trace, 
   which relies on the abstraction of expression and abstract transition (we also call it abstract event), I will discuss in the following section.
    To make it easy to understand, abstract control flow graph is a control flow graph, with difference constraints on every edge.
-  % }  
 
+   
 %
 \paragraph*{Expression Abstraction}
 
@@ -89,43 +82,6 @@ This difference constraint is defined in the same way as
 
  I show the expression abstraction $\absexpr : \expr \to \mathcal{VAR} \to DC(\mathcal{VAR}  \cup \constdom) \cup \{\top\} $ below.
 
-%  I introduce the following notations and operations first
-% % an expression abstraction method based on the expression abstraction in paper \cite{SinnZV17}.
-% \\
-% % is enriched into $\constdom \triangleq \mathbb{N} \cup \inpvar \cup \{\max{(\dbdom)}\} $.
-% T
-% \\
-
-% represents the set of inequality over all $\mathcal{VAR}  \cup \constdom$. 
-
-% The symbolic constant is enriched into $\constdom \triangleq \mathbb{N} \cup \inpvar \cup \{\max{(\dbdom)}\} $.
-% It consists of 
-% natural number $\mathbb{N}$,
-% the symbolic constants $\inpvar$ (i.e., the set of the program's input variables), 
-% and a constant value $\max(\dbdom)$ for estimating the upper bound of variables which are
-% assigned by queries.
-% \\
-% The symbolic constant is enriched into $\constdom \triangleq \mathbb{N} \cup \inpvar \cup \{\max{(\dbdom)}\} $.
-% \\
-
-% % $ \absdom: \mathcal{P}(DC(\mathcal{VAR}  \cup \constdom) \cup \{\top \})$:
-% \\
-% $\constdom: \mathbb{N} \cup \inpvar \cup \{\max{(\dbdom)}\} $ 
-% The  constant 
-% \\
-% % $DC(\mathcal{VAR}  \cup \constdom)$ represents the set of inequality over all $\mathcal{VAR}  \cup \constdom$.
-% \\
-
-% \[
-%   \begin{array}{ll} 
-%     \absexpr(y + c, x)  = x' \leq y + c  & c \in \mathbb{N} \land y \in (VAR \cup \constdom) \\
-%     \absexpr(y - c, x)  = x' \leq y - c  & c \in \mathbb{N} \land y \in (VAR \cup \constdom) \\
-%     \absexpr(v, x)  = x' \leq v + 0  & v \in (VAR \cup \constdom) \\
-%     \absexpr(\aexpr, x) = x' \leq 0 + \infty   & \aexpr \text{ doesn't have any of the forms as above} \\
-%     \absexpr(\qexpr, x)  = x' \leq 0 + \max(\dbdom) & \qexpr \text{ is a query expression}  \\
-%     \absexpr(\bexpr, x) = x' \leq 0 + 1   & \bexpr \text{ is a boolean expression} \\
-%   \end{array}
-%   \]
   \[
     \begin{array}{ll} 
       \absexpr(x - v, x)  = x' \leq x - v  & x \in \grdvar \land v \in \mathbb{N} \\

@@ -225,44 +225,10 @@ These previous works and limitations on formalizing the adaptivity are introduce
 \end{itemize}
 %
 \paragraph{Methodology Overview}
-% To formalize this intuition as a quantitative program property, 
-% in Chapter~\ref{ch:dynamic} I develop an execution-based analysis
-% % I first consider all the possible evaluations of a program --- I do this by 
-% % I use trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% % Through two aspects: the execution-based analysis and static-based program analysis.
-% % In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
-% % property of programs. This analysis is developed 
-% in three steps through different methodologies in each step as follows,
 Given all these limitations and challenges,
 to define this intuitive \emph{adaptivity} more precisely as a quantitative program property, 
 I give a new adaptivity formalization model by analyzing program's exectuion in Section~\ref{sec:adapt-exe}.
-% I first consider all the possible evaluations of a program --- I do this by 
-% I use a trace semantics recording the execution history of programs on some given input --- and I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% Through two aspects: the execution-based analysis and static-based program analysis.
-% In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
-% property of programs. This analysis is developed 
  This execution-based formalization is designed in three steps through different methodologies as follows,
-% \begin{enumerate}
-% \item The dependency relation between every query, through the methodology of semantic data dependency analysis.
-% \\
-% Specifically through a trace semantics recording the execution history of programs on some given input
-% % --- and I create a dependency graph, 
-% the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% % In the execution-based analysis, I will formalize the intuitive notion of \emph{adaptivity} as a quantitative 
-% % property of programs. This analysis is developed 
-% % \\
-% \item The dependency quantity analysis, through the methodology of execution-based data reachability, bound analysis.
-% % \\
-% \item The adaptivity quantity analysis, based on the two analysis results above, gives the formal \emph{adaptivity} model 
-% for program.
-% \\
-% Specifically, I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
-% I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
-% The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
-% \end{enumerate}
 \begin{enumerate}
  \item First step is to define the \emph{dependency relation} between every query, 
  through the methodology of semantic data dependency analysis.
@@ -281,13 +247,6 @@ I give a new adaptivity formalization model by analyzing program's exectuion in 
  % analysis, 
  based on the \emph{dependency relation} above.
  This analysis is developed through the methodology of execution-based reachability bound analysis.
- % \\
- % \item The last step in Section~\ref{sec:dynamic-adapt} is the intuitive \emph{adaptivity} quantity analysis, 
- % according to the two analysis results above, specifically \emph{dependency relation} and \emph{dependency quantity}.
- % This analysis is developed through the formal \emph{adaptivity} definition. \\
- % Specifically, I create a dependency graph, where the dependency between different variables (query is also assigned to a variable) is explicit and track which variable is associated with a query request. 
- % I then enrich this graph with weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
- % The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph. 
  \item The last step is the intuitive \emph{adaptivity} quantity definition, 
  according to the two analysis results above, specifically \emph{dependency relation} and \emph{dependency quantity}.
  This step 

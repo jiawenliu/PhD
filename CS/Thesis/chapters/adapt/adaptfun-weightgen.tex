@@ -22,7 +22,6 @@ The two computation steps are summarized as follows,
 
 \paragraph{Step-1: Reachability Bound Analysis}
 This symbolic reachability bound analysis performs over the same \emph{abstract control flow graph}, $\absG(c)$ of a program $c$. 
-% through the edges in $\absG(c)$, which correspond to $c$'s abstract transition between labels.
 It first computes a \emph{reachability bound} for every edge $l \xrightarrow{dc} l' \in \absE(c)$,
 which is a symbolic bound on the maximum execution times of the command with label $l$ of $c$.
 %  when executing the program $c$.
@@ -82,22 +81,6 @@ For each variable $x$ in a program $c$, this step computes three edge sets, $\in
   $\reset: \cdom \to \vardom \to \mathcal{P}(\absevent) $ is the set of the abstract events where the variable is reset,
 %
   \[\reset(c, x) = \left\{ \absevent| \absevent = (l,  x' \leq y - v, l') \land x \neq y \land \absevent \in \absflow(c) \right\}\]
-% $\resetchain: \cdom \to \mathcal{V} \to \mathcal{P}(\mathcal{P}(\absevent)) $
-% is the set of the chain of abstract events where the variable is reset through the chain.
-% \\
-% In addition to
-% collect the edge set that $x$ is reset on every edge in this set, i.e., compute the $\reset(c, x)$,
-% we also compute a set, $\resetchain(c, x)$ contains sequences of edges for $x$
-% follow the Definition 20 in \cite{sinn2017complexity}.
-% In each sequence, $(e_0, \cdots, e_m) \in \resetchain(c, x)$
-% a variable $x_i$ is reset by another variable $x_{i + 1}$ on edge $e_{i}$
-% and $x_{i + 1}$ is reset on edge $e_{i + 1}$ recursively
-% for every $i = 0, \cdots, m - 1$.
-% $x$ is reset on the first edge $e_0$ of every sequence in $\resetchain(c, x)$.
-% \highlight{Rephrase: Each edge $e_i$ in a sequence $(e_0, \cdots, e_m) \in \resetchain(c, x)$
-% resets a variable $x_i$ by another variable $x_{i + 1}$ such that $x_{i + 1}$
-% is reset on edge $e_{i + 1}$ recursively. The first edge $e_0$ of each sequence resets the variable $x$.}
-%
 In the following steps, $c$ is omitted in $\inc(x)$,
 $\dec(x)$ and $\reset(x)$ for concise when the reference of a program $c$ is clear in the context.
 \item {Assigning The Local Bound to An Edge}
@@ -105,8 +88,6 @@ This step adopts the local bound computation method in Section 4 of \cite{sinn20
 It assigns to each edge  $l \xrightarrow{dc} l'\in \absE(c)$ a \emph{local bound} as follows.
 \begin{defn}[Local Bound  Generatation]
   \label{def:ranking_gen}
-% Given a program $c$ with its abstract transition graph 
-% $\absG(c) = (\absV, \absE)$,
 For every edge $\absevent$ in the transition graph $\absG(c)$ of a program $c$,
 its \emph{local bound}, $\locbound(\absevent, c)$
 is the variable that decreases on this edge, computed as follows,
@@ -314,8 +295,6 @@ Figure~\ref{fig:kadaptwhile_alg}(c), which we aim to estimate.
 Every vertex from $\progV(c)$ in this graph corresponds to a labeled variable, for example $a^5$,
 and this label $5$ is also a vertex $5$ in the abstract control flow graph in Figure~\ref{fig:abscfg_tworound}(b).
 %
-% we infer the value bound for $j$, which is $k$.
-% Then the reachability bound for this abstract transition, (i.e., edge $4, j \leq j - 1, 5$) 
 Then, it is straight forward, 
 that the reachability bound for the label $5$, 
 is also the maximum visiting times bound of the labeled variable $a^5$.
