@@ -83,12 +83,11 @@ is transformed into a constraint.
 %
 \begin{itemize}
 \item 
-\jl{
 The difference constraints $DC(\mathcal{V}  \cup \constdom)$ is the set of all the inequality of
 form $x' \leq y + v$ or $x' \leq v$ where $x \in \mathcal{V} $, 
 $y \in \mathcal{V}$ and $v \in \constdom$.
-The \emph{Symbolic Constant} domain $\constdom = \mathbb{N} \cup \inpvar \cup \left\{ \infty, Q_m \right\}$
-is the set of all natural numbers with $\infty$, the input variables of all programs (i.e., $\inpvar \subseteq \vardom$), and a symbol $Q_m$ representing the abstract value of a query request.
+The \emph{Symbolic Constant} can be a natural number, $\infty$, or a program's input variable, We use $\scvardom \subseteq \mathbb{N} \cup \vardom \cup \{\infty \}$ to denote the universe of all \emph{Symbolic Constant},
+which is the set of all natural numbers with $\infty$ and programs' input variables.
 An inequality $x' \leq y + v$ describes that the value of $x$ in the current state is
 at most the value of $y$ in the previous state plus the symbolic constant $v$.
 An inequality $x' \leq v$ describes that the value of $x$ in the current state is
@@ -105,7 +104,6 @@ after executing the command at $l$ is at most
 % and the right-hand side describes 
 the value of the symbolic constant $v$ before the execution.
 For every expression in each of the label command, it is computed in three steps via program abstraction method adopted from the Section~6 in \cite{SinnZV17}. 
-}
 %
 \item The Boolean Expressions $b$ from the set $\booldom$.
 $b$ on an edge $l \xrightarrow{b} l'$ describes
@@ -122,10 +120,16 @@ interfere with any counter variable.
 }
 \begin{defn}[Constraint Computation]
   \label{def:constraint_compute}
-  For a program $c$, a boolean expression $\bexpr$ in the guard of a $\eif$ or $\ewhile$ command
+  With a program $c$, a boolean expression $\bexpr$ in the guard of a $\eif$ or $\ewhile$ command
   or an expression $\expr$ and a variable $x$
-  in an assignment command $\assign{x}{\expr}$,
-  the constraint $\absexpr(\bexpr, \_)$ or $\absexpr(x - v, x)$ is computed as follows,
+  in an assignment command $\assign{x}{\expr}$ as input.
+
+  We first initialize 
+  $\grdvar = \{\}$ as the set of the variable used in the expression of every while or if guard in the program $c$.
+  \footnote{We omit the input $c$ here as well as in the rest of \redd{PART \romannum{1}} because the context is clear. In \redd{PART \romannum{2}},
+  we will distinguish the input program $c$ explicitly in the input.}
+
+  Then the constraint $\absexpr(\bexpr, \_)$ or $\absexpr(x - v, x)$ is computed as follows,
   \[
     \begin{array}{ll} 
       \absexpr(x - v, x)  = x' \leq x - v  & x \in \grdvar \land v \in \constdom \\
@@ -138,7 +142,7 @@ interfere with any counter variable.
       \absexpr(\expr, x) = \top  &  x \notin \grdvar \\
     \end{array}
     \]
-    $\absexpr(\expr, x)$ is iteratively updating until stabilized over every guard and assignment command in $c$, and $\absexpr(\expr, x)$
+    $\absexpr(\expr, x)$ $\grdvar$ is iteratively updating until stabilized over every guard and assignment command in $c$, and $\absexpr(\expr, x)$
     denotes the stabilized result in the following paper.
   \end{defn}
 %
@@ -160,9 +164,9 @@ The counter variable $x$ is generalized into norm when the boolean expression $x
 in $\ewhile$ doesn't have the form $x > 0$.
 The way of normalizing the guards and computing the norms is adopted from the computation step 1 in Section 6.1 in paper \cite{SinnZV17}. 
 % \\
-\begin{defn}[Symbolic Expression Domain ($\mathcal{A}_{S}$)]
+\begin{defn}[Universe of The Symbolic Expression ($\mathcal{A}_{S}$)]
   \label{def:symbolic_expr_domain}
-  $\mathcal{A}_{S}$ is the set of all the arithmetic expressions 
+  $\mathcal{A}_{S}$ is the universe of all the arithmetic expressions 
 over $\constdom$, $\mathcal{A}_{S} \subseteq \mathcal{A}$
 \end{defn}
 The symbolic expression set is a subset of arithmetic expressions over $\mathbb{N}$ with input variables, 
@@ -196,8 +200,8 @@ from the standard control flow analysis.
     \absinit(\clabel{\assign{x}{\expr}}{}^l)  & = l  \\
     \absinit(\clabel{\assign{x}{\query(\qexpr)}}{}^l)  & = l \\
     \absinit(\clabel{\eskip}^{l})  & = l \\
-    \absinit(\eif [b]^l \ethen c_1 \eelse c_2)  & = l\\
-    \absinit(\ewhile [b]^l \edo c)  & = l \\
+    \absinit(\eif \clabel{\bexpr}^{l} \ethen c_1 \eelse c_2)  & = l\\
+    \absinit(\ewhile \clabel{\bexpr}^{l} \edo (c_w))  & = l \\
     \absinit(c_1 ; c_2)  & = \absinit(c_1) \\
  \end{array}
  \]
@@ -223,8 +227,8 @@ Given a program $c$, its final state, $\absfinal(c)$ is computed as follows,
       (l, x' \leq 0 + Q_m )\}  \\
      \absfinal(\clabel{\eskip}^{l})  
      & = \{(l, \top)\} \\
-     \absfinal(\eif [b]^l \ethen c_1 \eelse c_2)  & = \absfinal(c_1) \cup \absfinal(c_2) \\
-     \absfinal(\ewhile [b]^l \edo c)  & = \{(l, \absexpr(\bexpr, \top))\} \\
+     \absfinal(\eif \clabel{\bexpr}^{l} \ethen c_1 \eelse c_2)  & = \absfinal(c_1) \cup \absfinal(c_2) \\
+     \absfinal(\ewhile \clabel{\bexpr}^{l} \edo (c_w))  & = \{(l, \absexpr(\bexpr, \top))\} \\
      \absfinal(c_1 ; c_2)  & =  \absfinal(c_2) \\
  \end{array}
  \]
@@ -289,12 +293,12 @@ Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
       \absflow'(\clabel{\assign{x}{\expr}}{}^l)  & = \emptyset  \\
       \absflow'(\clabel{\assign{x}{\query(\qexpr)}}{}^l)  & = \emptyset  \\
       \absflow'([\eskip]^{l})  & = \emptyset \\
-      \absflow'(\eif [b]^l \ethen c_t \eelse c_f)  & =  \absflow'(c_t) \cup \absflow'(c_f)
+      \absflow'(\eif \clabel{\bexpr}^{l} \ethen c_t \eelse c_f)  & =  \absflow'(c_t) \cup \absflow'(c_f)
         \\ & \quad 
         \cup \left\{(l, \absexpr(\bexpr, \top),  \absinit(c_t) ) \right\}
         \\ & \quad 
         \cup \left\{ (l, \absexpr(\neg\bexpr, \top), \absinit(c_f)) \right\} \\
-       \absflow'(\ewhile [b]^l \edo c_w)  & =  \absflow'(c_w) \cup \{(l, \absexpr(\bexpr, \top), \absinit(c_w)) \} 
+       \absflow'(\ewhile \clabel{\bexpr}^{l} \edo (c_w))  & =  \absflow'(c_w) \cup \{(l, \absexpr(\bexpr, \top), \absinit(c_w)) \} 
        \\ & \quad 
        \cup \{(l', dc, l)| (l', dc) \in \absfinal(c_w) \} \\
        \absflow'(c_1 ; c_2)  & = \absflow'(c_1) \cup  \absflow'(c_2) 
@@ -332,7 +336,7 @@ For every event $\event$ with label $l$, if it is in an execution trace $\trace$
 
 For every program point $l$, if it is the label of an assignment command in a program $c$,
 there is a unique abstract event in the program's abstract events set $\absevent \in \absflow(c)$ of form $(l, \_, \_)$. 
-\begin{lem}[Uniqueness of the Abstract Events Computation]
+\begin{lem}[Uniqueness of the Abstract Event]
   \label{lem:abscfg_uniquex}
   For every program $c$ and
   an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.

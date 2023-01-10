@@ -30,40 +30,40 @@ is generated as follows.
 \begin{array}{rlcl}
 \text{Vertices} &
 \progV & := & \left\{ 
-x^l \in \mathcal{LV} 
+x^l
 ~ \middle\vert ~
-x^l \in \lvar_{c}
+x^l \in \lvar(c)
 \right\}
 \\
 \text{Directed Edges} &
 \progE & := & 
 \left\{ 
-(x^i, y^j) \in \mathcal{LV} \times \mathcal{LV}
+(x^i, y^j) 
 ~ \middle\vert ~
 \begin{array}{l}
 x^i, y^j \in \vertxs
 \land
-\exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat
+\exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat
 n \geq 0 \land
 \\
 \flowsto(y^j,  z_1^{r_1}, c) 
-\land \cdots \land \flowsto(z_n^{r_n}, x^i, c) 
+\land \ldots \land \flowsto(z_n^{r_n}, x^i, c) 
 \end{array}
 \right\}
 \\
 \text{Weights} &
 \progW & := &
-\left\{ (x^l, w) \in  \mathcal{LV} \times \mathcal{A}_{in}
+\left\{ (x^l, w) \in \lvar(c) \times \mathcal{A}_{S}
 \mid
-x^l \in \lvar_{{c}} \land (l, w) \in \absW(c)
+x^l \in \lvar(c) \land (l, w) \in \absW(c)
 \right\}
 \\
 \text{Query Annotation} &
 \progF & := & 
-\left\{(x^l, n)  \in  \mathcal{LV} \times \{0, 1\} 
+\left\{(x^l, n)  \in  \lvar(c) \times \{0, 1\} 
 ~ \middle\vert ~
-x^l \in \lvar_{c},
-n = 1 \iff x^l \in \qvar_{c} \land n = 0 \iff  x^l \in \qvar_{c} .
+x^l \in \lvar(c),
+n = 1 \iff x^l \in \qvar(c) \land n = 0 \iff  x^l \in \qvar(c) .
 \right\}
 \end{array}
 \] }

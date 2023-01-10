@@ -1,25 +1,31 @@
-In this section, I present the new 
-adaptivity analysis based on static program analysis as the third part of 
-the adaptivity analysis framework as in Figure~\ref{fig:structure}. 
-It is more advanced than previous works in all the accuracy, efficiency and generalization aspects.
-It is also fully automated and implemented.
+In this section, I present the new static
+program analysis algorithm for analyzing and estimating the adaptivity the third part of 
+the framework in Figure~\ref{fig:structure}. 
+It effectively combines the quantitative and reachability analysis techniques for analyzing
+adaptivity from two perspectives.
+The effective combination complements the weakness of two lines of work in comparison with any single one.
+Also, it computes more accurate adaptivity comparing to the previous adaptivity analysis with higher efficiency.
 
 
-\paragraph{{Static Analysis for Adaptivity Outline}}
+\paragraph{{Chapter Outline}}
 %
 In order to give a sound and precise approximation of the formal adaptivity from Section~\ref{sec:adapt-exe} efficiently, 
-the new static program analysis framework is developed through three steps analysis
-similar to the execution-based analysis.
+the new static program analysis framework is developed through four steps analysis in two phases
+similar to the semantics-based adaptivity formalization procedure.
 \begin{itemize}
-   \item In Section~\ref{sec:alg_edgegen},
-   the data \emph{dependency relation} is analyzed through the static data flow analysis technique.
-   \item The Section~\ref{sec:alg_weightgen} presents the \emph{dependency quantity} analysis through
-   the static reachability bound analysis techniques developed from the first part of this thesis.
-   \item The static analysis for estimating program's adaptivity is presented in Section~\ref{sec:alg_adaptcompute}.
+   \item The first phase estimate the \emph{semantics-based} dependency graph mainly in two steps.
+   \begin{enumerate}
+   \item In Section~\ref{sec:alg_edgegen}, we first analyze the \emph{reachability} perspective sub-property --
+   the data \emph{dependency relation} through the combined data and control flow analysis technique, and estimate the
+   \emph{variable may-dependency} relation.
+   \item The Section~\ref{sec:alg_weightgen} analyzes the \emph{quantitative} perspective sub-property -- the \emph{dependency depth} analysis through
+   the reachability bound analysis techniques, and estimates the weight of the \emph{semantics-based} dependency graph.
+   \item Then Section~\ref{sec:alg_graphgen} constructs the \emph{estimated dependency graph} combining two estimated results above together with the statically collected vertices and query annotation.
+   \end{enumerate}
+   \item The second phase in Section~\ref{sec:alg_adaptcompute} computes program's adaptivity.
    % the program adaptivity estimation, 
-   In this analysis, I construct a program-based dependence graph for approximating the execution-based graph in Section~\ref{sec:dynamic-adapt}.
-   Then, based on this graph, I design an algorithm
-   %  based on the results estimated above, 
+   In this phase, I construct a program-based dependence graph for approximating the execution-based graph in Section~\ref{sec:dynamic-adapt}.
+   Then, based on this graph, I design an algorithm based on graph theory for
    computing the adaptivity upper bound soundly 
    and accurately.
    \end{itemize}

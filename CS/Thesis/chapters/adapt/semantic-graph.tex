@@ -1,17 +1,16 @@
-We can now define the \emph{semantics-based dependency graph} of a program $c$. We want this graph to combines quantitative reachability information with dependency information. 
+We can now define the \emph{semantics-based dependency graph} of a program $c$. We want this graph to carry both quantitative perspective information and the reachability perspective (via dependency) information. 
 
-{
-For a program $c$, there are some notations used in the following definition.
+For a program $c$, there are some notations used in the following definition we want to remind.
 The labeled variables of $c$,
 $\lvar(c) \subseteq \mathcal{LV}$ contains all the variables in $c$'s assignment commands, with the command labels as superscripts. 
 The set of query-associated variables (in query request assignments),
-$\qvar(c) \subseteq \lvar(c)$ contains all labeled variables in $c$'s query requests. 
+$\qvar(c) \subseteq \lvar(c)$ contains all labeled variables in $c$'s query requests. Both of them are define in Section~\ref{sec:language-syntax} in Definition~\ref{def:lvar} and~\ref{def:qvar}.
 The set of initial traces of $c$,
 $\mathcal{T}_0(c) \subseteq \mathcal{T}$
-contains all possible initial trace of $c$.
+contains all the initial trace of $c$.
 Each initial trace,  $\trace_0 \in \mathcal{T}_0(c)$ contains the initial values of all input variables of $c$. 
 For instance, the initial trace of $\kw{twoRounds(k)}$ example contains the initial value of the input variable $k$.
-}
+
 \begin{defn}[Semantics-based Dependency Graph]
 \label{def:trace_graph}
 Given a program ${c}$,
@@ -65,7 +64,7 @@ is \emph{well-formed} if and only if $ \{x^l \ |\ (x^l,w)\in \traceW({c})\} = \t
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% The Explanation of Dependency Graph %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\jl{There are four components in this graph.
+There are four components in this graph.
 \begin{enumerate}
     \item The vertices $\traceV({c})$ of a program $c$ are all its labeled variables, $\lvar(c)$ which are statically collected.
     \item $\traceF(c)$ contains the \emph{query annotation} for 
@@ -86,4 +85,4 @@ Given input $\trace_0$, we execute the program under $\trace_0$ as $\config{\kw{
 \end{enumerate}
 The main novelty of  the semantics-based dependency graph is the combination of the quantitative and dependency information. 
 It can tell both the dependency between queries via the directed edge, and the times they depend on each other via the weight.
-}
+In this sense, this graph captures both quantitative perspective (via weight) and the reachability perspective (via dependency) information for adaptivity. Then we can utilize them, together with the query annotation to precisely define the \emph{adaptivity} concept.

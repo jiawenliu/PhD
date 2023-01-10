@@ -61,7 +61,7 @@ evaluates to another configuration with the trace updated along with the evaluat
 \\
 We denote by $\mathcal{T}$ the set of all finite traces.
 If a program $c$ has some non-terminating behavior, it will produce an infinite trace from $\mathcal{T} \cup \{\infty\}$. 
-In the rest part of this work, we rule out this situation and consider finite trace as well-formed only when the program terminates.
+In the rest of \redd{PART \romannum{1}}, we rule out this situation and consider as well-formed only the finite trace and the terminating programs.
 \\
 Some useful operators are defined below w.r.t. the finite traces.
 \\
@@ -266,7 +266,7 @@ Formally, the environment operator, $\env : {\mathcal{T}}  \to \mathcal{V} \to \
 
  \paragraph*{Operational Semantics}
  The trace based operational semantics is described in terms of a small step evaluation relation
- $\config{c, \trace} \to \config{c', \trace}'$  describing how a configuration program-trace evaluates to another
+ $\config{c, \trace} \to \config{c', \trace'}$  describing how a configuration program-trace evaluates to another
  configuration program-state. 
  The rules for the operational semantics are described in Fig.~\ref{fig:os}.
  The rules for assignment and query generate assignment events, while the rules for while and if generate testing events. 
@@ -353,7 +353,8 @@ If a program $c$ has some non-terminating behavior, we define its execution as f
     \end{array}
   \]
 \end{defn}
-In the rest part of this work, we consider as well-formed only the terminating execution and finite trace.
+In the rest of {\redd{PART \romannum{1}} we consider as well-formed only the terminating execution and finite trace denote by $\trace \in \mathcal{T}$.
+We will extend to the non-terminating programs in {\redd{PART \romannum{2}} and use $\ftdom$ and $\inftdom$ to distinguish the universe of finite trace and infinite trace.
 
  \begin{figure}
   \begin{mathpar}
@@ -515,7 +516,7 @@ In the rest part of this work, we consider as well-formed only the terminating e
   {
   \inferrule
   {
-   \trace, \qexpr \qarrow \qval
+    \config{\trace, \qexpr} \qarrow \qval
    \and 
   \query(\qval) = v
   \and 
@@ -533,15 +534,15 @@ In the rest part of this work, we consider as well-formed only the terminating e
   %
   \inferrule
   {
-   \trace, b \barrow \etrue
+    \config{\trace, b} \barrow \etrue
    \and 
    \event = (b, l, \etrue, \bullet)
   }
   {
-  \config{{\ewhile [b]^{l} \edo c, \trace}}
+  \config{{\ewhile [b]^{l} \edo (c), \trace}}
   \xrightarrow{} 
   \config{{
-  c; \ewhile [b]^{l} \edo c),
+  c; \ewhile [b]^{l} \edo (c),
   \trace \traceadd \event}}
   }
   ~\textbf{while-t}
@@ -551,12 +552,12 @@ In the rest part of this work, we consider as well-formed only the terminating e
   %
   \inferrule
   {
-   \trace, b \barrow \efalse
+    \config{\trace, b} \barrow \efalse
    \and 
    \event = (b, l, \efalse, \bullet)
   }
   {
-  \config{{\ewhile [b]^{l}, \edo c, \trace}}
+  \config{{\ewhile [b]^{l} \edo (c), \trace}}
   \xrightarrow{} 
   \config{{
     \clabel{\eskip}^l,
@@ -599,7 +600,7 @@ In the rest part of this work, we consider as well-formed only the terminating e
   %
   \inferrule
   {
-     \trace, b \barrow \etrue
+    \config{\trace, b} \barrow \etrue
    \and 
    \event = (b, l, \etrue, \bullet)
   }
@@ -616,7 +617,7 @@ In the rest part of this work, we consider as well-formed only the terminating e
   %
   \inferrule
   {
-   \trace, b \barrow \efalse
+    \config{\trace, b} \barrow \efalse
    \and 
    \event = (b, l, \efalse, \bullet)
   }
@@ -627,8 +628,6 @@ In the rest part of this work, we consider as well-formed only the terminating e
   }
   ~\textbf{if-f}
   % %
-  %
-  %
   \end{mathpar}
   }
       \caption{Trace-based Operational Semantics for {\tt QWhile} Language.}
@@ -650,23 +649,22 @@ Instead, we define the equivalence of query expression by quantifying over all v
 %
 \label{def:query_equal}
 Two query expressions $\qexpr_1$, $\qexpr_2$ are equivalent, denoted as $\qexpr_1 =_{q} \qexpr_2$, if and only if
-$$
+\[
  \begin{array}{l} 
    \forall \trace \in \mathcal{T} \sthat \exists \qval_1, \qval_2 \in \mathcal{QVAL} \sthat
     (\config{\trace,  \qexpr_1} \qarrow \qval_1 \land \config{\trace,  \qexpr_2 } \qarrow \qval_2) 
     \\
     \quad \land (\forall D \in \dbdom, r \in D \sthat 
     \exists v \in \mathcal{VAL} \sthat 
-          \config{\trace, \qval_1[r/\chi]} \aarrow v \land \config{\trace,  \qval_2[r/\chi] } \aarrow v)  
-  \end{array}.
-$$
- where $r \in D$ is a record in the database domain $D$. 
- As usual, we will denote by $\qexpr_1 \neq_{q} \qexpr_2$  the negation of the equivalence.
+          \config{\trace, \qval_1[r/\chi]} \aarrow v \land \config{\trace,  \qval_2[r/\chi] } \aarrow v),  
+  \end{array}
+  \]
+where $r \in D$ is a record (row) in the database $D$. 
+As usual, we denote by $\qexpr_1 \neq_{q} \qexpr_2$  the negation of the equivalence.
 \end{defn}
 %
 \begin{defn}[Event Equivalence]
   Two events $\event_1, \event_2 \in \eventset$ are equivalent, 
-  % denoted as $\event_1 \eventeq \event_2$ 
   denoted as $\event_1 = \event_2$ 
   if and only if:
   \[
@@ -680,11 +678,11 @@ $$
   \lor \pi_{4}(\event_1) =_q \pi_{4}(\event_2))
   \]
   %
-  As usual, we will denote by $\event_1 \neq \event_2$  the negation of the equivalence.
+  As usual, we denote by $\event_1 \neq \event_2$  the negation of the equivalence.
 \end{defn}
 
   
-  If we observe the operational semantics rules, we can find that no rule will shrink the trace. 
+If we observe the operational semantics rules, we can find that no rule will shrink the trace. 
 So we have the Lemma~\ref{lem:tracenondec} with proof in Appendix~\ref{apdx:tracenondec}, 
 specifically the trace has the property that its length never decreases during the program execution.
 \begin{lem}
@@ -697,8 +695,9 @@ then there exists a trace $\trace'' \in \mathcal{T}$ with $\trace \tracecat \tra
 $$
 \forall \trace, \trace' \in \mathcal{T}, c \in \cdom, l \in \ldom \sthat 
 \config{c, \trace} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace'} 
-\implies \exists \trace'' \in \mathcal{T} \sthat \trace \tracecat \trace'' = \trace'
+\implies \exists \trace'' \in \mathcal{T} \sthat \trace \tracecat \trace'' = \trace'.
 $$
+Again, we want to emphasize that in \redd{PART \romannum{1}}, we consider as well-formed only the finite trace when we say $\trace \in \mathcal{T}$, and the terminating execution.
 \end{lem}
 Since the equivalence over two events is defined over the query value equivalence, 
 when there is an event belonging to a trace, 

@@ -536,9 +536,6 @@
 \newcommand{\locbound}{\kw{locb}}
 \newcommand{\absdom}{\mathcal{ADOM}}
 
-\newcommand{\vardom}{\mathcal{V}}
-\newcommand{\inpvar}{\vardom_{\kw{in}}}
-\newcommand{\grdvar}{\vardom_{\kw{guard}}}
 
 \newcommand{\absclr}{{\kw{TB}}}
 \newcommand{\varinvar}{{\kw{VB}}}
@@ -607,6 +604,41 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Path Sensitive Reachability Bound Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Trace and Events %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Trace 
+\newcommand{\tdom}{\mathcal{T}^{+\infty}}
+\newcommand{\inftdom}{\mathcal{T}^{\infty}}
+\newcommand{\ftdom}{\mathcal{T}^{+}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Static Program Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Variables Domain
+%%% Variables Domain
+\newcommand{\vardom}{\mathcal{V}}
+\newcommand{\inpvardom}{\mathcal{V}_{\kw{\lin}}}
+\newcommand{\scexprdom}{\mathcal{A}_{\kw{sc}}}
+\newcommand{\inpexprdom}{\mathcal{A}_{\lin}}
+\newcommand{\grdvardom}{\mathcal{V}_{\kw{guard}}}
+\newcommand{\scvardom}{\mathcal{SC}}
+
+
+\newcommand{\scexpr}{{\kw{A_{sc}}}}
+\newcommand{\inpexpr}{\kw{A}_{\lin}}
+\newcommand{\inpvar}{{\kw{V_{\lin}}}}
+\newcommand{\grdvar}{\kw{V}_{\kw{guard}}}
+\newcommand{\scvar}{\kw{SC}}
+
+\newcommand{\resetG}{\kw{re{G}}}
+\newcommand{\resetV}{\kw{re{V}}}
+\newcommand{\resetE}{\kw{re{E}}}
+
+%%%%%%%%%%%%%%%%Algorithms
 \newcommand{\algrewrite}{\kw{Rewrite}}
 
 \newcommand{\tpath}{\kw{tp}}
@@ -638,3 +670,5 @@
 \newcommand{\lpnext}{\kw{lpNext}}
 \newcommand{\rpattern}{\kw{ptn}}
 \newcommand{\invariant}{\kw{invariant}}
+
+

@@ -117,27 +117,27 @@ formally in Definition~\ref{def:feasible_flowsto},
     {\small
     \[
    \begin{array}{ll}
-    \flowsto(x^i, y^j, \clabel{\assign{y}{\expr}}{}^l)  & \triangleq (x^i, y^j) \in \{ (x^i, y^l) | x \in \mathsf{FV}(\expr) 
+    \flowsto(x^i, y^j, \clabel{\assign{y}{\expr}}{}^l)  & \triangleq (x^i, y^j) \in \{ (x^i, y^l) | x \in \kw{FV}(\expr) 
     \land x^i \in \live(l, \clabel{\assign{y}{\expr}}^l) \}  \\
-    \flowsto(x^i, y^j, \clabel{\assign{y}{\query(\qexpr)}}{}^l)  & \triangleq (x^i, y^j) \in \{ (x^i, y^l) | x \in \mathsf{FV}(\qexpr) 
+    \flowsto(x^i, y^j, \clabel{\assign{y}{\query(\qexpr)}}{}^l)  & \triangleq (x^i, y^j) \in \{ (x^i, y^l) | x \in \kw{FV}(\qexpr) 
     % \land (y,i) \in \live(l,\clabel{\assign{x}{\query(\qexpr)}}^l) \}  \\
     \land x^i \in \live(l,\clabel{\assign{y}{\query(\qexpr)}}^l) \}  \\
     \flowsto(x^i, y^j, [\eskip]^{l})  & = \emptyset \\
-    \flowsto(x^i, y^j, \eif ([b]^l, c_1, c_2))  & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\ 
+    \flowsto(x^i, y^j, \eif (\clabel{\bexpr}^{l}, c_1, c_2))  & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\ 
         & \lor (x^i, y^j) \in
-        \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+        \left\{(x^i,y^j) | x \in \kw{FV}(b) \land 
       %  (x,i) 
-      x^i \in \live(l, \eif ([b]^l, c_1, c_2)) \land  y^j \in \lvar(c_1) \right\} \\
+      x^i \in \live(l, \eif (\clabel{\bexpr}^{l}, c_1, c_2)) \land  y^j \in \lvar(c_1) \right\} \\
     %   ([y = \_]^j) \in \mathsf{blk}(c_1) \} \\
-       &\lor (x^i, y^j) \in \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+       &\lor (x^i, y^j) \in \left\{(x^i,y^j) | x \in \kw{FV}(b) \land 
       %  (x,i) 
-      x^i\in \live(l, \eif ([b]^l, c_1, c_2))  \land  y^j \in \lvar(c_2)  \right\} \\
+      x^i\in \live(l, \eif (\clabel{\bexpr}^{l}, c_1, c_2))  \land  y^j \in \lvar(c_2)  \right\} \\
     %   \land ([y = \_]^j) \in \mathsf{blk}(c_2) \} \\
-       \flowsto(x^i, y^j, \ewhile [b]^l \edo c_w)  & \triangleq  \flowsto(x^i, y^j, c_w)  \lor
+       \flowsto(x^i, y^j, \ewhile \clabel{\bexpr}^{l} \edo (c_w))  & \triangleq  \flowsto(x^i, y^j, c_w)  \lor
        \\ & 
-       (x^i, y^j) \in  \left\{(x^i,y^j) | x \in \mathsf{FV}(b) \land 
+       (x^i, y^j) \in  \left\{(x^i,y^j) | x \in \kw{FV}(b) \land 
       %  (x,i) 
-      x^i \in \live(l,   \ewhile [b]^l \edo c_w) \land  y^j \in \lvar(c_w) \right\} \\
+      x^i \in \live(l,   \ewhile \clabel{\bexpr}^{l} \edo (c_w)) \land  y^j \in \lvar(c_w) \right\} \\
     %   ([y = \_]^j) \in \mathsf{blk}(c_w) \} \\
        \flowsto(x^i, y^j, c_1 ;c_2)  & \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \\
    \end{array}
@@ -150,7 +150,7 @@ of the \emph{Variable May-Dependency} relation over labeled variables for every 
 in Appendix~\ref{apdx:flowsto_soundness}.
 %
 
-\highlight{Improvement Analysis.}
+\highlight{Novelty of The Algorithm.}
 Combining the result of \emph{reaching definition}, $\live(l, c)$
 with the \emph{abstract control flow graph}, $\absG(c)$ with control flow analysis into the feasible 
 data-flow generation improves the data-dependency relation approximation accuracy. 
@@ -202,12 +202,10 @@ $
 \end{lem}
   \paragraph*{Example}
   %
-As in the Figure~3(c), 
+As in the Figure~\ref{fig:overview-example}(c), 
 the edge $l^6 \to a^5$ is built by $\flowsto(l^6, a^5, c)$ relation because
-% By $\flowsto(l^6, a^5, c)$, we can see 
 $a$ is used directly in the query expression $\chi[k]*a$
 in the command $\clabel{\assign{l}{\query(\chi[k]*a)}}^6$,
-i.e., $a \in FV(\chi[k]*a)$.
+i.e., $a \in \kw{FV}(\chi[k]*a)$.
 And we also have $a^5 \in \live(6, \kw{twoRounds(k)})$ from the reaching definition analysis.
-% Then we have $\flowsto(l^6, a^5, c)$ and construct the edge $l^6 \to a^5$.
 Another edge $x^3 \to j^5$ in the same graph represents the control flow from $j^5$ to $x^3$, which is soundly caught by our $\flowsto$ relation.
