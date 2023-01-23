@@ -1,0 +1,86 @@
+The operator $\lvar: \cdom \to \mathcal{P}(\ldom)$,
+computes the set of all labels
+in a labeled command $c$ defined as follows, we call it program points.
+Every the program point is unique.
+\begin{defn}[Program Points ($\lvar : \cdom \to \mathcal{P}(\ldom)$]
+\label{def:lvar}
+{\small
+\[
+  \lvar(c) \triangleq
+  \left\{
+  \begin{array}{ll}
+      \{l\}                  
+      & {c} = \clabel{\assign x \expr}^{l} 
+      \\
+      \lvar({c_1}) \cup \lvar({{c_2}}) 
+      & {c} = {c_1};{c_2}
+      \\
+      \lvar(c_1) \cup \lvar({{c_2}}) \cup \{l\} 
+      & {c} =\eif(\clabel{\bexpr}^{l}, c_1, c_2) 
+      \\
+      \lvar(c_w) \cup \{l\} 
+      & {c}   = \ewhile \clabel{\bexpr}^{l} \edo (c_w)
+\end{array}
+\right.
+\]
+}
+\end{defn}
+%
+Every program point corresponds to a labeled command in a program (either a guard of if or while command, or an assignment command), and it is unique.
+The Lemma below formally describes the uniqueness property of the program points
+with proof in Appendix~\ref{apdx:lem_language}.
+\begin{lem}[Uniqueness of The Program Point]
+  \label{lem:label_unique}
+  For every program $c \in \cdom$ and every two labels such that
+  $i, j \in \lvar(c)$, then $i \neq j$.
+  \[
+    \forall c \in \cdom, i, j \in \ldom \sthat i, j \in \lvar(c)\implies i \neq j.
+  \]
+\end{lem}
+%
+%
+\begin{defn}[Reachability-bound]
+  \label{def:rb}
+  For a program ${c}$ and a location $l \in \lvar(c)$ in this program,
+a function $f(c, l) : \ftdom_0(c) \to (\mathbb{N} \cup \{\infty\})$ is a \emph{Reachability-Bound} for $l$ if and only if
+\highlight{
+\[
+  \begin{array}{l}
+    \forall \trace_0 \in \ftdom_0(c), c' \in \cdom, l, l' \in \lvar(c), \trace \in \tdom \sthat 
+    \\ \qquad
+    \Big(
+      \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace} 
+      \lor 
+      \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
+    \Big)
+    \implies f({c}, l)(\trace_0) \geq \counter(\trace, l) 
+    \end{array}
+    \]
+}
+\end{defn}
+\highlight{
+Given a program point $l$ in $c$, our algorithm (defined below) computes a Reachability-Bound for it.
+It is easy to compute a trivial \emph{Reachability-Bound} $f(c, l): \ftdom_0(c) \to \infty$, but it is not interesting to us.
+\\
+% In the following sections, we only focus on computing a finite \emph{reachability-bound} for program's given location and considering the executions that terminates.
+Ideally, we aim to compute a precise reachability-bound as below.
+}
+\begin{defn}[Precise Reachability-Bound]
+  \label{def:exe_rb}
+  For a program ${c}$ and a location $l \in \lvar(c)$ in this program,
+$\exeRB({c}, l): \ftdom_0(c) \to (\mathbb{N} \cup \{\infty\})$ is a \emph{Precise Reachability-Bound}  if and only if,
+\highlight{
+\[
+  \begin{array}{l}
+    \forall \trace_0 \in \ftdom_0(c), c' \in \cdom, l, l' \in \lvar(c), \trace \in \tdom \sthat 
+    \\ \qquad
+    \Big(
+      \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace} 
+      \lor 
+      \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
+    \Big)
+    \implies f({c}, l)(\trace_0) = \counter(\trace, l) 
+    \end{array}
+    \]
+}
+\end{defn}

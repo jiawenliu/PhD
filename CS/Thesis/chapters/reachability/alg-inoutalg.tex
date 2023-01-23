@@ -1,0 +1,736 @@
+\textbf{Algorithm Overview} 
+Given a program $c$ with $\rprog$ as its refined program,
+\begin{enumerate}
+  \item 
+  \emph{Relative Loop Bound} $\lpchB(l, \tpath, \rprog)$,
+  \[
+    \lpchB(l, \tpath, \rprog) \triangleq
+    \left\{
+    \begin{array}{ll}
+      \inoutB(\rprog, \tpath)
+      & \qquad{ l:\rprog = \kw{enclose}(\tpath)}
+      \\
+      \frac{\lpinit(l, \tpath, \rprog) - \rffinal(\rprog, \tpath)}{\lpinit(l, \tpath, \rprog) - \lpnext(l, \tpath, \rprog)}
+      & \qquad o.w.
+    \end{array}
+    \right\}
+    \]
+    \item  reachability bound:
+    $\inoutB(\rprog, \tpath) \triangleq $
+
+    \[
+      \begin{array}{rcl}
+        \inoutB(\tpath, \tpath) & \triangleq & 1 \\
+        \inoutB(\tpath', \tpath) & \triangleq & \highlight{0} \\
+        \inoutB(\rpchoose{\rprog_1, \ldots, \rprog_m }, \tpath) & \triangleq & \max(, \ldots, ) \\
+        \inoutB(\rprepeat(\rprog'), \tpath) & \triangleq & \outinB(\rprepeat(\rprog'), \rprog) \times \inoutB(\rprog', \tpath)\\
+        \inoutB(\rprepeat(\rprog'), \tpath) & \triangleq 
+        & \highlight{\frac{\rfinit(\rprog, \rprog') - \rffinal(\rprog, \rprog')}{\varGD(\rprog, \rprog')}}
+         \times \inoutB(\rprog', \tpath)
+         \\
+        \inoutB(l: \rprog', \tpath) & \triangleq & \lpchB(l, \tpath, \rprog) \times \inoutB(\rprog, \tpath) \\
+        \inoutB(l: \rprog', \tpath) & \triangleq & 
+        \highlight{
+          \lpchB(l, \tpath, \rprog') \times 
+        \max\limits_{l':\rprog'' \in \rprog' \land l = \kw{enclose}(l':\rprog'')}
+       \{1, \inoutB(l':\rprog'', \tpath)\} }
+        \\
+        \end{array}
+      \]
+    
+     For every label $l \in \lvar(c)$, $\psRB(c, l)$,
+    \[ 
+      \psRB(c, l) = \sum\limits_{\tpath \in \rprog \land 
+    l \in \tpath} \inoutB(\tpath, \rprog)
+    \]
+
+\end{enumerate}
+
+
+For every simple transition path $\tpath$ in a refined program $\rprog$, 
+this algorithm
+computes the \textbf{Inside-Out} bound, $\outinB(\rprog, \tpath) \in \mathcal{A}_{in}$
+%  on its iteration numbers locally.
+% computes the bound
+on the execution numbers of $\tpath$ path-sensitively and globally
+% for every simple transition path $\tpath$ in this program $\rprog$,
+through the following steps.
+
+\subsection{Path-sensitive Local Bound}
+\highlight{\textbf{Computation Steps:}}
+%
+\emph{Repeat Chain Bound}.
+  \\
+  For every transition path $\tpath$ in a refined program $\rprog$,
+  this step computes a path-sensitive
+  bound on $\tpath$'s iteration times within its closest enclosing while loop, named \textbf{Repeat Chain} Bound.
+
+  \begin{enumerate}
+\item \emph{Repeat Chain} Computation $\rpch(\tpath, \rpattern) \in \mathcal{P}(\rprog)$.
+\\
+For a transition path $\tpath$ in the refined program $\rprog$ of a program $c$, 
+this step computes a repeat chain for $\tpath$ in a repeat pattern $\rpattern$
+within a while loop.
+%  whose header is at program point $l$.
+%  % 
+% is a list of repeat patterns nested inside each other, formally defined as follows.
+%  with loop header annotation $L$,
+% and the $\tpath$ is contained by these repeat patterns recursively.
+% % inside the same while loop $L$ as the $\tpath$. It is computed as follows,
+% % For a refined while loop program $\rprog_{l} = L_l : \rprog \in \mathcal{RP}$, 
+% % with its refined statement $\rprog \in \mathcal{RP}$,
+% \\
+% \emph{Repeat chain set}
+% $\rpchset(l, \tpath, \rprog) \in \mathcal{P}(\mathcal{P}(\rprog))$.
+% \\
+% For each transition path in the refined program $\tpath \in \rprog$, 
+% its repeat chain set 
+% $\rpchset(l, \tpath, \rprog) \in \mathcal{P}(\mathcal{P}(\rprog))$
+%  is a set of all the repeat chains for $l, \tpath \in \rprog$ in this program.
+ %
+%  \highlight{\textbf{Computation Steps:}}
+%  \begin{defn}[Repeat Chain]
+%   % ($\rpch(l, \tpath, \rprog) \in \mathcal{P}(\rprog)$)]
+%   \label{def:repeatchain}
+% For a refined program $\rprog$,
+% a \emph{Repeat Chain},
+% % $\rpch(l, \tpath, \rprog)$
+% % i.e.,
+% %  a repeat pattern with loop header annotation $l$.
+% %  efined program contained inside the same while loop $L$ as the $\tpath$. 
+% % It is computed as follows,
+%   % $\rpch(L_l, \tpath) \in \mathcal{P}(\rprog)$\\
+% % \[
+%   % \rpch(l, \tpath, \rprog) \triangleq 
+%   $\rpattern_m \to \rpattern_{n-1} \to \ldots \to \rpattern_{0} \to \tpath$
+%   is a list of repeat patterns nested within each other, 
+%   % and
+%   $\rpattern_{i}= \rprepeat(\ldots, \rpattern_{i - 1}, \ldots)$ for every $i = m-1, \ldots, 1$.
+% % \]
+% It satisfies
+% % $\rprog_{n} $ has the form 
+% 1. $l : \rpattern_m$ is a sub-refined program in $\rprog$
+% \\
+% 2. $\rpattern_{i}= \rprepeat(\ldots, \rpattern_{i - 1}, \ldots)$ and
+%  there isn't any nested loop header ($l'$) or $\rprepeat$ annotation between $\rpattern_{i}$ and $\rpattern_{i - 1}$
+%  for every $i = m-1, \ldots, 1$.
+% \end{defn}
+%
+  % \begin{defn}[Repeat Chain]
+  %   % ($\rpch(l, \tpath, \rprog) \in \mathcal{P}(\rprog)$)]
+  %   \label{def:repeatchain}
+  % For a refined program $\rprog$,
+  % a \emph{Repeat Chain},
+  % % $\rpch(l, \tpath, \rprog)$
+  % % i.e.,
+  % %  a repeat pattern with loop header annotation $l$.
+  % %  efined program contained inside the same while loop $L$ as the $\tpath$. 
+  % % It is computed as follows,
+  %   % $\rpch(L_l, \tpath) \in \mathcal{P}(\rprog)$\\
+  % % \[
+  %   % \rpch(l, \tpath, \rprog) \triangleq 
+  %   $\rpattern_m \to \rpattern_{n-1} \to \ldots \to \rpattern_{0} \to \tpath$
+  %   is a list of repeat patterns nested within each other, 
+  %   % and
+  %   $\rpattern_{i}= \rprepeat(\ldots, \rpattern_{i - 1}, \ldots)$ for every $i = m-1, \ldots, 1$.
+  % % \]
+  % % It satisfies
+  % % % $\rprog_{n} $ has the form 
+  % % 1. $l : \rpattern_m$ is a sub-refined program in $\rprog$
+  % % \\
+  % % 2. $\rpattern_{i}= \rprepeat(\ldots, \rpattern_{i - 1}, \ldots)$ and
+  % %  there isn't any nested loop header ($l'$) or $\rprepeat$ annotation between $\rpattern_{i}$ and $\rpattern_{i - 1}$
+  % %  for every $i = m-1, \ldots, 1$.
+  % \end{defn}
+  %
+  \begin{defn}[Repeat Chain of A Simple Transition Path $\rpch(\tpath, \rpattern)$]
+    \label{def:repeatchain-loop}
+  For a refined program $\rprog$ and a simple transition path $\tpath$, we define
+  % $\rpch(l, \tpath, \rprog)$ 
+  $\rpch(\tpath, \rpattern) = \rpattern \to \rpattern_1 \to \ldots \to \rpattern_{m} \to \tpath$
+  a repeat chain for $\tpath$ in the repeat pattern $\rpattern$
+  % loop whose header is at program point $l$,
+  if and only if,
+  % is a list of repeat patterns nested in a repeat pattern with loop header annotation $l$.
+  %  efined program contained inside the same while loop $L$ as the $\tpath$. 
+  % It is computed as follows,
+    % $\rpch(L_l, \tpath) \in \mathcal{P}(\rprog)$\\
+  \begin{itemize}
+    % \item $\rpch(l, \tpath, \rprog) = \rpattern_m \to \rpattern_{n-1} \to \ldots \to \rpattern_{0} \to \tpath$,
+    % $\rprog_{n} $ has the form 
+    % \item $l : \rpattern_m \in \rpchoose{l: \rpattern_1, \ldots, l: \rpattern_n}$ and $\rpchoose{l: \rpattern_1, \ldots, l: \rpattern_n}$ 
+    % is the sub-refined program of $\rprog$ for the loop with header at $l$,
+    %
+    \item  $\rpattern_{i - 1} = \rprepeat(\ldots; \rpattern^{i}; \ldots)$ for every $i = 1, \ldots, m$ and $\rpattern_m = \rprepeat(\tpath)$,
+    \item 
+    there isn't any nested loop (i.e., no program point of loop header ($l'$)) or $\rprepeat$ annotation between $\rpattern_{i - 1}$ and $\rpattern_{i}$
+    for every $i = 1, \ldots, m$.
+  \end{itemize}
+  \end{defn}
+  %
+\highlight{
+  The repeat chain of a $\tpath$
+  filters out the execution of other transition paths that are nested in the same loop as $\tpath$.
+  In this way, the following repeat chain bound computations are path-sensitive
+  because they only deal with $\tpath$'s execution over this chain.
+  }
+  %
+  % $\rpch(l, \tpath, \rprog) \in \mathcal{P}(\rprog)$ computes 
+%
+% \begin{defn}[Repeat Chain Computation]
+%   \label{def:repeatchain-loop}
+% For a refined program $\rprog$ and a simple transition path $\tpath$,
+% % $\rpch(l, \tpath, \rprog)$ 
+% $\rpattern_m \to \rpattern_{n-1} \to \ldots \to \rpattern_{0} \to \tpath$
+% ($\rpch(l, \tpath, \rprog) \in \mathcal{P}(\rprog)$ computes )
+% is a repeat chain for the loop whose header is at program point $l$,
+% if and only if,
+% % is a list of repeat patterns nested in a repeat pattern with loop header annotation $l$.
+% %  efined program contained inside the same while loop $L$ as the $\tpath$. 
+% % It is computed as follows,
+%   % $\rpch(L_l, \tpath) \in \mathcal{P}(\rprog)$\\
+% \begin{itemize}
+%   % \item $\rpch(l, \tpath, \rprog) = \rpattern_m \to \rpattern_{n-1} \to \ldots \to \rpattern_{0} \to \tpath$,
+%   % $\rprog_{n} $ has the form 
+%   \item $l : \rpattern_m \in \rpchoose{l: \rpattern_1, \ldots, l: \rpattern_n}$ and $\rpchoose{l: \rpattern_1, \ldots, l: \rpattern_n}$ 
+%   is the sub-refined program of $\rprog$ for the loop with header at $l$,
+%   %
+%   \item $\rpattern_{i} = \rprepeat(\ldots; \rpattern_{i - 1}; \ldots)$ and
+%  there isn't any nested loop (i.e., no program point of loop header ($l'$)) or $\rprepeat$ annotation between $\rpattern_{i}$ and $\rpattern_{i - 1}$
+%  for every $i = 1, \ldots, m - 1$.
+% \end{itemize}
+% \end{defn}
+%
+\item 
+\emph{Repeat Chain Set Computation}
+$\rpchset(l, \tpath, \rprog) \in \mathcal{P}(\mathcal{P}(\rprog))$.
+\\
+For a transition path $\tpath$ in the refined program $\rprog$ of a program $c$, 
+this step computes a set 
+$\rpchset(l, \tpath, \rprog) \in \mathcal{P}(\mathcal{P}(\rprog))$
+% computes a set containing
+which contains
+%  is a set of 
+ all repeat chains of $\tpath$ inside the loop with header at $l$.
+  % and $\tpath \in \rprog$.
+ \\
+Let $\rpchoose{l: \rpattern_1, \ldots, l: \rpattern_n}  \in \rprog$
+be the subprogram in $\rprog$ corresponds to the  loop with header at $l$, for a simple transition path $\tpath$ in this loop,
+the $\rpchset(l, \tpath, \rprog)$ is computed as follows,
+ \[
+    \rpchset(l, \tpath, \rprog) \triangleq \left\{\rpch(\tpath, \rpattern_m)
+    ~\middle\vert~
+    l : \rpattern_m \in \rpchoose{l: \rpattern_1, \ldots, l: \rpattern_n} 
+    % \land \rpchoose{l: \rpattern_1, \ldots, l: \rpattern_n}  \in \rprog
+    \right\}
+ \]
+%
+% \begin{defn}[Repeat Chain Set ($\rpchset(l, \tpath, \rprog) \in \mathcal{P}(\mathcal{P}(\rprog))$)]
+%   \label{def:repeatchainset}
+  
+%   For a refined program $\rprog$ and a simple transition path $\tpath$, the \emph{Repeat China Set} is the set of 
+%   all repeat chains for $\rprog$ and $\tpath$.
+%   \[
+%     \rpchset(l, \tpath, \rprog) \triangleq \left\{\rpch(l, \tpath, \rprog) \right\}
+%  \]
+% \end{defn}
+% \todo{Path-sensitivity Discussion}
+%
+%
+ % \\
+% 2. 
+% collect the loop chain: 
+% $lpchain : \tpath \to \mathcal{P}(\mathcal{P}(\rprog)))$
+% \\
+% $lpchain(\tpath) = \rprog_n \to \rprog_{n-1} \to \ldots \to \tpath$
+% % such that there is at least a $\rpchoose$ and isn't consecutive repeats $\rprepeat$ (i.e., at most one 
+% % $\rprepeat$) between any $\rprog_{i - 1}$ and $\rprog_{i}$ for $i = n, \ldots, 1$.
+% $\rprog_{i}= \rprepeat^{l}(\ldots, \rprog_{i - 1}, \ldots)$ and
+%  there isn't any loop (i.e., $\rprepeat^{L}$) between $\rprog_{i}$ and $\rprog_{i - 1}$ for $i = n, \ldots, 1$.
+% \\
+% 2. Compute the local bound for every repeat chain as follows:
+% \\
+% $\rpchB(l, \tpath, \rprog) = \prod\limits_{\rprog_i \in rpchain(\tpath)}
+% % \frac{chsInit(\rprog_i, \tpath) - chsFinal(\rprog_i, \tpath)}{\varGD(\rprog_i, \tpath)}
+% \outinB(\rprog_i)$
+% % \\
+% where $\rprepeat^{L}$ is the  closest loop containing $\tpath$, $\rprepeat^{L}(\ldots, \rprog, \ldots)$.
+% \\
+% 4. Compute the nested local bound for every loop chain as follows, for every of 
+% $(\rprog_i, \tpath)$ such that $\rprog_i \in lpchain(\tpath)$,
+% \\
+% $\lpchB(\rprog_i, \tpath) = 
+% % \prod\limits_{\rprog_i \in lpchain(\tpath)}
+% \frac{\lpinit(\rprog_i, \tpath) - lpFinal(\rprog_i, \tpath)}{\varGD(\rprog_i, \tpath)}$
+% \\
+\item  \emph{Repeat Chain Bound Computation}.
+\\
+For every transition path $\tpath$
+in its \highlight{closest enclosed} while loop $l$,
+the \emph{Repeat Chain Bound} $\rpchB(l, \tpath, \rprog) \in \mathcal{A}_{in}$ is computed as follows,
+% $rpRB: \tpath \to \mathcal{A}_{in}$, $chsRB: (\rprog \times \tpath) \to \mathcal{A}_{in}$
+% \\
+% For each transition path $\tpath \in \rprog$,
+% \\
+% 1. First compute the path sensitive reachability choosing bound through their choose chain:
+% \\
+% $chsRB(\rprog_n, \tpath) = \prod\limits_{\rprog_i \in lpchain(\rprog_n, \tpath)}
+% \frac{chsInit(\rprog_i, \tpath) - chsFinal(\rprog_i, \tpath)}{\varGD(\rprog_i, \tpath)}$
+  \\
+  $\rpchB(l, \tpath, \rprog) = \max \left\{ \prod\limits_{\rprog_i \in ch}  \outinB(\rprog, \rprog_i) 
+  ~\middle\vert~ ch \in \rpchset(l, \tpath, \rprog) \right\}
+  $,
+  \\
+  $\rpchB(l, \tpath, \rprog) = \bot$ if $l$ isn't the closest while loop containing $\tpath$.
+  %
+  \end{enumerate}
+  %
+  \highlight{\textbf{Theorem Guarantee Discussion: The Soundness and Path-sensitivity}}
+  \begin{itemize}
+  \item 
+  \emph{Soundness}
+  \\
+  \emph{Repeat-Chain Bound}  $\rpchB(l, \tpath, \rprog)$.
+  For a simple transition path $\tpath$ with its closest enclosing while loop at $l$ in a program $\rprog$, $\rpchB(l, \tpath, \rprog)$
+  is a sound bound on its execution times in side $l$.
+  \\
+  For a simple transition path $\tpath$ only enclosed by one repeat pattern $\rprepeat(\tpath)$, 
+  we know $\rpchB(l, \tpath, \rprog) = \outinB(\rprepeat(\tpath), \rprog)$.
+  Since $\outinB(\rprepeat(\tpath), \rprog)$ is a sound local bound on the iteration times
+  of $\rprepeat(\tpath)$ by assuming all the outside loops executes only once.
+  In this sense, $\outinB(\rprepeat(\tpath), \rprog)$ is also a sound bound on the iteration times globally.
+  \\
+  For a simple transition path $\tpath$ nested in multiple repeat patterns $\rpattern_1, \ldots, \rpattern_m$,
+  we know $\rpchB(l, \tpath, \rprog) = \prod\limits_{i = 1, \ldots, m}\outinB(\rpattern_i, \rprog)$.
+  By the same guarantee from $\outinB(\rpattern_i, \rprog)$, it is sound to multiply each of them.
+  
+  \item
+  \highlight{\textbf{The Path-sensitivity Discussion Informally}}
+  \\
+  For every multiple-paths loop,
+  this bound computes the bound for every simple transition path path-sensitively.
+  In comparison to the traditional bound computation methods, they
+  estimate the bound of different paths by taking maximum overall paths.
+  \\
+  The path-sensitivity is guaranteed by the following informal discussion.
+  \\
+  If a simple transition path isn't nested in any $\rprepeat$ annotation, then
+  $\outinB(\tpath) = 1$ is sound and tight because it bounds one execution of the while body accurate.
+  \\
+  If a simple transition path is nested in some $\rprepeat$ annotations,
+  $\rpch(l, \tpath, \rprog) \triangleq \rpattern_m \to \rpattern_{n-1} \to \ldots \to \rpattern_{0} \to \tpath$, we have the following guarantees.
+  \\
+  1. $\rprog_n$ is a unique repeat pattern of this loop,
+  and isn't a sub-pattern of any other repeat patterns in this loop.
+  \\
+  2. for every $i = n, \ldots, 0$, $\outinB(\rpattern_{i - 1})$ bounds the execution time of $\rpattern_{i - 1}$ with the assumption that $\rprog_{i}$ executes only once.
+  \\
+  3. $\tpath$ only shows up once inside $\rprog_n$.
+  \\
+  By 1. 2. 3. guarantees, multiplication of $\outinB(\rpattern_{i - 1})$ for every $i = n, \ldots, 0$ is the accurate execution time of this
+  simple transition path in the repeat pattern $\rprog_n$.
+  \\
+  In the case that loop has multiple repeat patterns, $\rpchoose{l: \rpattern_1, \ldots, l: \rpattern_n}$,
+  \\
+  We first find every repeat chain of this loop for this simple transition path.
+  Then we compute the execution time of $\tpath$ on every repeat chain and take the maximum value.
+%  
+  \end{itemize}
+
+\subsection{Relative Loop Bound}
+\label{sec:}
+% \\
+% 2. Then compute the path sensitive reachability repeating bound for $\tpath$ as:
+% \\
+% $RB(\tpath) = \max\limits_{l \in lpchains(\tpath)} \{\rpchB(n, \tpath) \prod\limits_{\rprog_i \in l} lpRB(\rprog_i, \tpath) \}$
+% % For $chain \in rpchain(\tpath)$:
+% where $lpchains(\tpath)$ is set of $lpchains(\tpath)$ containing all the loop chains of $\tpath$.
+%
+\emph{Relative Loop Bound:} 
+$\lpchB(l, \tpath, \rprog) \in \mathcal{A}_{\lin}$.
+\\
+For every simple transition path $\tpath$
+and a loop whose header is at program point $l$ in a refined program $\rprog$,
+ $\lpchB(l, \tpath, \rprog) \in \mathcal{A}_{\lin}$ computes a symbolic expression in $\mathcal{A}_{\lin}$
+as the \emph{Relative Loop Bound} for the $\tpath$ and loop $l$.
+\\
+It bounds the iteration numbers of the loop $l$ w.r.t.
+the inner loop $l'$ that is $\tpath$'s closest enclosing loop,
+such that,
+% the simple transition path $\tpath$.
+% This $\tpath$'s closest enclosing loop has the loop header at $l'$ and $l'$ is nested inside the loop $l$.
+% \\
+% It estimates the iteration numbers of loop $l$ such that 
+during these iterations of loop $l$, the nested loop $l'$ is executed.
+\highlight{
+% the for every program control location,
+% how many times the innermost loop of this control location will be touched w.r.t. every
+% outside loop it is nested in.
+This is distinguished from the traditional methods, which only compute the bound on the iteration number
+for the inner loop w.r.t one iteration of the outside loop where it is nested.
+\emph{Relative Loop Bound} for $\tpath$ and $l$ bounds the number of the iterations for
+the outside loop $l$,
+% w.r.t. an inner loop.
+%  of every control location.
+such that during these iterations of the outside loop $l$, the inner loop $l'$ is entered. 
+}
+%  is
+% the computed as follows.
+\begin{enumerate}
+  \item \emph{Loop Chain} Computation $\lpch(\tpath, \rprog) \in \mathcal{P}(\rprog)$ 
+  \\
+  For every simple transition path in a refined program $\tpath \in \rprog$,
+  this step computes 
+  % is 
+  a list of sub-refined program $\rprog_1, \ldots, \rprog_n \in \rprog$
+  as the loop chain $\lpch(\tpath, \rprog) \in \mathcal{P}(\rprog)$ of $\tpath$.
+  Each of the $\rprog_i$ in this chain corresponds to a sub-refined program of a loop whose header is at program point $l_i$ and
+ each loop $l_{i}$ is nested inside the other loop with header $l_{i+1}$.
+ We only compute the longest loop chain for $\tpath$ by checking that
+$\rprog_n$ isn't nested in any while loop.
+%  It is formally defined as follows.
+  % $\tpath$ is nested in, and every $\rprog'$ has different loop header annotation.
+\begin{defn}[Loop Chain ($\lpch(\tpath, \rprog) \in \mathcal{P}(\rprog)$)]
+  \label{def:loopchain}
+For a refined program $\rprog$ and a simple transition path $\tpath$ in this program, we define
+$\lpch(\tpath, \rprog) = 
+\rprog_n \to \rprog_{n-1} \to \ldots \to \tpath$
+the loop chain of
+$\tpath$ in this program if and only if 
+%
+% \[ 
+%   \lpch(\tpath, \rprog) 
+%   \triangleq 
+% \rprog_n \to \rprog_{n-1} \to \ldots \to \tpath
+% \]
+% such that there is at least a $\rpchoose$ and isn't consecutive repeats $\rprepeat$ (i.e., at most one 
+% $\rprepeat$) between any $\rprog_{i - 1}$ and $\rprog_{i}$ for $i = n, \ldots, 1$.
+% such that 
+\begin{itemize}
+\item $\rprog_{i}= l_i : (\ldots, l_{i - 1} : \rprog_{i-1}, \ldots)$ for $i = n, \ldots, 1$,
+\item there isn't any nested loop between $\rprog_{i}$ and $\rprog_{i - 1}$ for $i = n, \ldots, 1$,
+%  and 
+ \item $\rprog_n$ isn't nested in any other while loop.
+\end{itemize}
+\end{defn}
+%
+\highlight{Theorem Guarantee:}
+Every transition path in a refined program $\tpath \in \rprog$ has a unique longest loop chain.
+%
+%
+%
+\item  \highlight{\emph{\textbf{Relative Loop Bound:}}
+$\lpchB(l, \tpath, \rprog) \in \mathcal{A}_{\lin}$}.
+\\
+For a loop label $l$ and a transition path $\tpath$ in a refined program $\rprog$,
+ $\lpchB(l, \tpath, \rprog)$ computes a symbolic expression in $\mathcal{A}_{\lin}$ named \emph{Relative Loop Bound}
+ for $\tpath$ and $l$.
+\\
+It bounds the number of $l$'s iteration numbers,
+%  will 
+% bound the execution times of $L_{t_0}$
+% in each single execution of the $L_{t_i}$ for every
+such that during these iterations, the closest loop $l'$ enclosing $\tpath$ will be executed.
+It is formally computed as follows.
+%  bound of $\tpath$ in the while loop with loop label $l$.
+% \\
+% For a refined program $\rprog$, 
+% % with its refined statement $\rprog \in \mathcal{RP}$,
+% % \\
+% % for 
+% each transition path in this refined program, $\tpath \in \rprog$ with its loop chain set $\rpchset(\tpath)$,
+% \\
+% and every loop label $l \in \lpch(\tpath) $ and $\lpch(\tpath)  \in \rpchset(\tpath)$:
+% % \\
+% % $(l, \tpath)$ such that $l \in \lpch(\tpath)$,
+% \\
+% $\lpchB(l, \tpath, \rprog) = \rpchB(l, \tpath, \rprog)$ if $\rpchB(l, \tpath, \rprog) \neq \bot$.
+% \\
+% $\lpchB(l, \tpath, \rprog) = 
+% % \prod\limits_{\rprog_i \in lpchain(\tpath)}
+% \frac{\lpinit(l, \tpath) - \rffinal(\tpath)}{\lpinit(l, \tpath) - \lpnext(l, \tpath)}$
+% \\
+\begin{defn}[Relative Loop Bound ($\lpchB(l, \tpath, \rprog) \in \mathcal{A}_{\lin}$)]
+  \label{def:relatedloop_bound}
+For every simple transition path in a refined program $\tpath \in \rprog$
+and every loop $l \in \lpch(\tpath, \rprog)$,
+% where $\lpch(\tpath)  \in \rpchset(\tpath)$, 
+the \emph{Relative Loop Bound} $\lpchB(l, \tpath, \rprog)$ is computed as follows,
+\[
+  \lpchB(l, \tpath, \rprog) \triangleq
+  \left\{
+  \begin{array}{ll}
+    \rpchB(l, \tpath, \rprog)  
+    & \qquad \rpchB(l, \tpath, \rprog) \neq \bot
+    \\
+    \frac{\lpinit(l, \tpath, \rprog) - \rffinal(\rprog, \tpath)}{\lpinit(l, \tpath, \rprog) - \lpnext(l, \tpath, \rprog)}
+    & \qquad o.w.
+  \end{array}
+  \right\}
+  \]
+\end{defn}
+The computations of the operations $\lpinit(l, \tpath, \rprog)$ and $\lpnext(l, \tpath, \rprog)$
+are formally computed as follows,
+\begin{itemize}
+
+\item For a transition path $\tpath \in \paths(\absG(c))$ and a loop label $l$ in this transition path's loop chain.
+Let $\rpattern_l$ be the repeat pattern with label $l$, i.e., $l: \rpattern_l \in \rprog$, 
+the abstract loop chain initial state $\lpinit(l, \tpath, \rprog) \in \mathcal{P}(\absstate)$ is computed as follows,
+\[
+  \lpinit(l, \tpath, \rprog) \triangleq 
+  \bigwedge_{x \in VAR(\tpath)}
+  % \left\{ 
+  x = \arg\max_{l_1}
+  \left\{
+      \begin{array}{l}
+    (v, (l_1, dc, l_2)) \in \reset(x) 
+        \\ 
+    % \qquad
+    \land \absinit(\rpattern_l) \leq l_1 \leq \absinit(\tpath)
+    \land l: \rpattern_l \in \rprog
+    \end{array}
+    \right\}
+  % \right\}
+  \]
+\item
+For the transition path $\tpath \in \paths(\absG(c))$ and in a refined program $\rprog$,
+%  with the loop label $l: \rprog_i$, its 
+$\rfnext(l, \tpath, \rprog)$ is computed as follows,
+%
+\[
+  \begin{array}{l}
+  \lpnext(l, \tpath, \rprog) \triangleq 
+  \bigwedge\limits_{x \in VAR(\tpath)}
+  % \left\{ 
+    x =   
+    \begin{array}{l}
+  \sum\limits_{(x, \absevent) \in \inc(x) }\left\{ 
+    \varinvar(y) + v ~\middle\vert~ \absevent = (l, x' \leq y + v, \_) \land l \in \lvar(\rpattern_l)\right\}
+    \\ \qquad 
+    - \sum\limits_{(x, \absevent) \in dec(x) }\left\{ 
+      \varinvar(y) + v 
+      ~\middle\vert~ \absevent = (l, x' \leq y + v, \_) \land l \in \lvar(\rpattern_l) \right\}
+      \\
+      \qquad 
+      \land l: \rpattern_l \in \rprog
+    \end{array}
+  % \right\}
+  \end{array}
+\]
+%
+\end{itemize}
+% $rpRB: \tpath \to \mathcal{A}_{in}$, $chsRB: (\rprog \times \tpath) \to \mathcal{A}_{in}$
+% \\
+% For each transition path $\tpath \in \rprog$,
+% \\
+% 1. First compute the path sensitive reachability choosing bound through their choose chain:
+% \\
+% $chsRB(\rprog_n, \tpath) = \prod\limits_{\rprog_i \in lpchain(\rprog_n, \tpath)}
+% \frac{chsInit(\rprog_i, \tpath) - chsFinal(\rprog_i, \tpath)}{\varGD(\rprog_i, \tpath)}$
+% \\
+\end{enumerate}
+%
+
+\highlight{\textbf{Theorem Guarantee Discussion: The Soundness and Improvements}}
+\begin{itemize}
+\item 
+\emph{Soundness}
+\\
+\emph{Relative-Loop Bound} $\lpchB(l, \tpath, \rprog)$. In a refined program $\rprog$,
+for its every loop at the program point $l$ and a transition path $\tpath$ inside this loop,
+the \emph{Relative Loop Bound} $\lpchB(l, \tpath, \rprog)$ is a symbolic bound
+on the number of $l$'s iteration numbers,
+%  will 
+% bound the execution times of $L_{t_0}$
+% in each single execution of the $L_{t_i}$ for every
+such that during these iterations, the closest loop $l'$ enclosing $\tpath$ will be executed.
+\\
+The soundness is guaranteed by the operation
+ $\frac{\lpinit(\rprog, \tpath) - \rffinal(\rprog, \tpath)}{\lpinit(\rprog, \tpath) - \lpnext(\rprog, \tpath)}$.
+ In this operation, $\lpnext(\rprog, \tpath)$ computes the variables states of the $\tpath$
+after visited the program point $l$ the second time and before visiting any other program point.
+% it is 
+In the same time, the soundness also relies on an external solver. 
+\item 
+\highlight{
+  \emph{Improvements}
+  \\
+  $\lpinit(l, \tpath)$, and $\lpnext(l, \tpath)$ can be computed using the 
+  $\kw{INIT}(c, i, \absinit(\tpath))$ and $\kw{NEXT}(c, i, \absinit(\tpath))$ from paper~\cite{GulwaniJK09}.
+  % \\
+Then, based on the same semantics and syntax,
+the $\lpchB(l, \tpath)$ can be computed as
+\\
+$I(l, l') = \kw{BOUNDFINDERD(INIT(c, i, \absinit(\tpath)), NEXT(c, i, \absinit(\tpath)), V_{\ln})}$.
+\\
+There are two improvements comparing to their method.
+\\
+1. $I(l, l')$ is the bound on iteration numbers of the inner loop $l'$ in each iteration of outside loop.
+This is equivalent to the OutIn bound of $l'$ if $l$ is the closest enclosing loop of $l'$.
+By multiplying $I(l, l')$ with $\outinB(l')$
+ they assume $l'$ is executed in every $l$'s iteration.
+ In this sense, they over-approximate the iteration numbers of the inner loop $l'$.
+ \\
+2. However, $\kw{BOUNDFINDERD}$ in paper~\cite{GulwaniJK09} is an arbitrary interface computing the bound on iteration numbers of $l$
+separately.
+The efficiency and accuracy of their algorithm fully depend on this arbitrary interface.
+\\
+In comparison to them, I also provide an efficient and accurate bound computation method using the
+ranks computed in Definition~\ref{def:edge_pathinsensitivebound} over the abstract transition graph $\absG(c)$.
+ }
+\end{itemize}
+%
+\subsection{Path-sensitive Global Bound}
+
+The \emph{Inside-Out Bound} ($\inoutB(\tpath, \rprog) \in \mathcal{A}_{in}$).
+\\
+For every simple transition path $\tpath \in \rprog$,
+its \emph{Inside-Out Loop Bound}
+ $\inoutB(\tpath, \rprog) \in \mathcal{A}_{in}$ is 
+% Compute 
+the path sensitive reachability-bound on $\tpath$'s execution numbers,
+computed as follows.
+\begin{defn}[{Inside-Out Loop Bound} ($\inoutB(\tpath, \rprog) \in \mathcal{A}_{in}$)]
+  \label{def:outin_bound}
+  Given a refined program $\rprog$, for every transition path $\tpath \in \rprog$, 
+  its \emph{Inside-Out Loop Bound}
+  $\inoutB(\tpath, \rprog)$ is 
+ % Compute 
+\[
+  \inoutB(\tpath, \rprog) =
+  \prod\limits_{l \in \lpch(\tpath, \rprog)} \rpchB(l, \tpath, \rprog).
+% lpRB(\rprog_i, \tpath) 
+% ~ \middle\vert~ l \in lp\mathcal{C}(\tpath) \right
+\]
+\end{defn}
+% For $chain \in rpchain(\tpath)$:
+% where $lpchains(\tpath)$ is set of $lpchains(\tpath)$ containing all the loop chains of $\tpath$.
+
+\highlight{\textbf{Theorem Guarantee Discussion:}}
+\emph{Soundness} of the \emph{Inside-Out Bound}  
+For every simple transition path $\tpath$, the $\inoutB(\tpath, \rprog)$
+is a sound upper bound on its execution times globally.
+\\
+In every base case, a simple transition path not nested in any loop, or just inside one loop.
+Then $\inoutB(\tpath, \rprog) = \rpchB(l, \tpath, \rprog)$, which is the bound on its execution times without considering
+outside loops' executions. Since there isn't any outside loop, this operation is sound.
+In the same time, the soundness is guaranteed by the $\rpchB(l, \tpath, \rprog)$.
+\\
+For every simple transition path nested in multiple loops, if $l$ is the closest loop $\tpath$ comes from, then
+$\inoutB(\tpath, \rprog) =
+\prod\limits_{l' \in \lpch(\tpath, \rprog)} \rpchB(l', \tpath, \rprog) \times \rpchB(l, \tpath, \rprog)$.
+Since $\lpchB(l', \tpath, \rprog)$ bounds the number of $l'$'s iteration numbers,
+%  will 
+% bound the execution times of $L_{t_0}$
+% in each single execution of the $L_{t_i}$ for every
+such that during these iterations, the $\tpath$ will be executed,
+it is sound to multiply these bounds by $\rpchB(l, \tpath, \rprog)$.
+In the same time, the soundness also relies on the soundness of $\rpchB(l, \tpath, \rprog)$ and $\rpchB(l', \tpath, \rprog)$. 
+% Since 
+% In this way, it assumes all the outside patterns and loop execution only once.
+% In the other two cases,  $\varGD(\rprog, \rprepeat(\rpattern))$ and $\varGD(\rprog, \rpseq(\rpattern_1, \rpattern_2))$
+% has the same assumption.
+% \todo{reference}
+% \end{itemize}
+%
+\begin{thm}[Soundness of Inside-Out Bound]
+  \label{thm:sound_insideout}
+  For every program $c$ with it refined program $\rprog$ and 
+  every simple transition path $\tpath$ in this program,
+   the $\inoutB(\tpath, \rprog)$
+is a sound bound on the execution times of $\tpath$ in $c$.
+  \[
+    \begin{array}{l}
+    \forall c \in \cdom, \tpath \in \absG(c), \trace_0 \in \ftdom_0(c), \trace \in \tdom, \rprog \st 
+    % \rpattern \in \rprog \land
+    \rprog = Alg.4(c)
+    % \\ \qquad
+    \land
+    \config{c, \trace_0} \to^* 
+    % \config{\highlight{\tpath; \rprog', \trace_0 \tracecat \trace_1} 
+    % \land 
+    % \config{\rpattern, \trace_0 \tracecat \trace_1} \to^* 
+    \config{{\eskip, \trace_0 \tracecat \trace}}
+    \\ \qquad
+    \implies
+    \vcounter(\trace, L(\tpath)) \leq \inoutB(\tpath, \rprog)(\trace_0).
+    \end{array}
+    \]
+\end{thm}
+\todo{Formalize the Proof}
+\\
+Theorem~\ref{thm:sound_insideout} guarantees that
+for every simple transition path $\tpath$ in a program $c$ with its refined program $\rprog$,
+the $\inoutB(\tpath, \rprog)$
+is a sound upper bound on its execution times in $c$.
+% by assuming
+% that all the loops and repeat patterns where $\rpattern$ is nested execute only once.
+%
+\subsection{Path-sensitive Reachability-Bound}
+\label{sec:psrbcompute}
+For every program $c$ and a program point $l \in \lvar(c)$, with $\rprog$ as its refined program,
+%  in a program $c$,
+its path-sensitive reachability-bound ($\psRB(l, \rprog)$) is a symbolic sound bound on the executing times of $l$.
+%
+ \begin{defn}
+  \label{def:label_psrb}
+Given a program $c$ with $\rprog$ as its refined program,
+%  with 
+% \emph{Global Loop Bound} $\inoutB(\tpath)$
+% computed for its every transition path $\tpath \in \rprog$  notated by $\inoutB(\tpath)$,
+%  for each of its transition path $\tpath \in \rprog$ 
+% with the \emph{Global Loop Bound}
+% computed as above, notated by $\inoutB(\tpath)$.
+for every label $l \in \lvar(c)$, $\psRB(c, l)$ is computed as follows,
+% \\
+\[ 
+  \psRB(c, l) = \sum\limits_{\tpath \in \rprog \land 
+l \in \tpath} \inoutB(\tpath, \rprog)
+\]
+ \end{defn}
+%  \textbf{Semantics of }
+ \begin{thm}[Soundness of the Path-sensitive Reachability Bound Estimation]
+  \label{thm:pathsensitive_rb_soundness}
+For every program ${c}$ and every label $l$ in this program,
+%  $c$,
+% such that $(l, w) \in \exeRB(c)$, 
+% and any initial trace $\trace_0 \in \ftdom_0(c)$ with 
+% $\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat \vtrace} $ 
+% and $\config{\psRB(c, l), \trace_0} \earrow v$,
+% % for some generated evaluation trace $\vtrace \in \tdom$,
+% we have $ w(\trace_0) \leq v $.
+$\config{\psRB(c, l)}$ is a \emph{Reachability-Bound} for $l$ in $c$.
+%
+\[
+  \forall c \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \tdom \st 
+  \config{{c}, \trace} \to^{*} \config{\eskip, \trace_0 \tracecat \vtrace} 
+  \implies \config{\psRB(c, l)}(\trace_0) \geq \vcounter(\vtrace, l) 
+  \]
+\end{thm}
+%
+% \begin{thm}[Soundness of the Path-sensitive Reachability Bound Estimation]
+%   \label{thm:pathsensitive_rb_soundness}
+% Given a program ${c}$, for every label $l$ of this program $c$ such that $(l, w) \in \exeRB(c)$, 
+% and any initial trace $\trace_0 \in \ftdom_0(c)$ with 
+% % $\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat \vtrace} $ 
+% and $\config{\psRB(c, l), \trace_0} \earrow v$,
+% % for some generated evaluation trace $\vtrace \in \tdom$,
+% we have $ w(\trace_0) \leq v $.
+% %
+% \[
+%   \begin{array}{l}
+%   \forall (l, w_{t}) \in \exeRB(c),
+%   % (x^l, w_{p}) \in \progV, 
+%   \trace_0 \in \ftdom_0(c), 
+%   v \in \mathbb{N} \st
+%   \config{\psRB(c, l), \trace_0} \earrow v
+%   \implies
+%   % \right\} 
+%   w_{t}(\trace_0) \leq v
+%   \end{array}
+% \]
+% \end{thm}
+%
+Proof of this theorem is in Appendix~\ref{apdx:pathsensitive_rb_soundness}.
+\paragraph{Path-sensitive Reachability Bound through An Example}
+\input{examples/whileSim}

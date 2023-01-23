@@ -1,0 +1,250 @@
+We implemented {\THESYSTEM} as a tool which takes a labeled command as input  
+and outputs the reachability-bound on each program point.
+This implementation consists of the 
+program abstraction from Section~\ref{sec:progabs} in OCaml and the program refinement, ranking function estimation and the path-sensitive reachability-bound algorithm in Python.
+We evaluated it on our self-extracted programs from literatures, and 270 programs extracted from four benchmarks. 
+Including 75 {\tt .c} programs from different benchmarks\footnote{ABC: 15, C4B: 15, KoAT~\cite{BrockschmidtEFFG14,FalkeKS12,FalkeKS11}: 3, Loopus: 10, Rank10: 3, SPEED: 27, WTC: 37} and 37 challenging {\tt .c} programs 
+from the \hyperlink{https://forsyte.at/static/people/sinn/loopusJAR/index.html}{LoopusJAR}~\cite{SinnZV17},
+37 {\tt .java} programs from~\hyperlink{https://zenodo.org/record/5140586\#.Y5pBoC-B1QI}{Tianhan}\cite{LuCT21}
+and 100 {\tt .c} programs from~\hyperlink{https://github.com/icra-team/icra}{Icra}~\cite{KincaidBCR19,CyphertBKR19}.
+We translated the programs from different benchmarks into our language model.
+As the comparison, we also evaluated four bound analysis tools, 
+\hyperlink{https://forsyte.at/software/loopus/}{LoopusJAR}~\cite{SinnZV17},
+\hyperlink{https://github.com/aeflores/CoFloCo/tree/master/src}{CoFloCo}~\cite{Montoya17,Flores-Montoya16,Flores-MontoyaH14}
+and \hyperlink{https://zenodo.org/record/5140586\#.Y5pBoC-B1QI}{Tianhan}~\cite{LuCT21}
+and self-implemented SPEEDi based on paper~\cite{GulwaniJK09}
+over the same benchmarks.
+
+
+Tab.~\ref{tb:accuracy-eval} shows the evaluation results including the theoretical bounds, and empirical bounds computed.
+% on different path locations.
+We are the only one that computes different bounds on different path points,
+and we present only the computed numbers by other tools. In column $4$, for almost all the multipath loops, the bounds on different path location are significantly different, which never be computed be any of the existing tools.
+For the challenging loops without multipath, we do slightly worse but still comparable to existing tools.
+% As in Tab.~\ref{tb:performance-eval}, our tool suffers the efficiency problem because of the implementation and the possible non-terminating in REFINE algorithm and the ranking function estimating algorithm.
+
+Our tool suffers the efficiency problem because of the possible non-terminating in program refining and the ranking function estimating.
+As in Tab.~\ref{tb:performance-eval}, also the implementation based on Python downsides the efficiency.
+
+% Icra~\hyperlink{https://github.com/icra-team/icra}{Icra}
+% ,
+% KoAT~\hyperlink{https://github.com/s-falke/kittel-koat}{KoAT}
+
+% Benchmark sources:
+
+% Icra~\hyperlink{https://github.com/icra-team/icra}{Icra}
+% ,
+% Loopus~\hyperlink{https://forsyte.at/static/people/sinn/loopusJAR/index.html}{Loopus}
+% ,
+% -ABC : 15
+% ,
+% -C4B : 15
+% ,
+% -KoAT : 3
+% ,
+% -Loopus 11 + 14 + JAR: 10
+% ,
+% -Rank10 : 3
+% ,
+% -SPEED : 27
+% ,
+% -WTC : 37
+% ,
+% Loopus-challenging~\hyperlink{https://forsyte.at/static/people/sinn/loopusJAR/index.html}{LoopusJAR}
+% ,
+% : 37
+% ,
+% Icra~\hyperlink{https://github.com/icra-team/icra}{Icra}
+% ,
+% Tianhan~\hyperlink{https://zenodo.org/record/5140586\#.Y5pBoC-B1QI}{Tianhan}
+% ,
+
+% Tool Sources:
+% ,
+% CoFloCo~\hyperlink{https://github.com/aeflores/CoFloCo/tree/master/src}{CoFloCo}
+% ,
+% Icra~\hyperlink{https://github.com/icra-team/icra}{Icra}
+% ,
+% Tianhan~\hyperlink{https://zenodo.org/record/5140586\#.Y5pBoC-B1QI}{Tianhan}
+% ,
+% LoopusJAR~\hyperlink{https://forsyte.at/software/loopus/}{LoopusJAR}
+% ,
+% KoAT~\hyperlink{https://github.com/s-falke/kittel-koat}{KoAT}
+
+% Paper and Technique Reports:
+% ,
+% PathREFINE~\cite{GulwaniJK09}
+% ,
+% LoopusJAR~\cite{SinnZV17}
+% ,
+% CoFloCo~\cite{Montoya17,Flores-Montoya16,Flores-MontoyaH14}
+% ,
+% KoAT~\cite{BrockschmidtEFFG14,FalkeKS12,FalkeKS11}
+% ,
+% Icra~\cite{KincaidBCR19,CyphertBKR19}
+% ,
+% Tianhan~\cite{LuCT21}
+
+
+\begin{table}[H]
+    \caption{The Performance Evaluation of {\THESYSTEM}}
+    \label{tb:performance-eval}
+    \centering
+        {\footnotesize
+        \begin{tabular}{ >{\small}c | c | c | c | c | c | c | c | c | c }
+        \multirow{2}{*}{Benchmark} & \multirow{2}{*}{\# P}  & \multirow{2}{*}{M.P.L \#} & Nested  & \multirow{2}{*}{Bounded} & {Success} & \multirow{2}{*}{Failed} & Time  & Total\\
+         &  &  & Loop \# & & Rate &  & Outs &   Runtime \\
+        \hline
+            {Loopus} & {110}  & 53  & 52  & 98 & 89.1\% & 11 & 7 & 7min42sec \\
+            \hline
+            Loopus-C & 23  & 20 & 20 & {20} & {86\%}  & 2 & 3 & {12min39sec} \\
+            \hline
+            \todo{Icra} & 100 & 72 & 6 & {55} + \todo{-} & + \todo{-} & 0 & 0 & \todo{1min58sec} \\
+            \hline
+            Tianhan & 37 & 2 & 3 & 37 & 100.0\% & 1 & 0 & 1min03sec \\
+            \hline
+        \end{tabular}
+        }
+    \end{table}
+
+\begin{table}[ht]
+    \caption{The Accuracy Evaluation of {\THESYSTEM}}
+    \label{tb:accuracy-eval}
+    \centering
+    {\scriptsize
+    \begin{tabular}{ >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | c | c | c | c | c | c }
+    {Benchmark} &  {Theory} & & {\THESYSTEM} & \multicolumn{5}{c}{Computed}  \\
+    \cline{5-8}
+     Suit & Worst & \# & on Loop Paths  & {\tiny \THESYSTEM} & {\tiny Loopus} & {\tiny CoFloCo} & {\tiny SPEED} & {\tiny Tianhan} \\
+    %  & {\tiny Icra} \\
+    \hline
+    \multirow{5}{*}{Loopus} 
+    & $O(1)$        &   4   & $O(1)$  & 4   & 2 & 3 & 2 & 1 \\
+    \cline{2-9}
+    & $O(n)$        &  59   & $O(1), O(n)$  & 48  & 51 & 45 & 46 & 40 \\
+    \cline{2-9}
+    & $O(n^2)$      &  31   & $O(1), O(n), O(n^2)$ & 37  & 29 & 34 & 37 & 49 \\
+    \cline{2-9}
+    & $O(n\log(n))$ &  6   & $-$ & 0  & 0 & 0 & 0 & 0 \\
+    \cline{2-9}
+    & $O(n^3)$      &  2  & $O(n^3)$     & 4  & 1 & 2 & 5 & 7 \\
+    \cline{2-9}
+    & $O(n^{4})$    &  3  & $O(n^4)$  & 4  & 5 & 3 & 5 & 5 \\
+    \hline \hline
+    % \multirow{2}{*}{Loopus} 
+    & $O(1)$      & 1     & $-$  & 0  & 3 & 1 & 0 & 0 \\
+    \cline{2-9}
+    Loopus & $O(n)$  & 13   & $O(1), O(n)$   & 14 & 17 & 17 & 15 & 11 \\
+    \cline{2-9}
+    & $O(n^2)$      & 4    &$O(n), O(n^2)$ & 3 & 14 & 15 & 16 & 21 \\
+    \cline{2-9}
+    Challenging
+    & $O(n^3)$     & 4     &  $O(1), O(n), O(n^3)$ & 2 & 1 & 0 & 2 & 2 \\
+    \cline{2-9}
+    & $O(n^{4})$    & 1    & $O(n^4), O(n^3)$  & 1 & 5 & 3 & 5 & 5 \\
+    \hline \hline
+    \multirow{3}{*}{Icra} 
+    & $O(1)$       & 3     & $O(1)$  & - &  &  & - & \\
+    \cline{2-9}
+    & $O(n)$       & 3     &  $ O(1), O(n)$ & 51  & 51 & - & - & - & \\
+    \cline{2-9}
+    & $O(n^2)$     & 3     &  $O(1), O(n), O(n^2)$ & 4 & - & - & - & - \\
+    % \hline
+    % \multirow{3}{*}{Icra-SV} 
+    % & $O(1)$            & $O(1)$ & $O(1)$  & - &  &  & -\\
+    % \cline{2-9}
+    % & $O(n)$            &  $-$ & $-$  & - &  &  & -  \\
+    \cline{2-9}
+    & unbounded & -  & O(1), $\infty$ & & - &  &  & - &  \\
+    \hline \hline
+    \multirow{3}{*}{Tianhan} 
+    & $O(n)$       & 34     & $O(n) $ & 34 & 35 & 35 & 35 & 35 \\
+    \cline{2-9}
+    & $O(n^2)$      & 3    &  $O(n^2)$  & 3 & 2 & 2 & 2 & 2 \\
+    \hline
+    \end{tabular}
+    }
+\end{table}
+
+
+\begin{table}[ht]
+    \caption{The Accuracy Evaluation of {\THESYSTEM}}
+    \label{tb:accuracy-eval}
+    \centering
+    {\scriptsize
+    \begin{tabular}{ >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | c | c | c | c | c  }
+    {Benchmark} &  {Overall} & \multirow{2}{*}{$\psRB$ on Path Points} & \multirow{2}{*}{$\psRB$ on Points} & \multicolumn{5}{c}{Computed}  \\
+    \cline{5-9}
+     Suit &  Complexity & & & {\tiny \THESYSTEM} & {\tiny Loopus} & {\tiny CoFloCo} & {\tiny SPEED} & {\tiny Tianhan} \\
+    %  & {\tiny Icra} \\
+    \hline
+    \multirow{5}{*}{Loopus} 
+    & $O(1)$            & $O(1)$ & $O(1)$  & 3  & 2 & 3 & 2 & 1 \\
+    \cline{2-9}
+    & $O(n)$            & $O(1), O(n), \frac{O(n)}{c}, \frac{O(n)}{O(m)} $ & $O(n)$  & 49 / 59 & 51 & 45 & 46 & 32 \\
+    \cline{2-9}
+    & $O(n^2)$          & $O(1), O(n), \frac{O(n)}{c}, \frac{O(n^2)}{c}$ & $O(n), O(n^2)$ & 24 & 27 & 34 & 37 & 49 \\
+    \cline{2-9}
+    & $O(n^3)$          & $\frac{O(n^2)}{c}, \frac{O(n^3)}{c}$          & $O(n), O(n^2), O(n^3)$  & 2 & 1 & 2 & 5 & 23 \\
+    \cline{2-9}
+    & $O(n^{\geq 4})$   & $\frac{O(n^4)}{c}$ 
+    & $O(n), O(n^2), O(n^3), O(n^4)$  & 1 & 5 & 3 & 5 & 5 \\
+    \hline
+    % \multirow{2}{*}{Loopus} 
+    & $O(1)$            & $O(1)$ & $O(1)$  & 3  & 3 & 1 & 0 & 0 \\
+    \cline{2-9}
+    Loopus & $O(n)$     & {$O(1), O(n), \frac{O(n)}{c}, \frac{O(n)}{O(m)}$} & $O(1), O(n)$  & 13 & 17 & 17 & 15 & 11 \\
+    \cline{2-9}
+    % \multirow{2}{*}{Challenging} 
+    Challenging
+    & $O(n^2)$          & {$O(1), O(n), \frac{O(n)}{c}, \frac{O(n^2)}{c}$} & $O(1), O(n), O(n^2)$ & 15 & 14 & 15 & 16 & 21 \\
+    \cline{2-9}
+    & $O(n^3)$          & $O(n^3)$ & $O(1), O(n), O(n^2), O(n^2)$ & 1 & 1 & 0 & 2 & 2 \\
+    \hline \hline
+    \multirow{3}{*}{Icra} 
+    & $O(1)$            & $O(1)$ & $O(1)$  & - &  &  & - & \\
+    \cline{2-9}
+    & $O(n)$            &  $ -$ & $-$  & - &  &  & - & \\
+    \cline{2-9}
+    & $O(n^2)$          &  $-$ & $ - $ & - &  &  & - \\
+    % \hline
+    % \multirow{3}{*}{Icra-SV} 
+    % & $O(1)$            & $O(1)$ & $O(1)$  & - &  &  & -\\
+    % \cline{2-9}
+    % & $O(n)$            &  $-$ & $-$  & - &  &  & -  \\
+    % \cline{2-9}
+    % & $O(n^2)$          &  $-$ & $ - $ & - &  &  & - &  \\
+    \hline \hline
+    \multirow{3}{*}{Tianhan} 
+    & $O(1)$            & $O(1)$ & $O(1)$  & 2  & 2 & 2 & 1 & 2 \\
+    \cline{2-9}
+    & $O(n)$            &  $ O(n) $ & $O(1), O(n)$  & 63 & 63 & 63 & 62 & 64 \\
+    \cline{2-9}
+    & $O(n^2)$          &  $O(1), \frac{O(n^2)}{c}$ & $O(1), O(n), O(n^2)$ & 3 & 4 & 3 & 3 & 3\\
+    \hline
+    \end{tabular}
+    }
+\end{table}
+
+
+% \begin{table}[H]
+%     \caption{The Success Rate}
+%     \label{tb:success-eval}
+%     \centering
+%         {\tiny
+%         \begin{tabular}{ >{\small}c | c | c | c | c | c | c | c | c | c }
+%             L.O.C & M.P.L \# & Nested Loop \# & {\THESYSTEM} & PathREFINE -> Loopus14 & LoopusJAR & CoFloCo & KoAT & Icra & Tianhan \\
+%             \hline
+%             LoopusJAR & \# &  &   &  &   &  &  & - & -\\
+%             \hline
+%             Icra & & & & & & & & \\
+%             \hline
+%             Tianhan & & & & & & & & \\
+%             \hline
+%             Challenging & & & & & & & & \\
+%             \hline
+%         \end{tabular}
+%         }
+%     \end{table}
+    
+    

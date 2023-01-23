@@ -1,0 +1,106 @@
+%
+A trace $\trace \in \tdom$ is a list of events, 
+collecting the events generated during a specific program execution. 
+\[
+\begin{array}{llll}
+\mbox{Trace} & \trace
+& ::= & [] ~|~ \trace :: \event 
+% ~|~ []^{\infty}
+\end{array}
+\]
+A trace can be regarded as the program history, 
+which records all the evaluations for assignment commands and guards in $\eif$ and $\ewhile$ command.
+\\
+\highlight{
+A trace can be finite ($\trace \in \ftdom$) or infinite $\trace \in \inftdom$.
+If a program doesn't terminate when executing under some initial trace,
+it produces the infinite trace 
+from $\inftdom$, which records a non-terminating computation.
+So we denote by $\tdom$ the set of all traces, and $\tdom = \ftdom \cup \inftdom$.
+The trace-based semantics with non-terminating execution is defined below following the maximal trace semantics in \cite{Cousot19}.}
+
+We use list notation for traces, where $[]$ is the empty trace, the operator $\traceadd$ combines an event and a trace in a new event, 
+and the operator $\tracecat$ concatenates two traces formally defined as follows. 
+\highlight{
+\begin{defn}[Trace Concatenation, $\tracecat: \tdom \to \tdom\to \tdom $]
+  \label{def:trace_concate}
+Given two traces $\trace_1 \in \tdom, \trace_2 \in \tdom$, the trace concatenation operator 
+$\tracecat$ is defined as:
+\[
+\trace_1 \tracecat \trace_2 \triangleq
+\left\{
+\begin{array}{ll} 
+  \trace_1 & \trace_2 = [] \lor \trace_1 \in \inftdom \\
+  ((\trace_1 :: \event)  \tracecat \trace_2') & \trace_1 \in \ftdom \land \trace_2 = [\event] \tracecat \trace_2'
+  % \trace_2 &  \trace_2 \in \inftdom \\
+\end{array}
+\right.
+\]
+\end{defn}
+}
+\begin{defn}(An Event Belongs to A Trace)
+  An event $\event \in \eventset$ belongs to a trace $\trace \in \tdom$, i.e., $\event \in \trace$ are defined as follows:
+%
+\begin{equation*}
+  \event \in \trace  
+  \triangleq \left\{
+  \begin{array}{ll} 
+    \etrue                  & \trace =  [\event] \tracecat \trace'
+     \land \event = \event' \\
+    \event \in \trace' & \trace =  [\event'] \tracecat \trace'
+      \land \event \neq \event' \\ 
+    \efalse                 & \trace = [] \lor \trace \in \inftdom
+  \end{array}
+  \right.
+\end{equation*}
+As usual, we denote by $\event \notin \trace$ that the event $\event$ doesn't belong to the trace $\trace$.
+\end{defn}
+%
+In the rest of the paper, we denote by $\bot$ a value s.t. $\bot < n $ for all $n \in \mathbb{N}$.
+\begin{defn}[Counter Notation]
+  \label{def:counter}
+The counting operator $\counter : \tdom \to \ldom \to (\mathbb{N} \cup \{\bot\})$
+counts the appearance of a label in a trace.
+\[
+\begin{array}{llll}
+\counter([(x, l, v)] \tracecat \trace', l ) \triangleq \counter(\trace', l) + 1 & \text{if}~ l = l
+&
+\counter([(b, l, v)] \tracecat \trace', l) \triangleq \counter(\trace', l) + 1 & \text{if}~ l = l
+\\
+\counter([(x, l', v)] \tracecat \trace', l) \triangleq \counter(\trace', l)   & \text{if}~ l' \neq l
+&
+\counter([(b, l', v)] \tracecat \trace', l) \triangleq \counter(\trace', l)   & \text{if}~ l' \neq l
+\\
+\counter({[]}, l) \triangleq 0 & 
+&
+\counter(\trace, l) \triangleq \bot & \text{if }~ \trace \in \inftdom
+\end{array}
+\]
+{When the input trace is infinite, $\counter(\trace, l)$ returns $\bot$ for any program label $l$.}
+\end{defn}
+\begin{defn}[Counter Notation of Label List]
+  \label{def:lcounter}
+  The counting operator $\lcounter : \tdom \to \ldom \to (\mathbb{N} \cup \{\infty\})$
+  counts the appearance of a list of labels $[l_1, \ldots, l_n]$ as follows.
+\[
+  \begin{array}{ll}
+  \lcounter(\trace'' \tracecat \trace', [l_1, \ldots, l_n] ) 
+  \triangleq \lcounter(\trace', [l_1, \ldots, l_n]) + 1  & \text{if}~ \pi_2(\trace''[i]) = l_i, \forall i = 1, \ldots, n
+  \\ 
+  \lcounter([(\_, l, \_)] \tracecat \trace', [l_1, \ldots, l_n] ) 
+  \triangleq \lcounter(\trace', [l_1, \ldots, l_n]) & \text{if}~ l \neq l_1
+  \\ 
+  \lcounter(\trace, [l_1, \ldots, l_n] ) 
+  \triangleq \bot & \text{if }~ \trace \in \inftdom
+\end{array}
+\]
+{When the input trace is infinite, $\lcounter(\trace, L)$ returns $\bot$ for any list of labels as well.}
+\end{defn}
+%
+We define the operator $\tracel : \tdom \to \mathcal{P}{(\ldom)}$ projects the label from every event in a trace as a list of program points,
+defined as follows,
+\[
+\tracel([(\_, l, \_)] \tracecat \trace') \triangleq [l] \tracecat \tracel(\trace')
+\qquad
+\tracel([ ]) \triangleq []
+\]

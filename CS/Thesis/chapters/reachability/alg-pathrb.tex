@@ -1,0 +1,72 @@
+Using the \emph{loop reachability-bound} and \emph{path local reachability-bound}, we compute the \emph{path reachability-bound} first in Section~\ref{sec:pathrb}, 
+then the final path-sensitive reachability-bound for each program point in Section~\ref{sec:psrb}.
+
+For the program $c$ with its refined program $\rprog$, we compute
+for each of its \emph{simple transition path}s, $\tpath$ the \emph{path reachability-bound} , $\inoutB(\rprog, \tpath)$ during the execution of the program $c$ as in Definition~\ref{def:pathrb}.
+%
+\begin{defn}[Path Reachability-bound Computation]
+  \label{def:pathrb}
+  Given a refined program $\rprog$ and a simple transition path $\tpath$ in this program, 
+  $\tpath$'s reachability-bound, $\inoutB(\rprog, \tpath, c)$
+  is computed recursively as follows. 
+  The input $c$ is omitted in the following equations for concise given the context is clear.
+\[
+  \left\{ 
+  \begin{array}{ll}
+    1  & \rprog = \tpath\\
+    \highlight{0} & \rprog = \tpath' \neq \tpath\\
+    \inoutB(\rprog_1, \tpath, c) + \inoutB(\rprog_2, \tpath, c) & \rprog = \rprog_1;\rprog_2 \\
+    % & 
+    \max\left\{ \inoutB(\rprog_1, \tpath, c), \ldots, \inoutB(\rprog_m, \tpath, c) \right\} 
+    & \rprog = \rpchoose{\rprog_1, \ldots, \rprog_m } \\
+    \outinB(\rprog', \tpath, c), & l: \rprog_l \land l = \kw{closest}(\tpath) \\
+    \lpchB(\rprog_l, \tpath , c)
+    \times \max\limits_{l:\rprog_l = \kw{enclosed}(l':\rprog')}
+   \{\inoutB(l':\rprog', \tpath)\} \footnotemark, & l: \rprog_l \land l \neq \kw{enclosed}(\tpath) \\
+  \end{array}
+  \right.
+  \]
+  \end{defn}
+\footnotetext{There is only one non-zero $\inoutB(l':\rprog'', \tpath)$ where $\tpath \in \rprog''$, all the others $\inoutB(l':\rprog'', \tpath)$ where $\tpath \notin \rprog''$ equal to $0$}%
+
+We show the \emph{path reachability-bound} of the simple transition path $\tpath$ in a refined program $\rprog$ is a sound upper bound of its execution times when executing the program in Lemma~\ref{lem:pathrb-sound}, with the proof in \highlight{Appendix~\ref{apdx:pathrb-sound}}.
+\begin{lem}[Soundness of the Path Reachability-bound]
+  \label{lem:pathrb-sound}
+  For any program with its refined program $\rprog$ and a simple transition path $\tpath$ in this program,
+  the execution times of $\tpath$ when executing the $\rprog$ under initial trace $\trace_0 \in \ftdom_0(c)$ is bounded by $\econfig{\inoutB(\rprog, \tpath)}(\trace_0)$.
+  \[
+    \begin{array}{l}
+    \forall c, c_r \in \cdom, \tpath \in \absG(c), \trace_0 \in \ftdom_0(c),  \trace_r \in \ftdom_0(c_r), \trace \in \tdom, l \in \ldom, \rprog \sthat 
+    \\ \qquad
+    REFINE(\algrewrite(c)) = \rprog
+    \land 
+    \algrewrite(c_r) = \rprog
+    \land
+    \\ \qquad
+    \land 
+    \Big(
+      \config{c_r, \trace_r} \rightarrow^* \config{\clabel{\eskip}^{l}, \trace_r \tracecat \trace}
+      \lor \config{c_r, \trace_r} \uparrow^{\infty} \trace_r \tracecat \trace 
+      \Big)
+  \\ \qquad
+    \implies
+    \econfig{\inoutB(\rprog, \tpath)}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)).
+    \end{array}
+  \]  
+\end{lem}
+\paragraph{Walk through Example.}
+In Example~\ref{ex:relatedNestedWhileOdd-overview}, we already computed $\lpchB(\rprog_1^1, \tpath_3, c) = 1$ and
+$\outinB(4: \rprepeat(\tpath_3), \tpath_3) = n - m$ for $\tpath_3$. Now we obtain $\inoutB(\rprog, \tpath) = 1 \times (n - m)$ as tight as expected.
+
+In comparison with the substituted computation in Section~\ref{def:pathlocalrb}, now we use the \emph{loop reachability-bound}
+and compute a more precise path \emph{global} reachability-bound for the path $\tpath_3$ as $\frac{m}{4} \times 1$.
+The bounds for the other paths are the same.
+Then by summing up all the $\inoutB(\rprog, \tpath)$ where each program point $l$ shows up on the $\tpath$, we finally compute
+the \emph{reachability-bound} for every point path-sensitively as
+$\psRB(0) = \psRB(\lex) = 1$,
+$\psRB(1) = \frac{m}{2} + 1$,
+$\psRB(2) = \frac{m}{2} $, 
+$\psRB(3) = \psRB(6) = \psRB(7)  = \psRB(8) = \frac{m}{4} $,
+\highlight{$\psRB(5) = \frac{m}{4} \times 1$},
+and $\psRB(4) =  \frac{m}{4} + n - m + 1$.
+As expected, this bound is tight for every program point.
