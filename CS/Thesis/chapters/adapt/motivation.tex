@@ -88,7 +88,7 @@ named {\tt Query While} language with extensions on query requests in Section~\r
 
 The second challenge is \emph{how to define the adaptivity of a given program}.
 Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
-For example, as shown in~\cite{dwork2015reusable}, and as I did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
+For example, as shown in~\cite{DworkFHPRR15}, and as we did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
 If one feature's correlation changes, the classifier depending on features is also affected. 
 This notion of dependency builds on the execution trace as a \emph{causal history}. 
 In particular, I am interested in the history or provenance of a query up until this is executed, 

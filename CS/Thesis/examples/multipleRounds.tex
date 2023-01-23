@@ -12,7 +12,7 @@ The functions $\kw{updnscore}(p,a)$,
 $\kw{updcscore}(p,a)$, $\kw{update}(I,ns,cs)$ simplify the computations of updating $ns$, $cs$ and $I$.%
 
 % \jl{
-    Different from $\kw{twoRounds(k)}$ in Figure~\ref{fig:twoRounds},
+    Different from $\kw{twoRounds(k)}$ in Figure~\ref{fig:twoRounds-adaptfun},
 the query request, $\clabel{\assign{a}{\query(I)}}^6$ in each loop iteration is not independent. 
 $\query(I)$ in each iteration depends on the tracking list $I$ from all the previous iterations, 
 and $I$ is updated by all the query results in the previous iterations as well. 

@@ -1,6 +1,204 @@
-\begin{figure}
-    \centering
-    \includegraphics[width=1.0\columnwidth]{figures/psRB-architecture.png}
-    \caption{Overview of the path-sensitive reachability-bound algorithm.}
-    \label{fig:psRB-model-architecture}
-\end{figure}
+In this section, we discuss two representative examples illustrating the
+challenges of analyzing the symbolic
+\emph{reachability-bound} on
+every control location.
+% We also give the technique overview of our algorithm.
+%
+We also give a running example and the technique overview of our algorithm.
+
+\subsection{Multiple-Path Loop}
+\label{sec:overview-multiplepath}
+\input{chapters/reachability/examples/whileTwoCounters-overview}
+\footnotetext{We use the notation $(l_0 \to \cdots \to l_n)$ to denote a vertices sequence $(l_0, \cdots, l_n)$, and the constraint on each edge in
+each transition path are omitted for concise.}
+Figure~\ref{fig:whileTwoCounters-overview}(a) shows an example of a two paths loops
+with different \emph{reachability-bounds} on the control locations in different paths.
+This example is adopted from the example in~\cite{GulwaniZ10}, which
+is a skeleton code from the .Net base-class library.
+\\
+In this example, given $n \geq m$,
+the precise \emph{reachability-bound}s for control locations $4$ and $5$ are both $m \times \lfloor\frac{n}{m}\rfloor$,
+for location $2$ and $3$ are $(m + 1) \times \lfloor\frac{n}{m}\rfloor + 1$, 
+and $1$ for locations $0, 1$ and $\lex$. 
+\highlight{Notice here, though within the same loop $L_2$, the bounds for locations $4$ and $5$ on the first branch, and $6$ on the second branch are different.}
+\\
+However, the state-of-art \emph{reachability-bound} analysis~\cite{GulwaniZ10}
+gives the same \emph{reachability-bound}, $n + \lfloor\frac{n}{m}\rfloor$ for all the locations within the loop $L_2$, which is tight w.r.t. $L_2$'s iteration times but not for different locations inside $L_2$ without considering multiple paths.
+Among works on program complexity, cost and loop bound analysis, \cite{GulwaniJK09} can also compute the tight bound on the loop iteration but not reachability-bound on each location path-sensitively.
+Though we can use it as the \emph{reachability-bound} for location $1$ and $2$,
+the \emph{reachability-bounds} for control locations $4, 5$ and $6$ are still unclear.
+
+
+\paragraph{Path Reachability-bound}
+To compute the bounds for locations on different paths of a loop, we compute the \emph{path reachability-bound},
+which is the first key idea of this path-sensitive \emph{reachability-bound} analysis algorithm. This bound approximate the evaluation times of each loop free path instead of the entire multipath loop.
+\\
+This bound is computed based on the refined loop and using the estimated ranking function for every path, combines two lines of work introduced in Section~\ref{sec:intro}. It is benefited from the high accuracy of the path refinement and the ranking function estimation, but reduces the efficiency comparing to simply computing the ranking function.
+\\
+% Our algorithm combines the idea of \emph{difference constraint} based program complexity analysis method from \cite{SinnZV17}
+% and the control-flow refinement technique from~\cite{GulwaniJK09}.
+For this example, we first
+generate the abstract transition graph for the program using the difference constraints, such as Figure~\ref{fig:whileTwoCounters-overview}(b).
+Then it transforms every loop in $\kw{twoPathsWhile}$ by explicitly computing the interleaving between paths and
+%  using the control-flow refinement technique from~\cite{GulwaniJK09} and 
+generates a refined program $\rprog$ as
+\\
+% 
+% The refined program for program $\kw{twoPathsWhile}$ is
+% \[
+  $
+  \tpath_0 ; 
+  \rpchoose{2: \rprepeat_2(\rprepeat_1(\tpath_1); \tpath_2), 
+  2: \rprepeat_1(\tpath_1)}; \tpath_3.
+  $
+% \]
+\\
+Each $\tpath_i$ in this refined program is a \emph{simple transition path} we computed in a pre-procedure, which is loop free and not interleave with the other $\tpath_j, j \neq i$ as in Figure~\ref{fig:whileTwoCounters-overview}(c).
+% Every path will not interleave with the others. 
+Then we compute the \emph{path reachability-bound} for every $\tpath_i$,
+$\inoutB(\rprog, \tpath_i)$ during the execution of $\rprog$.
+% which is a bound on the reachability time of $\tpath$ during the execution of $\rprog$.
+The \emph{path reachability-bound}s for the four simple transition paths in this example are
+$\inoutB(\rprog, \tpath_1) = \max\{m, m \times \lfloor\frac{n}{m}\rfloor\}$,
+$\inoutB(\rprog, \tpath_2) = \lfloor\frac{n}{m}\rfloor$,
+and $\inoutB(\rprog, \tpath_0) = \inoutB(\rprog, \tpath_3) = 1$.
+% \\
+% Then we use this bounds
+% and another \emph{loop reachability-bound}
+% to compute the final \emph{reachability-bound} for each location.
+Since there isn't nested loop in this example, we simply sum up $\inoutB(\rprog, \tpath)$ over the $\tpath$ where a certain location shows up
+and as the \emph{reachability-bound} of this location.
+Then we get the precise \emph{reachability-bound} for every location in program $\kw{twoPathsWhile}$ as
+$\psRB(0) = \psRB(1) = \psRB(\lex) = 1$,
+$\psRB(4) = \psRB(5) = \max\{m, m \times \lfloor\frac{n}{m}\rfloor\}$,
+$\psRB(3) = \psRB(2) = \max\{m, m \times \lfloor\frac{n}{m}\rfloor\} + \lfloor\frac{n}{m}\rfloor + 1 $,
+and $\psRB(6) = \lfloor\frac{n}{m}\rfloor$.
+%
+\subsection{Nested Loops with Related Iterator}
+\label{sec:overview-nestedwhile}
+However, when there exists nested loop, computing the \emph{reachability-bound} for each location encounters another challenge.
+The \emph{path reachability-bound} is precise for each path w.r.t. the innermost loop but not the outer nested loops.
+Figure~\ref{fig:threeWhile-overview}(a) shows an example of the nested loops with related 
+iterators.
+This example is adopted from the example in~\cite{GulwaniJK09}, which is common in product code.
+\\
+In line 8, $i$ is reset by $w$ and $w$ is reset by $j$ at line 5. So the
+while $L_6$ is only executed in the first iteration of while loop $L_1$ and $L_3$.
+% \\
+The while loop $L_3$ at line 3 is executed only in 
+the first $m - N$ iterations of the 
+$L_1$ because $j$ is reset by $i$ in line 2.
+% \\
+So the total iterations of all the three loops is
+$n + m^2 - m \times N$,
+and the precise \emph{reachability-bound} for location $7$ inside the $L_6$ is $N$,
+for locations $4, 5$ and $8$ between the $L_3$ and $L_6$ are $(n-N) \times (m - N)$,
+and $n - N$ for locations $2$ and $9$.
+% \\
+\highlight{Notice here the \emph{reachability-bounds} for the locations inside the loop $L_6$ is 
+the same as its innermost loop iteration bound.
+% , as well as our \emph{path reachability-bound}.
+However, for the locations between $L_3$ and $L_6$,
+the \emph{reachability-bounds} are the multiplication of the inner and outer loop iteration bounds.}
+\\
+To the best of our knowledge, the loop bound analysis method in \cite{GulwaniJK09} can only give a loose bound $n + (m \times n) + N$ for the entire loop complexity, and 
+the DC-based algorithm in \cite{SinnZV17} is able to
+compute a better but still loose bound, $n + m^2 - m \times N$ on total iteration times.
+None of them can give the precise \emph{reachability-bound} for every location in these nested loops,
+which is non-trivial to compute even though knowing the loop bound,
+especially for the locations similar to $7$ in $\kw{threeNestedWhile}$.
+\\
+\highlight{
+In order to precisely compute how many times the location $7$ is reached, we need to know
+the numbers of iterations of the outside loop $L_3$ and $L_1$ such that,
+during these iterations, the loop $L_6$ is ``entered''. 
+We call this the \emph{loop reachability} of the location within loop $L_6$ w.r.t the loops $L_3$ and $L_1$.
+Then by multiplying the loop iteration bound of the $L_6$ with its \emph{loop reachability} times w.r.t the  $L_3$ and $L_1$, we can compute the precise
+\emph{reachability-bounds} for location $7$.
+}
+\\
+\highlight{
+This quantity isn't considered or computed in any of the previous works.
+In the line of methods based on path refinement and loop summarization, the \emph{Progress Invariant} method in \cite{GulwaniJK09} is only able to compute
+the
+bound on iteration numbers
+of the inner loop $L_6$ in each iteration of $L_3$ and $L_1$, which are both $N$.
+So they have to over-approximate the reachability-bound for locations inside $L_6$ with the
+overall program complexity by multiplication, i.e., $n + m^2 - m \times N$.
+% \\
+In the line of the \emph{amortized complexity analysis} through ranking function, the DC-based algorithm in \cite{SinnZV17}
+is only able to
+compute the combined loop bound and the local bound of each loop
+separately as well.
+% We are still unable to know the precise \emph{reachability-bound} for the locations in the innermost loop.
+}
+\paragraph*{Loop reachability-bound.}
+In this sense, this \emph{loop reachability-bound}, $\lpchB(L:\rprog, \tpath)$ is our second key idea combining two lines of works.
+It has high accuracy and efficiency by using the estimated ranking function based on the \emph{amortized complexity analysis} methodology over the refined loop paths.
+For each transition path $\tpath$ w.r.t each of the loops $L:\rprog$ in which $\tpath$ is nested,
+$\lpchB(L:\rprog, \tpath)$ 
+\highlight{is a bound on the iterations for
+the outside loop, $L:\rprog$ w.r.t. the innermost loop where $\tpath$ is enclosed,
+such that during these iterations of $L:\rprog$, the innermost loop is ``entered''. 
+This is distinguished from the traditional methods, which only estimate the bound on the inner loop's iteration number
+in one iteration of the outside loop.}
+\\
+Similar to the $\kw{twoPathsWhile}$ example, we also generate its abstract transition graph as well in Figure~\ref{fig:threeWhile-overview}(a),
+and compute its refined program,
+$\rprog = \tpath_0; 1: \rprepeat(\tpath_1;$ 
+$3: {\rprepeat(\tpath_2; 6 : {\rprepeat(\tpath_3)}; \tpath_4)}; \tpath_5);$ 
+$\tpath_6$,
+where the $\tpath_0, \ldots$ are shown in the middle part of Figure~\ref{fig:threeWhile-overview}(b).
+We use $\rprog_1$ and $\rprog_3$ denote the body of the loop $L_1$ and $L_3$ respectively as in the bottom part of Figure~\ref{fig:threeWhile-overview}(b).
+% to denote ${\rprepeat(\tpath_1; 3: {\rprepeat(\tpath_2; 6 : {\rprepeat(\tpath_3)}; \tpath_4)}; \tpath_5)}$
+% and $\rprog_3 = {\rprepeat(\tpath_2; 6 : {\rprepeat(\tpath_3)}; \tpath_4)}$
+In the first step, we still compute the \emph{path reachability-bound} for each $\tpath_i$ but only w.r.t. the innermost loop it is nested.
+Then differently from $\kw{twoPathsWhile}$,
+we compute \emph{loop reachability-bound} for each $\tpath_i$ w.r.t. each of its outer nested loops.
+For example, for $\tpath_3$ we compute
+$\lpchB(1: \rprog_1, \tpath_3) = 1$ and
+$\lpchB(3: \rprog_3, \tpath_3) = 1$.
+Both are tight because loop $L_6$ will only be entered once among all iterations of $L_1$ and $L_3$, and in all the rest iterations, the body of loop $L_6$ isn't executed at all.
+So $1$ as \emph{loop reachability-bound} of this path is tight w.r.t. both the loop $L_3$ and $L_1$.
+% In the same way, we also compute $\lpchB(3: \rprog_3, \tpath_3) = 1$ precisely.
+Then for each $\tpath_i$, the multiplication of its \emph{path reachability-bound} with all its \emph{loop reachability-bound}s is an accurate \emph{loop reachability-bound} for the locations on this path.
+By summing up the reachability-bound of the path where each location shows up,
+% as its \emph{reachability-bound} as before.
+% and multiply this result by all its \emph{loop reachability-bound}s.
+% In this way, 
+we compute $N$ as the \emph{reachability-bound} of location $7$, which is tight.
+\input{chapters/reachability/examples/threeNestedWhile-overview}
+
+\subsection{Running Example}
+\input{chapters/reachability/examples/relatedNestedWhileOdd-overview}
+This running example program in Figure~\ref{ex:relatedNestedWhileOdd-overview}(a) has two level nested loops, outer loop $L_1$ and nested loop $L_4$, and $L_4$ is in the first path of $L_1$. It has both of the two challenges from the two examples.
+The first one comes with the if condition in the outer loop.
+The bounds for different locations in the same loop $L_1$ are different.
+Given $n \geq m \geq 0$,
+the expected \emph{reachability-bound}s for locations in outer loop $3, 6, 7$ and $8$ are all $\lfloor\frac{m}{4}\rfloor$,
+%  for $8$ is $\lfloor\frac{m}{4}\rfloor + 1$,
+for location $2$ is $\lfloor\frac{m}{2}\rfloor$ and $\lfloor\frac{m}{2}\rfloor + 1$ for location $1$.
+
+The second one comes in the nested loop.
+In line 6, $i$ is reset by $k + m$ and $k$ is reset by $i - m$ at line 3. So the
+loop $L_4$ is only executed in the first iteration of while loop $L_1$.
+% \\
+% The while loop $L_1$ at line 3 is executed only in 
+% the first $m - N$ iterations of the 
+% $L_1$ because $j$ is reset by $i$ in line 2.
+% \\
+So the total iterations of all the two loops are
+$n - m + \lfloor\frac{m}{2}\rfloor + 1$,
+and the precise \emph{reachability-bound} for location $5$ inside the $L_4$ is $m$.
+% for locations $4, 5$ and $8$ between the $L_3$ and $L_6$ are $(n-N) \times (m - N)$,
+% and $n - N$ for locations $2$ and $9$.
+% \\
+\highlight{Notice here the \emph{reachability-bounds} for the locations inside the loop $L_4$ is 
+the same as its innermost loop iteration bound.
+% , as well as our \emph{path reachability-bound}.
+However, for the locations between $L_1$ and $L_4$,
+the \emph{reachability-bounds} are the multiplication of the inner and outer loop iteration bounds.}
+
+Our algorithm computes the reachability-bound for this example through the following steps.
+
+\input{chapters/reachability/alg-overview}

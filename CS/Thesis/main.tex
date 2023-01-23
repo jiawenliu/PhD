@@ -371,12 +371,15 @@ B.A. in Department of Information Science, Central University of Economics and F
 \input{chapters/reachability/preface}
 \chapter{Introduction}
 \label{sec:reachability-intro}
+
 \section{Reachability-bound Problem}
 \label{sec:reachability-background}
-\input{chapters/reachability/intro-reachability_bound_problem}
+\input{chapters/reachability/intro-background}
+
 \section{Motivation and Overview}
 \label{sec:reachability-motivation}
 \input{chapters/reachability/intro-motivation_and_overview}
+
 \section{Outline and Contributions}
 \label{sec:reachability-outline}
 \input{chapters/reachability/intro-outline}
@@ -386,10 +389,11 @@ B.A. in Department of Information Science, Central University of Economics and F
 
 \section{{Language and Program Model}}
 \label{sec:psRB-language}
-\subsection{Language}
-\label{sec:psRB-language-syntax}
-\subsection{Trace-Based Operational Semantics}
-\label{sec:psRB-language-semantics}
+\input{chapters/reachability/language}
+% %
+\section{{The Reachability-bound}}
+\label{sec:psRB-execution_rb}
+\input{chapters/reachability/rb_definition}
 % %
 % %
 \section{{The Reachability-bound}}
@@ -397,42 +401,48 @@ B.A. in Department of Information Science, Central University of Economics and F
 % % % % 
 \section{Path Sensitive Reachability-bound Analysis}
 \label{sec:psRB-analysis-alg}
-% \input{alg-preface}
+\input{chapters/reachability/alg-preface}
 %
 \subsection{Main Steps of Path-sensitive Reachability-bound Analysis}
 \label{sec:psRB-preface}
-% \input{alg-preface}
-% \input{alg-psrb}
+\input{chapters/reachability/alg-mainstep}
+
 \subsection{Abstraction Transition Graph}
 \label{sec:psRB-progabs}
-% \input{alg-progabs}
+\input{chapters/reachability/alg-progabs}
 \subsection{Loop Refinement}
 \label{sec:psRB-refine}
-% \input{alg-refine}
+\input{chapters/reachability/alg-refine}
+
 \subsection{Ranking Function Computation and Estimation}
 \label{sec:psRB-rank}
-% \input{alg-rank}
-\subsection{Loop Bound and Path Local Reachability-bound Computation}
+\input{chapters/reachability/alg-rank}
+
+\section{Path-sensitive Reachability-bound Algorithm}
+\label{sec:psRB-psrb}
+\input{chapters/reachability/alg-psrb}
+
+\subsection{Loop Bound and Local Path Reachability-bound Computation}
 \label{sec:psRB-pathlocalrb}
-% \input{alg-pathlocalrb}
+\input{chapters/reachability/alg-pathlocalrb}
 \subsection{Loop Reachability-bound Computation}
 \label{sec:psRB-looprb}
-% \input{alg-looprb}
-\subsection{Path and Program Point Reachability-bound Computation}
-\label{sec:psRB-rb}
+\input{chapters/reachability/alg-looprb}
 
 
 \chapter{Evaluation}
 \label{sec:psRB-eval}
 \section{Examples}
 \label{sec:psRB-example}
+\input{chapters/reachability/examples}
 
 \section{Implementation}
 \label{sec:psRB-implementation}
+\input{chapters/reachability/eval}
 
 \chapter{Related Works}
 \label{sec:psRB-relatedwork}
-
+\input{chapters/reachability/relatedwork}
 
 % \cleardoublepage
 \chapter*{\redd{PART \romannum{3} \quad Epilogue}}

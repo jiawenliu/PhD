@@ -2,8 +2,8 @@
 
 \paragraph{Chapter~\ref{sec:reachability-analysis}} presents the {path-sensitive reachability-bound analysis} through the following sections.
 
-In Section~{\ref{sec:psRB-language}}, we first give the language and program model formally, including the
-language syntax in Section~\ref{sec:psRB-language-syntax} and the trace-based operational semantics in Section~\ref{sec:psRB-language-semantics}.
+In Section~{\ref{sec:psRB-language}}, we first give the language and program model formally similar to our language mode in
+\redd{PART \romannum{1}}.
 
 Then Section~\ref{sec:psRB-definition} gives the \emph{reachability-bound} definition.
 
@@ -23,10 +23,14 @@ and then shows the implementation and evaluation results over five real world be
 
 \subsection{Contributions}
 The contributions of this work can be summarized as follows,
- \begin{itemize}
-   \item the main contribution is the combination of the \emph{amortized program analysis} through ranking function estimation and the path refinement and loop summarization based on \emph{algebraic program analysis} in bound analysis algorithm.
-   \item A path-sensitive \emph{reachability-bound} computation algorithm.
-    This algorithm can compute the evaluation times of each program point accurately and path-sensitively.
-   \item A prototype implementation of this algorithm and an evaluation over 5 different benchmarks.
-    The evaluation results show that we can compute tight bound on the evaluation times of each program point in a program. For program with multi-path loop, we compute different bounds for the points on different paths.
- \end{itemize}
+\begin{itemize}
+  \item 
+  1. A path-sensitive reachability-bound algorithm, which computes sound bound on the evaluation times of each program point path-sensitively.
+  \item 
+  2. The combination of the \emph{amortized bound analysis} through ranking function estimation and the path refinement approach in our algorithm.
+  \item 
+  3. Two novel quantities, the \emph{path reachability-bound} and \emph{loop reachability-bound} and the corresponding estimating algorithms.
+  \item 
+  4. A prototype implementation with evaluation over four different benchmarks.
+  The evaluation shows that we can compute different bounds on the evaluation times of different program points in the same loop accurately.
+\end{itemize}
