@@ -11,7 +11,7 @@ There are three steps as follows.
   refined program $\rprog$ for a program $c$ given the rewritten program as input.
 \end{enumerate}
 
-\subsection{The Simple Transition Path}
+\subsubsection{The Simple Transition Path}
 We first collect the loop headers $\loopl(c) \subseteq \lvar(c)$ from a program $c$, which is the set of all program points corresponding to the loop headers in program $c$.
 \begin{defn}[Loop Headers ($\loopl : \cdom \to \mathcal{P}(\ldom)$)]
   \label{def:loopl}
@@ -78,7 +78,7 @@ However, $1 \to 2 \to 3 \to 4 \to 5 \to 4 \to 6 \to 7 \to 1$ is not a \emph{simp
 Also, $1 \to 2 \to 3 \to 4 \to 6 \to 7 \to 1$ is not a \emph{simple transition path} because it visits a loop header $4$ inside the path. $1 \to 2 \to 3$ isn't either because its end-point isn't a loop header.
 In Figure~\ref{fig:threeWhile-overview}(b), $1 \to 2 \to 3 \to 4 \to 5 \to 6$ is not a \emph{simple transition path} on $\absG(\kw{threeNestedWhile}(n, m, N))$ because it visits a loop header $3$ inside the path.
 
-\subsection{Program Refinement}
+\subsubsection{Program Refinement}
 \paragraph{Rewrite the Program.}
 \begin{algorithm}
   \caption{Program Rewriting $\kw{Rewrite}$}

@@ -3,7 +3,7 @@ is performed on basis of an \emph{Abstract Transition Graph} for the program $c$
 This step shows how to generate the abstract transition graph $\absG(c)$ of a
 program $c$ through constructing its vertices and edges.
 
-\subsection{Vertices}
+\subsubsection{Vertices}
 \label{sec:abs_prog-vertex}
 Every 
 vertex corresponds to a program execution point, 
@@ -12,7 +12,7 @@ and the vertices set is all the $c$'s program execution points with an extra exi
   \absV(c) = \lvar(c)\cup\{{\lex}\}
   \]
 
-\subsection{Edges}
+\subsubsection{Edges}
 \label{sec:abs_prog-edge}
   In the first step, we generate the \textbf{constraint}
   for the expression in each program command,
@@ -351,7 +351,7 @@ The edge for $c$'s abstract transition graph is constructed simply by computing 
 For each edge $(l, dc, l') \in \absE(c)$, $dc$ describes either an abstract execution of the assignment command with label $l$,
 or the evaluation of the guard with label $l$.
 %
-\subsection{Abstract Transition Graph Construction} 
+\subsubsection{Abstract Transition Graph Construction} 
 With the vertices $\absV(c)$ and edges $\absE(c)$ ready, we construct the abstract transition graph, formally in
 Definition~\ref{def:abs_cfg}.
 %
@@ -387,7 +387,7 @@ $\clabel{\assign{i}{n}}^0$ is executed with a continuation point $1$, and the wh
   \end{defn}
   For example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b), $1 \to 2 \to 3 \to 4 \to 5 \to 4$ is a \emph{path}, but it is not simple (the program points $4$ is visited twice). The path $4 \to 5 \to 4$ is both cyclic and simple.
 % \\
-% \subsection{Abstract Transition Graph Illustration through the Running Example}
+% \subsubsection{Abstract Transition Graph Illustration through the Running Example}
 % \label{sec:abs_prog_example}
 % 
 % \todo{Change Or remove}
