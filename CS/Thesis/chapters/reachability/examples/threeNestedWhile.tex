@@ -1,0 +1,175 @@
+\begin{example}[Nested Loop with Related Iterators]
+  \label{ex:threeNestedWhile}
+  %
+  %
+  { \small
+\begin{figure}
+\centering
+\begin{subfigure}{.4\textwidth}
+  \begin{centering}
+  {\footnotesize
+  $
+  \begin{array}{l}
+      \kw{relatedNestedWhile}(n, m, N) \triangleq \\
+      \clabel{ \assign{i}{0} }^{0} ; \\
+          \ewhile ~ \clabel{i < n}^{1} ~ \edo ~ \\
+          \qquad \Big(
+           \clabel{\assign{j}{m}}^{2} ;\\
+           \qquad \ewhile ~ \clabel{j > 0}^{3} ~ \edo ~ \\
+           \qquad \qquad \Big(
+            \clabel{\assign{j}{j-1}}^{4};
+            \clabel{\assign{w}{i}}^{5};\\
+            \qquad \qquad \ewhile ~ \clabel{w < N}^{6} ~ \edo ~
+            \Big(
+              \clabel{\assign{w}{w + 1}}^{7}
+                \Big); \\
+                \qquad \qquad \clabel{\assign{i}{w}}^{8}
+                \Big); \\
+                \qquad \clabel{\assign{i}{i+1}}^{9}
+            \Big)
+      \end{array}
+  $
+  }
+  \caption{}
+  \end{centering}
+  \end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \begin{centering}
+%   \todo{abstract-cfg for two round}
+\begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
+\draw[] (-7, 10) circle (0pt) node{{ $0$}};
+\draw[] (0, 10) circle (0pt) node{{ $1$}};
+\draw[] (6, 10) circle (0pt) node {{$\lex$}};
+\draw[] (0, 7) circle (0pt) node{{$2$}};
+\draw[] (0, 4) circle (0pt) node{{ $3$}};
+\draw[] (-7, 4) circle (0pt) node{{ $9$}};
+\draw[] (0, 1) circle (0pt) node{{ $4$}};
+\draw[] (3, 1) circle (0pt) node{{ $5$}};
+\draw[] (6, 1) circle (0pt) node{{ $6$}};
+\draw[] (9, 1) circle (0pt) node{{ $7$}};
+\draw[] (5, 6) circle (0pt) node{{ $8$}};
+% Counter Variables
+%
+% Control Flow Edges:
+\draw[ thick, -latex] (-6, 10)  -- node [above] {$i' \leq 0$}(-0.5, 10);
+\draw[ thick, -latex] (0, 9.5)  -- node [left] {$i < n$} (0, 7.5) ;
+\draw[ thick, -latex] (0, 6.5)  -- node [left] {$j' \leq m$} (0, 4.5) ;
+\draw[ thick, -latex] (0, 3.5)  -- node [left] {$j > 0$} (0, 1.5) ;
+\draw[ thick, -latex] (-0.5, 4)  -- node [below] {$j \leq 0$} (-6.5, 4) ;
+\draw[ thick, -latex] (-6.5, 4.5)  to  [out=90,in=180]  node [left] {$i' \leq i + 1$ }(-0.5, 9.5);
+\draw[ thick, -latex] (0.5, 10)  -- node [above] {$i \geq n$}  (5, 10);
+\draw[ thick, -latex] (0.5, 1)  -- node [below] {$j' \leq j - 1$}  (2.5, 1);
+\draw[ thick, -latex] (3.5, 1)  -- node [above] {$w' \leq i$}  (5.5, 1);
+\draw[ thick, -latex] (6.5, 1)  -- node [below] {$w < N$}  (8.5, 1);
+\draw[ thick, -latex] (6, 1.5)  to [out=90,in=-60] node [right] {$w \geq N$}  (5, 5.5);
+\draw[ thick, -latex] (9, 1.5)  to  [out=120,in=30] node [right] {$w' \leq w + 1$}  (6, 1.5);
+\draw[ thick, -latex] (5, 5.5)  to  node [above] {$i' \leq w$ }(0.5, 4);
+\end{tikzpicture}
+\caption{}
+  \end{centering}
+  \end{subfigure}
+\caption{
+(a) The Example of Nested Loop with Related Iterators
+  (b) The Abstract Execution Control Flow Graph}
+    \label{fig:threeNestedWhile}
+\end{figure}
+}
+\end{example}
+
+\begin{enumerate}
+  \item  \textbf{The Abstract Control Flow Graph}: Figure~\ref{fig:threeNestedWhile}(b).
+
+  \item \textbf{Program Refinement}
+  \\
+  {Simple Transition Paths:}
+  %  are computed as follows,
+  \\
+$
+      \begin{array}{llll}
+          \tpath_0 = (0 \to 1)
+          &
+          \tpath_1 = (1 \to 2 \to 3)
+          &           
+          \tpath_2 = (3 \to 4 \to 5 \to 6)
+          &
+          \tpath_3 = (6 \to 7 \to 6)
+          \\
+          \tpath_6 = (1 \to \lex)
+          &
+          \tpath_4 = (6 \to 8 \to 3)
+          &
+          \tpath_5 = (3 \to 9 \to 1)
+      \end{array}
+$
+  \\
+  Refined Program:
+\\
+$
+  \rprog = \tpath_0 ; 
+1: \rprepeat(\tpath_1; 3: \rprepeat(\tpath_2; 6: \rprepeat(\tpath_3); \tpath_4); \tpath_5); \tpath_6
+$
+\\
+Let $\rprog_1 = \rprepeat(\tpath_1; 3: \rprepeat(\tpath_2; 6: \rprepeat(\tpath_3); \tpath_4); \tpath_5)$
+\\
+$\rprog_3 = \rprepeat(\tpath_2; 6: \rprepeat(\tpath_3); \tpath_4)$
+\\
+$\rprog_6 = \rprepeat(\tpath_3)$
+  \item {Path Local Reachability-bound}:
+\\
+$\outinB(1: \rprog_1, \tpath_1) = n - N$ \quad
+$\outinB(1: \rprog_1, \tpath_5) = n - N$ \quad
+$\outinB(3: \rprog_3, \tpath_2) = m$ \\
+$\outinB(3: \rprog_3, \tpath_4) = m$ \quad
+$\outinB(6: \rprog_6, \tpath_3) = N$ \quad
+%
+\\
+Loop Bounds:
+\\
+$BD(\tpath_0) = 1$
+\quad
+$BD(\tpath_6) = 1$
+\quad
+$BD( \rprepeat(\tpath_3)) = N $
+\quad
+$BD(\rprog_3) = m $
+\quad
+$BD(\rprog_1) = n - N $
+%
+\item Loop Reachability-bound:
+\\
+\highlight{
+$\lpchB(1: \rprog_1, \tpath_1) = n - N$ \quad
+$\lpchB(1: \rprog_1, \tpath_5) = n - N$ \quad
+$\lpchB(1: \rprog_1, \tpath_2) = n$ \\ 
+$\lpchB(1: \rprog_1, \tpath_4) = n$ \quad
+$\lpchB(1: \rprog_1, \tpath_3) = 1$ \quad
+$\lpchB(3: \rprog_3, \tpath_4) = m$ \\
+$\lpchB(3: \rprog_3, \tpath_2) = m$ \quad
+$\lpchB(3: \rprog_3, \tpath_3) = 1$ \quad 
+$\lpchB(6: \rprog_6, \tpath_3) = N$
+}
+%
+%
+\item Path Global Reachability-bound:
+\\
+$\inoutB(\rprog, \tpath_1) = n - N$ \quad
+$\inoutB(\rprog, \tpath_2) = n \times m$ \quad
+$\inoutB(\rprog, \tpath_0) = 1$ 
+\quad
+$\inoutB(\rprog, \tpath_5) = n - N$ \quad
+$\inoutB(\rprog, \tpath_4) = n \times m$ \quad
+$\inoutB(\rprog, \tpath_6) = 1$ 
+\quad
+$\inoutB(\rprog, \tpath_3) = N$
+%
+\item The Reachability-bound:
+\\
+$\psRB(0) = \psRB(\lex) = 1$ \quad
+$\psRB(1) = n - N + 1$ \quad
+$\psRB(2) = \psRB(9) = n - N$ \quad
+$\psRB(7) = N$
+\\
+$\psRB(3) = n - N + n \times m$ \quad
+$\psRB(4) = \psRB(5) = \psRB(8) = n \times m$ \quad
+$\psRB(6) = N + n \times m$ 
+\end{enumerate}

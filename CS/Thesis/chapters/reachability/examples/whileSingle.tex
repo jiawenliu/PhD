@@ -1,0 +1,248 @@
+\begin{example}
+    [While Loop Example with Two Paths And Multiple Repeat Patterns]
+    \label{ex:whileSigle}
+    % \[
+    %   %
+    %   \begin{array}{l}
+    %       \kw{whileSingle}(k) \triangleq \\
+    %       \clabel{ \assign{i}{k} }^{0} ; \\
+    %           \ewhile ~ \clabel{i > 0}^{1} ~ \edo ~ \\
+    %           \qquad \Big(
+    %             \eif(\clabel{i = 2 }^{2}, \\
+    %             \qquad \qquad \clabel{\assign{i}{i - 2}}^{3},\\
+    %             \qquad \qquad \clabel{\assign{i}{i - 1}}^{4});
+    %             \Big)
+    %       \end{array}
+    %   \]
+    % \end{example}
+    { \small
+    \begin{figure}
+    \centering
+    \begin{subfigure}{.4\textwidth}
+      \begin{centering}
+      {\small
+      $
+      \begin{array}{l}
+        \kw{whileSingle}(k) \triangleq \\
+        \clabel{ \assign{i}{k} }^{0} ; \\
+            \ewhile ~ \clabel{i > 0}^{1} ~ \edo ~ \\
+            \qquad \Big(
+              \eif(\clabel{i = 2 }^{2}, \\
+              \qquad \qquad \clabel{\assign{i}{i - 2}}^{3},\\
+              \qquad \qquad \clabel{\assign{i}{i - 1}}^{4});
+              \Big)
+        \end{array}
+      $
+      }
+      \caption{}
+      \end{centering}
+      \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+      \begin{centering}
+    %   \todo{abstract-cfg for two round}
+    \begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
+    \draw[] (-7, 10) circle (0pt) node{{ $0$}};
+    \draw[] (0, 10) circle (0pt) node{{ $1$}};
+    \draw[] (0, 7) circle (0pt) node{\textbf{$2$}};
+    \draw[] (4, 4) circle (0pt) node{{ $3$}};
+    % \draw[] (0, 1) circle (0pt) node{{ $4$}};
+    \draw[] (-4, 4) circle (0pt) node{{ $4$}};
+    % Counter Variables
+    \draw[] (6, 10) circle (0pt) node {\textbf{$\lex$}};
+    % \draw[] (6, 4) circle (0pt) node {{ $ex$}};
+    %
+    % Control Flow Edges:
+    \draw[ thick, -latex] (-6, 10)  -- node [above] {$i' \leq k$}(-0.5, 10);
+    \draw[ thick, -latex] (0, 9.5)  -- node [left] {$i > 0$} (0, 7.5) ;
+    \draw[ thick, -latex] (0.5, 7)  -- node [below] {$ i = 2 $}  (4, 4.5);
+    \draw[ thick, -latex] (-4.5, 4)  to  [out=110,in=180]  node [left] {$i' \leq i - 1$ }(-0.5, 9.5);
+    \draw[ thick, -latex] (4.5, 4)  to  [out=70,in=0]   node [right] {$i' \leq i - 2$ }(0.5, 9.5);
+    \draw[ thick, -latex]  (-0.5, 7) -- node  {$i  \neq 2$}  (-4, 4.5) ;
+    \draw[ thick, -latex] (0.5, 10)  -- node [above] {$i \leq 0$}  (5.5, 10);
+    % \draw[ thick, -latex] (6, 6.5)  -- node [right] {$\top$} (6, 4.5) ;
+    \end{tikzpicture}
+    \caption{}
+      \end{centering}
+      \end{subfigure}
+    \caption{
+    (a) The Simple While Loop Example with Two Paths And Multiple Repeat Patterns
+      (b) The Abstract Execution Control Flow Graph}
+        \label{fig:whileSingle}
+    \end{figure}
+    }
+  \end{example}    
+  \begin{enumerate}
+    \item  \textbf{The Abstract Execution Control Flow Graph} is generated in Figure~\ref{fig:whileSingle}(b).
+    \item \textbf{Program Refinement}
+    \\
+    The loop free simple transition paths are computed as follows,
+     \\
+    $\tpath_0 = (0 \to 1)$
+    \quad
+    $\tpath_1 = (1 \to 2 \to 3 \to 1)$
+    \quad
+    $\tpath_2 = (1 \to 2 \to 4) \to 1)$
+    \quad
+    $\tpath_3 = (1 \to \lex)$
+    \\
+    \textbf{Refined Program}:
+    \[
+      \tpath_0 ; 
+      \rpchoose{
+        1: \tpath_1, 
+        1: \rprepeat_2(\tpath_2),
+        1: \rprepeat_3(\rprepeat_2(\tpath_2); \tpath_1)}; \tpath_3
+      \]
+      \item \textbf{Outside-In Algorithm} : Compute Local Bound for Every program and sub programs.
+      \\
+    $\outinB(\tpath_0) = 1$
+    \\
+    $\outinB(\tpath_3) = 1$
+    \\
+    $\outinB(\tpath_1) = 1 $
+    \\
+    $\outinB(\rprepeat_2(\tpath_2)) = 
+    \left\{
+      \begin{array}{ll}
+      \max\{0, n\} & \env(\trace_0) n < 2 \\
+      n - 2 & \env(\trace_0)  n \geq 2
+      \end{array} 
+    \right.$
+    \\
+    $\outinB(\rprepeat_3(\rprepeat_2(\tpath_2); \tpath_1)) = 
+    \left\{
+      \begin{array}{ll}
+      0 & \env(\trace_0) n \leq 2 \\
+      1 & \env(\trace_0)  n > 2
+      \end{array} 
+    \right.$
+    \\
+    % \\
+    % $\outinB(1: \rpchoose(\rprepeat_2(\cdots), \tpath_1)) 
+    % = \max\{m, \frac{n}{m}\} $
+    % \\
+    \item \textbf{Inside-Out Algorithm}
+    \begin{itemize}
+      \item \textbf{Repeat Chain Set}
+      \\
+      $\rpchset(1, \tpath_1) = \{\rprepeat_3(\cdots, \tpath_1), \tpath_1\}$ 
+      \\
+      $\rpchset(1, \tpath_2) = \{\rprepeat_2(\tpath_2), \rprepeat_3(\rprepeat_2(\tpath_2); \tpath_1) \to \rprepeat_2(\tpath_2)\}$ \\
+      $\rpchset(\_, \_) = \emptyset$ 
+      % \\
+      \item \textbf{Repeat Chain Bound} for every simple transition path $\tpath$ through its \emph{Repeat Chain}s
+      \\
+      $\rpchB(1, \tpath_1) = 
+      \left\{
+        \begin{array}{ll}
+        0 & \env(\trace_0)  n < 2 \\
+        1 & \env(\trace_0)  n \geq 2
+        \end{array} 
+      \right.$
+      \\
+      $\rpchB(1, \tpath_2) =     
+      \left\{
+        \begin{array}{ll}
+        \max\{0, n\} & \env(\trace_0) n < 2 \\
+        n - 2 & \env(\trace_0)  n \geq 2
+        \end{array} 
+      \right.$
+      %
+      \item \textbf{Loop Chain}
+      \\
+      $\lpch(\tpath_1) = 1\to \tpath_1$ \\
+      $\lpch(\tpath_2) = 1\to \tpath_2$ \\
+      $\lpch(\tpath_0) = \tpath_0$ \\
+      $\lpch(\tpath_3) = \tpath_3$ 
+      \item \textbf{{Relative Loop Bound}} for every simple transition path $\tpath$ through its \emph{Loop Chain}
+      \\
+      $\rpchB(1, \tpath_1) =       
+      \left\{
+        \begin{array}{ll}
+        0 & \env(\trace_0)  n < 2 \\
+        1 & \env(\trace_0)  n \geq 2
+        \end{array} 
+      \right.$
+      \\
+      $\rpchB(1, \tpath_2) = 
+      \left\{
+        \begin{array}{ll}
+        \max\{0, n\} & \env(\trace_0) n < 2 \\
+        n - 2 & \env(\trace_0)  n \geq 2
+        \end{array} 
+      \right.$
+       \\
+      $\rpchB(\bot, \tpath_0) = 1$ \\
+      $\rpchB(\bot, \tpath_3) = 1$ 
+      \item \textbf{Path-Sensitive Reachability-Bound} for every simple transition path $\tpath$
+      \\
+      $\inoutB(\tpath_1) = 
+      \left\{
+        \begin{array}{ll}
+        0 & \env(\trace_0)  n < 2 \\
+        1 & \env(\trace_0)  n \geq 2
+        \end{array} 
+      \right.$
+       \\
+      $\inoutB(\tpath_2) = 
+      \left\{
+        \begin{array}{ll}
+        \max\{0, n\} & \env(\trace_0) n < 2 \\
+        n - 2 & \env(\trace_0)  n \geq 2
+        \end{array} 
+      \right.$
+      \\
+      $\inoutB(\tpath_0) = 1$ \\
+      $\inoutB(\tpath_3) = 1$ 
+    \end{itemize}
+    \item \textbf{Path Sensitive Reachability-Bound} on every program control location
+    \\
+    $\psRB(\{0, \lex\}) = 1$ \\
+    $\psRB(\{1 \}) = 1 + 
+    \left\{
+      \begin{array}{ll}
+      0 & \env(\trace_0) n < 2 \\
+      1 & \env(\trace_0)  n \geq 2
+      \end{array} 
+    \right.
+    + 
+    \left\{
+      \begin{array}{ll}
+      0 & \env(\trace_0) n < 2 \\
+      1 & \env(\trace_0)  n \geq 2
+      \end{array} 
+    \right.
+    $
+    \\
+    $\psRB(\{2\}) = 
+    \left\{
+      \begin{array}{ll}
+      0 & \env(\trace_0) n < 2 \\
+      1 & \env(\trace_0)  n \geq 2
+      \end{array} 
+    \right.
+    + 
+    \left\{
+      \begin{array}{ll}
+      \max\{0, n\} & \env(\trace_0) n < 2 \\
+      n - 2 & \env(\trace_0)  n \geq 2
+      \end{array} 
+    \right.
+    $
+       \\
+    $\psRB(\{3\}) = 
+    \left\{
+      \begin{array}{ll}
+      0 & \env(\trace_0) n < 2 \\
+      1 & \env(\trace_0)  n \geq 2
+      \end{array} 
+    \right.$
+     \\
+    $psRB(\{4\}) = 
+    \left\{
+      \begin{array}{ll}
+      \max\{0, n\} & \env(\trace_0) n < 2 \\
+      n - 2 & \env(\trace_0)  n \geq 2
+      \end{array} 
+    \right.$
+    \end{enumerate}

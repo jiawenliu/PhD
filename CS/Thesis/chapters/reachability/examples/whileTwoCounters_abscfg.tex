@@ -1,0 +1,83 @@
+\begin{example}[The Abstract Control Flow Graph for While with Two Paths]
+  \label{ex:twoPathsWhile_abscfg}
+  %
+  { \small
+  \begin{figure}
+  \centering
+  \begin{subfigure}{.4\textwidth}
+    \begin{centering}
+    {\small
+    $
+    \begin{array}{l}
+      \kw{twoPathsWhile}(n, m) \triangleq \\
+    \clabel{ \assign{i}{n} }^{0} ; \\
+    \clabel{ \assign{j}{0} }^{1} ; \\
+        \ewhile ~ \clabel{i > 0}^{2} ~ \edo ~ \\
+        \qquad \Big(
+          \eif(\clabel{j < m}^{3}, \\
+          \qquad \qquad \clabel{\assign{j}{j + 1}}^{4}; 
+          \clabel{\assign{i}{i - 1}}^{5},\\
+          \qquad \qquad \clabel{\assign{j}{0}}^{6});
+          \Big)
+        \end{array}
+        $
+    }
+    \caption{}
+    \end{centering}
+    \end{subfigure}
+  \begin{subfigure}{.5\textwidth}
+    \begin{centering}
+  \begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
+  \draw[] (-8, 10) circle (0pt) node{{ $0$}};
+  \draw[] (-4, 10) circle (0pt) node{{ $1$}};
+  \draw[] (0, 10) circle (0pt) node{{ $2$}};
+  \draw[] (0, 7) circle (0pt) node{{$3$}};
+  \draw[] (-3, 4) circle (0pt) node{{ $4$}};
+  \draw[] (-8, 4) circle (0pt) node{{ $5$}};
+  \draw[] (4, 4) circle (0pt) node{{ $6$}};
+  % Counter Variables
+  \draw[] (6, 10) circle (0pt) node {\textbf{$\lex$}};
+  %
+  % Control Flow Edges:
+  \draw[ thick, -latex] (-7, 10)  -- node [above] {$i' \leq n$}(-4.5, 10);
+  \draw[ thick, -latex] (-3, 10)  -- node [above] {$j' \leq 0$}(-0.5, 10);
+  \draw[ thick, -latex] (0, 9.5)  -- node [left] {$i > 0$} (0, 7.5) ;
+  \draw[ thick, -latex] (0.5, 7)  -- node [below] {$ j \geq m $}  (4, 4.5);
+  \draw[ thick, -latex] (-7.5, 4.5)  to  [out=90,in=180]  node [left] {$i' \leq i - 1$ }(-0.5, 9.5);
+  \draw[ thick, -latex] (4.5, 4)  to  [out=70,in=0]   node [right] {$j' \leq 0 $}(0.5, 9.5);
+  \draw[ thick, -latex]  (-0.5, 7) -- node  {$j < m$}  (-3, 4.5) ;
+  \draw[ thick, -latex]  (-3.5, 4) -- node [above] {$j' \leq j + 1$}  (-7, 4) ;
+  \draw[ thick, -latex] (0.5, 10)  -- node [above] {$i \leq 0$}  (5.5, 10);
+  \end{tikzpicture}
+  \caption{}
+    \end{centering}
+    \end{subfigure}
+  \caption{
+  (a) The Two Paths While Loop Example
+    (b) The Abstract Execution Control Flow Graph}
+      \label{fig:twoPathsWhile_abscfg}
+  \end{figure}
+  }
+The program in Figure~\ref{fig:twoPathsWhile_abscfg}(a) is an example of two paths loop with different reachability-bounds on the control
+locations in different paths.
+Its abstract control flow graph is shown in Figure~\ref{fig:twoPathsWhile_abscfg}(b).
+The edge $(0 \xrightarrow{i' \leq n} 1)$ on the top tells us the command 
+$\clabel{\assign{i}{n}}^0$ is executed with a continuation point $1$, and the
+command $\clabel{\assign{j}{0}}^1$ will be executed next.
+The annotation $i' \leq 0$ is a difference constraint 
+computed by $\absexpr$ over
+the expression $n$ in the assignment command $\assign{i}{n}$.
+It represents that the value of $i$ is less than or equal to value of $n$ after the
+execution of $\clabel{\assign{i}{n}}^0$ and before executing $\clabel{\assign{j}{0}}^1$.
+Another example constraint $i' \leq i - 1$ on the edge $5 \xrightarrow{i' \leq i - 1} 2$
+describes the execution of
+ the command at line $5$, 
+$\clabel{\assign{i}{i - 1}}^{5}$. 
+The $i'$ on the left side of $i' \leq i - 1$ represents the value of $i$ after the assignment operation,
+and the right-hand side $i$ stores the value before the assignment.
+The boolean constraint $i \leq 0 $ on the edge $2 \xrightarrow{i \leq 0} \lex$, 
+represents the negation of the testing guard $\clabel{i > 0}^2$
+in the $\ewhile$ command.
+$2 \xrightarrow{i \leq 0} \lex$ denotes that $i \leq 0$ must hold in order to perform this transition from program point $2$ to
+the program exit. 
+\end{example}
