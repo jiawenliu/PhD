@@ -1,0 +1,360 @@
+\begin{lemma}[Soundness of Path Reachability Bound]
+  % \label{lem:pathrb-sound}
+  For any program $c$ with its refined program $\rprog$ and a simple transition path $\tpath$ in this program,
+  the execution times of $\tpath$ when executing the $\rprog$ under initial trace $\trace_0 \in \ftdom_0(c)$ is bounded by $\econfig{\inoutB(\rprog, \tpath)}(\trace_0)$.
+  \[
+    \begin{array}{l}
+      \forall c, c_r \in \cdom, \tpath \in \absG(c), \trace_0 \in \ftdom_0(c),  \trace_r \in \ftdom_0(c_r), \trace \in \tdom, l \in \ldom, \rprog \sthat 
+      \\ \qquad
+      REFINE(\algrewrite(c)) = \rprog
+      \land 
+      \algrewrite(c_r) = \rprog
+      \land
+      \\ \qquad
+      \land 
+      \Big(
+        \config{c_r, \trace_r} \rightarrow^* \config{\clabel{\eskip}^{l}, \trace_r \tracecat \trace}
+        \lor \config{c_r, \trace_r} \uparrow^{\infty} \trace_r \tracecat \trace 
+        \Big)
+    \\ \qquad
+    \implies
+    \econfig{\inoutB(\rprog, \tpath)}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)).
+    \end{array}
+  \]
+\end{lemma}
+%
+\begin{proof}
+\emph{Soundness} of the \emph{Path Reachability Bound}.
+  \\
+  Taking an arbitrary global program $c$, let $\rprog = REFINE(\algrewrite(c))$ be its refined program and $\tpath$ be an arbitrary transition path in this program.
+  Let $c_r$ be the while language program where $\rprog = \algrewrite(c_r)$.
+  \\
+  Taking an arbitrary initial trace of $c$, $\trace_0 \in \ftdom_0(c)$ and an arbitrary initial trace of $c_r$, $\trace_r \in \ftdom_0(c_r)$, 
+ an execution trace $\trace \in \tdom$ and label $l \in \lvar(c_r)$
+ such that 
+ \[
+  \config{{c_r}, \trace_r} \to^{*} \config{\clabel{\eskip}^{l}, \trace_r \tracecat \trace} \lor \config{c_r, \trace_r} \uparrow^{\infty} \trace_r \tracecat \trace,
+  \]
+ we have two cases.
+\\
+\textbf{$\bullet$ The execution terminates and {$\config{{c_r}, \trace_r} \to^{*} \config{\clabel{\eskip}^{l}, \trace_r \tracecat \trace}$}.} 
+\\
+ In this case we know $\trace \in \ftdom$ and is sufficient to show,
+ %
+ \[
+ \econfig{\inoutB(\rprog, \tpath)}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)) .
+ \]
+By induction on program $\rprog$, we have the same cases as in the proof of \emph{Path Local Reachability-Bound} Soundness in Appendix~\ref{apdx:pathlocalrb-sound}.
+The proof of the first four cases are almost the same as the proof of Lemma~\ref{lem:pathlocalrb-sound}, I don't unfold and repeat all the detail in this proof.
+\caseL{$\rprog = \tpath$}
+By Definition~\ref{def:pathrb}, we have $\inoutB(\tpath, \tpath) = 1$, which is sound.
+\caseL{$\rprog = \tpath'$}
+By Definition~\ref{def:pathrb}, we have $\inoutB(\tpath', \tpath) = \highlight{0}$.
+\\
+Since $\tpath' \neq \tpath$, we know $\tpath$ isn't executed when executing $\tpath'$, which is sound.
+\caseL{$\rprog = \rprog_1;\rprog_2$}
+By Definition~\ref{def:pathrb}, we have
+\[
+  \inoutB(\rprog_1;\rprog_2, \tpath) = \inoutB(\rprog_1, \tpath) + \inoutB(\rprog_2, \tpath). 
+\]
+Then by induction hypothesis on $\rprog_1$ and $\rprog_2$, we have this case proved in the same way as the proof of Lemma~\ref{lem:pathlocalrb-sound} in Appendix~\ref{apdx:pathlocalrb-sound}.
+\caseL{$\rprog = \rpchoose{\rprog_1, \ldots, \rprog_m }$}
+By Definition~\ref{def:pathrb}, we have 
+\[
+\inoutB(\rpchoose{\rprog_1, \ldots, \rprog_m }, \tpath) = 
+\max\left\{ \inoutB(\rprog_1, \tpath), \ldots, \inoutB(\rprog_m, \tpath) \right\}
+\] 
+By induction hypothesis on $\rprog_1, \ldots, \rprog_m$, we have this case proved in the same way as the proof of Lemma~\ref{lem:pathlocalrb-sound} in Appendix~\ref{apdx:pathlocalrb-sound}.
+\caseL{$\rprog = l': \rprog'$ }
+By Definition~\ref{def:pathrb}, we have 
+\[  
+  \begin{array}{rcll}
+  \inoutB(l': \rprog', \tpath) & \triangleq & 
+  \highlight{\outinB(\rprog', \tpath)}, & \text{if }~ l = \kw{enclosed}(\tpath)
+  \\ &  & 
+  \highlight{
+    \lpchB(l':\rprog', \tpath )
+  \times \max\limits_{l': \rprog' = \kw{enclosed}(l'':\rprog'')}
+  \{\inoutB(l'':\rprog'', \tpath)\} }, & o.w.
+  \end{array}
+\]
+%
+Then, we have the following three cases:
+\subcaseL{$l': \rprog' = \kw{enclosed}(\tpath)$ }
+In this case, we have $\inoutB(l': \rprog', \tpath) = {\outinB(\rprog, \tpath)}$.
+\\
+Since $l': \rprog' = \kw{enclosed}(\tpath)$, we know $l': \rprog'$ is the closet loop where $\tpath$ is nested.
+\\
+By Lemma~\ref{lem:pathlocalrb-sound}, we know $\outinB(\rprog', \tpath)$ is the
+sound upper bound on $\tpath$'s reaching times when executing $l': \rprog'$. 
+\\
+So we have this case proved by
+\[
+  \econfig{\inoutB(\rprog, \tpath)}(\trace_0) = \econfig{\outinB(\rprog, \tpath)}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)).
+\]
+%
+% \subcaseL{$\kw{enclosed}(\tpath) \notin \kw{enclosing}(\rprog')$}
+% In this case, we have $\inoutB(l: \rprog_l, \tpath) = 0$.
+% \\
+% Since $\tpath$ doesn't belong to this loop, $0$ is sound because $\tpath$ will not be executed during the execution of $\rprog_l$.
+% %
+\subcaseL{ $o.w.$ }
+In this case, we have 
+\[
+  \inoutB(l': \rprog', \tpath) = \lpchB(l':\rprog', \tpath )
+  \times \max\limits_{l': \rprog' = \kw{enclosed}(l'':\rprog'')}
+  \{\inoutB(l'':\rprog'', \tpath)\}.
+\]
+Then we need to show:
+\[
+  \econfig{\lpchB(l':\rprog', \tpath )
+  \times \max\limits_{l': \rprog' = \kw{enclosed}(l'':\rprog'')}
+  \{\inoutB(l'':\rprog'', \tpath)\}}(\trace_0) 
+  \geq \lcounter(\trace, \pathl(\tpath)).
+  \]
+%
+Since $\rprog = l': \rprog'$, according to Algorithm~\ref{alg:alg-refine_rewrite}, we know $c$ has the form
+$\ewhile \clabel{\bexpr}^{l'} \edo c'$ for some boolean expression $\bexpr$.
+\\
+For each $l'':\rprog''$ such that $l': \rprog' = \kw{enclosed}(l'':\rprog'')$, 
+let $c''\in \cdom$ be the while language program corresponding to $\rprog''$ such that $\algrewrite(c'') = \rprog''$,
+$c_1, c_2 \in \cdom$ such that $c' = c_1; c''; c_2$
+$\trace'' \in \tdom$ be the execution trace of $c''$ and $\trace_1, \trace_2 \in \tdom$ be the execution traces before and after executing $c''$, then we have
+\[
+  \begin{array}{l}
+  \config{c, \trace_r} \to \config{c';c, \trace_r \tracecat [(\bexpr, l', \etrue)]} \\
+  \to^* \config{c'';c_2;c, \trace_r \tracecat [(\bexpr, l', \etrue)] \tracecat \trace_1} \\
+  \to^* \config{c_2;c, \trace_r \tracecat [(\bexpr, l', \etrue)] \tracecat \trace_1 \tracecat \trace''} \\
+  \to^* \config{\eskip, \trace_r \tracecat [(\bexpr, l', \etrue)] \tracecat \trace_1 \tracecat \trace'' \tracecat \trace_2}
+  \end{array}
+\]
+By the trace non-decreasing property in Lemma~\ref{lem:tracenondec},
+we know $\trace = [(\bexpr, l', \etrue)] \tracecat \trace_1 \tracecat \trace'' \tracecat \trace_2$.
+\\
+By induction hypothesis on $\inoutB(l'':\rprog'', \tpath)$ and $c''$, we have
+\[
+  \econfig{\inoutB(l'':\rprog'', \tpath)}(\trace_0) 
+  \geq \counter(\trace'', L(\tpath)).
+\]
+Then for all $l'':\rprog''$ such that $l': \rprog' = \kw{enclosed}(l'':\rprog'')$, we have 
+\[
+  \begin{array}{l}
+  \econfig{\max\limits_{l': \rprog' = \kw{enclosed}(l'':\rprog'')} \{\inoutB(l'':\rprog'', \tpath)\}}
+  (\trace_0)
+  \geq \counter(\trace'', L(\tpath))
+  \end{array}
+\]
+Since $\trace''$ is the execution trace for $c''$ in one iteration of $c'$,
+we know $\trace_2$ contains multiple execution traces of  $c''$ in all iterations of $c'$.
+\\
+There are two ways to prove the soundness.
+\\
+By Lemma~\ref{apdx:loopbound-sound}, we know $BD(l':\rprog') \geq$ the iteration numbers of $c'$. Then we have
+\[
+  \begin{array}{l}
+  \econfig{ BD(l':\rprog', c)}(\trace_0) \times \counter(\trace'', L(\tpath)) \\
+  \geq \counter(\trace'' \tracecat \trace_2, L(\tpath)) \\
+  = \counter([(\bexpr, l', \etrue)] \tracecat \trace_1 \tracecat \trace'' \tracecat \trace_2)\\
+  = \lcounter(\trace, \pathl(\tpath))
+  \end{array}
+\]
+Then we have this case proved as the following.
+\[
+  \begin{array}{l}
+  \econfig{ BD(l':\rprog', c) \times \max\limits_{l': \rprog' = \kw{enclosed}(l'':\rprog'')} \{\inoutB(l'':\rprog'', \tpath)\}}(\trace_0)\\
+  \geq \econfig{ BD(l':\rprog')}(\trace_0) \times 
+  \econfig{\max\limits_{l': \rprog' = \kw{enclosed}(l'':\rprog'')} \{\inoutB(l'':\rprog'', \tpath)\}}
+  (\trace_0)\\
+  \geq \econfig{ BD(l':\rprog')}(\trace_0) \times \counter(\trace'', L(\tpath)) \\
+  \geq \lcounter(\trace, \pathl(\tpath))
+  \end{array}
+\]
+However, this isn't precise enough since $\tpath$ might not be executed in every iteration of $c'$ because it is located in nested loops. 
+\\
+In this sense, we prove the soundness of the tighter bound based on $\lpchB(l:\rprog', \tpath)$ and Lemma~\ref{lem:looprb-sound}.
+\\
+By Lemma~\ref{lem:looprb-sound}, we know $\lpchB(l:\rprog', \tpath)$ is a sound upper bound on the maximum number of $l': \rprog'$'s iteration times such that during these iterations, the $\tpath$ is executed.
+\\
+In this sense, $\lpchB(l:\rprog', \tpath) \times \inoutB(\rprog, \tpath)$ is a sound upper bound on $\tpath$'s execution times during the execution of $l': \rprog'$.
+\\
+Then we have
+\[
+  \begin{array}{l}
+  \econfig{ \lpchB(l:\rprog', \tpath)}(\trace_0) \times \counter(\trace'', L(\tpath)) \\
+  \geq \counter(\trace'' \tracecat \trace_2, L(\tpath))\\
+  = \counter([(\bexpr, l', \etrue)] \tracecat \trace_1 \tracecat \trace'' \tracecat \trace_2)\\
+  = \lcounter(\trace, \pathl(\tpath))
+  \end{array}
+\]
+Then we have this case proved as the following.
+\[
+  \begin{array}{l}
+  \inoutB(l':\rprog') \\
+  = \econfig{ \lpchB(l:\rprog', \tpath) \times \max\limits_{l': \rprog' = \kw{enclosed}(l'':\rprog'')} \{\inoutB(l'':\rprog'', \tpath)\}}(\trace_0) \\
+  \geq \econfig{ \lpchB(l:\rprog', \tpath) }(\trace_0) \times
+  \econfig{\max\limits_{l': \rprog' = \kw{enclosed}(l'':\rprog'')} \{\inoutB(l'':\rprog'', \tpath)\}} 
+  (\trace_0) \\
+  \geq \econfig{ \lpchB(l:\rprog', \tpath)}(\trace_0) \times \counter(\trace'', L(\tpath)) \\
+  \geq \lcounter(\trace, \pathl(\tpath))
+  \end{array}
+\]
+%
+\caseL{$\rprog = \rprepeat(\rprog')$}
+By Definition~\ref{def:pathrb}, we have
+\[
+  \inoutB(\rprepeat(\rprog'), \tpath) = \inoutB(\rprepeat(\rprog'), \rprog) \times \inoutB(\rprog', \tpath).
+\]
+We will never meet this case by the program rewriting in Algorithm~\ref{alg:alg-refine_rewrite}.
+\\
+Because $\rprepeat(\rprog')$ only shows up in a loop, we always match the case $l' : \rprepeat(\rprog')$ in the previous case before match this case.
+%
+\\
+\textbf{$\bullet$ The execution is non-terminating and {$\config{{c_r}, \trace} \uparrow^{\infty} \trace_r \tracecat \trace$}.} 
+\\
+ In this case we know $\trace \in \inftdom$ and is sufficient to show,
+\[
+  \econfig{\inoutB(\rprog, \tpath)}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)).
+\]
+By induction on the refined program $\rprog$,
+we have the following cases:
+\caseL{$\rprog = \tpath$}
+In this case, we have $\inoutB(\tpath, \tpath) = 1$ by Definition~\ref{def:pathlocalrb}. 
+\\
+Since $\tpath$ doesn't contain any loop, we know it will be executed at most once and terminates.
+\\
+Then this case is vacuously true.
+\caseL{$\rprog = \tpath' \land \tpath' \neq \tpath$}
+This case is vacuously true as well for the same reason as above.
+\caseL{$\rprog = \rprog_1;\rprog_2$}
+In this case, we have $\inoutB(\rprog_1;\rprog_2, \tpath) = \inoutB(\rprog_1, \tpath) + \inoutB(\rprog_2, \tpath) $ by Definition~\ref{alg:alg-refine_rewrite}, and
+it is sufficient to show
+\[
+  \econfig{\inoutB(\rprog_1, \tpath) + \inoutB(\rprog_2, \tpath)}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)) 
+\]
+Let $c_1, c_2 \in \cdom$ be the while language program corresponding to $\rprog_1$ and $\rprog_2$ such that $\algrewrite(c_1) = \rprog_1$ and $\algrewrite(c_2) = \rprog_2$.
+According to the Algorithm~\ref{alg:alg-refine_rewrite}, we have $c_r = c_1; c_2$.
+\\
+According to the operational semantics, let $\trace_1 \in \tdom, \trace_2 \in \inftdom$ be two execution traces, we have the two following possible executions,
+\[
+  \config{c_1; c_2, \trace_r} \uparrow^{\infty} \trace_r \tracecat \trace_1
+\]
+or
+\[
+  \config{c_1; c_2, \trace_r} \to^* \config{c_2, \trace_r \tracecat \trace_1} \uparrow^{\infty} \trace_r \tracecat \trace_1 \tracecat \trace_2
+\]
+By the trace non-decreasing property in Lemma~\ref{lem:tracenondec} and the trace concatenaton in Definition~\ref{def:trace_concate}, we have in the first subcase $\trace = \trace_1$ and
+\[
+  \lcounter(\trace, \pathl(\tpath))  = \lcounter(\trace_1,  \pathl(\tpath))  = \bot;
+\]
+and in the second subcase $\trace = \trace_1 \tracecat \trace_2$ and
+\[
+  \lcounter(\trace, \pathl(\tpath))  = \lcounter(\trace_1,  \pathl(\tpath))  + \lcounter(\trace_2,  \pathl(\tpath)) = \lcounter(\trace_1,  \pathl(\tpath)) + \bot.
+\]
+By induction hypothesis on $\trace_r$, $c_1$ and $c_2$, $\trace_1$ and $c_2$, we have
+either 
+\[
+  \econfig{\inoutB(\rprog_1, \tpath)}(\trace_0)  \geq \lcounter(\trace_1,  \pathl(\tpath)) 
+\]
+and
+\[
+  \econfig{\inoutB(\rprog_2, \tpath)}(\trace_0) \geq \lcounter(\trace_2,  \pathl(\tpath))  
+\]
+respectively.
+\\
+Then we have this case proved as the follows in both subcases.
+\[
+  \begin{array}{l}
+  \econfig{\inoutB(\rprog_1, \tpath) + \inoutB(\rprog_2, \tpath)}(\trace_0)
+  \\
+  \geq \econfig{\inoutB(\rprog_1, \tpath)}(\trace_0) + \econfig{\inoutB(\rprog_2, \tpath)}(\trace_0)
+  \\
+  \geq \lcounter(\trace_1,  \pathl(\tpath))  + \lcounter(\trace_2,  \pathl(\tpath)) 
+  \\
+  \geq \lcounter(\trace, \pathl(\tpath))
+  \end{array}
+  \] 
+\caseL{$\rprog = \rpchoose{\rprog_1, \ldots, \rprog_m }$}
+We have $\inoutB(\rpchoose{\rprog_1, \ldots, \rprog_m }, \tpath) = \max\left\{ \inoutB(\rprog_1, \tpath), \ldots, \inoutB(\rprog_m, \tpath) \right\}$ by Definition~\ref{alg:alg-refine_rewrite}.
+Then it is sufficient to show
+\[
+  \econfig{\max\left\{ \inoutB(\rprog_1, \tpath), \ldots, \inoutB(\rprog_m, \tpath) \right\}}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)) 
+\]
+Let $c_1, \ldots, c_m \in \cdom$ be the while language program corresponding to $\rprog_1, \ldots, \rprog_m$ such that $\algrewrite(c_1) = \rprog_1$, $\ldots$ and  $\algrewrite(c_m) = \rprog_m$.
+\\
+Let $\trace_1, \ldots, \trace_m \in \tdom$ be the execution traces such that each $c_i$ and $\trace_i$ satisfies 
+\[
+  \config{c_i, \trace_r} \to^* 
+  \config{\clabel{\eskip}^{l}, \trace_r \tracecat \trace_i}
+  \lor 
+  \config{c_i, \trace_r} \uparrow^{\infty}  \trace_r \tracecat \trace_i.
+\]
+Since the execution of each $c_i$ corresponds to one possible execution of $c_r$ as analyzed in Appendix~\ref{apdx:loopbound-sound}, we know there exists at least a sub-program $c_j$ where $\trace_j \in \inftdom$ such that
+\[
+  \config{c_j, \trace_r} \uparrow^{\infty} \trace_r \tracecat \trace_j.
+\]
+Then we have $\lcounter(\trace_j, \pathl(\tpath))  = \bot$, and by induction hypothesis on $c_j$ we also know 
+\[
+  \econfig{\inoutB(\rprog_j, \tpath)}(\trace_0) 
+  \geq \lcounter(\trace_j, \pathl(\tpath)) 
+\]
+Then we have this case proved by following
+\[
+  \begin{array}{l}
+    \econfig{\max\left\{ \inoutB(\rprog_1, \tpath), \ldots, \inoutB(\rprog_m, \tpath) \right\}}(\trace_0)
+    \\
+    \geq \max\left\{ \econfig{\inoutB(\rprog_1, \tpath)}(\trace_0), \ldots, \econfig{\inoutB(\rprog_2, \tpath)}(\trace_0)\right\}
+    \\
+    =  \infty
+    \\
+    \geq \max\left\{ \lcounter(\trace_1,  \pathl(\tpath)),  \ldots, \lcounter(\trace_m,  \pathl(\tpath))  \right\}
+    \\
+    \geq \lcounter(\trace, \pathl(\tpath))
+    \end{array}
+  \]
+\caseL{$\rprog = \rprepeat(\rprog')$ }
+We have $\inoutB(\rprepeat(\rprog'), \tpath) = BD(\rprepeat(\rprog'), c) \times \inoutB(\rprog', \tpath)$
+by Definition~\ref{alg:alg-refine_rewrite}, and
+it is sufficient to show
+\[
+  \econfig{ BD(\rprepeat(\rprog'), c) \times \inoutB(\rprog', \tpath)} (\trace_0) \geq \lcounter(\trace, \pathl(\tpath)) 
+\]
+Since execution of $\rprepeat(\rprog')$ non-terminates, and it is a loop program,
+by the second subcase of the non-terminating case in the proof of Lemma~\ref{lem:loopbound_sound}, we know
+\[
+  BD(\rprepeat(\rprog'), c) = \infty.
+\]
+Then we have this case proved by
+\[
+  \begin{array}{l}
+  \econfig{BD(\rprepeat(\rprog'), c) \times \inoutB(\rprog', \tpath)}(\trace_0) 
+  \\
+  =
+  \econfig{ \infty }(\trace_0) 
+  \\
+  \geq \lcounter(\trace, \pathl(\tpath)) 
+  \end{array}
+  \]
+  \caseL{$\rprog = l : \rprog_l$}
+  In this case, we have
+  \[
+    \inoutB(l: \rprog_l, c) = \inoutB(\rprog_l, c)
+  \]
+  Let $c_l \in \cdom$ be the while language program corresponding to $\rprog_l$ such that $\algrewrite(c_l) = \rprog_l$.
+  \\
+  According to the Algorithm~\ref{alg:alg-refine_rewrite} and the program refinement algorithm REFINE, we know
+  $c_l = c_l$.
+  \\
+  Then we have this case proved trivially by induction hypothesis on $\rprog_l$ and $c_l$ with the same initial and execution trace $\trace_r$.
+\caseL{$\rprog = l': \rprog'$ and $l':\rprog' \neq \kw{enclosed}(\tpath)$}
+$\inoutB(l': \rprog', \tpath) = \inoutB(\rprog', \tpath)$ 
+Since $l': \rprog' \neq \kw{enclosed}(\tpath)$, we know $\tpath$ isn't executed when executing $c_l$, i.e., $\lcounter(\trace, \pathl(\tpath)) = 0$.
+\\
+Then we have
+\[
+  \econfig{\inoutB(l': \rprog', \tpath)}(\trace_0) = 0 = \lcounter(\trace, \pathl(\tpath)),
+  \]
+and this case is proved.
+\end{proof}
+
+
+

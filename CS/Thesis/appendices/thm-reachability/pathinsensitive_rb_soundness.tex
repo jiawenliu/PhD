@@ -1,0 +1,144 @@
+  \begin{lem}[Soundness of the Ranking Function Estimation]
+    \label{lem:local_bound_sound}
+  Given a program ${c}$, we have:
+  %
+  \[
+  \forall \absevent = (l, dc, l') \sthat 
+  \max \left\{ \counter(\vtrace') l ~ \middle\vert~
+  \forall \vtrace \in \mathcal{T} \sthat \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
+  \leq 
+  \locbound(\absevent)
+  \]
+  \end{lem}
+  \begin{proof}
+    \subcaseL{$l \notin SCC(\absG(c))$}
+    In this case, we know variable $x^l$ isn't involved in the body of any $\ewhile$ command. 
+    \\
+    Taking an arbitrary $\vtrace_0 \in \mathcal{T}$, 
+    let $\trace \in \mathcal{T}$ be of resulting trace of executing $c$ with $\trace$, 
+    i.e., $\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace}$,
+    \\
+    we know the
+    assignment command at line $l$ associated with the abstract event $\absevent$ will be executed at most once, i.e.,:
+    %
+    $\counter(\vtrace) l \leq 1$
+    \\
+    By $\locbound$ definition, we know $\locbound(\absevent) = 1$.
+    \\
+    This case is proved.
+    \subcaseL{$l \in SCC(\absG(c)) \land \absevent \in \dec(x) $}  in this case, we know $\locbound(\absevent) \triangleq x$.
+    \subcaseL{$l \in SCC(\absG(c)) \land \absevent 
+    \notin \bigcup_{x \in VAR} \dec(x)
+    \land \absevent \notin SCC(\absG(c)/\dec(x)) $}  in this case, we know $\locbound(\absevent) \triangleq x$.
+    \\
+    In the two cases above, the soundness is discussed in~\cite{SinnZV17} Section 4 of Paragraph \emph{Discussion on Soundness} in Page 25.
+  \end{proof}
+  %
+  \begin{theorem}[Soundness of the Path-insensitive Transition Bound]
+    % \label{thm:pathinsensitive_rb_soundness}
+  For each program ${c}$ and an edge $\absevent = (l, \_, \_) \in \absG(c)$, if $l$ is the label of an assignment command,
+  %  label $l \in \lvar(c)$,
+  then its \emph{path-insensitive transition bound} $\absclr(\absevent, c)$ 
+   is a sound upper bound on 
+  the execution times of this assignment command in $c$.
+    \[
+      \begin{array}{l}
+        \forall \trace_0 \in \ftdom_0(c), \trace \in \tdom, c \in \cdom, l, l' \in \lvar(c) \sthat
+        \Big( \config{c, \trace_0} \rightarrow^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace} 
+          \lor  \config{c, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace \Big)
+         \\ \qquad \qquad
+         \implies
+         \exists \absevent = (\_, l, \_) \in \absflow(c) \land
+        \counter(\trace, l) \leq \econfig{\absclr(\absevent, c)}(\trace_0)
+      \end{array}
+    \]
+  \end{theorem}
+  % \begin{thm}[Soundness of the Path-insensitive Transition Bound]
+  %   % \label{thm:pathinsensitive_rb_soundness}
+  % Given a program ${c}$, for every label $l \in \lvar(c)$,
+  % its \emph{Path-Insensitive Reachability Bound} $w^p$ 
+  %  is a sound upper bound for its 
+  %  execution-based reachability bound $w^t$ 
+  %  where $(l, w^p) \in \absW(c)$ and  $(l, w^t) \in \exeRB(c)$.
+  %   \[
+  %     \begin{array}{l}
+  %       \forall c \in \cdom, l \in \lvar(c),\trace_0 \in \mathcal{T}_0(c), 
+  %       \trace' \in \mathcal{T}, v \in \mathbb{N}
+  %        \sthat 
+  %       (l, w_p) \in \absW(c)
+  %       \land 
+  %       (l, w_t) \in \exeRB(c)
+  %       \\ \quad
+  %       \land \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\vtrace'} 
+  %       \land 
+  %       \config{w_{p}, \trace_0} \earrow v
+  %       \implies
+  %       % \right\} 
+  %       w_{t}(\trace) \leq v
+  %     \end{array}
+  %     \]
+  % \end{thm}
+%
+\begin{proof}
+  Taking arbitrary $\trace_0 \in \ftdom_0(c), \trace \in \tdom, c, c' \in \cdom$ and a program point
+  such that
+  \[
+    \Big( \config{c, \trace_0} \rightarrow^{*} \config{\eskip, \trace_0 \tracecat \trace} 
+    \lor  \config{c, \trace_0} \rightarrow^{\infty} \config{c', \trace_0 \tracecat \trace} \Big)
+  \]
+  Then it is sufficient to show 
+  \[
+    \forall l \in \lvar(c) \exists \absevent = (\_, l, \_) \in \absflow(c) \land
+    \counter(\trace', l) \leq \econfig{\absclr(\absevent, c)}(\trace_0)
+  \]
+  Let $l \in \lvar(c)$ be arbitrary program point,
+  By Lemma~\ref{lem:abscfg_sound}, there exists an abstract event in $\absflow(c)$ of form $(\absevent) = (l, \_, \_)$,
+  corresponding to the assignment command associated to labeled variable $x^l$. 
+  \\
+  Let $(\absevent) = (l, dc, l') \in \absflow(c)$ be this event for some $dc$ and $l'$ such that  $(\absevent) = (l, dc, l') \in \absflow(c)$,
+   then it is sufficient to show:
+  \[
+    \counter(\trace, l) \leq \econfig{\absclr(\absevent, c)}(\trace_0)
+  \]
+  By definition of $\absclr(\absevent)$:
+  \[
+ \begin{array}{ll}
+  \locbound(\absevent) & \locbound(\absevent) \in \constdom \\
+  \inc(\locbound(\absevent)) + 
+  \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\} 
+  & \locbound(\absevent) \notin \constdom
+\end{array}
+\]
+  \caseL{$\locbound(\absevent) \in \constdom$}
+  \\
+  Proved by the soundness of Local bound in Lemma~\ref{lem:local_bound_sound}.
+  \caseL{$\locbound(\absevent) \notin \constdom$}
+To show:
+\[
+  \begin{array}{l}
+    \max \left\{ \counter(\vtrace',  l) ~ \middle\vert~
+\forall \vtrace \in \mathcal{T} \sthat \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
+\\
+\leq 
+\econfig{\inc(\locbound(\absevent))}(\trace_0) + 
+\sum\{\econfig{\absclr(\absevent') \times \max(\varinvar(a) + c, 0)}(\trace_0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\} 
+\end{array}
+\]
+  Taking an arbitrary initial trace
+  $\trace_0 \in \mathcal{T}$, 
+  executing $c$ with $\trace_0$, let $\trace$ be the trace after evaluation, i.e., $\config{{c}, \trace_0} \to^{*} \config{\eskip,\vtrace}$, it is sufficient to show:
+  \[ 
+    \begin{array}{l}
+      \counter(\vtrace',  l) \leq 
+    \econfig{\inc(\locbound(\absevent)) + 
+    \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\}}(\trace_0)
+  \end{array}
+  \]
+%
+ By the soundness of the (1) Transition Bound and (2) Variable Bound Invariant 
+ in~\cite{SinnZV17} Theorem 1, 
+This case is proved.
+\end{proof}
+
+
+%

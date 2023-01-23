@@ -1,0 +1,380 @@
+\begin{lemma}[Soundness of The Abstract Execution Trace]
+    % \label{lem:abscfg_sound}
+    For every program $c$ and
+    a finite execution trace $\trace \in \ftdom$ which is generated w.r.t.
+    an initial trace  $\trace_0 \in \ftdom_0(c)$,
+    there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
+    for every event $\event \in \trace$ having the same label $l$, i.e., $\event = (\_, l, \_)$.
+    %
+    \[
+    \begin{array}{l}
+      \forall c, c' \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom ,  \event = (\_, l, \_) \in \eventset \sthat
+      \big(
+        \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} 
+      % \lor 
+      % \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
+      \big)
+      \land \event \in \trace 
+      \\
+      \qquad \implies \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
+      \absevent \in \absflow(c)
+    \end{array}
+    \]
+  \end{lemma}
+  \begin{proof}
+    Taking an arbitrary program $c$, an intermediate program $c' \in \cdom$, an initial trace $\trace_0 \in \ftdom_0(c)$, an arbitrary event $\event = (\_, l, \_) \in \eventset$ and a finite execution trace $\trace \in \ftdom$
+    such that
+    \[
+      \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace}.
+      % \lor 
+      % \config{{c}, \trace_0} \to^{\infty} \config{c', \trace_0 \tracecat \trace}.
+    \]
+    Then it is sufficient to show,
+    \[
+      \event \in \trace  \implies
+      \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
+      \absevent \in \absflow(c)
+    \]
+    By induction on program $c$, we have the following cases:
+    \caseL{$c = \clabel{\assign{x}{\expr}}^{l'}$}
+    By the evaluation rule $\rname{assn}$, we have
+    $
+    {
+    \config{\clabel{\assign{{x}}{\aexpr}}^{l'},  \trace_0 } 
+    \xrightarrow{} 
+    \config{\clabel{\eskip}^{l'}, \trace_0 :: ({x}, l', v)}
+    }$, for some $v \in \mathbb{N}$.
+    \\
+    There are 2 cases, where $l' = l$ and $l' \neq l$.
+    \\
+    In case of $l' \neq l$, we know $\event \not\in [({x}, l', v)]$, then this Lemma is vacuously true.
+    \\
+    In case of $l' = l$, by the abstract execution trace computation in Definition~\ref{def:absevent_compute}, we have 
+    \[
+      \absflow(c) = \absflow'([x := \expr]^{l'}; \clabel{\eskip}^{\lex}) = \{(l', \absexpr(\expr), \lex)\}
+    \]
+    Let $\absevent = (l', \absexpr(\expr), \lex) $, then we have $\absevent \in \absflow(c)$ and this case is proved.
+    \caseL{$\ewhile \clabel{b}^{l_w} \edo (c_w)$}
+    By the first rule applied to $c$ in operational semantics, there are two cases as follows.
+    \subcaseL{$\textbf{while-t}$}
+    In this case, we have
+    \[
+      \config{{\ewhile \clabel{b}^{l_w} \edo (c_w), \trace_0}}
+      \xrightarrow{} 
+      \config{{
+      c_w; \ewhile \clabel{b}^{l_w} \edo (c_w),
+      \trace_0 :: (b, l_w, \etrue)}}.
+    \]
+      Then it is sufficient to show.
+      \[
+        \event \in [(b, l_w, \etrue)]
+        \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
+        \absevent \in \absflow(c)
+      \]
+      In case of $l \neq l_w$, we know $\event \not \in [(b, l_w, \etrue)]$, and this Lemma is vacuously true.
+      \\
+      Then, let $\event = (b, l_w, \etrue)$ and $\trace' =  [(b, l_w, \etrue)]$. 
+      \\
+      By abstract trace computation in Definition~\ref{def:absevent_compute}, we have
+      \[
+        \absflow(c) = \absflow'(c; \clabel{\eskip}^{\lex}) = \{(l_w, \top, \init(c_w))\} \cup \cdots.
+      \]
+      Let $\absevent = (l_w, \top, \init(c_w))$, then we have this case is proved.
+%     Let $\trace_w \in \tdom$ satisfying following execution:
+%     \\
+%     $
+%     \config{{
+%     c_w,
+%     \trace_0 \tracecat [(b, l_w, \etrue)]}}
+%     \xrightarrow{*} 
+%     \config{{
+%     \eskip,
+%     \trace_0 \tracecat [(b, l_w, \etrue)] \tracecat \trace_w}}
+%   $
+%   \\
+%   Then we have the following execution
+% \[
+%   \begin{array}{l}
+%     \config{{\ewhile \clabel{b}^{l_w} \edo (c_w), \trace}}
+%   \xrightarrow{} 
+%   \config{{
+%   c_w; \ewhile \clabel{b}^{l_w} \edo (c_w),
+%   \trace_0 \tracecat [(b, l_w, \etrue)]}} \\
+%   \xrightarrow{*} 
+%   \config{{
+%     \ewhile \clabel{b}^{l_w} \edo (c_w),
+%   \trace_0 \tracecat [(b, l_w, \etrue)] \tracecat \trace_w}}
+%   \xrightarrow{*} 
+%   \config{{
+%   \eskip,
+%   \trace_0 \tracecat [(b, l_w, \etrue)] \tracecat \trace_w \tracecat \trace_1}}
+%   \end{array}
+%  \]
+%   for some $\trace_1 \in \tdom$ and $\trace = [(b, l_w, \etrue)] \tracecat \trace_w \tracecat \trace_1$.
+  % \\
+  % Then we have 3 cases: 
+  % (1) $\event \eventeq (b, l_w, \etrue)$, 
+  % (2) $\event \in \trace_w$ or 
+  % (3) $\event \in \trace_1$.
+  % \\
+  % In case of (1). $\event \eventeq (b, l_w, \etrue)$, since $\absflow(c) = \absflow'(c;\clabel{\eskip}^{\lex}) = \{(l, \top, \init(c_w))\} \cup \cdots $, we have $\absevent = (l, \top, \init(c_w))$ and this case is proved.
+  % \\
+  % In case of (2). $\event \in \trace_w$,
+  % by induction hypothesis on 
+  % $c_w$ with the execution 
+  %   $\config{{
+  %   (c_w),
+  %   \trace_0 \tracecat [(b, l_w, \etrue)]}}
+  %   \xrightarrow{*} 
+  %   \config{{
+  %   \eskip,
+  %   \trace_0 \tracecat [(b, l_w, \etrue)] \tracecat \trace_w}}$ and trace $\trace_w$, 
+  %   we know there is an abstract event of the form 
+  %   $\absevent' = (l, \_, \_ ) \in \absflow(c_w)$ where $\absflow(c_w) = \absflow'(c_w;\clabel{\eskip}^{\lex})$.
+  %   \\
+  %   Let $\absevent' = (l, dc, l')$ for some $dc$ and $l'$ such that $\absevent \in \absflow(c)$.
+  %   \\
+  %   By definition of $\absflow'$, we have 
+  %   $ \absflow'(c_w;\clabel{\eskip}^{\lex}) = 
+  %   \absflow'(c_w) \cup  \{ (l', dc, \lex) | (l', dc) \in \absfinal(c_w) \} $.
+  %   \\
+  %   There are 2 subcases: (2.1) $\absevent' \in \absflow'(c_w)$ or 
+  %   $ (2.2) \absevent' \in \{ (l', dc, \lex) | (l', dc) \in \absfinal(c_w) \}$.
+  %   \subcaseL{(2.1)}
+  %   Since $\absflow(c) = \absflow'(c_w) \cup \{(l', dc, l_w)| (l', dc) \in \absfinal(c_w) \} \cup \cdots $, 
+  %   we know the abstract event $\absevent' \in \absflow(c)$. 
+  %   \\
+  %   This case is proved.
+  %   \subcaseL{(2.2) $\absevent' \in \{ (l', dc, \lex) | (l', dc) \in \absfinal(c_w) \}$ }
+  %   In this case, we know $(l, dc) \in \absfinal(c_w)$.
+  %   \\
+  %   Since $\absflow(c) = \absflow'(c_w) \cup \{(l', dc, l_w)| (l', dc) \in \absfinal(c_w) \} \cup \cdots $, 
+  %   we know $(l, dc, l_w) \in \{(l', dc, l_w)| (l', dc) \in \absfinal(c_w) \}$, 
+  %    i.e., the abstract event $(l, dc, l_w) \in \absflow(c)$ and $(l, dc, l_w)$ has the form $(l, \_, \_)$.
+  %   \\
+  %   This case is proved.
+  %   \\
+  %   %
+  % In case of (3). $\event \in \trace_1$, we know either $\event = (b, l_w, \_)$, or $\event \in \trace_w'$ where $\trace_w' \in \tdom$ is the trace of executing $c_w$ in an iteration.
+  % \\
+  % Then this case is proved by repeating the proof in case (1) and case (2).
+  %   \\
+    \subcaseL{$\rname{while-f}$}
+    In this case, we have
+    \[
+      \config{{\ewhile \clabel{b}^{l_w} \edo (c_w), \trace_0}}
+      \xrightarrow{}^\rname{while-f}
+      \config{{
+      \eskip,
+      \trace_0 :: (b, l_w, \efalse)}}.
+    \]
+    Then it is sufficient to show
+      \[
+        \event \in [(b, l_w, \efalse)]
+        \implies
+        \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
+        \absevent \in \absflow(c).
+      \]
+      In case of $l \neq l_w$, we know $\event \not\in [(b, l_w, \efalse)]$, and this Lemma is vacuously true.
+      \\
+      Then we prove the lemma in the case where $l = l_w$, 
+      let $\trace = [(b, l_w, \efalse)]$ and $\event = (b, l_w, \efalse)$.
+    \\
+    By abstract trace computation in Definition~\ref{def:absevent_compute}, we have
+    \[
+      \absflow(c) = \absflow'(c; \clabel{\eskip}^{\lex}) = \{(l_w, \top, \init(c_w))\} \cup \cdots.
+    \]
+    Let $\absevent = (l_w, \top, \init(c_w))$, then we have this case is proved.
+    \caseL{$\eif(\clabel{b}^l, c_t, c_f)$}
+    By the first rule applied to $\eif(\clabel{b}^l, c_t, c_f)$ in operational semantics,
+    we have two subcases \rname{if-t} and \rname{{if-f}}.
+    \\
+    Then both of the two cases will append the evaluation result of the guard $\clabel{b}^l$, i.e., $(b, l_w, \etrue)$ and $(b, l_w, \efalse)$ respectively.
+    \\
+    By abstract trace computation in Definition~\ref{def:absevent_compute}, we have
+    \[
+      \begin{array}{l}
+        \absflow(c) = \absflow'(c; \clabel{\eskip}^{\lex}) 
+        \\ \quad
+        = \absflow'(\eif \clabel{b}^l \ethen c_t \eelse c_f) \cup \absflow'(\clabel{\eskip}^{\lex}) 
+        \\ \quad \quad 
+        \cup \{ (l, dc, \absinit(c_2)) | (l, dc) \in \absfinal(c_1) \} 
+        \\ \quad  
+        = \{(l, \absexpr(\bexpr, \top),  \absinit(c_t) ) ,  (l, \absexpr(\neg\bexpr, \top), \absinit(c_f)) \}
+        \\ \quad \quad 
+        \cup \absflow'(c_t) \cup \absflow'(c_f) 
+        \cup \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_1) \} 
+     \end{array}
+    \]
+    Let $\absevent = (l, \absexpr(\bexpr, \top),  \absinit(c_t) ) $ or $ (l, \absexpr(\neg\bexpr, \top), \absinit(c_f)) $
+    respectively in the two subcases.
+    \\
+    Then we have both of the two subcases proved.
+    \caseL{$c = c_1;c_2$}
+    By the first rule applied to $c$ in operational semantics, there are two cases as follows.
+    \subcaseL{$\rname{seq1}$}
+    In this case, we have the following where $\trace = \trace_1$.
+    \[
+      \inferrule
+      {
+      \config{{c_1, \trace_0}}
+      \xrightarrow{}
+      \config{{c_1',  \trace_0 \tracecat \trace_1}}
+      }
+      {
+      \config{{c_1; c_2, \trace_0}} 
+      \xrightarrow{} 
+      \config{{c_1'; c_2, \trace_0 \tracecat \trace_1}}
+      }
+    \]
+    By induction hypothesis on $c_1$, we know 
+    \[
+      \event \in \trace_1
+      \implies
+      \exists \absevent = (l, \_, \_) \in (\ldom \times \dcdom^{\top} \times \ldom) \sthat 
+      \absevent \in \absflow(c_1)
+    \]
+    Let $\event = (\_, l_1, \_) \in \trace_1$ and $\absevent_1 = (l_1, \_, \_) \in \absflow(c_1)$,
+    Then it is sufficient to show
+    \[
+      \exists \absevent = (l_1, \_, \_) \in (\ldom \times \dcdom^{\top} \times \ldom) \sthat 
+      \absevent \in \absflow(c)
+    \]
+    By abstract trace computation in Definition~\ref{def:absevent_compute}, we have
+    \[
+      \begin{array}{l}
+        \absflow(c_1) = \absflow'(c_1; \clabel{\eskip}^{\lex}) 
+        \\ \quad
+        = \absflow'(c_1) \cup \absflow'(\clabel{\eskip}^{\lex}) 
+        \cup \{ (l, dc, \absinit(\clabel{\eskip}^{\lex}))) | (l, dc) \in \absfinal(c_1) \} 
+        \\ \quad
+        = \absflow'(c_1) \cup  \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_1) \} 
+     \end{array}
+    \]  
+    and 
+    \[
+      \begin{array}{l}
+        \absflow(c) = \absflow'(c; \clabel{\eskip}^{\lex}) 
+        \\ \quad
+        = \absflow'(c_1;c_2) \cup \absflow'(\clabel{\eskip}^{\lex}) 
+        \cup \{ (l, dc, \absinit(\clabel{\eskip}^{\lex})) | (l, dc) \in \absfinal(c_1; c_2) \} 
+        \\ \quad  
+        = \absflow'(c_1) \cup \absflow'(c_2) 
+        \\ \quad \quad
+        \cup \{ (l, dc, \absinit(c_2)) | (l, dc) \in \absfinal(c_1) \} 
+        \cup \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_1; c_2) \} 
+     \end{array}
+    \]
+    Then we have two subcases where 
+    $\absevent_1 \in \absflow'(c_1)$ or $\absevent_1 \in \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_1) \}$.
+    \subcaseL{$\absevent_1 \in \absflow'(c_1)$}
+    Since $\absflow'(c_1) \subseteq \absflow(c)$, then we know $\absevent_1 \in \absflow(c)$.
+    \\
+    Let $\absevent = \absevent_1$, then we have $\absevent \in \absflow(c)$ and this subcase is proved.
+    \subcaseL{$\absevent_1 \in \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_1) \} $}
+    In this case, we know $(l_1, \_) \in \absfinal(c_1)$.
+    \\
+    Let $\absevent = (l_1, \_, \absinit(c_2))$, then we know 
+    \[
+      \absevent \in   \{ (l, dc, \absinit(c_2)) | (l, dc) \in \absfinal(c_1) \}. 
+    \]
+    Since $\{ (l, dc, \absinit(c_2)) | (l, dc) \in \absfinal(c_1) \}  \subset\absflow(c)$,  then we have $\absevent \in \absflow(c)$ and this subcase is proved.
+    \subcaseL{$\rname{seq2}$}
+    In this case, we have the following where $\trace = \trace_2$.
+    \[
+      \inferrule
+      {
+      \config{{c_2, \trace_0}}
+      \xrightarrow{}
+      \config{{c_2',  \trace_0 \tracecat \trace_2}}
+      }
+      {
+      \config{{\clabel{\eskip}^l; c_2, \trace_0}} 
+      \xrightarrow{} 
+      \config{{c_2, \trace_0 \tracecat \trace_2}}
+      }
+    \]
+    By induction hypothesis on $c_2$, we know 
+    \[
+      \event \in \trace_2
+      \implies
+      \exists \absevent = (l, \_, \_) \in (\ldom \times \dcdom^{\top} \times \ldom) \sthat 
+      \absevent \in \absflow(c_2)
+    \]
+    Let $\event = (\_, l_2, \_) \in \trace_2$ and $\absevent_2 = (l_2, \_, \_) \in \absflow(c_2)$,
+    Then it is sufficient to show
+    \[
+      \exists \absevent = (l_2, \_, \_) \in (\ldom \times \dcdom^{\top} \times \ldom) \sthat 
+      \absevent \in \absflow(c)
+    \]
+    By abstract trace computation in Definition~\ref{def:absevent_compute}, we have
+    \[
+      \begin{array}{l}
+        \absflow(c_2) = \absflow'(c_2; \clabel{\eskip}^{\lex}) 
+        \\ \quad
+        = \absflow'(c_2) \cup \absflow'(\clabel{\eskip}^{\lex}) 
+        \cup \{ (l, dc, \absinit(\clabel{\eskip}^{\lex}))) | (l, dc) \in \absfinal(c_2) \} 
+        \\ \quad
+        = \absflow'(c_2) \cup  \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_2) \} 
+     \end{array}
+    \]  
+    and 
+    \[
+      \begin{array}{l}
+        \absflow(c) = \absflow'(c; \clabel{\eskip}^{\lex}) 
+        \\ \quad
+        = \absflow'(c_1;c_2) \cup \absflow'(\clabel{\eskip}^{\lex}) 
+        \cup \{ (l, dc, \absinit(\clabel{\eskip}^{\lex})) | (l, dc) \in \absfinal(c_1; c_2) \} 
+        \\ \quad  
+        = \absflow'(c_1) \cup \absflow'(c_2) 
+        \\ \quad \quad
+        \cup \{ (l, dc, \absinit(c_2)) | (l, dc) \in \absfinal(c_1) \} 
+        \cup \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_1; c_2) \} 
+     \end{array}
+    \]
+    Then we have two subcases where 
+    $\absevent_2 \in \absflow'(c_2)$ or $\absevent_2 \in \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_2) \}$.
+    \subcaseL{$\absevent_2 \in \absflow'(c_2)$}
+    Since $\absflow'(c_2) \subseteq \absflow(c)$, then we know $\absevent_2 \in \absflow(c)$.
+    \\
+    Let $\absevent = \absevent_2$, then we have $\absevent \in \absflow(c)$ and this subcase is proved.
+    \subcaseL{$\absevent_2 \in \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_2) \} $}
+    In this case, we know $(l_2, \_) \in \absfinal(c_2)$. By abstract continuation state computation in Section~\ref{sec:abs_prog-edge}, we know
+    \[
+      \absfinal(c_1; c_2) =  \absfinal(c_2) 
+    \]
+    Then we know $(l_2, \_) \in \absfinal(c_1; c_2)$. Let $\absevent = \absevent_2$, then we know 
+    \[
+      \absevent = \absevent_2 \in   \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_1; c_2) \}  \subset\absflow(c).
+    \]
+    Then we have $\absevent \in \absflow(c)$ and this subcase is proved.
+  \end{proof}
+  
+  For every labeled variable in program $c$, $x^l \in \lvar_c$, there is a unique abstract event in program's abstract execution trace $\absevent \in \absflow(c)$ of form $(l, \_, \_)$. 
+  \begin{lemma}[Uniqueness of the Abstract execution trace]
+  % \label{lem:absevent_unique}
+  For every program $c$ and
+  a finite execution trace $\trace \in \ftdom$ which is generated w.r.t.
+  an initial trace $\trace_0 \in \ftdom_0(c)$,
+  there is a unique abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
+  for every assignment event $\event \in \eventset^{\asn}$ in the
+  execution trace having the label $l$, i.e., $\event = (\_, l, \_)$ and $\event \in \trace$.
+  %
+  \[
+    \begin{array}{l}
+    \forall c \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom ,  \event = (\_, l, \_) \in \eventset^{\asn} \sthat
+    \big(
+      \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} 
+    % \lor 
+    % \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
+    \big)
+    \land \event \in \trace 
+    \\
+    \qquad \implies \exists ! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
+    \absevent \in \absflow(c)
+    \end{array}
+  \]
+  \end{lemma}
+  \begin{proof}
+    This is proved trivially by induction on the program $c$.
+  \end{proof}

@@ -1,0 +1,145 @@
+\begin{theorem}[Soundness of the Path-sensitive Reachability Bound]
+% \label{thm:pathsensitive_rb_soundness}
+For every program ${c}$ and every label $l$ in this program,
+$\econfig{\psRB(c, l)}$ is a \emph{Reachability-Bound} for $l$ in $c$.
+%
+\[
+    \begin{array}{l}
+      \forall c, c_r \in \cdom, \tpath \in \absG(c), \trace_0 \in \ftdom_0(c),  \trace_r \in \ftdom_0(c_r), \trace \in \tdom, l, l' \in \ldom, \rprog \sthat 
+      \\ \qquad
+      \rprog = REFINE(\algrewrite(c))
+      \land 
+      \rprog = \algrewrite(c_r)
+      \land
+      \\ \qquad
+      \land
+      \Big(
+      \config{c_r, \trace_0} \rightarrow^* \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace}
+      \lor \config{c_r, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
+      \Big)
+      \\ \qquad
+      \implies \econfig{\psRB(c, l)}(\trace_0) \geq \counter(\trace, l).
+    \end{array}
+  \]
+\end{theorem}
+%
+\begin{proof} \emph{Path-sensitive Reachability Bound} Soundness.
+
+    Taking arbitrary program $c$, a program point $l \in \lvar(c)$,
+    Let $c_r$ be the while language program where $\rprog = \algrewrite(c_r)$.
+    \\
+    Taking an arbitrary initial trace of $c$, $\trace_0 \in \ftdom_0(c)$, an arbitrary initial trace of $c_r$, $\trace_r \in \ftdom_0(c_r)$, and an execution trace $\trace \in \tdom$ and label $l' \in \lvar(c_r)$
+   such that 
+   \[
+    \config{{c_r}, \trace_r} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_r \tracecat \trace} \lor \config{c_r, \trace_r} \uparrow^{\infty} \trace_r \tracecat \trace,
+    \]
+   we have two cases.
+  \\
+  \textbf{$\bullet$ The execution terminates and {$\config{{c_r}, \trace_r} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_r \tracecat \trace}$}.} 
+  \\
+  In this case we know $\trace \in \ftdom$ and it is sufficient to show,
+  %
+    \[
+    \econfig{\psRB(c, l)}(\trace_0) \geq \counter(\trace, l) .
+    \]
+    By Definition~\ref{def:point_psrb}, it is sufficient to show 
+    \[
+    \econfig{
+        \sum \left\{ \inoutB(\rprog, \tpath) ~\vert~ \tpath \in \rprog \land l \in \tpath \right\}
+        }(\trace_0)  \geq  \counter(\trace, l)
+    \]
+    According to whether the program point $l$ is in any loop, there are two cases as follows.
+    \caseL{$l \not\in SCC(\absG(c))$}
+    In this case, we know $l$ isn't in any loop, and it will be executed at most once. So we have
+    \[ 
+        \counter(\trace, l) \leq 1
+    \]
+    Since $l \not\in SCC(\absG(c))$, we also know there is only one $\tpath$ contains $l$ by Definition~\ref{def:abs_cfg}.
+    \\
+    By Definition~\ref{def:pathrb}, we know $\inoutB(\rprog, \tpath) = 1$.
+    \\
+    Then we have 
+    \[
+        \begin{array}{l}
+        \econfig{
+        \sum \left\{ \inoutB(\rprog, \tpath) ~\vert~ \tpath \in \rprog \land l \in \tpath \right\}
+        }(\trace_0)
+        \\ =  \econfig{ \sum \left\{ 1 \right\}(\trace_0)}(\trace_0)
+        \\ =  1 \geq \counter(\trace, l).
+        \end{array}
+        \]
+    This case is proved.
+    \caseL{$l \in SCC(\absG(c))$}
+    In this case, let $TP$ be the set of all transition paths containing 
+    label $l$ in program $\rprog$, then it is sufficient to show 
+    \[
+        \econfig{\sum \left\{ \inoutB(\rprog, \tpath) ~\vert~ \tpath \in TP \right\}}(\trace_0)  
+        \geq   \counter(\trace, l)
+    \]
+    By Definition~\ref{def:tpath}, we know for each $\tpath \in TP$, $l \in \pathl(\tpath)$ and $l$ shows up at most once on $\pathl(\tpath)$. 
+    \\
+    Then we have
+    \[
+    \counter(\trace, l) \leq \sum\left\{ \lcounter(\trace, \pathl(\tpath)) ~\vert~ \tpath \in TP \right\}.
+    \]
+    By the soundness of path reachability-bound in Lemma~\ref{lem:pathrb-sound}, we know for each $\tpath \in TP$,
+    \[
+        \econfig{\inoutB(\rprog, \tpath)}(\trace_0)  \geq  \lcounter(\trace, \pathl(\tpath)).
+    \]
+    Then we have the soundness proved by
+    \[
+        \begin{array}{l}
+        \econfig{\psRB(c, l)}(\trace_0) 
+        \\ =
+        \econfig{\sum \left\{ \inoutB(\rprog, \tpath) ~\vert~ \tpath \in TP \right\}}(\trace_0) 
+        \\ \geq 
+        \sum\left\{ \econfig{\inoutB(\rprog, \tpath)}(\trace_0) ~\vert~ \tpath \in TP \right\}
+        \\ \geq 
+        \sum\left\{ \lcounter(\trace, \pathl(\tpath)) ~\vert~ \tpath \in TP \right\}
+        \\ \geq \counter(\trace, l)
+        \end{array}
+    \]
+    \textbf{$\bullet$ The execution is non-terminating and {$\config{{c_r}, \trace} \uparrow^{\infty} \trace_r \tracecat \trace$}.} 
+    \\
+     In this case we know $\trace \in \inftdom$ and is sufficient to show,
+    \[
+      \econfig{\psRB(c, l)}(\trace_0) \geq \counter(\trace, l).
+    \]
+    By Definition~\ref{def:counter}, we know $\counter(\trace, l) = \bot$ and this case is proved as well by the soundness of path reachability-bound in Lemma~\ref{lem:pathrb-sound}.
+    \end{proof}
+  
+% \begin{lem}[Uniqueness of the Enclosed Loop]
+% \label{lem:nestloop_unique}
+%     For every program $c$, let $\rprog$ be the corresponded refined program, 
+%     then for each of the transition path $\tpath \in \rprog$, there is at most one nested loop chain $lpch(\tpath) \in lp\mathcal{C}(\tpath)$.
+%     \[
+%     \forall c \in \cdom \sthat \rprog = REFINE(c) \land \tpath \in \rprog \implies 
+%     |lp\mathcal{C}(\tpath)| \leq 1
+%     \]
+% \end{lem}
+% Proof Summary:
+% \\
+% By induction on the program.
+% \\
+% Or by showing contradiction.
+% \begin{proof}
+%     Taking an arbitrary program $c$, let $\rprog$ be its  refined program.
+%     By the label consistency, for any transition path $\tpath$, $\tpath$ cannot be in two different while commands.
+%     \\
+%     It is sufficient to show the existence of a contradiction by assuming that 
+%     $\tpath$ is contained in two different while commands as follows,
+%     \\
+%     $c_1 = \ewhile \clabel{b_1}^{l_1} \edo c_{w1}$ and $c_2 = \ewhile \clabel{b_2}^{l_2} \edo c_{w2}$, 
+%     \\
+%     such that $c_1 \not\in c_2$ and $c_2 \not\in c_1$,
+%     $c_1 \in c$ and $c_2 \in c$.
+%     \\
+%     By $c_1 \not\in c_2$ and $c_2 \not\in c_1$ and the label consistency, we know 
+%     $\lvar(c_{w1}) \cap \lvar(c_2) = \emptyset$.
+%     \\
+%     By $\tpath \in c_{w1}$ and $\tpath \in c_{w2}$, we know 
+%     % \\
+%     $\lvar(c_{w1}) \cap \lvar(c_2) = \lvar(\tpath) \neq \emptyset$.
+%     \\
+%     Then we have a contradiction and this Lemma is proved.    
+% \end{proof}

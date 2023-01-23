@@ -1,0 +1,171 @@
+  \begin{lemma}[Trace Non-Decreasing]
+    % \label{lem:tracenondec}
+    For any program $c \in \cdom$ and initial trace $\trace_0 \in \ftdom_0(c)$,
+    if there exists $\trace \in \tdom$ and $c' \in \cdom $ such that $\config{c, \trace_0} \rightarrow^{*} \config{c', \trace} $ or 
+    $\config{c, \trace_0} \uparrow^{\infty} \trace$  
+    then there exists a trace $\trace' \in \tdom$ such that $\trace_0 \tracecat \trace' = \trace$ formally as follows.
+    %
+    \[
+      \begin{array}{l}
+      \forall \trace_0 \in \ftdom_0(c), \trace \in \tdom, c, c' \in \cdom \sthat
+      \Big( \config{c, \trace_0} \rightarrow^{*} \config{c', \trace} 
+      \lor  \config{c, \trace_0} \uparrow^{\infty} \trace \Big)
+      \\ \quad
+      \implies \exists \trace' \in \tdom \sthat \trace_0 \tracecat \trace' = \trace 
+      \end{array}
+    \]
+\end{lemma}
+\begin{proof}
+  Taking an arbitrary program $c \in \cdom$, an initial trace $\trace_0 \in \ftdom_0(c)$, by induction on program $c$, we have the following cases.
+  \caseL{$c = [\assign{x}{\expr}]^{l}$}
+  By the evaluation rule $\rname{assn}$, we have
+  $
+  {
+  \config{\clabel{\assign{{x}}{\aexpr}}^{l},  \trace_0 } 
+  \xrightarrow{} 
+  \config{\clabel{\eskip}^{l}, \trace_0 :: ({x}, l, v)}
+  }$, for some $v \in \mathbb{N}$.
+  \\
+  Let $\trace = \trace_0 ::({x}, l, v)$ and $\trace' =  [({x}, l, v) ]$,
+  then we have $\trace_0 \tracecat \trace' = \trace$ and this case is proved.
+  \caseL{$c = c_{1};c_{2}$}
+  By the first rule applied to $c$ in operational semantics, there are two cases as follows.
+  \subcaseL{$\rname{seq1}$}
+  If the first rule applied to $c$ is $\rname{seq1}$, we have
+  \[
+    \inferrule
+    {
+    \config{{c_1, \trace_0}}
+    \xrightarrow{}
+    \config{{c_1',  \trace_1}}
+    }
+    {
+    \config{{c_1; c_2, \trace_0}} 
+    \xrightarrow{} 
+    \config{{c_1'; c_2, \trace_1}}
+    }
+  \]
+  By induction hypothesis on $c_1$, we know 
+  \[
+    \exists \trace_1' \in \tdom \sthat \trace_0 \tracecat \trace_1' = \trace_1
+  \]
+  Let $\trace = \trace_1$ and $\trace' =  \trace_1'$,
+  then we have $\trace_0 \tracecat \trace' = \trace$ and this case is proved.
+  \subcaseL{$\rname{seq2}$}
+  If the first rule applied to $c$ is $\rname{seq2}$, we have
+  \[
+    \inferrule
+    {
+    \config{{c_2, \trace_0}}
+    \xrightarrow{}
+    \config{{c_2',  \trace_2}}
+    }
+    {
+    \config{{\clabel{\eskip}^l; c_2, \trace_0}} 
+    \xrightarrow{} 
+    \config{{c_2, \trace_2}}
+    }
+  \]
+  By induction hypothesis on $c_2$, we know 
+  \[
+    \exists \trace_2' \in \tdom \sthat \trace_0 \tracecat \trace_2' = \trace_2
+  \]
+  Let $\trace = \trace_2$ and $\trace' =  \trace_2'$,
+  then we have $\trace_0 \tracecat \trace' = \trace$ and this case is proved.
+  \caseL{$\ewhile \clabel{b}^{l_w} \edo (c_w)$}
+  By the first rule applied to $c$ in operational semantics, there are two cases as follows.
+  \subcaseL{$\textbf{while-t}$}
+  If the first rule applied to $c$ is $\rname{while-t}$, we have
+  \[
+    \config{{\ewhile \clabel{b}^{l_w} \edo c_w, \trace_0}}
+    \xrightarrow{} 
+    \config{{
+    c_w; \ewhile \clabel{b}^{l_w} \edo c_w,
+    \trace_0 :: (b, l_w, \etrue)}}.
+  \]
+  Let $\trace = \trace_0 ::(b, l_w, \etrue)$ and $\trace' =  [(b, l_w, \etrue)]$,
+  then we have $\trace_0 \tracecat \trace' = \trace$ and this case is proved.
+  %   \\
+  %   Let $\trace_w' \in \tdom$ be the trace satisfying following execution:
+  %   \\
+  %   $
+  %   \config{{
+  %   c_w,
+  %   \trace :: (b, l_w, \etrue, \bullet)}}
+  %   \xrightarrow{*} 
+  %   \config{{
+  %   \eskip, \trace_w'}}
+  % $
+  % \\
+  % By induction hypothesis on sub program $c_w$ with starting trace 
+  % $\trace :: (b, l_w, \etrue, \bullet)$ and ending trace $\trace_w'$, 
+  % we know there exist
+  % $\trace_w \in \tdom$ such that $\trace_w' = \trace :: (b, l_w, \etrue, \bullet) \tracecat \trace_w$.
+  % \\
+  % Then we have the following execution continued from $(1)$:
+  % \\
+  % $
+  % \config{{\ewhile \clabel{b}^{l_w} \edo c_w, \trace}}
+  %     \xrightarrow{} 
+  %     \config{{
+  %     c_w; \ewhile \clabel{b}^{l_w} \edo c_w,
+  %     \trace :: (b, l_w, \etrue, \bullet)}}
+  %     \xrightarrow{*} 
+  %     \config{\ewhile \clabel{b}^{l_w} \edo c_w, \trace :: (b, l_w, \etrue, \bullet) \tracecat \trace_w}
+  %     ~(2)
+  % $
+  % By repeating the execution (1) and (2) until the program is evaluated into $\eskip$,
+  % with trace $\trace_w^{i'} $ for $i = 1, \cdots, n n \geq 1$ in each iteration, we know 
+  % in the $i-th$ iteration,
+  %  there exists  $\trace_w^i \in \tdom$ such that  
+  % $\trace_w^{i'} = \trace_w^{(i-1)'} :: (b, l_w, \etrue, \bullet) ++ \trace_w^{i'}$
+  % \\
+  % Then we have the following execution:
+  % \\
+  % $
+  % \config{{\ewhile \clabel{b}^{l_w} \edo c_w, \trace}}
+  %     \xrightarrow{} 
+  %     \config{{
+  %     c_w; \ewhile \clabel{b}^{l_w} \edo c_w,
+  %     \trace :: (b, l_w, \etrue, \bullet)}}
+  %     \xrightarrow{*} 
+  %     \config{\ewhile \clabel{b}^{l_w} \edo c_w, \trace_w^{n'}}
+  %     \xrightarrow{}^\rname{{while-f}}
+  %     \config{\eskip, \trace_w^{n'}:: (b, l_w, \efalse, \bullet)}
+  % $ and $\trace_w^{n'} = \trace :: (b, l_w, \etrue, \bullet) \tracecat \trace_w^{1} :: \cdots :: (b, l_w, \etrue, \bullet) \tracecat \trace_w^{n} $.
+  % \\
+  % Picking $\trace' = \trace_w^{n'} :: (b, l_w, \efalse, \bullet)$ and $\trace'' = [(b, l_w, \etrue, \bullet)] \tracecat \trace_w^{1} :: \cdots :: (b, l_w, \etrue, \bullet) \tracecat \trace_w^{n}$,
+  % we have 
+  % $\trace ++ \trace'' = \trace'$.
+  % \\
+  % This case is proved.
+  \subcaseL{$\textbf{while-f}$}
+  If the first rule applied to $c$ is $\rname{while-f}$, we have
+  \[
+    \config{{\ewhile \clabel{b}^{l_w} \edo (c_w), \trace_0}}
+    \xrightarrow{}^\rname{while-f}
+    \config{{
+    \eskip,
+    \trace_0 :: (b, l_w, \efalse)}}
+  \],
+  Let $\trace = \trace_0 ::(b, l_w, \efalse)$ and $\trace' =  [(b, l_w, \efalse)]$,
+  then we have $\trace_0 \tracecat \trace' = \trace$ and this case is proved.
+  \caseL{$\eif(\clabel{b}^l, c_t, c_f)$}
+  By the first rule applied to $\eif(\clabel{b}^l, c_t, c_f)$ in operational semantics,
+  we have two cases \rname{if-t} and \rname{{if-f}}.
+  Then both of the two cases will append the evaluation result of the guard $\clabel{b}^l$, $(b, l_w, \etrue)$ and $(b, l_w, \efalse)$ respectively.
+  \\
+  Formally, the two cases will be proved in the same way as \textbf{case: $c = \ewhile \clabel{b}^{l} \edo (c_w)$}.
+\end{proof}
+    %
+\begin{lemma}[Uniqueness of the Program Labels]
+  % \label{lem:label_unique}
+  For every program $c \in \cdom$ and every two labels such that
+  $i, j \in \lvar(c)$, then $i \neq j$.
+  \[
+    \forall c \in \cdom, i, j \in \ldom \sthat i, j \in \lvar(c)\implies i \neq j.
+    \]
+\end{lemma}
+  \begin{proof}
+    The proof is trivially by induction on program $c$.
+  \end{proof}
