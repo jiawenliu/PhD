@@ -61,8 +61,8 @@ but rather the upper bound on the cost can happen at any intermediate step.
 % all these works in the two categories fail to recognize the case where program resource consumption is decreased implicitly.
 \paragraph*{Type-System Based}
 In type-system-based analysis methodology,
-they design the effect systems~\cite{cciccek2017relational,radivcek2017monadic,qu2019relational},
-Hoare-Logic~\cite{gaboardi2021graded}, or amortized type system~\cite{hoffmann_jost_2022}.
+they design the effect systems~\cite{CicekBG0H17,RadicekBG0Z18,QuG019},
+Hoare-Logic~\cite{GaboardiKOS21}, or amortized type system~\cite{RajaniG0021}.
 They statically estimate a sound upper bound for the program's cost.
 However, they all aim to compute the bound for the traditional resource cost accumulatively
 without considering the cost decreasing. 
@@ -77,7 +77,7 @@ without considering the cost decreasing.
 % The only way to save the cost on the potential
 % type, as 
 % The type system in~\cite{GustafssonEL05} and
-The amortized type-system designed in \cite{hoffmann_jost_2022} considers a perfect garbage collection
+The amortized type-system designed in \cite{RajaniG0021} considers a perfect garbage collection
 % through explicit abstraction or data structure de-allocation.
 % data structure deallocation 
 % and they 
