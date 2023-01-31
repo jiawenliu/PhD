@@ -62,27 +62,28 @@ The second part focus on computing the precise reachability-bound for every prog
     \item \redd{PART \romannum{2} \quad  REACHABILITY BOUND ANALYSIS}
 
     \paragraph{Chapter~\ref{sec:reachability-intro}} gives the introduction of the
-    \emph{Reachability-bound} Problem in
     Section~\ref{sec:reachability-background}, and
     then presents the motivation and existing limitations on this problem and give the overview of the new algorithm in
     Section~\ref{sec:reachability-motivation} and the structure of this part 
     in Section~\ref{sec:reachability-outline}.
 
-    \paragraph{Chapter~\ref{sec:reachability-analysis}} presents the {path-sensitive reachability-bound analysis} through the following sections.
-
-    In Section~{\ref{sec:psRB-language}}, we first give the language and program model formally, including the
+    \paragraph*{Chapter~\ref{sec:psRB-language}}, we first give the language and program model formally, including the
     language syntax in Section~\ref{sec:psRB-language-syntax} and the trace-based operational semantics in Section~\ref{sec:psRB-language-semantics}.
     
-    Then Section~\ref{sec:psRB-definition} gives the \emph{reachability-bound} definition.
+    \paragraph{Chapter~\ref{sec:psRB-definition}} gives the \emph{reachability-bound} definition.
 
+    \paragraph{Chapter~\ref{sec:psRB-analysis-alg}} presents the {path-sensitive reachability-bound analysis} through the following sections.
     Section~\ref{sec:psRB-analysis-alg} presents the new \emph{path-sensitive reachability-bound} analysis algorithm, named $\kw{psRB}$ through the following subsections.
     %
     Section~\ref{sec:psRB-preface} first gives the main steps of this algorithm as a structural section. There are five steps in this algorithm.
     In Section~\ref{sec:psRB-progabs}, the first step abstracted the program into an \emph{abstract transition graph}.
     Based on this graph, Section~\ref{sec:psRB-refine} then refines the multi-paths loop in this program and generates a refined program.
     According to the graph and the refined program, Section~\ref{sec:psRB-rank} computes the ranking function for each edge on the graph and estimates the value of each ranking function.
+    
+    Built on the combination of the ranks with the refined program, Section~\ref{sec:psRB-psrb} first presents the \emph{path-sensitive reachability-bound} algorithm for each program point and the following sections give the detail computations.
+
     Section~\ref{sec:psRB-pathlocalrb} and \ref{sec:psRB-looprb} then computes the \emph{path reachability-bound} and \emph{loop reachability-bound} for each path and loop of this program using the ranking function and the graph.
-    Then Section~\ref{sec:psRB-rb} finally gives the \emph{path-sensitive reachability-bound} computation algorithm for each program point.
+    
 
     \paragraph{Chapter~{\ref{sec:psRB-eval}}} presents four step-by-step examples to illustrate the algorithm clearly in Section~\ref{sec:psRB-example} firstly,
     and then shows the implementation and evaluation results over five real world benchmarks in Section~\ref{sec:psRB-eval}.

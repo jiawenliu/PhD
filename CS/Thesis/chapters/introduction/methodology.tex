@@ -1,5 +1,13 @@
 \subsection{Adaptivity Analysis}
 \label{sec:intro-methodology-adapt}
+
+\subsubsection{Language Models}
+\paragraph{Existing Methodology and Limitations}
+\todo{Brief Describe Existing Language Models}
+
+\paragraph{Our Method}
+\todo{Brief Describe our Language Model}
+
 \subsubsection{Program Property Formalization}
 
 \paragraph{Existing Methodology and Limitations}
@@ -153,12 +161,36 @@ We compute the refined program $\rprog$ based on the abstract transition graph a
 effectively combine this methodology with the \emph{amortized complexity analysis} above through ranking function estimation.
 % The next methodology introduced in the next part 
 
-\subsubsection{Path and Loop Reachability-bound}
-The \emph{path reachability-bound} and the \emph{loop reachability-bound} are the main novelty of our new path-sensitive reachability-bound algorithm build on the traditional methods.
+\subsubsection{Reachability-bound Computation}
+\paragraph{Existing Techniques and Limitation.}
+\cite{GulwaniZ10} first introduce \emph{reachability-bound} as the upper bound on the number of times a given control location 
+inside a procedure is visited during program execution.
+While existing works all have different limitations when inferring the \emph{reachability-bound}.
+For example, Gulwani et. al~\cite{GulwaniZ10}
+give a two-step solution by combining program abstract and proof-rules-based bound computation.
+But it does not compute the \emph{reachability-bound} precisely for every control location.
+Instead, they only compute the complexity bounds for the overall loop and over-approximate for different locations using this bound,
+which is loose especially when there are multipath loops.
+Techniques in program complexity analysis~\cite{GustafssonEL05,HumenbergerJK18} 
+or worst-case resource cost analysis
+~\cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14} can be repurposed to estimate similar quantities such as the
+bounds on loop iterations, execution time, etc.
+While these quantities focus only on 
+the overall complexity,
+none of them compute the reachability-bound on a given program control location directly or path-sensitively.
+This leads to inaccuracy in data leakage analysis, resource cost estimation, etc.
+
+\paragraph{Our Method}
+To overcome these limitations, 
+our method is built over an abstract transition graph which effectively combines amortized complexity analysis with loop summarization-based multipath refinement.
+This combination mitigates the limitations faced by either technique individually. 
+Building on this combination, we introduce two novel quantities,
+the \emph{path reachability-bound} and \emph{loop reachability-bound}.
+They are the main novelty of our new path-sensitive reachability-bound algorithm build on the traditional methods.
 It is computed over the refined program and effectively utilizing the ranking function estimated through the abstract transition graph.
 These two bounds combines the two lines of techniques effectively and complements the weakness in both lines.
 
-The first key idea -- the \emph{path reachability-bound} $\inoutB(\rprog, \tpath)$ is a reachability-bound for a loop free path $\tpath$ inside a refined loop $\rprog$. This bound approximates the evaluation times of each loop free path instead of the entire multipath loop.
+The first novel quantity -- the \emph{path reachability-bound} $\inoutB(\rprog, \tpath)$ is a reachability-bound for a loop free path $\tpath$ inside a refined loop $\rprog$. This bound approximates the evaluation times of each loop free path instead of the entire multipath loop.
 \\
 This bound is computed based on the refined loop and using the estimated ranking function for every path, combines two lines of work above. 
 It is benefited from the high accuracy of the path refinement and the ranking function estimation, but reduces the efficiency comparing to simply computing the ranking function.
@@ -172,9 +204,7 @@ the outside loop, $L:\rprog$ w.r.t. the innermost loop where $\tpath$ is enclose
 such that during these iterations of $L:\rprog$, the innermost loop is ``entered''. 
 This is distinguished from the traditional methods and this quantity isn't considered or computed in any of the previous works.
 Traditional methods only estimate the bound on the inner loop's iteration number
-in one iteration of the outside loop.}
-\\
-In the line of methods based on path refinement and loop summarization, the \emph{Progress Invariant} method in \cite{GulwaniJK09} is only able to compute
+in one iteration of the outside loop.} \cite{GulwaniJK09} considers a similar amount based on \emph{Progress Invariant}, but it is only able to compute
 the
 bound on iteration numbers
 of the inner loop in each iteration of outside loop.
