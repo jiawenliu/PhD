@@ -31,13 +31,13 @@ The second part focus on computing the precise reachability-bound for every prog
     The Section~\ref{sec:dynamic-datadep} defines \emph{variable may-dependency} relation in order to the reason the \emph{data-dependency} between every query semantically.
     % through the methodology of semantic data dependency analysis.
 %
-    In Section~\ref{sec:dynamic-graph}, it analyzes the \emph{dependency-quantity} over variables
+    In Section~\ref{sec:dynamic-graph}, it analyzes the \emph{dependency quantity} over variables
     based on the \emph{variable may-dependency} relations formalized above.
     Then we combine this quantitative information with \emph{variable may-dependency} relations and construct a weighted dependency graph
     named \emph{semantics-based dependency graph}.
     %
     Then in Section~\ref{sec:dynamic-adapt}, we present the formal \emph{adaptivity} model in Definition~\ref{def:trace_adapt} as a formal quantitative reachability property.
-   This definition is based on the \emph{semantics-based dependency graph} by combining both \emph{data-dependency} and \emph{dependency-quantity} property, which captures intuitive \emph{adaptivity} accurately.
+   This definition is based on the \emph{semantics-based dependency graph} by combining both \emph{data-dependency} and \emph{dependency quantity} property, which captures intuitive \emph{adaptivity} accurately.
 
     Section~\ref{sec:adapt-static} develops a static program adaptivity analysis framework, named {\THESYSTEM}.
     This analysis combines both data dependency analysis with resource cost analysis techniques.
@@ -47,7 +47,7 @@ The second part focus on computing the precise reachability-bound for every prog
     In Section~\ref{sec:alg_vertexgen},~\ref{sec:alg_weightedgegen} and~\ref{sec:alg_graphgen}, it constructs an 
     \emph{estimated dependency} graph for approximating the \emph{semantics-based dependency graph}.
     Specifically, through Section~\ref{sec:alg_edgegen}, {\THESYSTEM} first uses a combined data-control flow analysis algorithm estimating the data \emph{variable may-dependency} relation in order to estimate the edge of this graph.
-    The Section~\ref{sec:alg_weightgen} presents a reachability-bound analysis algorithm. {\THESYSTEM} then uses this algorithm and estimates the \emph{dependency-quantity} for \emph{adaptivity}, as well as the weight of this graph.
+    The Section~\ref{sec:alg_weightgen} presents a reachability-bound analysis algorithm. {\THESYSTEM} then uses this algorithm and estimates the \emph{dependency quantity} for \emph{adaptivity}, as well as the weight of this graph.
     Then Section~\ref{sec:alg_graphgen} combines all information and constructs the 
     \emph{estimate dependency} graph.
     The Section~\ref{sec:alg_adaptcompute} presents an efficient and accurate path search algorithm. It computes the \emph{adaptive} from the estimated graph.

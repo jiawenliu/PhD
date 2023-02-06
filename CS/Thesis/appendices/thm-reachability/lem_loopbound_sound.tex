@@ -75,15 +75,10 @@ Below we prove the soundness of a more general version Loop Bound Computation, $
   \begin{array}{lll}
     1 &  \rprog = \tpath\\
     \min \left\{BD(\rprog_1, c), BD(\rprog_2, c) \right\} & \rprog = \rprog_1;\rprog_2\\
-    \max\left\{ BD(\rprog_1, c), \ldots, BD(\rprog_m, c) \right\} & \rprog = \rpchoose{\rprog_1, \ldots, \rprog_m } \\
-    % \max\limits_{x \in \left\{ \locbound(\absevent, c) | \tpath \in \rprog_l \land \absevent \in \tpath \right\}}
-    % \big\{ \highlight{\frac{a - b}{\varGD(\rprog_l, c)}} & \rprog = \rprepeat(\rprog_l) 
-    % \\  \qquad
-    % ~\vert~ x = a \in \rfinit(\rprog_l, c)
-    % % \\ & & \qquad \qquad \qquad \qquad \qquad \qquad \qquad 
-    % \land x = b \in \rffinal(\rprog_l, c)
-    % \big\} \\
-    \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}}
+    \max\left\{ BD(\rprog_1, c), \ldots, BD(\rprog_m, c) \right\} & \rprog = \rpchoose{\rprog_1, \ldots, \rprog_m } 
+    \\
+    %
+    \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}} 
     \Big\{ \highlight{\frac{a - b}{\varGD(\tpath, c)}}  &  \rprog = \rprepeat(\tpath)
     \\ \qquad 
     ~\vert~
@@ -91,10 +86,16 @@ Below we prove the soundness of a more general version Loop Bound Computation, $
     \land x = b \in \rffinal(\tpath, c)
     \Big\} 
     \\
-    \frac{\min\{ \rfinit(\rprog_1), \rfinit(\rprog_1) - \varGD(\rprog_1) \} - \rffinal(\rprog_2;\rprog_2)}{ 
-    \varGD(\rprog_1;\rprog_2)}  & \rprog = \rprepeat(\rprog_1;\rprog_2)
-    \\
-    0  &  o.w.
+  \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}} 
+    \Big\{ \highlight{\frac{\min\{ a, a - \varGD(\rprog_1, c) \} - b}{\varGD(\rprog_1;\rprog_2, c)}}  
+    &  \rprog = \rprepeat(\rprog_1;\rprog_2)
+    \\ \qquad 
+    ~\vert~
+    x = a \in \rfinit(\rprog_1, c)
+    % \\ \qquad 
+    \land x = b \in \rffinal(\rprog_2;\rprog_2, c)
+    \Big\}   \\
+  0  &  o.w.
 \end{array}
 \right.
 \]
@@ -635,21 +636,22 @@ Then in the first subcase, $\rprog' = \rprepeat(\rprog_l) = \tpath$, we have thi
     \end{array}
 \]
 In the subcase of $\rprog_l = \rprog_1; \rprog_2$, 
-we know 
-$\min\{ \rfinit(\rprog_1), \rfinit(\rprog_1) - \varGD(\rprog_1) \}$ bounds the minimum initial value of the counter during the first loop iteration.
+we know for arbitrary $a \in \scvar(c)$ such that $x = a \in \rfinit(\rprog_1, c)$,
+$\min\{ a, a - \varGD(\rprog_1, c) \}$ bounds the minimum initial value of the counter during the first loop iteration.
 
-We also have $\rffinal(\rprog_2;\rprog_2) = \rffinal(\rprog_l)$ and $\varGD(\rprog_l) = \varGD(\rprog_1;\rprog_2)$.
+% \\ \qquad 
+We also have  $\varGD(\rprog_l) = \varGD(\rprog_1;\rprog_2)$.
 Then this subcase is proved by 
 \[
   \begin{array}{l}
     \econfig{
-      \max\limits_{x \in \left\{ \locbound(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\}}
-      \Big\{ \highlight{\frac{a - b}{\varGD(\rprog_l, c)}} 
-      \\ \qquad
+      \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}} 
+      \Big\{ \highlight{\frac{\min\{ a, a - \varGD(\rprog_1, c) \} - b}{\varGD(\rprog_1;\rprog_2, c)}}  
+      \\ \qquad 
       ~\vert~
-      x = a \in \min\{ \rfinit(\rprog_1), \rfinit(\rprog_1) - \varGD(\rprog_1) \}
-      \land x = b \in \rffinal(\rprog', c)
-      \Big\} 
+      x = a \in \rfinit(\rprog_1, c)
+      \land x = b \in \rffinal(\rprog_2;\rprog_2, c)
+      \Big\}  
     }(\trace_0) \\
     \geq
     \# \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom

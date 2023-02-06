@@ -23,7 +23,7 @@ Intuitively,
 $\outinB(\rprog_l, \tpath, c)$ bounds the execution times of $\tpath$ when only its innermost loop program $\rprog_l$ is executing.
 % and $\rprog$ is the closest loop where $\tpath$ is nested.
 For example in the first interleaving pattern $\rprog_1^1$ in Example~\ref{ex:relatedNestedWhileOdd-overview}, 
-$4:\rprepeat(\tpath_3)$ is the innermost loop program of $\tpath_3$. So we first compute $m - n$ as its local \emph{path reachability-bound} to bound its iteration times in its closest loop by Section~\ref{sec:pathlocalrb}.
+$4:\rprepeat(\tpath_3)$ is the innermost loop program of $\tpath_3$. So we first compute $m - n$ as its local \emph{path reachability-bound} to bound its iteration times in its closest loop by Section~\ref{sec:psRB-pathlocalrb}.
 
 Next, we define the \emph{loop reachability-bound},
 $\lpchB(l: \rprog_l, \tpath, c) \in \scexpr(c)$ for every outer loop program $\rprog_l$ of $\tpath$ in $\rprog$. This quantity aims to precisely bound the iteration numbers of the outer loop $l$,
@@ -39,7 +39,7 @@ such that,
 during these iterations, the nested loop $l' = \kw{enclosed(\tpath)}$ is entered.
 \end{defn}
 In Example~\ref{ex:relatedNestedWhileOdd-overview}, $\tpath_3$ has an outer loop $\rprog_1^1$. Since $L_4$ will be ``entered'' only in the first iteration of $\rprog_1^1$,
-we aim to compute $1$ for $\lpchB(\rprog_1^1, \tpath_3, c)$ in Section~\ref{sec:looprb}.
+we aim to compute $1$ for $\lpchB(\rprog_1^1, \tpath_3, c)$ in Section~\ref{sec:psRB-looprb}.
   % and we compute $\lpchB(\rprog_1^1, \tpath_3, c) = 1$. It is tight because the innermost loop of $\tpath_3$ will be ``entered'' only in the first iteration of $\rprog_1^1$.
 
 % Intuitively $\lpchB(l: \rprog_l, \tpath, c) \in \scexpr(c)$
@@ -49,7 +49,7 @@ we aim to compute $1$ for $\lpchB(\rprog_1^1, \tpath_3, c)$ in Section~\ref{sec:
 The \emph{path reachability-bound}, $\inoutB(\rprog, \tpath, c)$ for each $\tpath$
 aims to bound the execution times of $\tpath$ globally
 % during the execution of $c$ 
-and Section~\ref{sec:pathrb} presents the estimating algorithm.
+and Section~\ref{sec:psRB-pathrb} presents the estimating algorithm.
 %
 \begin{defn}[Path Reachability-bound]
 % \label{def:pathrb}

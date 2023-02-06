@@ -1,42 +1,46 @@
-% \textbf{Step 1: Abstract Transition Graph}
-\textbf{Step 1: }
-The Section~\ref{sec:psRB-progabs} first 
-computes the \emph{Abstract Transition Graph} as in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b).
+
+\textbf{Step 1}
+in Section~\ref{sec:psRB-progabs} first 
+generates the \emph{Abstract Transition Graph} as in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b).
 Each edge $l \xrightarrow{dc} l'$ is an abstract transition $\absevent = (l, dc, l')$ annotated with a constraint $dc$ corresponding to the command of label $l$.
 
 % \textbf{Step 2: Program Refinement}
-\textbf{Step 2: }
-The second step in Section~\ref{sec:psRB-refine}
+\textbf{Step 2} in Section~\ref{sec:psRB-refine}
+% The second step in Section~\ref{sec:psRB-refine}
 computes the \emph{Refined Program}, $\rprog$ for a program $c$ based on 
 its abstraction transition graph and transforms the multiple-paths loops
 into multiple loops where
-the interleaving of paths is explicit as in bottom part of Figure~\ref{fig:relatedNestedWhileOdd-overview}(c).
+the interleaving of paths is explicit as in the bottom of Figure~\ref{fig:relatedNestedWhileOdd-overview}(c).
 It has two interleaving patterns in the loop $L_1$.
-%  denoted as $\rprog_1^1$ and $\rprog_1^2$.
+% denoted as $\rprog_1^1$ and $\rprog_1^2$.
 
 % \textbf{Step 3: Ranking Function Estimation}
-\textbf{Step 3: }
-In the meanwhile, Section~\ref{sec:psRB-rank} computes the \emph{Ranking Function}, $\locbound(\absevent, c)$ 
+\textbf{Step 3} computes the \emph{Ranking Function}, $\locbound(\absevent, c)$ 
 for every edge $\absevent$ 
-and estimates an upper bound invariant for each.
+and estimates an upper bound invariant, which is presented in Section~\ref{sec:psRB-rank}.
 
 % \textbf{Step 4: Path-sensitive Reachability-bound Computation.}
-\textbf{Step 4: }
+\textbf{Step 4}
 % The \emph{path-sensitive reachability-bound} 
-The algorithm computes the \emph{Reachability-bound}, $\psRB(l, c)$ for every program point $l$ using the $\rprog$ and the upper bound invariant of the $\locbound(\absevent, c)$ where $\absevent = (l,dc,l')$.
-It requires to compute our two novel quantities, the \emph{Path Reachability-bound}, $\inoutB(\rprog, \tpath, c)$ and the \emph{Loop Reachability-bound}, $\lpchB(l: \rprog, \tpath, c)$.
+computes the \emph{Reachability-bound}, $\psRB(l, c)$ for every program point $l$ using the $\rprog$ and the upper bound invariant of the $\locbound(\absevent, c)$ where $\absevent = (l,dc,l')$.
+\highlight{It requires computing the \emph{path reachability-bound}, $\inoutB(\rprog, \tpath, c)$ for every $\tpath$.
+If there are nested loops, we need to compute the \emph{loop reachability-bound}, $\lpchB(l: \rprog, \tpath, c)$ w.r.t. every level of $\tpath$'s outer loop. }
 Section~\ref{sec:psRB-psrb} introduces this algorithm and the following sections describe the computations. 
-The soundness of each algorithm is in the Appendices and the input $c$ will be omitted if the context is clear.
+The soundness and proof of each algorithm are given in the Appendices and the input $c$ will be omitted in the rest of the paper if the context is clear.
 
-In the first interleaving pattern, $\rprog_1^1 = 1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4)$ in Figure~\ref{fig:relatedNestedWhileOdd-overview},
-we first compute $\outinB(4:\rprepeat(\tpath_3), \tpath_3) = n - m$
- for $\tpath_3$ in its innermost loop $L_4$ as a local \emph{path reachability-bound} in Section~\ref{sec:psRB-pathlocalrb}.
-Then we compute $\lpchB(\rprog_1^1, \tpath_3) = 1$ w.r.t. its outer loop $L_1$ in Section~\ref{sec:psRB-looprb}. In the second interleaving pattern, we compute $\outinB(4:\rprepeat(\tpath_3), \tpath) = n - m - 3$ and the same for $\lpchB$.
-So Section~\ref{sec:psRB-pathrb} computes $\inoutB(\rprog, \tpath_3) = \max\{ 1 \times (n - m), 1 \times (n - m - 3) \} = n - m$ globally.
-
-Then for every program point $l$, we sum up all the $\inoutB(\rprog, \tpath)$ over $\tpath$ that contains $l$ and get $\psRB(l, c)$.
+In Figure~\ref{fig:relatedNestedWhileOdd-overview}, for $\tpath_3$ in the first interleaving pattern, $\rprog_1^1 = 1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4)$, 
+we first compute a local \emph{path reachability-bound}, $\outinB(4:\rprepeat(\tpath_3), \tpath_3, c) = n - m$
+w.r.t. its innermost loop $L_4$ by Section~\ref{sec:psRB-pathlocalrb}.
+Since $\tpath_3$ is nested in two loops, we need to compute the \emph{loop reachability-bound} for it
+w.r.t. its outer loop $L_1$. The algorithm in Section~\ref{sec:psRB-looprb} computes a tight bound $\lpchB(\rprog_1^1, \tpath_3, c) = 1$. We also compute In the second interleaving pattern $\rprog_1^2$ the same number and
+then
+% $\outinB(4:\rprepeat(\tpath_3), \tpath, c) = n - m - 3$ and the same $\lpchB(\rprog_1^2, \tpath_3, c)$.
+% So 
+Section~\ref{sec:psRB-pathrb} computes $\inoutB(\rprog, \tpath_3, c) = \max\{ 1 \times (n - m), 1 \times (n - m - 3) \} = n - m$ globally for $\tpath_3$.
+%
+Now for every program point $l$, we sum up the $\inoutB(\rprog, \tpath)$ over all $\tpath$ that contains $l$ and get $\psRB(l, c)$.
 Since point $5$ only shows up on $\tpath_3$, we compute \highlight{$\psRB(5, c) = n - m$}.
-The points $0$ and $\lex$ are not in any loop, so $\psRB(0) = \psRB(\lex) = 1$,
-The points $3, 6, 7$ and $8$ which only show up once on $\tpath_2$ and $\tpath_4$ are all equal to $\lfloor\frac{m}{4}\rfloor$, which are same as their $\inoutB$.
-For the loop headers $1$ and $4$, we only sum up the $\inoutB(\rprog, \tpath)$ where they show up as start-point of the $\tpath$.
-So $\psRB(4) =  \lfloor\frac{m}{4}\rfloor + n - m + 1$ and $\psRB(1) = 2 \times \lfloor\frac{m}{4}\rfloor + 1$ all as expected.
+The points $0$ and $\lex$ are not in any loop, so $\psRB(0, c) = \psRB(\lex, c) = 1$,
+The points $3, 6, 7$ and $8$ which only show up once on $\tpath_2$ and $\tpath_4$ are all equal to $\lfloor\frac{m}{4}\rfloor$ the same as their $\inoutB$.
+For the loop headers $1$ and $4$, we only count the $\tpath$ where they show up as a start-point.
+So $\psRB(4, c) = \lfloor\frac{m}{4}\rfloor + n - m + 1$ and $\psRB(1,c) = 2 \times \lfloor\frac{m}{4}\rfloor + 1$ all as expected.

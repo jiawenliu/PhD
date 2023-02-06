@@ -57,7 +57,7 @@ As usual, we denote by $\event \notin \trace$ that the event $\event$ doesn't be
 \end{defn}
 %
 In the rest of the paper, we denote by $\bot$ a value s.t. $\bot < n $ for all $n \in \mathbb{N}$.
-\begin{defn}[Counter Notation]
+\begin{defn}[Counter Notation for Program Point]
   \label{def:counter}
 The counting operator $\counter : \tdom \to \ldom \to (\mathbb{N} \cup \{\bot\})$
 counts the appearance of a label in a trace.
@@ -78,9 +78,9 @@ counts the appearance of a label in a trace.
 \]
 {When the input trace is infinite, $\counter(\trace, l)$ returns $\bot$ for any program label $l$.}
 \end{defn}
-\begin{defn}[Counter Notation of Label List]
+\begin{defn}[Counter Notation for List of Program Point]
   \label{def:lcounter}
-  The counting operator $\lcounter : \tdom \to \ldom \to (\mathbb{N} \cup \{\infty\})$
+  The counting operator $\lcounter : \tdom \to \mathcal{P}(\ldom) \to (\mathbb{N} \cup \{\infty\})$
   counts the appearance of a list of labels $[l_1, \ldots, l_n]$ as follows.
 \[
   \begin{array}{ll}

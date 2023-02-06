@@ -1,5 +1,4 @@
-\section{Labeled Language}
-\label{sec:psRB-language-syntax}
+\subsection{Labeled Language}
 \[
 \begin{array}{llll}
 \mbox{Arithmetic Operators} 
@@ -88,7 +87,8 @@ We denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$, and
 \\
 %
 \ftdom_0(c) & : & \mbox{Set of Program $c$'s Well-formed Initial Traces.}
-\\ & & \mbox{Each well formed initial trace $\trace_0 \in \ftdom_0(c)$ is finite and every input variable of the program $c$ has an initial value in $\trace_0$.}
+\\ & & \mbox{Each well formed initial trace $\trace_0 \in \ftdom_0(c)$ is finite and every input variable}
+\\ & & \mbox{of the program $c$ has an initial value in $\trace_0$.}
 \end{array}
 \]
 %
@@ -97,7 +97,7 @@ Expressions include
 standard arithmetic expression, $\aexpr \in \mathcal{A}$ (with the value $n \in \mathbb{N} \cup \{ \infty\}$ and the variable $x$ from a finite universe $\vardom$) and boolean expression, $\bexpr \in \booldom$, where we denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$.
 An arithmetic expression can be a constant $n$ denoting integer, a variable $x$ from some countable set $\vardom$, binary operation $\oplus_a$ such as addition, product, subtraction, etc., over arithmetic expressions, with also $\elog$ and $\esign$. 
 %
-A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq, =, <$, etc.
+A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and or denoted by $\oplus_b$, and basic comparison $\sim$ between arithmetic expressions, e.g., $\leq, =, <$, etc.
 Additionally, we also have list in expression.
 
 \paragraph{Labeled Command}
@@ -122,8 +122,8 @@ We denote by $\cdom$ the universe of all labeled commands and $\ldom$ for all la
   showing up in $c$ such that they are never defined before using, are actually the input variables of this program.
   We denote by $\mathcal{V}_{\lin}$ the universe of all input variables and $\kw{V_{\lin}}(c)$ the set of input variables in a given program $c$.
 
-\section{{Trace-based Operational Semantics}}
-\label{sec:psRB-language-semantics}
+\subsection{{Trace-based Operational Semantics}}
+\label{sec:operational_semantics}
 \paragraph{Event}
 An event is a triple.
 Its first element is the variable name $x$,
@@ -153,7 +153,7 @@ $\pi_i : \eventset \to \vardom \cup \booldom \cup \ldom $
 \paragraph{Trace.}
 \input{chapters/reachability/trace}
 %
-\paragraph{Environment.} $\env : {\ftdom}  \to \vardom \to(\mathbb{N} \cup \{\bot\})$.  
+\paragraph{Environment.} $\env : {\ftdom}  \to \vardom \to(\mathbb{N} \cup \{\bot, \infty\})$.  
 We don't use separate data structure as the environment to record each variable's value or state. Instead, we use the operator $\env (\trace) x$ to fetch the latest value assigned to $x$ in the trace $\trace$. 
 \[
 \begin{array}{llll}
@@ -180,52 +180,75 @@ In the rest part of the paper, we implicitly consider $\trace$ as a well-formed 
 when $\trace \in \ftdom_0(c)$, and $\ftdom_0(c)$ is used as the set of well-formed initial traces for program $c$.
 %
 \paragraph{Expression Semantics}
-The evaluation notation for arithmetic expression is $\econfig{} : \mathcal{A} \to \tdom \to \mathcal{V}$.
-The $\econfig{\aexpr}(\trace)$ evaluates an arithmetic expression $\aexpr$ under trace $\trace$ following the arithmetic expression evaluation rules in Figure~\ref{fig:aexpr-eval}.
+The evaluation notation for arithmetic expression is $\aconfig{} : \mathcal{A} \to \tdom \to \mathcal{V}$.
+The $\aconfig{\aexpr}(\trace)$ evaluates an arithmetic expression $\aexpr$ under trace $\trace$ following the arithmetic expression evaluation rules in Figure~\ref{fig:aexpr-eval}.
+
+We also define for $\infty$ the following mathematic computation with arbitrary $\trace \in \tdom$.
+ \[
+  \begin{array}{llll}
+  \aconfig{\aexpr + \infty} (\trace) = \infty
+ &
+ \aconfig{\aexpr - \infty} (\trace) = 0
+ &
+ \aconfig{\infty - \aexpr} (\trace) = \infty
+  &
+ \aconfig{\aexpr \div \infty} (\trace) = 0
+ \\
+ \aconfig{\min(\aexpr, \infty)} (\trace) = \aexpr
+ &
+ \aconfig{\max(\aexpr, \infty)} (\trace) = \infty
+ &
+ \aconfig{\elog(\infty)} (\trace) = \infty
+ &
+ \aconfig{\esign(\infty)} (\trace) = 1
+  \end{array}
+ \]
+% and
+% $\aconfig{\aexpr + \bot} (\trace) = \bot$, $\aconfig{\max(\aexpr, \bot)} (\trace) = \aexpr$, etc. respectively 
 \begin{figure}
 \begin{mathpar}
-  \boxed{ \econfig{} \, : \, \mbox{Arithmetic Expression $\to$ Trace $\to$ Arithmetic Value}}
+  \boxed{ \aconfig{} \, : \, \mbox{Arithmetic Expression $\to$ Trace $\to$ Arithmetic Value}}
   \\
   \inferrule{ 
     \empty
   }{
-   \econfig{n} (\trace)
+   \aconfig{n} (\trace)
    = n
   }
   \and
   \inferrule{ 
     \env(\trace) x = v
   }{
-   \econfig{x} (\trace)
+   \aconfig{x} (\trace)
    = v
   }
   \and
   \inferrule{ 
-    \econfig{\aexpr_1}(\trace) = v_1
+    \aconfig{\aexpr_1}(\trace) = v_1
     \and 
-    \econfig{\aexpr_2}(\trace) = v_2
+    \aconfig{\aexpr_2}(\trace) = v_2
     \and 
      v_1 \oplus_a v_2 = v
   }{
-   \econfig{\aexpr_1 \oplus_a \aexpr_2} (\trace)
+   \aconfig{\aexpr_1 \oplus_a \aexpr_2} (\trace)
    = v
   }
   \and
   \inferrule{ 
-    \econfig{\aexpr}(\trace) = v'
+    \aconfig{\aexpr}(\trace) = v'
     \and 
     \elog v' = v
   }{
-   \econfig{\elog \aexpr}(\trace) 
+   \aconfig{\elog \aexpr}(\trace) 
    = v
   }
   \and
   \inferrule{ 
-    \econfig{\aexpr}(\trace) = v'
+    \aconfig{\aexpr}(\trace) = v'
     \and 
     \esign v' = v
   }{
-   \econfig{\esign \aexpr} (\trace)
+   \aconfig{\esign \aexpr} (\trace)
    = v
   }
    \end{mathpar}
@@ -233,54 +256,55 @@ The $\econfig{\aexpr}(\trace)$ evaluates an arithmetic expression $\aexpr$ under
    \label{fig:aexpr-eval}
    \end{figure}
 
- The evaluation rules for boolean expression and standard expression are in Figure~\ref{fig:bexpr-eval} and Figure~\ref{fig:expr-eval}.
+ The evaluation rules for boolean expression, $\bconfig{} : \booldom \to \tdom \to \mathcal{V}$ and
+ standard expression, $\econfig{} : (\mathcal{A} \cup \booldom) \to \tdom \to \mathcal{V}$ are in Figure~\ref{fig:bexpr-eval} and Figure~\ref{fig:expr-eval} respectively.
  \begin{figure}
   \begin{mathpar}
-  \boxed{ \barrow \, : \, \mbox{ Boolean Expression $\times$ Trace $\rightarrow$ Boolean Value} }
+  \boxed{ \bconfig{} \, : \, \mbox{ Boolean Expression $\times$ Trace $\rightarrow$ Boolean Value} }
   \\
   \inferrule{ 
     \empty
   }{
-   \config{\efalse, \trace} 
-   \barrow \efalse
+   \bconfig{\efalse}(\trace) 
+   = \efalse
   }
   \and 
   \inferrule{ 
     \empty
   }{
-   \config{\etrue, \trace} 
-   \barrow \etrue
+   \bconfig{\etrue}(\trace) 
+   = \etrue
   }
   \and 
   \inferrule{ 
-    \config{\bexpr, \trace} \barrow v'
+    \bconfig{\bexpr}(\trace)  = v'
     \and 
     \neg v' = v
   }{
-   \config{\neg \bexpr, \trace} 
-   \barrow v
+   \bconfig{\neg \bexpr}(\trace) 
+   = v
   }
   \and 
   \inferrule{ 
-    \config{\bexpr_1, \trace} \barrow v_1
+    \bconfig{\bexpr_1}(\trace)  = v_1
     \and 
-    \config{\bexpr_2, \trace} \barrow v_2
+    \bconfig{\bexpr_2}(\trace)  = v_2
     \and 
      v_1 \land v_2 = v
   }{
-   \config{\bexpr \land \bexpr_2, \trace} 
-   \barrow v
+   \bconfig{\bexpr \land \bexpr_2}(\trace) 
+   = v
   }
   \and 
   \inferrule{ 
-    \config{\bexpr_1, \trace} \barrow v_1
+    \bconfig{\bexpr_1}(\trace)  = v_1
     \and 
-    \config{\bexpr_2, \trace} \barrow v_2
+    \bconfig{\bexpr_2}(\trace)  = v_2
     \and 
      v_1 \lor v_2 = v
   }{
-   \config{\bexpr_1 \lor \bexpr_2, \trace} 
-   \barrow v
+   \bconfig{\bexpr_1 \lor \bexpr_2}(\trace)  
+   = v
   }
   \end{mathpar}
   \caption{Evaluation Rules of Boolean Expression}
@@ -289,38 +313,38 @@ The $\econfig{\aexpr}(\trace)$ evaluates an arithmetic expression $\aexpr$ under
   
   \begin{figure}
     \begin{mathpar}
-  \boxed{ \earrow \, : \, \mbox{Expression $\times$ Trace $\rightarrow$ Value} }
+  \boxed{ \econfig{} \, : \, \mbox{Expression $\times$ Trace $\rightarrow$ Value} }
   \\
   \inferrule{ 
-    \econfig{\aexpr}(\trace) = v
+    \aconfig{\aexpr}(\trace) = v
   }{
-   \config{\aexpr, \trace} 
-   \earrow v
+   \econfig{\aexpr}(\trace) 
+   = v
   }
   \and
   \inferrule{ 
-    \config{\bexpr, \trace} \barrow v
+    \bconfig{\bexpr}(\trace)  = v
   }{
-   \config{\bexpr, \trace} 
-   \earrow v
+   \bconfig{\bexpr}(\trace)  
+   = v
   }
   \and
   \inferrule{ 
-    \config{\expr_1, \trace} \earrow v_1
+    \econfig{\expr_1}(\trace)  = v_1
     \and 
     \ldots
     \and 
-    \config{\expr_n, \trace} \earrow v_n
+    \econfig{\expr_n}(\trace)  = v_n
   }{
-   \config{ [\expr_1, \ldots, \expr_n], \trace} 
-   \earrow [v_1, \ldots, v_n]
+   \econfig{ [\expr_1, \ldots, \expr_n]}(\trace) 
+   = [v_1, \ldots, v_n]
   }
   \and
   \inferrule{ 
     \empty
   }{
-   \config{v, \trace} 
-   \earrow v
+   \econfig{v}(\trace) 
+   = v
   }
    \end{mathpar}
    \caption{Evaluation Rules of Standard Expression}
@@ -349,7 +373,7 @@ The rules are presented in Figure~\ref{fig:command-os}.
 %
 \inferrule
 {
-\config{\expr, \trace} \earrow v
+\econfig{\expr}(\trace)  = v
   \and
 \event = ({x}, l, v)
 }
@@ -363,7 +387,7 @@ The rules are presented in Figure~\ref{fig:command-os}.
 %
 \inferrule
 {
-  \config{\bexpr, \trace} \earrow \etrue
+  \bconfig{\bexpr}(\trace)  = \etrue
  \and 
  \event = (\bexpr, l, \etrue)
 }
@@ -381,7 +405,7 @@ c; \ewhile \clabel{\bexpr}^{l} \edo (c),
 %
 \inferrule
 {
-  \config{\bexpr, \trace} \earrow \efalse
+  \bconfig{\bexpr}(\trace)  = \efalse
  \and 
  \event = (\bexpr, l, \efalse)
 }
@@ -427,7 +451,7 @@ c; \ewhile \clabel{\bexpr}^{l} \edo (c),
 %
 \inferrule
 {
-  \config{\bexpr, \trace} \earrow \etrue
+  \bconfig{\bexpr}(\trace)  = \etrue
  \and 
  \event = (\bexpr, l, \etrue)
 }
@@ -444,7 +468,7 @@ c; \ewhile \clabel{\bexpr}^{l} \edo (c),
 %
 \inferrule
 {
- \config{\bexpr, \trace} \earrow \efalse
+ \bconfig{\bexpr}(\trace)  = \efalse
  \and 
  \event = (\bexpr, l, \efalse)
 }
@@ -470,7 +494,7 @@ then the program's execution terminates and produces a finite execution trace $\
   \label{def:non-terminating}
   Given a program $c$ and an initial trace $\trace \in \ftdom_0(c)$,
   when $c$ executes with $\trace$,  we define the execution of $c$ under $\trace$ is non-terminating and produces an infinite trace $\trace' \in \inftdom$, as 
-  $\config{c, \trace_0} \uparrow^{\infty} \trace' \in \lim(\uparrow)$
+  $\config{c, \trace} \uparrow^{\infty} \trace' \in \lim(\uparrow)$
   where the limit is defined as follows.
   \[
     \begin{array}{l}
@@ -482,7 +506,7 @@ then the program's execution terminates and produces a finite execution trace $\
       (\config{c, \trace}, \trace') ~\vert~ 
       c\in \cdom, \trace \in \ftdom_0(c),
       \trace' \in \inftdom 
-      \land \exists \trace_0 \in \ftdom, c_0 \in \cdom \sthat
+      \land \exists \trace_0 \in \ftdom, c_0 \in \cdom \sthat 
       \config{c, \trace} \to \config{c_0, \trace_0}
       \\ \qquad \qquad \qquad 
       \land \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \ftdom, \trace'' \in \inftdom, c_i, c_{i + 1} \in \cdom \sthat 
@@ -502,13 +526,13 @@ then the program's execution terminates and produces a finite execution trace $\
 %   $\config{c_i, \trace_i} \to \config{c_{i + 1}, \trace_{i + 1}}$. 
 %   \[
 %     \begin{array}{l}
-%     \forall \trace_0 \in \ftdom_0(c), c \in \cdom \st
+%     \forall \trace_0 \in \ftdom_0(c), c \in \cdom \sthat
 %     \config{c, \trace_0} \uparrow^{\infty}
 %     \\
-%     \iff \exists f : \mathbb{N} \to \cdom \times \tdom \st 
+%     \iff \exists f : \mathbb{N} \to \cdom \times \tdom \sthat 
 %     f(0) = \config{c, \trace_0}
 %     \\ \qquad \land
-%     \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \tdom, c_i, c_{i + 1} \in \cdom\st 
+%     \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \tdom, c_i, c_{i + 1} \in \cdom\sthat 
 %     \\ \qquad \quad
 %     f(i) = \config{c_i, \trace_i}$, $f(i + 1) =  \config{c_{i + 1}, \trace_{i + 1}} \land \config{c_i, \trace_i} \to \config{c_{i + 1}, \trace_{i + 1}}
 %     \end{array}
@@ -530,13 +554,13 @@ then the program's execution terminates and produces a finite execution trace $\
 %   $\config{c_i, \trace_i} \to \config{c_{i + 1}, \trace_{i + 1}}$. 
 %   \[
 %     \begin{array}{l}
-%     \forall \trace_0 \in \ftdom_0(c), \trace' \in \inftdom, c \in \cdom \st
+%     \forall \trace_0 \in \ftdom_0(c), \trace' \in \inftdom, c \in \cdom \sthat
 %     \config{c, \trace_0} \uparrow^{\infty} \trace'
 %     \\
-%     \iff \exists f : \mathbb{N} \to \cdom \times \tdom \st 
+%     \iff \exists f : \mathbb{N} \to \cdom \times \tdom \sthat 
 %     f(0) = \config{c, \trace_0}
 %     \\ \qquad \land
-%     \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \tdom, c_i, c_{i + 1} \in \cdom\st 
+%     \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \tdom, c_i, c_{i + 1} \in \cdom\sthat 
 %     \\ \qquad \quad
 %     f(i) = \config{c_i, \trace_i}$, $f(i + 1) =  \config{c_{i + 1}, \trace_{i + 1}} \land \config{c_i, \trace_i} \to \config{c_{i + 1}, \trace_{i + 1}}.
 %     \end{array}

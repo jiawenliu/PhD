@@ -26,7 +26,18 @@
     By $\locbound$ definition, we know $\locbound(\absevent) = 1$.
     \\
     This case is proved.
-    \subcaseL{$l \in SCC(\absG(c)) \land \absevent \in \dec(x) $}  in this case, we know $\locbound(\absevent) \triangleq x$.
+    \subcaseL{$l \in SCC(\absG(c)) \land \absevent \in \dec(x) $} 
+    In this case, we know symbol $x$ is decreasing on this transition. So symbol $x$ is a witness of the execution times of this transition.
+    \\
+    In this sense, it is safe to assign 
+    $\locbound(\absevent) \triangleq \locbound(\absevent', c)$.
+    \subcaseL{$\exists \absevent' \in \absG(c), \tpath \in \paths( \absG(c)) \sthat \absevent, \absevent' \in \tpath$}
+    In this case, we know both $\absevent'$ and $\absevent$ are on the same simple transition path.
+    \\
+    By Definition~\ref{def:tpath}, we know every $\tpath$ is loop free and interleaving free. Then we know execution of the transitions $\absevent'$ and $\absevent$ must execute following each other.
+    \\
+    In this sense, it is safe to assign 
+    $\locbound(\absevent) \triangleq \locbound(\absevent)$.
     \subcaseL{$l \in SCC(\absG(c)) \land \absevent 
     \notin \bigcup_{x \in VAR} \dec(x)
     \land \absevent \notin SCC(\absG(c)/\dec(x)) $}  in this case, we know $\locbound(\absevent) \triangleq x$.

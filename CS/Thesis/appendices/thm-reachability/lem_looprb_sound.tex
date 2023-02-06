@@ -84,8 +84,9 @@
   \\
 By Definition~\ref{def:looprb}, we have
 \[
-    \lpchB(l: \rprog, \tpath) \triangleq
-    \frac{\lpinit(\rprog, \tpath, c) - \rffinal(\rprog, \tpath, c)}{\lpnext(\rprog, \tpath, c)}.
+  \lpchB(l: \rprog, \tpath, c) \triangleq
+  \max\limits_{x = a \in \rffinal(\tpath, c)}
+  \frac{\lpinit(\rprog, \tpath, c) - a }{\lpnext(\rprog, \tpath, c)}
 \]
 The soundness is guaranteed by the three states,
  $\lpinit(\rprog, \tpath, c)$, $\rffinal(\rprog, \tpath, c)$, $\lpnext(\rprog, \tpath, )$ computed in Definition~\ref{def:alg-loopabsstate} as follows.
@@ -266,7 +267,10 @@ In this case, we know loop $l_t: \rprog_t$ will never be entered, and this case 
 
 \subcaseL{$l_t: \rprog_t \in \rprog$}
 In this case, based on the soundness of the three states above, we know 
-$\frac{\lpinit(\rprog, \tpath, c) - \rffinal(\tpath, c)}{\lpnext(\rprog, \tpath, c)}$ 
+$
+  \max\limits_{x = a \in \rffinal(\tpath, c)}
+  \frac{\lpinit(\rprog, \tpath, c) - a }{\lpnext(\rprog, \tpath, c)}
+$
 soundly computes the maximum number of $l: \rprog$'s iteration times such that during these iterations, the nested loop $l_t: \rprog_t$ is executed.
 
 \textbf{$\bullet$ The execution is non-terminating and {$\config{{c_r}, \trace} \uparrow^{\infty} \trace_r \tracecat \trace$}.} 

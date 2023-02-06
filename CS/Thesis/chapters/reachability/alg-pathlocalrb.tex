@@ -1,9 +1,9 @@
 
-\subsubsection{Loop Bound Computation}
+\subsection{Loop Bound Computation}
 There are three methods for computing the loop bound, $BD(\rprepeat(\rprog'), c)$ for every sub program, specifically loop program $\rprepeat(\rprog')$ in a program $c$'s refined program $\rprog$:
 \begin{enumerate}
   \item Estimated by $BD(\rprepeat(\rprog'), c) = BOUND(\rprepeat(\rprog'))$ from paper~\cite{GulwaniJK09}, which is precise for simple loop without nested loops but not for nested loops. We are not giving the computation detail in this paper, which can be found in paper~\cite{GulwaniJK09}.
-  \item Estimated by Equation~\ref{eq:absBD} in Section~\ref{sec:loopbound-rankbased} path-insensitively based on the estimated ranking function from Section~\ref{sec:psRB-rank}. This bound is precise when there is only one path in this loop but not for loops with multiple paths.
+  \item Estimated by Equation~\ref{eq:absBD} in Section~\ref{sec:psRB-loopbound-rankbased} path-insensitively based on the estimated ranking function from Section~\ref{sec:psRB-rank}. This bound is precise when there is only one path in this loop but not for loops with multiple paths.
   \item   We provide an alternative computation method using the variable invariant estimation idea from~\cite{SinnZV17} in Definition~\ref{def:loopbound} and the progress invariant idea from~\cite{GulwaniJK09}.
   We compute the rank functions' abstract states, $\rfinit(\rprog, c)$, $\rffinal(\rprog, c)$, $\rfnext(\rprog, c)$ and $\varGD(\rprog, c)$ as in Definition~\ref{def:alg-absstate}.
   Then we compute $BD(\rprepeat(\rprog'), c)$ by Definition~\ref{def:loopbound} using SMT solver.
@@ -11,7 +11,7 @@ There are three methods for computing the loop bound, $BD(\rprepeat(\rprog'), c)
 %
 \subsubsection{Ranking Function Based Loop Bound Computation}
 \label{sec:loopbound-rankbased}
-Based on the estimated ranking function from Section~\ref{sec:rank}, the $BD(\rprog, c)$ for the refined program $\rprog$ can be estimated by $\absclr(\absevent, c)$ by taking the
+Based on the estimated ranking function from Section~\ref{sec:psRB-rank}, the $BD(\rprog, c)$ for the refined program $\rprog$ can be estimated by $\absclr(\absevent, c)$ by taking the
 minimum value over all $\absevent \in \rprog$.
 We use $\absevent \in \rprog$ to denote $\absevent$ is an edge on path $\rprog$.
 \begin{equation}
@@ -219,7 +219,7 @@ For the first iteration pattern $\rprog_1^1$ in Figure~\ref{fig:relatedNestedWhi
 $\rfinit = \{k = n - m, i = m\}$, $\rffinal = \{k = 0, i = 0\}$ and $\varGD(\rprog_1^1) = 4$. So we compute $BD(\rprog_1^1) = \lfloor \frac{m}{4} \rfloor $ as expected.
 
 
-\subsubsection{Path Local Reachability-bound}
+\subsection{Path Local Reachability-bound}
 We first compute $\kw{enclosed}(\rprog, \tpath)$, which is \textbf{the innermost loop} inside $\rprog$ where $\tpath$ is located. Then by using the loop bound computed by our new approach, we compute the \emph{path local reachability-bound} of
 the $\tpath$ in its closest nested loop as follows in Definition~\ref{def:pathlocalrb}.
 \begin{defn}[Path Local Reachability-bound Computation]

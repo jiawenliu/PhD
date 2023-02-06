@@ -20,7 +20,7 @@ Three steps:
   The Definition.25 in paper~\cite{SinnZV17}
   assigns each transition with a variable that decreases in this transition, as the local bound and computes the bound similarly.
   %
-  \subsubsection{Collecting Variable Modifications}
+  \subsection{Collecting Variable Modifications}
   For each variable $x$ in a program $c$, this step computes three edge sets, $\inc(x, c)$, $\dec(x, c)$,
   and $\reset(x, c)$ for $x$.
   Every edge in a set corresponds to a transition in which $x$ is increased,
@@ -64,7 +64,7 @@ Three steps:
   In the following steps, $c$ is omitted in $\inc(x, c)$,
   $\dec(x, c)$ and $\reset(x, c)$ for concise when the reference of a program $c$ is clear in the context.
 
-  \subsubsection{Assigning The Ranking Function to An Edge}
+  \subsection{Assigning The Ranking Function to An Edge}
   For each edge in the transition graph $\absG(c)$ of a program $c$,
   this step assigns the variable that decreases on this edge as the ranking function of this edge.
   This step adopts the local bound computation method in Section 4 of~\cite{SinnZV17} to assign the local bound to each edge,
@@ -76,20 +76,23 @@ Three steps:
   is the variable that decreases on this edge, computed as follows,
   %
   \[ 
-  \begin{array}{ll}
-    \locbound(\absevent, c) \triangleq 1 
-    & \absevent \notin SCC(\absG(c))
-    \\
-    \locbound(\absevent, c) \triangleq x
-    & \absevent \in SCC(\absG(c)) \land \absevent \in \dec(x, c) \land  \absevent = (\_, \_ , x' \leq x - v) \\
-    \locbound(\absevent, c) \triangleq x
-    & \absevent \in SCC(\absG(c)) \land 
-    \absevent  \notin \bigcup_{x \in \vardom} \dec(x, c)
-    \land \absevent \notin SCC(\absG(c) \setminus \dec(x, c))\\
-    \locbound(\absevent, c) \triangleq \infty
-    & o.w..
-  \end{array}
-  \]
+\begin{array}{ll}
+  \locbound(\absevent, c) \triangleq 1 
+  & \absevent \notin SCC(\absG(c))
+  \\
+  \locbound(\absevent, c) \triangleq x
+  & \absevent \in SCC(\absG(c)) \land \absevent \in \dec(x, c) \land  \absevent = (\_, \_ , x' \leq x - v) \\
+  \locbound(\absevent, c) \triangleq \locbound(\absevent', c)
+  & \exists \absevent' \in \absG(c), \tpath \in \paths( \absG(c)) \sthat \absevent, \absevent' \in \tpath \\
+    % \in SCC(\absG(c)) \land \absevent \in \dec(x, c) \land  \absevent = (\_, \_ , x' \leq x - v) \\
+  \locbound(\absevent, c) \triangleq x
+  & \absevent \in SCC(\absG(c)) \land 
+  \absevent  \notin \bigcup_{x \in \vardom} \dec(x, c)
+  \land \absevent \notin SCC(\absG(c) \setminus \dec(x, c))\\
+  \locbound(\absevent, c) \triangleq \infty
+  & o.w..
+\end{array}
+\]
   $SCC(\absG(c))$ is the set of all the strong connected components of $\absG(c)$.
   \end{defn}
     The first case is straightforward. 
@@ -105,7 +108,7 @@ Three steps:
 In the same way, ranking for edges on $\tpath_4$ is $i$ as well and $k$ for them on $\tpath_3$.
 
 
-  \subsubsection{Ranking Function Estimation}
+  \subsection{Ranking Function Estimation}
   This step estimates the upper bound, $\varinvar(x, c) \in \scexpr(c)$
   on the maximum value for each ranking function  $x \in  \vardom \cup \scvar(c)$.
   \\
