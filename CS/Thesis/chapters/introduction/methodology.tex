@@ -13,8 +13,8 @@ However, the variety of the external API makes the formalization of data analysi
 We identify some data analysis models which are usually used as the base of data analysis algorithms.
 Based on these models, we design simple but scalable language based on standard while language that can be used to implement these models and formalize
 the adaptivity in these algorithms, named {\tt QWhile}.
+It is a standard while language enriched with the query request command and added labels on each program command.  
 
-% \todo{Brief Describe our Language Model}
 
 \subsubsection{Program Property Formalization}
 
@@ -26,9 +26,6 @@ are also widely used in defining
 and formalizing the program's properties. While they have the same limitation as the abstract interpretation and it is not straightforward how to apply them to analyzing and formalizing the \emph{adaptivity}
 for adaptive data analysis program as a \emph{quantitative-reachability} property from two perspectives.
 There is also purely syntactic-based methodology originated from~\cite{Weiser84} and developed in~\cite{DenningD77} in defining a property (the data dependency relation), but it suffers the limitation of certain language and is not easy to generalize into other setting, especially the \emph{adaptivity}.
-% dependency analysis. 
-% However, it is not straightforward how to apply them to analyzing and formalizing the \emph{adaptivity}
-% for adaptive data analysis program.
 Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to defining both the dependency property and the quantitative property for the program.
 And there are mainly three technique difficulties among existing formalization methodologies in defining the \emph{adaptivity} w.r.t. the two sub-properties.
 \begin{enumerate}
@@ -51,12 +48,13 @@ This requires us to design new formal model in order to define this property pre
 \paragraph{New Methodology}
 Our semantics-based formalization model defines this intuitive \emph{adaptivity} as a \emph{quantitative-reachability} program property semantically as follows.
 \begin{enumerate}
-   \item In the first step, we define the semantic \emph{dependency relation}, $\vardep(c, x^i, y^j)$ over variables $x^i, y^j$ in the program $c$, inspired from the method in~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
-   This relation capture both the control influence and value influence between data, which are never fully captured in previous dependency relation.
-   This relation can be used to reason about the dependency between queries.
+   \item From the \emph{reachability} perspective, we first define the \emph{data dependency} relation based on our trace-based semantics.
+  %  The semantics-based definition is inspired from~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
+   Our new definition capture both the control influence and value influence between data, which are never fully captured in previous dependency relation~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
+   It can be used to reason about the dependency between queries.
 
-   \item Then we define the \emph{dependency quantity} with respect to each variable $x^i$
-     based on the \emph{dependency relation}, which is inspired from the works in the program complexity and resource cost analysis areas. This quantity captures a sub-property of \emph{adaptivity} from the quantitative perspective.
+   \item Then from the \emph{quantitative} perspective, we define the \emph{dependency quantity} with respect to certain data
+     to capture the dependency times between queries. We borrow the idea from the program complexity analysis areas~\cite{GulwaniJK09}, where the complexity bound can be repurposed to estimate the times that certain data is used.
    
      \item With the two property defined above, we construct a dependency graph by combining both the \emph{dependency relation} (as the graph edge) and \emph{dependency quantity} (as the vertex weight) on it. This dependency graph accurately reflects the two perspectives of the intuitive \emph{adaptivity}. Though there are previous works designing the weight dependency graph, none of them able to carry both dependency and dependency depth and apply it into analyzing the \emph{adaptivity}.
    
@@ -72,7 +70,7 @@ However, it is not straightforward how to apply them into analyzing and estimati
 \begin{enumerate}
 \item To the best of our knowledge,
 existing static dependency analysis techniques do not consider both control influence and value influence.
-But in order to analyze and estimate the \emph{adaptivity} statically, as discussed above, we need to consider both of them.
+However, to estimate the \emph{adaptivity} accurately, we need to consider both of them.
 \item The existing static analysis techniques in the complexity or resource cost estimation areas,
 cannot give accurate reachability times on programs 
 at every execution location.
@@ -83,9 +81,9 @@ but not both of them.
 \end{enumerate}
 
 \paragraph{New Methodology}
-We develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static}.
-This new methodology combines data flow and control flow analysis with reachability bound analysis.
-This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve 
+We present a static program analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static} to estimate the adaptivity.
+This new methodology combines data flow and control flow analysis with reachability-bound analysis.
+It gives tighter bounds on the adaptivity of a program than the ones one would achieve 
 by directly using the data and control flow analyzes or the ones that one would achieve 
 by directly using reachability bound analysis techniques alone. 
 \begin{enumerate}
@@ -113,24 +111,11 @@ This new algorithm again also complements the NP-hardness of the longest path se
 
 This property is a worst-case bound on the number of times a given control location 
 inside a procedure is visited during the program execution.
-This execution property has broad
-applications in analyzing other program property beyond \emph{quantitative-reachability}.
-For example in the resource cost analysis, this \emph{quantitative-reachability} property
-can help to provide a tighter
-bound on the resources consumed by a program such as time, memory,
-network traffic, power, etc.
-In estimating some quantitative property
-in the data analysis area, for example, when analyzing the program's \emph{adaptivity}
-as introduced above, % on the adaptive data analysis program's \emph{adaptivity}
-the \emph{reachability-bound} on each program control location
-can improve the precision of the estimated bound.
-In the security analysis area, this \emph{reachability-bound} helps to improve the accuracy
-in estimating the program's information leakage or uncertainty propagation, etc.
 Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
 However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively.
-To solve these issues and improve the analysis results on this problem, I present a new algorithm
-aiming to find a precise symbolic worst-case \emph{reachability-bound} on the program's every control location.
-
+To solve these issues and improve the analysis results on this problem, we present a new algorithm
+aiming to find the precise symbolic \emph{reachability-bound} on the program's every control location.
+Below are the methodologies we adopted in our new algorithm and their existing limitations.
 
 \subsubsection{Program Abstraction}
 \paragraph{Existing Techniques and Limitation.}
@@ -197,28 +182,10 @@ the \emph{path reachability-bound} and \emph{loop reachability-bound}.
 They are the main novelty of our new path-sensitive reachability-bound algorithm build on the traditional methods.
 It is computed over the refined program and effectively utilizing the ranking function estimated through the abstract transition graph.
 These two bounds combines the two lines of techniques effectively and complements the weakness in both lines.
-
-The first novel quantity -- the \emph{path reachability-bound} $\inoutB(\rprog, \tpath)$ is a reachability-bound for a loop free path $\tpath$ inside a refined loop $\rprog$. This bound approximates the evaluation times of each loop free path instead of the entire multipath loop.
-\\
-This bound is computed based on the refined loop and using the estimated ranking function for every path, combines two lines of work above. 
-It is benefited from the high accuracy of the path refinement and the ranking function estimation, but reduces the efficiency comparing to simply computing the ranking function.
-
-The \emph{loop reachability-bound}, $\lpchB(L:\rprog, \tpath)$ is our second key novelty.
-It has high accuracy and efficiency by using the estimated ranking function based on the \emph{amortized complexity analysis} methodology over the refined loop paths.
-For each transition path $\tpath$ w.r.t each of the loops $L:\rprog$ in which $\tpath$ is nested,
-$\lpchB(L:\rprog, \tpath)$ 
-\highlight{is a bound on the iterations for
-the outside loop, $L:\rprog$ w.r.t. the innermost loop where $\tpath$ is enclosed,
-such that during these iterations of $L:\rprog$, the innermost loop is ``entered''. 
-This is distinguished from the traditional methods and this quantity isn't considered or computed in any of the previous works.
-Traditional methods only estimate the bound on the inner loop's iteration number
-in one iteration of the outside loop.} \cite{GulwaniJK09} considers a similar amount based on \emph{Progress Invariant}, but it is only able to compute
-the
-bound on iteration numbers
-of the inner loop in each iteration of outside loop.
-So they have to over-approximate the reachability-bound for locations in the inner loop by multiplication.
-% \\
-In the line of the \emph{amortized complexity analysis} through ranking function, the DC-based algorithm in \cite{SinnZV17}
-is only able to
-compute the combined loop bound and the local bound of each loop
-separately as well.
+The first one bounds the evaluation times of each loop-free and interleave-free path in a refined program, and the second one bounds the number of iterations of an outer loop w.r.t. an inner loop, counting only the iterations when the inner loop is ``entered''. 
+We present algorithms for estimating these two quantities. By using them we can then 
+%Section~\ref{sec:looprb} and~\ref{sec:pathrb} 
+compute the \emph{reachability-bound} for each program point in a path-sensitive way.
+%in Section~\ref{sec:psrb}.
+We have implemented our algorithm in a prototype and evaluated it on 290 program extracted from different benchmarks. Our evaluation %Section~\ref{sec:eval} 
+shows that we can accurately estimate different bounds for different locations in programs with loops containing multiple paths. Based on this, we can also compute a tighter overall complexity compared to the state-of-art worst-case complexity analysis tools.
