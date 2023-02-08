@@ -1,7 +1,5 @@
 \subsection{Chapter Structure}
 
-\paragraph{Chapter~\ref{sec:reachability-analysis}} presents the {path-sensitive reachability-bound analysis} through the following sections.
-
 In Section~{\ref{sec:psRB-language}}, we first give the language and program model formally similar to our language mode in
 \redd{PART \romannum{1}}.
 
@@ -13,8 +11,11 @@ Section~\ref{sec:psRB-preface} first gives the main steps of this algorithm as a
 In Section~\ref{sec:psRB-progabs}, the first step abstracted the program into an \emph{abstract transition graph}.
 Based on this graph, Section~\ref{sec:psRB-refine} then refines the multi-paths loop in this program and generates a refined program.
 According to the graph and the refined program, Section~\ref{sec:psRB-rank} computes the ranking function for each edge on the graph and estimates the value of each ranking function.
-Section~\ref{sec:psRB-pathlocalrb} and \ref{sec:psRB-looprb} then computes the \emph{path reachability-bound} and \emph{loop reachability-bound} for each path and loop of this program using the ranking function and the graph.
-Then Section~\ref{sec:psRB-rb} finally gives the \emph{path-sensitive reachability-bound} computation algorithm for each program point.
+Section~\ref{sec:psRB-psrb} gives the \emph{path-sensitive reachability-bound} algorithm and the rest of the sections give the computation algorithm for each step. Specifically, 
+Section~\ref{sec:psRB-pathlocalrb} gives the local \emph{path reachability-bound} estimation algorithm, Section~\ref{sec:psRB-looprb} presents the \emph{loop reachability-bound} estimation algorithm,
+and Section~\ref{sec:psRB-pathrb} gives the global  \emph{path reachability-bound} estimation algorithm.
+? for each path and loop of this program using the ranking function and the graph.
+% Then Section~\ref{sec:psRB-rb} finally 
 
 \paragraph{Chapter~{\ref{sec:psRB-eval}}} presents four step-by-step examples to illustrate the algorithm clearly in Section~\ref{sec:psRB-example} firstly,
 and then shows the implementation and evaluation results over five real world benchmarks in Section~\ref{sec:psRB-eval}.

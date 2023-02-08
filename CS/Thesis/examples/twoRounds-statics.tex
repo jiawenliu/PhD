@@ -1,12 +1,12 @@
 \begin{example}[twoRounds]    
     We show again reuse the same walk through example as Figure~\ref{fig:overview-example}
     We represent the program and the graph below in Figure~\ref{fig:twoRounds-adaptfun}(c) for reminding.
-    The estimated dependency graph that our static analysis algorithm returns for the program $\kw{twoRounds(k)}$ is in Figure~\ref{fig:twoRounds}(a).
+    The estimated dependency graph that our static analysis algorithm returns for the program $\kw{twoRounds(k)}$ is in Figure~\ref{fig:twoRounds-adaptfun}(a).
     Vertices and query annotations are the same as the ones in Figure~\ref{fig:twoRounds-adaptfun}(b) and they are simply inferred by scanning the program.
     As we said before, the edges are estimated using control flow and data flow analysis.
-    For the $\kw{twoRounds(k)}$ example, every edge in Figure~\ref{fig:twoRounds-adaptfun}(b) is precisely inferred by our combined analysis, this is why Figure~\ref{fig:twoRounds}(c) contains exactly the same edges.
+    For the $\kw{twoRounds(k)}$ example, every edge in Figure~\ref{fig:twoRounds-adaptfun}(b) is precisely inferred by our combined analysis, this is why Figure~\ref{fig:twoRounds-adaptfun}(c) contains exactly the same edges.
     The weight of every vertex is computed using a reachability-bound estimation algorithm which output a symbolic expression over the input variables, in the example only $k$, representing an upper bound on the number of times each assignment is executed.
-    For example, consider the vertex $x^{3}$, its weight is $k$ and this provides an upper bound on the values returned by the weight function $\lambda \trace. \rho(\trace)k$ associated with vertex $x^{3}$ in Figure~\ref{fig:twoRounds}(b) for any initial state. 
+    For example, consider the vertex $x^{3}$, its weight is $k$ and this provides an upper bound on the values returned by the weight function $\lambda \trace. \rho(\trace)k$ associated with vertex $x^{3}$ in Figure~\ref{fig:twoRounds-adaptfun}(b) for any initial state. 
     
     The algorithm searching for the longest walk first finds a path $l^6:{}^1_1 \to a^5: {}^k_1 \to x^3: {}^k_1$, and then constructs a walk based on this path. Every vertex on this walk is visited once, and the number of vertices with query annotation $1$ in this walk is $2$, which is the upper bound we expect.
     {It is worth to note here that $x^3$ and $a^5$ can only be visited once because there isn't an edge to go back to them, even though they both have the weight $k$}.

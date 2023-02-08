@@ -23,7 +23,7 @@ and estimates an upper bound invariant, which is presented in Section~\ref{sec:p
 \textbf{Step 4}
 % The \emph{path-sensitive reachability-bound} 
 computes the \emph{Reachability-bound}, $\psRB(l, c)$ for every program point $l$ using the $\rprog$ and the upper bound invariant of the $\locbound(\absevent, c)$ where $\absevent = (l,dc,l')$.
-\highlight{It requires computing the \emph{path reachability-bound}, $\inoutB(\rprog, \tpath, c)$ for every $\tpath$.
+{It requires computing the \emph{path reachability-bound}, $\inoutB(\rprog, \tpath, c)$ for every $\tpath$.
 If there are nested loops, we need to compute the \emph{loop reachability-bound}, $\lpchB(l: \rprog, \tpath, c)$ w.r.t. every level of $\tpath$'s outer loop. }
 Section~\ref{sec:psRB-psrb} introduces this algorithm and the following sections describe the computations. 
 The soundness and proof of each algorithm are given in the Appendices and the input $c$ will be omitted in the rest of the paper if the context is clear.

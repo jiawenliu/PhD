@@ -11,7 +11,7 @@ collecting the events generated during a specific program execution.
 A trace can be regarded as the program history, 
 which records all the evaluations for assignment commands and guards in $\eif$ and $\ewhile$ command.
 \\
-\highlight{
+{
 A trace can be finite ($\trace \in \ftdom$) or infinite $\trace \in \inftdom$.
 If a program doesn't terminate when executing under some initial trace,
 it produces the infinite trace 
@@ -21,7 +21,6 @@ The trace-based semantics with non-terminating execution is defined below follow
 
 We use list notation for traces, where $[]$ is the empty trace, the operator $\traceadd$ combines an event and a trace in a new event, 
 and the operator $\tracecat$ concatenates two traces formally defined as follows. 
-\highlight{
 \begin{defn}[Trace Concatenation, $\tracecat: \tdom \to \tdom\to \tdom $]
   \label{def:trace_concate}
 Given two traces $\trace_1 \in \tdom, \trace_2 \in \tdom$, the trace concatenation operator 
@@ -37,7 +36,7 @@ $\tracecat$ is defined as:
 \right.
 \]
 \end{defn}
-}
+
 \begin{defn}(An Event Belongs to A Trace)
   An event $\event \in \eventset$ belongs to a trace $\trace \in \tdom$, i.e., $\event \in \trace$ are defined as follows:
 %

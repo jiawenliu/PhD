@@ -1,7 +1,6 @@
 \subsection{The Implementation Evaluation Results }
 \label{sec:adapt-impleval}
 
-\jl{
 We implemented $\THESYSTEM$ as a tool which takes a labeled command as input  
 and outputs two upper bounds on the program adaptivity and the number of query requests respectively.
 This implementation consists of an 
@@ -11,7 +10,6 @@ and the adaptivity computation algorithm shown in Section~\ref{sec:alg_adaptcomp
 The OCaml program takes the labeled command as input and outputs the program-based dependency graph and
 the abstract transition graph,
 feeds into the python program and the python program provides the adaptivity upper bound and the query number as the final output.
-}
 
 We evaluated this implementation on $23$ example programs with the evaluation results shown in Table~\ref{tb:adapt-imp}.
 In this table,

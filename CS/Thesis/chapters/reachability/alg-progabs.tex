@@ -40,48 +40,49 @@ is transformed into a constraint.
 This constraint describes the abstract execution of the assignment command with label $l$,
 or abstract evaluation of the boolean expression in the guard with label $l$.
 
-\highlight{Notations / Formal Definitions:}
-\begin{itemize}
-\item Operator: $\absexpr : \mathcal{A} \cup \booldom \to DC(\vardom  \cup \scvardom)\cup \booldom \cup \{\top\}$
-%
-\item Constraints $\dcdom^{\top}: DC(\vardom  \cup \scvardom) \cup \booldom\cup \{\top\}$  contains:
-%
-\begin{itemize}
-\item The difference constraints $DC(\vardom  \cup \scvardom)$ is the set of all the inequality of
-form $x' \leq y + v$ or $x' \leq v$ where $x \in \vardom $, 
-$y \in \vardom$ and $v \in \scvardom$.
-\\
-The \emph{Symbolic Constant} can be a natural number, $\infty$, or a program's input variable, We use $\scvardom \subseteq \mathbb{N} \cup \vardom \cup \{\infty \}$ to denote the universe of all \emph{Symbolic Constant},
-which is the set of all natural numbers with $\infty$ and programs' input variables.
-\\
-An inequality $x' \leq y + v$ describes that the value of $x$ in the current state is
-at most the value of $y$ in the previous state plus the symbolic constant $v$.
-An inequality $x' \leq v$ describes that the value of $x$ in the current state is
-at most the value $v$.
-When a difference constrain shows up as an edge annotation, $l \xrightarrow{x' \leq y + v} l'$,
-% Then $x'$ 
-it denotes that
-the value of variable $x$
-after executing the command at $l$ is at most
-% and the right-hand side describes 
-the value of variable $y$ plus $v$ before the execution,
-and $l \xrightarrow{x' \leq v} l'$ respectively denotes value of variable $x$
-after executing the command at $l$ is at most
-% and the right-hand side describes 
-the value of the symbolic constant $v$ before the execution.
-For every expression in each of the label command, it is computed in three steps via program abstraction method adopted from the Section~6 in~\cite{SinnZV17}. 
-%
-\item The Boolean Expressions $b$ from the set $\booldom$.
-$b$ on an edge $l \xrightarrow{b} l'$ describes
-that after evaluating the guard with label $l$,
-$b$ holds and the command with label $l$ will execute right after.
-%
-\item The top constraint, $\top$ denotes true. It is preserved for $\eskip$ command,
-or commands that don't interfere any guard variable.
-\end{itemize}
-\end{itemize}
+% \highlight{Notations / Formal Definitions:}
+% \begin{itemize}
+% \item Operator: $\absexpr : \mathcal{A} \cup \booldom \to DC(\vardom  \cup \scvardom)\cup \booldom \cup \{\top\}$
+% %
+% \item Constraints $\dcdom^{\top}: DC(\vardom  \cup \scvardom) \cup \booldom\cup \{\top\}$  contains:
+% %
+% \begin{itemize}
+% \item The difference constraints $DC(\vardom  \cup \scvardom)$ is the set of all the inequality of
+% form $x' \leq y + v$ or $x' \leq v$ where $x \in \vardom $, 
+% $y \in \vardom$ and $v \in \scvardom$.
+% \\
+% The \emph{Symbolic Constant} can be a natural number, $\infty$, or a program's input variable, We use $\scvardom \subseteq \mathbb{N} \cup \vardom \cup \{\infty \}$ to denote the universe of all \emph{Symbolic Constant},
+% which is the set of all natural numbers with $\infty$ and programs' input variables.
+% \\
+% An inequality $x' \leq y + v$ describes that the value of $x$ in the current state is
+% at most the value of $y$ in the previous state plus the symbolic constant $v$.
+% An inequality $x' \leq v$ describes that the value of $x$ in the current state is
+% at most the value $v$.
+% When a difference constrain shows up as an edge annotation, $l \xrightarrow{x' \leq y + v} l'$,
+% % Then $x'$ 
+% it denotes that
+% the value of variable $x$
+% after executing the command at $l$ is at most
+% % and the right-hand side describes 
+% the value of variable $y$ plus $v$ before the execution,
+% and $l \xrightarrow{x' \leq v} l'$ respectively denotes value of variable $x$
+% after executing the command at $l$ is at most
+% % and the right-hand side describes 
+% the value of the symbolic constant $v$ before the execution.
+% For every expression in each of the label command, it is computed in three steps via program abstraction method adopted from the Section~6 in~\cite{SinnZV17}. 
+% %
+% \item The Boolean Expressions $b$ from the set $\booldom$.
+% $b$ on an edge $l \xrightarrow{b} l'$ describes
+% that after evaluating the guard with label $l$,
+% $b$ holds and the command with label $l$ will execute right after.
+% %
+% \item The top constraint, $\top$ denotes true. It is preserved for $\eskip$ command,
+% or commands that don't interfere any guard variable.
+% \end{itemize}
+% \end{itemize}
 
-\highlight{Definitions}
+% \highlight{Definitions}
+
 \begin{defn}[Symbolic Constant, Symbolic Expression]
   \label{def:symbolic_expr}
 The universe of the \emph{symbolic constant} is denoted by $\scvardom \subseteq \mathbb{N} \cup \vardom \cup \{\infty \}$, in which a symbolic constant can be a natural number, $\infty$, or a program's input variable.
@@ -132,7 +133,7 @@ in the $\ewhile$ command, and $i \leq 0$ must hold in order to perform this tran
 the program exit. 
 We also have $\top$, which is preserved for $\eskip$ command or the commands that don't interfere any guard variable.
 
-\highlight{Computation Steps:}
+% \highlight{Computation Steps:}
 
 
 \begin{defn}[Constraint Computation]
@@ -155,7 +156,9 @@ We also have $\top$, which is preserved for $\eskip$ command or the commands tha
       \absexpr(y + v, x, c)  = x' \leq y + v  & x, y \in \grdvar(c)\land v \in \scvar(c)\\
       \absexpr(v, x, c)  = x' \leq v  & x \in \grdvar(c)\land v \in \scvar(c) \\
       \absexpr(y + v, x, c)  = x' \leq y + v, \grdvar(c) = \grdvar(c) \cup \{y\} 
-      & x \in \grdvar(c)\land y \notin \grdvar(c) \land v \in \scvar(c)  \\
+      & x \in \grdvar(c) \\
+      & \land y \notin \grdvar(c)  \\
+      & \land v \in \scvar(c)  \\
       \absexpr(\bexpr, \_, c) = \bexpr, \grdvar(c) = \grdvar(c) \cup FV(\bexpr) & \bexpr \in \scvar(c) \\
       \absexpr(\expr, x, c) = \top &  {o.w.} \\
     \end{array}
@@ -234,13 +237,13 @@ Given a program $c$, its continuation execution state, $\absfinal(c)$ is compute
  \paragraph{Abstract Event Computation} Each abstract event is an edge between two vertices in the abstract transition graph.
  It is generated by computing the initial and continuation execution state interactively and recursively for a program $c$.
  
- \highlight{Notations and Formal Definitions:}
- \begin{itemize}
-  \item \emph{Abstract Event}: 
-  $\absevent \in $
-  $\ldom \times \dcdom^{\top} \times \ldom$
-  \item \emph{Abstract Trace}, $\absflow(c)$ of a program $c$: $\absflow(c) \in \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$
- \end{itemize}
+%  \highlight{Notations and Formal Definitions:}
+%  \begin{itemize}
+%   \item \emph{Abstract Event}: 
+%   $\absevent \in $
+%   $\ldom \times \dcdom^{\top} \times \ldom$
+%   \item \emph{Abstract Trace}, $\absflow(c)$ of a program $c$: $\absflow(c) \in \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$
+%  \end{itemize}
  \begin{defn}[Abstract Event]
    \label{def:abs_event}
    Abstract Event: 
@@ -255,8 +258,6 @@ Given a program $c$, its continuation execution state, $\absfinal(c)$ is compute
    the second label $l' \in \ldom$ with the constraint $dc \in \dcdom^{\top}$ correspond to an abstract continuation execution state of $c$.
 We abuse the notation $\mathcal{P}(\absevent)$ for the power set of all abstract events.
 
-\highlight{Computation Steps:}
-\\
 The set of the abstract events $\absflow(c)$ for a program $c$
 is computed as follows in Definition~\ref{def:absevent_compute}.
  %
