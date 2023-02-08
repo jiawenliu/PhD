@@ -20,10 +20,10 @@ and our own SPEED~\cite{GulwaniJK09} implementation.
 When comparing with tools for worst-case
 complexity analysis we aim to answer the following two questions: is our prototype able to compute precise reachability-bound for different program points (\emph{Effectiveness})? If so, can we also have better overall complexity estimation (\emph{Accuracy})?
 %  based on the precise reachability-bound?
-We summarize the results of our evaluation in Table~\ref{tb:accuracy-eval}.
-\\
+
 \emph{Effectiveness}
 \newcommand{\pointnum}{\kw{\# l}}
+We summarize the results of the effectiveness evaluation in Table~\ref{tb:effectiveness-eval}.
 On each row, a theoretical worst-case complexity is listed in the $2^{nd}$ column and the number of programs ($\# p$) with this particular complexity is given in the $3^{rd}$ column.
 % The  and $3^{rd}$ columns are the theoretical worst-case complexity and the number of programs that have this complexity.
 In the ``worst bound ($\# p$)'' column, each row provides the number of programs that the corresponding tool identify of the  corresponding ``theory worst'' complexity. For example, the number $1$ in the column of our tool for the row $O(1)$ says that our tool infer the right complexity for only one of the programs, for the other three programs it infers a higher complexity.
@@ -43,72 +43,186 @@ While our tool computes for almost all the multipath loops precise \emph{reachab
 Even for the unbounded loops, we can still compute finite \emph{reachability-bound}s on certain program points that are not involved with the unbounded loop paths.
 None of other tools compute bounds for these programs.
 \\
+\begin{table}[ht]
+    \caption{The Effectiveness Evaluation Table of {\PSRB}}
+    \label{tb:effectiveness-eval}
+    \centering
+    {\scriptsize
+    \begin{tabular}{ | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | c | c | c | c | c | c | c | c | c | c | c | c | c |}
+    \hline
+    {Bench-} & {theory} & ($\# p$) & ($\# l$) & \multicolumn{6}{c|}{reachability-bound ($\pointnum$)} & \multicolumn{5}{c|}{worst bound ($\# p$)} \\
+    \cline{5-15}
+    -marks & worst &  &  & $1$ & $n$ & $n^2$ & $n^3$ & $n^4$ & $\infty$ & {\tiny \PSRB} & {\tiny Loopus} & {\tiny Cofloco} & {\tiny SPEED} & {\tiny \cite{BenchmarkTianhan}}  \\
+    \hline
+    & $O(1)$   &  4 & 82 & 32 & 0 & 0 & 0 & 0 & 0 & 1 & 2 & 3 & 2 & 1  \\
+    \cline{2-2}
+    & $O(n)$   & 59 & 373 & 112 & 261 & 0 & 0 & 0 & 0 & 48 & 51 & 45 & 46 & 40 \\
+    \cline{2-2}Other
+    & $O(n^2)$ & 31 & 414 & 70 & 191 & 153 & 0 & 0 & 0  & 37 & 29 & 34 & 37 & 49  \\
+    \cline{2-2}
+    Tools
+    & $n\log(n)$ & 6 & 81 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
+    \cline{2-2}
+    & $O(n^3)$   & 2 & 91 & 6 & 16 & 13 & 13 & 0 & 0 & 4 & 3 & 2 & 5 & 7 \\
+    \cline{2-2}
+    & $O(n^{4})$ & 3 & 36 & 4 & 9 & 9 & 12 & 11 & 0 & 4 & 4 & 3 & 5 & 5 \\
+    \hline \hline
+    \multirow{5}{*}{Loopus} 
+    & $O(1)$     & 1 & 154 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0  \\
+    \cline{2-2}
+    & $O(n)$     & 13 & 176 & 49 & 105 & 0 & 0 & 0 & 0 & 12 & 13 & 14 & 14 & 11 \\
+    \cline{2-2}
+    & $O(n^2)$   & 4 & 64 & 4 & 13 & 15 & 0 & 0 & 0 & 3 & 2 & 5 & 2 & 6 \\
+    \cline{2-2}
+    & $O(n^3)$   & 4 & 193 & 2 & 7 & 10 & 4 & 0 & 0 & 2 & 1 & 2 & 2 & 3 \\
+    \cline{2-2}
+    & $O(n^{4})$ & 1 & 21 & 1 & 3 & 6 & 8 & 2 & 0 & 1 & 1 & 1 & 1 & 0 \\
+    \hline \hline
+    \multirow{6}{*}{Icra} 
+    & $O(1)$ & 4 & 93 & 41 & 0 & 0 & 0 & 0 & 0 & 1 & 3 & 2 & 2 & 0  \\
+    \cline{2-2}
+    & $\log(n)$ & 2 & 16 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0   \\
+    \cline{2-2}
+    & $O(n)$ & 79 & 988 & 267 & 698 & 0 & 0 & 0 & 0 & 78 & 80 & 82 & 78 & 77  \\
+    \cline{2-2}
+    & $O(n^2)$ & 12 & 151 & 26 & 110 & 26 & 0 & 0 & 0 & 18 & 14 & 11 & 16 & 17  \\
+    \cline{2-2}
+    & $O(n^3)$ & 1 &  9 & 1 & 3 & 3 & 2 & 0 & 0 & 1 & 1 & 4 & 2 & 4  \\
+    \cline{2-2}
+    & $\infty$ & 20 & 295 &  50 & 0 & 0 & 0 & 0 & 245 & 9 & 0 & 0 & 0 & 0  \\
+    \hline \hline
+    \multirow{2}{*}{Tianhan} 
+    & $O(n)$ & 35 & 188 & 68 & 120 & 0 & 0 & 0 & 0 & 35 & 35 & 35 & 35 & 35  \\
+    \cline{2-2}
+    & $O(n^2)$ & 2 & 12 & 4 & 8 & 4 & 0 & 0 & 0 & 2 & 2 & 2 & 2 & 2   \\
+    \hline
+    \end{tabular}
+    }
+    \end{table}
+
 \emph{Accuracy}
 % We show in the sub-columns of the ``worst bound ($\# p$)'' column the number of programs that are computed to have certain ``theory worst'' complexity by other tools for comparison. 
-Based on the worst-case bound and reachability-bound, the last column shows the ``overall complexity bound'' estimation.
+Based on the worst-case bound and reachability-bound, we present the accuracy evaluation result in
+Table~\ref{tb:accuracy-eval}.
+In the last column we show the ``overall complexity bound'' estimation.
 In the $1^{st}$ sub-column, formula in each row is the sum of different reachability-bounds times the $\pointnum$ that has certain reachability-bound.
 For comparison, we show the worst-case bound times $\sum\pointnum$ in the $2^{nd}$ sub-column by other tools. Given the precise reachability-bounds on every program locations, we can compute tighter overall complexity bound than the best worst-case analysis tools.
-% It can be applied to many places, such as saving the resources' allocation,
-% computing precise information leakage, etc.
+
+\begin{table}[ht]
+    \caption{The Accuracy Evaluation Table of {\PSRB}}
+    \label{tb:accuracy-eval}
+    \centering
+    {\scriptsize
+    \begin{tabular}{| >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | c | c | c | c | c | c |}
+    \hline
+    {Bench-} & {theory} & ($\# p$) & ($\# l$) & \multicolumn{2}{c|}{overall complexity bound}\\
+    \cline{5-6}
+    -marks & worst &  &   & {\PSRB} & worst \\
+    \hline
+    & $O(1)$   &  4 & 82  & 32 & 64 \\
+    \cline{2-2}
+    & $O(n)$   & 59 & 373 & $112 + 261n$  & $373n$\\
+    \cline{2-2}Other
+    & $O(n^2)$ & 31 & 414  & $70 + 191n + 153n^2$ & $ 414n^2 $ \\
+    \cline{2-2}
+    Tools
+    & $n\log(n)$ & 6 & 81  & 0 & 0 \\
+    \cline{2-2}
+    & $O(n^3)$   & 2 & 91  & $6 + 16n + 13n^2 + 13n^3$ & $48 n^3$\\
+    \cline{2-2}
+    & $O(n^{4})$ & 3 & 36 & $4 + 9n + 9n^2 + 12n^3 + 11n^4$ & $45n^4$\\
+    \hline \hline
+    \multirow{5}{*}{Loopus} 
+    & $O(1)$     & 1 & 154 & 0 & - \\
+    \cline{2-2}
+    & $O(n)$     & 13 & 176  & $49 + 105n$ & $162n$\\
+    \cline{2-2}
+    & $O(n^2)$   & 4 & 64 & $4 + 13n + 15n^2$ & $32n^2$ \\
+    \cline{2-2}
+    & $O(n^3)$   & 4 & 193  & $2 + 7n + 10n^2 + 4n^3 $ & $23n^3$\\
+    \cline{2-2}
+    & $O(n^{4})$ & 1 & 21  & $1+3n+6n^2+8n^3+2n^4$ & $20n^4$\\
+    \hline \hline
+    \multirow{6}{*}{Icra} 
+    & $O(1)$ & 4 & 93 & 6 & 64 \\
+    \cline{2-2}
+    & $\log(n)$ & 2 & 16 & 0 & 0 \\
+    \cline{2-2}
+    & $O(n)$ & 79 & 988  & $267 + 698n$ & $ 965n $\\
+    \cline{2-2}
+    & $O(n^2)$ & 12 & 151  & $26+110n+26n^2$ & $162n^2$\\
+    \cline{2-2}
+    & $O(n^3)$ & 1 &  9 & $1+3n+3n^2+2n^3$ & $9n^3$\\
+    \cline{2-2}
+    & $\infty$ & 20 & 295  & $50$ & $ \infty$\\
+    \hline \hline
+    \multirow{2}{*}{Tianhan} 
+    & $O(n)$ & 35 & 188 & $68+120n$ & $188n$\\
+    \cline{2-2}
+    & $O(n^2)$ & 2 & 12  & $4+8n+4n^2$ & $16n^2$ \\
+    \hline
+    \end{tabular}
+    }
+    \end{table}
+
 %
- \begin{table}[ht]
- \caption{The Effectiveness And Accuracy Evaluation of {\PSRB}}
- \label{tb:accuracy-eval}
- \centering
- {\scriptsize
- \begin{tabular}{ >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | c | c | c | c | c | c | c | c | c | c | c | c |}
-        &  &  &  & \multicolumn{5}{c|}{reachability-bound} & \multicolumn{5}{c|}{worst bound } &  \multicolumn{2}{c|}{} \\
-{Bench-} & {theory} & ($\# p$) & ($\# l$) & \multicolumn{5}{c|}{ ($\pointnum$)} & \multicolumn{5}{c|}{($\# p$)} & \multicolumn{2}{c|}{overall complexity bound}\\
- \cline{5-16}
- -marks & worst &  &  & $1$ & $n$ & $n^2$ & $n^3$ & $\infty$ & {\tiny \PSRB} & {\tiny \cite{BenchmarkLoopus}} & {\tiny \cite{ToolCofloco}} & {\tiny \cite{GulwaniJK09}} & {\tiny \cite{BenchmarkTianhan}} & {\PSRB} & worst \\
- \hline
- & $O(1)$   &  4 & 82 & 32 & 0 & 0 & 0 &  0 & 1 & 2 & 3 & 2 & 1 & 32 & 64 \\
- \cline{2-2}
- & $O(n)$   & 59 & 373 & 112 & 261 & 0 & 0 &  0 & 48 & 51 & 45 & 46 & 40 & $112 + 261n$  & $373n$\\
- \cline{2-2}Other
- & $O(n^2)$ & 31 & 414 & 70 & 191 & 153 & 0 &  0  & 37 & 29 & 34 & 37 & 49 & $70 + 191n + 153n^2$ & $ 414n^2 $ \\
- \cline{2-2}
- Tools
- & $n\log(n)$ & 6 & 81 & 0 & 0 & 0 & 0 & 0 &  0 & 0 & 0 & 0 & 0 & 0 & 0 \\
- \cline{2-2}
- & $O(n^3)$   & 2 & 91 & 6 & 16 & 13 & 13 &  0 & 4 & 3 & 2 & 5 & 7 & $6 + 16n + 13n^2 + 13n^3$ & $48 n^3$\\
- \cline{2-2}
- & $O(n^{4})$ & 3 & 36 & 4 & 9 & 9 & 12 & 0 & 4 & 4 & 3 & 5 & 5 & $4 + 9n + 9n^2 + 12n^3 $ & $45n^4$\\
- \hline \hline
- \multirow{5}{*}{Loopus} 
- & $O(1)$     & 1 & 154 & 0 & 0 & 0 & 0  & 0 & 0 & 1 & 0 & 0 & 0 & 0 & - \\
- \cline{2-2}
- & $O(n)$     & 13 & 176 & 49 & 105 & 0  & 0 & 0 & 12 & 13 & 14 & 14 & 11 & $49 + 105n$ & $162n$\\
- \cline{2-2}
- & $O(n^2)$   & 4 & 64 & 4 & 13 & 15 & 0  & 0 & 3 & 2 & 5 & 2 & 6 & $4 + 13n + 15n^2$ & $32n^2$ \\
- \cline{2-2}
- & $O(n^3)$   & 4 & 193 & 2 & 7 & 10 & 4  & 0 & 2 & 1 & 2 & 2 & 3 & $2 + 7n + 10n^2 + 4n^3 $ & $23n^3$\\
- \cline{2-2}
- & $O(n^{4})$ & 1 & 21 & 1 & 3 & 6 & 8 & 2  & 1 & 1 & 1 & 1 & 0 & $1+3n+6n^2+8n^3$ & $20n^4$\\
- \hline \hline
- \multirow{6}{*}{Icra} 
- & $O(1)$ & 4 & 93 & 41 & 0 & 0 & 0 & 0  & 1 & 3 & 2 & 2 & 0 & 6 & 64 \\
- \cline{2-2}
- & $\log(n)$ & 2 & 16 & 0 & 0 & 0 & 0 & 0  & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
- \cline{2-2}
- & $O(n)$ & 79 & 988 & 267 & 698 & 0 & 0 & 0  & 78 & 80 & 82 & 78 & 77 & $267 + 698n$ & $ 965n $\\
- \cline{2-2}
- & $O(n^2)$ & 12 & 151 & 26 & 110 & 26 & 0 & 0  & 18 & 14 & 11 & 16 & 17 & $26+110n+26n^2$ & $162n^2$\\
- \cline{2-2}
- & $O(n^3)$ & 1 &  9 & 1 & 3 & 3 & 2 & 0  & 1 & 1 & 4 & 2 & 4 & $1+3n+3n^2+2n^3$ & $9n^3$\\
- \cline{2-2}
- & $\infty$ & 20 & 295 &  50 & 0 & 0 & 0  & 245 & 9 & 0 & 0 & 0 & 0 & $50$ & $ \infty$\\
- \hline \hline
- \multirow{2}{*}{Tianhan} 
- & $O(n)$ & 35 & 188 & 68 & 120 & 0 & 0 &  0 & 35 & 35 & 35 & 35 & 35 & $68+120n$ & $188n$\\
- \cline{2-2}
- & $O(n^2)$ & 2 & 12 & 4 & 8 & 4 & 0 & 0 & 2 & 2 & 2 & 2 & 2 & $4+8n+4n^2$ & $16n^2$ \\
- \hline
- \end{tabular}
- }
- \end{table}
+%  \begin{table}[ht]
+%  \caption{The Effectiveness And Accuracy Evaluation of {\PSRB}}
+%  \label{tb:accuracy-eval}
+%  \centering
+%  {\scriptsize
+%  \begin{tabular}{ >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | c | c | c | c | c | c | c | c | c | c | c | c |}
+%         &  &  &  & \multicolumn{5}{c|}{reachability-bound} & \multicolumn{5}{c|}{worst bound } &  \multicolumn{2}{c|}{} \\
+% {Bench-} & {theory} & ($\# p$) & ($\# l$) & \multicolumn{5}{c|}{ ($\pointnum$)} & \multicolumn{5}{c|}{($\# p$)} & \multicolumn{2}{c|}{overall complexity bound}\\
+%  \cline{5-16}
+%  -marks & worst &  &  & $1$ & $n$ & $n^2$ & $n^3$ & $\infty$ & {\tiny \PSRB} & {\tiny Loopus} & {\tiny Cofloco} & {\tiny SPEED} & {\tiny \cite{BenchmarkTianhan}} & {\PSRB} & worst \\
+%  \hline
+%  & $O(1)$   &  4 & 82 & 32 & 0 & 0 & 0 &  0 & 1 & 2 & 3 & 2 & 1 & 32 & 64 \\
+%  \cline{2-2}
+%  & $O(n)$   & 59 & 373 & 112 & 261 & 0 & 0 &  0 & 48 & 51 & 45 & 46 & 40 & $112 + 261n$  & $373n$\\
+%  \cline{2-2}Other
+%  & $O(n^2)$ & 31 & 414 & 70 & 191 & 153 & 0 &  0  & 37 & 29 & 34 & 37 & 49 & $70 + 191n + 153n^2$ & $ 414n^2 $ \\
+%  \cline{2-2}
+%  Tools
+%  & $n\log(n)$ & 6 & 81 & 0 & 0 & 0 & 0 & 0 &  0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+%  \cline{2-2}
+%  & $O(n^3)$   & 2 & 91 & 6 & 16 & 13 & 13 &  0 & 4 & 3 & 2 & 5 & 7 & $6 + 16n + 13n^2 + 13n^3$ & $48 n^3$\\
+%  \cline{2-2}
+%  & $O(n^{4})$ & 3 & 36 & 4 & 9 & 9 & 12 & 0 & 4 & 4 & 3 & 5 & 5 & $4 + 9n + 9n^2 + 12n^3 $ & $45n^4$\\
+%  \hline \hline
+%  \multirow{5}{*}{Loopus} 
+%  & $O(1)$     & 1 & 154 & 0 & 0 & 0 & 0  & 0 & 0 & 1 & 0 & 0 & 0 & 0 & - \\
+%  \cline{2-2}
+%  & $O(n)$     & 13 & 176 & 49 & 105 & 0  & 0 & 0 & 12 & 13 & 14 & 14 & 11 & $49 + 105n$ & $162n$\\
+%  \cline{2-2}
+%  & $O(n^2)$   & 4 & 64 & 4 & 13 & 15 & 0  & 0 & 3 & 2 & 5 & 2 & 6 & $4 + 13n + 15n^2$ & $32n^2$ \\
+%  \cline{2-2}
+%  & $O(n^3)$   & 4 & 193 & 2 & 7 & 10 & 4  & 0 & 2 & 1 & 2 & 2 & 3 & $2 + 7n + 10n^2 + 4n^3 $ & $23n^3$\\
+%  \cline{2-2}
+%  & $O(n^{4})$ & 1 & 21 & 1 & 3 & 6 & 8 & 2  & 1 & 1 & 1 & 1 & 0 & $1+3n+6n^2+8n^3$ & $20n^4$\\
+%  \hline \hline
+%  \multirow{6}{*}{Icra} 
+%  & $O(1)$ & 4 & 93 & 41 & 0 & 0 & 0 & 0  & 1 & 3 & 2 & 2 & 0 & 6 & 64 \\
+%  \cline{2-2}
+%  & $\log(n)$ & 2 & 16 & 0 & 0 & 0 & 0 & 0  & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+%  \cline{2-2}
+%  & $O(n)$ & 79 & 988 & 267 & 698 & 0 & 0 & 0  & 78 & 80 & 82 & 78 & 77 & $267 + 698n$ & $ 965n $\\
+%  \cline{2-2}
+%  & $O(n^2)$ & 12 & 151 & 26 & 110 & 26 & 0 & 0  & 18 & 14 & 11 & 16 & 17 & $26+110n+26n^2$ & $162n^2$\\
+%  \cline{2-2}
+%  & $O(n^3)$ & 1 &  9 & 1 & 3 & 3 & 2 & 0  & 1 & 1 & 4 & 2 & 4 & $1+3n+3n^2+2n^3$ & $9n^3$\\
+%  \cline{2-2}
+%  & $\infty$ & 20 & 295 &  50 & 0 & 0 & 0  & 245 & 9 & 0 & 0 & 0 & 0 & $50$ & $ \infty$\\
+%  \hline \hline
+%  \multirow{2}{*}{Tianhan} 
+%  & $O(n)$ & 35 & 188 & 68 & 120 & 0 & 0 &  0 & 35 & 35 & 35 & 35 & 35 & $68+120n$ & $188n$\\
+%  \cline{2-2}
+%  & $O(n^2)$ & 2 & 12 & 4 & 8 & 4 & 0 & 0 & 2 & 2 & 2 & 2 & 2 & $4+8n+4n^2$ & $16n^2$ \\
+%  \hline
+%  \end{tabular}
+%  }
+%  \end{table}
 %
-\\
 \emph{Performance}
 The performance evaluation is in Table~\ref{tb:performance-eval}.
 The columns from $2$ to $6$ are the numbers of the programs, program with multipath loops, program with nested loops, and program with bounded loops and the lines of code in each benchmark set respectively.
@@ -122,7 +236,7 @@ Since our prototype consists of the implementations in OCaml and Python, the int
 \label{tb:performance-eval}
     \centering
 {\scriptsize
-\begin{tabular}{ | >{\small}c | c | c | c | c | c | c | c | c | c | c |}
+\begin{tabular}{ | c | c | c | c | c | c | c | c | c | c | c |}
 \hline
 \multirow{2}{*}{Benchmarks} & \multirow{2}{*}{\# P}  & {M.P.L} & Nested  & {Bounded} & L.O.C & {Success} & \multirow{2}{*}{Failed} & Time  & Total
 \\
