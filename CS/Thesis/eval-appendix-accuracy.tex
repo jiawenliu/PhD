@@ -1,0 +1,56 @@
+\begin{table}[ht]
+    \caption{The Complete Effectiveness And Accuracy Evaluation Table of {\THESYSTEM}}
+    \label{tb:accuracy-eval-appendix}
+    \centering
+    {\scriptsize
+    \begin{tabular}{ >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | c | c | c | c | c | c | c | c | c | c | c | c | c |}
+    {Bench-} & {theory} & ($\# p$) & ($\# l$) & \multicolumn{6}{c|}{reachability-bound ($\pointnum$)} & \multicolumn{5}{c|}{worst bound ($\# p$)} & \multicolumn{2}{c|}{overall complexity bound}\\
+    \cline{5-17}
+    -marks & worst &  &  & $1$ & $n$ & $n^2$ & $n^3$ & $n^4$ & $\infty$ & {\tiny \THESYSTEM} & {\tiny \cite{BenchmarkLoopus}} & {\tiny \cite{ToolCofloco}} & {\tiny \cite{GulwaniJK09}} & {\tiny \cite{BenchmarkTianhan}} & {\THESYSTEM} & worst \\
+    \hline
+    & $O(1)$   &  4 & 82 & 32 & 0 & 0 & 0 & 0 & 0 & 1 & 2 & 3 & 2 & 1 & 32 & 64 \\
+    \cline{2-2}
+    & $O(n)$   & 59 & 373 & 112 & 261 & 0 & 0 & 0 & 0 & 48 & 51 & 45 & 46 & 40 & $112 + 261n$  & $373n$\\
+    \cline{2-2}Other
+    & $O(n^2)$ & 31 & 414 & 70 & 191 & 153 & 0 & 0 & 0  & 37 & 29 & 34 & 37 & 49 & $70 + 191n + 153n^2$ & $ 414n^2 $ \\
+    \cline{2-2}
+    Tools
+    & $n\log(n)$ & 6 & 81 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    \cline{2-2}
+    & $O(n^3)$   & 2 & 91 & 6 & 16 & 13 & 13 & 0 & 0 & 4 & 3 & 2 & 5 & 7 & $6 + 16n + 13n^2 + 13n^3$ & $48 n^3$\\
+    \cline{2-2}
+    & $O(n^{4})$ & 3 & 36 & 4 & 9 & 9 & 12 & 11 & 0 & 4 & 4 & 3 & 5 & 5 & $4 + 9n + 9n^2 + 12n^3 + 11n^4$ & $45n^4$\\
+    \hline \hline
+    \multirow{5}{*}{Loopus} 
+    & $O(1)$     & 1 & 154 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & - \\
+    \cline{2-2}
+    & $O(n)$     & 13 & 176 & 49 & 105 & 0 & 0 & 0 & 0 & 12 & 13 & 14 & 14 & 11 & $49 + 105n$ & $162n$\\
+    \cline{2-2}
+    & $O(n^2)$   & 4 & 64 & 4 & 13 & 15 & 0 & 0 & 0 & 3 & 2 & 5 & 2 & 6 & $4 + 13n + 15n^2$ & $32n^2$ \\
+    \cline{2-2}
+    & $O(n^3)$   & 4 & 193 & 2 & 7 & 10 & 4 & 0 & 0 & 2 & 1 & 2 & 2 & 3 & $2 + 7n + 10n^2 + 4n^3 $ & $23n^3$\\
+    \cline{2-2}
+    & $O(n^{4})$ & 1 & 21 & 1 & 3 & 6 & 8 & 2 & 0 & 1 & 1 & 1 & 1 & 0 & $1+3n+6n^2+8n^3+2n^4$ & $20n^4$\\
+    \hline \hline
+    \multirow{6}{*}{Icra} 
+    & $O(1)$ & 4 & 93 & 41 & 0 & 0 & 0 & 0 & 0 & 1 & 3 & 2 & 2 & 0 & 6 & 64 \\
+    \cline{2-2}
+    & $\log(n)$ & 2 & 16 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    \cline{2-2}
+    & $O(n)$ & 79 & 988 & 267 & 698 & 0 & 0 & 0 & 0 & 78 & 80 & 82 & 78 & 77 & $267 + 698n$ & $ 965n $\\
+    \cline{2-2}
+    & $O(n^2)$ & 12 & 151 & 26 & 110 & 26 & 0 & 0 & 0 & 18 & 14 & 11 & 16 & 17 & $26+110n+26n^2$ & $162n^2$\\
+    \cline{2-2}
+    & $O(n^3)$ & 1 &  9 & 1 & 3 & 3 & 2 & 0 & 0 & 1 & 1 & 4 & 2 & 4 & $1+3n+3n^2+2n^3$ & $9n^3$\\
+    \cline{2-2}
+    & $\infty$ & 20 & 295 &  50 & 0 & 0 & 0 & 0 & 245 & 9 & 0 & 0 & 0 & 0 & $50$ & $ \infty$\\
+    \hline \hline
+    \multirow{2}{*}{Tianhan} 
+    & $O(n)$ & 35 & 188 & 68 & 120 & 0 & 0 & 0 & 0 & 35 & 35 & 35 & 35 & 35 & $68+120n$ & $188n$\\
+    \cline{2-2}
+    & $O(n^2)$ & 2 & 12 & 4 & 8 & 4 & 0 & 0 & 0 & 2 & 2 & 2 & 2 & 2 & $4+8n+4n^2$ & $16n^2$ \\
+    \hline
+    \end{tabular}
+    }
+    \end{table}
+   %
