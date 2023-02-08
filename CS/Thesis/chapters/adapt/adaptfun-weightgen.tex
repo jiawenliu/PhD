@@ -12,7 +12,7 @@ The two computation steps are summarized as follows,
   \item \textbf{Reachability Bound Analysis}
   This analysis estimate for each program point $l \in \absV(c)$ a symbolic upper bounds on the execution times of the command with label $l$. 
   These symbolic upper bounds are expressions with the input variables as free variables, hence they correspond to the weight functions in the semantics-based dependency graphs. 
-  Our reachability-bound algorithm adapts to our setting ideas from previous work~\cite{ZulegerGSV11, SinnZV14, sinn2017complexity}.
+  Our reachability-bound algorithm adapts to our setting ideas from previous work~\cite{ZulegerGSV11,SinnZV14,SinnZV17}.
   Specifically, it provides an upper bound on the number of times every command can be executed.
     \item \textbf{Weight Estimation}
     Because
@@ -84,7 +84,7 @@ For each variable $x$ in a program $c$, this step computes three edge sets, $\in
 In the following steps, $c$ is omitted in $\inc(x)$,
 $\dec(x)$ and $\reset(x)$ for concise when the reference of a program $c$ is clear in the context.
 \item {Assigning The Local Bound to An Edge}
-This step adopts the local bound computation method in Section 4 of \cite{sinn2017complexity}.
+This step adopts the local bound computation method in Section 4 of \cite{SinnZV17}.
 It assigns to each edge  $l \xrightarrow{dc} l'\in \absE(c)$ a \emph{local bound} as follows.
 \begin{defn}[Local Bound  Generatation]
   \label{def:ranking_gen}
@@ -189,14 +189,14 @@ computed as follows,
 \end{defn}
 \footnotetext{We only present the computation based on the variable reset set ($\reset$) instead of the reset chain ($\resetchain$)
 for easier understanding the concept.
-In the implementation, we use the one based on $\resetchain$ in Definition 21 from \cite{sinn2017complexity} achieving more accurate results.}
+In the implementation, we use the one based on $\resetchain$ in Definition 21 from \cite{SinnZV17} achieving more accurate results.}
 Then we construct the set of reachability bound $w$ for every program point $l$, as $\absW(c)$.
 For each pair $(l, w) \in \absW(c)$, $w = \sum\left\{  \absclr(\absevent, c) \middle\vert \absevent = (l, \_, \_) \right\}$.
 
 \highlight{Theorem Guarantee}
 For a program $c$ and an edge $\absevent \in \absE(c)$,
 $\absclr(\absevent)$ is a sound upper bound
-on the execution times of this transition by paper~\cite{sinn2017complexity}.
+on the execution times of this transition by~\cite{SinnZV17}.
 The soundness theorem is attached in Theorem~\ref{thm:transition_bound_sound} in Appendix~\ref{apdx:reachability_soundness}.
 %
 \begin{thm}[Soundness of the Transition Bound]
