@@ -3,7 +3,7 @@ We can now define the adaptivity of a program formally. This notion is formulate
 
 \begin{defn}[Walk on $\traceG({c})$]
 \label{def:finitewalk}
-Given the semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ of a program $c$, a \emph{walk} $k:\mathcal{T}_0(c)\to \mathbb{N}$ on $\traceG({c})$ is a function that given as input an initial trace $\trace_0$ returns a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+Given the semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ of a program $c$, a \emph{walk} $k:\ftdom_0(c)\to \mathbb{N}$ on $\traceG({c})$ is a function that given as input an initial trace $\trace_0$ returns a sequence of edges $(e_1 \ldots e_{n - 1})$ 
 for which there is a sequence of vertices $(v_1, \ldots, v_{n})$ such that:
 \begin{itemize}
 \item $e_i = (v_{i},v_{i + 1}) \in \traceE$ for every $1 \leq i < n$.
@@ -24,7 +24,7 @@ corresponding to queries.
 Given 
 the semantics-based dependency graph $\traceG({c})$ of a program $c$,
  and a \emph{walk} 
- $k \in \walks(\traceG(c))$, the \emph{query length} of $k$ is a function $\qlen(k):\mathcal{T}_0(c) \to \mathbb{N}$ that given an initial trace $\trace_0$ returns
+ $k \in \walks(\traceG(c))$, the \emph{query length} of $k$ is a function $\qlen(k):\ftdom_0(c) \to \mathbb{N}$ that given an initial trace $\trace_0$ returns
 the number of vertices which correspond to query variables in the vertices sequence, $(v_1, \ldots, v_{n})$ as follows, 
 \begin{center}
    $
@@ -37,8 +37,8 @@ $
     \label{def:trace_adapt}
     Given a program ${c}$, 
     its adaptivity $A(c)$ is function 
-    $A(c) : \mathcal{T}_0(c)\to \mathbb{N}$ such that for an
-    initial trace $\trace_0 \in \mathcal{T}_0(c)$, 
+    $A(c) : \ftdom_0(c)\to \mathbb{N}$ such that for an
+    initial trace $\trace_0 \in \ftdom_0(c)$, 
 \begin{center}
 $
     A(c)(\trace_0) = \max \big 

@@ -3,15 +3,15 @@
 \label{apdx:abscfg_sound}
 \begin{lemma}[Soundness of the Abstract Events Computation]
   For every program $c$ and
-  an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.
-  an initial trace  $\vtrace_0 \in \mathcal{T}_0(c)$,
+  an execution trace $\trace \in \ftdom$ that is generated w.r.t.
+  an initial trace  $\vtrace_0 \in \ftdom_0(c)$,
   there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
   % with initial label $l$
   for every event $\event \in \trace$ having the label $l$, i.e., $\event = (\_, l, \_)$.
    %
 \[
   \begin{array}{l}
-    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  l, l' \in \absV(c), \event = (\_, l, \_) \in \eventset \sthat 
+    \forall c \in \cdom, \vtrace_0 \in \ftdom_0(c), \trace \in \ftdom ,  l, l' \in \absV(c), \event = (\_, l, \_) \in \eventset \sthat 
 \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
 \land \event \in \trace 
 \\
@@ -22,10 +22,10 @@
 \end{lemma}
 
 \begin{proof}
-  Taking arbitrary $\trace_0 \in \mathcal{T}$, and an arbitrary event $\event = (\_, l, \_) \in \eventset$, it is sufficient to show:
+  Taking arbitrary $\trace_0 \in \ftdom$, and an arbitrary event $\event = (\_, l, \_) \in \eventset$, it is sufficient to show:
   \[
   \begin{array}{l}
-    \forall \trace \in \mathcal{T} \sthat 
+    \forall \trace \in \ftdom \sthat 
 \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
 \land \event \in \trace 
 \\
@@ -66,7 +66,7 @@
     \trace_0 \tracecat [(b, l, \etrue)]}}
   $.
   \\
-  Let $\trace_w \in \mathcal{T}$ satisfying following execution:
+  Let $\trace_w \in \ftdom$ satisfying following execution:
   \\
   $
   \config{{
@@ -93,14 +93,14 @@ c_w; \ewhile [b]^{l_w} \edo c_w,
 \config{{
 \eskip,
 \trace_0 \tracecat [(b, l_w, \etrue)] \tracecat \trace_w \tracecat \trace_1}}
-$ for some $\trace_1 \in \mathcal{T}$ and $\trace = [(b, l_w, \etrue)] \tracecat \trace_w \tracecat \trace_1$.
+$ for some $\trace_1 \in \ftdom$ and $\trace = [(b, l_w, \etrue)] \tracecat \trace_w \tracecat \trace_1$.
 \\
 Then we have 3 cases: 
 (1) $\event \eventeq (b, l_w, \etrue)$, 
 (2) $\event \in \trace_w$ or 
 (3) $\event \in \trace_1$.
   \\
-In case of (1). $\event \eventeq (b, l_w, \etrue)$, since $\absflow(c) = \absflow'(c;\clabel{\eskip}^{l_e}) = \{(l, \top, \init(c_w))\} \cup \cdots $, we have $\absevent = (l, \top, \init(c_w))$ and this case is proved.
+In case of (1). $\event \eventeq (b, l_w, \etrue)$, since $\absflow(c) = \absflow'(c;\clabel{\eskip}^{l_e}) = \{(l, \top, \init(c_w))\} \cup \ldots $, we have $\absevent = (l, \top, \init(c_w))$ and this case is proved.
 \\
 In case of (2). $\event \in \trace_w$,
 by induction hypothesis on 
@@ -124,21 +124,21 @@ $c_w$ with the execution
   There are 2 subcases: (2.1) $\absevent' \in \absflow'(c_w)$ or 
   $ (2.2) \absevent' \in \{ (l', dc, l_e) | (l', dc) \in \absfinal(c_w) \}$.
   \subcaseL{(2.1)}
-  Since $\absflow(c) = \absflow'(c_w) \cup \{(l', dc, l_w)| (l', dc) \in \absfinal(c_w) \} \cup \cdots $, 
+  Since $\absflow(c) = \absflow'(c_w) \cup \{(l', dc, l_w)| (l', dc) \in \absfinal(c_w) \} \cup \ldots $, 
   we know the abstract event $\absevent' \in \absflow(c)$. 
   \\
   This case is proved.
   \subcaseL{(2.2) $\absevent' \in \{ (l', dc, l_e) | (l', dc) \in \absfinal(c_w) \}$ }
   In this case, we know $(l, dc) \in \absfinal(c_w)$.
   \\
-  Since $\absflow(c) = \absflow'(c_w) \cup \{(l', dc, l_w)| (l', dc) \in \absfinal(c_w) \} \cup \cdots $, 
+  Since $\absflow(c) = \absflow'(c_w) \cup \{(l', dc, l_w)| (l', dc) \in \absfinal(c_w) \} \cup \ldots $, 
   we know $(l, dc, l_w) \in \{(l', dc, l_w)| (l', dc) \in \absfinal(c_w) \}$, 
    i.e., the abstract event $(l, dc, l_w) \in \absflow(c)$ and $(l, dc, l_w)$ has the form $(l, \_, \_)$.
   \\
   This case is proved.
   \\
   %
-In case of (3). $\event \in \trace_1$, we know either $\event = (b, l_w, \_)$, or $\event \in \trace_w'$ where $\trace_w' \in \mathcal{T}$ is the trace of executing $c_w$ in an iteration.
+In case of (3). $\event \in \trace_1$, we know either $\event = (b, l_w, \_)$, or $\event \in \trace_w'$ where $\trace_w' \in \ftdom$ is the trace of executing $c_w$ in an iteration.
 \\
 Then this case is proved by repeating the proof in case (1) and case (2).
   \\
@@ -154,7 +154,7 @@ Then this case is proved by repeating the proof in case (1) and case (2).
   }$,
   In this case, we have $\trace = [(b, l_w, \efalse)]$ and $\event = (b, l_w, \efalse)$ (o.w., $\event \not\eventin \trace$ and this lemma is vacuously true) with $l = l_w$.
   \\
-  By the abstract execution trace computation, $\absflow(c) = \{(l, \top, \init(c_w))\} \cup \cdots $, 
+  By the abstract execution trace computation, $\absflow(c) = \{(l, \top, \init(c_w))\} \cup \ldots $, 
   we have $\absevent = (l, \top, \init(c_w))$  and $\absevent \in \absflow(c)$.
 \\
   This case is proved.
@@ -169,15 +169,15 @@ Then this case is proved by repeating the proof in case (1) and case (2).
 \label{apdx:abscfg_uniquex}
 \begin{lemma}[Uniqueness of the Abstract Events Computation]
   For every program $c$ and
-  an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.
-  an initial trace  $\vtrace_0 \in \mathcal{T}_0(c)$,
+  an execution trace $\trace \in \ftdom$ that is generated w.r.t.
+  an initial trace  $\vtrace_0 \in \ftdom_0(c)$,
   there is a unique abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
   for every assignment event $\event \in \eventset^{\asn}$ in the
   execution trace having the label $l$, i.e., $\event = (\_, l, \_, \_)$ and  $\event \in \trace$.
 %
 \[
   \begin{array}{l}
-    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  l, l' \in \absV(c), \event = (\_, l, \_) \in \eventset^{\asn} \sthat 
+    \forall c \in \cdom, \vtrace_0 \in \ftdom_0(c), \trace \in \ftdom ,  l, l' \in \absV(c), \event = (\_, l, \_) \in \eventset^{\asn} \sthat 
 \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
 \land \event \in \trace 
 \\
@@ -205,8 +205,8 @@ Then this case is proved by repeating the proof in case (1) and case (2).
   the execution times of this assignment command in $c$.
     \[
       \begin{array}{l}
-        \forall c \in \cdom, l \in \lvar(c),\trace_0 \in \mathcal{T}_0(c), 
-        \trace \in \mathcal{T}, v \in \mathbb{N}
+        \forall c \in \cdom, l \in \lvar(c),\trace_0 \in \ftdom_0(c), 
+        \trace \in \ftdom, v \in \mathbb{N}
          \sthat  
          \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\vtrace} 
          \land \config{\absclr(\absevent, c), \trace_0} \aarrow v
@@ -229,7 +229,7 @@ Then this case is proved by repeating the proof in case (1) and case (2).
    \sthat  
   % \max \left\{ 
     % \vcounter(\vtrace') l ~ \middle\vert~
-  % \forall \vtrace, \trace' \in \mathcal{T} \sthat  
+  % \forall \vtrace, \trace' \in \ftdom \sthat  
   \config{{c}, \trace} \to^{*} \config{\clabel{\eskip}^{l'}, \trace\tracecat\vtrace'} 
   \land 
   \config{\trace, w} \earrow v
@@ -288,7 +288,7 @@ To show:
 \[
   \begin{array}{l}
     \max \left\{ \vcounter(\vtrace') l ~ \middle\vert~
-\forall \vtrace \in \mathcal{T} \sthat  \config{{c}, \trace} \to^{*} \config{\clabel{\eskip}^{l'}, \trace\tracecat\vtrace'} \right\} 
+\forall \vtrace \in \ftdom \sthat  \config{{c}, \trace} \to^{*} \config{\clabel{\eskip}^{l'}, \trace\tracecat\vtrace'} \right\} 
 \\
 \leq 
 Incr(\locbound(\absevent)) + 
@@ -296,7 +296,7 @@ Incr(\locbound(\absevent)) +
 \end{array}
 \]
   Taking an arbitrary initial trace
-  $\trace_0 \in \mathcal{T}$, 
+  $\trace_0 \in \ftdom$, 
   executing $c$ with $\trace_0$, let $\trace$ be the trace after evaluation, i.e., $\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'},\vtrace}$, it is sufficient to show:
   \[ 
     \begin{array}{l}
@@ -318,7 +318,7 @@ Given a program ${c}$, we have:
 \[
 \forall \absevent = (l, dc, l') \sthat  
 \max \left\{ \vcounter(\vtrace') l ~ \middle\vert~
-\forall \vtrace \in \mathcal{T} \sthat  \config{{c}, \trace} \to^{*} \config{\clabel{\eskip}^{l'}, \trace\tracecat\vtrace'} \right\} 
+\forall \vtrace \in \ftdom \sthat  \config{{c}, \trace} \to^{*} \config{\clabel{\eskip}^{l'}, \trace\tracecat\vtrace'} \right\} 
 \leq 
 \locbound(\absevent)
 \]
@@ -327,8 +327,8 @@ Given a program ${c}$, we have:
   \subcaseL{$l \notin SCC(\absG(c))$}
   In this case, we know variable $x^l$ isn't involved in the body of any $\ewhile$ command. 
   \\
-  Taking an arbitrary $\vtrace_0 \in \mathcal{T}$, 
-  let $\trace \in \mathcal{T}$ be of resulting trace of executing $c$ with $\trace$, 
+  Taking an arbitrary $\vtrace_0 \in \ftdom$, 
+  let $\trace \in \ftdom$ be of resulting trace of executing $c$ with $\trace$, 
   i.e., $\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace}$,
   \\
   we know the

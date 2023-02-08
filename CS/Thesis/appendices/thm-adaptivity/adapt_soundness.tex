@@ -3,7 +3,7 @@
 	For every program $c$, 
 	its estimated adaptivity is a sound upper bound of its adaptivity.
 	 \[
-	 \forall \trace_0 \in \mathcal{T}_{0}(c), v \in \mathbb{N}^{\infty} \sthat  
+	 \forall \trace_0 \in \ftdom_{0}(c), v \in \mathbb{N}^{\infty} \sthat  
   \config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq c
   \] 
   \end{theorem}
@@ -44,7 +44,7 @@ The parameter $(c)$ for the components in the two graphs are omitted for concise
 According to the Definition \ref{def:prog_adapt} and Definition~\ref{def:trace_adapt}, it is sufficient to show:
 %
 $$
-\forall \trace \in \mathcal{T} \sthat 
+\forall \trace \in \ftdom \sthat 
 \config{\max\left\{ \qlen(k) \ \mid \  k\in \walks(\progG({c}))\right \}
 , \trace } \earrow n \implies
 n \geq
@@ -58,7 +58,7 @@ Then it is sufficient to show that:
   \forall 
   k_t \in \walks(\traceG({c}),
   \exists k_p \in \walks(\progG({c})) 
-  \sthat  \forall \trace \in \mathcal{T} \sthat 
+  \sthat  \forall \trace \in \ftdom \sthat 
   \qlen(k_p), \trace \earrow n
    \implies 
   n \geq \qlen(k_t(\trace))
@@ -66,7 +66,7 @@ Then it is sufficient to show that:
 \]
 %
 Let $k_t\in \walks(\traceG(c))$ be an arbitrary walk in $\traceG(c)$, 
-and $\trace \in \mathcal{T}$ be arbitrary trace.
+and $\trace \in \ftdom$ be arbitrary trace.
 \\
 Then, 
 let $(e_{p1}, \cdots, e_{p(n-1)}) $ and
@@ -248,7 +248,7 @@ Then by definition of $\progE$, we know $(x^i, y^j) \in \progE$. This Lemma is p
 			\\ \quad
 			\implies
 			\forall (x^l, w_{t}) \in \traceW,
-			(x^l, w_{p}) \in \progW, \vtrace, \trace' \in \mathcal{T}, v \in \mathbb{N} \sthat 
+			(x^l, w_{p}) \in \progW, \vtrace, \trace' \in \ftdom, v \in \mathbb{N} \sthat 
 			\config{w_{p}, \trace} \earrow v
 			\implies
 			% \right\} 
@@ -271,7 +271,7 @@ trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
 \\
 Taking arbitrary 
 % $v \in \traceV$, by Lemma~\ref{lem:vertex_map}, we know $v \in \progV$.
-$(x^l, w_{t}) \in \traceW, (x^l, w_{p}) \in \progW, \vtrace, \trace' \in \mathcal{T}$, satisfying:
+$(x^l, w_{t}) \in \traceW, (x^l, w_{p}) \in \progW, \vtrace, \trace' \in \ftdom$, satisfying:
 \\
 $\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
 \land 

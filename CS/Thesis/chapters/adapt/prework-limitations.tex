@@ -1,6 +1,4 @@
 There are three limitations as follows.
-\highlight{
-% \paragraph{Limitations in The Language Model}
 \begin{itemize}
  \item \textbf{Expressiveness Limitation}
 %  \\
@@ -9,8 +7,6 @@ There are three limitations as follows.
     % %
     % \item  
     This language model doesn't support programs with non-deterministic while loop.
-    %  the program which contains while loop with non-deterministic iterations.
-    % In the other words, it only supports the programs with the loops of constant iteration numbers,
     It only allows the while loops in the program to iterate a fixed number of times.
     This is because the expression in the loop guard has to be a constant number
     % constant 
@@ -78,4 +74,7 @@ There are three limitations as follows.
    %  \item For the same reason as above, their \textbf{Graph Generation} algorithm is low-efficient as well.
     \end{enumerate}
 \end{itemize}
-}  
+
+Given the limitations in previous work, we develop our new framework
+composed of three parts as well as in Figure~\ref{fig:adaptfun-overview}.
+It is presented in the following three chapters.

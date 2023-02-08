@@ -96,15 +96,19 @@ We use following notations to represent the set of corresponding terms:
 \dbdom  & : & \mbox{{Set of Databases}} 
 \\
 %
-{\mathcal{T}} & : & \mbox{Universe of Traces}
+\highlight{\ftdom} & : & \mbox{\highlight{Set of All Finite Execution Traces}}
 \\
+\highlight{\inftdom} & : & \mbox{\highlight{Set of Infinite  Execution Traces}}
+\\
+\highlight{\tdom} & : & \mbox{\highlight{Set of All Finite Or Infinite  Execution Traces}}
+\\ 
 %
 \qdom & : & \mbox{{Domain of Query Results}}
 \\
 \inpvar(c) & : & \mbox{Set of Program $c$'s Input Variables}  
 \\
-\mathcal{T}_0(c) & : & \mbox{Set of Program $c$'s Well-formed Initial Traces.}
-\\ & & \mbox{Each well formed initial trace $\trace_0 \in \mathcal{T}_0(c)$ is finite}
+\ftdom_0(c) & : & \mbox{Set of Program $c$'s Well-formed Initial Traces.}
+\\ & & \mbox{Each well formed initial trace $\trace_0 \in \ftdom_0(c)$ is finite}
 \\ & & \mbox{and every input variable of the program $c$ has an initial value in $\trace_0$.}
 \end{array}
 \]

@@ -58,12 +58,12 @@ This matches the intuitive data dependency between queries, where one query is i
 {Below is the \emph{event may-dependency} between events based on formally observing their differences via $\diff$.}
 \begin{defn}[Event May-Dependency]
 \label{def:event_dep}
-An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment event $\event_1 \in \eventset^{\asn}$ in a program ${c}$  with a hidden database $D$ and a witness trace $\trace \in \mathcal{T}$,
-$\eventdep(\event_1, \event_2, [\event_1 ] \tracecat \trace \tracecat [\event_2], c, D)$ if and only if
+An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment event $\event_1 \in \eventset^{\asn}$ in a program ${c}$  with a hidden database $D$ and a witness trace $\trace \in \ftdom$,
+$\eventdep(\event_1, \event_2, [\event_1] \tracecat \trace \tracecat [\event_2], c, D)$ if and only if
 \begin{subequations}
 \begin{align}
   &  
-  \exists \trace_0, \trace_1, \trace' \in \mathcal{T},\event_1' \in \eventset^{\asn}, {c}_1, {c}_2  \in \cdom  \sthat \diff(\event_1, \event_1') \land \\
+  \exists \trace_0, \trace_1, \trace' \in \ftdom,\event_1' \in \eventset^{\asn}, {c}_1, {c}_2  \in \cdom  \sthat \diff(\event_1, \event_1') \land \\
   & 
   \quad (\exists  \event_2' \in \eventset \sthat
   \left(
@@ -88,7 +88,7 @@ $\eventdep(\event_1, \event_2, [\event_1 ] \tracecat \trace \tracecat [\event_2]
   \lor 
   \left(
   \begin{array}{l} 
-    \exists \trace_3, \trace_3'  \in \mathcal{T}, \event_b \in \eventset^{\test} \sthat  
+    \exists \trace_3, \trace_3'  \in \ftdom, \event_b \in \eventset^{\test} \sthat  
     \\
     \quad \config{{c}, \trace_0} \rightarrow^{*} \config{{c}_1, \trace_1 \tracecat [\event_1]}  \rightarrow^{*}
     \config{c_2,  \trace_1 \tracecat [\event_1] \tracecat
@@ -153,7 +153,7 @@ A variable ${x}_2^{l_2} \in \lvar(c)$  \emph{may-dependend} on the
 $
 {
 \begin{array}{l}
-\exists \event_1, \event_2 \in \eventset^{\asn}, \trace \in \mathcal{T} \sthat
+\exists \event_1, \event_2 \in \eventset^{\asn}, \trace \in \ftdom \sthat
 \pi_{1}{(\event_1)}^{\pi_{2}{(\event_1)}} = {x}_1^{l_1}
 \land
 \pi_{1}{(\event_2)}^{\pi_{2}{(\event_2)}} = {x}_2^{l_2}% \\ \quad 

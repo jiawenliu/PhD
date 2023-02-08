@@ -6,9 +6,9 @@ $\lvar(c) \subseteq \mathcal{LV}$ contains all the variables in $c$'s assignment
 The set of query-associated variables (in query request assignments),
 $\qvar(c) \subseteq \lvar(c)$ contains all labeled variables in $c$'s query requests. Both of them are define in Section~\ref{sec:language-syntax} in Definition~\ref{def:lvar} and~\ref{def:qvar}.
 The set of initial traces of $c$,
-$\mathcal{T}_0(c) \subseteq \mathcal{T}$
+$\ftdom_0(c) \subseteq \ftdom$
 contains all the initial trace of $c$.
-Each initial trace,  $\trace_0 \in \mathcal{T}_0(c)$ contains the initial values of all input variables of $c$. 
+Each initial trace,  $\trace_0 \in \ftdom_0(c)$ contains the initial values of all input variables of $c$. 
 For instance, the initial trace of $\kw{twoRounds(k)}$ example contains the initial value of the input variable $k$.
 
 \begin{defn}[Semantics-based Dependency Graph]
@@ -38,12 +38,12 @@ $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is def
   \{ 
   (x^l, w) 
   ~ \vert ~ 
-  w : \mathcal{T}_0(c) \to \mathbb{N}
+  w : \ftdom_0(c) \to \mathbb{N}
   \land
   x^l \in \lvar(c) 
   \\ & &
   \quad \land
-  \forall \trace_0 \in \mathcal{T}_0(c), \trace' \in \mathcal{T} \sthat \config{{c}, \trace_0} \to^{*} 
+  \forall \trace_0 \in \ftdom_0(c), \trace' \in \ftdom \sthat \config{{c}, \trace_0} \to^{*} 
   \config{\eskip, \trace_0\tracecat\trace'} 
   \land w(\trace_0) = \vcounter(\trace', l) \}  
   \\
@@ -72,15 +72,15 @@ There are four components in this graph.
     \item Edges in $\traceE(c)$ are built from the  \emph{variable may-dependency} relation, i.e. $\vardep(x^i, y^j, c)$ in Definition~\ref{def:var_dep} between two labeled variables.
     This is the key definition in order to formalize the intuitive \emph{adaptivity}, and also ingredients the dependency information of the program.
     \item 
-  The weight function in $\traceW(c)$ for each vertex, $w : \mathcal{T} \to \mathbb{N}$
-maps from a starting trace $\trace_0 \in \mathcal{T}_0(c)$ to a natural number.
-A weight function $w \in \traceW(c)$ is a function that for every starting trace $\trace_0 \in \mathcal{T}_0(c)$ 
+  The weight function in $\traceW(c)$ for each vertex, $w : \ftdom \to \mathbb{N}$
+maps from a starting trace $\trace_0 \in \ftdom_0(c)$ to a natural number.
+A weight function $w \in \traceW(c)$ is a function that for every starting trace $\trace_0 \in \ftdom_0(c)$ 
 gives the number of times the assignment of the corresponding vertex $x^l$ is visited. Notice that weight functions are total and with range $\mathbb{N}$. This means that if a program $c$ has some non-terminating behavior, the set $\traceW(c)$ will be empty.
 Again as discussed above in Section~\ref{sec:language-os}, we consider as well-formed only graphs which have a weight for every vertex with the terminating programs. 
 For each vertex $x^l$, it tracks its visiting times (i.e., the evaluation times of the command with the label $l$) when the program $c$ is evaluated from the initial trace $\trace_0$ into $\eskip$, $\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\trace'} $.
 The visiting times is computed by the counter operator $\vcounter(\trace', l)$
 by counting the occurrence of the label $l$ in $\trace'$.
-As an instance, in the semantics-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight, $w_k$ of the vertex $x^3$ is a function of type $\mathcal{T}_0(\kw{twoRound(k)}) \to \mathbb{N}$.
+As an instance, in the semantics-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight, $w_k$ of the vertex $x^3$ is a function of type $\ftdom_0(\kw{twoRound(k)}) \to \mathbb{N}$.
 Given input $\trace_0$, we execute the program under $\trace_0$ as $\config{\kw{twoRound(k)}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\trace'} $. Then $w_k(\trace_0)$ outputs the occurrence time of the label $3$ in $\trace'$.
 \end{enumerate}
 The main novelty of  the semantics-based dependency graph is the combination of the quantitative and dependency information. 

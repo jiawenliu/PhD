@@ -85,12 +85,12 @@ the estimated adaptivity for $c$ is
 }
 \end{defn}
 Similarly, the adaptivity bound $\progA(c)$ will also be a symbolic arithmetic expression over the input variables. With this symbolic expression we can prove the upper bound sound with respect to any initial trace, on its adaptivity in Definition~\ref{def:trace_adapt}.
-\begin{thm}[Soundness of  \THESYSTEM]
+\begin{thm}[Soundness of {\THESYSTEM}]
   \label{thm:adaptfun_sound}
   For every program $c$, 
   its estimated adaptivity is a sound upper bound of its adaptivity.
    \[
-   \forall \trace_0 \in \mathcal{T}_{0}(c), v \in \mathbb{N}^{\infty} \sthat
+   \forall \trace_0 \in \ftdom_{0}(c), v \in \mathbb{N}^{\infty} \sthat
 \config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq c
 \] 
 \end{thm}

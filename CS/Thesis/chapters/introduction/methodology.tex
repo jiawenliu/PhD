@@ -82,22 +82,25 @@ but not both of them.
 
 \paragraph{New Methodology}
 We present a static program analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static} to estimate the adaptivity.
-This new methodology combines data flow and control flow analysis with reachability-bound analysis.
+This new methodology reuses the techniques in data flow, control flow analysis, and reachability-bound analysis.
 It gives tighter bounds on the adaptivity of a program than the ones one would achieve 
 by directly using the data and control flow analyzes or the ones that one would achieve 
 by directly using reachability bound analysis techniques alone. 
 \begin{enumerate}
-\item The {\THESYSTEM} first adopts both the static data flow analysis and the control flow analysis techniques for
-estimating the \emph{dependency relation} property between the program variables.
-\item In the second part, {\THESYSTEM} then reasons the
-\emph{dependency quantity} property of the \emph{adaptivity} through \emph{reachability-bound} analysis and combines it with the
-\emph{dependency relation} property.
+\item From the \emph{reachability} perspective, {\THESYSTEM} first 
+% adopts both the static data flow analysis and the control flow analysis techniques for
+estimates the \emph{data dependency} relation accurately. The estimation is more accurate than existing works in the sense that
+it performs both the data flow analysis and the control flow analysis.
 
-\item Then
-{\THESYSTEM} combines the estimated \emph{dependency quantity} and \emph{dependency relation}
-and constructs an \emph{estimated dependence} graph. This combination is never consider before, and it complements the weakness of both lines of works. In comparison to purely use single analysis, 
-{\THESYSTEM} estimates both the two sub-properties of \emph{adaptivity} from \emph{reachability} and \emph{quantitative} perspectives more accurate.
-Moreover, the combination isn't trivial adoption and addition, we combine them effectively by encoding them on to a dependency graph and compute the \emph{adaptivity} over the graph in the next step.
+\item Then {\THESYSTEM} reasons the
+\emph{quantitative} perspective through \emph{reachability-bound} analysis techniques.
+It estimates the evaluation times w.r.t. each data. This estimation captures the \emph{quantitative} information for adaptivity, which is not able to be captured by any existing static program analysis framework.
+
+\item
+{\THESYSTEM} then constructs an \emph{estimated dependence} graph encoding both the estimated \emph{reachability} and \emph{quantitative} information.
+This encoding complements the weakness of both lines of works in comparison to purely use single either \emph{reachability} or \emph{quantitative} analysis, 
+% {\THESYSTEM} estimates both the two sub-properties of \emph{adaptivity} from \emph{reachability} and \emph{quantitative} perspectives more accurate.
+% Moreover, the combination isn't trivial adoption and addition, we combine them effectively by encoding them on to a dependency graph and compute the \emph{adaptivity} over the graph in the next step.
 
 %
 \item In the last step, we design a new path search algorithm based on the graph theory 

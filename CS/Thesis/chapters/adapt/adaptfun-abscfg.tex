@@ -75,23 +75,25 @@ Given a program $c$,
 every expression in an assignment command or in the guard of a $\eif$ or $\ewhile$ command
 is transformed into a constraint.
 
-\highlight{Notations:}
-\begin{itemize}
-\item Operator: $\absexpr : \mathcal{A} \cup \mathcal{B} \to DC(\mathcal{V}  \cup \constdom)\cup \booldom \cup \{\top\}$
+
 %
-\item Constrains, $\dcdom^{\top}$ is composed of the \emph{Difference Constraints} $DC(\mathcal{V}  \cup \constdom)$, the \emph{Boolean Expressions} $\booldom$ and $\top$.
-%
-\begin{itemize}
-\item 
+\begin{defn} 
 The difference constraints $DC(\mathcal{V}  \cup \constdom)$ is the set of all the inequality of
 form $x' \leq y + v$ or $x' \leq v$ where $x \in \mathcal{V} $, 
 $y \in \mathcal{V}$ and $v \in \constdom$.
 The \emph{Symbolic Constant} can be a natural number, $\infty$, or a program's input variable, We use $\scvardom \subseteq \mathbb{N} \cup \vardom \cup \{\infty \}$ to denote the universe of all \emph{Symbolic Constant},
 which is the set of all natural numbers with $\infty$ and programs' input variables.
+\end{defn}
 An inequality $x' \leq y + v$ describes that the value of $x$ in the current state is
 at most the value of $y$ in the previous state plus the symbolic constant $v$.
 An inequality $x' \leq v$ describes that the value of $x$ in the current state is
 at most the value $v$.
+
+\begin{defn}
+  Constrains, $\dcdom^{\top}$ is composed of the \emph{Difference Constraints} $DC(\mathcal{V}  \cup \constdom)$, the \emph{Boolean Expressions} $\booldom$ and $\top$.
+  \end{defn}
+  
+
 When a difference constrain shows up as an edge annotation, $l \xrightarrow{x' \leq y + v} l'$,
 % Then $x'$ 
 it denotes that
@@ -105,19 +107,20 @@ after executing the command at $l$ is at most
 the value of the symbolic constant $v$ before the execution.
 For every expression in each of the label command, it is computed in three steps via program abstraction method adopted from the Section~6 in \cite{SinnZV17}. 
 %
-\item The Boolean Expressions $b$ from the set $\booldom$.
+
+The Boolean Expressions $b$ from the set $\booldom$.
 $b$ on an edge $l \xrightarrow{b} l'$ describes
 that after evaluating the guard with label $l$,
 $b$ holds and the command with label $l$ will execute right after.
 %
-\item The top constraint, $\top$ denotes true. It is preserved for $\eskip$ command, or commands that don't
-interfere with any counter variable.
-%
-\end{itemize}
-\end{itemize}
 
-\highlight{Computation Steps are summarized below. The computation below is a context free computation skeleton overall the variable and value domain. In a specific computation with given program $c$, these domains will associate to the program $c$.
-}
+The top constraint, $\top$ denotes true. It is preserved for $\eskip$ command, or commands that don't
+interfere with any counter variable.
+
+
+Below we compute the constraints.
+It is a context free computation skeleton overall the variable and value domain. In a specific computation with given program $c$, these domains will associate to the program $c$.
+
 \begin{defn}[Constraint Computation]
   \label{def:constraint_compute}
   With a program $c$, a boolean expression $\bexpr$ in the guard of a $\eif$ or $\ewhile$ command
@@ -126,8 +129,7 @@ interfere with any counter variable.
 
   We first initialize 
   $\grdvar = \{\}$ as the set of the variable used in the expression of every while or if guard in the program $c$.
-  \footnote{We omit the input $c$ here as well as in the rest of \redd{PART \romannum{1}} because the context is clear. In \redd{PART \romannum{2}},
-  we will distinguish the input program $c$ explicitly in the input.}
+  \footnote{We omit the input $c$ in the rest of \redd{PART \romannum{1}} if the context is clear. }
 
   Then the constraint $\absexpr(\bexpr, \_)$ or $\absexpr(x - v, x)$ is computed as follows,
   \[
@@ -182,14 +184,14 @@ This set is enriched
 from the standard control flow analysis.
 
 %
-\highlight{Notations:}
-\begin{itemize}
-\item The \emph{abstract initial state}: $\absinit(c) \in \ldom$.
-%
-\item The \emph{abstract final state}: $\absfinal(c) \in \mathcal{P}(\ldom \times \dcdom^{\top})$
-\end{itemize}
+% \highlight{Notations:}
+% \begin{itemize}
+% \item The \emph{abstract initial state}: $\absinit(c) \in \ldom$.
+% %
+% \item The \emph{abstract final state}: $\absfinal(c) \in \mathcal{P}(\ldom \times \dcdom^{\top})$
+% \end{itemize}
 
-\highlight{Computation Steps:}
+% \highlight{Computation Steps:}
 \begin{itemize}
   \item The \emph{abstract initial state}, $\absinit(c) \in \mathcal{P}(\ldom)$
   for a command $c$ is the initial program point corresponds to the unique program label of the first executed command in $c$,
@@ -309,7 +311,7 @@ Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
    }
    Notice $\absflow'([x := \expr]^{l})$, $\absflow'([x := \query(\qexpr)]^{l})$ and $\absflow'([\eskip]^{l})$ are all empty set. 
    
- \highlight{Theorem Guarantees:}
+%  \highlight{Theorem Guarantees:}
 
 For every event $\event$ with label $l$, if it is in an execution trace $\trace$ of the program $c$, 
    there is an abstract event in program's abstract execution trace of form $(l, \_, \_)$, formally below
@@ -317,14 +319,14 @@ For every event $\event$ with label $l$, if it is in an execution trace $\trace$
    \begin{lem}[Soundness of the Abstract Events]
      \label{lem:abscfg_sound}
      For every program $c$ and
-     an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.
-     an initial trace  $\vtrace_0 \in \mathcal{T}_0(c)$,
+     an execution trace $\trace \in \ftdom$ that is generated w.r.t.
+     an initial trace  $\vtrace_0 \in \ftdom_0(c)$,
      there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
      for every event $\event \in \trace$ having the same label $l$, i.e., $\event = (\_, l, \_, \_)$.
       %
    \[
      \begin{array}{l}
-    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} ,  l, l' \in \absV(c),  \event = (\_, l, \_, \_) \in \eventset \sthat
+    \forall c \in \cdom, \vtrace_0 \in \ftdom_0(c), \trace \in \ftdom ,  l, l' \in \absV(c),  \event = (\_, l, \_, \_) \in \eventset \sthat
    \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
    \land \event \in \trace 
    \\
@@ -339,15 +341,15 @@ there is a unique abstract event in the program's abstract events set $\absevent
 \begin{lem}[Uniqueness of the Abstract Event]
   \label{lem:abscfg_uniquex}
   For every program $c$ and
-  an execution trace $\trace \in \mathcal{T}$ that is generated w.r.t.
-  an initial trace $\vtrace_0 \in \mathcal{T}_0(c)$,
+  an execution trace $\trace \in \ftdom$ that is generated w.r.t.
+  an initial trace $\vtrace_0 \in \ftdom_0(c)$,
   there is a unique abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
   for every assignment event $\event \in \eventset^{\asn}$ in the
   execution trace having the label $l$, i.e., $\event = (\_, l, \_, \_)$ and  $\event \in \trace$.
 %
 \[
   \begin{array}{l}
-    \forall c \in \cdom, \vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T} , l, l' \in \absV(c), \event = (\_, l, \_) \in \eventset^{\asn} \sthat
+    \forall c \in \cdom, \vtrace_0 \in \ftdom_0(c), \trace \in \ftdom , l, l' \in \absV(c), \event = (\_, l, \_) \in \eventset^{\asn} \sthat
 \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
 \land \event \in \trace 
 \\

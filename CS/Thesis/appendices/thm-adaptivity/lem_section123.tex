@@ -11,35 +11,22 @@
     This is proved directly by the consistency property of the command label.
   \end{proof}
   
-  % \begin{lemma}
-  %   [Trace Non-Decreasing]
-  %   % \label{lem:tracenondec}
-  %   For every program $c \in \cdom$ and traces $\trace, \trace' \in \mathcal{T}$, if 
-  %   $\config{c, \trace} \rightarrow^{*} \config{\eskip, \trace'}$,
-  %   then there exists a trace $\trace'' \in \mathcal{T}$ with $\trace \tracecat \trace'' = \trace'$
-  %   %
-  %   $$
-  %   \forall \trace, \trace' \in \mathcal{T}, c \st
-  %   \config{c, \trace} \rightarrow^{*} \config{\eskip, \trace'} 
-  %   \implies \exists \trace'' \in \mathcal{T} \st \trace \tracecat \trace'' = \trace'
-  %   $$
-  %   \end{lemma}
   \subsection{Proof of Lemma~\ref{lem:tracenondec}}
   \label{apdx:tracenondec}
   \begin{lemma}
     [Trace Non-Decreasing]
-    For every program $c \in \cdom$ and traces $\trace, \trace' \in \mathcal{T}$, if 
+    For every program $c \in \cdom$ and traces $\trace, \trace' \in \ftdom$, if 
     $\config{c, \trace} \rightarrow^{*} \config{\eskip, \trace'}$,
-    then there exists a trace $\trace'' \in \mathcal{T}$ with $\trace \tracecat \trace'' = \trace'$
+    then there exists a trace $\trace'' \in \ftdom$ with $\trace \tracecat \trace'' = \trace'$
     %
     $$
-    \forall \trace, \trace' \in \mathcal{T}, c \sthat 
+    \forall \trace, \trace' \in \ftdom, c \sthat 
     \config{c, \trace} \rightarrow^{*} \config{\eskip, \trace'} 
-    \implies \exists \trace'' \in \mathcal{T} \sthat \trace \tracecat \trace'' = \trace'
+    \implies \exists \trace'' \in \ftdom \sthat \trace \tracecat \trace'' = \trace'
     $$
     \end{lemma}
       \begin{proof}
-      Taking arbitrary trace $\trace \in \mathcal{T}$, by induction on program $c$, we have the following cases:
+      Taking arbitrary trace $\trace \in \ftdom$, by induction on program $c$, we have the following cases:
       \caseL{$c = [\assign{x}{\expr}]^{l}$}
       By the evaluation rule $\rname{assn}$, we have
       $
@@ -67,7 +54,7 @@
         \trace :: (b, l_w, \etrue, \bullet)}}~ (1)
       $.
       \\
-      Let $\trace_w' \in \mathcal{T}$ be the trace satisfying following execution:
+      Let $\trace_w' \in \ftdom$ be the trace satisfying following execution:
       \\
       $
       \config{{
@@ -81,7 +68,7 @@
     By induction hypothesis on sub program $c_w$ with starting trace 
     $\trace :: (b, l_w, \etrue, \bullet)$ and ending trace $\trace_w'$, 
     we know there exist
-    $\trace_w \in \mathcal{T}$ such that $\trace_w' = \trace :: (b, l_w, \etrue, \bullet) \tracecat \trace_w$.
+    $\trace_w \in \ftdom$ such that $\trace_w' = \trace :: (b, l_w, \etrue, \bullet) \tracecat \trace_w$.
     \\
     Then we have the following execution continued from $(1)$:
     \\
@@ -98,7 +85,7 @@
     By repeating the execution (1) and (2) until the program is evaluated into $\eskip$,
     with trace $\trace_w^{i'} $ for $i = 1, \cdots, n n \geq 1$ in each iteration, we know 
     in the $i-th$ iteration,
-     there exists  $\trace_w^i \in \mathcal{T}$ such that  
+     there exists  $\trace_w^i \in \ftdom$ such that  
     $\trace_w^{i'} = \trace_w^{(i-1)'} :: (b, l_w, \etrue, \bullet) ++ \trace_w^{i'}$
     \\
     Then we have the following execution:
@@ -146,15 +133,15 @@
     \label{apdx:aqintrace}
     \begin{corollary}
       % \label{coro:aqintrace}
-      For every event and a trace $\trace \in \mathcal{T}$,
+      For every event and a trace $\trace \in \ftdom$,
       if $\event \in \trace$, 
-      then there exist another event $\event' \in \eventset$ and traces $\trace_1, \trace_2 \in \mathcal{T}$
+      then there exist another event $\event' \in \eventset$ and traces $\trace_1, \trace_2 \in \ftdom$
       such that $\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace $
       with 
       $\event$ and $\event'$ equivalent but may differ in their query value.
       \[
-        \forall \event \in \eventset, \trace \in \mathcal{T} \sthat 
-      \event \in \trace \implies \exists \trace_1, \trace_2 \in \mathcal{T}, 
+        \forall \event \in \eventset, \trace \in \ftdom \sthat 
+      \event \in \trace \implies \exists \trace_1, \trace_2 \in \ftdom, 
       \event' \in \eventset \sthat (\event \in \trace') \land \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  
       \]
       \end{corollary}

@@ -118,7 +118,7 @@ I develop a static program analysis in Section~\ref{sec:adapt-static}, named {\T
 \end{enumerate}
 % \\
 %
-\subsection{Methodology}
+\subsection{Technical Limitation}
 \label{sec:adapt-intro-overview}
 
 \subsubsection{Language Design}
@@ -135,11 +135,6 @@ However, these language designs are limited in their expressiveness largely.
 Most of the general data analyses are not supported by the previous language design.
 In Section~\ref{sec:prework-language}, I introduce in detail the previous language design and limitations.
 %
-\paragraph*{Methodology Overview}
-I design a new while-like language 
-named {\tt Query While} language in Section~\ref{sec:adapt-language}.
-This language is extended from the standard language.
-It supports more general data analysis and query requests with more expressive expressions than previous works.
 
 \subsubsection{Adaptivity Formalization}
 \label{sec:intro-exe}
@@ -204,36 +199,36 @@ they cannot give the most precise adaptivity definitions matching the intuitive 
 These previous works and limitations on formalizing the adaptivity are introduced in more detail in Section~\ref{sec:prework-formalization}.
 \end{itemize}
 %
-\paragraph{Methodology Overview}
-Given all these limitations and challenges,
-to define this intuitive \emph{adaptivity} precisely as a \emph{quantitative reachability} program property, 
-we give a new adaptivity formalization model by reasoning program's semantics in Section~\ref{sec:adapt-exe}
-summarized as follows.
-\begin{enumerate}
- \item For any pair variables $x^i, y^j$ in a program $c$, 
- we first define a \emph{variable may-dependency} relation between them by looking into their semantics as
- \[
-   \vardep(x^i, y^j, c).
-  \]
- Then we reason the \emph{dependency relation} between queries through this relation and an extra annotation on variables indicating whether it is a query request.
- %
- Specifically through a trace semantics recording the execution history of programs on a given input,
- the dependency between different variables (query is also assigned to a variable) is explicitly tracked and 
- analyzed. This is presented in Section~\ref{sec:dynamic-datadep}.
- \item The second step in Section~\ref{sec:dynamic-graph} constructs a \emph{semantics-based dependency graph} combining the \emph{dependency relation}
-  with a \emph{quantitative relation} as weight. This graph is denoted as $\traceG(c)$ for the program $c$ has an edge set $\traceE(c)$,
-  vertex set $\traceV(c)$, weights $\traceW(c)$ and an annotation set $\traceF(c)$.
- The edges are created by dependency comes from the \emph{dependency relation} defined above.
- The weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
- For each variable (query is also assigned to a variable) 
- we also explicitly track and annotate which one is associated with a query request. 
+% \paragraph{Methodology Overview}
+% Given all these limitations and challenges,
+% to define this intuitive \emph{adaptivity} precisely as a \emph{quantitative reachability} program property, 
+% we give a new adaptivity formalization model by reasoning program's semantics in Section~\ref{sec:adapt-exe}
+% summarized as follows.
+% \begin{enumerate}
+%  \item For any pair variables $x^i, y^j$ in a program $c$, 
+%  we first define a \emph{variable may-dependency} relation between them by looking into their semantics as
+%  \[
+%    \vardep(x^i, y^j, c).
+%   \]
+%  Then we reason the \emph{dependency relation} between queries through this relation and an extra annotation on variables indicating whether it is a query request.
+%  %
+%  Specifically through a trace semantics recording the execution history of programs on a given input,
+%  the dependency between different variables (query is also assigned to a variable) is explicitly tracked and 
+%  analyzed. This is presented in Section~\ref{sec:dynamic-datadep}.
+%  \item The second step in Section~\ref{sec:dynamic-graph} constructs a \emph{semantics-based dependency graph} combining the \emph{dependency relation}
+%   with a \emph{quantitative relation} as weight. This graph is denoted as $\traceG(c)$ for the program $c$ has an edge set $\traceE(c)$,
+%   vertex set $\traceV(c)$, weights $\traceW(c)$ and an annotation set $\traceF(c)$.
+%  The edges are created by dependency comes from the \emph{dependency relation} defined above.
+%  The weights describing the maximal number of times each variable is evaluated in a program evaluation starting with an initial state. 
+%  For each variable (query is also assigned to a variable) 
+%  we also explicitly track and annotate which one is associated with a query request. 
 
- \item In the last step we define the intuitive \emph{adaptivity}
- according to the two analysis results above, specifically the \emph{variable may-dependency} relation and \emph{dependency quantity} (vertex weight).
- This step 
- % is developed through 
- gives the formal \emph{adaptivity} definition, as the length of the walk visiting most query-related variables on this graph. 
- \end{enumerate}
+%  \item In the last step we define the intuitive \emph{adaptivity}
+%  according to the two analysis results above, specifically the \emph{variable may-dependency} relation and \emph{dependency quantity} (vertex weight).
+%  This step 
+%  % is developed through 
+%  gives the formal \emph{adaptivity} definition, as the length of the walk visiting most query-related variables on this graph. 
+%  \end{enumerate}
  % \item 
 \subsubsection{Static Program Analysis}
 \label{sec:adapt-intro-static}
@@ -295,36 +290,36 @@ However, this algorithm is low efficiency, and in-precise. It is not automatic e
 This analysis algorithm and limitations are introduced with more details in Section~\ref{sec:prework-formalization}.
 \end{itemize}
 
-\paragraph{Methodology}
-To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
-I develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static}.
-This analysis combines data flow and control flow analysis with reachability bound analysis.
-% ~\cite{GulwaniZ10}. 
-This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve 
-by directly using the data and control flow analyses or the ones that one would achieve 
-by directly using reachability bound analysis techniques alone. 
-It is developed in 3 aspects similar to the semantics-based adaptivity analysis 
-while through static program analysis techniques. 
-A sound estimated result is given in each part, which is summarized as follows.
-\begin{enumerate}
-\item The {\THESYSTEM} estimates the \emph{variable may-dependency} relation, $\vardep(x^i, y^j, c)$ through the static data flow analysis technique in Section~\ref{sec:alg_edgegen}, and computes the $\flowsto()$ relation correspondingly.
-This analysis corresponds to the first step in semantics-based adaptivity analysis. 
-The estimated result produced from 
-this step is proved as a sound upper bound for the \emph{dependency relation} defined in the adaptivity formalization model from Section~\ref{sec:dynamic-datadep}.
-\item 
-% Still , 
-Corresponding to the second step in semantics-based adaptivity analysis, the \emph{dependency quantity} 
-is estimated by {\THESYSTEM} through the static program reachability bound analysis techniques, in Section~\ref{sec:alg_weightgen}.
-The estimated result produced from 
-this step is proved as a sound upper bound for the \emph{dependency quantity} defined in the adaptivity formalization model.
-\item 
-The static program adaptivity analysis in this step
-% , specifically estimating 
-According to the third step of semantics-based adaptivity analysis, 
-{\THESYSTEM} in this step also constructs a program-based dependence graph for approximating the semantics-based dependency graph.
-It generates the \emph{estimated dependency graph}, $\progG(c)$ for the program $c$ with four components $\progE(c)$,
-vertex set $\progV(c)$, weights $\progW(c)$ and an annotation set $\progF(c)$ repsectively.
-Then, based on this graph, {\THESYSTEM} 
-computes the adaptivity upper bound soundly 
-and accurately through a newly designed algorithm.
-\end{enumerate}
+% \paragraph{Methodology}
+% To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
+% I develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static}.
+% This analysis combines data flow and control flow analysis with reachability bound analysis.
+% % ~\cite{GulwaniZ10}. 
+% This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve 
+% by directly using the data and control flow analyses or the ones that one would achieve 
+% by directly using reachability bound analysis techniques alone. 
+% It is developed in 3 aspects similar to the semantics-based adaptivity analysis 
+% while through static program analysis techniques. 
+% A sound estimated result is given in each part, which is summarized as follows.
+% \begin{enumerate}
+% \item The {\THESYSTEM} estimates the \emph{variable may-dependency} relation, $\vardep(x^i, y^j, c)$ through the static data flow analysis technique in Section~\ref{sec:alg_edgegen}, and computes the $\flowsto()$ relation correspondingly.
+% This analysis corresponds to the first step in semantics-based adaptivity analysis. 
+% The estimated result produced from 
+% this step is proved as a sound upper bound for the \emph{dependency relation} defined in the adaptivity formalization model from Section~\ref{sec:dynamic-datadep}.
+% \item 
+% % Still , 
+% Corresponding to the second step in semantics-based adaptivity analysis, the \emph{dependency quantity} 
+% is estimated by {\THESYSTEM} through the static program reachability bound analysis techniques, in Section~\ref{sec:alg_weightgen}.
+% The estimated result produced from 
+% this step is proved as a sound upper bound for the \emph{dependency quantity} defined in the adaptivity formalization model.
+% \item 
+% The static program adaptivity analysis in this step
+% % , specifically estimating 
+% According to the third step of semantics-based adaptivity analysis, 
+% {\THESYSTEM} in this step also constructs a program-based dependence graph for approximating the semantics-based dependency graph.
+% It generates the \emph{estimated dependency graph}, $\progG(c)$ for the program $c$ with four components $\progE(c)$,
+% vertex set $\progV(c)$, weights $\progW(c)$ and an annotation set $\progF(c)$ repsectively.
+% Then, based on this graph, {\THESYSTEM} 
+% computes the adaptivity upper bound soundly 
+% and accurately through a newly designed algorithm.
+% \end{enumerate}

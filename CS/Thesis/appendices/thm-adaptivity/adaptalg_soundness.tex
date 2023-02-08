@@ -23,8 +23,8 @@ proof Summary:
 3.2 By Lemma~\ref{lem:sound_adaptalg_scc}, $\qlen$ of each sub-walk is bound by the longest walk of the SCC it belongs to.
 \\
 % we have a path
-%  $p_{x,y} = (x, v_1, \cdots, y)$ by the $\kw{bfs}$ algorithm,
-% and $adapt[\sccgraph(x)] + adapt[\sccgraph(v_1)] + \cdots + adapt[\sccgraph(y)] \geq \{\qlen(k_{x,y})\}$.
+%  $p_{x,y} = (x, v_1, \ldots, y)$ by the $\kw{bfs}$ algorithm,
+% and $adapt[\sccgraph(x)] + adapt[\sccgraph(v_1)] + \ldots + adapt[\sccgraph(y)] \geq \{\qlen(k_{x,y})\}$.
 3.3 By line: in algorithm, the output of $\pathsearch(\progG)$ is greater than sum up the $\qlen$ of longest walk in every SCC that each sub-walk belongs to.
 \\
 4. Then we have
@@ -34,11 +34,11 @@ $\pathsearch(\progG(c)) \geq \progA(c)$.
   program based dependency graph.
   \\
   Taking an arbitrary walk $k_{x,y} \in \walks{(\progG)}$, with vertices sequence
-  $(x, s_1, \cdots, y)$, it is sufficient to show:
+  $(x, s_1, \ldots, y)$, it is sufficient to show:
   \[
-    \qlen(k_{x,y}) = \len(s | s \in (x, s_1, \cdots, y) \land \qflag(s) = 1) \leq \pathsearch(\progG(c))
+    \qlen(k_{x,y}) = \len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \pathsearch(\progG(c))
   \]
-  By line:3 of $\pathsearch(\progG)$ algorithm defined in Algorithm~\ref{alg:adpt_alg}, let $\kw{\sccgraph_1}, \cdots, \kw{\sccgraph_n}$ be all the strong connected components on $\progG$ with $0 \leq n \leq |\vertxs|$,
+  By line:3 of $\pathsearch(\progG)$ algorithm defined in Algorithm~\ref{alg:adpt_alg}, let $\kw{\sccgraph_1}, \ldots, \kw{\sccgraph_n}$ be all the strong connected components on $\progG$ with $0 \leq n \leq |\vertxs|$,
   where each $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$,
   \\
   By line:5-6 in Algorithm~\ref{alg:adpt_alg}, let $\kw{adapt_{scc}[\sccgraph_i]}$ be the result of $\pathsearch_{\kw{scc}}(\sccgraph_i)$ for each $\sccgraph_i$.
@@ -65,28 +65,28 @@ This case is proved.
 %
 %
 \caseL{$x, y$ on different SSC}
-Let $\sccgraph_x, \sccgraph_1, \cdots, \sccgraph_m, \sccgraph_y, 0 \leq m$ be all the SCC this walk pass by, where each vertex in 
-$(x, s_1, \cdots, s_n, y) $ belongs to a single SCC number. 
+Let $\sccgraph_x, \sccgraph_1, \ldots, \sccgraph_m, \sccgraph_y, 0 \leq m$ be all the SCC this walk pass by, where each vertex in 
+$(x, s_1, \ldots, s_n, y) $ belongs to a single SCC number. 
 \\
 By the property of SCC, we know every 2 SCCs are single direct connected. Then we can divide this walk into $m+2$ sub-walks:
 \\
-$k_x = (x, s_1, \cdots, s_{scc_x})$;
+$k_x = (x, s_1, \ldots, s_{scc_x})$;
 \\
-$k_1 = (s_{scc_x}, \cdots, s_{scc_1})$;
+$k_1 = (s_{scc_x}, \ldots, s_{scc_1})$;
 \\
-$\cdots$
+$\ldots$
 \\
-$k_y = (s_{scc_m}, \cdots, s_y)$;
+$k_y = (s_{scc_m}, \ldots, s_y)$;
 \\
-where $k_x \in \walks(\sccgraph_x), \cdots, k_y \in \walks(\sccgraph_y)$.
+where $k_x \in \walks(\sccgraph_x), \ldots, k_y \in \walks(\sccgraph_y)$.
 \\
 By Lemma~\ref{lem:sound_adaptalg_scc}, we know for each walk $k_i$:
 \[ \qlen(k_i) \leq \max\{\qlen(k_i) | k_i \in \walks(\sccgraph_i)\} \leq \pathsearch_{scc}(\sccgraph_i) = \kw{adapt_{scc}[\sccgraph_i]} \]
 %
 Then we have:
 \[ 
-  \qlen(k_{x,y}) = \qlen(k_x) + \qlen(k_1) + \cdots + \qlen(k_y) \leq 
-  \kw{adapt_{scc}[\sccgraph_1]} + \kw{adapt_{scc}[\sccgraph_1]}  + \cdots + \kw{adapt_{scc}[\sccgraph_y]}
+  \qlen(k_{x,y}) = \qlen(k_x) + \qlen(k_1) + \ldots + \qlen(k_y) \leq 
+  \kw{adapt_{scc}[\sccgraph_1]} + \kw{adapt_{scc}[\sccgraph_1]}  + \ldots + \kw{adapt_{scc}[\sccgraph_y]}
   \leq \kw{adapt}
   \]
 , where $\kw{adapt}$ is the output of $\pathsearch(\progG)$.
@@ -99,7 +99,7 @@ This case is proved.
   $\max\{\qlen(k) | k \in \walks(\sccgraph)\} \leq \pathsearch_{scc}(\sccgraph) $.
   %
   \[
-    \forall c \in \cdom, \sccgraph \in \mathcal{Graph} \sthat  \sccgraph \subseteq_{\kw{graph}} \progG(c)
+    \forall c \in \cdom, \sccgraph \sthat  \sccgraph \subseteq_{\kw{graph}} \progG(c)
     \implies 
     \max\{\qlen(k) | k \in \walks(\sccgraph)\} \leq \pathsearch_{scc}(\sccgraph) 
     \]
@@ -108,15 +108,15 @@ This case is proved.
 ProofSummary:
 \\
 (1) for each node $x$ on SCC, by property of SCC, 
-for every walk on SCC $k_{x, x} = (x, s_1, \cdots, x)$,
-with set of unique vertex $\{v_1, \cdots, x\}$
+for every walk on SCC $k_{x, x} = (x, s_1, \ldots, x)$,
+with set of unique vertex $\{v_1, \ldots, x\}$
 there are $\paths(p_{x,x})$ on $\sccgraph$.
 \\
-(2) For every path $p_{x,x}^{i} = (x, v_1, \cdots, x) \in \paths(p_{x,x})$,  
-$\kw{flowcapacity} (p_{x,x}^{i})$ is the maximum visiting times for every $v \in (x, v_1, \cdots, x)$, 
-$\visit(s) (s_1, \cdots, x)) \leq \kw{flowcapacity}(p_{x,x}^{i})$;
+(2) For every path $p_{x,x}^{i} = (x, v_1, \ldots, x) \in \paths(p_{x,x})$,  
+$\kw{flowcapacity} (p_{x,x}^{i})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, x)$, 
+$\visit(s) (s_1, \ldots, x)) \leq \kw{flowcapacity}(p_{x,x}^{i})$;
 \\
-(3) $\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i}$)  $\geq\len(s | s \in ( s_1, \cdots, x) \land \qflag(s) = 1) =  \qlen(k)$,
+(3) $\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i}$)  $\geq\len(s | s \in ( s_1, \ldots, x) \land \qflag(s) = 1) =  \qlen(k)$,
 \\
 (4) Then, the $\max\limits_{p_{x,x}^{i} \in \paths(p_{x,x})} \geq \max\{\qlen(k_{x, x}) | k_{x, x} \in \walks(k_{x, x})\}$
 \\
@@ -153,22 +153,22 @@ This case is proved.
   \caseL{$\sccgraph$ contains at least 1 edge and at least 1 vertex $v$, i.e., $1 \leq |\edges| \land 1 \leq |\vertxs|$}
 %
   Taking arbitrary walk $k_{x,y} \in \walks{(\sccgraph})$, with vertices sequence
-  $(x, s_1, \cdots, y)$, it is sufficient to show:
+  $(x, s_1, \ldots, y)$, it is sufficient to show:
   \[
-    \qlen(k_{x,y}) = \len(s | s \in (x, s_1, \cdots, y) \land \qflag(s) = 1) \leq \pathsearch_{scc}(\sccgraph)
+    \qlen(k_{x,y}) = \len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \pathsearch_{scc}(\sccgraph)
   \]
   By $\pathsearch_{scc}(\sccgraph)$ algorithm line 19, in the iteration where $x$ is the starting vertex,
   we know $\pathsearch_{scc}(\sccgraph) = \kw{r_{scc}} = \max(\kw{r_{scc}, \kw{dfs(\sccgraph, x, visited)}})$,
   then it is sufficient to show:
   $$
-  \len(s | s \in (x, s_1, \cdots, y) \land \qflag(s) = 1) \leq \kw{dfs(\sccgraph, x, visited)}.
+  \len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \kw{dfs(\sccgraph, x, visited)}.
   $$
   %
-  Let  $\{v_1, \cdots, x\}$ be the set of all the distinct vertices of $k_{x,y}$'s vertices sequence $(x, s_1, \cdots, y)$, and 
-  $(v_1, \cdots, x)$ be a subsequence containing all the vertices in $\{x, v_1, \cdots, y\}$.
+  Let  $\{v_1, \ldots, x\}$ be the set of all the distinct vertices of $k_{x,y}$'s vertices sequence $(x, s_1, \ldots, y)$, and 
+  $(v_1, \ldots, x)$ be a subsequence containing all the vertices in $\{x, v_1, \ldots, y\}$.
   \\
   By the definition of walk,
- there  is a path $p_{x,y} $ from $x$ to $y$ with this vertices sequence: $(x, v_1, \cdots, y)$.
+ there  is a path $p_{x,y} $ from $x$ to $y$ with this vertices sequence: $(x, v_1, \ldots, y)$.
   \\
   By line:13 of the $\kw{dfs(\sccgraph, x, visited)}$ in Algorithm~\ref{alg:adaptscc},
   \\
@@ -179,40 +179,40 @@ This case is proved.
   By the property of strong connected graph, we know in this case  $\paths_{x,x}(\sccgraph) \neq \emptyset$ and there are 2 cases, $x = y$ and $x \neq y$.
   \caseL{$x = y$}
   In this case, we know $p_{x, y} \in p \in \paths_{x,x}(\sccgraph)$,  then it is sufficient to show: 
-  % $\len(s | s \in (x, s_1, \cdots, y, v_1', \cdots, x) \land \qflag(s) = 1) \leq r[x]$.
+  % $\len(s | s \in (x, s_1, \ldots, y, v_1', \ldots, x) \land \qflag(s) = 1) \leq r[x]$.
   % \\
   % \\
   % Then we know 
   % \\
   $$ 
-  \len(s | s \in (x, s_1, \cdots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y} ) 
+  \len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y} ) 
   $$
   %
   % , where $(p_{x, y} + p_{y, x})$ is the path $p_{x, y}$ concatenated by path $p_{y, x}$ and we know $(p_{x, y} + p_{y, x}) \in \paths(\sccgraph)$.
   \\
-By line:7 and line:13 in Algorithm~\ref{alg:adaptscc}, we know $\kw{flowcapacity}(p_{x, y})$ is the maximum visiting times for every $v \in (x, v_1, \cdots, y)$, 
+By line:7 and line:13 in Algorithm~\ref{alg:adaptscc}, we know $\kw{flowcapacity}(p_{x, y})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, y)$, 
 \\
 we know for every $s$ in the vertices sequence of walk $k_{x,y}$, 
-$\visit(s) (x, s_1, \cdots, y)  \leq \kw{flowcapacity}(p_{x, y})$
+$\visit(s) (x, s_1, \ldots, y)  \leq \kw{flowcapacity}(p_{x, y})$
   \\
   Also by line:8 and line:13 in Algorithm~\ref{alg:adaptscc}, we know $\kw{querynum}(p_{x, y})$ is the number of vertices with $\qflag$ equal to $1$,
   \\
   Then we know 
   \\
-  $\len(s | s \in (x, s_1, \cdots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y}) $
+  $\len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y}) $
   \\
   This case is proved.
   \caseL{$x \neq y$}
   we also have a path start from $y$ and go back to $x$.
   % \todo{pass through the same vertices sequence.}
   \\
-  Let $p_{y, x}$ be this path with vertices sequence $(y, v_1', \cdots, x)$, we have a path $p_{x,x}$, which is the path $p_{x, y}$ concatenated by path $p_{y, x}$ with vertices sequence $ (x, v_1, \cdots, y, v_1', \cdots, v_{m}', x)$, where $m \geq 0$.
+  Let $p_{y, x}$ be this path with vertices sequence $(y, v_1', \ldots, x)$, we have a path $p_{x,x}$, which is the path $p_{x, y}$ concatenated by path $p_{y, x}$ with vertices sequence $ (x, v_1, \ldots, y, v_1', \ldots, v_{m}', x)$, where $m \geq 0$.
   \\
-  % Then we have a potential walk $k_{x,x}$ with vertices sequence $(x, s_1, \cdots, y) + (v_1', \cdots, x)$, and
+  % Then we have a potential walk $k_{x,x}$ with vertices sequence $(x, s_1, \ldots, y) + (v_1', \ldots, x)$, and
   % we know $\qlen(k_{x,y}) \leq \qlen(k_{x,x})$.
   % Then, it is sufficient to show 
   % $$
-  % \qlen(k_{x,x}) = \len(s | s \in (x, s_1, \cdots, y, v_1', \cdots, x) \land \qflag(s) = 1) \leq \kw{dfs(\sccgraph, x, visited)}
+  % \qlen(k_{x,x}) = \len(s | s \in (x, s_1, \ldots, y, v_1', \ldots, x) \land \qflag(s) = 1) \leq \kw{dfs(\sccgraph, x, visited)}
   % $$
   %
   % By line:13 of the $\kw{dfs(\sccgraph, x, visited)}$ in Algorithm~\ref{alg:adaptscc},
@@ -221,32 +221,32 @@ $\visit(s) (x, s_1, \cdots, y)  \leq \kw{flowcapacity}(p_{x, y})$
   % $r[x] = \max\{\kw{flowcapacity}(p) \times \kw{querynum}(p) | p \in \paths_{x,x}(\sccgraph)\}$.
   % \\
   Then in this case, it is sufficient to show: 
-  % $\len(s | s \in (x, s_1, \cdots, y, v_1', \cdots, x) \land \qflag(s) = 1) \leq r[x]$.
+  % $\len(s | s \in (x, s_1, \ldots, y, v_1', \ldots, x) \land \qflag(s) = 1) \leq r[x]$.
   % \\
   % \\
   % Then we know 
   % \\
   $$ 
-  \len(s | s \in (x, s_1, \cdots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, x}) \times \kw{querynum}(p_{x, x}) 
+  \len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, x}) \times \kw{querynum}(p_{x, x}) 
   $$
   %
   % \\
-Since $\kw{flowcapacity}(p_{x, y} + p_{y, x})$ is the maximum visiting times for every $v \in (x, v_1, \cdots, y, v_1', \cdots, x)$, 
+Since $\kw{flowcapacity}(p_{x, y} + p_{y, x})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, y, v_1', \ldots, x)$, 
 \\
-By line:7 in Algorithm~\ref{alg:adaptscc}, we know $\kw{flowcapacity}(p_{x, y})$ is the maximum visiting times for every $v \in (x, v_1, \cdots, y)$, 
+By line:7 in Algorithm~\ref{alg:adaptscc}, we know $\kw{flowcapacity}(p_{x, y})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, y)$, 
 \\
 we know for every $s$ in the vertices sequence of walk $k_{x,y}$, 
-$\visit(s) (x, s_1, \cdots, y)  \leq \kw{flowcapacity}(p_{x, y})$
+$\visit(s) (x, s_1, \ldots, y)  \leq \kw{flowcapacity}(p_{x, y})$
   \\
   Also by line:8 in Algorithm~\ref{alg:adaptscc}, we know $\kw{querynum}(p_{x, y})$ is the number of vertices with $\qflag$ equal to $1$,
   \\
   Then we know 
   \\
-  $\len(s | s \in (x, s_1, \cdots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y}) = r[y]$
+  $\len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y}) = r[y]$
   \\
   By line:13, we also know $r[x] = \max(r[x], r[v_{m}'] + \kw{flowcapacity}(p_{x, x}) \times \kw{querynum}(p_{x, x})$, and $r[y] \leq r[w_{m}']$
   then we know $r[y] \leq r[x]$, i.e., 
-  $\len(s | s \in (x, s_1, \cdots, y) \land \qflag(s) = 1) \leq r[x]$
+  $\len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq r[x]$
   \\
   This case is proved.
   %

@@ -60,20 +60,20 @@ show x is directly used by the boolean expression for a conditional command and 
 %
 \begin{lem}[Control Dependency Inversion]
 	\label{lem:ctldep_inv}
-	For every $c \in \cdom$, $D \in \dbdom, \trace \in \mathcal{T}$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn} $, if they are in the second case of the \emph{Event May-Dependency} relation from Definition.~\ref{def:event_dep},
+	For every $c \in \cdom$, $D \in \dbdom, \trace \in \ftdom$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn} $, if they are in the second case of the \emph{Event May-Dependency} relation from Definition.~\ref{def:event_dep},
 	$\eventdep(\event, \event, c, \trace, D)$ as Eq.~\ref{eq:ctlflowsto_inv},
 	then for all  $z \in VAR(\pi_1(\event_b))$ there exists a label $i \in \mathbb{N}$ such that 
 	$\flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)$
 	\begin{equation}
 		\label{eq:ctlflowsto_inv},		
 		\begin{array}{l}
-			\forall D \in \dbdom , c \in \cdom, \trace \in \mathcal{T},
+			\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom,
 			\event_1, \event_2 \in \eventset^{\asn} \sthat  
 			\\ 
 			\exists \vtrace_0,
-			\vtrace_1, \vtrace', \vtrace_3, \vtrace_3' \in \mathcal{T},\event_1' \in \eventset^{\asn}, {c}_1, {c}_2  \in \cdom, 
+			\vtrace_1, \vtrace', \vtrace_3, \vtrace_3' \in \ftdom,\event_1' \in \eventset^{\asn}, {c}_1, {c}_2  \in \cdom, 
 			\event_b \in \eventset^{\test},
-			\trace_{ih} \in \mathcal{T} \sthat  
+			\trace_{ih} \in \ftdom \sthat  
 		\trace = [\event_1] \tracecat \trace_{ih} \tracecat [\event_2]
 		\\ \quad \implies	  
 			  \config{{c}, \vtrace_0} \rightarrow^{*} 
@@ -100,11 +100,11 @@ show x is directly used by the boolean expression for a conditional command and 
 	\ref{lem:inv_event}, and \ref{lem:inv_live}, and the \emph{Event May-Dependency} definition of the second case.
 %
 	\begin{proof}
-		Take arbitrary $D \in \dbdom , c \in \cdom, \trace \in \mathcal{T},
+		Take arbitrary $D \in \dbdom , c \in \cdom, \trace \in \ftdom,
 		\event_1, \event_2 \in \eventset^{\asn} $,
 %
 let $\vtrace_0,
-\vtrace_1, \vtrace', \vtrace_3, \vtrace_3' \in \mathcal{T}, 
+\vtrace_1, \vtrace', \vtrace_3, \vtrace_3' \in \ftdom, 
 \event_2' \in \eventset, \event_1' \in \eventset^{\asn}, \event_b, {c}_1, {c}_2$ be the traces, 
 events and commands satisfying the executions,
 by Inversion Lemma~\ref{lem:inv_event} on 
@@ -259,9 +259,9 @@ This lemma is proved.
 	%
 \begin{lem}[The Multiple-Steps Event Dependency Inversion]
 	\label{lem:depevents_exist}
-For every $D \in \dbdom , c \in \cdom, \trace \in \mathcal{T}$, and two assignment events 
+For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and two assignment events 
 $\event_1, \event_2 \in \eventset^{\asn}$,
-if the trace $trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \mathcal{T}$, and $\eventdep(\event_1, \event_2, \trace, c, D)$
+if the trace $trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, and $\eventdep(\event_1, \event_2, \trace, c, D)$
 then $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) $,
 or otherwise there exists
 $\event \in \trace'$ such that
@@ -273,8 +273,8 @@ $\left(
 %
 	\[
 	\begin{array}{l}
-		\forall D \in \dbdom , c \in \cdom, \trace \in \mathcal{T} \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
-		 \exists \trace' \in \mathcal{T} \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
+		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
+		 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
 		\implies
 		\eventdep(\event_1, \event_2, \trace, c, D) 
 		\\ \quad 
@@ -299,11 +299,11 @@ Proving by using Lemma~\ref{lem:inv_indepevents}, Lemma~\ref{lem:ctldep_inv}, an
 and showing a contradiction.
 \begin{proof}
 	Taking arbitrary 
-	$ D \in \dbdom , c \in \cdom, \trace \in \mathcal{T} $ and two events 
+	$ D \in \dbdom , c \in \cdom, \trace \in \ftdom $ and two events 
 	$\event_1, \event_2 \in \eventset^{\asn}$, where $\trace$ has the form 
 	$\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ 
 	for some 
-	$\trace' \in \mathcal{T}$ and $\eventdep(\event_1, \event_2, \trace, c, D)$
+	$\trace' \in \ftdom$ and $\eventdep(\event_1, \event_2, \trace, c, D)$
 	\\ 
 	Assume 
 	\[
@@ -331,17 +331,17 @@ and showing a contradiction.
 %
 \begin{lem}[Independent Events Doesn't Block $\flowsto$ ]
 		\label{lem:inv_indepevents}
-		For every $D \in \dbdom , c \in \cdom, \trace \in \mathcal{T}$, one assignment events 
+		For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, one assignment events 
 		$\event_1\in \eventset^{\asn}$, and another event $\event_2 \in \eventset$,
-		if the trace $\trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \mathcal{T}$, 
+		if the trace $\trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, 
 		and $\eventdep(\event_1, \event_2, \trace, c, D)$,
 		then the following two conclusions hold when $\event_2$ is an assignment event and a testing event respectively.
 	\begin{itemize}
 		\item
 		If $\event_2 \in \eventset^{\asn}$,
-		% For every $D \in \dbdom , c \in \cdom, \trace \in \mathcal{T}$, and two assignment events 
+		% For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and two assignment events 
 		% $\event_1, \event_2 \in \eventset^{\asn}$,
-		% if the trace $\trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \mathcal{T}$, and $\eventdep(\event_1, \event_2, \trace, c, D)$,
+		% if the trace $\trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, and $\eventdep(\event_1, \event_2, \trace, c, D)$,
 		then for every $\event \in \trace'$, if it either doesn't have the \emph{Event May-Dependency} relation on $\event_1$, 
 		or $\pi_1(\event)^{\pi_2(\event)}$ doesn't have the $\flowsto$ relation with $ \pi_1(\event_2)^{\pi_2(\event_2)}$,
 		then the labelled variable $\pi_1(\event_1)^{\pi_2(\event_1)}$ directly flows to the other one $\pi_1(\event_2)^{\pi_2(\event_2)}$, 
@@ -349,8 +349,8 @@ and showing a contradiction.
 		%
 		\[
 		\begin{array}{l}
-			\forall D \in \dbdom , c \in \cdom, \trace \in \mathcal{T} \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
-			 \exists \trace' \in \mathcal{T} \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
+			\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
+			 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
 			\implies
 			\eventdep(\event_1, \event_2, \trace, c, D) 
 			\\ \quad 
@@ -372,8 +372,8 @@ $\pi_1(\event_1) \in VAR(\pi_1(\event_2))$, and $ {\pi_2(\event_1)} = \llabel(\t
 %
 \[
 \begin{array}{l}
-	\forall D \in \dbdom , c \in \cdom, \trace \in \mathcal{T} \sthat  \forall \event_1,\in \eventset^{\asn}, \event_2 \in \eventset^{\test} \sthat 
-	 \exists \trace' \in \mathcal{T} \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
+	\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1,\in \eventset^{\asn}, \event_2 \in \eventset^{\test} \sthat 
+	 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
 	\implies
 	\eventdep(\event_1, \event_2, \trace, c, D) 
 	\\ \quad 
@@ -395,18 +395,18 @@ Taking arbitrary $D \in \dbdom , c \in \cdom$, and an assignment events $\event_
 $\event_2\in \eventset$.
 \\
 Without loss of generalization, 
-taking arbitrary trace has the form $\trace = [\event_1; \cdots; \event_2]$ for arbitrary $\trace_2 \in \mathcal{T}$,
- then we know $\exists \trace' \in \mathcal{T} \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$, let $\trace_2$ be this $\trace'$.
+taking arbitrary trace has the form $\trace = [\event_1; \ldots; \event_2]$ for arbitrary $\trace_2 \in \ftdom$,
+ then we know $\exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$, let $\trace_2$ be this $\trace'$.
 %
 \caseL{$\event_2 \in \eventset^{\asn}$}
 %
 By the definition of $\eventdep(\event_1, \event_2, \trace, c, D)$, 
 taking $ \event_1', \event_2' \in \eventset^{\asn},
-\trace_2' \in \mathcal{T}, c_1, c_2 \in \cdom$ as the events, traces and commands satisfying the definition,
+\trace_2' \in \ftdom, c_1, c_2 \in \cdom$ as the events, traces and commands satisfying the definition,
  we have following two executions:
 % \[
 %   \exists \event_1', \event_2' \in \eventset^{\asn},
-%   \trace_2' \in \mathcal{T}, c_1, c_2 \in \cdom \sthat 
+%   \trace_2' \in \ftdom, c_1, c_2 \in \cdom \sthat 
 % \]
 %
 \[
@@ -448,13 +448,13 @@ In case of $ \pi_1(\event_z) \notin VAR(\expr_2 / \qexpr_2)$, by Inversion Lemma
  of arithmetic and query expression cases, we know:
 %
 \[
-	\forall x^i \in \lvar, \trace, \trace' \in \mathcal{T}, v, v' \sthat 
+	\forall x^i \in \lvar, \trace, \trace' \in \ftdom, v, v' \sthat 
 	\Big( \forall z^j \in \lvar / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
 	\env(\trace) z = \env(\trace') z \Big) \land 
 	\config{\trace, \expr_2 / \qexpr_2} \aarrow v \land \config{\trace', \expr_2} \aarrow  v' \implies v = v'
 	\]
 	\[
-		\forall x^i \in \lvar, \trace, \trace' \in \mathcal{T}, \qval, \qval' \sthat 
+		\forall x^i \in \lvar, \trace, \trace' \in \ftdom, \qval, \qval' \sthat 
 		\Big( \forall z^j \in \lvar / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
 		\env(\trace) z = \env(\trace') z \Big) \land 
 		\config{\trace, \qexpr_2} \qarrow \qval \land \config{\trace', \qexpr_2} \qarrow \qval' \implies \qval =_{q} \qval'
@@ -484,7 +484,7 @@ $\neg \eventdep(\event_1, \event_z, \trace[\event_1:\event_z], c, D)$, i.e.,:
  \\ 
 $
 	\forall z^l \in \lvar \setminus ( \lvar_{\trace_2} \setminus \lvar_{\kw{use}_{\trace_2}}), 
-	\trace, \trace' \in \mathcal{T}, v, v' \sthat  
+	\trace, \trace' \in \ftdom, v, v' \sthat  
 	\env(\trace) z = \env(\trace') z 
 	\land 
 	\config{\trace, \expr_2} \aarrow v 
@@ -497,7 +497,7 @@ $;
 \\
 $
 	\forall z^l \in \lvar \setminus ( \lvar_{\trace_2} \setminus \lvar_{\kw{use}_{\trace_2}}), 
-	\trace, \trace' \in \mathcal{T}, \qval, \qval' \sthat  
+	\trace, \trace' \in \ftdom, \qval, \qval' \sthat  
 	\env(\trace) z = \env(\trace') z 
 	\land 
 	\config{\trace, \qexpr_2} \qarrow \qval 
@@ -514,7 +514,7 @@ where $\lvar_{\trace_2}$ and $\lvar_{\kw{use}_{\trace_2}}$ are
 % and 
 % $
 % 	\forall\event_z \in \lvar/\kw{diff}_{\eventset}, 
-% 	\trace, \trace' \in \mathcal{T}, v, v' \sthat  
+% 	\trace, \trace' \in \ftdom, v, v' \sthat  
 % 	\env(\trace) \pi_1(\event_z) = \env(\trace') \pi_1(\event_z) 
 % 	\land 
 % 	\config{\trace, \expr_2} \aarrow v 
@@ -532,7 +532,7 @@ where $\lvar_{\trace_2}$ and $\lvar_{\kw{use}_{\trace_2}}$ are
 % \]
 % \[
 % 	\forall\event_z \in \trace_2 \setminus \kw{use}_{\eventset}, 
-% 	\trace, \trace' \in \mathcal{T}, v, v' \sthat  
+% 	\trace, \trace' \in \ftdom, v, v' \sthat  
 % 	% \env(\trace) \pi_1(\event_z) = \env(\trace') \pi_1(\event_z) 
 % 	% \land 
 % 	\config{\trace, \expr_2} \aarrow v 
@@ -570,7 +570,7 @@ where $\lvar_{\trace_2}$ and $\lvar_{\kw{use}_{\trace_2}}$ are
 % $\neg \eventdep(\event_z, \event_2, \trace[\event_z:\event_2], c, D) $.
 % \\
 % Then by $\eventdep$ definition, we know 
-% $\forall \event_z', \event_2'' \in \eventset^{\asn}, \trace_z',\trace_z,  \trace_1' \in \mathcal{T}, c_z \in \cdom$ satisfying following two executions, we have $\event_2 \eventeq \event_2''$.
+% $\forall \event_z', \event_2'' \in \eventset^{\asn}, \trace_z',\trace_z,  \trace_1' \in \ftdom, c_z \in \cdom$ satisfying following two executions, we have $\event_2 \eventeq \event_2''$.
 % \[
 % 	\begin{array}{l}
 % 		\config{c, \trace_0} \rightarrow^{*}
@@ -584,7 +584,7 @@ where $\lvar_{\trace_2}$ and $\lvar_{\kw{use}_{\trace_2}}$ are
 % Then we know 
 % \todo{type correctness}
 % \[
-% 	\forall z^j \in (\lvar \setminus \mathbb{LV}_{\diff_{\eventset}} ), \trace, \trace' \in \mathcal{T}, v, v' \sthat  
+% 	\forall z^j \in (\lvar \setminus \mathbb{LV}_{\diff_{\eventset}} ), \trace, \trace' \in \ftdom, v, v' \sthat  
 % 	\env(\trace) z = \env(\trace') z 
 % 	\land 
 % 	\config{\trace, \expr_2} \aarrow v 
@@ -636,12 +636,12 @@ This case is proved.
 \\
 By the definition of $\eventdep(\event_1, \event_2, \trace, c, D)$, 
 taking $ \event_1' \in \eventset^{\asn},
-\trace_2' \in \mathcal{T}, c_1, c_2 \in \cdom$ and $\event_2' \in \eventset^{\test}$
+\trace_2' \in \ftdom, c_1, c_2 \in \cdom$ and $\event_2' \in \eventset^{\test}$
  as the events, traces and commands satisfying the definition,
  we have following two executions:
 % \[
 %   \exists \event_1', \event_2' \in \eventset^{\asn},
-%   \trace_2' \in \mathcal{T}, c_1, c_2 \in \cdom \sthat 
+%   \trace_2' \in \ftdom, c_1, c_2 \in \cdom \sthat 
 % \]
 %
 \[
@@ -670,7 +670,7 @@ we have:
 %
 \begin{lem}[While Loop Inversion]
 	\label{lem:inv_while}
-	For every $\trace, \trace' \in \mathcal{T}, c, c_1, c_2 \in \cdom$ 
+	For every $\trace, \trace' \in \ftdom, c, c_1, c_2 \in \cdom$ 
 	if $ \config{c, \trace} \rightarrow^* \config{c_1; c_2, \trace'}$ and 
 	$c_1 \in_c c_2$, 
 	then there must exist a $\ewhile$ command in $c_2$ and $c_1$ must shows up in the body of that $\ewhile$ command,
@@ -679,7 +679,7 @@ we have:
 	%
 	\[
 	\begin{array}{l}
-	\forall \trace, \trace' \in \mathcal{T}, c, c_1, c_2 \in \cdom \sthat 
+	\forall \trace, \trace' \in \ftdom, c, c_1, c_2 \in \cdom \sthat 
 		\\ \quad
 		\config{c, \trace} \rightarrow^* \config{c_1; c_2, \trace'}
 		\implies
@@ -692,7 +692,7 @@ we have:
 	\end{lem}	
 	Proof Summary: trivially by induction on $c$ and enumerate all operational semantic rules.
 \begin{proof}
-	Take arbitrary $\trace \in \mathcal{T}$, by induction on $c$, we have following cases:
+	Take arbitrary $\trace \in \ftdom$, by induction on $c$, we have following cases:
 		\caseL{$c = [\assign{x}{\expr}]^l$}
 		By the evaluation rule $\rname{assn}$, we have
 		$
@@ -770,10 +770,10 @@ we have:
 %
 \begin{lem}[Only $\eskip$ Command doesn't Produce Event].
 	\label{lem:inv_skip}
-	For all trace $\trace\in \mathcal{T}$, and $c, c' \in \cdom$,  
+	For all trace $\trace\in \ftdom$, and $c, c' \in \cdom$,  
 	$\config{c, \trace} \rightarrow \config{c', \trace}$ if and only if $c = [\eskip];c'$. 
 	\[
-		\forall \trace\in \mathcal{T}, c, c' \in \cdom \sthat 
+		\forall \trace\in \ftdom, c, c' \in \cdom \sthat 
 		\config{c, \trace} \rightarrow \config{c', \trace}
 		\Leftrightarrow 
 		c = [\eskip];c'
@@ -786,9 +786,9 @@ we have:
 % \begin{lem}[Independent Events Doesn't Block $\flowsto$ for Testing Event]
 % 	\label{lem:inv_indepeventstest}
 % 	%
-% 	For every $D \in \dbdom , c \in \cdom, \trace \in \mathcal{T}$, an assignment event
+% 	For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, an assignment event
 % 	$\event_1 \in \eventset^{\asn}$ and a test event $\event_2 \in \eventset^{\test}$,
-% 	if the trace $trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \mathcal{T}$, 
+% 	if the trace $trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, 
 % 	and $\eventdep(\event_1, \event_2, \trace, c, D)$,
 % 	and every $\event \in \trace'$ doesn't have the \emph{May-Dependency} relations both on $\event_1$ and to $\event_2$,
 % 	then 
@@ -796,8 +796,8 @@ we have:
 % 	%
 % 	\[
 % 	\begin{array}{l}
-% 		\forall D \in \dbdom , c \in \cdom, \trace \in \mathcal{T} \sthat  \forall \event_1,\in \eventset^{\asn}, \event_2 \in \eventset^{\test} \sthat 
-% 		 \exists \trace' \in \mathcal{T} \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
+% 		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1,\in \eventset^{\asn}, \event_2 \in \eventset^{\test} \sthat 
+% 		 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
 % 		\implies
 % 		\eventdep(\event_1, \event_2, \trace, c, D) 
 % 		\\ \quad 
@@ -814,12 +814,12 @@ we have:
 %
 % \begin{lem}[Flow Search Algorithm ($\mathcal{A}$) Inversion 1]
 % \label{lem:inv_alg1}
-% For all $D \in \dbdom , c \in \cdom, \trace \in \mathcal{T}, \event_1, \event_2 \in \eventset^{\asn}$, and a list $l$,
+% For all $D \in \dbdom , c \in \cdom, \trace \in \ftdom, \event_1, \event_2 \in \eventset^{\asn}$, and a list $l$,
 % if $l \in \mathcal{A}(\event_1, \event_2, \trace, c, D)$,
 % then l must have the form $[\pi_1(\event_1)^{\pi_2(\event_1)},\ldots, \pi_1(\event_2)^{\pi_2(\event_2)}]$.
 % \[
 % \begin{array}{l}
-%     \forall D \in \dbdom , c \in \cdom, \trace \in \mathcal{T}, l \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
+%     \forall D \in \dbdom , c \in \cdom, \trace \in \ftdom, l \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
 %   \\ \quad 
 %  l\in \mathcal{A}(\event_1, \event_2, \trace, c, D)  \implies  l = [\pi_1(\event_1)^{\pi_2(\event_1)},\ldots, \pi_1(\event_2)^{\pi_2(\event_2)}]
 % \end{array}
@@ -848,7 +848,7 @@ we have:
 % % 	l_1 = l
 % % \]
 % % \[
-% % l = [\event_1, \cdots, \event_2]
+% % l = [\event_1, \ldots, \event_2]
 % % \]
 % % \\
 % Let  $l \in \mathcal{A}(\event_1, \event_2, \trace, c, D)$,
@@ -863,7 +863,7 @@ we have:
 % 	~ S,
 % $$
 % %
-% where $S=(\kw{setfilter} ~(\efun l \to l = [\event_1, \cdots, \event_2]) ~ (\kw{dfs} \eapp \trace \eapp c \eapp  D))$.
+% where $S=(\kw{setfilter} ~(\efun l \to l = [\event_1, \ldots, \event_2]) ~ (\kw{dfs} \eapp \trace \eapp c \eapp  D))$.
 % \\
 % Then, by definition of $\kw{setmap}$, we know $l$ is an output of
 % \\
@@ -881,32 +881,32 @@ we have:
 % = l.
 % $$
 %  %
-% Since $l_e \in (\kw{setfilter} ~(\efun l \to l = [\event_1, \cdots, \event_2]) ~ (\kw{dfs} \eapp \trace \eapp c \eapp  D))$,
+% Since $l_e \in (\kw{setfilter} ~(\efun l \to l = [\event_1, \ldots, \event_2]) ~ (\kw{dfs} \eapp \trace \eapp c \eapp  D))$,
 % \\
 % by the $\kw{setfilter}$ function,
 % we know only the lists of events in $(\kw{dfs} \eapp \trace \eapp c \eapp  D)$ having the form
-% $ [\event_1, \cdots, \event_2] $ are preserved in $S$, i.e.,
+% $ [\event_1, \ldots, \event_2] $ are preserved in $S$, i.e.,
 % \[
-% 	\forall l \in (\kw{setfilter} ~(\efun l \to l = [\event_1, \cdots, \event_2]) ~ \kw{dfs}(\trace, c, D))
-% 	\sthat  l = [\event_1, \cdots, \event_2]
+% 	\forall l \in (\kw{setfilter} ~(\efun l \to l = [\event_1, \ldots, \event_2]) ~ \kw{dfs}(\trace, c, D))
+% 	\sthat  l = [\event_1, \ldots, \event_2]
 % \]
 % %
 % Then we know $l_e$ also has the same form, 
-% i.e., $l_e = [\event_1, \cdots, \event_2]$.
+% i.e., $l_e = [\event_1, \ldots, \event_2]$.
 % %
 % \\
 % Let $l_{ef} = (\efilter (\efun \event \to  \event \in \eventset^{\asn})) ~ l_e$, 
 % by $\event_1, \event_2 \in \eventset^{\asn}$, 
 % we know $\event_1$ and $\event_2$ are preserved in $l_{ef}$, i.e.,:
 % \[
-% 	l_{ef} =[\event_1, \cdots, \event_2]
+% 	l_{ef} =[\event_1, \ldots, \event_2]
 % \]
 % %
 % Then, by applying the function
 % $\emap (\efun  \event \to \pi_1(\event)^{\pi_2(\event)})$ to 
 % $l_{ef}$, we have $l$ as follows:
 % \[
-% 	[\pi_1(\event_1)^{\pi_2(\event_1)}, \cdots, \pi_1(\event_2)^{\pi_2(\event_2)}]
+% 	[\pi_1(\event_1)^{\pi_2(\event_1)}, \ldots, \pi_1(\event_2)^{\pi_2(\event_2)}]
 % \]
 % %
 % %
@@ -942,7 +942,7 @@ we have:
 % 		(\efun \event \to  \event \in \eventset^{\asn}) ~ l) \right)
 % 	\\ \qquad \qquad
 % 	(\kw{setfilter} ~
-% 		(\efun l \to l = [\event_1, \cdots, \event_2]) ~ 
+% 		(\efun l \to l = [\event_1, \ldots, \event_2]) ~ 
 % 		% \left(\left\{[\event_2]\right\} \cup \left\{ \event_1 \sthat ackrel{[\event_1; \event_2]}{\uplus} [\event_2] \right\} \right))
 % 		\left(\left\{[\event_2]\right\} \cup \left(  {\uplus} \eapp \event_1 \eapp {[\event_1; \event_2]} \eapp [\event_2] \right) \right))
 % 	\end{array}
@@ -985,7 +985,7 @@ we have:
 % 	\[
 % 	\begin{array}{l}
 % 		\forall x \in \lvar_c, \kw{V_{ptl}} \in \subseteq \lvar_c \expr \sthat  
-% 		\exists \trace, \trace' \in \mathcal{T} \sthat  
+% 		\exists \trace, \trace' \in \ftdom \sthat  
 % 		\\ \quad
 % 		\forall z \in \lvar_c \setminus (\{x\} \cup \kw{V_{ptl}}) \sthat  
 % 		\env(\trace) z = \env(\trace') z 
@@ -1011,7 +1011,7 @@ we have:
 \begin{lem}
 	\label{lem:valdep_trans}
 (Event Dependency Transitivity)
-For every $D \in \dbdom , c \in \cdom, \trace \in \mathcal{T}$, and $\event_1, \event_2, \event_3 \in \eventset^{\asn}, \trace_{12}, \trace_{23} \in \mathcal{T}$,
+For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and $\event_1, \event_2, \event_3 \in \eventset^{\asn}, \trace_{12}, \trace_{23} \in \ftdom$,
 if $\eventdep(\event_1, \event_2, \trace_{12}, c, D)$
 and $\eventdep(\event_2, \event_3, \trace_{23}, c, D) $,
 then $\eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)$.
@@ -1020,7 +1020,7 @@ then $\eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)$.
   % if and only if
   \[
 	  \begin{array}{l}
-  \forall D \in \dbdom , c \in \cdom, \event_1, \event_2, \event_3 \in \eventset^{\asn}, \trace_{12}, \trace_{23} \in \mathcal{T} \sthat  
+  \forall D \in \dbdom , c \in \cdom, \event_1, \event_2, \event_3 \in \eventset^{\asn}, \trace_{12}, \trace_{23} \in \ftdom \sthat  
   \eventdep(\event_1, \event_2, \trace_{12}, c, D) 
   \land
   \eventdep(\event_2, \event_3, \trace_{23}, c, D) 

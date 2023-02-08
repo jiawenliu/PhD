@@ -209,8 +209,8 @@ then its \emph{path-insensitive transition bound} $\absclr(\absevent, c)$
 the execution times of this assignment command in $c$.
   \[
     \begin{array}{l}
-      \forall c \in \cdom, l \in \lvar(c),\trace_0 \in \mathcal{T}_0(c), 
-      \trace \in \mathcal{T}, v \in \mathbb{N}
+      \forall c \in \cdom, l \in \lvar(c),\trace_0 \in \ftdom_0(c), 
+      \trace \in \ftdom, v \in \mathbb{N}
        \sthat 
        \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\vtrace} 
        \\ \qquad 
@@ -270,17 +270,16 @@ in Appendix~\ref{apdx:adapt_soundness}, and Theorem~\ref{thm:rb_soundness} in Ap
 \begin{thm}[Soundness of the Reachability Bounds Estimation]
   \label{thm:addweight_soundness}
 Let  ${c}$ be a program and $\progW(c)$ be its estimated weight set.
-Then, for each $(x^l, w) \in \progW(c),\vtrace_0 \in \mathcal{T}_0(c), \trace \in \mathcal{T},
+Then, for each $(x^l, w) \in \progW(c),\vtrace_0 \in \ftdom_0(c), \trace \in \ftdom,
 v \in \mathbb{N}$ we have:
   %
 \[
- \text{ if }
 \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat\vtrace} 
 \land 
 \config{\vtrace_0, w} \earrow v
 \land
 % \right\} 
-\text{ then }
+\implies
 \vcounter(\vtrace, l) \leq v
 \]
 \end{thm}

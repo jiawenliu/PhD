@@ -41,7 +41,7 @@ Based on the event recording all the program's evaluations for expressions,
  now tracks all these events.
 
  A \emph{trace}
- $\trace$ is a list of \emph{events} generated when executing specific commands. We denote by $\mathcal{T}$ the set of all finite traces and we will use list notation for traces, where $[]$ is the empty trace, the operator $\traceadd$ combines an event and a trace in a new event, 
+ $\trace$ is a list of \emph{events} generated when executing specific commands. We denote by $\ftdom$ the set of all finite traces and we will use list notation for traces, where $[]$ is the empty trace, the operator $\traceadd$ combines an event and a trace in a new event, 
  and the operator $\tracecat$ concatenates two traces. 
  \[
 \begin{array}{llll}
@@ -59,19 +59,18 @@ which consists of a command $c$ to be evaluated and a starting trace $\trace$,
 evaluates to another configuration with the trace updated along with the evaluation of the command $c$ to the normal form of the command $\eskip$.
 %
 \\
-We denote by $\mathcal{T}$ the set of all finite traces.
-If a program $c$ has some non-terminating behavior, it will produce an infinite trace from $\mathcal{T} \cup \{\infty\}$. 
+If a program $c$ has some non-terminating behavior, it will produce an infinite trace from $\ftdom \cup \{\infty\}$. 
 In the rest of \redd{PART \romannum{1}}, we rule out this situation and consider as well-formed only the finite trace and the terminating programs.
 \\
 Some useful operators are defined below w.r.t. the finite traces.
 \\
-The \emph{Trace Concatenation} operator $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$ concatenate two traces
+The \emph{Trace Concatenation} operator $\tracecat: \ftdom \to \ftdom \to \ftdom$ concatenate two traces
 as the standard list concatenation formally
 in Definition~\ref{def:trace_cat}.
 The concatenation preserves the order of every element in the two traces.
-\begin{defn}[Trace Concatenation: $\tracecat: \mathcal{T} \to \mathcal{T} \to \mathcal{T}$]
+\begin{defn}[Trace Concatenation: $\tracecat: \ftdom \to \ftdom \to \ftdom$]
   \label{def:trace_cat}
-  Given two traces $\trace_1, \trace_2 \in \mathcal{T}$, the trace concatenation operator 
+  Given two traces $\trace_1, \trace_2 \in \ftdom$, the trace concatenation operator 
   $\tracecat$ is defined as:
   \[
     \trace_1 \tracecat \trace_2 \triangleq
@@ -84,7 +83,7 @@ The concatenation preserves the order of every element in the two traces.
   \]
   \end{defn}
   
-The \emph{Belongs To} operator $\in : \eventset \to \mathcal{T} \to \{\etrue, \efalse \} $ and its opposite $\not\in$
+The \emph{Belongs To} operator $\in : \eventset \to \ftdom \to \{\etrue, \efalse \} $ and its opposite $\not\in$
 express whether an event belongs to a trace, formally as follows in Definition~\ref{def:event_belong}.
 \begin{defn}[An Event Belongs to A Trace]
   \label{def:event_belong}
@@ -105,91 +104,11 @@ express whether an event belongs to a trace, formally as follows in Definition~\
   \end{equation}
   As usual, we denote by $\event \notin \trace$ that the event $\event$ doesn't belong to the trace $\trace$.
   \end{defn}
-  %
-  % An event $\event \in \eventset$ belongs to a trace $\trace$ up to value, 
-  % i.e., $\event \sigin \trace$ are defined as follows:
-  %   %
-  % \begin{equation}
-  %   \event \sigin \trace  
-  %   \triangleq \left\{
-  %   \begin{array}{ll} 
-  %     \etrue                  & \trace =  (\trace' \tracecate \event')                          \land \pi_1(\event_1) = \pi_1(\event_2) 
-  %                               \land  \pi_2(\event_1) = \pi_2(\event_2)  
-  %                               % \land \vcounter(\trace \event) = \vcounter()
-  %                               \\
-  %     \event \sigin \trace'   & \trace =  (\trace' \tracecate \event') 
-  %                               \land 
-  %                               (\pi_1(\event_1) \neq \pi_1(\event_2) 
-  %                               \lor  \pi_2(\event_1) \neq \pi_2(\event_2)) 
-  %                               \\ 
-  %     \efalse                 & o.w.
-  %   \end{array}
-  %   \right.
-  % \end{equation}
-  %
-  % % \mg{Why the previous definition used :: and now you switch to ++? Cannot this just be defined using ::? I am trying to anticipate places where a reader might be confused. Also, this definition would be much simpler if we defined event in a more uniform way. Ideally, we want to distinguish three cases, we don't need to distinguish 7 cases.}\\
-  % % \jl{My bad, I was really too sticky to the convention.
-  % I though the list appending  $::$ can only append element on the left side.}
-  % \mg{We introduce a counting operator $\vcounter : \mathcal{T} \to \mathbb{N} \to \mathbb{N}$ whose behavior is defined as follows, \sout{Counter $\vcounter : \mathcal{T} \to \mathbb{N} \to \mathbb{N}$ }}.
-  % \wq{The operator counter actually provides the number of times a specific label appears in a trace. Only a number, the position of label is ignored.}
-  % \[
-  % \begin{array}{lll}
-  % \vcounter((x, l, v) :: \trace ) l \triangleq \vcounter(\trace) l + 1
-  % &
-  % \vcounter((b, l, v):: \trace ) l \triangleq \vcounter(\trace) l + 1
-  % &
-  % \vcounter((x, l, \qval, v):: \trace ) l \triangleq \vcounter(\trace) l + 1
-  % \\
-  % \vcounter((x, l', v):: \trace ) l \triangleq \vcounter(\trace ) l
-  % &
-  % \vcounter((b, l', v):: \trace ) l \triangleq \vcounter(\trace ) l
-  % &
-  % \vcounter((x, l', \qval, v):: \trace ) l \triangleq \vcounter(\trace ) l
-  % \\
-  % \vcounter({[]}) l \triangleq 0
-  % &&
-  % \end{array}
-  % \]
-  % \[
-  % \begin{array}{lll}
-  % \vcounter(\trace  \tracecat [(x, l, v)] ) l \triangleq \vcounter(\trace) l + 1
-  % &
-  % \vcounter(\trace  \tracecat [(b, l, v)] ) l \triangleq \vcounter(\trace) l + 1
-  % &
-  % \vcounter(\trace  \tracecat [(x, l, \qval, v)] ) l \triangleq \vcounter(\trace) l + 1
-  % \\
-  % \vcounter(\trace  \tracecat [(x, l', v)] ) l \triangleq \vcounter(\trace ) l
-  % &
-  % \vcounter(\trace  \tracecat [(b, l', v)] ) l \triangleq \vcounter(\trace ) l
-  % &
-  % \vcounter(\trace  \tracecat [(x, l', \qval, v)]) l \triangleq \vcounter(\trace ) l
-  % \\
-  % \vcounter({[]}) l \triangleq 0
-  % &&
-  % \end{array}
-  % \]
-The \emph{Occurrence Counter} $\vcounter : \mathcal{T} \to \mathbb{N} \to \mathbb{N}$ counts the 
+
+  The \emph{Occurrence Counter} $\vcounter : \ftdom \to \mathbb{N} \to \mathbb{N}$ counts the 
 occurrence of a label in a trace,
 % whose behavior is defined 
 formally as follows in Definition~\ref{def:trace_cnt}.
-  % \[
-  % \begin{array}{lll}
-  % \vcounter(\trace :: (x, l, v, \bullet) ) l \triangleq \vcounter(\trace) l + 1
-  % &
-  % \vcounter(\trace  ::(b, l, v, \bullet) ) l \triangleq \vcounter(\trace) l + 1
-  % &
-  % \vcounter(\trace  :: (x, l, v, \qval) ) l \triangleq \vcounter(\trace) l + 1
-  % \\
-  % \vcounter(\trace  :: (x, l', v, \bullet) ) l \triangleq \vcounter(\trace ) l, l' \neq l
-  % &
-  % \vcounter(\trace  :: (b, l', v, \bullet) ) l \triangleq \vcounter(\trace ) l, l' \neq l
-  % &
-  % \vcounter(\trace  :: (x, l', v, \qval)) l \triangleq \vcounter(\trace ) l, l' \neq l
-  % \\
-  % \vcounter({[]}) l \triangleq 0
-  % &&
-  % \end{array}
-  % \]
   \begin{defn}[Occurrence Counter]
     \label{def:trace_cnt}
     \[
@@ -213,7 +132,7 @@ formally as follows in Definition~\ref{def:trace_cnt}.
       \]
 \end{defn}
 The \emph{Latest Label}
-operator $\llabel : \mathcal{T} \to \mathcal{V} \to \mathbb{N} \cup \{ \bot\}$,
+operator $\llabel : \ftdom \to \mathcal{V} \to \mathbb{N} \cup \{ \bot\}$,
 takes a trace and a variable as input and returns the label of the latest assignment event which assigns value to that variable. 
   Its behavior is defined as follows,
   \begin{defn}[Latest Label]
@@ -231,7 +150,7 @@ takes a trace and a variable as input and returns the label of the latest assign
     \]
   \end{defn}
   %
-    The operator $\tlabel : \mathcal{T} \to \mathcal{P}{(\ldom)}$ gives the set of labels in every event belonging to 
+    The operator $\tlabel : \ftdom \to \mathcal{P}{(\ldom)}$ gives the set of labels in every event belonging to 
     a trace, whose behavior is defined as follows,
   \[
     % \begin{array}{llll}
@@ -247,7 +166,7 @@ The environment is simply an efficient operator, $\env$ where $\env(\trace) x$ f
   Since the trace records all the program's evaluations for assignments, 
   the value assigned to variables can be recovered from trace directly.
   In this sense, it is more efficiently by reading value from trace directly rather than using a separate memory recording the variable values.
-Formally, the environment operator, $\env : {\mathcal{T}}  \to \mathcal{V} \to \mathcal{VAL} \cup \{\bot\}$ maps a trace and a variable to the latest value assigned to this variable on the trace, as defined below.
+Formally, the environment operator, $\env : {\ftdom}  \to \mathcal{V} \to \mathcal{VAL} \cup \{\bot\}$ maps a trace and a variable to the latest value assigned to this variable on the trace, as defined below.
 \[
 \begin{array}{lll}
 \env(\trace  \traceadd (x, l, v, \bullet)) x \triangleq v
@@ -264,7 +183,7 @@ Formally, the environment operator, $\env : {\mathcal{T}}  \to \mathcal{V} \to \
 \end{array}
 \]
 
- \paragraph*{Operational Semantics}
+ \paragraph{Operational Semantics}
  The trace based operational semantics is described in terms of a small step evaluation relation
  $\config{c, \trace} \to \config{c', \trace'}$  describing how a configuration program-trace evaluates to another
  configuration program-state. 
@@ -325,13 +244,13 @@ The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval
 
  As usual, we will use $\to^*$ for the reflexive and transitive closure of $\to$. 
  If $\config{c, \trace_0} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace_0 \tracecat \trace}$,
- then the program's execution terminates and produces a finite execution trace $\trace \in \mathcal{T}$. 
+ then the program's execution terminates and produces a finite execution trace $\trace \in \ftdom$. 
 If a program $c$ has some non-terminating behavior, we define its execution as follows.
 \\
 \begin{defn}[Non-terminating and Infinite Trace]
   \label{def:non-terminating}
-  Given a program $c$ and an initial trace $\trace \in \mathcal{T}_0(c)$,
-  when $c$ executes with $\trace$,  we define the execution of $c$ under $\trace$ is non-terminating and produces an infinite trace $\trace' \in \mathcal{T} \cup \{\infty\}$, as 
+  Given a program $c$ and an initial trace $\trace \in \ftdom_0(c)$,
+  when $c$ executes with $\trace$,  we define the execution of $c$ under $\trace$ is non-terminating and produces an infinite trace $\trace' \in \ftdom \cup \{\infty\}$, as 
   $\config{c, \trace_0} \uparrow^{\infty} \trace' \in \lim(\uparrow)$
   where the limit is defined as follows.
   \[
@@ -341,20 +260,21 @@ If a program $c$ has some non-terminating behavior, we define its execution as f
     \\ \quad
     \Big\{
       (\config{c, \trace}, \trace') ~\vert~ 
-      c\in \cdom, \trace \in \mathcal{T}_0(c),
-      \trace' \in \mathcal{T} \cup \{\infty\} 
-      \land \exists \trace_0 \in \mathcal{T}, c_0 \in \cdom \sthat 
+      c\in \cdom, \trace \in \ftdom_0(c),
+      \trace' \in \ftdom \cup \{\infty\} 
+      \land \exists \trace_0 \in \ftdom, c_0 \in \cdom \sthat 
       \config{c, \trace} \to \config{c_0, \trace_0}
       \\ \qquad \qquad \qquad 
-      \land \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \mathcal{T}, \trace'' \in \mathcal{T} \cup \{\infty\}, c_i, c_{i + 1} \in \cdom \sthat 
+      \land \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \ftdom, \trace'' \in \ftdom \cup \{\infty\}, c_i, c_{i + 1} \in \cdom \sthat 
       \config{c_i, \trace_i} \to \config{c_{i + 1}, \trace_{i + 1}} 
       \land  \trace' = \trace_{i + 1} \tracecat \trace''
     \Big\}
     \end{array}
   \]
 \end{defn}
-In the rest of {\redd{PART \romannum{1}} we consider as well-formed only the terminating execution and finite trace denote by $\trace \in \mathcal{T}$.
-We will extend to the non-terminating programs in {\redd{PART \romannum{2}} and use $\ftdom$ and $\inftdom$ to distinguish the universe of finite trace and infinite trace.
+We want to emphasis that in the rest of {\redd{PART \romannum{1}} we consider as well-formed only the terminating execution and finite trace denote by $\trace \in \ftdom$.
+We will extend to the non-terminating programs in {\redd{PART \romannum{2}}.
+%  and use $\ftdom$ and $\inftdom$ to distinguish the universe of finite trace and infinite trace.
 
  \begin{figure}
   \begin{mathpar}
@@ -634,7 +554,7 @@ We will extend to the non-terminating programs in {\redd{PART \romannum{2}} and 
       \label{fig:os}
   \end{figure}
 
-\paragraph*{Properties and Lemmas}
+\paragraph{Properties and Lemmas}
 
 In order to distinguish if a query's choice is affected by previous values, 
 we need to be able to identify whether two queries are the equivalent or not, so that when we change the result of one query, 
@@ -651,7 +571,7 @@ Instead, we define the equivalence of query expression by quantifying over all v
 Two query expressions $\qexpr_1$, $\qexpr_2$ are equivalent, denoted as $\qexpr_1 =_{q} \qexpr_2$, if and only if
 \[
  \begin{array}{l} 
-   \forall \trace \in \mathcal{T} \sthat \exists \qval_1, \qval_2 \in \mathcal{QVAL} \sthat
+   \forall \trace \in \ftdom \sthat \exists \qval_1, \qval_2 \in \mathcal{QVAL} \sthat
     (\config{\trace,  \qexpr_1} \qarrow \qval_1 \land \config{\trace,  \qexpr_2 } \qarrow \qval_2) 
     \\
     \quad \land (\forall D \in \dbdom, r \in D \sthat 
@@ -688,16 +608,16 @@ specifically the trace has the property that its length never decreases during t
 \begin{lem}
 [Trace Non-Decreasing]
 \label{lem:tracenondec}
-For every program $c \in \cdom$ and traces $\trace, \trace' \in \mathcal{T}$, if 
+For every program $c \in \cdom$ and traces $\trace, \trace' \in \ftdom$, if 
 $\config{c, \trace} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace'}$,
-then there exists a trace $\trace'' \in \mathcal{T}$ with $\trace \tracecat \trace'' = \trace'$
+then there exists a trace $\trace'' \in \ftdom$ with $\trace \tracecat \trace'' = \trace'$
 %
 $$
-\forall \trace, \trace' \in \mathcal{T}, c \in \cdom, l \in \ldom \sthat 
+\forall \trace, \trace' \in \ftdom, c \in \cdom, l \in \ldom \sthat 
 \config{c, \trace} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace'} 
-\implies \exists \trace'' \in \mathcal{T} \sthat \trace \tracecat \trace'' = \trace'.
+\implies \exists \trace'' \in \ftdom \sthat \trace \tracecat \trace'' = \trace'.
 $$
-Again, we want to emphasize that in \redd{PART \romannum{1}}, we consider as well-formed only the finite trace when we say $\trace \in \mathcal{T}$, and the terminating execution.
+Again, we want to emphasize that in \redd{PART \romannum{1}}, we consider as well-formed only the finite trace when we say $\trace \in \ftdom$, and the terminating execution.
 \end{lem}
 Since the equivalence over two events is defined over the query value equivalence, 
 when there is an event belonging to a trace, 
@@ -708,15 +628,15 @@ but they are equivalent by Definition~\ref{def:query_equal}.
 So we have the following Corollary~\ref{coro:aqintrace} with proof in Appendix~\ref{apdx:aqintrace}.
 \begin{coro}
 \label{coro:aqintrace}
-For every event and a trace $\trace \in \mathcal{T}$,
+For every event and a trace $\trace \in \ftdom$,
 if $\event \in \trace$, 
-then there exist another event $\event' \in \eventset$ and traces $\trace_1, \trace_2 \in \mathcal{T}$
+then there exist another event $\event' \in \eventset$ and traces $\trace_1, \trace_2 \in \ftdom$
 such that $\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace $
 with 
 $\event$ and $\event'$ equivalent but may differ in their query value.
 \[
-  \forall \event \in \eventset, \trace \in \mathcal{T} \sthat 
-\event \in \trace \implies \exists \trace_1, \trace_2 \in \mathcal{T}, 
+  \forall \event \in \eventset, \trace \in \ftdom \sthat 
+\event \in \trace \implies \exists \trace_1, \trace_2 \in \ftdom, 
 \event' \in \eventset \sthat (\event \in \trace') \land \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  
 \]
 \end{coro}

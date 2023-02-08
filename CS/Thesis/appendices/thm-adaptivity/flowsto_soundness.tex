@@ -4,18 +4,18 @@ Given a program ${c}$, for all  $ x^i, y^j \in \lvar_{{c}}$, if $\vardep(x^i, y^
 then
 %  either $\flowsto(x^i, y^j, c)$ 
 % or 
-there exist $z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}}$ with $n \geq 0$ such that   
+there exist $z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}}$ with $n \geq 0$ such that   
 $\flowsto(x^i,  z_1^{r_1}, c) 
-\land \cdots \land \flowsto(z_n^{r_n}, y^j, c)$
+\land \ldots \land \flowsto(z_n^{r_n}, y^j, c)$
 %
 \[
 \begin{array}{l}
   \forall x^i, y^j \in \lvar_{{c}}.
   \vardep(x^i, y^j, {c})
   \\ \quad \implies
-  \Big( \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+  \Big( \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
   \flowsto(x^i,  z_1^{r_1}, c) 
-  \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) \Big)
+  \land \ldots \land \flowsto(z_n^{r_n}, y^j, c) \Big)
 \end{array}
 \]
 \end{thm}
@@ -37,9 +37,9 @@ Proof Summary, for  arbitrary two $x^i, y^j \in \lvar_c$, with \emph{Variable Ma
     \exists z^l \in \lvar_{{c}}.
   \left(\vardep(x^i, z^l, {c})   
   \implies
-   \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+   \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
   \flowsto(x^i,  z_1^{r_1}, c) 
-  \land \cdots \land \flowsto(z_n^{r_n}, z^l, c)
+  \land \ldots \land \flowsto(z_n^{r_n}, z^l, c)
   \right)
   \land  \flowsto(z^l, y^j, {c})
   \Big)$.
@@ -54,10 +54,10 @@ Proof Summary, for  arbitrary two $x^i, y^j \in \lvar_c$, with \emph{Variable Ma
 %     \Big(
 %     \vardep(x^i, z^l, {c})   
 %   \implies
-%      \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+%      \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
 %     \flowsto(x^i,  z_1^{r_1}, c) 
 %     \\ \qquad \qquad 
-%     \land \cdots  \land \flowsto(z_n^{r_n}, z^l, c) 
+%     \land \ldots  \land \flowsto(z_n^{r_n}, z^l, c) 
 %     \Big)
 %     \land  \flowsto(z^l, y^j, {c})
 %   \end{array}
@@ -76,38 +76,38 @@ Proof Summary, for  arbitrary two $x^i, y^j \in \lvar_c$, with \emph{Variable Ma
 %
 By definition of $\vardep(x^i, y^j, {c})$, 
 let $D \in \dbdom$ be the dataset,
-and $\trace \in \mathcal{T}$, $\event_x, \event_y$ be the trace and two events satisfying the definition, 
+and $\trace \in \ftdom$, $\event_x, \event_y$ be the trace and two events satisfying the definition, 
 with $\pi_1(\event_x) = x$ and $\pi_1(\event_y) = y$,
 %  then informally it is sufficient to show:
 % then it is sufficient to show:
 %     \[
 %       \begin{array}{l}
 %       \Big(
-%          \exists \trace \in \mathcal{T} \sthat  
+%          \exists \trace \in \ftdom \sthat  
 %         \eventdep^{val}(\event_x, \event_y, \trace, c, D) \lor 
 %         (\exists \event_b \in \eventset^{\test} \sthat  
 %         \eventdep^{val}(\event_x, \event_b, \trace, c, D)
 %         \land \eventdep^{\ctl}(\event_b, \event_y, c, D))  
 %         \Big)
 %         \\ \quad \implies
-%   \Big( \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+%   \Big( \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
 %   \flowsto(x^i,  z_1^{r_1}, c) 
-%   \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) \Big)
+%   \land \ldots \land \flowsto(z_n^{r_n}, y^j, c) \Big)
 %       \end{array}
 %     \]
 %     \[
 %         (\exists \event_b \in \eventset^{\test} \sthat  x^i \in VAR(\pi_1(\event_b)) 
 %         \land \eventdep^{\ctl}(\event_b, \event_y, c, D))    
 %     \implies
-%   \Big( \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+%   \Big( \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
 %   \flowsto(x^i,  z_1^{r_1}, c) 
-%   \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) \Big)
+%   \land \ldots \land \flowsto(z_n^{r_n}, y^j, c) \Big)
 % \]
 % Proved by applying Theorem.~\ref{thm:algvardep_sound} and Correctness of $\mathcal{A}$ in Theorem.~\ref{thm:alg_correct}.
 % \[
 % 	\begin{array}{l}
-% 		\forall D \in \dbdom , c \in \cdom, \trace \in \mathcal{T} \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
-% 		 \exists \trace' \in \mathcal{T} \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
+% 		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
+% 		 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
 % 		\implies
 % 		\eventdep(\event_1, \event_2, \trace, c, D) 
 % 		\\ \quad 
@@ -134,9 +134,9 @@ $$
     \eventdep(\event_x, \event_z, \trace[\event_x: \event_z], c, D)
     \\ \qquad 
     \implies 
-    \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
 \flowsto(x^i,  z_1^{r_1}, c) 
-\land \cdots \land \flowsto(z_n^{r_n},  \pi_1(\event_z)^{\pi_2(\event_z)}, c)
+\land \ldots \land \flowsto(z_n^{r_n},  \pi_1(\event_z)^{\pi_2(\event_z)}, c)
     )
     \\ \quad
     \land 
@@ -149,8 +149,8 @@ It is clearer to show it in two lemmas:
 1. Existence of a middle event:
 % \[
 % 	\begin{array}{l}
-% 		\forall D \in \dbdom , c \in \cdom, \trace \in \mathcal{T} \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
-% 		 \exists \trace' \in \mathcal{T} \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
+% 		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
+% 		 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
 % 		\implies
 % 		\eventdep(\event_1, \event_2, \trace, c, D) 
 % 		\\ \quad 
@@ -179,9 +179,9 @@ in Lemma~\ref{lem:depevents_exist}.
 %     \eventdep(\event_x, \event_z, \trace[\event_x: \event_z], c, D)
 %     \\ \qquad 
 %     \implies 
-%     \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+%     \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
 % \flowsto(x^i,  z_1^{r_1}, c) 
-% \land \cdots \land \flowsto(z_n^{r_n},  \pi_1(\event_z)^{\pi_2(\event_z)}, c)
+% \land \ldots \land \flowsto(z_n^{r_n},  \pi_1(\event_z)^{\pi_2(\event_z)}, c)
 % \end{array}
 % \]
 % %
@@ -190,16 +190,16 @@ in Lemma~\ref{lem:depevents_exist}.
 %
 \[
   \begin{array}{l}
-		\forall D \in \dbdom , c \in \cdom, \trace \in \mathcal{T} \sthat  \forall \event_1, \event_2 \in \eventset \sthat 
+		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset \sthat 
     \event_1, \event_2 \in \eventset^{\asn} \land 
-		 \exists \trace' \in \mathcal{T} \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
+		 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
 		\implies
 		\eventdep(\event_1, \event_2, \trace, c, D) 
 		\\ \quad 
 		\implies 
-    \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
 		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
-    \land \cdots \land \flowsto(z_n^{r_n}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+    \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
 	\end{array}
 \]
 with the induction hypothesis:
@@ -207,15 +207,15 @@ with the induction hypothesis:
   \begin{array}{l}
     \forall \event_{ih1}, \event_{ih2} \in \trace \sthat  \event_{ih1}, \event_{ih2} \in \eventset^{\asn} 
     \land
-		 \exists \trace' \in \mathcal{T} \sthat  
+		 \exists \trace' \in \ftdom \sthat  
      \trace[\event_{ih1}:\event_{ih2}] = [\event_{ih1}] \tracecat \trace' \tracecat [\event_{ih2}]
 		\implies
 		\eventdep(\event_{ih1}, \event_{ih2}, \trace[\event_{ih1}:\event_{ih2}], c, D) 
 		\\ \quad 
 		\implies 
-    \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
 		\flowsto(\pi_1(\event_{ih1})^{\pi_2(\event_{ih1})},  z_1^{r_1}, c) 
-    \land \cdots \land \flowsto(z_n^{r_n}, \pi_1(\event_{ih2})^{\pi_2(\event_{ih2})}, c) 
+    \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_{ih2})^{\pi_2(\event_{ih2})}, c) 
   \end{array}
   \]
 %
@@ -236,16 +236,16 @@ Proved in Theorem~\ref{thm:flowsto_event_soundness} with the main proof logic:
 %
 by definition of $\vardep(x^i, y^j, {c})$, 
 let $D \in \dbdom$ be the dataset,
-and $\trace \in \mathcal{T}$, $\event_x, \event_y$ be the trace and two events satisfying the definition, 
+and $\trace \in \ftdom$, $\event_x, \event_y$ be the trace and two events satisfying the definition, 
 with $\pi_1(\event_x)^{\pi_2(\event_x)} = x^i$ and $\pi_1(\event_y)^{\pi_2(\event_y)} = y^j$,  it is sufficient to show:
 $$
 \begin{array}{l}
   \eventdep(\event_x, \event_y, \trace, c, D) 
   \\ \quad 
   \implies 
-  \exists n \in \mathbb{N}, z_1^{r_1}, \cdots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+  \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
   \flowsto(x^i,  z_1^{r_1}, c) 
-  \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
+  \land \ldots \land \flowsto(z_n^{r_n}, y^j, c) 
 \end{array}
 $$
 %
