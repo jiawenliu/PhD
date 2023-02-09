@@ -118,7 +118,7 @@ I develop a static program analysis in Section~\ref{sec:adapt-static}, named {\T
 \end{enumerate}
 % \\
 %
-\subsection{Technical Limitation}
+\subsection{Technical Motivations}
 \label{sec:adapt-intro-overview}
 
 \subsubsection{Language Design}
@@ -129,7 +129,7 @@ for analyzing the adaptive data analysis,
 the research goal is to develop
 an expressive language supporting general adaptive data analysis formally.
 
-\paragraph*{Limitations of Previous Works}
+\paragraph{Limitations of Previous Works}
 There are previous works from~\cite{weihao22} developing language formalizing the adaptive data analysis.
 However, these language designs are limited in their expressiveness largely.
 Most of the general data analyses are not supported by the previous language design.
@@ -138,7 +138,8 @@ In Section~\ref{sec:prework-language}, I introduce in detail the previous langua
 
 \subsubsection{Adaptivity Formalization}
 \label{sec:intro-exe}
-\paragraph{Research Goal - Define the Adaptivity formally}
+
+\paragraph{Technical Research Goal -- Adaptivity Formalization}
 Targeting the second challenge
 % --\textbf{Adaptivity Formalization}--
 for analyzing the adaptivity, 
@@ -155,24 +156,10 @@ and from the \emph{quantitative} perspective the depth of this dependency.
 As we discussed in Section~\ref{sec:intro-methodology}, our methodology defines the \emph{reachability} as
 data dependency relation, and defines the \emph{quantitative} as the reachability-bound, and then defines the
 \emph{adaptivity} over it.
-Most techniques that are used to define these relations, or used in previous work have different limitations. We summarize these techniques and their limitations as follows.
+We summarize them into three sub-research goals as follows.
+% Most techniques that are used to define these relations, or used in previous work have different limitations. We summarize these techniques and their limitations as follows.
 
-% There are different methodologies that can be used to formalize the dependency between two query requests, such as the 
-% dynamic analysis, semantics-based analysis, static analysis, etc.
-% %
-% In order to capture the dependency (also the intuitive \emph{adaptivity}) in the most precise way,
-% % I design the semantics-based program analysis method.
-% I formalize the adaptivity based on the program's execution.
-% This semantics-based
-% % program analysis method 
-% formalization is precise in defining both the dependency relation
-% and the intuitive \emph{adaptivity} because it is
-% based on observing the actual evaluation of these query requests during the 
-% program execution. This is consistent with the intuition of query requests dependency and their dependency depth,
-% as well as the intuitive
-% \emph{adaptivity}.
-% This is because I focus on the generalization error of queries and not their post-processing. % 
-\paragraph{Technique Limitations in Existing Method}
+% \paragraph{Technique Limitations in Existing Method}
 % There are many techniques for analyzing a program's execution or formalizing program's semantics properties, including program simulation, 
 % semantics analysis, abstract interpretation, etc., which are widely used in defining
 % and formalizing the program's properties.
@@ -184,16 +171,16 @@ Most techniques that are used to define these relations, or used in previous wor
 % Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to defining both the dependency property and the quantitative property for the program.
 % And there are mainly three technique difficulties among existing formalization methodologies in defining the \emph{adaptivity} w.r.t. the two sub-properties.
 \begin{enumerate}
-\item
+\item[sub-goal 1.]
 From the \emph{reachability} perspective, existing methods on the semantics concept of the data / value dependency relation don't
 consider both control influence and value influence, such as~\cite{Cousot19a, DenningD77, AbadiBHR99, Mantel2004, CheneyAA11}.
 However, both of these
 two influences are considered as \emph{may-dependent} in the intuitive query dependency 
 in adaptive data analysis programs.
-\item From the \emph{quantitative} perspective, the state-of-art data dependency relation formalization, there isn't any technique taking into account
+\item[sub-goal 2.] From the \emph{quantitative} perspective, the state-of-art data dependency relation formalization, there isn't any technique taking into account
 the dependency depth, specifically the quantitative information of the data dependency property. For example the works in~\cite{GoguenM84, AssafNSTT17, BartheDR11}.
 However, this dependency depth is the key quantity in formalizing the intuitive \emph{adaptivity}.
-\item The intuitive \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
+\item[sub-goal 3.] The intuitive \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
 dependency depth. There is only very limited works related to this non-linear quantity property analysis.
 The non-monotonic resource cost analysis in~\cite{AlbertFR15} focus on analyzing the peak resource consumption of the heap structure, which is still different from the accumulation of the \emph{adaptivity}.
 This requires us to design new formal model in order to define this property precisely.
@@ -252,51 +239,50 @@ Because the static program analysis techniques usually don't require the executi
 they are very efficient.
 Motivated by this, we develop a static program analysis framework, named {\THESYSTEM}.
 
-\paragraph{Research Goal - Adaptivity Estimation}
+\paragraph{Technical Research Goal - Adaptivity Estimation}
 Targeting on the third challenge
 for estimating the adaptivity, 
 the major research goal is to develop analysis method which can
 provide the programmers with the \emph{adaptivity} quantity
 soundly, accurately and
 efficiently
-% defined 
 through static program analysis.
 As we discussed in Section~\ref{sec:intro-methodology}, our new methodology would like to estimate \emph{adaptivity}
-from \emph{reachability} and \emph{quantitative} perspectives as well in 
+from \emph{reachability} and \emph{quantitative} perspectives, and compute the
+\emph{adaptivity} based on the graph theory as well.
+We summarize them as three sub-goals below. Each of them aims to resolve a fact introduced in the \textbf{Adaptivity Estimation} challenge in Section~\ref{sec:adapt-motivation}.
 
-We summarize it as three sub-goals below. Each of them aims to resolve a fact introduced in the \textbf{Adaptivity Estimation} challenge in Section~\ref{sec:adapt-motivation}.
-\\
-subgoal-1) Designing a data flow analysis algorithm, aims to estimate whether a query may depend on the other queries. 
-This analysis needs to consider the monolithic blocks of the program, through the use of variables and values, on other parts of the program.
-\\
-subgoal-2) Integrating the control flow analysis techniques into the static analysis,
- aims to 
-capture the query dependency soundly
+\begin{enumerate}
+\item[sub-goal 1.] From the \emph{reachability} perspective, existing static dependency analysis techniques do not consider both control influence and value influence.
+Our goal is to design new a data flow analysis algorithm. This new algorithm need to estimate whether a query may depend on the other queries. 
+It also needs to be able to capture the query dependency soundly
 under the control influence.
- \\
-subgoal-3) Combining the reachability bound analysis techniques into the static analysis,
-aims to estimate
-the dependency depth for query requests.
+\item[sub-goal 2.] From the \emph{quantitative} perspective, existing static analysis techniques in the complexity or resource cost estimation areas are not focusing on the queries or data in the program. 
+The technical research goal is to estimate the \emph{reachability-bound} w.r.t. the queries or data in the program and
+integrate it together with the \emph{reachability} sub-property on a dependency graph.
+%  techniques.
+\item[sub-goal 3.] To estimate the \emph{adaptivity} in the end for programs,
+the last research goal is design new algorithm to compute the longest \emph{finite walk} over the dependency graph.
+\end{enumerate}
 
-
-\paragraph{Limitations of Existing Works}
+% \paragraph{Limitations of Existing Works}
 % \begin{itemize}
 %  \item \textbf{Limitations in Static Program Analysis Area}
 %  \\
 %  There are many static program analysis techniques, which are widely used in dependency analysis. 
 %  However, it is not straightforward when applied to adaptivity analysis.
- \begin{enumerate}
- \item To the best of my knowledge,
- existing static dependency analysis techniques do not consider both control influence and value influence.
- But in order to analyze and estimate the \emph{adaptivity} statically, as discussed above, we need to consider both of them.
- \item The existing static analysis techniques in the complexity or resource cost estimation areas,
- cannot give accurate reachability times on programs 
- at every execution location.
- \item Moreover, existing static analysis techniques and their research focus consider
- either only the dependency analysis
- or only the program quantitative property (such as complexity or resource cost),
- but not both of them.
- \end{enumerate}
+%  \begin{enumerate}
+%  \item To the best of my knowledge,
+%  existing static dependency analysis techniques do not consider both control influence and value influence.
+%  But in order to analyze and estimate the \emph{adaptivity} statically, as discussed above, we need to consider both of them.
+%  \item The existing static analysis techniques in the complexity or resource cost estimation areas,
+%  cannot give accurate reachability times on programs 
+%  at every execution location.
+%  \item Moreover, existing static analysis techniques and their research focus consider
+%  either only the dependency analysis
+%  or only the program quantitative property (such as complexity or resource cost),
+%  but not both of them.
+%  \end{enumerate}
 
 \paragraph{Technique Limitations in Previous Works}
 The previous works from~\cite{weihao22}

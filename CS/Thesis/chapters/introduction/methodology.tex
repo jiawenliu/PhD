@@ -102,7 +102,7 @@ We summarize their existing developments and limitations as follows.
 % existing static dependency analysis techniques do not consider both control influence and value influence.
 % However, to estimate the \emph{adaptivity} accurately, we need to consider both of them.
 
-\emph{Data Dependency And Control Flow Analysis.}
+\emph{Data Dependency / Control Flow Analysis.}
 Both of these two kinds of analysis techniques can help to estimate the \emph{reachability} sub-property.
 However, to the best of our knowledge, 
 most of the existing static dependency analysis, or control flow analysis techniques consider only the value influence, or control influence respectively.
@@ -212,10 +212,10 @@ In order to compute the \emph{reachability-bound} path sensitively, we also depl
 \subsubsection{Loop Summarization and Path Refinement}
 \paragraph{Existing Techniques and Limitation.}
 Another line of loop bound analysis through loop summarization and path refinement seek for precise loop path representation~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19}, and compute loop bound over accurate loop summarization~\cite{GulwaniJK09, ZulegerGSV11}.
-They do well in summarizing the loop path and computing the interleaving between paths, as well as computing the precise bound considering the interleaving. However, composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
+They mainly focus on summarizing the loop path and computing the interleaving between paths, as well as computing the precise bound considering the interleaving. However, composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
 \paragraph{Our Method.}
-Our method take advantage from the accuracy of the path refinement techniques by a light-weight path refinement algorithm adapted from~\cite{GulwaniJK09}.
-We compute the refined program $\rprog$ based on the abstract transition graph and then
+Our new method is a light-weight path refinement algorithm adapted from~\cite{GulwaniJK09}.
+We compute the refined program based on the abstract transition graph and then
 effectively combine this methodology with the \emph{amortized complexity analysis} above through ranking function estimation.
 % The next methodology introduced in the next part 
 
