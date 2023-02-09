@@ -82,7 +82,7 @@ the \emph{reachability} and the \emph{quantitative} sub-properties.
 None of existing methodology is able to capture this property as precise as our methodology.
 We present this formalization procedure in Chapter~\ref{sec:adapt-exe}.
 
- \subsubsection{Program Analysis for Adaptivity}
+\subsubsection{Program Analysis for Adaptivity}
 \label{sec:intro-methodology-adapt-static}
 
 \paragraph{Existing Methodology and Limitations}
@@ -108,32 +108,43 @@ but not both of them.
 \paragraph{New Methodology}
 To precisely analysis \emph{adaptivity}, we need to consider its nature as \emph{quantitative-reachability} property from different perspectives. Our new methodology follows the similar structure as the one in Section~\ref{sec:intro-methodology-adapt-formalization}. It is summarized as follows.
 \begin{enumerate}
-\item From the \emph{reachability} perspective, {\THESYSTEM} first 
+\item From the \emph{reachability} perspective, we first want to analyze 
 % adopts both the static data flow analysis and the control flow analysis techniques for
-estimates the \emph{data dependency} relation accurately. The estimation is more accurate than existing works in the sense that
-it performs both the data flow analysis and the control flow analysis.
+the \emph{data dependency} relation and estimate it statically.
+Our new methodology
+performs both the data flow analysis and the control flow analysis, which
+is more accurate than using either single one of them.
 
-\item Then {\THESYSTEM} reasons the
-\emph{quantitative} perspective through \emph{reachability-bound} analysis techniques.
-It estimates the evaluation times w.r.t. each data. This estimation captures the \emph{quantitative} information for adaptivity, which is not able to be captured by any existing static program analysis framework.
+\item Then we would like to reason the
+\emph{quantitative} perspective through estimating the \emph{reachability-bound}.
+% It estimates the evaluation times w.r.t. each data. This estimation captures the \emph{quantitative} information for adaptivity,
+The new methodology reuses some techniques in
+the program complexity analysis area.
+Since we want this \emph{reachability-bound} to capture the dependency depth of the queries,
+we instead estimate for ``queries'' their \emph{reachability-bound}s rather than for control locations.
+This is more compatible with our adaptivity analysis than
+trivial computing \emph{reachability-bound} for certain control location.
+%  is not able to be captured by any existing static program analysis framework.
 
-\item
-{\THESYSTEM} then constructs an \emph{estimated dependence} graph encoding both the estimated \emph{reachability} and \emph{quantitative} information.
+\item Then our new approach constructs the \emph{estimated dependence graph} in order to approximate
+the graph that is built in order to formalize the \emph{adaptivity}.
+It
+encodes both the estimated \emph{data dependency} relation and the \emph{reachability-bound} as well.
 This encoding complements the weakness of both lines of works in comparison to purely use single either \emph{reachability} or \emph{quantitative} analysis, 
 % {\THESYSTEM} estimates both the two sub-properties of \emph{adaptivity} from \emph{reachability} and \emph{quantitative} perspectives more accurate.
 % Moreover, the combination isn't trivial adoption and addition, we combine them effectively by encoding them on to a dependency graph and compute the \emph{adaptivity} over the graph in the next step.
 
 %
-\item In the last step, we design a new path search algorithm based on the graph theory 
-and compute the \emph{adaptivity} accurately on this graph.
-The computation fully utilize the two perspectives sub-properties estimated above.
-This new algorithm again also complements the NP-hardness of the longest path search problem and computes an accurate symbolic length of the longest finite walk based on an efficient symbolic weighted longest path estimation.
+\item At the end, to accurately estimate the adaptivity, the new approach analyzes the longest \emph{finite walk} over the estimated graph. To estimate this longest \emph{finite walk}, we design new algorithm by studying some longest path algorithms in the graph and complexity theory.
+It approximates this longest \emph{finite walk} and computes the \emph{adaptivity} efficiently.
+%  a new path search algorithm based on the graph theory 
+% and compute the \emph{adaptivity} accurately on this graph.
+% The computation fully utilize the two perspectives sub-properties estimated above.
+% This new algorithm also complements the NP-hardness of the longest path search problem and computes an accurate symbolic length of the longest finite walk based on an efficient symbolic weighted longest path estimation.
 \end{enumerate}
 
-From the high level, it reuses the techniques in data flow, control flow analysis, and reachability-bound analysis and combines them non-trivially.
-It gives tighter bounds on the adaptivity of a program than the ones one would achieve 
-by directly using the data and control flow analyzes or the ones that one would achieve 
-by directly using reachability bound analysis techniques alone. 
+From the high level, it reuses the techniques in data flow, control flow analysis, reachability-bound analysis, and the graph theory and design new algorithms based on them.
+It gives accurate bound on the adaptivity of a program, that none of a single technique alone can compute.
 We present this algorithm in Chapter~\ref{sec:adapt-static} and name it as {\THESYSTEM}.
 
 
