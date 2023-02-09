@@ -61,12 +61,17 @@ This error shows the reliability of the data analysis and reflecting the accurac
 High generalization error makes the analysis results
 % of these programs 
 not reliable and reduces the accuracy on a large scale.
-Studies found that some reachability quantitative properties of data analysis programs can help to control the generalization error, especially when the data analysis is adaptive.
-These reachability quantitative properties are the 
+Studies found that some non-functional properties of data analysis programs can help to control the generalization error, especially when the data analysis is adaptive.
+\\
+These non-functional program properties can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
+These \emph{quantitative-reachability} properties are the 
 program's non-functional properties
 we are interested in
 analyzing in this proposal to help improve a data analysis program's output accuracy and guarantee people's daily life quality.
+We specifically look into the \emph{adaptivity rounds} property in our \redd{PART \romannum{1}}. It captures the generalization error in terms of whether the queries are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
+Under the light of existing machine learning studies, we want to use this \emph{quantitative-reachability} property to control the generalization error.
 
+% It is a \emph{quantitative-reachability} property of the data analysis programs, which captures both the data dependent as the reachability perspective and the dependent times as the quantitative perspective.
 
 High-quality modern daily life
 is not only
@@ -97,39 +102,11 @@ Estimating the reachability for certain lines of program code and the bound on t
 can help to control the usage of some resources.
 In this sense, it can help to guarantee both the performance and safety properties for
 people's high-quality daily life.
-
-
-These non-functional program properties above can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
-For example, in the data analysis scenario, the generalization error can be captured in terms of whether data is dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
-In the second scenario, the resource cost or data leakage can be expressed in terms of whether certain piece of code is executed (the \emph{reachability}) and how many times it is executed  (the \emph{quantitative}).
-% The \emph{reachability} can describe the existence of these properties.
-% However, it cannot capture how many times or how long these properties hold for programs
-% % For example, it can not tell us how much 
-% such as the amount of leaked data, the times of the execution, etc., which is the quantitative perspective of these properties.
-% %  is leaked, which is also crucial in security. 
-% This requires us to describe these properties from two perspectives.
-% As introduced in abstract, we refer to the two perspectives as \emph{quantitative} and \emph{reachability}, and this category of properties as \emph{quantitative-reachability} property. 
-Analyzing and controlling these properties from two perspectives can better help to improve program reliability, security, privacy, usability, etc., and guarantee the high-quality
-service through the mobile device people's life than just from single view. 
-
-As the first property in the data analysis scenario, we capture the generalization error
-by the \emph{adaptivity rounds} property. It is a \emph{quantitative-reachability} property of the data analysis programs, which captures both the data dependent as the reachability perspective and the dependent times as the quantitative perspective.
-Under the light of existing machine learning studies, it can help to control the generalization error, 
-% %  to improve the mobile service quality in people's daily life by improving the data analysis results and reducing its generalization error.
-% %  High generalization error makes the analysis result of these programs not reliable.
-% Under the light of existing machine learning studies on some \emph{quantitative-reachability} properties of data analysis programs -- the \emph{adaptivity rounds}, which can help to control the generalization error, 
-% we look into 
-% it as the first \emph{quantitative-reachability}.
-
-% \todo{Shorten}
-As a continuation, we want to improve the precision in analyzing  the \emph{adaptivity rounds}.
-In the meanwhile, we also want to improve
-the efficiency of the program execution which is closely related to the resource cost.
-In this sense, we look at the second \emph{quantitative-reachability} property -- the program's \emph{reachability-bound}.
-This property is a worst-case bound on the number of times a given control location 
+\\
+This property can also be expressed from two perspectives, whether certain piece of code is executed (the \emph{reachability}) and how many times it is executed  (the \emph{quantitative}).
+In \cite{GulwaniJK09}, this property is referred to as \emph{reachability-bound}, which is a worst-case bound on the number of times a given control location 
 inside a procedure is visited during the program execution.
-This execution property has broad
-applications in analyzing other program property beyond itself.
+It has broad applications in analyzing other program property beyond itself.
 For example in the resource cost analysis, this \emph{quantitative-reachability} property
 can help to provide a tighter
 bound on the resources consumed by a program such as time, memory,
@@ -138,9 +115,56 @@ In the data analysis area, for example, when analyzing the program's \emph{adapt
 as introduced above,
 the \emph{reachability-bound} on each program control location
 can improve the precision of the estimated bound.
-In the security analysis area, this reachability-bound helps to improve the accuracy
-in estimating the program's information leakage or uncertainty propagation, etc.
-This motivates us to look into the program's \emph{reachability-bound} for every program location.
+Analyzing and controlling it from two perspectives can better help to improve program reliability, security, privacy, usability, etc., and guarantee the high-quality
+service through the mobile device people's life than just from single view. 
+Motivated by this, also as a continuation in improving the precision when analyzing the \emph{adaptivity rounds} in the first setting, we look into the \emph{reachability-bound} in our \redd{PART \romannum{2}}
+
+% These non-functional program properties above can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
+% For example, in the data analysis scenario, the generalization error can be captured in terms of whether data is dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
+
+% In the second scenario, the resource cost or data leakage can be expressed in terms of whether certain piece of code is executed (the \emph{reachability}) and how many times it is executed  (the \emph{quantitative}).
+% The \emph{reachability} can describe the existence of these properties.
+% However, it cannot capture how many times or how long these properties hold for programs
+% % For example, it can not tell us how much 
+% such as the amount of leaked data, the times of the execution, etc., which is the quantitative perspective of these properties.
+% %  is leaked, which is also crucial in security. 
+% This requires us to describe these properties from two perspectives.
+% As introduced in abstract, we refer to the two perspectives as \emph{quantitative} and \emph{reachability}, and this category of properties as \emph{quantitative-reachability} property. 
+% Analyzing and controlling these properties from two perspectives can better help to improve program reliability, security, privacy, usability, etc., and guarantee the high-quality
+% service through the mobile device people's life than just from single view. 
+
+% As the first property in the data analysis scenario, we capture the generalization error
+% by the \emph{adaptivity rounds} property. 
+% It is a \emph{quantitative-reachability} property of the data analysis programs, which captures both the data dependent as the reachability perspective and the dependent times as the quantitative perspective.
+% Under the light of existing machine learning studies, it can help to control the generalization error, 
+% %  to improve the mobile service quality in people's daily life by improving the data analysis results and reducing its generalization error.
+% %  High generalization error makes the analysis result of these programs not reliable.
+% Under the light of existing machine learning studies on some \emph{quantitative-reachability} properties of data analysis programs -- the \emph{adaptivity rounds}, which can help to control the generalization error, 
+% we look into 
+% it as the first \emph{quantitative-reachability}.
+
+% \todo{Shorten}
+% As a continuation, we want to improve the precision in analyzing  the \emph{adaptivity rounds}.
+% In the meanwhile, we also want to improve
+% the efficiency of the program execution which is closely related to the resource cost.
+% In this sense, we look at the second \emph{quantitative-reachability} property -- the program's \emph{reachability-bound}.
+
+% This property is a worst-case bound on the number of times a given control location 
+% inside a procedure is visited during the program execution.
+% This execution property has broad
+% applications in analyzing other program property beyond itself.
+% For example in the resource cost analysis, this \emph{quantitative-reachability} property
+% can help to provide a tighter
+% bound on the resources consumed by a program such as time, memory,
+% network traffic, power, etc.
+% In the data analysis area, for example, when analyzing the program's \emph{adaptivity}
+% as introduced above,
+% the \emph{reachability-bound} on each program control location
+% can improve the precision of the estimated bound.
+% Analyzing and controlling it from two perspectives can better help to improve program reliability, security, privacy, usability, etc., and guarantee the high-quality
+% service through the mobile device people's life than just from single view. 
+
+
 
 We first formalize these conceptual \emph{quantitative-reachability} properties through specific programming language models.
 % and  static program analysis techniques in different research lines,
