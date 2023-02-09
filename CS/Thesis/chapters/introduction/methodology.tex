@@ -74,7 +74,7 @@ We present new methodology to formalize this intuitive \emph{adaptivity} as a \e
   % and apply it into analyzing the \emph{adaptivity}.
    
    \item Based on this graph, we introduce the longest \emph{finite walk} to formally capture the \emph{adaptivity} as a \emph{quantitative-reachability} program property.
-   This longest \emph{finite walk} is also a novel quantity that is never considered before.
+   This longest \emph{finite walk} is also a novel quantity in the graph theory area that is never considered before.
    \end{enumerate}
 
 From the high level, the \emph{adaptivity} is defined over a \emph{semantics-based dependency graph}. This graph contains both
@@ -84,29 +84,51 @@ We present this formalization procedure in Chapter~\ref{sec:adapt-exe}.
 
 \subsubsection{Program Analysis for Adaptivity}
 \label{sec:intro-methodology-adapt-static}
+To precisely analysis \emph{adaptivity}, we still need to consider the different perspectives of the adaptivity as a \emph{quantitative-reachability} property. 
+% Although many static program analysis techniques can be repurposed, such as control flow analysis, resource cost analysis,
+% data dependency estimation, path-search algorithms, etc.
+% They can only analyze sub-properties for the \emph{adaptivity}. None of them can compute the \emph{adaptivity} directly.
+% We summarize their existing developments and their limitations in analyzing these sub-properties as follows.
 
 \paragraph{Existing Methodology and Limitations}
-There are many static program analysis techniques, which are widely used in dependency, resource cost, quantitative analysis, etc. 
-However, it is not straightforward how to apply them into analyzing and estimating the adaptivity -- an \emph{quantitative-reachability} property carrying two perspective sub-properties.
+% However, it is not straightforward how to apply them into analyzing and estimating the adaptivity as a \emph{quantitative-reachability} property carrying two perspective sub-properties.
+Although many static program analysis techniques and algorithms in graph theory can be repurposed here, such as control flow analysis, resource cost analysis,
+data dependency estimation, path-search algorithms, etc.,
+they can only analyze sub-properties for the \emph{adaptivity} and each of them also has limitations
+in analyzing certain sub-property. None of them can compute the \emph{adaptivity} directly.
+We summarize their existing developments and limitations as follows.
 
-\emph{Control Flow Analysis} To the best of our knowledge,
-existing static dependency analysis techniques do not consider both control influence and value influence.
-However, to estimate the \emph{adaptivity} accurately, we need to consider both of them.
 
-\emph{Data Dependency Analysis}
-The existing static analysis techniques in the complexity or resource cost estimation areas,
-cannot give accurate reachability times on programs 
-at every execution location.
-Moreover, existing program analysis focus
-either only the dependency analysis
-or only the program quantitative property (such as complexity or resource cost),
-but not both of them.
+% existing static dependency analysis techniques do not consider both control influence and value influence.
+% However, to estimate the \emph{adaptivity} accurately, we need to consider both of them.
 
-\emph{Resource Cost / Complexity Analysis}
+\emph{Data Dependency And Control Flow Analysis.}
+Both of these two kinds of analysis techniques can help to estimate the \emph{reachability} sub-property.
+However, to the best of our knowledge, 
+most of the existing static dependency analysis, or control flow analysis techniques consider only the value influence, or control influence respectively.
+To analyze the \emph{reachability} sub-property w.r.t. the queries in adaptive data analysis program, we need to consider both of them.
+% The existing static analysis techniques in the complexity or resource cost estimation areas,
+% cannot give accurate reachability times on programs 
+% at every execution location.
+In this sense, it is challenging to apply them in computing the \emph{reachability} sub-property of \emph{adaptivity}.
 
+\emph{Resource Cost / Complexity Analysis.}
+Techniques in the complexity or resource cost estimation areas can be used to analyze the \emph{quantitative} sub-property.
+However, they are focusing on estimating the
+overall resource costs or program execution complexity.
+Most of them cannot give the estimation w.r.t. the queries or data in our new setting.
+Reusing them in analyzing the \emph{quantitative} sub-property for \emph{adaptivity} is infeasible. 
+
+\emph{Longest Path Search.}
+Given the  similarity between the longest path and the longest \emph{finite walk}, some longest weighted path search algorithms
+can help to compute the longest \emph{finite walk}.
+However, since computing the longest weighted path is NP-complete, 
+it is slow if we use these algorithms searching for the longest \emph{finite walk}.
+Moreover, the weight on our graph is symbolic, so most of these algorithms are non-terminating.
+In this sense, it is difficult to use them computing the longest \emph{finite walk} and estimating our \emph{adaptivity}.
 
 \paragraph{New Methodology}
-To precisely analysis \emph{adaptivity}, we need to consider its nature as \emph{quantitative-reachability} property from different perspectives. Our new methodology follows the similar structure as the one in Section~\ref{sec:intro-methodology-adapt-formalization}. It is summarized as follows.
+Our new methodology follows the similar structure as the one in Section~\ref{sec:intro-methodology-adapt-formalization}. It is summarized as follows.
 \begin{enumerate}
 \item From the \emph{reachability} perspective, we first want to analyze 
 % adopts both the static data flow analysis and the control flow analysis techniques for
