@@ -9,21 +9,20 @@ However, the expectation has also changed along with the popularity of mobile de
 It is not enough for these programs running on mobile phones or those programs handling big data, 
 to just run without bugs. 
 The non-functional execution properties come into play in the new era.
-
-
 We think programs on mobile devices are of great significance in today's life.
 To provide people with high-quality mobile devices
 service through programs,
-lots of programs' non-functional properties are worth to be studied. This thesis studies two non-functional properties in the \emph{quantitative-reachability} property category which can significantly influence people's daily life.
+lots of programs' non-functional properties are worth to be studied. This thesis studies two non-functional properties in the \emph{quantitative-reachability} property category which can significantly influence people's daily life in terms of the \emph{convenience},
+\emph{enjoyment} and the \emph{efficiency}.
 
 
-We notice that people's daily life
+\emph{Convenience And Enjoyment.} We notice that people's daily life
 quality is closely related to the experience of using the applications on their mobile devices.
-A large number of mobile device applications
+Numerous mobile device applications
 such as video or music players, online games, shopping, etc.,
-provide users with personalized recommendations.
-So the mobile devices experience
-is determined largely by
+provide users with personalized recommendations, to provide user with a more convenient and enjoyable experience.
+In this sense, part of the convenience and enjoyment in mobile experience
+is influenced by
 the recommendation accuracy when using applications.
 The accuracy of the recommendation
 % results 
@@ -61,25 +60,29 @@ This error shows the reliability of the data analysis and reflecting the accurac
 High generalization error makes the analysis results
 % of these programs 
 not reliable and reduces the accuracy on a large scale.
-Studies found that some non-functional properties of data analysis programs can help to control the generalization error, especially when the data analysis is adaptive.
+Studies found that some non-functional properties of data analysis algorithms can help to control the generalization error, especially when the data analysis is adaptive.
 \\
-These non-functional program properties can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
-These \emph{quantitative-reachability} properties are the 
-program's non-functional properties
-we are interested in
-analyzing in this proposal to help improve a data analysis program's output accuracy and guarantee people's daily life quality.
+These non-functional properties can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
+We are interested in analyzing them as \emph{quantitative-reachability} properties using the principles of programming languages to help control the generalization error of corresponding algorithm.
+% that can be useful to formalize and for reasoning about a concept that is often used only informally: adaptivity of a data analysis.
+% in terms of programming language, to control the generalization error of corresponding algorithm.
+% These \emph{quantitative-reachability} properties are the 
+% program's non-functional properties
+% we are interested in
+% analyzing in this proposal to help 
+In this sense, we can help to improve accuracy for the recommendation results computed by these algorithms
+and guarantee the \emph{convenience} and the \emph{enjoyment} of people's life.
 We specifically look into the \emph{adaptivity rounds} property in our \redd{PART \romannum{1}}. It captures the generalization error in terms of whether the queries are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
 Under the light of existing machine learning studies, we want to use this \emph{quantitative-reachability} property to control the generalization error.
 
 % It is a \emph{quantitative-reachability} property of the data analysis programs, which captures both the data dependent as the reachability perspective and the dependent times as the quantitative perspective.
 
-High-quality modern daily life
+\emph{Efficiency.} High-quality modern daily life
 is not only
-determined by the accuracy of
-recommendation results through some mobile device applications,
+determined by the enjoyment or convenience in using some mobile device applications,
 but also
 the performance, 
-privacy, etc., of the software on a mobile device or a computer. 
+privacy, etc., of the applications on a mobile device or software on a computer. 
 Suppose we are playing an online game on our smartphones, what do we care about? 
 In games such as racing, 
 we care about the performance of the game, in another word, if it runs fast, if it crashes due to being out of memory, and so on.
@@ -96,14 +99,13 @@ and their execution times.
 % \\
 This brings my attention to other non-functional properties,
 the
-reachability and 
-execution times of certain lines of program code.
-Estimating the reachability for certain lines of program code and the bound on their execution times
-can help to control the usage of some resources.
-In this sense, it can help to guarantee both the performance and safety properties for
-people's high-quality daily life.
+reachability of certain lines of program code, and the times that certain code is executed.
+% Estimating the reachability for certain lines of program code and the bound on their execution times
+% can help to control the usage of some resources.
+% In this sense, it can help to guarantee both the performance and safety properties for
+% people's high-quality daily life.
 \\
-This property can also be expressed from two perspectives, whether certain piece of code is executed (the \emph{reachability}) and how many times it is executed  (the \emph{quantitative}).
+These two properties can indeed be captured by a \emph{quantitative-reachability} property from two perspectives, whether certain piece of code is executed (the \emph{reachability}) and how many times it is executed  (the \emph{quantitative}).
 In \cite{GulwaniJK09}, this property is referred to as \emph{reachability-bound}, which is a worst-case bound on the number of times a given control location 
 inside a procedure is visited during the program execution.
 It has broad applications in analyzing other program property beyond itself.
@@ -166,13 +168,12 @@ Motivated by this, also as a continuation in improving the precision when analyz
 
 
 
-We first formalize these conceptual \emph{quantitative-reachability} properties through specific programming language models.
-% and  static program analysis techniques in different research lines,
+For both of the two conceptual \emph{quantitative-reachability} properties, we first formalize them  through specific programming language models.
 Then we develop new static program analysis frameworks to best exploit the benefit of these properties in data analysis and resource usage. 
 However, to fully utilize the aforementioned benefits of the new analysis frameworks on these non-functional properties, the appropriate implementation is inevitable. 
 To this end, we also take one step in algorithmitizing and implementing the analysis frameworks
 which is used to formalize and statically estimate these properties.
 The evaluation results over real world benchmarks report the effectiveness of our work in real world and its potential applications beyond the program analysis area.
 
-Last but not least, reasoning these \emph{quantitative-reachability} properties are not limited to static program analysis. 
-We are not only interested in programs implementing the specific algorithm, but also willing to study the properties of the algorithm itself.
+% Last but not least, reasoning these \emph{quantitative-reachability} properties are not limited to static program analysis. 
+% We are not only interested in programs implementing the specific algorithm, but also willing to study the properties of the algorithm itself.
