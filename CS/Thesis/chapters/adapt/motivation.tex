@@ -144,60 +144,70 @@ Targeting the second challenge
 for analyzing the adaptivity, 
 the research goal is to develop an analysis method which can
 % The second challenge is 
-\emph{define} the intuitive \emph{adaptivity} rounds for a given data analysis program formally and accurately.
-The intuition behind this \emph{adaptivity} quantity relies on the dependency between the query requests 
-executed in the program, and their dependency depth. 
-Following this intuition, we need to formally define whether there is the dependency between query requests during the program
-execution.
-There are different methodologies that can be used to formalize the dependency between two query requests, such as the 
-dynamic analysis, semantics-based analysis, static analysis, etc.
-%
-In order to capture the dependency (also the intuitive \emph{adaptivity}) in the most precise way,
-% I design the semantics-based program analysis method.
-I formalize the adaptivity based on the program's execution.
-This semantics-based
-% program analysis method 
-formalization is precise in defining both the dependency relation
-and the intuitive \emph{adaptivity} because it is
-based on observing the actual evaluation of these query requests during the 
-program execution. This is consistent with the intuition of query requests dependency and their dependency depth,
-as well as the intuitive
-\emph{adaptivity}.
-% This is because I focus on the generalization error of queries and not their post-processing. % 
-\paragraph{Limitations of Existing Program Semantics and Execution-Based Analysis Techniques}
+{formalize} the intuitive \emph{adaptivity} rounds for a given data analysis program as a \emph{quantitative-reachability} property.
 
-\begin{itemize}
- \item \textbf{Limitations in Program Semantics and Execution-Based Formalization}
- \\
-There are many techniques for analyzing a program's execution or formalizing program's semantics properties, including program simulation, 
-semantics analysis, abstract interpretation, etc., which are widely used in defining
-and formalizing the program's properties.
-% dependency analysis. 
-However, it is not straightforward how to apply them to analyzing and formalizing the \emph{adaptivity}
-for adaptive data analysis program.
-There are following three limitations among existing semantics-based formalization methodologies.
+The intuition behind this \emph{adaptivity} quantity relies on the dependency between the query requests 
+executed in the program, and their dependency depth.
+Following this intuition, we need to formally define
+from the \emph{reachability} perspective whether there is dependency between query requests during the program
+execution,
+and from the \emph{quantitative} perspective the depth of this dependency.
+As we discussed in Section~\ref{sec:intro-methodology}, our methodology defines the \emph{reachability} as
+data dependency relation, and defines the \emph{quantitative} as the reachability-bound, and then defines the
+\emph{adaptivity} over it.
+Most techniques that are used to define these relations, or used in previous work have different limitations. We summarize these techniques and their limitations as follows.
+
+% There are different methodologies that can be used to formalize the dependency between two query requests, such as the 
+% dynamic analysis, semantics-based analysis, static analysis, etc.
+% %
+% In order to capture the dependency (also the intuitive \emph{adaptivity}) in the most precise way,
+% % I design the semantics-based program analysis method.
+% I formalize the adaptivity based on the program's execution.
+% This semantics-based
+% % program analysis method 
+% formalization is precise in defining both the dependency relation
+% and the intuitive \emph{adaptivity} because it is
+% based on observing the actual evaluation of these query requests during the 
+% program execution. This is consistent with the intuition of query requests dependency and their dependency depth,
+% as well as the intuitive
+% \emph{adaptivity}.
+% This is because I focus on the generalization error of queries and not their post-processing. % 
+\paragraph{Technique Limitations in Existing Method}
+% There are many techniques for analyzing a program's execution or formalizing program's semantics properties, including program simulation, 
+% semantics analysis, abstract interpretation, etc., which are widely used in defining
+% and formalizing the program's properties.
+% % dependency analysis. 
+% However, it is not straightforward how to apply them to analyzing and formalizing the \emph{adaptivity}
+% for adaptive data analysis program.
+% There are following three limitations among existing semantics-based formalization methodologies.
+
+% Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to defining both the dependency property and the quantitative property for the program.
+% And there are mainly three technique difficulties among existing formalization methodologies in defining the \emph{adaptivity} w.r.t. the two sub-properties.
 \begin{enumerate}
-\item The state-of-art data dependency relation model don't
-consider both control influence and value influence. 
+\item
+From the \emph{reachability} perspective, existing methods on the semantics concept of the data / value dependency relation don't
+consider both control influence and value influence, such as~\cite{Cousot19a, DenningD77, AbadiBHR99, Mantel2004, CheneyAA11}.
 However, both of these
-two dependencies are counted as the query dependency 
-in the adaptive data analysis programs.
-% require
-\item In the existing data dependency analysis, there isn't any definition taking into account
-the dependency depth. However, this dependency depth is the key quantity in formalizing the intuitive \emph{adaptivity} as a \emph{quantitative reachability} program property.
-\item The \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
-dependency depth. There is only very limited works related to this non-monotonic program quantitative property~\cite{AlbertFR15} analysis.
-This requires us to design new semantics formalization model in order to define \emph{adaptivity} concept precisely.
+two influences are considered as \emph{may-dependent} in the intuitive query dependency 
+in adaptive data analysis programs.
+\item From the \emph{quantitative} perspective, the state-of-art data dependency relation formalization, there isn't any technique taking into account
+the dependency depth, specifically the quantitative information of the data dependency property. For example the works in~\cite{GoguenM84, AssafNSTT17, BartheDR11}.
+However, this dependency depth is the key quantity in formalizing the intuitive \emph{adaptivity}.
+\item The intuitive \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
+dependency depth. There is only very limited works related to this non-linear quantity property analysis.
+The non-monotonic resource cost analysis in~\cite{AlbertFR15} focus on analyzing the peak resource consumption of the heap structure, which is still different from the accumulation of the \emph{adaptivity}.
+This requires us to design new formal model in order to define this property precisely.
+% here isn't any research combining the two pieces of information. No need to mention the adaptivity analysis.
 \end{enumerate}
-\item \textbf{Limitations in Previous Works on Formalizing Adaptivity} 
-\\
-There are also previous works on formalizing this quantity from~\cite{weihao22}. However, these works
+
+\paragraph{Technique Limitations in Previous Works.} 
+Techniques in previous works~\cite{weihao22} on formalizing this quantity
 are limited in expressiveness and accuracy significantly.
 The \emph{adaptivity} quantities in many general data analysis programs are unable to be defined in the previous \emph{adaptivity} definition.
-For the program which is able to be defined,
+For the program which is able to be expressed,
 they cannot give the most precise adaptivity definitions matching the intuitive \emph{adaptivity}.
 These previous works and limitations on formalizing the adaptivity are introduced in more detail in Section~\ref{sec:prework-formalization}.
-\end{itemize}
+
 %
 % \paragraph{Methodology Overview}
 % Given all these limitations and challenges,
@@ -251,8 +261,10 @@ soundly, accurately and
 efficiently
 % defined 
 through static program analysis.
-There are three sub-research goals in estimating \emph{adaptivity} statically.
-Each goal aims to resolve a fact introduced in the \textbf{Adaptivity Estimation} challenge in Section~\ref{sec:adapt-motivation}.
+As we discussed in Section~\ref{sec:intro-methodology}, our new methodology would like to estimate \emph{adaptivity}
+from \emph{reachability} and \emph{quantitative} perspectives as well in 
+
+We summarize it as three sub-goals below. Each of them aims to resolve a fact introduced in the \textbf{Adaptivity Estimation} challenge in Section~\ref{sec:adapt-motivation}.
 \\
 subgoal-1) Designing a data flow analysis algorithm, aims to estimate whether a query may depend on the other queries. 
 This analysis needs to consider the monolithic blocks of the program, through the use of variables and values, on other parts of the program.
@@ -265,12 +277,14 @@ under the control influence.
 subgoal-3) Combining the reachability bound analysis techniques into the static analysis,
 aims to estimate
 the dependency depth for query requests.
+
+
 \paragraph{Limitations of Existing Works}
-\begin{itemize}
- \item \textbf{Limitations in Static Program Analysis Area}
- \\
- There are many static program analysis techniques, which are widely used in dependency analysis. 
- However, it is not straightforward when applied to adaptivity analysis.
+% \begin{itemize}
+%  \item \textbf{Limitations in Static Program Analysis Area}
+%  \\
+%  There are many static program analysis techniques, which are widely used in dependency analysis. 
+%  However, it is not straightforward when applied to adaptivity analysis.
  \begin{enumerate}
  \item To the best of my knowledge,
  existing static dependency analysis techniques do not consider both control influence and value influence.
@@ -283,12 +297,13 @@ the dependency depth for query requests.
  or only the program quantitative property (such as complexity or resource cost),
  but not both of them.
  \end{enumerate}
-\item \textbf{Limitations in Previous Works on Estimating Adaptivity}
+
+\paragraph{Technique Limitations in Previous Works}
 The previous works from~\cite{weihao22}
 develop program analysis algorithm for estimating the adaptivity.
 However, this algorithm is low efficiency, and in-precise. It is not automatic either. 
 This analysis algorithm and limitations are introduced with more details in Section~\ref{sec:prework-formalization}.
-\end{itemize}
+% \end{itemize}
 
 % \paragraph{Methodology}
 % To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 

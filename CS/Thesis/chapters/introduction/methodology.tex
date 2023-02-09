@@ -2,90 +2,111 @@
 \label{sec:intro-methodology-adapt}
 
 \subsubsection{Language Models}
-\paragraph{Existing Methodology and Limitations}
-The state-of-art data analysis algorithms are mostly implemented in Python equipped with the .panda library for database access, C with external database access library, etc.
-These languages and external libraries are mainly focusing on efficiency and scalable computation over big data.
-In terms of adaptivity, none of them taking care of this property w.r.t. these data analysis algorithms implemented.
-However, the variety of the external API makes the formalization of data analysis algorithms and its adaptivity property over these languages difficult.
+\paragraph{Existing Programming Languages and The Limitations}
+The state-of-art data analysis algorithms are mostly implemented in Python equipped with the .panda library for database access, 
+or in C with external database access library, etc.
+These languages and external libraries are mainly focusing on efficiency and scalable of the programs that implements these algorithms.
+None of them takes care of the generalization error of the corresponding algorithms that these programs implemented.
+% In terms of adaptivity, none of them taking care of this property w.r.t. these data analysis algorithms implemented.
+In this sense, analyzing the \emph{adaptivity} as a program property in order to control generalization error
+is difficult based on existing programming languages.
+% However, the variety of the external API makes the formalization of data analysis algorithms and its adaptivity property over these languages difficult.
 
 % \todo{Brief Describe Existing Language Models}
-\paragraph{Our Method}
+\paragraph{Our Language Model}
 We identify some data analysis models which are usually used as the base of data analysis algorithms.
-Based on these models, we design simple but scalable language based on standard while language that can be used to implement these models and formalize
-the adaptivity in these algorithms, named {\tt QWhile}.
-It is a standard while language enriched with the query request command and added labels on each program command.  
+Based on these models, we design simple but scalable language based on standard while language that can be used to implement these algorithms and formalize
+the \emph{adaptivity}, named {\tt QWhile}.
+It is a standard while language enriched with the query request command and labels on each program command.  
 
 
 \subsubsection{Program Property Formalization}
+\label{sec:intro-methodology-adapt-formalization}
 
-\paragraph{Existing Methodology and Limitations}
+\paragraph{Existing Methodology and The Limitations}
 There are many methodologies for formalizing a program's conceptual property. 
-For example, the abstract interpretation based methodology which is originated from Cousot's influential paper~\cite{CousotH78, CousotC77} and intensively developed in~\cite{Mine06, ZanioliC11, MastroeniZ17, KincaidCBR18, Cousot19a, JanaHAGC20}, etc. This category of method does well in formalizing property from one perspective such as the dependency relation~\cite{Cousot19a}, program point reachability~\cite{MastroeniZ08}, etc.
-The execution history and program simulation-based~\cite{Israel56, Kildall73}
+For example, the \emph{abstract interpretation} based methodology which is originated from Cousot's influential paper~\cite{CousotH78, CousotC77} and intensively developed in~\cite{Mine06, ZanioliC11, MastroeniZ17, KincaidCBR18, Cousot19a, JanaHAGC20}, etc. This category of methods is focusing on formalizing property from the \emph{reachability} perspective,
+such as the dependency relation defined in~\cite{Cousot19a}, program point reachability formalized in~\cite{MastroeniZ08}, etc.
+However, they are not able to capture the \emph{quantitative} sub-property for the \emph{adaptivity}.
+
+The \emph{execution history and program simulation}-based methodology~\cite{Israel56, Kildall73}
 are also widely used in defining
-and formalizing the program's properties. While they have the same limitation as the abstract interpretation and it is not straightforward how to apply them to analyzing and formalizing the \emph{adaptivity}
-for adaptive data analysis program as a \emph{quantitative-reachability} property from two perspectives.
-There is also purely syntactic-based methodology originated from~\cite{Weiser84} and developed in~\cite{DenningD77} in defining a property (the data dependency relation), but it suffers the limitation of certain language and is not easy to generalize into other setting, especially the \emph{adaptivity}.
-Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to defining both the dependency property and the quantitative property for the program.
-And there are mainly three technique difficulties among existing formalization methodologies in defining the \emph{adaptivity} w.r.t. the two sub-properties.
-\begin{enumerate}
-\item
-Existing definitions on the semantics concept of the data / value dependency relation don't
-consider both control influence and value influence, such as~\cite{Cousot19a, DenningD77, AbadiBHR99, Mantel2004, CheneyAA11}.
-However, both of these
-two influences are considered as \emph{may-dependent} in the intuitive query dependency 
-in adaptive data analysis programs.
-\item In the state-of-art data dependency relation formalization, there isn't any technique taking into account
-the dependency depth, specifically the quantitative information of the data dependency property. For example the works in~\cite{GoguenM84, AssafNSTT17, BartheDR11}.
-However, this dependency depth is the key quantity in formalizing the intuitive \emph{adaptivity}.
-\item The intuitive \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
-dependency depth. There is only very limited works related to this non-linear quantity property analysis.
-The non-monotonic resource cost analysis in~\cite{AlbertFR15} focus on analyzing the peak resource consumption of the heap structure, which is still different from the accumulation of the \emph{adaptivity}.
-This requires us to design new formal model in order to define this property precisely.
-% here isn't any research combining the two pieces of information. No need to mention the adaptivity analysis.
-\end{enumerate}
+and formalizing the program's properties.
+However, they have the same limitation as the abstract interpretation based methodology. It is not straightforward how to apply them to define the \emph{adaptivity} as a \emph{quantitative-reachability} property from two perspectives.
+
+There is also purely \emph{syntactic}-based methodology originated from~\cite{Weiser84} and developed in~\cite{DenningD77} in defining a property (the data dependency relation).
+However, these methods are limited to certain languages and is not easy to generalize into other language model.
+
+% Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to defining both the dependency property and the quantitative property for the program.
+% And there are mainly three technique difficulties among existing formalization methodologies in defining the \emph{adaptivity} w.r.t. the two sub-properties.
+% \begin{enumerate}
+% \item
+% Existing definitions on the semantics concept of the data / value dependency relation don't
+% consider both control influence and value influence, such as~\cite{Cousot19a, DenningD77, AbadiBHR99, Mantel2004, CheneyAA11}.
+% However, both of these
+% two influences are considered as \emph{may-dependent} in the intuitive query dependency 
+% in adaptive data analysis programs.
+% \item In the state-of-art data dependency relation formalization, there isn't any technique taking into account
+% the dependency depth, specifically the quantitative information of the data dependency property. For example the works in~\cite{GoguenM84, AssafNSTT17, BartheDR11}.
+% However, this dependency depth is the key quantity in formalizing the intuitive \emph{adaptivity}.
+% \item The intuitive \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
+% dependency depth. There is only very limited works related to this non-linear quantity property analysis.
+% The non-monotonic resource cost analysis in~\cite{AlbertFR15} focus on analyzing the peak resource consumption of the heap structure, which is still different from the accumulation of the \emph{adaptivity}.
+% This requires us to design new formal model in order to define this property precisely.
+% % here isn't any research combining the two pieces of information. No need to mention the adaptivity analysis.
+% \end{enumerate}
 %
 \paragraph{New Methodology}
-Our semantics-based formalization model defines this intuitive \emph{adaptivity} as a \emph{quantitative-reachability} program property semantically as follows.
+Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to defining from both
+the \emph{reachability} and the \emph{quantitative} perspective.
+We present new methodology to formalize this intuitive \emph{adaptivity} as a \emph{quantitative-reachability} program property semantically. This new methodology can be summarized as  follows.
 \begin{enumerate}
-   \item From the \emph{reachability} perspective, we first define the \emph{data dependency} relation based on our trace-based semantics.
+  \item From the \emph{reachability} perspective, our approach formalizes this sub-property as the \emph{data dependency} relation.
+  % based on our trace-based semantics.
   %  The semantics-based definition is inspired from~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
-   Our new definition capture both the control influence and value influence between data, which are never fully captured in previous dependency relation~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
+   The new definition capture both the control influence and value influence between data, which are never fully captured in previous dependency relation~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
    It can be used to reason about the dependency between queries.
 
-   \item Then from the \emph{quantitative} perspective, we define the \emph{dependency quantity} with respect to certain data
-     to capture the dependency times between queries. We borrow the idea from the program complexity analysis areas~\cite{GulwaniJK09}, where the complexity bound can be repurposed to estimate the times that certain data is used.
+  \item Then in terms of the \emph{quantitative} sub-property, we define it as the \emph{reachability-bound} with respect to certain data.
+   We borrow the idea from the program complexity analysis works in~\cite{GulwaniJK09}, which works well in capturing the dependency depth between queries.
    
-     \item With the two property defined above, we construct a dependency graph by combining both the \emph{dependency relation} (as the graph edge) and \emph{dependency quantity} (as the vertex weight) on it. This dependency graph accurately reflects the two perspectives of the intuitive \emph{adaptivity}. Though there are previous works designing the weight dependency graph, none of them able to carry both dependency and dependency depth and apply it into analyzing the \emph{adaptivity}.
+  \item With the two sub-properties defined above, we construct a dependency graph by combining both the \emph{dependency relation} (as the graph edge) and \emph{dependency quantity} (as the vertex weight) on it. This dependency graph accurately reflects the two perspectives of the intuitive \emph{adaptivity}. Though there are previous works designing the weight dependency graph, none of them are able to carry both dependency and dependency depth.
+  % and apply it into analyzing the \emph{adaptivity}.
    
-   \item Based on this graph, we formally define the \emph{adaptivity} as a \emph{quantitative-reachability} program property as the longest finite walk. This is also a novel quantity never considered before.
+   \item Based on this graph, we introduce the longest \emph{finite walk} to formally capture the \emph{adaptivity} as a \emph{quantitative-reachability} program property.
+   This longest \emph{finite walk} is also a novel quantity that is never considered before.
    \end{enumerate}
-   % \item 
-\subsubsection{Program Analysis for Adaptivity}
-\label{sec:intro-static}
+
+From the high level, the \emph{adaptivity} is defined over a \emph{semantics-based dependency graph}. This graph contains both
+the \emph{reachability} and the \emph{quantitative} sub-properties.
+None of existing methodology is able to capture this property as precise as our methodology.
+We present this formalization procedure in Chapter~\ref{sec:adapt-exe}.
+
+ \subsubsection{Program Analysis for Adaptivity}
+\label{sec:intro-methodology-adapt-static}
 
 \paragraph{Existing Methodology and Limitations}
 There are many static program analysis techniques, which are widely used in dependency, resource cost, quantitative analysis, etc. 
 However, it is not straightforward how to apply them into analyzing and estimating the adaptivity -- an \emph{quantitative-reachability} property carrying two perspective sub-properties.
-\begin{enumerate}
-\item To the best of our knowledge,
+
+\emph{Control Flow Analysis} To the best of our knowledge,
 existing static dependency analysis techniques do not consider both control influence and value influence.
 However, to estimate the \emph{adaptivity} accurately, we need to consider both of them.
-\item The existing static analysis techniques in the complexity or resource cost estimation areas,
+
+\emph{Data Dependency Analysis}
+The existing static analysis techniques in the complexity or resource cost estimation areas,
 cannot give accurate reachability times on programs 
 at every execution location.
-\item Moreover, existing program analysis focus
+Moreover, existing program analysis focus
 either only the dependency analysis
 or only the program quantitative property (such as complexity or resource cost),
 but not both of them.
-\end{enumerate}
+
+\emph{Resource Cost / Complexity Analysis}
+
 
 \paragraph{New Methodology}
-We present a static program analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static} to estimate the adaptivity.
-This new methodology reuses the techniques in data flow, control flow analysis, and reachability-bound analysis.
-It gives tighter bounds on the adaptivity of a program than the ones one would achieve 
-by directly using the data and control flow analyzes or the ones that one would achieve 
-by directly using reachability bound analysis techniques alone. 
+To precisely analysis \emph{adaptivity}, we need to consider its nature as \emph{quantitative-reachability} property from different perspectives. Our new methodology follows the similar structure as the one in Section~\ref{sec:intro-methodology-adapt-formalization}. It is summarized as follows.
 \begin{enumerate}
 \item From the \emph{reachability} perspective, {\THESYSTEM} first 
 % adopts both the static data flow analysis and the control flow analysis techniques for
@@ -108,6 +129,14 @@ and compute the \emph{adaptivity} accurately on this graph.
 The computation fully utilize the two perspectives sub-properties estimated above.
 This new algorithm again also complements the NP-hardness of the longest path search problem and computes an accurate symbolic length of the longest finite walk based on an efficient symbolic weighted longest path estimation.
 \end{enumerate}
+
+From the high level, it reuses the techniques in data flow, control flow analysis, and reachability-bound analysis and combines them non-trivially.
+It gives tighter bounds on the adaptivity of a program than the ones one would achieve 
+by directly using the data and control flow analyzes or the ones that one would achieve 
+by directly using reachability bound analysis techniques alone. 
+We present this algorithm in Chapter~\ref{sec:adapt-static} and name it as {\THESYSTEM}.
+
+
 
 \subsection{\redd{PART \romannum{2}} - The Path-sensitive Reachability-bound Analysis}
 \label{sec:intro-methodology-reachability}
