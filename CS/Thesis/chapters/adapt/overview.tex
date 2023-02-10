@@ -25,7 +25,7 @@ contains at least $k$ numeric attributes
 (every query in the first phase focuses on one), which we index just by natural numbers.
 The implementation of this data analysis in the language of {\THESYSTEM} is presented in Fig.~\ref{fig:overview-example}(a).
 
-\subsection{Program Model}
+\subsection{Program Model.}
 The {\THESYSTEM} language extends a standard while language\footnote{Programs components are labeled, so that we can uniquely identify every component.} with a query request constructor denoted $\query$. Queries have the form $\query(\qexpr)$, where $\qexpr$ is a special expression 
 (see syntax in Section~\ref{sec:adapt-language}) representing a function $\from \univ \to U$ on rows.
 We use $U$ to denote the codomain of queries and it could be $[-1,1]$, $[0,1]$ or $[-R,+R]$, for some $R$ we consider. This function characterizes the linear query we are interested in running. Indeed, as we discussed in the previous section, linear queries compute the empirical mean of a function on rows --- we use $\chi$ to abstract a possible row in the database.

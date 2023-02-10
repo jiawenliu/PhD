@@ -154,9 +154,10 @@ from the \emph{reachability} perspective whether there is dependency between que
 execution,
 and from the \emph{quantitative} perspective the depth of this dependency.
 As we discussed in Section~\ref{sec:intro-methodology}, our methodology defines the \emph{reachability} as
-data dependency relation, and defines the \emph{quantitative} as the reachability-bound, and then defines the
-\emph{adaptivity} over it.
-We summarize them into three sub-research goals as follows.
+data dependency relation, and defines the \emph{quantitative} as the reachability-bound, and then builds a graph combining them and defines the
+\emph{adaptivity} through the longest \emph{finite walk} over this graph.
+Techniques in defining each sub-property all have their limitations, 
+we summarize them into three sub-research motivation as follows.
 % Most techniques that are used to define these relations, or used in previous work have different limitations. We summarize these techniques and their limitations as follows.
 
 % \paragraph{Technique Limitations in Existing Method}
@@ -171,16 +172,16 @@ We summarize them into three sub-research goals as follows.
 % Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to defining both the dependency property and the quantitative property for the program.
 % And there are mainly three technique difficulties among existing formalization methodologies in defining the \emph{adaptivity} w.r.t. the two sub-properties.
 \begin{enumerate}
-\item[sub-goal 1.]
+\item[sub-motivation 1.]
 From the \emph{reachability} perspective, existing methods on the semantics concept of the data / value dependency relation don't
 consider both control influence and value influence, such as~\cite{Cousot19a, DenningD77, AbadiBHR99, Mantel2004, CheneyAA11}.
 However, both of these
 two influences are considered as \emph{may-dependent} in the intuitive query dependency 
 in adaptive data analysis programs.
-\item[sub-goal 2.] From the \emph{quantitative} perspective, the state-of-art data dependency relation formalization, there isn't any technique taking into account
+\item[sub-motivation 2.] From the \emph{quantitative} perspective, the state-of-art data dependency relation formalization, there isn't any technique taking into account
 the dependency depth, specifically the quantitative information of the data dependency property. For example the works in~\cite{GoguenM84, AssafNSTT17, BartheDR11}.
 However, this dependency depth is the key quantity in formalizing the intuitive \emph{adaptivity}.
-\item[sub-goal 3.] The intuitive \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
+\item[sub-motivation 3.] The intuitive \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
 dependency depth. There is only very limited works related to this non-linear quantity property analysis.
 The non-monotonic resource cost analysis in~\cite{AlbertFR15} focus on analyzing the peak resource consumption of the heap structure, which is still different from the accumulation of the \emph{adaptivity}.
 This requires us to design new formal model in order to define this property precisely.
@@ -250,19 +251,26 @@ through static program analysis.
 As we discussed in Section~\ref{sec:intro-methodology}, our new methodology would like to estimate \emph{adaptivity}
 from \emph{reachability} and \emph{quantitative} perspectives, and compute the
 \emph{adaptivity} based on the graph theory as well.
-We summarize them as three sub-goals below. Each of them aims to resolve a fact introduced in the \textbf{Adaptivity Estimation} challenge in Section~\ref{sec:adapt-motivation}.
+Techniques in estimating each of them all have their limitations.
+We summarize them as three sub-research motivations as follows.
+% Each of them aims to resolve a fact introduced in the \textbf{Adaptivity Estimation} challenge in Section~\ref{sec:adapt-motivation}.
 
 \begin{enumerate}
-\item[sub-goal 1.] From the \emph{reachability} perspective, existing static dependency analysis techniques do not consider both control influence and value influence.
-Our goal is to design new a data flow analysis algorithm. This new algorithm need to estimate whether a query may depend on the other queries. 
+\item[sub-motivation 1.] From the \emph{reachability} perspective, either static dependency analysis techniques or the control flow analysis consider only
+the value influence or control influence respectively.
+However, both of the two influence are considered as query dependency.
+We want to design a new data-flow analysis algorithm which can estimate whether a query may depend on the other queries
 It also needs to be able to capture the query dependency soundly
-under the control influence.
-\item[sub-goal 2.] From the \emph{quantitative} perspective, existing static analysis techniques in the complexity or resource cost estimation areas are not focusing on the queries or data in the program. 
+consider both the control and data influence.
+\item[sub-motivation 2.] From the \emph{quantitative} perspective, existing static analysis techniques in the complexity or resource cost estimation areas are not focusing on the queries or data in the program. 
 The technical research goal is to estimate the \emph{reachability-bound} w.r.t. the queries or data in the program and
 integrate it together with the \emph{reachability} sub-property on a dependency graph.
 %  techniques.
-\item[sub-goal 3.] To estimate the \emph{adaptivity} in the end for programs,
-the last research goal is design new algorithm to compute the longest \emph{finite walk} over the dependency graph.
+\item[sub-motivation 3.] To estimate the \emph{adaptivity} in the end for programs, we want to reuse some path search algorithm
+in graph theory to estimate the longest \emph{finite walk}.
+However, since computing the longest weighted path is NP-complete, they are either non-terminating or low efficiency in computing the longest \emph{finite walk}.
+This motivates us to design new algorithm to compute the longest \emph{finite walk} over the dependency graph.
+
 \end{enumerate}
 
 % \paragraph{Limitations of Existing Works}
