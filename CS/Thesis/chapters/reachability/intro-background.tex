@@ -1,104 +1,56 @@
-The programs' execution complexity affects our daily life from many perspectives.
-For example,
-from the privacy and security perspective,
-how much secret information is leaked by a program depends on the number of times a certain operation that leaks the data,
+
+Gulwani et al.~\cite{GulwaniZ10} first introduced \emph{reachability-bound analysis} as a way to provide upper bounds on the number of times a given program location 
+is visited during program execution.
+Obtaining tight reachability-bounds is useful in many applications.
+For example from a privacy and security perspective,
+how much secret information is leaked by a program may depend on the number of times a certain operation that leaks the data
 is executed~\cite{Malacaria07};
-the amount of perturbation in the output data values resulting
-from a small perturbation or uncertainty in the input,
-values depend on the number of times additive error propagation operators are applied; etc.
-Estimating such quantitative properties requires us to know
-how many times is a given control location inside the program that performs certain operations executed?
-% \\
-From the performance perspective, it is important to give a precise estimation
-on the program's resource cost bound w.r.t. the program's inputs.
-For example, in memory-constrained environments such as embedded systems,
-it is important to bound the amount of memory required to run certain applications.
-In real-time systems, it is important to bound the worst-case execution time of the program.
-Applications running on low-power devices or low-bandwidth environments must use up little power or bandwidth respectively. 
-With the advent of cloud computing, where users would be charged per program execution,
-predicting resource usage characteristics would be a crucial component of accurate bid placement by cloud providers. 
-One of the challenges in bounding this cost precisely is that resource consumption is location-sensitive.
-In other words, different location has different resource cost as well as different execution times.
-To give accurate estimation results on these execution properties,
-the fundamental questions that need to be addressed 
-is estimating the bound on the execution times
-a given control location inside the program that consumes these resources.
-For these reasons, we focus on analyzing the bound on the execution times of a program's given control location in this paper.
-This bound is referred to as the reachability-bound in the program analysis area,
-which is firstly proposed by the paper~\cite{GulwaniZ10}.
-In this paper, finding a symbolic worst-case bound on this quantitative reachability property
-in terms of the inputs to that procedure
-is referred to as the \emph{reachability-bound problem}.
+from an efficiency perspective, when different program locations consume different resources, a precise reachability-bound for each location can help to estimate the resource cost more accurately than just computing the overall complexity.
 
-Providing a good solution to this problem is challenging.
-The paper~\cite{GulwaniZ10} that introduces this concept
-gives a two-step solution by combining the abstract interpretation-based iterative technique
-and the non-iterative proof-rules-based technique.
-However, their solution
-does not solve this problem in a path-sensitive manner.
-It over-approximates the reachability-bounds on different paths inside a while loop.
-% \\
-There are also many works in analyzing the program complexity~\cite{GustafssonEL05, HumenbergerJK18},
-or estimating the upper bound on a program's worst-case resource cost
-~\cite{BrockschmidtEFFG16, AlbertAGP08, AliasDFG10, Flores-MontoyaH14}.
-But their analysis
-focus only on estimating 
-the overall complexity 
-by inferring the bounds on the loop iteration numbers,
-or the worst-case running time and resource cost of the program's entire execution.
+%Existing works all have different limitations when inferring the \emph{reachability-bound}.
+Gulwani et. al~\cite{GulwaniZ10}
+give a two-step solution combining program abstraction with a set of proof-rules that are used to compute the actual reachability-bounds. This combination is effective at computing reachability-bounds for a rich class of programs, however, it also has limitations. This method 
+computes complexity bounds for loops and over-approximate the reachability-bounds of the different locations inside the loop by using this bound. This result in an over-approximation of the reachability-bounds of several locations, especially when there are loops with multiple paths.
+
+A similar approach to reachability-bounds can be also computed, in principle, using techniques from \emph{amortized program complexity analysis}~\cite{BradleyMS05,CookSZ13,Zuleger18,SinnZV14,SinnZV17,LuCT21,AliasDFG10}. Indeed, using techniques like ranking functions, counter increments, difference constraints, etc.
+one can estimate 
+precise bounds on loop iterations and execution time, and in turn obtain reachability bounds for complex programs. However, these techniques are designed to capture the worst-case or overall complexity, and again they may over-approximate the reachability-bounds of certain locations. This is again particularly evident when a loop contains multiple paths, since in this situation one usually obtains an overall complexity bound which is greater than the reachability-bounds on some locations of some of the paths. 
+
+To overcome these limitations, 
+we introduce a new path-sensitive reachability-bound analysis that combines ideas from amortized complexity analysis with ideas from 
+\emph{path refinement complexity analysis}~\cite{GustafssonEL05,ManoliosV06,BalakrishnanSIG09,SharmaDDA11,Flores-MontoyaH14,HumenbergerJK18,CyphertBKR19,GulwaniJK09,ZulegerGSV11}.
+% can help to summarize the loop paths and compute the program complexity path-sensitively. However, they still do not compute the  reachability-bound for every program location.
+Specifically, we propose a new algorithm which by combining amortized  analysis with loop summarization-based multipath refinement mitigates the limitations faced by each technique individually. 
+% \end{itemize}
+%
+
+More in details, our algorithm first uses the difference constraints program abstraction model~\cite{SinnZV17,SinnZV14} enriched with boolean expressions to generate an abstract transition graph.
+ %in Section~\ref{sec:progabs}
+Then the algorithm performs both path refinement and amortized complexity analysis through ranking estimation over this graph.
+%in Section~\ref{sec:refine} and  Section~\ref{sec:rank}.
+By computing the ranking function, we effectively alternate computation for the loop bound with the bound invariant of the ranking function. 
+% $\locbound(\absevent, c)$ for each transition edge $\absevent$, 
+% and estimating its bound invariant in Section~\ref{sec:rank}.
+We also leverage the path-insensitivity of ranking function estimation through a lightweight path refinement algorithm adopted from~\cite{GulwaniJK09}.
+Building on this combination, we then focus on two useful quantities which we call \emph{path reachability-bound} and \emph{loop reachability-bound}.
+The first one bounds the evaluation times of each loop-free and interleave-free path in a refined program, and the second one bounds the number of iterations of an outer loop w.r.t. an inner loop, counting only the iterations when the inner loop is ``entered''. 
+We present algorithms for estimating these two quantities. By using them we can then 
+%Section~\ref{sec:looprb} and~\ref{sec:pathrb} 
+compute the \emph{reachability-bound} for each program point in a path-sensitive way.
+%in Section~\ref{sec:psrb}.
+We have implemented our algorithm in a prototype and evaluated it on 290 program extracted from different benchmarks. Our evaluation %Section~\ref{sec:eval} 
+shows that we can accurately estimate different bounds for different locations in programs with loops containing multiple paths. Based on this, we can also compute a tighter overall complexity compared to the state-of-art worst-case complexity analysis tools.
+
+To summarize, our contributions are as follows.
 \\
-None of them computes the reachability-bound on a given program control location directly or path-sensitively.
-To leverage these limitations,
-we introduce a path-sensitive reachability-bound analysis algorithm in this paper, which aims to solve 
-the reachability-bounds problem efficiently and path-sensitively.
-Our algorithm combines two lines of complexity analysis techniques.
-\begin{itemize}
-  \item 
-  One line of complexity analysis follows the idea of the \emph{amortized complexity analysis} originated from Tarjan's influential paper~\cite{PotechinP17} combined with ranking function~\cite{BradleyMS05,CookSZ13,Zuleger18} or counter increment and developed in~\cite{ZulegerGSV11,SinnZV14,SinnZV17,LuCT21,AliasDFG10}.
-  They do well in nested loops by alternating the loop bound computation with the ranking or counter estimation. This alternation is efficient without recursively unrolling the nested loops when composing the bound of different paths.
-    % \\
-  But estimating the counter or ranking function invariant ignores the interleaving between multiple paths in the same loop.
-  Most of them (including some existing tools CofloCo~\cite{Montoya17,Flores-MontoyaH14,Flores-Montoya16}, KoAT~\cite{BrockschmidtEFFG16,BrockschmidtEFFG14,FalkeKS12,FalkeKS11}, and the amortized algorithm in~\cite{LuCT21}) over-approximate the loop bound when the path interleaving affects the loop execution. They give the entire loop bound path-insensitively as the reachability-bound on different points. Another kind of \emph{amortized complexity analysis} based on type refinement or annotation such as~\cite{CraryW00,JostHLH10,CicekBG0H17,RajaniG0021,CarbonneauxHS15} have the same weakness in considering the paths interleaving, and over-approximating the resource cost on different program points.
-    
-  Though they do well in nested loops by alternating the loop bound computation with the ranking function estimation. This alternation lines up with advantage of the \emph{amortized complexity analysis} is efficient and accurate without recursively unrolling the nested loops when composing the bound of different paths.
-  But they have limitation, estimating the ranking function ignores the interleaving between multiple paths in the same loop.
-  It over-approximates the bound of each single path as well the loop bound when the path interleaving affects the loop execution.
-  
-  To improve in the setting of multiple paths, our method combines this analysis with loop refinement techniques to complement its limitations.
-  \item 
-  Another line of loop bound analysis through loop summarization and path refinement seeks for precise loop path representation~\cite{ManoliosV06,BalakrishnanSIG09,SharmaDDA11,Flores-MontoyaH14,HumenbergerJK18,CyphertBKR19}, and explicating the interleaving between paths~\cite{GulwaniJK09,ZulegerGSV11}.
-  Paper~\cite{KincaidBCR19} introduces a precise closed-form loop summarization techniques which can help to improve the accuracy of the path refinement, as well as the non-linear loop summarization techniques~\cite{KincaidCBR18} and the invariant generating algorithm considering recurrence in~\cite{BreckCKR20}. 
-  But the limitation occurs when composing the bound between nested loops in most works of this line, which recursively unrolls the nested loops. This is heavy and non-terminating in most cases.
-
-  Though they do well in summarizing the loop path and computing the interleaving between paths, as well as computing the precise bound considering the interleaving.
-  The limitation occurs when composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
-
-  We simplify the path refinement algorithm in~\cite{GulwaniJK09} by contextualization techniques in~\cite{ZulegerGSV11,SinnZV14}, which is originated from~\cite{ManoliosV06},
-and limit the iterations of the refinement algorithm to a constant in our bound analysis algorithm.
-\end{itemize}
-Our combination improves in both limitations as shown in Figure~\ref{fig:psRB-architecture}.
-Based on an abstract transition graph through program abstraction presented in Section~\ref{def:abs_cfg},
-we perform both the path refinement and the ranking estimation over this graph.
-
-We utilize the effectiveness of the \emph{amortized complexity analysis} by computing the ranking function $\locbound(\absevent, c)$ for each transition edge $\absevent$, and then estimating the bound on each ranking function, $\varinvar(\locbound(\absevent, c), c)$ and transition edge, $\absclr(\absevent, c)$ alternatively and path-insensitively.
-In the meantime, we also take advantage from the accuracy of the path refinement techniques through a light-weight path refinement algorithm adapted from~\cite{GulwaniJK09} presented in Section~\ref{alg:alg-refine_rewrite}.
-
-Built on this, we compute the bounds over two novel quantities, the \emph{path reachability-bound} and \emph{loop reachability-bound}. These two bounds effectively combines the strength of the two different bound computation methods above.
-
-The first key novelty -- the \emph{path reachability-bound} $\inoutB(\rprog, \tpath)$ for a loop free path $\tpath$ within a loop program $\rprog$ bounds the evaluation times of each loop free path instead of the entire multipath loop.
-
-The second key idea combining two lines of works above is the \emph{loop reachability-bound}, $\lpchB(L:\rprog, \tpath)$.
-For each transition path $\tpath$ w.r.t each of the loops $L:\rprog$ in which $\tpath$ is nested,
-$\lpchB(L:\rprog, \tpath)$ bounds the iterations for
-the outside loop, $L:\rprog$ w.r.t. the innermost loop where $\tpath$ is enclosed,
-such that during these iterations of $L:\rprog$, the innermost loop is ``entered''. 
-Then by multiplication and summing over these two bounds where each program control point shows up, we compute each point's the \emph{reachability-bound} path-sensitively.
-Then we present the algorithm for estimating the two quantities in Section~\ref{sec:psRB-looprb} and~\ref{sec:psRB-pathrb} and compute the \emph{reachability-bound} for each program point path-sensitively in Section~\ref{sec:psRB-psrb}.
-Our evaluation on the prototype implementation in Section~\ref{sec:psRB-eval} shows that we can accurately estimate different bounds for different program points on multiple loop paths. The main contributions are as follows.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\columnwidth]{psRB-architecture.png}
-  \caption{Architecture of the path-sensitive reachability-bound algorithm.}
-  \label{fig:psRB-architecture}
-  \end{figure}
+% \begin{itemize}
+% \item 
+1. We introduce a path-sensitive reachability-bound algorithm 
+combining \emph{amortized bound analysis}  and \emph{path refinement}. The algorithm computes tight bounds on the times that each program point is evaluated.
+\\
+2. We identify two quantities,  \emph{path reachability-bound} and \emph{loop reachability-bound}, which are useful to measure precise information about the program execution.  We also propose two algorithms for soundly estimating these two quantities.
+% \item 
+\\
+3. We develop a prototype implementation with evaluation over 290 programs.
+ The evaluation shows improvement in precision compared to other tools for reachability-bound analysis and the worst-case complexity analysis.
+% \end{itemize}

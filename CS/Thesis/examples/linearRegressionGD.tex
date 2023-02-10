@@ -101,10 +101,8 @@ In this sense, the two query requests in each iteration depends on queries in th
 %
 Its program-based dependency graph, $\progG(\kw{lR(k, r)})$ is shown in Figure~\ref{fig:linear_regression}(b),
 and $\traceG(\kw{lR(k, r)})$ is omitted for the same reason as Example~\ref{ex:multipleRounds}.
-\jl{
   In Figure~\ref{fig:linear_regression}(b), we omit the edges which are constructed by the transition of $\flowsto$ relation
 for concise, but these edges exist in $\traceG(\kw{lR(k, r)})$  because they can be constructed directly by $\vardep$ relation.
-}
 Given an input $\trace_0$, there are multiple walks having the same longest query length in 
 $\traceG(\kw{lR(k, r)})$,
 such as the walks 

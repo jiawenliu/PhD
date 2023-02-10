@@ -122,12 +122,14 @@ I develop a static program analysis in Section~\ref{sec:adapt-static}, named {\T
 \label{sec:adapt-intro-overview}
 
 \subsubsection{Language Design}
-\paragraph*{Research Goal - Adaptive Data Analysis Formalization}
-Targeting the first challenge
-% --\textbf{Adaptivity Formalization}--
+% \paragraph{Research Goal - Adaptive Data Analysis Formalization}
+Targeting on the first challenge
 for analyzing the adaptive data analysis, 
 the research goal is to develop
 an expressive language supporting general adaptive data analysis formally.
+As we discussed in Section~\ref{sec:intro-methodology-adapt-language}, existing language mainly focuses on efficiency and scalable of the programs but not the generalization error of the corresponding algorithms that these programs implemented.
+This makes the analysis of the \emph{adaptivity} as a program property difficult.
+This motivates us to design a simple and scalable language  that can be used to implement these data analysis algorithms and analyze the \emph{adaptivity}.
 
 \paragraph{Limitations of Previous Works}
 There are previous works from~\cite{weihao22} developing language formalizing the adaptive data analysis.
@@ -139,17 +141,15 @@ In Section~\ref{sec:prework-language}, I introduce in detail the previous langua
 \subsubsection{Adaptivity Formalization}
 \label{sec:intro-exe}
 
-\paragraph{Technical Research Goal -- Adaptivity Formalization}
+% \paragraph{Technical Research Goal -- Adaptivity Formalization}
 Targeting the second challenge
-% --\textbf{Adaptivity Formalization}--
 for analyzing the adaptivity, 
 the research goal is to develop an analysis method which can
-% The second challenge is 
 {formalize} the intuitive \emph{adaptivity} rounds for a given data analysis program as a \emph{quantitative-reachability} property.
-
-The intuition behind this \emph{adaptivity} quantity relies on the dependency between the query requests 
+To formalize this \emph{adaptivity} property, we follow
+the intuition behind it, which is the dependency between the query requests 
 executed in the program, and their dependency depth.
-Following this intuition, we need to formally define
+So, we need to formally define
 from the \emph{reachability} perspective whether there is dependency between query requests during the program
 execution,
 and from the \emph{quantitative} perspective the depth of this dependency.
@@ -157,20 +157,7 @@ As we discussed in Section~\ref{sec:intro-methodology}, our methodology defines 
 data dependency relation, and defines the \emph{quantitative} as the reachability-bound, and then builds a graph combining them and defines the
 \emph{adaptivity} through the longest \emph{finite walk} over this graph.
 Techniques in defining each sub-property all have their limitations, 
-we summarize them into three sub-research motivation as follows.
-% Most techniques that are used to define these relations, or used in previous work have different limitations. We summarize these techniques and their limitations as follows.
-
-% \paragraph{Technique Limitations in Existing Method}
-% There are many techniques for analyzing a program's execution or formalizing program's semantics properties, including program simulation, 
-% semantics analysis, abstract interpretation, etc., which are widely used in defining
-% and formalizing the program's properties.
-% % dependency analysis. 
-% However, it is not straightforward how to apply them to analyzing and formalizing the \emph{adaptivity}
-% for adaptive data analysis program.
-% There are following three limitations among existing semantics-based formalization methodologies.
-
-% Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to defining both the dependency property and the quantitative property for the program.
-% And there are mainly three technique difficulties among existing formalization methodologies in defining the \emph{adaptivity} w.r.t. the two sub-properties.
+we summarize them into three sub-technical motivation as follows.
 \begin{enumerate}
 \item[sub-motivation 1.]
 From the \emph{reachability} perspective, existing methods on the semantics concept of the data / value dependency relation don't
@@ -230,29 +217,26 @@ These previous works and limitations on formalizing the adaptivity are introduce
  % \item 
 \subsubsection{Static Program Analysis}
 \label{sec:adapt-intro-static}
-Though we have the intuitive \emph{adaptivity} formally and precisely defined through the semantics-based program analysis,
+
+% \paragraph{Technical Research Goal - Adaptivity Estimation}
+Targeting on the third challenge,
+though we have the intuitive \emph{adaptivity} formally and precisely defined through the semantics-based program analysis,
 it is still not useful enough for programmers.
-Programmer need to execute the program multiple times in order to have the most precise \emph{Adaptivity} following the definition.
+Programmers need to execute the program multiple times and tune the parameter in order to have the most precise \emph{adaptivity} and control the generalization error.
 When the query requests, the multiple executions consume a large amount of computation and communication resources.
 This requires us to develop an efficient static analysis method, 
-which can provide the programmers with the \emph{Adaptivity} quantity before executing the program.
-Because the static program analysis techniques usually don't require the execution of the program,
-they are very efficient.
-Motivated by this, we develop a static program analysis framework, named {\THESYSTEM}.
-
-\paragraph{Technical Research Goal - Adaptivity Estimation}
-Targeting on the third challenge
-for estimating the adaptivity, 
-the major research goal is to develop analysis method which can
+which can provide the programmers with the \emph{adaptivity} rounds before executing the program.
+To this end, the major research goal is to develop analysis method which can
 provide the programmers with the \emph{adaptivity} quantity
 soundly, accurately and
 efficiently
 through static program analysis.
+
 As we discussed in Section~\ref{sec:intro-methodology}, our new methodology would like to estimate \emph{adaptivity}
 from \emph{reachability} and \emph{quantitative} perspectives, and compute the
 \emph{adaptivity} based on the graph theory as well.
 Techniques in estimating each of them all have their limitations.
-We summarize them as three sub-research motivations as follows.
+We summarize them as three sub-technical motivations as follows.
 % Each of them aims to resolve a fact introduced in the \textbf{Adaptivity Estimation} challenge in Section~\ref{sec:adapt-motivation}.
 
 \begin{enumerate}

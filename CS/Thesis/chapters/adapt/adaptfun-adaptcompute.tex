@@ -70,13 +70,13 @@ the \emph{query length} of a finite walk in the estimated graph, $\progG(c)$ as 
   \end{defn}
   We estimate the adaptivity upper bound, $\progA(c)$ for a program $c$ as the maximum query length over all finite walks in its \emph{estimated dependency graph}, $\progG({c})$. 
 \begin{defn}
-[{estimated Adaptivity}]
+[{Adaptivity Computation}]
 \label{def:prog_adapt}
 {
-Given a program ${c}$ and its estimated dependency graph 
-$\progG({c})$
+Given a program ${c}$, we first compute its \emph{estimated dependency graph} 
+$\progG({c})$, then we compute adaptivity
 %
-the estimated adaptivity for $c$ is 
+ for $c$ as 
 \[
 \progA({c})
 \triangleq \max
@@ -84,7 +84,9 @@ the estimated adaptivity for $c$ is
 \]
 }
 \end{defn}
-Similarly, the adaptivity bound $\progA(c)$ will also be a symbolic arithmetic expression over the input variables. With this symbolic expression we can prove the upper bound sound with respect to any initial trace, on its adaptivity in Definition~\ref{def:trace_adapt}.
+Similarly, the adaptivity bound $\progA(c)$ will also be a symbolic arithmetic expression over the input variables. 
+With this symbolic expression we prove that Definition~\ref{def:prog_adapt} computes
+a sound upper bound sound for the \emph{adaptivity} w.r.t the Definition~\ref{def:trace_adapt}.
 \begin{thm}[Soundness of {\THESYSTEM}]
   \label{thm:adaptfun_sound}
   For every program $c$, 
@@ -99,13 +101,14 @@ The proof is in Appendix~\ref{apdx:adapt_soundness}.
 
 Symbolic expressions as used in the weight  are great to express symbolic bounds but make the computation of 
 a maximal walk harder. 
-To compute $\progA(c)$ accurately and soundly, we develop an adaptivity computation algorithm named $\pathsearch$.
+However, the computation in Definition~\ref{def:prog_adapt} is non-terminating given the weight as symbolic.
+To compute $\progA(c)$ accurately and soundly, we develop an adaptivity approximation algorithm named $\pathsearch$.
 It combines the depth first search and breath first search strategies and computes a sound upper bound on $\progA(c)$.
 $\pathsearch$ also involves another algorithm $\pathsearch_{\kw{SCC}}$ in \ref{alg:adaptscc} recursively, which finds the longest walk for a strong connected component (SCC) (SCC is the maximal strongly connected subgraph) of $\progG(c)$.
 Theorem~\ref{thm:adaptalg_soundness} below formally describes the soundness of this algorithm with proof in Appendix~\ref{apdx:adaptalg_soundness}.
 \begin{thm}[Soundness of $\pathsearch$]
     \label{thm:adaptalg_soundness}
-    For every program $c$, given its \emph{Program-Based Dependency Graph} $\progG$,
+    For every program $c$, given its \emph{estimated dependency graph} $\progG$,
     \[ \pathsearch(\progG({c})) \geq \progA(c).\]
 \end{thm}
 
@@ -121,11 +124,7 @@ Because the weight of each vertex in a program's estimated dependency graph,
 which is an arithmetic expression containing input variables. 
 In this sense, the simple traversing could never terminate when domain of the input variables isn't finite.
 However, it is very common that the domain of program's input variables is infinite such as natural number $\mathbb{N}$, real number $\mathbb{R}$, or etc. As the simple while loop example program in Figure~\ref{fig:kadaptwhile_alg} with k adaptivity rounds, the input variable $k$ has domain $\mathbb{N}$.
-% Analysis Results: $ \progA(\kw{whileRec}(k)) = 1 + k$
-%
 If we traverse on the estimated dependency graph, and decrease the weight of $x^3$ (the weight $k$ is symbolic) by one after every visit,
-% We can simply adopt either a depth first strategy to estimate the adaptivity as the length of the longest weight path, as 
-% in Algorithm~\ref{alg:overadp_alg}.
 we will never terminate because we only know $k \in \mathbb{N}$.
 
 \input{examples/kRoundsWhileSim_alg}
@@ -138,12 +137,8 @@ Then, by summing up the weights on this path where the vertices have query annot
 This is a tight bound for this simple k adaptivity rounds example program.
 
 \textbf{Approximation Challenge:}
-% As in Definition~\ref{def:finitewalk}, w
-% When we adopt a depth first strategy to search for the longest weighted path, and then use the path to approximate the adaptivity. 
 However, this naive approximation via depth first searching over-approximates the adaptivity rounds largely in many cases.
 It computes $\infty$ adaptivity upper bound for our $\kw{twoRounds}$ example program in Figure~\ref{fig:overview-example}, which has only $2$ adaptivity rounds.
-% Look at the two-round example in overview, 
-% it is easy to find that 
 More specifically, the depth first searching finds the longest weighted path,
 $x^3 : {}^{k}_{1} \to a^5 : {}^{k}_{0} \to l^6 : {}^{1}_{0}$.
 Then, it computes the weighted length, $1 + k$.

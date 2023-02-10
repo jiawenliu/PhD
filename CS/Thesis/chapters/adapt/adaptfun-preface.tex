@@ -1,6 +1,6 @@
-In this section, I present the new static
-program analysis algorithm for analyzing and estimating the adaptivity the third part of 
-the framework in Figure~\ref{fig:structure}. 
+In this section, we present the new static
+program analysis algorithm for estimating as the adaptivity the third part of 
+the framework in Figure~\ref{fig:adaptfun-structure}. 
 It effectively combines the quantitative and reachability analysis techniques for analyzing
 adaptivity from two perspectives.
 The effective combination complements the weakness of two lines of work in comparison with any single one.
@@ -24,8 +24,8 @@ similar to the semantics-based adaptivity formalization procedure.
    \end{enumerate}
    \item The second phase in Section~\ref{sec:alg_adaptcompute} computes program's adaptivity.
    % the program adaptivity estimation, 
-   In this phase, I construct a program-based dependence graph for approximating the execution-based graph in Section~\ref{sec:dynamic-adapt}.
-   Then, based on this graph, I design an algorithm based on graph theory for
+   In this phase, we construct a program-based dependence graph for approximating the execution-based graph in Section~\ref{sec:dynamic-adapt}.
+   Then, based on this graph, we design an algorithm based on graph theory for
    computing the adaptivity upper bound soundly 
    and accurately.
    \end{itemize}

@@ -9,7 +9,7 @@ Every
 vertex corresponds to a program execution point, 
 and the vertices set is all the $c$'s program execution points with an extra exit point ${\lex}$, 
 \[ 
-  \absV(c) = \lvar(c)\cup\{{\lex}\}
+  \absV(c) = \progl(c)\cup\{{\lex}\}
   \]
 
 \subsection{Edges}
@@ -359,7 +359,7 @@ Definition~\ref{def:abs_cfg}.
 \begin{defn}[Abstract Transition Graph]
   \label{def:abs_cfg}
   The \emph{abstract transition graph} of a program $c$ is $\absG(c) \triangleq (\absV(c), \absE(c))$, where
-  $\absV(c) \triangleq \lvar(c)\cup\{\lex\}$
+  $\absV(c) \triangleq \progl(c)\cup\{\lex\}$
   and 
   % $\absE(c) \triangleq \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}$,
   % and

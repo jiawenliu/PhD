@@ -150,15 +150,15 @@ of the \emph{Variable May-Dependency} relation over labeled variables for every 
 in Appendix~\ref{apdx:flowsto_soundness}.
 %
 
-\highlight{Novelty of The Algorithm.}
-Combining the result of \emph{reaching definition}, $\live(l, c)$
+The combinations of the result of \emph{reaching definition}, $\live(l, c)$
 with the \emph{abstract control flow graph}, $\absG(c)$ with control flow analysis into the feasible 
 data-flow generation improves the data-dependency relation approximation accuracy. 
+
 For example, a program $ [x = 0]^{1}; [x=2]^{2};  [y = x+1]^{3}$. 
 The standard data flow analysis 
 tells us that both the labeled variable $x^{1}$ and $x${2} may flow to $y^{3}$, which will result in an unnecessary edge ($x^{1}, y^{3}$). The result of reaching definition 
 can help us eliminate this kind of edge by telling us, at line $3$, only variable $x^{2}$ is reachable. 
-% \paragraph*{Edges Estimation}
+
 \paragraph{Edge Estimation}
 The \textbf{Edge Estimation}
 is based on the $\flowsto(x^i, y^j, c)$ relation.
@@ -169,8 +169,8 @@ Using the $\flowsto(x^i, y^j, c)$ relation, we define the estimated directed edg
 pair of vertices $x^i, y^j$ in $\progV(c)$, 
 $\progE(c) \in \mathcal{P}( \mathcal{LV} \times \mathcal{LV})$
 satisfying in the transitive closure of $\flowsto$ as follows,
-\highlight{
-  \[
+
+\[
     \begin{array}{ll}
     \progE(c) \triangleq &
     \{ 
@@ -184,8 +184,8 @@ satisfying in the transitive closure of $\flowsto$ as follows,
     \}
     \end{array}
     \]
-}
-We prove that this estimated directed edge set $\progE(c)$ is a sound approximation of the 
+
+    We prove that this estimated directed edge set $\progE(c)$ is a sound approximation of the 
 edge set in $c$'s semantics-based dependency graph 
 in Appendix~\ref{apdx:adapt_soundness}.
 \begin{lem}[Mapping from Egdes of $\traceG$ to $\progG$]

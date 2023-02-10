@@ -2,6 +2,7 @@
 \label{sec:intro-methodology-adapt}
 
 \subsubsection{Language Models}
+\label{sec:intro-methodology-adapt-language}
 \paragraph{Existing Programming Languages and The Limitations}
 The state-of-art data analysis algorithms are mostly implemented in Python equipped with the .panda library for database access, 
 or in C with external database access library, etc.
@@ -73,13 +74,14 @@ We present new methodology to formalize this intuitive \emph{adaptivity} as a \e
   \item With the two sub-properties defined above, we construct a dependency graph by combining both the \emph{dependency relation} (as the graph edge) and \emph{dependency quantity} (as the vertex weight) on it. This dependency graph accurately reflects the two perspectives of the intuitive \emph{adaptivity}. Though there are previous works designing the weight dependency graph, none of them are able to carry both dependency and dependency depth.
   % and apply it into analyzing the \emph{adaptivity}.
    
-   \item Based on this graph, we introduce the longest \emph{finite walk} to formally capture the \emph{adaptivity} as a \emph{quantitative-reachability} program property.
+   \item Based on this graph, we introduce the longest \emph{finite walk} over this graph, and the \emph{adaptivity} is defined as the length of this walk.
+   To this end, we formally capture the \emph{adaptivity} as a \emph{quantitative-reachability} program property.
    This longest \emph{finite walk} is also a novel quantity in the graph theory area that is never considered before.
    \end{enumerate}
 
-From the high level, the \emph{adaptivity} is defined over a \emph{semantics-based dependency graph}. This graph contains both
+From the high level, the \emph{adaptivity} is defined by the longest \emph{finite walk} over a dependency graph. This graph contains both
 the \emph{reachability} and the \emph{quantitative} sub-properties.
-None of existing methodology is able to capture this property as precise as our methodology.
+None of existing methodology is able to capture this hyper-property as precise as our methodology.
 We present this formalization procedure in Chapter~\ref{sec:adapt-exe}.
 
 \subsubsection{Program Analysis for Adaptivity}
@@ -92,7 +94,7 @@ To precisely analysis \emph{adaptivity}, we still need to consider the different
 
 \paragraph{Existing Methodology and Limitations}
 % However, it is not straightforward how to apply them into analyzing and estimating the adaptivity as a \emph{quantitative-reachability} property carrying two perspective sub-properties.
-Although many static program analysis techniques and algorithms in graph theory can be repurposed here, such as control flow analysis, resource cost analysis,
+Although many static program analysis techniques or algorithms in graph theory can be repurposed here, such as control flow analysis, resource cost analysis,
 data dependency estimation, path-search algorithms, etc.,
 they can only analyze sub-properties for the \emph{adaptivity} and each of them also has limitations
 in analyzing certain sub-property. None of them can compute the \emph{adaptivity} directly.
@@ -177,9 +179,9 @@ We present this algorithm in Chapter~\ref{sec:adapt-static} and name it as {\THE
 This property is a worst-case bound on the number of times a given control location 
 inside a procedure is visited during the program execution.
 Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
-However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively.
+However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively for each program location.
 To solve these issues and improve the analysis results on this problem, we present a new algorithm
-aiming to find the precise symbolic \emph{reachability-bound} on the program's every control location.
+aiming to find the precise symbolic \emph{reachability-bound} on the program's every location.
 Below are the methodologies we adopted in our new algorithm and their existing limitations.
 
 \subsubsection{Program Abstraction}
@@ -201,21 +203,31 @@ semantics model, which is inspired from~\cite{Cousot19a} and~\cite{Cousot19} and
 \subsubsection{Amortized Complexity Analysis through Ranking Function}
 \paragraph{Existing Techniques and Limitation.}
 This method is originated from Tarjan's influential paper~\cite{PotechinP17} combined with \emph{ranking function} estimation from~\cite{BradleyMS05} and developed in~\cite{ZulegerGSV11, SinnZV14, SinnZV17, LuCT21, AliasDFG10}.
-It does well in nested loops by alternating the loop bound computation with the ranking function estimation. While estimating the ranking function ignores the interleaving between multiple paths of one loop.
-It over-approximates the bound of each single path as well the loop bound when the path interleaving affects the loop execution.
+Indeed, using techniques like ranking functions, counter increments, difference constraints, etc.
+one can estimate 
+precise bounds on loop iterations and execution time,
+and in turn obtain reachability bounds for complex programs.
+However, these techniques are designed to capture the worst-case or overall complexity, and again they may over-approximate the reachability-bounds of certain locations.
+When there are multiple paths and the interleaving affects the loop execution, the over-approximation is more evident.
 \paragraph{Our Method.}
-We utilize the effectiveness of this method by first computing the ranking function $\locbound(\absevent, c)$ for each transition edge $\absevent$, and then estimating the bound on each ranking function, $\varinvar(\locbound(\absevent, c), c)$ and transition edge, $\absclr(\absevent, c)$ alternatively and path-insensitively.
-This alternation lines up with advantage of the \emph{amortized complexity analysis} is efficient and accurate without recursively unrolling the nested loops when composing the bound of different paths.
-But it is not precise enough without considering the effect of the path-interleaving.
-In order to compute the \emph{reachability-bound} path sensitively, we also deploy the path refinement technique.
+To improve these limitations, our methodology deploys the loop path refinement technique and performs the \emph{amortized complexity analysis} over the refined programs.
+The \emph{amortized complexity analysis} techniques we use is through the ranking function 
+% $\locbound(\absevent, c)$ 
+estimation
+%  $\absevent$, 
+and alternatively computing the bound on each ranking function and transition edge.
+It is also efficient and accurate without recursively unrolling the nested loops when composing the bound of different paths.
+However, deployment of the path refinement technique has its limitation as well.
+% But it is not precise enough without considering the effect of the path-interleaving.
+% In order to comput zx the \emph{reachability-bound} path sensitively, we also deploy the path refinement technique.
 
 \subsubsection{Loop Summarization and Path Refinement}
 \paragraph{Existing Techniques and Limitation.}
 Another line of loop bound analysis through loop summarization and path refinement seek for precise loop path representation~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19}, and compute loop bound over accurate loop summarization~\cite{GulwaniJK09, ZulegerGSV11}.
 They mainly focus on summarizing the loop path and computing the interleaving between paths, as well as computing the precise bound considering the interleaving. However, composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
 \paragraph{Our Method.}
-Our new method is a light-weight path refinement algorithm adapted from~\cite{GulwaniJK09}.
-We compute the refined program based on the abstract transition graph and then
+Our new approach uses a light-weight path refinement algorithm adapted from~\cite{GulwaniJK09}.
+It computes the refined program based on the abstract transition graph and then
 effectively combine this methodology with the \emph{amortized complexity analysis} above through ranking function estimation.
 % The next methodology introduced in the next part 
 
@@ -240,7 +252,7 @@ This leads to inaccuracy in data leakage analysis, resource cost estimation, etc
 
 \paragraph{Our Method}
 To overcome these limitations, 
-our method is built over an abstract transition graph which effectively combines amortized complexity analysis with loop summarization-based multipath refinement.
+our algorithm is built over an abstract transition graph which effectively combines \emph{amortized complexity analysis} with \emph{loop summarization-based multipath refinement}.
 This combination mitigates the limitations faced by either technique individually. 
 Building on this combination, we introduce two novel quantities,
 the \emph{path reachability-bound} and \emph{loop reachability-bound}.

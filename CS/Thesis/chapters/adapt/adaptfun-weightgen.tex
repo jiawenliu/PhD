@@ -115,7 +115,7 @@ Otherwise, if the edge belongs to a strongly connected component and there is a 
 Otherwise, the local bound is $\infty$. 
 Notice that the output is either a symbolic constant in $\constdom$ or a variable that is not an input variable.
 
-\highlight{Soundness Informal}
+\emph{Soundness Informal}
   The first case is straightforward. 
   For the label $l$ which is not in any while loop, 
   the labeled command with the label $l$ will be 
@@ -132,16 +132,16 @@ second, it will recursively sum the reachability-bounds of all the edges whose d
 
 To compute these two quantities we use two mutually recursive procedures in a path-insensitive manner.
 
-\highlight{Notations:}
-\\ 
-Bound on the maximum value of $\locbound(\absevent, c)$ assigned to edge $\absevent \in \absE(c)$:
-% , the 
-$ \varinvar: (\mathcal{V} \cup \constdom  \times \cdom) \to \mathcal{A}_{\lin}$
-\\
-the bound on the iteration times of each corresponding edge, $\absclr(\absevent, c)$:
-$\absclr: (\absevent \times \cdom) \to \mathcal{A}_{\lin}$
+% \highlight{Notations:}
+% \\ 
+% Bound on the maximum value of $\locbound(\absevent, c)$ assigned to edge $\absevent \in \absE(c)$:
+% % , the 
+% $ \varinvar: (\mathcal{V} \cup \constdom  \times \cdom) \to \mathcal{A}_{\lin}$
+% \\
+% the bound on the iteration times of each corresponding edge, $\absclr(\absevent, c)$:
+% $\absclr: (\absevent \times \cdom) \to \mathcal{A}_{\lin}$
 
-\highlight{Computations:}
+
 
 The first one estimates the upper bound, $\varinvar(x, c) \in \mathcal{A}_{\lin}$
 on the maximum value for each local bound  $x \in  \mathcal{V} \cup \constdom$.
@@ -193,7 +193,7 @@ In the implementation, we use the one based on $\resetchain$ in Definition 21 fr
 Then we construct the set of reachability bound $w$ for every program point $l$, as $\absW(c)$.
 For each pair $(l, w) \in \absW(c)$, $w = \sum\left\{  \absclr(\absevent, c) \middle\vert \absevent = (l, \_, \_) \right\}$.
 
-\highlight{Theorem Guarantee}
+\emph{Soundness Informal}
 For a program $c$ and an edge $\absevent \in \absE(c)$,
 $\absclr(\absevent)$ is a sound upper bound
 on the execution times of this transition by~\cite{SinnZV17}.
@@ -249,8 +249,6 @@ The weight $\progW(c)$
 for each vertex $x^l \in \lvar(c)$ maps to a symbolic expression over $\constdom$.
 $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{A}_{\lin})$ is formally computed
 as follows.
-\highlight{
-% :
 % \\
  \[\progW(c) \triangleq
    \left\{ (x^l, w) 
@@ -258,7 +256,6 @@ as follows.
 x^l \in \progV(c) \land (l, w) \in \absW(c)
 \right\}.
 \]
-}
 %
 Notice that $w \in \mathcal{A}_{\lin}$ is a symbolic arithmetic expression over symbols in $\constdom$. In particular, it may contain the input variables and so it may effectively be used as a function of the input - and capture loop bounds in terms of these inputs.
  

@@ -1,4 +1,4 @@
-{ \footnotesize
+{ 
 \begin{figure}
 \centering
 %
@@ -17,7 +17,6 @@
           \big)
         \end{array}
         $
-\vspace{-0.2cm}
 \caption{}
 \end{subfigure}
 \begin{subfigure}{.71\textwidth}
@@ -31,10 +30,8 @@
 \draw[] (-3, 4) circle (0pt) node{{ $4$}};
 \draw[] (-8, 4) circle (0pt) node{{ $5$}};
 \draw[] (4, 4) circle (0pt) node{{ $6$}};
-% Counter Variables
 \draw[] (5, 10) circle (0pt) node {\textbf{$\lex$}};
 %
-% Control Flow Edges:
 \draw[ thick, -latex] (-7, 10)  -- node [above] {$i' \leq n$}(-4.5, 10);
 \draw[ thick, -latex] (-3, 10)  -- node [above] {$j' \leq 0$}(-0.5, 10);
 \draw[ thick, -latex] (0, 9.5)  -- node [left] {$i > 0$} (0, 7.5) ;
@@ -81,12 +78,10 @@ $
 \end{subfigure}
 }
 \end{subfigure}
-\vspace{-0.2cm}
 \caption{
 (a) The two paths loop example,
 (b) the Abstract Transition Graph for $\kw{twoPathsWhile}(n, m)$,
 (c) the Simple Transition Paths of $\kw{twoPathsWhile}(n, m)$.}
-\vspace{-0.5cm}
     \label{fig:whileTwoCounters-overview}
 \end{figure}
 }

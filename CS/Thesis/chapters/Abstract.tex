@@ -5,11 +5,11 @@
     Analyzing these behaviors are all focusing on analyzing the same two sub-properties, "How Much" and "Whether" from two perspectives.
     We refer to the two perspective sub-properties as \emph{quantitative} and \emph{reachability} properties, and we refer to this class of behaviors as a hyper-property named \emph{quantitative-reachability} property.
     Existing analysis that are mainly from one perspective is not precise enough to capture these properties.
-    For example, reachability analysis only tells us whether the output relies on user input, whether the confidential data is leaked, whether some code is executed, etc., but not how many times or how long these properties hold for programs. 
-    Quantitative analysis, such as program complexity and cost analysis, only tells us the upper bound on the overall worst-case quantity but not where the resource is cost, where the data is leaked, etc.
-    This thesis presents algorithms that complement two lines of analysis and shows the effectiveness in analyzing two representative quantitative-reachability properties by controlling the program's execution behavior in a higher granularity. 
+    For example, reachability analysis only tells us, whether some code is executed, whether the confidential data is leaked, whether the output relies on input, etc., but not how many times or how long these properties hold for programs. 
+    Quantitative analysis, such as program complexity or cost analysis, only tells us the upper bound on the overall worst-case quantity but not where the resource is cost, where the data is leaked, etc.
+    This thesis presents algorithms that complement two lines of analysis and shows the effectiveness in analyzing two representative quantitative-reachability properties and controlling the program's execution behavior in a higher granularity. 
     
-    The first noteworthy property we look into is the adaptivity rounds of the programs in adaptive data analysis, which is composed of multiple queries by data analysts.
+    The first noteworthy property we look into is the \emph{adaptivity-rounds} of the programs in adaptive data analysis, which is composed of multiple queries by data analysts.
     Among these queries, the choice of some queries may depend on previous queries' results, and they form dependent relations with each other.
     Adaptivity is intuitively the depth of the chain of dependent queries during these dependence relations.
     Reasoning about adaptivity is useful in controlling the generalization error of adaptive data analysis, which usually propagates sharply along with the dependency chain.

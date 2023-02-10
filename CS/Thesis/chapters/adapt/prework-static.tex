@@ -8,7 +8,7 @@ a Static Single Assignment (SSA) version of loop language, then estimate the ada
 % This can improve the accuracy in the variable re-assigning cases.
 % The following parts summarize the SSA version of the loop language with their program analysis framework,
 % followed by the limitations of their analysis method.
-\subsection*{SSA-Language}
+\subsection{SSA-Language}
 In order to distinguish different query requests in the case where they are assigned to
 %  the issue of re-assignment of query requesting results to 
 the same variable, they re-write the program from the loop language into SSA form.
@@ -37,7 +37,7 @@ Then they transform the operational semantics rules with all the operations defi
 Based on the transformed language, they also redefine the formal adaptivity for the transformed program equivalent to the
 loop language-based definition. The complete definition is in Thesis~\cite{weihao22}.
 %
-\subsection*{Program Analysis Algorithm}
+\subsection{Program Analysis Algorithm}
 Then they estimate the adaptivity for a program based on rewriting it into SSA form.
 This part summarizes
 %  the previous analysis algorithm for estimating the adaptivity for a program. 
@@ -120,12 +120,10 @@ The $\mathsf{VE}$ specifies the nodes of their variable-based dependency graph. 
 The algorithm $\mathsf{GG}$ generates a matrix-vector-based graph for the program. 
 The matrix $M$ records the may-dependency between annotated variables in the global list $G$. It has size $|G| \times |G|$. The vector $V$ has the same size as $G$ and gives a weight to each variable in $G$.
 This weight is $1$ when the variable is assigned with a query request and $0$ otherwise. 
-% To be precise, the $i$th row, $j$th column of the matrix $M$, written $M[i][j]$, is  $1$ when there may be a dependency from variable $ G[i]$ to $G[j]$. Dually, $M[i][j] =0$ means no dependency. In a similar way, $V[i]=1$ means the variable $G[i]$ is assigned with a query request.
-% Figure~\ref{fig:prework-static_alg2} shows some selected rules of this algorithm.
-\highlight{The same key rules is selected in Figure~\ref{fig:prework-static_alg2}.
+
+Some key rules are selected in Figure~\ref{fig:prework-static_alg2}.
 The rule \textbf{ad-loop} is as low-efficient and expressiveness-limited as the rule \textbf{ag-loop} in Figure~\ref{fig:prework-static_alg1} for the same reason.
 This will be analyzed in detail in the limitation part.
-}
 %
 \begin{figure}
 {\footnotesize
@@ -226,35 +224,39 @@ B= |\ssa{\bar{x}}| \and {A = |\ssa{c}|}
 \\
 They use standard longest path search algorithm to compute the adaptivity bound over the variable-based dependency graph.
 \end{enumerate}
-\subsection*{Limitations}
-\highlight{
-\begin{enumerate}
- \item \textbf{Efficiency Limitations}
+
+
+\subsection{Limitations}
+Limitations of this adaptivity estimation algorithm is summarized from the same three aspects as follows.
+
+\emph{Efficiency}
  \begin{enumerate}
- \item
+ \item \textbf{SSA Transformation}
  In order to address the issue of re-assignment of different queries requesting results to the same variable, they re-write the program from the loop language into SSA form.
  However, this rewriting is low-efficient and unnecessary.
  The re-assignment problem can be resolved efficiently and accurately through many state-of-art static program analysis techniques, such as the
  variable reachable analysis, etc..
- \item Their variable estimation algorithm is low-efficient by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_alg1},
- and rule \textbf{ad-loop} in Figure~\ref{fig:prework-static_alg2}.
- These two rules unfold every iteration of the while loop and create new annotated variables for every iteration.
- This operation increased the complexity of the program analysis by exponential factors. 
- \item For the same reason as above, their \textbf{Graph Generation} algorithm is low-efficient as well.
+
+ \item \textbf{Variable Estimation Algorithm}
+ According to the rules \textbf{ag-loop} in Figure~\ref{fig:prework-static_alg1},
+ and rule \textbf{ad-loop} in Figure~\ref{fig:prework-static_alg2}, the algorithm needs to
+ unfold every iteration of the while loop and create new annotated variables for every iteration.
+ This operation increased the complexity of the program analysis by exponential factors, which is inefficient.
+
+ \item \textbf{Path Search and Adaptivity Estimation}
+ Based on the unfolded loops and exponential numbers of the annotated variables, the graph
+ generated over these variables are  exponentially huge as well.
+ However, to estimate the adaptivity over this graph, we need to search for the longest weight path over it.
+ The exponential size of the graph increases the burden of the path search algorithm significantly.
  \end{enumerate}
  %
- \item \textbf{Expressiveness Limitations}
- \begin{enumerate}
- \item Their variable estimation algorithm is unable to analyze the programs with
+ \emph{Expressiveness}
+ The variable estimation algorithm is unable to analyze the programs with
  non-constant (or non-deterministic) loop iteration numbers.
  This is caused by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_alg1}.
  This rule unfolds every iteration of the while loop, and creates new annotated variables for every iteration.
  In order to guarantee the termination of the analysis, they have to limit the loop with the constant number of loop iterations.
  Specifically in rule \textbf{ag-loop} and \textbf{ad-loop},
- % Their variable estimation for the while loop is low-efficient. As shown in rule \textbf{ag-loop},
- % they unfold every iteration of the while loop and create new annotated variables for every iteration.
- % This rule causes a major efficiency limitation of their static analysis.
- % It also causes a critical expressiveness limitation. 
  the premise in these two rules requires
  the arithmetic expression
  % is required 
@@ -270,15 +272,14 @@ They use standard longest path search algorithm to compute the adaptivity bound 
  \assign{z}{q(x + z)};
  \}\}
  \] 
- \item For the same reason as above, their \textbf{Graph Generation} algorithm is limited as well.
- \end{enumerate}
- \item \textbf{Accuracy Limitations}
- \begin{enumerate}
- \item The estimated adaptivity from this framework is loose.
+
+ \emph{Accuracy}
+ The estimated adaptivity from this framework is loose.
  It over-approximates in the cases where there isn't semantic dependency between variables even though the variables
  are explicitly used in the query request.
- \item This program analysis framework is naive in the sense that all three steps are standard.
- And the framework is simply a straightforward composition of the three steps.
- \end{enumerate}
-\end{enumerate}
-}
+ This is also because the algorithms that are used in each step is simply the standard algorithms that do not naturally
+ compatible with each other.
+ So the straightforward composition does not able to estimate
+ the adaptivity property accurately when considering it as
+ the \emph{quantitative-reachability} property.
+

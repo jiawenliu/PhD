@@ -12,7 +12,7 @@ There are three steps as follows.
 \end{enumerate}
 
 \subsection{The Simple Transition Path}
-We first collect the loop headers $\loopl(c) \subseteq \lvar(c)$ from a program $c$, which is the set of all program points corresponding to the loop headers in program $c$.
+We first collect the loop headers $\loopl(c) \subseteq \progl(c)$ from a program $c$, which is the set of all program points corresponding to the loop headers in program $c$.
 \begin{defn}[Loop Headers ($\loopl : \cdom \to \mathcal{P}(\ldom)$)]
   \label{def:loopl}
   \[
@@ -148,7 +148,7 @@ Then we compute the refined program as,
   The best state-of-art bound analysis
   gives the same \emph{reachability-bound}, $n + \lfloor\frac{n}{m}\rfloor$ for all the locations within the loop $L_2$.
   %
-  \input{examples/whileTwoCounters-overview}
+  \input{chapters/reachability/examples/whileTwoCounters-overview}
   %
   To know the bounds for locations on different branches of a loop, 
   it is necessary to know the alternative iteration patterns of the two paths.

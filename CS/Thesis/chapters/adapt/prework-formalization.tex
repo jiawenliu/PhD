@@ -1,10 +1,9 @@
 The previous works on formalizing the adaptivity is through a query-based dependency graph.
 Below is a summary of their query-based dependency graph construction and adaptivity formal definition, followed
 by the weaknesses of this formalization method.
-\subsection*{Query-Based Dependency Graph}
+\subsection{Query-Based Dependency Graph}
 They build their dependency graph over annotated queries, in order to construct the edge between queries for this graph, they first
 define a query \emph{May-Dependency} relation. Below is a summary of this definition from
-% Below is the formal definition of query may dependency based on their trace-based operational semantics 
 from Thesis~\cite{weihao22}.
 The notations $\in_q$ and $\not\in_q$ a query belongs to the trace or not respectively, with the full details in Thesis~\cite{weihao22}.
 \begin{defn}[Query may dependency]
@@ -58,20 +57,18 @@ The previous trace before the execution of $c$ is excluded when constructing the
 % To summarize, for every execution of a program $c$ staring with different configurations, 
 % they can construct a corresponding dependency graph. 
 
-\subsection*{Adaptivity Formalization}
+\subsection{Adaptivity Formalization}
 Below is the definition of adaptivity from Thesis~\cite{weihao22}, by means of the query-based dependency graph. 
 \begin{defn}[Adaptivity in {loop} language]
 Given a program $c$, and a memory $m$, a database $D$, a starting loop map $w$, the adaptivity of the dependency graph $G(c, D,m,w) = (V, E)$ is the length of the longest path in this graph. We denote the path from $q({v_q})^{(l,w)}$ to $q({v_q}')^{(l',w')}$ as $p(q({v_q})^{(l,w)}, q({v_q}')^{(l',w')} )$. The adaptivity denoted as $A(c, D, m, w)$.
 %
 $$A(c, D, m, w) = \max\limits_{q({v_q})^{(l,w)},q({v_q}')^{(l',w')} \in V } |p(q({v_q})^{(l,w)}, q({v_q}')^{(l',w')} )| $$
 \end{defn}
-\subsection*{Limitations}
+
+\subsection{Limitations}
 Limited by their language design and the dependency graph construction,
 this adaptivity definition is weak in the following aspects.
-\highlight{
- \begin{enumerate}
- \item \textbf{Expressiveness Limitation}
- \\
+\emph{Expressiveness.}
  The definition isn't general enough to give the formal adaptivity for the adaptive data analysis programs with non-constant
  while loops.
  However, programs containing while loops of non-deterministic iteration times are very common in the adaptive data analysis area.
@@ -93,12 +90,10 @@ this adaptivity definition is weak in the following aspects.
  the number of iterations cannot be evaluated to a nature number in advance of entering this loop for the same reason. 
  The iteration number is only
  able to be decided during executing this while loop body.
- % This program represents a class of data analysis programs with non-constant loop iterations, which is very common in data analysis. However, it isn't supported by their design.
  \\
  Limited by this, they cannot give the adaptivity for this program even though the adaptivity in this program is 4, which is straightforward to observe.
- % a trace generated for this program
- \item \textbf{Accuracy Limitation}
- \\
+
+ \emph{Accuracy.}
  The in-accuracy of this \emph{adaptivity} definition is caused by both their language design and their graph construction.
  \\
  As analyzed in Section~\ref{sec:prework-language}, the information in non-query requesting variables are lost.
@@ -110,18 +105,13 @@ this adaptivity definition is weak in the following aspects.
  execution.
  In the other words, this adaptivity definition doesn't correspond to the \emph{adaptivity} for this program,
  but for the program in a certain execution.
- % to The trace only tracks the query requests. This lost the information of the variables
- % which are assigned by query values even if they are not assigned by query requests. 
- \item \textbf{Efficiency Limitation}
- \\
- This definition is in-efficient in the sense that it requires the full unfolding of every iteration for the while loop.
+
+ \emph{Complexity}
+ This definition requires the full unfolding of every iteration for the while loop.
+ The unfolding procedure generates many unnecessary and duplicate nodes during the while iterations.
  There are two reasons for this unfolding operation.
  The first one comes from the low efficiency of their trace-based operational semantics,
  which requires the trace to track the loop iteration number in the annotated query.
  The other comes from their dependency graph generation, which requires every query request evaluated during the program execution
  as the graph nodes.
  Both of the two processes generate unnecessary and duplicate nodes during the while iterations.
- % annotatation of the the query request executed in the program
- % with integer indicating the while loops. 
-\end{enumerate}
-}
