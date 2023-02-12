@@ -102,7 +102,7 @@ The soundness is guaranteed by the three states,
            \\
            \land \absinit(\rprog) \leq l_1 \leq \absinit(\tpath)
            \land
-           x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}
+           x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}
          \end{array}
        \right\}
     \]
@@ -110,7 +110,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
 \[
   \config{c_l, \trace_0} \to^* \config{c_t;c', \trace_0 \tracecat \trace'} \to^* \config{\eskip, \trace_0 \tracecat \trace}
 \]
-  Let $x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}$ be arbitrary ranking function of an edge on $\tpath$,
+  Let $x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}$ be arbitrary ranking function of an edge on $\tpath$,
   by the soundness of the rank estimation in Lemma~\ref{lem:local_bound_sound} and Theorem~\ref{thm:pathinsensitive_rb_soundness}, we know 
   for each variable $y$ such that $(l_1, x' \leq y + v, l_2) \in \reset(x, c) $,
   $\varinvar(y, c)$ is the sound upper bound on its maximum value during the execution. Then we have
@@ -149,7 +149,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
   \begin{array}{l}
   \lpnext(l: \rprog, \tpath, c) \triangleq 
   \\
-  \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}}
+  \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}}
   \left\{
     \begin{array}{l}
   \sum\limits_{\absevent \in \inc(x, c) }
@@ -174,7 +174,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
   \[
     \config{c_l, \trace_0} \to^* \config{c_t;c', \trace_0 \tracecat \trace'} \to^* \config{\eskip, \trace_0 \tracecat \trace}
   \]
-  Let $x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}$ be arbitrary ranking function of an edge on $\tpath$,
+  Let $x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}$ be arbitrary ranking function of an edge on $\tpath$,
   by the soundness of the rank estimation in Lemma~\ref{lem:local_bound_sound} and Theorem~\ref{thm:pathinsensitive_rb_soundness}, we know 
     for each variable $y$ such that $(l_1, x' \leq y + v, l_2) \in \reset(x, c) $,
     $\varinvar(y, c)$ is the sound upper bound on its maximum value during the execution. Then we have
@@ -250,13 +250,13 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
     \end{array}
     \]
   %
-  \item $\rffinal(\tpath, c)$ computes the value of $\locbound(\tpath, c)$ after the iteration of $l_t:\rprog_t$ finished.
+  \item $\rffinal(\tpath, c)$ computes the value of $\rank(\tpath, c)$ after the iteration of $l_t:\rprog_t$ finished.
   \\
   Let $\trace' \in \tdom$ be the execution trace after the execution of $l_t: \rprog_t$ in the first iteration of $l:\rprog$ and the $c'$ be the program after the execution of $c_t$ in the first iteration of $l:\rprog$,  then we have
   \[
     \config{c_l, \trace_0} \to^* \config{c', \trace_0 \tracecat \trace'} \to^* \config{\eskip, \trace_0 \tracecat \trace}
   \]
-  By Lemma~\ref{lem:loopbound_sound}, we know $\rffinal(\tpath, c)$ computes the lower bound on the value of $\locbound(\tpath, c)$ after the iteration of $l_t:\rprog_t$ finished.
+  By Lemma~\ref{lem:loopbound_sound}, we know $\rffinal(\tpath, c)$ computes the lower bound on the value of $\rank(\tpath, c)$ after the iteration of $l_t:\rprog_t$ finished.
   \\
   Then we have 
   $\rffinal(\tpath, c) \leq \env(\trace') x$ and $\lpinit(\rprog, \tpath, c) - \rffinal(\rprog, \tpath, c) \geq \env(\trace') x$.

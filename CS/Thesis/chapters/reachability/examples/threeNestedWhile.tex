@@ -119,9 +119,9 @@ $\rprog_6 = \rprepeat(\tpath_3)$
   \item {Path Local Reachability-bound}:
 \\
 $\outinB(1: \rprog_1, \tpath_1) = n - N$ \quad
-$\outinB(1: \rprog_1, \tpath_5) = n - N$ \quad
-$\outinB(3: \rprog_3, \tpath_2) = m$ \\
-$\outinB(3: \rprog_3, \tpath_4) = m$ \quad
+$\outinB(1: \rprog_1, \tpath_5) = n - N$ \\
+$\outinB(3: \rprog_3, \tpath_2) = m$ \quad
+$\outinB(3: \rprog_3, \tpath_4) = m$ \\
 $\outinB(6: \rprog_6, \tpath_3) = N$ \quad
 %
 \\
@@ -132,7 +132,7 @@ $BD(\tpath_0) = 1$
 $BD(\tpath_6) = 1$
 \quad
 $BD( \rprepeat(\tpath_3)) = N $
-\quad
+\\
 $BD(\rprog_3) = m $
 \quad
 $BD(\rprog_1) = n - N $
@@ -157,21 +157,20 @@ $\lpchB(6: \rprog_6, \tpath_3) = N$
 $\inoutB(\rprog, \tpath_1) = n - N$ \quad
 $\inoutB(\rprog, \tpath_2) = n \times m$ \quad
 $\inoutB(\rprog, \tpath_0) = 1$ 
-\quad
+\\
 $\inoutB(\rprog, \tpath_5) = n - N$ \quad
 $\inoutB(\rprog, \tpath_4) = n \times m$ \quad
 $\inoutB(\rprog, \tpath_6) = 1$ 
-\quad
+\\
 $\inoutB(\rprog, \tpath_3) = N$
 %
 \item The Reachability-bound:
 \\
 $\psRB(0) = \psRB(\lex) = 1$ \quad
 $\psRB(1) = n - N + 1$ \quad
-$\psRB(2) = \psRB(9) = n - N$ \quad
-$\psRB(7) = N$
-\\
+$\psRB(2) = \psRB(9) = n - N$ \\
+$\psRB(7) = N$ \quad
 $\psRB(3) = n - N + n \times m$ \quad
-$\psRB(4) = \psRB(5) = \psRB(8) = n \times m$ \quad
+$\psRB(4) = \psRB(5) = \psRB(8) = n \times m$ \\
 $\psRB(6) = N + n \times m$ 
 \end{enumerate}

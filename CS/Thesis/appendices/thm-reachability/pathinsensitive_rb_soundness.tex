@@ -7,7 +7,7 @@
   \max \left\{ \counter(\vtrace') l ~ \middle\vert~
   \forall \vtrace \in \mathcal{T} \sthat \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
   \leq 
-  \locbound(\absevent)
+  \rank(\absevent)
   \]
   \end{lem}
   \begin{proof}
@@ -23,24 +23,24 @@
     %
     $\counter(\vtrace) l \leq 1$
     \\
-    By $\locbound$ definition, we know $\locbound(\absevent) = 1$.
+    By $\rank$ definition, we know $\rank(\absevent) = 1$.
     \\
     This case is proved.
     \subcaseL{$l \in SCC(\absG(c)) \land \absevent \in \dec(x) $} 
     In this case, we know symbol $x$ is decreasing on this transition. So symbol $x$ is a witness of the execution times of this transition.
     \\
     In this sense, it is safe to assign 
-    $\locbound(\absevent) \triangleq \locbound(\absevent', c)$.
+    $\rank(\absevent) \triangleq \rank(\absevent', c)$.
     \subcaseL{$\exists \absevent' \in \absG(c), \tpath \in \paths( \absG(c)) \sthat \absevent, \absevent' \in \tpath$}
     In this case, we know both $\absevent'$ and $\absevent$ are on the same simple transition path.
     \\
     By Definition~\ref{def:tpath}, we know every $\tpath$ is loop free and interleaving free. Then we know execution of the transitions $\absevent'$ and $\absevent$ must execute following each other.
     \\
     In this sense, it is safe to assign 
-    $\locbound(\absevent) \triangleq \locbound(\absevent)$.
+    $\rank(\absevent) \triangleq \rank(\absevent)$.
     \subcaseL{$l \in SCC(\absG(c)) \land \absevent 
     \notin \bigcup_{x \in VAR} \dec(x)
-    \land \absevent \notin SCC(\absG(c)/\dec(x)) $}  in this case, we know $\locbound(\absevent) \triangleq x$.
+    \land \absevent \notin SCC(\absG(c)/\dec(x)) $}  in this case, we know $\rank(\absevent) \triangleq x$.
     \\
     In the two cases above, the soundness is discussed in~\cite{SinnZV17} Section 4 of Paragraph \emph{Discussion on Soundness} in Page 25.
   \end{proof}
@@ -114,16 +114,16 @@
   By definition of $\absclr(\absevent)$:
   \[
  \begin{array}{ll}
-  \locbound(\absevent) & \locbound(\absevent) \in \constdom \\
-  \inc(\locbound(\absevent)) + 
-  \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\} 
-  & \locbound(\absevent) \notin \constdom
+  \rank(\absevent) & \rank(\absevent) \in \constdom \\
+  \inc(\rank(\absevent)) + 
+  \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\rank(\absevent))\} 
+  & \rank(\absevent) \notin \constdom
 \end{array}
 \]
-  \caseL{$\locbound(\absevent) \in \constdom$}
+  \caseL{$\rank(\absevent) \in \constdom$}
   \\
   Proved by the soundness of Local bound in Lemma~\ref{lem:local_bound_sound}.
-  \caseL{$\locbound(\absevent) \notin \constdom$}
+  \caseL{$\rank(\absevent) \notin \constdom$}
 To show:
 \[
   \begin{array}{l}
@@ -131,8 +131,8 @@ To show:
 \forall \vtrace \in \mathcal{T} \sthat \config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} \right\} 
 \\
 \leq 
-\econfig{\inc(\locbound(\absevent))}(\trace_0) + 
-\sum\{\econfig{\absclr(\absevent') \times \max(\varinvar(a) + c, 0)}(\trace_0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\} 
+\econfig{\inc(\rank(\absevent))}(\trace_0) + 
+\sum\{\econfig{\absclr(\absevent') \times \max(\varinvar(a) + c, 0)}(\trace_0) | (\absevent', a, c) \in \reset(\rank(\absevent))\} 
 \end{array}
 \]
   Taking an arbitrary initial trace
@@ -141,8 +141,8 @@ To show:
   \[ 
     \begin{array}{l}
       \counter(\vtrace',  l) \leq 
-    \econfig{\inc(\locbound(\absevent)) + 
-    \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\}}(\trace_0)
+    \econfig{\inc(\rank(\absevent)) + 
+    \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\rank(\absevent))\}}(\trace_0)
   \end{array}
   \]
 %

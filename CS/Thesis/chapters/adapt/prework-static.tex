@@ -229,7 +229,7 @@ They use standard longest path search algorithm to compute the adaptivity bound 
 \subsection{Limitations}
 Limitations of this adaptivity estimation algorithm is summarized from the same three aspects as follows.
 
-\emph{Efficiency}
+\emph{Efficiency.}
  \begin{enumerate}
  \item \textbf{SSA Transformation}
  In order to address the issue of re-assignment of different queries requesting results to the same variable, they re-write the program from the loop language into SSA form.
@@ -250,7 +250,7 @@ Limitations of this adaptivity estimation algorithm is summarized from the same 
  The exponential size of the graph increases the burden of the path search algorithm significantly.
  \end{enumerate}
  %
- \emph{Expressiveness}
+ \emph{Expressiveness.}
  The variable estimation algorithm is unable to analyze the programs with
  non-constant (or non-deterministic) loop iteration numbers.
  This is caused by their \textbf{ag-loop} rule in Figure~\ref{fig:prework-static_alg1}.
@@ -273,7 +273,7 @@ Limitations of this adaptivity estimation algorithm is summarized from the same 
  \}\}
  \] 
 
- \emph{Accuracy}
+ \emph{Accuracy.}
  The estimated adaptivity from this framework is loose.
  It over-approximates in the cases where there isn't semantic dependency between variables even though the variables
  are explicitly used in the query request.

@@ -70,12 +70,13 @@ By Definition~\ref{def:pathrb}, we have
 \[  
   \begin{array}{rcll}
   \inoutB(l': \rprog', \tpath) & \triangleq & 
-  \highlight{\outinB(\rprog', \tpath)}, & \text{if }~ l = \kw{enclosed}(\tpath)
+  \highlight{\outinB(\rprog', \tpath)}, \qquad \text{if }~ l = \kw{enclosed}(\tpath) & \\
+  % & & \text{if }~ l = \kw{enclosed}(\tpath)
   \\ &  & 
   \highlight{
     \lpchB(l':\rprog', \tpath )
   \times \max\limits_{l': \rprog' = \kw{enclosed}(l'':\rprog'')}
-  \{\inoutB(l'':\rprog'', \tpath)\} }, & o.w.
+  \{\inoutB(l'':\rprog'', \tpath)\} }, \qquad o.w. &
   \end{array}
 \]
 %

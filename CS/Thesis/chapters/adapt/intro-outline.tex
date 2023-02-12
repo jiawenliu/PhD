@@ -1,17 +1,16 @@
 \paragraph{Chapter Outline}
 The rest parts of this chapter is organized as follows. 
 \begin{enumerate}
-   \item The previous works on adaptive data analysis are introduced in Section~\ref{sec:prework}.
-   \item The new program analysis framework for the adaptivity of Adaptive Data Analysis is presented 
-   in Section~\ref{sec:adapt-analysis}.
-   This new program analysis framework has three major components:
+   \item The previous works on analyzing the \emph{adaptivity} of adaptive data analysis are introduced in Section~\ref{sec:prework}.
+   
+   \item The new program analysis framework for \emph{adaptivity} in adaptive data analysis with three components.
    \begin{enumerate}
-      \item A while-like language extended with query request feature, named {\tt Query While} Language, 
-      used to implement the adaptive data analysis in Section~\ref{sec:adapt-language};
-      \item A formal adaptivity model through analyzing the program's execution semantically in Section~\ref{sec:adapt-exe};
+      \item A while-like language extended with query request feature, named {\tt QWhile} Language, 
+      used to implement the adaptive data analysis in Section~\ref{sec:adapt-language}.
+      \item A formal adaptivity model through analyzing the program's execution semantically in Section~\ref{sec:adapt-exe}.
       \item A static program analysis algorithm, named {\THESYSTEM} through static adaptivity analysis in Section~\ref{sec:adapt-static}.
    \end{enumerate}
-   \item The manual examples demonstrating the new adaptivity analysis framework,
+   \item Examples demonstrating our program adaptivity analysis framework,
    and the evaluation results from the implementation
    of this analysis framework is presented in Section~\ref{sec:adapt-implementation}.
    \item Section~\ref{sec:adapt-relatedwork} presents the related works in the program analysis and the data analysis areas
@@ -20,7 +19,7 @@ The rest parts of this chapter is organized as follows.
 
 
 \paragraph{Contributions}
-This chapter has the following contributions.
+This part has the following contributions.
 \begin{enumerate}
    \item A programming framework for adaptive data analyses where programs represent analysts that can query generalization-preserving mechanisms mediating the access to some data. 
    \item 

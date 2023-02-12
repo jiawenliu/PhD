@@ -15,14 +15,14 @@ It has two interleaving patterns in the loop $L_1$.
 % denoted as $\rprog_1^1$ and $\rprog_1^2$.
 
 % \textbf{Step 3: Ranking Function Estimation}
-\textbf{Step 3} computes the \emph{Ranking Function}, $\locbound(\absevent, c)$ 
+\textbf{Step 3} computes the \emph{Ranking Function}, $\rank(\absevent, c)$
 for every edge $\absevent$ 
 and estimates an upper bound invariant, which is presented in Section~\ref{sec:psRB-rank}.
 
 % \textbf{Step 4: Path-sensitive Reachability-bound Computation.}
 \textbf{Step 4}
 % The \emph{path-sensitive reachability-bound} 
-computes the \emph{Reachability-bound}, $\psRB(l, c)$ for every program point $l$ using the $\rprog$ and the upper bound invariant of the $\locbound(\absevent, c)$ where $\absevent = (l,dc,l')$.
+computes the \emph{Reachability-bound}, $\psRB(l, c)$ for every program point $l$ using the $\rprog$ and the upper bound invariant of the $\rank(\absevent, c)$ where $\absevent = (l,dc,l')$.
 {It requires computing the \emph{path reachability-bound}, $\inoutB(\rprog, \tpath, c)$ for every $\tpath$.
 If there are nested loops, we need to compute the \emph{loop reachability-bound}, $\lpchB(l: \rprog, \tpath, c)$ w.r.t. every level of $\tpath$'s outer loop. }
 Section~\ref{sec:psRB-psrb} introduces this algorithm and the following sections describe the computations. 

@@ -24,7 +24,7 @@ any visit of $\tpath$ and during the first execution of $\rprog$.
  \\
  \land \absinit(\rprog) \leq l_1 \leq \absinit(\tpath)
  \land
- x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}
+ x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}
  \end{array}
  \right\}
  \end{array}
@@ -38,14 +38,14 @@ that is modified before
 the second visit of $\tpath$ but during the second execution of $\rprog$.
 $ 
 \lpnext(\rprog, \tpath, c) \triangleq 
-\max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}}
+\max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}}
 $
 %
 {\small
 \[
  \begin{array}{l}
  % \lpnext(\rprog, \tpath, c) \triangleq 
- % \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}}
+ % \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}}
  % \\
  \left\{
  \begin{array}{l}

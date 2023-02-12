@@ -68,6 +68,7 @@ $$A(c, D, m, w) = \max\limits_{q({v_q})^{(l,w)},q({v_q}')^{(l',w')} \in V } |p(q
 \subsection{Limitations}
 Limited by their language design and the dependency graph construction,
 this adaptivity definition is weak in the following aspects.
+
 \emph{Expressiveness.}
  The definition isn't general enough to give the formal adaptivity for the adaptive data analysis programs with non-constant
  while loops.
@@ -106,7 +107,7 @@ this adaptivity definition is weak in the following aspects.
  In the other words, this adaptivity definition doesn't correspond to the \emph{adaptivity} for this program,
  but for the program in a certain execution.
 
- \emph{Complexity}
+ \emph{Complexity.}
  This definition requires the full unfolding of every iteration for the while loop.
  The unfolding procedure generates many unnecessary and duplicate nodes during the while iterations.
  There are two reasons for this unfolding operation.

@@ -57,7 +57,7 @@ We first compute three abstract states for each ranking function in different su
  $\rfinit(\rprog, c) \triangleq $
  {\small
  \[
- \bigcup_{x \in \left\{ \locbound(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\} }
+ \bigcup_{x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\} }
  \left \{ 
  x = \arg\max_{l_1}\left\{
  \varinvar(y, c) + v ~\middle\vert~ 
@@ -80,7 +80,7 @@ We first compute three abstract states for each ranking function in different su
  {\small
 \[
  \begin{array}{l} 
- \bigcup\limits_{x \in \left\{ \locbound(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\} }
+ \bigcup\limits_{x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\} }
  \left \{ 
  x = \min\limits_{ \left\{ l_1 ~|~ l_1 \geq \absfinal(\rprog, c) \right\} }
  \max\left\{
@@ -100,7 +100,7 @@ We first compute three abstract states for each ranking function in different su
  \begin{array}{l}
  \rfnext(\tpath, c) \triangleq 
  \\
- \bigcup\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}}
+ \bigcup\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}}
  \left\{ x = 
  \begin{array}{l}
  \sum\limits_{\absevent \in \inc(x, c) }
@@ -130,7 +130,7 @@ the \emph{Variable Gradient Decent}--
  \[
  \left\{ 
  \begin{array}{ll}
- \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}} 
+ \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}} 
  \Big\{ \highlight{\frac{a - b}{\varGD(\tpath, c)}} & \rprog_l = \tpath
  \\ \qquad 
  ~\vert~
@@ -138,7 +138,7 @@ the \emph{Variable Gradient Decent}--
  \land x = b \in \rffinal(\tpath, c)
  \Big\} 
  \\
- \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}} 
+ \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}} 
  \Big\{ \highlight{\frac{\min\{ a, a - \varGD(\rprog_1, c) \} - b}{\varGD(\rprog_1;\rprog_2, c)}} 
  & \rprog_l = \rprog_1;\rprog_2
  \\ \qquad 

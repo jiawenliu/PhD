@@ -72,24 +72,24 @@ Three steps:
   \begin{defn}[Ranking Function Generatation]
   \label{def:ranking_gen}
   For every edge $\absevent$ in the transition graph $\absG(c)$ of a program $c$,
-  its \emph{ranking function/local bound}, $\locbound(\absevent, c)$
+  its \emph{ranking function/local bound}, $\rank(\absevent, c)$
   is the variable that decreases on this edge, computed as follows,
   %
   \[ 
 \begin{array}{ll}
-  \locbound(\absevent, c) \triangleq 1 
+  \rank(\absevent, c) \triangleq 1 
   & \absevent \notin SCC(\absG(c))
   \\
-  \locbound(\absevent, c) \triangleq x
+  \rank(\absevent, c) \triangleq x
   & \absevent \in SCC(\absG(c)) \land \absevent \in \dec(x, c) \land  \absevent = (\_, \_ , x' \leq x - v) \\
-  \locbound(\absevent, c) \triangleq \locbound(\absevent', c)
+  \rank(\absevent, c) \triangleq \rank(\absevent', c)
   & \exists \absevent' \in \absG(c), \tpath \in \paths( \absG(c)) \sthat \absevent, \absevent' \in \tpath \\
     % \in SCC(\absG(c)) \land \absevent \in \dec(x, c) \land  \absevent = (\_, \_ , x' \leq x - v) \\
-  \locbound(\absevent, c) \triangleq x
+  \rank(\absevent, c) \triangleq x
   & \absevent \in SCC(\absG(c)) \land 
   \absevent  \notin \bigcup_{x \in \vardom} \dec(x, c)
   \land \absevent \notin SCC(\absG(c) \setminus \dec(x, c))\\
-  \locbound(\absevent, c) \triangleq \infty
+  \rank(\absevent, c) \triangleq \infty
   & o.w..
 \end{array}
 \]
@@ -113,11 +113,11 @@ In the same way, ranking for edges on $\tpath_4$ is $i$ as well and $k$ for them
   on the maximum value for each ranking function  $x \in  \vardom \cup \scvar(c)$.
   \\
   For a program $c$, the \emph{ranking function bound},
-  $\varinvar(\locbound(\absevent, c), c)$ is 
+  $\varinvar(\rank(\absevent, c), c)$ is 
   the bound on the maximum value of the ranking function  
   assigned to the edge $\absevent \in \absE(c)$, formally in Definition~\ref{def:ranking_bound}.
   \\
-  In order to estimate the maximum value of $\locbound(\absevent, c)$ assigned to edge $\absevent \in \absE(c)$,
+  In order to estimate the maximum value of $\rank(\absevent, c)$ assigned to edge $\absevent \in \absE(c)$,
   the bound on the iteration times of each corresponding edge, $\absclr(\absevent, c)$ 
   is computed interactively in a path-insensitive manner.
   % \\ 
@@ -128,7 +128,7 @@ In the same way, ranking for edges on $\tpath_4$ is $i$ as well and $k$ for them
     \label{def:ranking_bound}
   For a program $c$ and an edge $\absevent \in \absE(c)$,
   the \emph{ranking function bound}, 
-  $\varinvar(\locbound(\absevent, c), c)$ for the ranking function $x = \locbound(\absevent, c)$
+  $\varinvar(\rank(\absevent, c), c)$ for the ranking function $x = \rank(\absevent, c)$
   of this edge
   is computed as follows,
     \[ 
@@ -143,8 +143,8 @@ In the same way, ranking for edges on $\tpath_4$ is $i$ as well and $k$ for them
 \[ 
 \begin{array}{lll}
   \absclr(\absevent, c) 
-  & \triangleq \varinvar(\locbound(\absevent, c), c)  &  \\
-  & \quad \text{if} ~ \locbound(\absevent, c) \in \scvar(c) & \\
+  & \triangleq \varinvar(\rank(\absevent, c), c)  &  \\
+  & \quad \text{if} ~ \rank(\absevent, c) \in \scvar(c) & \\
   \absclr(\absevent, c) 
   & \triangleq
     \sum \left\{ \incrs(y, c) | ch \in \resetchain(x, c) \land y \in ch \right\} & \\
@@ -153,7 +153,7 @@ In the same way, ranking for edges on $\tpath_4$ is $i$ as well and $k$ for them
   \min \left\{\absclr(\absevent', c) ~\mid~ \absevent' \in ch\right\} \times 
   \big(\varinvar(in(ch), c) 
   + \sum\limits_{(\_, (\_, x' \leq y + v, \_), \_) \in ch} v \big) & \\
-  &  \quad \text{if} ~\locbound(\absevent, c) = x \land x \notin \scvar(c) & ,
+  &  \quad \text{if} ~\rank(\absevent, c) = x \land x \notin \scvar(c) & ,
 \end{array}
   \]
  where $in(ch)$ is the first vertex of the reset chain $ch$.
@@ -186,15 +186,15 @@ the execution times of this assignment command in $c$.
 \paragraph[example]{Example.}
 % \todo{The w example}
 Using this ranking function based approach, we first find the ranks for every transition,
-$\locbound(0 \to 1) = 1$,
-$\locbound(1 \to \lex) = 1$,
-$\locbound(1 \to 2) = i$,
-$\locbound(2 \to 3) = i$,
-$\locbound(3 \to 4) = i$,
-$\locbound(4 \to 5) = k$,
-$\locbound(5 \to 4) = k$,
-$\locbound(4\to 6) = \locbound(6 \to 7) = \locbound(7 \to 1) = i$,
-and $\locbound(2 \to 8) = \locbound(8 \to 1) = i$,
+$\rank(0 \to 1) = 1$,
+$\rank(1 \to \lex) = 1$,
+$\rank(1 \to 2) = i$,
+$\rank(2 \to 3) = i$,
+$\rank(3 \to 4) = i$,
+$\rank(4 \to 5) = k$,
+$\rank(5 \to 4) = k$,
+$\rank(4\to 6) = \rank(6 \to 7) = \rank(7 \to 1) = i$,
+and $\rank(2 \to 8) = \rank(8 \to 1) = i$,
 Then we estimate the upper bound invariant for the ranking function $i$ and $k$ by computing the transition bound in the same time.
 We get $\varinvar(i, c) = n$ and $\varinvar(k, c) = m$.
 While the transition bound for each transition is the same as the upper bound invariant of its ranking function.

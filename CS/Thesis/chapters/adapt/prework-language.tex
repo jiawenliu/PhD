@@ -1,5 +1,5 @@
-Previous works formalized the adaptive data analysis into a while-like language named loop language with  limited expressiveness.
-It is presented in {Thesis~\cite{weihao22}}.
+Previous works from {Thesis~\cite{weihao22}} formalized the adaptive data analysis into a while-like language named loop language with  limited expressiveness.
+% It is presented in {Thesis~\cite{weihao22}}.
 \subsection{Language Syntax}
 Figure~\ref{fig:prework_syntax} is a selection of the syntax from their loop language.
 {\small
@@ -267,7 +267,7 @@ The rules for loop modify the loop map $w$. In the rule $\textbf{l-loop}$, the l
 \subsection{Limitations}
 This language model is limited in the following aspects:
  
-\emph{Expressiveness Limitation}
+\emph{Expressiveness.}
  By the operational semantics rule design, trace design, and their annotated query design, the loop iteration number can only be a constant number or an arithmetic expression evaluated to a nature number.
  In the rule \rname{l-loop}, a nature number $v_N$ is required on the premise of tracking the iteration times.
  This requires that the loop iteration number has to be a nature number or evaluated to a nature number in advance to execute the loop.
@@ -293,7 +293,7 @@ This language model is limited in the following aspects:
  This program represents a class of data analysis programs with non-constant loop iterations
  which is very common in data analysis. However, it isn't supported by their design.
 
- \emph{Accuracy Limitation}
+ \emph{Accuracy.}
  This operational semantics design causes in-precision in formalizing the \emph{adaptivity}.
  Because there is information loss in their trace generated through the operational semantic rules.
  The trace only tracks the query requests. This lost the information of the variables
@@ -301,7 +301,7 @@ This language model is limited in the following aspects:
  are critical in analyzing the \emph{adaptivity}.
  This will be analyzed in detail in the limitation in Section~\ref{sec:prework-formalization}.
  
- \emph{Efficiency Limitation}
+ \emph{Efficiency.}
  There are four components in their configuration in order to evaluate the program. 
  The update operations for this quadruple configuration are low-efficient, especially the update operation of the while map.
 

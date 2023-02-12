@@ -3,8 +3,7 @@ However, as we discussed before in the introduction, we consider it as a \emph{q
 that has two perspectives sub-properties, the  \emph{quantitative} and \emph{reachability}.
 In the other word, previous works only analyzed it as a sub-property and losses the information from the other perspective.
 
-\begin{itemize}
- \item \textbf{Expressiveness Limitation}
+\emph{Expressiveness.}
     This language model doesn't support programs with non-deterministic while loop.
     It only allows the while loops in the program to iterate a fixed number of times.
     This is because the expression in the loop guard has to be a constant number
@@ -12,7 +11,8 @@ In the other word, previous works only analyzed it as a sub-property and losses 
     that is evaluated into a constant $V_N$ before executing the loop body.
     However, the adaptive data analysis programs with loops of non-deterministic iteration times are very common.
     The syntax doesn't support the programs with user inputs either, which are also common in the data analysis area.
- \item \textbf{Accuracy Limitation}.
+
+\emph{Accuracy.}
  The adaptivity definition and the estimated adaptivity are both inaccurate.
     \begin{itemize}
         \item There are two reasons for the inaccuracy of adaptivity definition.
@@ -37,7 +37,8 @@ In the other word, previous works only analyzed it as a sub-property and losses 
     And the standard path search algorithm also over-approximates the longest weighted path on this over-approximated dependency graph. 
     In this sense, the estimated adaptivity is a loose bound on the defined adaptivity.
  \end{itemize}
- \item \textbf{Efficiency Limitation}
+
+ \emph{Efficiency.}
  \begin{itemize}
     \item The operational semantics has four components in the configuration when evaluating the program. 
     % The updating operations for this quadruple configuration are inefficient, especially the update operation of the while map.   
@@ -56,7 +57,6 @@ In the other word, previous works only analyzed it as a sub-property and losses 
    This operation increased the algorithms' complexity exponentially. 
    %  \item For the same reason as above, their \textbf{Graph Generation} algorithm is low-efficient as well.
     \end{itemize}
-\end{itemize}
 
 Given the limitations in previous work, we develop our new framework
 composed of three parts as well as in Figure~\ref{fig:adaptfun-overview}.

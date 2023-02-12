@@ -78,7 +78,7 @@ Below we prove the soundness of a more general version Loop Bound Computation, $
     \max\left\{ BD(\rprog_1, c), \ldots, BD(\rprog_m, c) \right\} & \rprog = \rpchoose{\rprog_1, \ldots, \rprog_m } 
     \\
     %
-    \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}} 
+    \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}} 
     \Big\{ \highlight{\frac{a - b}{\varGD(\tpath, c)}}  &  \rprog = \rprepeat(\tpath)
     \\ \qquad 
     ~\vert~
@@ -86,7 +86,7 @@ Below we prove the soundness of a more general version Loop Bound Computation, $
     \land x = b \in \rffinal(\tpath, c)
     \Big\} 
     \\
-  \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}} 
+  \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}} 
     \Big\{ \highlight{\frac{\min\{ a, a - \varGD(\rprog_1, c) \} - b}{\varGD(\rprog_1;\rprog_2, c)}}  
     &  \rprog = \rprepeat(\rprog_1;\rprog_2)
     \\ \qquad 
@@ -380,7 +380,7 @@ In this case, we have
   BD(\rprepeat(\rprog_l), c) =
   \left\{ 
   \begin{array}{lll}
-    \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}}
+    \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}}
     \Big\{ \highlight{\frac{a - b}{\varGD(\tpath, c)}}  &  \rprog_l = (\tpath)
     \\ \qquad 
     ~\vert~
@@ -398,13 +398,13 @@ In this case, we have
 Then we have the soundness guaranteed by the three states,
 $\rfinit(\rprog)$, $\rffinal(\rprog)$, $\rfnext(\rprog)$ computed in Definition~\ref{def:alg-loopabsstate}.
 \\
-For each $\tpath \in \rprog$ and $x = \locbound(\tpath)$ the ranking function of this path, we prove the soundness of the three states respectively as follows.
+For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of this path, we prove the soundness of the three states respectively as follows.
 \begin{itemize}
  \item \emph{Initial State} Soundness.
  By Definition~\ref{def:alg-absstate}, we have $\rfinit(\rprog)$ 
  \[
   \rfinit(\rprog, c) \triangleq 
-  \bigcup_{x \in \left\{ \locbound(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\} }
+  \bigcup_{x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\} }
   \left \{ 
   x = \arg\max_{l_1}\left\{
     \varinvar(y, c) + v ~\middle\vert~ 
@@ -416,7 +416,7 @@ For each $\tpath \in \rprog$ and $x = \locbound(\tpath)$ the ranking function of
   \right\}
   \right\}
  \]
- Taking an arbitrary ranking function $x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}$,
+ Taking an arbitrary ranking function $x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}$,
  let $\trace' \in \ftdom$ be the execution trace before first execution of $l_f: \rprog_t$, we have
 \[
  \config{c_l, \trace_r} \to^* \config{c_t;c_r', \trace_r \tracecat \trace'} \to^* \config{\clabel{\eskip}^{l}, \trace_r \tracecat \trace}
@@ -453,14 +453,14 @@ For each $\tpath \in \rprog$ and $x = \locbound(\tpath)$ the ranking function of
  \item  
  The \emph{Next State}, $\rfnext(\tpath, c) \in \scexpr(c)$ 
  is a
- symbolic expression describing how much $\tpath$'s ranking function ($\locbound(\tpath)$) is changed after the first execution of $\rprog$ and before the second execution.
+ symbolic expression describing how much $\tpath$'s ranking function ($\rank(\tpath)$) is changed after the first execution of $\rprog$ and before the second execution.
 \\
  By Definition~\ref{def:alg-loopabsstate}, we have
  \[
    \begin{array}{l}
    \rfnext(\tpath, c) \triangleq 
    \\
-   \bigcup\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}}
+   \bigcup\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}}
    \left\{ x = \begin{array}{l}
   \sum\limits_{\absevent \in \inc(x, c) }
    \left\{ v ~\middle\vert~ \absevent = (l, x' \leq x + v, \_) \land l \in \tpath\right\}
@@ -475,7 +475,7 @@ For each $\tpath \in \rprog$ and $x = \locbound(\tpath)$ the ranking function of
    \right\}.
    \end{array}
  \]
- Taking an arbitrary ranking function $x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}$,
+ Taking an arbitrary ranking function $x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}$,
  let $\trace' \in \ftdom$ be the execution trace before the second execution of $\tpath$, we have
  \[
    \config{c_r, \trace_r} \to^* \config{c_r', \trace_r \tracecat \trace'} \to^* \config{\clabel{\eskip}^{l}, \trace_r \tracecat \trace}
@@ -528,14 +528,14 @@ For each $\tpath \in \rprog$ and $x = \locbound(\tpath)$ the ranking function of
  %
  \item $\rffinal(\rprog, c)$ computes the value of 
  each ranking function 
- $x \in \left\{ \locbound(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\}$ after the iteration of $l_f:\rprog_t$ finished.
+ $x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\}$ after the iteration of $l_f:\rprog_t$ finished.
  \\
- Taking an arbitrary ranking function $x \in \left\{ \locbound(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\}$,
+ Taking an arbitrary ranking function $x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\}$,
  let $\trace' \in \ftdom$ be the execution trace after the execution of $\rprog$,  then we have
  \[
    \config{c_r, \trace_r} \to^* \config{c_r', \trace_r \tracecat \trace'} \to^* \config{\clabel{\eskip}^{l}, \trace_r \tracecat \trace}.
  \]
-So we know for each $\tpath$ in $\rprog$ with $x = \locbound(\tpath)$,
+So we know for each $\tpath$ in $\rprog$ with $x = \rank(\tpath)$,
 $\rffinal(\rprog, c)$ computes the lower bound on the value of $x$ after the execution of $\rprog$ finished.
 \\
 Then we know for each $ x = a \in \rfinit(\rprog, c) $ and $ x = b \in \rffinal(\rprog, c) $
@@ -596,7 +596,7 @@ Then we have this case proved.
 Based on the soundness of the three states above, we know that the initial value of the ranking function
 subtracts its final value divided by the modified value soundly computes the maximum iteration times of this program from $\absinit(\rprog)$ until the $l_f$ where $(l_f, \_) \in \absfinal(\rprog)$.
 \\
-So we have for each $\tpath \in \rprog$ where $x = \locbound(\tpath)$,
+So we have for each $\tpath \in \rprog$ where $x = \rank(\tpath)$,
 and $a, b, a ' \in \scexpr(c)$
 such that $x = a \in \rfinit(\rprog', c)$ and $x = b \in \rffinal(\rprog', c)$,
 the following holds.
@@ -618,7 +618,7 @@ Then in the first subcase, $\rprog' = \rprepeat(\rprog_l) = \tpath$, we have thi
 \[
   \begin{array}{l}
     \econfig{
-      \max\limits_{x \in \left\{ \locbound(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\}}
+      \max\limits_{x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\}}
       \left\{ \highlight{\frac{a - b}{\varGD(\tpath, c)}} ~\vert~
       x = a \in \rfinit(\tpath, c)
       \land x = b \in \rffinal(\tpath, c)
@@ -645,7 +645,7 @@ Then this subcase is proved by
 \[
   \begin{array}{l}
     \econfig{
-      \max\limits_{x \in \left\{ \locbound(\absevent, c) | \absevent \in \tpath \right\}} 
+      \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}} 
       \Big\{ \highlight{\frac{\min\{ a, a - \varGD(\rprog_1, c) \} - b}{\varGD(\rprog_1;\rprog_2, c)}}  
       \\ \qquad 
       ~\vert~
