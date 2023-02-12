@@ -261,14 +261,19 @@ effectively combine this methodology with the \emph{amortized complexity analysi
 
 \subsubsection{Reachability-bound Computation}
 \paragraph{Existing Techniques and Limitation.}
-\cite{GulwaniZ10} first introduce \emph{reachability-bound} as the upper bound on the number of times a given control location 
-inside a procedure is visited during program execution.
-While existing works all have different limitations when inferring the \emph{reachability-bound}.
+As we discussed above, most of existing static analysis methodology cannot compute the reachability-bound on a given program control location directly or path-sensitively.
+Most of them focus on one the \emph{quantitative} perspective of this property.
+% We summarize some of them below.
+% \cite{GulwaniZ10} first introduce \emph{reachability-bound} as the upper bound on the number of times a given control location 
+% inside a procedure is visited during program execution.
+% While existing works all have different limitations when inferring the \emph{reachability-bound}.
 For example, Gulwani et. al~\cite{GulwaniZ10}
 give a two-step solution by combining program abstract and proof-rules-based bound computation.
 But it does not compute the \emph{reachability-bound} precisely for every control location.
+% , which is the \emph{reachability} perspective of this property.
 Instead, they only compute the complexity bounds for the overall loop and over-approximate for different locations using this bound,
 which is loose especially when there are multipath loops.
+In this sense, they only estimate the \emph{quantitative} sub-property and loose the \emph{reachability} perspective of the \emph{reachability-bound}.
 Techniques in program complexity analysis~\cite{GustafssonEL05,HumenbergerJK18} 
 or worst-case resource cost analysis
 ~\cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14} can be repurposed to estimate similar quantities such as the
@@ -276,7 +281,7 @@ bounds on loop iterations, execution time, etc.
 While these quantities focus only on 
 the overall complexity,
 none of them compute the reachability-bound on a given program control location directly or path-sensitively.
-This leads to inaccuracy in data leakage analysis, resource cost estimation, etc.
+For the same reason, they also loose the \emph{reachability} perspective of the \emph{reachability-bound}.
 
 \paragraph{Our Method}
 To overcome these limitations, 
@@ -291,6 +296,5 @@ The first one bounds the evaluation times of each loop-free and interleave-free 
 We present algorithms for estimating these two quantities. By using them we can then 
 %Section~\ref{sec:looprb} and~\ref{sec:pathrb} 
 compute the \emph{reachability-bound} for each program point in a path-sensitive way.
-%in Section~\ref{sec:psrb}.
-We have implemented our algorithm in a prototype and evaluated it on 290 program extracted from different benchmarks. Our evaluation %Section~\ref{sec:eval} 
-shows that we can accurately estimate different bounds for different locations in programs with loops containing multiple paths. Based on this, we can also compute a tighter overall complexity compared to the state-of-art worst-case complexity analysis tools.
+To this end, our new methodology studies both of the \emph{reachability} and the \emph{quantitative} perspectives and
+analyzes the \emph{reachability-bound} in a higher granularity.
