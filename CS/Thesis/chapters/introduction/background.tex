@@ -57,10 +57,10 @@ achieved by
 analyzing the entire population.
 % This error shows the reliability of the data analysis and reflecting the accuracy of the personalized recommendations.
 High generalization error in the data analysis reduces the accuracy of the personalized recommendations for people using certain mobile applications. This brings in-\emph{convenience} and reduces the \emph{enjoyment} of the mobile experience.
-Under the light of existing machine learning studies, some researches found that some non-functional properties of data analysis algorithms can help to control the generalization error, especially when the data analysis is adaptive.
+Under the light of existing machine learning studies, some researches found that certain non-functional properties of data analysis algorithms can help to control the generalization error, especially when the data analysis is adaptive.
 \\
 We notice one of these non-functional properties that is critical in controlling the generalization error can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
-This property captures the generalization error in terms of whether the queries are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
+This property captures the generalization error in terms of whether the sample data that is queried by the algorithm are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
 We are interested in analyzing it as a \emph{quantitative-reachability} property using the principles of programming languages to help reduce the generalization error of corresponding algorithm.
 In this sense, we can help to improve accuracy for the recommendation results computed by these algorithms
 and guarantee the \emph{convenience} and the \emph{enjoyment} of people's life.
@@ -78,34 +78,44 @@ privacy, etc., of the applications on a mobile device or software on a computer.
 Suppose we are playing an online game on our smartphones, what do we care about? 
 In games such as racing, 
 we care about the performance of the game, in another word, if it runs fast, if it crashes due to being out of memory, and so on.
-In some other strategy games, we also care about whether my strategy is leaked to
-other parties, i.e., the privacy quality of the game.
-We observe that the performance of
-a program is usually related to resource cost, which is
-mainly determined by
-whether some lines of code are executed and how times they
-are executed.
-From the same perspective, we observe that whether the data is leaked is also related to
+In 
+strategy games, people also care about whether their strategies are leaked to
+the other parties, i.e., the privacy quality of the game.
+We observe that both of the performance and privacy
+can
+%  of
+% a program is usually related to resource cost, which is
+mainly be determined by
+% whether some lines of code are executed and how times they
+% are executed.
+% From the same perspective, we observe that whether the data is leaked is also related to
 whether certain pieces of the program code are executed,
-and their execution times.
-This brings my attention to other non-functional properties,
+and how times they are executed.
+% and their execution times.
+This brings my attention to the two non-functional properties,
 the
 reachability of certain lines of program code, and the times that certain code is executed.
 \\
-These two properties can indeed be captured by a \emph{quantitative-reachability} property from two perspectives, whether certain piece of code is executed (the \emph{reachability}) and how many times it is executed  (the \emph{quantitative}).
+These two properties can indeed be captured by a \emph{quantitative-reachability} hyper-property from two perspectives,
+i.e., whether certain piece of code is executed (the \emph{reachability}) and how many times it is executed  (the \emph{quantitative}).
 In \cite{GulwaniJK09}, this property is referred to as \emph{reachability-bound}, which is a worst-case bound on the number of times a given control location 
 inside a procedure is visited during the program execution.
-It has broad applications in analyzing other program property beyond itself.
+It has broad applications in analyzing other program properties beyond itself.
 For example in the resource cost analysis, this \emph{quantitative-reachability} property
 can help to provide a tighter
 bound on the resources consumed by a program such as time, memory,
 network traffic, power, etc.
-In the data analysis area, for example, when analyzing the program's \emph{adaptivity}
+In the data analysis area when we analyze the program's \emph{adaptivity}
 as introduced above,
-the \emph{reachability-bound} on each program control location
-can improve the precision of the estimated bound.
-Analyzing and controlling it from two perspectives can better help to improve program reliability, security, privacy, usability, etc., and guarantee the high-quality
-service through the mobile device people's life than just from single view. 
+the \emph{reachability-bound} on each program location
+can improve the precision of the \emph{adaptivity} analysis result.
+To this sense, analyzing and controlling it from two perspectives can better help to improve program reliability, security, privacy, usability, etc., and then guarantee the
+% high-quality
+% service through the 
+\emph{efficiency} and \emph{privacy} in people's daily life when they use the
+mobile applications.
+%  people experience.
+% 's life than just from single view. 
 Motivated by this, also as a continuation in improving the precision when analyzing the \emph{adaptivity} rounds in the first part, we look into the \emph{reachability-bound} in the \redd{PART \romannum{2}}
 
 
