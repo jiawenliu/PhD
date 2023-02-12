@@ -1,8 +1,20 @@
-As future work, we plan to investigate the potential integration of  {\THESYSTEM} in an adaptive data analysis framework like Guess and check by Rogers at al.~\cite{RogersRSSTW20}. As we discussed, this framework is  designed to support adaptive data analyses with limited generalization error. As our experiments show, this framework could benefit from the information provided by {\THESYSTEM} to provide more precise estimate and improved confidence intervals. Another direction we will explore is to make 
-the upper bounds provided by {\THESYSTEM} more precise by integrating our algorithm with a path-sensitive approach.
+We mainly focus on two aspects for future works in this part, the practical applications of {\THESYSTEM} and the
+accuracy of {\THESYSTEM}.
+%
+%  We plan to investigate the potential integration of  {\THESYSTEM} in an adaptive data analysis framework like Guess and check by Rogers at al.~\cite{RogersRSSTW20}. As we discussed, this framework is  designed to support adaptive data analyses with limited generalization error. As our experiments show, this framework could benefit from the information provided by {\THESYSTEM} to provide more precise estimate and improved confidence intervals. Another direction we will explore is to make 
+% the upper bounds provided by {\THESYSTEM} more precise by integrating our algorithm with a path-sensitive approach.
 
-\subsubsection{Accurate Adaptivity Definition}
-\label{sec:future-adapt-definition}
+\subsubsection{Practical Applications}
+\label{sec:future-adapt-application}
+We plan to investigate the potential integration of  {\THESYSTEM} in an adaptive data analysis framework like Guess and check by Rogers at al.~\cite{RogersRSSTW20}. As we discussed, this framework is  designed to support adaptive data analyses with limited generalization error. As our experiments show, this framework could benefit from the information provided by {\THESYSTEM} to provide more precise estimate and improved confidence intervals. 
+
+\subsubsection{Accuracy}
+\label{sec:future-adapt-accuracy}
+Another direction we will explore is to make 
+the upper bounds provided by {\THESYSTEM} more precise by integrating our algorithm with a path-sensitive approach.
+Specifically, we plan to improve the accuracy through from the two aspects.
+
+\paragraph{The Adaptivity Definition.}
 The program's adaptivity definition in Section~\ref{sec:adapt-exe}
 (specifically in Definition~\ref{def:trace_adapt}), isn't precise enough w.r.t. the intuitive \emph{adaptivity} rounds.
 It comes across an over-approximation.
@@ -24,8 +36,9 @@ dependency quantity is computed over the traces different from the traces used i
 % witness 
 analyzing the \emph{variable may-dependency} relation.
 
-\paragraph{Proposed Methodology}
-\label{para:furthers-dep-depth}
+% \paragraph{Proposed Methodology}
+% \label{para:furthers-dep-depth}
+
 Based on the \emph{adaptivity} formalization in Section~\ref{sec:adapt-exe}, the improvement on the accuracy 
 of
 \emph{adaptivity} definition is planned to develop in following three-steps.
@@ -52,8 +65,8 @@ The occurrence of every edge in a finite walk is restricted to be no more than i
 \end{enumerate}
 Through the three steps above, ideally we will give a more accurate definition of the intuitive \emph{adaptivity}.
 
-\subsubsection{Accurate Adaptivity Estimation}
-\label{sec:future-adaptfun}
+\paragraph{Adaptivity Static Analysis.}
+% \label{sec:future-adaptfun}
 In static program analysis framework $\THESYSTEM$, specifically on the dependency quantity, 
 I adopt the reachability bound analysis technique to estimate this dependency quantity.
 % In existing static reachability bound analysis, 
@@ -64,36 +77,36 @@ The Example~\ref{ex:multiRoundsO} shows this limitation in Section~\ref{sec:adap
 In this example, the estimated adaptivity by static analysis in Section~\ref{sec:adapt-static} 
 is $1 + 2*k$ where $k$ is the initial value of the input variable.
 However, the formal \emph{adaptivity} is only $1 + k$ from the execution-based analysis.
-
 This is resulted from the  path-insensitive of the dependency quantity in
 second stage of the static analysis in Section~\ref{sec:alg_weightgen}.
 It occurs when the control flow can be decided in a particular way in front of conditional branches, 
 while the static analysis fails to witness. 
 
-\paragraph{Proposed Methodology}
-\label{para:future-adaptfun}
-The accurate static adaptivity analysis is planned to be improved in following two steps.
-\begin{enumerate}
-    \item \textbf{Path-sensitive Reachability-bound Algorithm Design}
-    The imprecision comes from the second stage of the static program analysis.
-    The algorithm in this stage is to statically estimate the 
-    reachability bound for every location of program.
-    Specifically, this reachability bound analysis algorithm isn't path sensitive. 
-    There are many works in the program complexity analysis area, estimating the path-sensitive loop bound 
-    or reachability bound
-    \cite{GustafssonEL05, HumenbergerJK18}, 
-    \cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}, 
-    \cite{GulwaniZ10,SinnZV17,GulwaniJK09,GulwaniMC09}. 
-    However, they aren't analyzing the reachability
-    bound in a path-sensitive way.
-    \\
-    Motivated by this observation, I will first design path-sensitive reachability bound analysis algorithm computing the 
-    reachability bounds for every labeled command taking the different paths inside while loop into consideration.
-    \item \textbf{$\THESYSTEM$ via Path-sensitive Reachability-bound Algorithm Design}
-    Then following the same static program analysis based $\THESYSTEM$ framework in Section~\ref{sec:adapt-static},
-   this improved analysis result will be applied to estimate the dependency quantity as follows,
+% \paragraph{Proposed Methodology}
+% \label{para:future-adaptfun}
+The accurate static adaptivity analysis is planned to be improved by using our \emph{path-sensitive reachability-bound} alhgorithm
+from \redd{PART \romannum{2} } as follows.
+% \begin{enumerate}
+%     \item \textbf{Path-sensitive Reachability-bound Algorithm Design}
+%     The imprecision comes from the second stage of the static program analysis.
+%     The algorithm in this stage is to statically estimate the 
+%     reachability bound for every location of program.
+%     Specifically, this reachability bound analysis algorithm isn't path sensitive. 
+%     There are many works in the program complexity analysis area, estimating the path-sensitive loop bound 
+%     or reachability bound
+%     \cite{GustafssonEL05, HumenbergerJK18}, 
+%     \cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}, 
+%     \cite{GulwaniZ10,SinnZV17,GulwaniJK09,GulwaniMC09}. 
+%     However, they aren't analyzing the reachability
+%     bound in a path-sensitive way.
+%     \\
+%     Motivated by this observation, I will first design path-sensitive reachability bound analysis algorithm computing the 
+%     reachability bounds for every labeled command taking the different paths inside while loop into consideration.
+%     \item \textbf{$\THESYSTEM$ via Path-sensitive Reachability-bound Algorithm Design}
+%     Then following the same static program analysis based $\THESYSTEM$ framework in Section~\ref{sec:adapt-static},
+%    this improved analysis result will be applied to estimate the dependency quantity as follows,
 \begin{itemize}
-    \item $\THESYSTEM$ will construct different abstract control flow graph based on the requirement of the newly-designed
+    \item New $\THESYSTEM$ will construct different abstract control flow graph based on the requirement of the newly-designed
     path-sensitive reachability bound algorithm.
 
     \item The improved $\THESYSTEM$ will perform the same algorithm for analyzing the dependency relation in the first stage.
@@ -108,7 +121,7 @@ a more accurate program-based data dependency graph.
 Then, by applying Algorithm~\ref{alg:adapt} in Section~\ref{sec:alg_adaptcompute}, 
 the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.%
 \end{itemize}
-\end{enumerate}
+% \end{enumerate}
 Again as shown in Figure~\ref{fig:multiRoundsO}(b), ideally we will compute $\frac{k}{2}$ as the weight for vertices $p^6$ and $x^7$  through the newly-designed path-sensitive reachability bound analysis algorithm!
 This also gives the motivation for the work in \redd{ PART \romannum{2}} in this thesis.
 

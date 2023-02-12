@@ -1,14 +1,21 @@
-There are many limitations in this algorithm.
+The future works of our {path-sensitive} reachability-bound analysis
+mainly focus on improving our algorithm and the implementation
+from the three aspects,
+% has mainly three limitations in terms of
+the \emph{efficiency}, \emph{accuracy} and the \emph{generality}.
 
-There are many limitations in this algorithm.
-\begin{itemize}
-    \item The efficiency of the algorithm.
-    There are six steps in this algorithm in order to precisely estimate the reaching times of each location. Each step involves at least one iteration over the program, which results in low efficiency.
-    The major bottleneck comes from the recursion and potential non-termination in path-refinement algorithm and computing the invariants for the ranking functions. So in the next step, we will explore new path refinement~\cite{CyphertBKR19} and loop summarization techniques~\cite{BreckCKR20,KincaidBCR19,KincaidCBR18} and design more efficient path refinement algorithm. We also aim to design more efficient ranking estimate in replace of the existing one.
-    \item The accuracy of the path refinement algorithm and program abstraction implementation.
-    We sacrificed the accuracy in order improve the efficiency of the implementation. For the path refinement algorithm,
-    we limited its maximal iteration times to $100$ and same for computing program constraints. 
-    In the future, we plan to improve the accuracy of the implementation by extending the implementation with the new efficient algorithm.
-    \cite{CyphertBKR19} introduced a precise path refinement techniques over regular expression. Its experiments show that they are accurate for eliminating infeasible loop paths, which can be a potential technique for improvement.
-    \item The generality of the prototype is limited. So far we only support the program with integer counters and linear counter transformation. While there are some advanced works reasoning about the non-linear loop summarization and invariant generation. Under this background, we plan to support more complex counter transformation in the next step.
-\end{itemize}
+\subsubsection{The Efficiency} 
+% The efficiency of the algorithm.
+In our algorithm, there are six steps in order to precisely estimate the reaching times of each location. Each step involves at least one iteration of the program, which results in low efficiency.
+The major bottleneck comes from the recursion and potential non-termination in the path-refinement algorithm and computing the invariants for the ranking functions. So in the next step, we will explore new path refinement~\cite{CyphertBKR19} and loop summarization techniques~\cite{BreckCKR20,KincaidBCR19,KincaidCBR18} and design a more efficient path refinement algorithm. We also aim to design a more efficient ranking estimation in replace of the existing one.
+
+\subsubsection{The Accuracy} 
+The accuracy of the path refinement algorithm and program abstraction implementation.
+We sacrificed accuracy in order to improve the efficiency of the implementation. For the path refinement algorithm,
+we limited its maximal iteration times to $100$, and the same for computing program constraints. 
+In the future, we plan to improve the accuracy of the implementation by extending the implementation with the new efficient algorithm.
+\cite{CyphertBKR19} introduced a precise path refinement technique over regular expression. Its experiments show that they are accurate in eliminating infeasible loop paths, which can be a potential technique for improvement.
+
+\subsubsection{The Generality}
+In our existing implementation, the prototype is limited in terms of expressiveness and scalability. So far we only support the program with integer counters and linear counter transformation. While there are some advanced works reasoning about the non-linear loop summarization and invariant generation. Against this background, we plan to support more complex computations in the next step.
+

@@ -1,137 +1,137 @@
 There are two main parts of the work in this thesis.
-The first part focus on formalizing and analyzing the \emph{adaptivity} -- a quantitative reachability property -- for the programs in data analysis area,
-through semantics-based formalization and the static program analysis techniques.
+The first part focuses on formalizing and analyzing the \emph{adaptivity} -- a quantitative reachability property -- for the programs in the data analysis area,
+through semantics-based formalization and static program analysis techniques.
 The second part focus on computing the precise reachability-bound for every program control point.
 \begin{enumerate}
 
-    \item \redd{PART \romannum{1} \quad  PROGRAM ANALYSIS FRAMEWORK FOR ADAPTIVE DATA ANALYSIS}
-    shows the work on studying and formalizing the \emph{adaptivity} of the adaptive data analysis program.    
+ \item \redd{PART \romannum{1} \quad PROGRAM ANALYSIS FRAMEWORK FOR ADAPTIVE DATA ANALYSIS}
+ shows the work on studying and formalizing the \emph{adaptivity} of the adaptive data analysis program. 
 
-    \paragraph{Chapter~\ref{sec:adapt-intro}} introduces the \emph{adaptivity} concept through the following secitons.
-    
-    Section~\ref{sec:adapt-background} first introduces the background of \emph{adaptivity} in
-    the adaptive data analysis areas.
-    %
-    Then in Section~\ref{sec:adapt-motivation}, we discuss the challenges in analyzing
-    this concept in the programming language area.
-    %  that we are facing to formalize and {obtain} the adaptive data analysis program's adaptivity and control its generalization error,
-    % with an 
-    %
-    Section~\ref{sec:adapt-overview} shows a running example and gives the technical overview of our approach.
-    %
-    The outline of this part is given in Section~\ref{sec:adapt-outline}.
-    
-    \paragraph{Chapter~\ref{sec:prework}} summarizes the previous works on analyzing the \emph{adaptivity}.
-    It contains a short summary of the language designs in Section~\ref{sec:prework-language} 
-    the adaptivity formalization through program analysis over the trace-based operational semantics (Section~\ref{sec:prework-formalization}),
-    and previous program analysis algorithm that is used to estimate the adaptivity of the data analysis programs 
-    in Section~\ref{sec:prework-static}
-    Their algorithm first introduces the SSA version of the loop language
-    to enable an easier analysis over adaptivity by an easier tracking of dependency relations between variables based of the limitation of direct analysis over the loop language
-    Following with a three-step algorithm, which constructs a data control dependency graph, and add weights to the graph. The adaptivity is estimated by the weight of the path with the highest weight.
+ \paragraph{Chapter~\ref{sec:adapt-intro}} introduces the \emph{adaptivity} concept through the following secitons.
+ 
+ Section~\ref{sec:adapt-background} first introduces the background of \emph{adaptivity} in
+ the adaptive data analysis areas.
+ %
+ Then in Section~\ref{sec:adapt-motivation}, we discuss the challenges in analyzing
+ this concept in the programming language area.
+ % that we are facing to formalize and {obtain} the adaptive data analysis program's adaptivity and control its generalization error,
+ % with an 
+ %
+ Section~\ref{sec:adapt-overview} shows a running example and gives the technical overview of our approach.
+ %
+ The outline of this part is given in Section~\ref{sec:adapt-outline}.
+ 
+ \paragraph{Chapter~\ref{sec:prework}} summarizes the previous works on analyzing the \emph{adaptivity}.
+ It contains a short summary of the language designs in Section~\ref{sec:prework-language} 
+ the adaptivity formalization through program analysis over the trace-based operational semantics (Section~\ref{sec:prework-formalization}),
+ and previous program analysis algorithm that is used to estimate the adaptivity of the data analysis programs 
+ in Section~\ref{sec:prework-static}
+ Their algorithm first introduces the SSA version of the loop language
+ to enable an easier analysis over adaptivity by an easier tracking of dependency relations between variables based on the limitation of direct analysis over the loop language
+ followed with a three-step algorithm, which constructs a data control dependency graph, and add weights to the graph. The adaptivity is estimated by the weight of the path with the highest weight.
 
 
-    % \paragraph*{Chapter~\ref{sec:adapt-analysis}} presents the new adaptivity analysis framework in following sections.
-    
-    \paragraph*{Chapter~\ref{sec:adapt-language}} gives our
-    {\tt Qwhile} language extended from the while language. It includes the syntax in Section~\ref{sec:language-syntax}
-    and the trace-based operational semantics in Section~\ref{sec:language-os}.
-    %  supports more general adadptive data analysis.
-    
-    \paragraph*{Chapter~\ref{sec:adapt-exe}} presents the new definition for
-    the intuitive \emph{adaptivity} rounds for a given data analysis program through a formal semantics model.
-    It is defined through the following sections. 
+ % \paragraph*{Chapter~\ref{sec:adapt-analysis}} presents the new adaptivity analysis framework in following sections.
+ 
+ \paragraph*{Chapter~\ref{sec:adapt-language}} gives our
+ {\tt Qwhile} language extended from the while language. It includes the syntax in Section~\ref{sec:language-syntax}
+ and the trace-based operational semantics in Section~\ref{sec:language-os}.
+ % supports more general adadptive data analysis.
+ 
+ \paragraph*{Chapter~\ref{sec:adapt-exe}} presents the new definition for
+ the intuitive \emph{adaptivity} rounds for a given data analysis program through a formal semantics model.
+ It is defined through the following sections. 
 %
 
-    The Section~\ref{sec:dynamic-datadep} defines the \emph{variable may-dependency} relation in order to the reason the \emph{data-dependency} between every query semantically.
-    % through the methodology of semantic data dependency analysis.
+ Section~\ref{sec:dynamic-datadep} defines the \emph{variable may-dependency} relation in order to the reason the \emph{data-dependency} between every query semantically.
+ % through the methodology of semantic data dependency analysis.
 %
 
-    In Section~\ref{sec:dynamic-graph}, it analyzes the \emph{dependency quantity} over variables
-    based on the \emph{variable may-dependency} relations formalized above.
-    Then we combine this quantitative information with \emph{variable may-dependency} relations and construct a weighted dependency graph
-    named \emph{semantics-based dependency graph}.
-    %
+ In Section~\ref{sec:dynamic-graph}, it analyzes the \emph{dependency quantity} over variables
+ based on the \emph{variable may-dependency} relations formalized above.
+ Then we combine this quantitative information with \emph{variable may-dependency} relations and construct a weighted dependency graph
+ named \emph{semantics-based dependency graph}.
+ %
 
-    Then in Section~\ref{sec:dynamic-adapt}, we present the formal \emph{adaptivity} model in Definition~\ref{def:trace_adapt} as a formal quantitative reachability property.
-   This definition is based on the \emph{semantics-based dependency graph} by combining both \emph{data-dependency} and \emph{dependency quantity} property, which captures intuitive \emph{adaptivity} accurately.
+ Then in Section~\ref{sec:dynamic-adapt}, we present the formal \emph{adaptivity} model in Definition~\ref{def:trace_adapt} as a formal quantitative reachability property.
+ This definition is based on the \emph{semantics-based dependency graph} by combining both \emph{data-dependency} and \emph{dependency quantity} property, which captures intuitive \emph{adaptivity} accurately.
 
-   \paragraph*{Chapter~\ref{sec:adapt-static}} introduces a static program adaptivity analysis framework, named {\THESYSTEM}.
-    This analysis combines both data dependency analysis with resource cost analysis techniques.
-    It is developed in as follows in order to accurately approximate the formal \emph{adaptivity} definition
-    through static program analysis techniques. 
+ \paragraph*{Chapter~\ref{sec:adapt-static}} introduces a static program adaptivity analysis framework, named {\THESYSTEM}.
+ This analysis combines both data dependency analysis with resource cost analysis techniques.
+ It is developed as follows in order to accurately approximate the formal \emph{adaptivity} definition
+ through static program analysis techniques. 
 
-    In Section~\ref{sec:alg_vertexgen},~\ref{sec:alg_weightedgegen} and~\ref{sec:alg_graphgen}, it constructs an 
-    \emph{estimated dependency} graph for approximating the \emph{semantics-based dependency graph}.
-    Specifically, through Section~\ref{sec:alg_edgegen}, {\THESYSTEM} first uses a combined data-control flow analysis algorithm estimating the data \emph{variable may-dependency} relation in order to estimate the edge of this graph.
-    The Section~\ref{sec:alg_weightgen} presents a reachability-bound analysis algorithm. {\THESYSTEM} then uses this algorithm and estimates the \emph{dependency quantity} for \emph{adaptivity}, as well as the weight of this graph.
-    Then Section~\ref{sec:alg_graphgen} combines all information and constructs the 
-    \emph{estimate dependency} graph.
+ In Section~\ref{sec:alg_vertexgen},~\ref{sec:alg_weightedgegen} and~\ref{sec:alg_graphgen}, it constructs an 
+ \emph{estimated dependency} graph for approximating the \emph{semantics-based dependency graph}.
+ Specifically, through Section~\ref{sec:alg_edgegen}, {\THESYSTEM} first uses a combined data-control flow analysis algorithm estimating the data \emph{variable may-dependency} relation in order to estimate the edge of this graph.
+ Section~\ref{sec:alg_weightgen} presents a reachability-bound analysis algorithm. {\THESYSTEM} then uses this algorithm and estimates the \emph{dependency quantity} for \emph{adaptivity}, as well as the weight of this graph.
+ Then Section~\ref{sec:alg_graphgen} combines all information and constructs the 
+ \emph{estimate dependency} graph.
 
-    The Section~\ref{sec:alg_adaptcompute} presents an efficient and accurate path search algorithm. It computes the \emph{adaptive} from the estimated graph.
-    % , specifically estimating     
+ Section~\ref{sec:alg_adaptcompute} presents an efficient and accurate path search algorithm. It computes the \emph{adaptive} from the estimated graph.
+ % , specifically estimating 
 
-    \paragraph{Chapter~\ref{sec:adapt-implementation}} presents five examples with steps unfolded manually to demonstrate this framework in Section~\ref{sec:adapt-example},
-    and the evaluation results over a benchmark composed of six real world data analysis algorithms and eleven handcrafted programs based on the code pieces extracted from C library and six synthesized programs in Section~\ref{sec:adapt-eval}.
-    
-    \paragraph{Chapter~\ref{sec:adapt-relatedwork}} discusses the related works from three perspectives:
-    the semantics based dependency  analysis and formalization(Section~\ref{sec:relatedwork-adapt-semantics}), the static program analysis (Section~\ref{sec:relatedwork-adapt-static}), and the works about generalization error in adaptive data analysis (Section~\ref{sec:relatedwork-adapt-error}).  
+ \paragraph{Chapter~\ref{sec:adapt-implementation}} presents five examples with steps unfolded manually to demonstrate this framework in Section~\ref{sec:adapt-example},
+ and the evaluation results over a benchmark composed of six real-world data analysis algorithms and eleven handcrafted programs based on the code pieces extracted from the C library and six synthesized programs in Section~\ref{sec:adapt-eval}.
+ 
+ \paragraph{Chapter~\ref{sec:adapt-relatedwork}} discusses the related works from three perspectives:
+ the semantics-based dependency analysis and formalization(Section~\ref{sec:relatedwork-adapt-semantics}), the static program analysis (Section~\ref{sec:relatedwork-adapt-static}), and the works about generalization error in adaptive data analysis (Section~\ref{sec:relatedwork-adapt-error}). 
 
-    \item \redd{PART \romannum{2} \quad  REACHABILITY BOUND ANALYSIS}
+ \item \redd{PART \romannum{2} \quad REACHABILITY BOUND ANALYSIS}
 
-    \paragraph{Chapter~\ref{sec:reachability-intro}} has four parts.
+ \paragraph{Chapter~\ref{sec:reachability-intro}} has four parts.
 
-    The first part in Section~\ref{sec:reachability-background} introduces the background of the
-    \emph{reachability-bound} and developments in analyzing it.
-    Then in
-    Section~\ref{sec:reachability-motivation}, we discuss the technique motivations
-    %  and existing 
-    and the technical limitations in analyzing the \emph{reachability-bound}.
-    Section~\ref{sec:reachability-overview} gives the technical overview of our new approach through
-    three running examples.
-    % then presents the motivation and existing limitations on this problem and give the overview of the new algorithm in
-    % Section~\ref{sec:reachability-motivation} and 
-    The structure of this chapter is given 
-    in Section~\ref{sec:reachability-outline}.
+ The first part in Section~\ref{sec:reachability-background} introduces the background of the
+ \emph{reachability-bound} and developments in analyzing it.
+ Then in
+ Section~\ref{sec:reachability-motivation}, we discuss the technique motivations
+ % and existing 
+ and the technical limitations in analyzing the \emph{reachability-bound}.
+ Section~\ref{sec:reachability-overview} gives the technical overview of our new approach through
+ three running examples.
+ % then presents the motivation and existing limitations of this problem and give an overview of the new algorithm in
+ % Section~\ref{sec:reachability-motivation} and 
+ The structure of this chapter is given 
+ in Section~\ref{sec:reachability-outline}.
 
-    \paragraph*{Chapter~\ref{sec:psRB-language}} gives our language and program model, which includes the
-    language syntax in Section~\ref{sec:psRB-language-syntax} and the trace-based operational semantics in Section~\ref{sec:psRB-language-semantics}.
-    
-    \paragraph{Chapter~\ref{sec:psRB-definition}} gives the \emph{reachability-bound} definition over our language model.
+ \paragraph*{Chapter~\ref{sec:psRB-language}} gives our language and program model, which includes the
+ language syntax in Section~\ref{sec:psRB-language-syntax} and the trace-based operational semantics in Section~\ref{sec:psRB-language-semantics}.
+ 
+ \paragraph{Chapter~\ref{sec:psRB-definition}} gives the \emph{reachability-bound} definition over our language model.
 
-    \paragraph{Chapter~\ref{sec:psRB-analysis-alg}} presents the {path-sensitive reachability-bound analysis} through the following sections.
-    Section~\ref{sec:psRB-analysis-alg} presents the new \emph{path-sensitive reachability-bound} analysis algorithm, named $\kw{psRB}$ through the following subsections.
-    
-    Section~\ref{sec:psRB-preface} first gives the main steps of this algorithm as a structural section. There are five steps in this algorithm.
-    
-    In Section~\ref{sec:psRB-progabs}, we give the first step computation, which computes the \emph{abstract transition graph}
-    for the program.
+ \paragraph{Chapter~\ref{sec:psRB-analysis-alg}} presents the {path-sensitive reachability-bound analysis} through the following sections.
+ Section~\ref{sec:psRB-analysis-alg} presents the new \emph{path-sensitive reachability-bound} analysis algorithm, named $\kw{psRB}$ through the following subsections.
+ 
+ Section~\ref{sec:psRB-preface} first gives the main steps of this algorithm as a structural section. There are five steps in this algorithm.
+ 
+ In Section~\ref{sec:psRB-progabs}, we give the first step computation, which computes the \emph{abstract transition graph}
+ for the program.
 
-    Based on this graph, Section~\ref{sec:psRB-refine} then refines the multi-paths loop in this program and generates a refined program.
+ Based on this graph, Section~\ref{sec:psRB-refine} then refines the multi-paths loop in this program and generates a refined program.
 
-    According to the graph and the refined program, Section~\ref{sec:psRB-rank} computes the ranking function for each edge on the graph and estimates the value of each ranking function.
-    
-    Using the estimated ranking functions and the refined program, Section~\ref{sec:psRB-psrb} introduces our \emph{path-sensitive reachability-bound} algorithm. Then we give the detail computations of this algorithm in the following sections.
-    Section~\ref{sec:psRB-pathlocalrb} and \ref{sec:psRB-looprb} then computes the \emph{path reachability-bound} and \emph{loop reachability-bound} for each path and loop of this program using the ranking function and the graph.
-    
+ According to the graph and the refined program, Section~\ref{sec:psRB-rank} computes the ranking function for each edge on the graph and estimates the value of each ranking function.
+ 
+ Using the estimated ranking functions and the refined program, Section~\ref{sec:psRB-psrb} introduces our \emph{path-sensitive reachability-bound} algorithm. Then we give the detailed computations of this algorithm in the following sections.
+ Section~\ref{sec:psRB-pathlocalrb} and \ref{sec:psRB-looprb} then computes the \emph{path reachability-bound} and \emph{loop reachability-bound} for each path and loop of this program using the ranking function and the graph.
+ 
 
-    \paragraph{Chapter~{\ref{sec:psRB-eval}}} presents some step-by-step examples to illustrate the algorithm clearly in Section~\ref{sec:psRB-example} firstly,
-    and then shows the implementation and evaluation results over five real world benchmarks in Section~\ref{sec:psRB-eval}.
-    
-    \paragraph{Chapter~\ref{sec:psRB-relatedwork}} discusses the related works in this area.
+ \paragraph{Chapter~{\ref{sec:psRB-eval}}} presents some step-by-step examples to illustrate the algorithm clearly in Section~\ref{sec:psRB-example} firstly,
+ and then shows the implementation and evaluation results over five real-world benchmarks in Section~\ref{sec:psRB-eval}.
+ 
+ \paragraph{Chapter~\ref{sec:psRB-relatedwork}} discusses the related works in this area.
 
-    \item \redd{PART \romannum{3} \quad  Epilogue}
-    \paragraph{Chapter~\ref{sec:conclusionfuture}}
-    concludes the works of \redd{PART \romannum{1}} and \redd{PART \romannum{2}}, and gives the future plans based on their limitations respectively in Section~\ref{sec:conclusionfuture-adapt} and Section~\ref{sec:conclusionfuture-psRB}.
+ \item \redd{PART \romannum{3} \quad Epilogue}
+ \paragraph{Chapter~\ref{sec:conclusionfuture}}
+ concludes the works of \redd{PART \romannum{1}} and \redd{PART \romannum{2}}, and gives the future plans based on their limitations respectively in Section~\ref{sec:conclusionfuture-adapt} and Section~\ref{sec:conclusionfuture-psRB}.
 
-    Section~\ref{sec:conclusion-adapt} summarizes the program analysis framework for adaptive data analysis in \redd{PART \romannum{1}}, concludes the contribution and weakness of our analysis algorithm. Then in Section~\ref{sec:future-adapt}, we propose the future work on extending and improving the existing technique.
+ Section~\ref{sec:conclusion-adapt} summarizes the program analysis framework for adaptive data analysis in \redd{PART \romannum{1}}, and concludes the contribution and weakness of our analysis algorithm. Then in Section~\ref{sec:future-adapt}, we propose future work on extending and improving the existing technique.
 
-    Section~\ref{sec:conclusion-psRB} summarizes the main contribution and limitation of our path-sensitive reachability-bound computation algorithm in \redd{PART \romannum{2}}. Then Section~\ref{sec:future-psRB} presents the possible improvement plan for the next step.
-    
-    Section~\ref{sec:future-cost} discusses a possible future direction on studying a general quantitative reachability properties, i.e., {the program's non-monotonic quantitative property}.
+ Section~\ref{sec:conclusion-psRB} summarizes the main contribution and limitation of our path-sensitive reachability-bound computation algorithm in \redd{PART \romannum{2}}. Then Section~\ref{sec:future-psRB} presents the possible improvement plan for the next step.
+ 
+%  Section~\ref{sec:future-cost} discusses a possible future direction for studying general quantitative reachability properties, i.e., {the program's non-monotonic quantitative property}.
 
-   \item \redd{PART \romannum{4} \quad  APPENDIX}
-    The Appendix contains the complete program code for examples, and proofs for lemmas and theorems in \redd{PART \romannum{1}} and \redd{PART \romannum{2}}.
+ \item \redd{PART \romannum{4} \quad APPENDIX}
+ The Appendix contains the complete program code for examples, and proofs for lemmas and theorems in \redd{PART \romannum{1}} and \redd{PART \romannum{2}}.
 \end{enumerate}
 
 % \textbf{Previous Published Materials}

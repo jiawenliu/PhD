@@ -1,27 +1,27 @@
 \begin{abstractpage}
     Program analysis analyzes the behaviors of a computer program, such as resource usage, where people analyze whether a piece of code consumes certain resources and how much specific resources are used by a program / certain pieces of code.
-    People also analyze its safety behavior, where we care if a certain program / code leaks a secret and how much secret it leaks. 
-    In terms of the privacy behavior, people analyze whether certain private data is dependent on others and how many times they are dependent during multiple executions.
+    People also analyze its safety behavior, where we care if a certain program/code leaks a secret and how much secret it leaks. 
+    In terms of privacy behavior, people analyze whether certain private data is dependent on others and how many times they are dependent during multiple executions.
     Analyzing these behaviors are all focusing on analyzing the same two sub-properties, "How Much" and "Whether" from two perspectives.
     We refer to the two perspective sub-properties as \emph{quantitative} and \emph{reachability} properties, and we refer to this class of behaviors as a hyper-property named \emph{quantitative-reachability} property.
-    Existing analysis that are mainly from one perspective is not precise enough to capture these properties.
-    For example, reachability analysis only tells us, whether some code is executed, whether the confidential data is leaked, whether the output relies on input, etc., but not how many times or how long these properties hold for programs. 
+    Existing analysis that is mainly from one perspective is not precise enough to capture these properties.
+    For example, reachability analysis only tells us, whether some code is executed, whether confidential data is leaked, whether the output relies on input, etc., but not how many times or how long these properties hold for programs. 
     Quantitative analysis, such as program complexity or cost analysis, only tells us the upper bound on the overall worst-case quantity but not where the resource is cost, where the data is leaked, etc.
-    This thesis presents algorithms that complement two lines of analysis and shows the effectiveness in analyzing two representative quantitative-reachability properties and controlling the program's execution behavior in a higher granularity. 
+    This thesis presents algorithms that complement two lines of analysis and shows the effectiveness in analyzing two representative quantitative-reachability properties and controlling the program's execution behavior in higher granularity. 
     
     The first noteworthy property we look into is the \emph{adaptivity} rounds in adaptive data analysis. An adaptive data analysis is usually composed of multiple queries among which the choice of some queries may depend on previous queries' results.
-    These queries form dependent relations with each other, and the
+    These queries form dependent relations with each other and the
     \emph{adaptivity} is intuitively the depth of the chain of dependent queries in these dependence relations.
-    Reasoning about  \emph{adaptivity} is useful in controlling the generalization error of adaptive data analysis, which usually propagates sharply along with the dependency chain.
-    Researchers in the data analysis area have found that the generalization error can be controlled well by choosing the appropriate statistic technique according to the  \emph{adaptivity}.
+    Reasoning about \emph{adaptivity} is useful in controlling the generalization error of adaptive data analysis, which usually propagates sharply along with the dependency chain.
+    Researchers in the data analysis area have found that the generalization error can be controlled well by choosing the appropriate statistic technique according to the \emph{adaptivity}.
     Nevertheless, adaptivity is not always clear to data analysts when they need it.
     To solve this dilemma, we present a program analysis framework, which analyzes this intuitive concept in
     the principle of programming language.
-    %  based on dependency graphs to provide an upper bound on adaptivity to assist data analysts. 
+    % based on dependency graphs to provide an upper bound on adaptivity to assist data analysts. 
     Our framework first formalizes the \emph{adaptivity} through a semantics-based definition
     Then through a new program analysis algorithm that combines the \emph{reachability} and \emph{quantitative} analysis techniques,
     it estimates the adaptivity for programs that implements certain data analysis strategies statistically and soundly. 
-
+   
     As a continuation of the previous problem, to get a more precise bound on the adaptivity, we look at the second quantitative-reachability property – the number of times a given control location inside a procedure is visited during the program execution.
     The upper bound on this property is referred to as the \emph{reachability-bound} by~\cite{GulwaniZ10} in the first place. 
     A tight reachability-bound can help to improve the analysis results on other program features beyond itself,
@@ -32,4 +32,6 @@
     By doing this, we bring together two techniques from resource analysis: 1. amortized bound analysis through program abstraction and ranking function estimation, and 2. summarization-based multiple loop paths refinement.
     Building on this combination, we focus on two new quantities, \emph{path reachability-bound} and \emph{loop reachability-bound}, which allow us to leverage the precision and efficiency of the two techniques, and allow us to compute precise reachability-bounds for each program point in a path-sensitive way.
     We implemented our algorithm in a prototype, and we report on an experimental comparison with state-of-art tools over four different sets of benchmarks.
-\end{abstractpage}
+   \end{abstractpage}
+   
+   
