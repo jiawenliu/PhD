@@ -124,27 +124,31 @@ We summarize their existing developments and limitations as follows.
 \emph{Data Dependency / Control Flow Analysis.}
 Both of these two kinds of analysis techniques can help to estimate the \emph{reachability} sub-property.
 However, to the best of our knowledge, 
-most of the existing static dependency analysis, or control flow analysis techniques consider only the value influence, or control influence respectively.
+most of the existing static dependency analysis or control flow analysis techniques consider only either the value influence or control influence.
 To analyze the \emph{reachability} sub-property w.r.t. the queries in adaptive data analysis program, we need to consider both of them.
 % The existing static analysis techniques in the complexity or resource cost estimation areas,
 % cannot give accurate reachability times on programs 
 % at every execution location.
-In this sense, it is challenging to apply them in computing the \emph{reachability} sub-property of \emph{adaptivity}.
+In this sense, it is difficult to apply them to analyze the \emph{reachability} sub-property of \emph{adaptivity}.
 
 \emph{Resource Cost / Complexity Analysis.}
 Techniques in the complexity or resource cost estimation areas can be used to analyze the \emph{quantitative} sub-property.
 However, they are focusing on estimating the
 overall resource costs or program execution complexity.
-Most of them cannot give the estimation w.r.t. the queries or data in our new setting.
-Reusing them in analyzing the \emph{quantitative} sub-property for \emph{adaptivity} is infeasible. 
+Most of them cannot give the estimation w.r.t. the queries or data for the data analysis programs.
+%  our new setting.
+Reusing them in analyzing the \emph{quantitative} sub-property for \emph{adaptivity} is not straightforward. 
 
 \emph{Longest Path Search.}
 Given the  similarity between the longest path and the longest \emph{finite walk}, some longest weighted path search algorithms
 can help to compute the longest \emph{finite walk}.
-However, since computing the longest weighted path is NP-complete, 
-it is slow if we use these algorithms searching for the longest \emph{finite walk}.
-Moreover, the weight on our graph is symbolic, so most of these algorithms are non-terminating.
-In this sense, it is difficult to use them computing the longest \emph{finite walk} and estimating our \emph{adaptivity}.
+However, since computing the longest weighted path is NP-complete,
+and the weight on our graph is symbolic
+% it is slow if we use these algorithms searching for the longest \emph{finite walk}.
+most of these algorithms are non-terminating if we use them to search for the longest \emph{finite walk}.
+% Moreover, the weight on our graph is symbolic, so most of these algorithms are non-terminating.
+% In this sense, it is difficult to use 
+In this sense, we need to design new algorithm to compute the longest \emph{finite walk} and estimate the \emph{adaptivity}.
 
 \paragraph{New Methodology}
 Our new methodology follows the similar structure as the one in Section~\ref{sec:intro-methodology-adapt-formalization}. It is summarized as follows.
@@ -153,8 +157,9 @@ Our new methodology follows the similar structure as the one in Section~\ref{sec
 % adopts both the static data flow analysis and the control flow analysis techniques for
 the \emph{data dependency} relation and estimate it statically.
 Our new methodology
-performs both the data flow analysis and the control flow analysis, which
-is more accurate than using either single one of them.
+performs both the data flow analysis and the control flow analysis. Based on this
+it estimates the \emph{data dependency} relation
+more accurately than using either single one of them.
 
 \item Then we would like to reason the
 \emph{quantitative} perspective through estimating the \emph{reachability-bound}.
@@ -168,7 +173,7 @@ trivial computing \emph{reachability-bound} for certain control location.
 %  is not able to be captured by any existing static program analysis framework.
 
 \item Then our new approach constructs the \emph{estimated dependence graph} in order to approximate
-the graph that is built in order to formalize the \emph{adaptivity}.
+the graph that is built when defining the \emph{adaptivity}.
 It
 encodes both the estimated \emph{data dependency} relation and the \emph{reachability-bound} as well.
 This encoding complements the weakness of both lines of works in comparison to purely use single either \emph{reachability} or \emph{quantitative} analysis, 
@@ -198,7 +203,7 @@ inside a procedure is visited during the program execution.
 Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
 However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively for each program location.
 Existing methods from different areas have different limitations in computing the reachability-bound.
-Below we summarize these limitations in the relevant methodologies and introduce how we leverage them in our new approach.
+Below we summarize some limitations of the relevant methodologies and introduce how we leverage them in our new approach.
 % To solve these issues and improve the analysis results on this problem, we present a new algorithm
 % aiming to find the precise symbolic \emph{reachability-bound} on the program's every location.
 % Below are the methodologies we adopted in our new algorithm and their existing limitations.
@@ -211,8 +216,12 @@ But none of the three abstraction models can represent the if guard in multipath
 computing the \emph{reachability-bound} can also be used. While it only works well for the specific targeting problem, and still low-efficient or inaccuracy in summarizing the multipath loops and solving the path-sensitive \emph{reachability-bound} problem. 
 
 \paragraph*{Our Method.}
-In our algorithm, we choose to use the difference constrain based program abstraction model combined with boolean expression abstraction to generate our abstract transition graph $\absG(c)$ for a program $c$. 
-Each command in the program is abstracted into an abstract transition, $\absevent$.
+In our algorithm, we choose to use the difference constrain based program abstraction model combined with boolean expression abstraction to generate our abstract transition graph
+%  $\absG(c)$ 
+for a program.
+%  $c$. 
+Each command in the program is abstracted into an abstract transition.
+% , $\absevent$.
 It can represent the program loops path-sensitively which is more accurate than the state-of-art program abstraction models.
 It is based on the difference constrain model in~\cite{SinnZV17} and the size change abstraction in~\cite{SinnZV14}. The efficiency also benefit from our
 semantics model, which is inspired from~\cite{Cousot19a} and~\cite{Cousot19} and has similar intuition with the program model in~\cite{SinnZV17}.
@@ -227,6 +236,7 @@ precise bounds on loop iterations and execution time,
 and in turn obtain reachability bounds for complex programs.
 However, these techniques are designed to capture the worst-case or overall complexity, and again they may over-approximate the reachability-bounds of certain locations.
 When there are multiple paths and the interleaving affects the loop execution, the over-approximation is more evident.
+
 \paragraph{Our Method.}
 To improve these limitations, our methodology deploys the loop path refinement technique and performs the \emph{amortized complexity analysis} over the refined programs.
 The \emph{amortized complexity analysis} techniques we use is through the ranking function 
