@@ -25,7 +25,7 @@ contains at least $k$ numeric attributes
 (every query in the first phase focuses on one), which we index just by natural numbers.
 The implementation of this data analysis in the language of {\THESYSTEM} is presented in Fig.~\ref{fig:overview-example}(a).
 
-\subsection{Program Model.}
+\subsection{Program Model}
 The {\THESYSTEM} language extends a standard while language\footnote{Programs components are labeled, so that we can uniquely identify every component.} with a query request constructor denoted $\query$. Queries have the form $\query(\qexpr)$, where $\qexpr$ is a special expression 
 (see syntax in Section~\ref{sec:adapt-language}) representing a function $\from \univ \to U$ on rows.
 We use $U$ to denote the codomain of queries and it could be $[-1,1]$, $[0,1]$ or $[-R,+R]$, for some $R$ we consider. This function characterizes the linear query we are interested in running. Indeed, as we discussed in the previous section, linear queries compute the empirical mean of a function on rows --- we use $\chi$ to abstract a possible row in the database.
@@ -39,7 +39,7 @@ This example is intuitively 2-rounds adaptive since we have two clearly distingu
 (at line 6) depends on the results of all the previous queries. 
 However, capturing this concept formally is surprisingly difficult. The difficulty comes from the fact that a query can depend on the result of another query in multiple ways, by means of data dependency or control flow dependency.
 
-\subsection{Adaptivity definition}
+\subsection{Adaptivity Definition}
 \label{sec:adaptivity-informal}
 The central property we are after in this work is the \emph{adaptivity of a program}. We define formally this notion in three steps, which we will describe in details in Section~\ref{sec:adapt-exe}. First, we define a notion of dependency, or better \emph{may-dependency}, between variables. To do this we take inspiration from previous works on dependency analysis and information flow control and we say that a variable \emph{may depend} on another one if changing the execution of the latter can affect the execution of the former. 
 We can see in Fig.~\ref{fig:overview-example}(a) that the value of the variable $l$, which corresponds to the result of the execution of the query in the second phase (in the command with label 6), is affected by the value of the variable $x$, which corresponds to the result of the execution of the query at line 3 in the first phase, via the variable $a$.
@@ -58,7 +58,7 @@ Third, we can finally define adaptivity using the semantics-based dependency gra
 Looking again at Fig.~\ref{fig:overview-example}(b), and assuming that $\tau(k) \geq 1$, we can see that the 
 the walk along the dashed arrows,  $l^{6} \to a^5 \to x^3 $ has two vertices with query annotation $1$, and we cannot find another walk having more than $2$ vertices with query annotation $1$. So the adaptivity of the program in Fig.~\ref{fig:overview-example}(a) with respect to $\tau$ is $2$. If we consider an initial state $\tau$ such that $\tau(k)=0$ we have that the adaptivity with respect to $\tau$ is instead $1$. 
 
-\subsection{Static analysis}
+\subsection{Static Analysis}
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Previous Version Above for Reference  %%%%%%%%%%%%%%%%%
 To compute statically a sound and accurate upper bound on the \emph{adaptivity} of a program $c$,
 we design a program analysis framework named {\THESYSTEM} which we will describe formally in \ref{sec:adapt-static}. 
