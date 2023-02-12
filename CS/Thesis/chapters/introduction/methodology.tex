@@ -4,21 +4,20 @@
 \subsubsection{Language Models}
 \label{sec:intro-methodology-adapt-language}
 \paragraph{Existing Programming Languages and The Limitations}
-Most of the data analysis algorithms are implemented in Python equipped with the panda, numpy, tensorflow, etc. library for database access and data training computation, 
-or in C with external database access library, etc.
-These languages and external libraries are mainly focusing on efficiency and scalable of the programs that implements these algorithms.
+Most of the data analysis algorithms are implemented in Python equipped with the panda, numpy, TensorFlow, etc. libraries for database access and data training computation, 
+or in C with some external database access libraries, etc.
+These languages and external libraries are mainly focusing on the efficiency and scalable of the programs that implement these algorithms.
 None of them takes care of the generalization error of the corresponding algorithms that these programs implemented.
-% In terms of adaptivity, none of them taking care of this property w.r.t. these data analysis algorithms implemented.
+% In terms of adaptivity, none of them take care of this property w.r.t. these data analysis algorithms implemented.
 In this sense, analyzing the \emph{adaptivity} as a program property in order to control generalization error
 is difficult based on existing programming languages.
-% However, the variety of the external API makes the formalization of data analysis algorithms and its adaptivity property over these languages difficult.
+% However, the variety of the external API makes the formalization of data analysis algorithms and their adaptivity property over these languages difficult.
 
-% \todo{Brief Describe Existing Language Models}
 \paragraph{Our Language Model}
 We identify some data analysis models which are usually used as the base of data analysis algorithms.
-Based on these models, we design simple but scalable language model based on standard while language that can be used to implement these algorithms and formalize
+Based on these models, we design a simple but scalable language model based on standard while language that can be used to implement these algorithms and formalize
 the \emph{adaptivity}, named {\tt QWhile}.
-It is a standard while language enriched with the query request command and labels on each program command.  
+It is a standard while language enriched with the query request command and labels on each program command. 
 
 
 \subsubsection{Program Property Formalization}
@@ -27,7 +26,7 @@ As discussed in the abstract and introduction sections, this \emph{adaptivity} i
 To study it as a program property, we need to have 
 % a formal 
 model where 
-this concept formally defined as a program property, specifically a \emph{quantitative-reachability} property.
+this concept is formally defined as a program property, specifically a \emph{quantitative-reachability} property.
 There are many ways to formally define a program's conceptual property. However, they all have difficulties in capturing its two perspectives sub-properties, the \emph{quantitative} and \emph{reachability}. 
 We summarize some existing formalization methods with their limitations and then introduce how we formalize this concept.
 
@@ -39,29 +38,11 @@ However, they are not able to capture the \emph{quantitative} sub-property for t
 The \emph{execution history and program simulation}-based methodology~\cite{Israel56, Kildall73}
 are also widely used in defining
 and formalizing the program's properties.
-However, they have the same limitation as the abstract interpretation based methodology. It is not straightforward how to apply them to define the \emph{adaptivity} as a \emph{quantitative-reachability} property from two perspectives.
+However, they have the same limitation as the abstract interpretation-based methodology. It is not straightforward how to apply them to define the \emph{adaptivity} as a \emph{quantitative-reachability} property from two perspectives.
 
 There is also purely \emph{syntactic}-based methodology originated from~\cite{Weiser84} and developed in~\cite{DenningD77} in defining a property (the data dependency relation).
-However, these methods are limited to certain languages and is not easy to generalize into other language model.
+However, these methods are limited to certain languages and are not easy to generalize into other language models.
 
-% Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to defining both the dependency property and the quantitative property for the program.
-% And there are mainly three technique difficulties among existing formalization methodologies in defining the \emph{adaptivity} w.r.t. the two sub-properties.
-% \begin{enumerate}
-% \item
-% Existing definitions on the semantics concept of the data / value dependency relation don't
-% consider both control influence and value influence, such as~\cite{Cousot19a, DenningD77, AbadiBHR99, Mantel2004, CheneyAA11}.
-% However, both of these
-% two influences are considered as \emph{may-dependent} in the intuitive query dependency 
-% in adaptive data analysis programs.
-% \item In the state-of-art data dependency relation formalization, there isn't any technique taking into account
-% the dependency depth, specifically the quantitative information of the data dependency property. For example the works in~\cite{GoguenM84, AssafNSTT17, BartheDR11}.
-% However, this dependency depth is the key quantity in formalizing the intuitive \emph{adaptivity}.
-% \item The intuitive \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
-% dependency depth. There is only very limited works related to this non-linear quantity property analysis.
-% The non-monotonic resource cost analysis in~\cite{AlbertFR15} focus on analyzing the peak resource consumption of the heap structure, which is still different from the accumulation of the \emph{adaptivity}.
-% This requires us to design new formal model in order to define this property precisely.
-% % here isn't any research combining the two pieces of information. No need to mention the adaptivity analysis.
-% \end{enumerate}
 %
 \paragraph{New Methodology}
 Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to define from both
@@ -70,33 +51,33 @@ Our new methodology formalizes it
 % this intuitive \emph{adaptivity} as a \emph{quantitative-reachability} program property 
 via a semantics-based definition as follows.
 \begin{enumerate}
-  \item From the \emph{reachability} perspective, our approach defines this sub-property as the \emph{data dependency} relation.
-  % based on our trace-based semantics.
-  %  The semantics-based definition is inspired from~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
-   The new definition captures both the control influence and value influence between data, which are never fully captured in previous dependency relation~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
-   It can be used to reason about the dependency between queries.
+ \item From the \emph{reachability} perspective, our approach defines this sub-property as the \emph{data dependency} relation.
+ % based on our trace-based semantics.
+ % The semantics-based definition is inspired from~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
+ The new definition captures both the control influence and value influence between data, which are never fully captured in previous dependency relation~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
+ It can be used to reason about the dependency between queries.
 
-  \item Then in terms of the \emph{quantitative}
-  %  sub-property, 
-  we use the \emph{reachability-bound} with respect to certain data to capture it.
-  We borrow the idea from the program complexity analysis works in~\cite{GulwaniJK09}, which works well in capturing the dependency depth between queries.
-   
-  \item With the two sub-properties defined above, we construct a dependency graph by using the
-  % combining both the \emph{dependency relation} (as the graph edge) and \emph{dependency quantity} (as the vertex weight) on it. 
-  \emph{data dependency} relation as the graph edge and the \emph{reachability-bound} as the vertex weight.
-  In this way, we encode both of the two perspective sub-properties of the intuitive \emph{adaptivity} on this graph.
-  % This dependency graph accurately reflects the two perspectives of the intuitive \emph{adaptivity}. 
-  Although there are previous works designing the weighted dependency graph, none of them are able to carry both dependency and dependency depth in terms of the queries used in data analysis algorithms.
-  % and apply it into analyzing the \emph{adaptivity}.
-   
-   \item Based on this graph, we introduce a new concept, the longest \emph{finite walk} over this graph, and the \emph{adaptivity} is defined as the length of this walk.
-   To this end, we formally capture the \emph{adaptivity} as a \emph{quantitative-reachability} program property.
-  %  This longest \emph{finite walk} is also a novel quantity in the graph theory area that is never considered before.
-   \end{enumerate}
+ \item Then in terms of the \emph{quantitative}
+ % sub-property, 
+ we use the \emph{reachability-bound} with respect to certain data to capture it.
+ We borrow the idea from the program complexity analysis works in~\cite{GulwaniJK09}, which works well in capturing the dependency depth between queries.
+ 
+ \item With the two sub-properties defined above, we construct a dependency graph by using the
+ % combining both the \emph{dependency relation} (as the graph edge) and \emph{dependency quantity} (as the vertex weight) on it. 
+ \emph{data dependency} relation as the graph edge and the \emph{reachability-bound} as the vertex weight.
+ In this way, we encode both of the two perspective sub-properties of the intuitive \emph{adaptivity} on this graph.
+ % This dependency graph accurately reflects the two perspectives of the intuitive \emph{adaptivity}. 
+ Although there are previous works designing the weighted dependency graph, none of them are able to carry both dependency and dependency depth in terms of the queries used in data analysis algorithms.
+ % and apply it into analyzing the \emph{adaptivity}.
+ 
+ \item Based on this graph, we introduce a new concept, the longest \emph{finite walk} over this graph, and the \emph{adaptivity} is defined as the length of this walk.
+ To this end, we formally capture the \emph{adaptivity} as a \emph{quantitative-reachability} program property.
+ % This longest \emph{finite walk} is also a novel quantity in the graph theory area that is never considered before.
+ \end{enumerate}
 
 From the high level, the \emph{adaptivity} is defined by the longest \emph{finite walk} over a dependency graph. This graph contains both
 the \emph{reachability} and the \emph{quantitative} sub-properties.
-None of existing methodology is able to capture this hyper-property as precise as our methodology.
+None of the existing methodologies is able to capture this hyper-property as precisely as our methodology.
 We present this formalization procedure in Chapter~\ref{sec:adapt-exe}.
 
 \subsubsection{Program Analysis for Adaptivity}
@@ -110,7 +91,7 @@ Below we summarize some of these methodologies and introduce how our new algorit
 % We summarize their existing developments and their limitations in analyzing these sub-properties as follows.
 
 \paragraph{Existing Methodology and Limitations}
-% However, it is not straightforward how to apply them into analyzing and estimating the adaptivity as a \emph{quantitative-reachability} property carrying two perspective sub-properties.
+% However, it is not straightforward how to apply them to analyzing and estimating the adaptivity as a \emph{quantitative-reachability} property carrying two perspective sub-properties.
 Although many static program analysis techniques or algorithms in graph theory can be repurposed here, such as control flow analysis, resource cost analysis,
 data dependency estimation, path-search algorithms, etc.,
 they can only analyze sub-properties for the \emph{adaptivity} and each of them also has limitations
@@ -125,7 +106,7 @@ We summarize their existing developments and limitations as follows.
 Both of these two kinds of analysis techniques can help to estimate the \emph{reachability} sub-property.
 However, to the best of our knowledge, 
 most of the existing static dependency analysis or control flow analysis techniques consider only either the value influence or control influence.
-To analyze the \emph{reachability} sub-property w.r.t. the queries in adaptive data analysis program, we need to consider both of them.
+To analyze the \emph{reachability} sub-property w.r.t. the queries in the adaptive data analysis program, we need to consider both of them.
 % The existing static analysis techniques in the complexity or resource cost estimation areas,
 % cannot give accurate reachability times on programs 
 % at every execution location.
@@ -136,22 +117,22 @@ Techniques in the complexity or resource cost estimation areas can be used to an
 However, they are focusing on estimating the
 overall resource costs or program execution complexity.
 Most of them cannot give the estimation w.r.t. the queries or data for the data analysis programs.
-%  our new setting.
+% our new setting.
 Reusing them in analyzing the \emph{quantitative} sub-property for \emph{adaptivity} is not straightforward. 
 
 \emph{Longest Path Search.}
-Given the  similarity between the longest path and the longest \emph{finite walk}, some longest weighted path search algorithms
+Given the similarity between the longest path and the longest \emph{finite walk}, some longest-weighted path search algorithms
 can help to compute the longest \emph{finite walk}.
 However, since computing the longest weighted path is NP-complete,
 and the weight on our graph is symbolic
-% it is slow if we use these algorithms searching for the longest \emph{finite walk}.
+% it is slow if we use these algorithms to search for the longest \emph{finite walk}.
 most of these algorithms are non-terminating if we use them to search for the longest \emph{finite walk}.
 % Moreover, the weight on our graph is symbolic, so most of these algorithms are non-terminating.
 % In this sense, it is difficult to use 
-In this sense, we need to design new algorithm to compute the longest \emph{finite walk} and estimate the \emph{adaptivity}.
+In this sense, we need to design a new algorithm to compute the longest \emph{finite walk} and estimate the \emph{adaptivity}.
 
 \paragraph{New Methodology}
-Our new methodology follows the similar structure as the one in Section~\ref{sec:intro-methodology-adapt-formalization}. It is summarized as follows.
+Our new methodology follows a similar structure as the one in Section~\ref{sec:intro-methodology-adapt-formalization}. It is summarized as follows.
 \begin{enumerate}
 \item From the \emph{reachability} perspective, we first want to analyze 
 % adopts both the static data flow analysis and the control flow analysis techniques for
@@ -169,28 +150,23 @@ the program complexity analysis area.
 Since we want this \emph{reachability-bound} to capture the dependency depth of the queries,
 we instead estimate for ``queries'' their \emph{reachability-bound}s rather than for control locations.
 This is more compatible with our adaptivity analysis than
-trivial computing \emph{reachability-bound} for certain control location.
-%  is not able to be captured by any existing static program analysis framework.
+trivial computing \emph{reachability-bound} for certain control locations.
+% is not able to be captured by any existing static program analysis framework.
 
 \item Then our new approach constructs the \emph{estimated dependence graph} in order to approximate
 the graph that is built when defining the \emph{adaptivity}.
 It
 encodes both the estimated \emph{data dependency} relation and the \emph{reachability-bound} as well.
-This encoding complements the weakness of both lines of works in comparison to purely use single either \emph{reachability} or \emph{quantitative} analysis, 
-% {\THESYSTEM} estimates both the two sub-properties of \emph{adaptivity} from \emph{reachability} and \emph{quantitative} perspectives more accurate.
-% Moreover, the combination isn't trivial adoption and addition, we combine them effectively by encoding them on to a dependency graph and compute the \emph{adaptivity} over the graph in the next step.
+This encoding complements the weakness of both lines of work in comparison to purely using single either \emph{reachability} or \emph{quantitative} analysis, 
 
 %
-\item At the end, to accurately estimate the adaptivity, the new approach computes the longest \emph{finite walk} over the estimated graph. To estimate this longest \emph{finite walk}, we design new algorithm by studying some longest path algorithms in the graph and complexity theory.
+\item At the end, to accurately estimate the adaptivity, the new approach computes the longest \emph{finite walk} over the estimated graph. To estimate this longest \emph{finite walk}, we design a new algorithm by studying some longest path algorithms in the graph and complexity theory.
 It approximates this longest \emph{finite walk} and computes the \emph{adaptivity} efficiently.
-%  a new path search algorithm based on the graph theory 
-% and compute the \emph{adaptivity} accurately on this graph.
-% The computation fully utilize the two perspectives sub-properties estimated above.
 % This new algorithm also complements the NP-hardness of the longest path search problem and computes an accurate symbolic length of the longest finite walk based on an efficient symbolic weighted longest path estimation.
 \end{enumerate}
 
-From the high level, it reuses the techniques in data flow, control flow analysis, reachability-bound analysis, and the graph theory and design new algorithms based on them.
-It gives accurate bound on the adaptivity of a program, that none of a single technique alone can compute.
+From the high level, it reuses the techniques in the data flow, control flow analysis, reachability-bound analysis, and graph theory and designs new algorithms based on them.
+It gives an accurate bound on the adaptivity of a program, that none of a single technique alone can compute.
 We present this algorithm in Chapter~\ref{sec:adapt-static} and name it as {\THESYSTEM}.
 
 
@@ -210,20 +186,20 @@ Below we summarize some limitations of the relevant methodologies and introduce 
 
 \subsubsection{Program Abstraction}
 \paragraph{Existing Techniques and Limitation.}
-The program abstraction techniques are widely used in program analysis area to precisely summarize the key property of the program. They are usually based on some specific abstract interpretation models as introduced in Section~\ref{sec:intro-methodology-adapt}.
-In analyzing the loop bounds, the unified lattice model~\cite{CousotH78}, polyhedra~\cite{CousotC77} and octagons~\cite{Mine06} are used in~\cite{GulwaniZ10} for summarize the loop transition and generating the transition system.
-But none of the three abstraction models can represent the if guard in multipath loop, and solving the transition system using these abstraction models is low-efficient. The wedge abstract developed in~\cite{KincaidCBR18} for generating the non-linear loop invariant
+The program abstraction techniques are widely used in the program analysis area to precisely summarize the key property of the program. They are usually based on some specific abstract interpretation models as introduced in Section~\ref{sec:intro-methodology-adapt}.
+In analyzing the loop bounds, the unified lattice model~\cite{CousotH78}, polyhedra~\cite{CousotC77}, and octagons~\cite{Mine06} are used in~\cite{GulwaniZ10} for summarize the loop transition and generating the transition system.
+But none of the three abstraction models can represent the if guard in the multipath loops, and solving the transition system using these abstraction models is low-efficient. The wedge abstract developed in~\cite{KincaidCBR18} for generating the non-linear loop invariant
 computing the \emph{reachability-bound} can also be used. While it only works well for the specific targeting problem, and still low-efficient or inaccuracy in summarizing the multipath loops and solving the path-sensitive \emph{reachability-bound} problem. 
 
 \paragraph*{Our Method.}
-In our algorithm, we choose to use the difference constrain based program abstraction model combined with boolean expression abstraction to generate our abstract transition graph
-%  $\absG(c)$ 
+In our algorithm, we choose to use the difference constraint-based program abstraction model combined with boolean expression abstraction to generate our abstract transition graph
+% $\absG(c)$ 
 for a program.
-%  $c$. 
+% $c$. 
 Each command in the program is abstracted into an abstract transition.
 % , $\absevent$.
 It can represent the program loops path-sensitively which is more accurate than the state-of-art program abstraction models.
-It is based on the difference constrain model in~\cite{SinnZV17} and the size change abstraction in~\cite{SinnZV14}. The efficiency also benefit from our
+It is based on the difference constrain model in~\cite{SinnZV17} and the size change abstraction in~\cite{SinnZV14}. The efficiency also benefits from our
 semantics model, which is inspired from~\cite{Cousot19a} and~\cite{Cousot19} and has similar intuition with the program model in~\cite{SinnZV17}.
 
 
@@ -233,7 +209,7 @@ This method is originated from Tarjan's influential paper~\cite{PotechinP17} com
 Indeed, using techniques like ranking functions, counter increments, difference constraints, etc.
 one can estimate 
 precise bounds on loop iterations and execution time,
-and in turn obtain reachability bounds for complex programs.
+and in turn, obtain reachability bounds for complex programs.
 However, these techniques are designed to capture the worst-case or overall complexity, and again they may over-approximate the reachability-bounds of certain locations.
 When there are multiple paths and the interleaving affects the loop execution, the over-approximation is more evident.
 
@@ -242,7 +218,7 @@ To improve these limitations, our methodology deploys the loop path refinement t
 The \emph{amortized complexity analysis} techniques we use is through the ranking function 
 % $\locbound(\absevent, c)$ 
 estimation
-%  $\absevent$, 
+% $\absevent$, 
 and alternatively computing the bound on each ranking function and transition edge.
 It is also efficient and accurate without recursively unrolling the nested loops when composing the bound of different paths.
 However, deployment of the path refinement technique has its limitation as well.
@@ -251,29 +227,25 @@ However, deployment of the path refinement technique has its limitation as well.
 
 \subsubsection{Loop Summarization and Path Refinement}
 \paragraph{Existing Techniques and Limitation.}
-Another line of loop bound analysis through loop summarization and path refinement seek for precise loop path representation~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19}, and compute loop bound over accurate loop summarization~\cite{GulwaniJK09, ZulegerGSV11}.
+Another line of loop bound analysis through loop summarization and path refinement seeks precise loop path representation~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19}, and compute loop bound over accurate loop summarization~\cite{GulwaniJK09, ZulegerGSV11}.
 They mainly focus on summarizing the loop path and computing the interleaving between paths, as well as computing the precise bound considering the interleaving. However, composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
 \paragraph{Our Method.}
-Our new approach uses a light-weight path refinement algorithm adapted from~\cite{GulwaniJK09}.
+Our new approach uses a lightweight path refinement algorithm adapted from~\cite{GulwaniJK09}.
 It computes the refined program based on the abstract transition graph and then
-effectively combine this methodology with the \emph{amortized complexity analysis} above through ranking function estimation.
+effectively combines this methodology with the \emph{amortized complexity analysis} above through ranking function estimation.
 % The next methodology introduced in the next part 
 
 \subsubsection{Reachability-bound Computation}
 \paragraph{Existing Techniques and Limitation.}
-As we discussed above, most of existing static analysis methodology cannot compute the reachability-bound on a given program control location directly or path-sensitively.
+As we discussed above, most of the existing static analysis methodologies cannot compute the reachability-bound on a given program control location directly or path-sensitively.
 Most of them focus on one the \emph{quantitative} perspective of this property.
-% We summarize some of them below.
-% \cite{GulwaniZ10} first introduce \emph{reachability-bound} as the upper bound on the number of times a given control location 
-% inside a procedure is visited during program execution.
-% While existing works all have different limitations when inferring the \emph{reachability-bound}.
 For example, Gulwani et. al~\cite{GulwaniZ10}
 give a two-step solution by combining program abstract and proof-rules-based bound computation.
 But it does not compute the \emph{reachability-bound} precisely for every control location.
 % , which is the \emph{reachability} perspective of this property.
 Instead, they only compute the complexity bounds for the overall loop and over-approximate for different locations using this bound,
 which is loose especially when there are multipath loops.
-In this sense, they only estimate the \emph{quantitative} sub-property and loose the \emph{reachability} perspective of the \emph{reachability-bound}.
+In this sense, they only estimate the \emph{quantitative} sub-property and lose the \emph{reachability} perspective of the \emph{reachability-bound}.
 Techniques in program complexity analysis~\cite{GustafssonEL05,HumenbergerJK18} 
 or worst-case resource cost analysis
 ~\cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14} can be repurposed to estimate similar quantities such as the
@@ -281,7 +253,7 @@ bounds on loop iterations, execution time, etc.
 While these quantities focus only on 
 the overall complexity,
 none of them compute the reachability-bound on a given program control location directly or path-sensitively.
-For the same reason, they also loose the \emph{reachability} perspective of the \emph{reachability-bound}.
+For the same reason, they also lose the \emph{reachability} perspective of the \emph{reachability-bound}.
 
 \paragraph{Our Method}
 To overcome these limitations, 
@@ -289,12 +261,10 @@ our algorithm is built over an abstract transition graph which effectively combi
 This combination mitigates the limitations faced by either technique individually. 
 Building on this combination, we introduce two novel quantities,
 the \emph{path reachability-bound} and \emph{loop reachability-bound}.
-They are the main novelty of our new path-sensitive reachability-bound algorithm build on the traditional methods.
-It is computed over the refined program and effectively utilizing the ranking function estimated through the abstract transition graph.
-These two bounds combines the two lines of techniques effectively and complements the weakness in both lines.
+They are the main novelty of our new path-sensitive reachability-bound algorithm built on traditional methods.
 The first one bounds the evaluation times of each loop-free and interleave-free path in a refined program, and the second one bounds the number of iterations of an outer loop w.r.t. an inner loop, counting only the iterations when the inner loop is ``entered''. 
 We present algorithms for estimating these two quantities. By using them we can then 
 %Section~\ref{sec:looprb} and~\ref{sec:pathrb} 
 compute the \emph{reachability-bound} for each program point in a path-sensitive way.
-To this end, our new methodology studies both of the \emph{reachability} and the \emph{quantitative} perspectives and
+To this end, our new methodology studies both the \emph{reachability} and the \emph{quantitative} perspectives and
 analyzes the \emph{reachability-bound} in a higher granularity.
