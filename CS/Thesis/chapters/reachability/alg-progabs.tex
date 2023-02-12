@@ -3,7 +3,7 @@ is performed on basis of an \emph{Abstract Transition Graph} for the program $c$
 This step shows how to generate the abstract transition graph $\absG(c)$ of a
 program $c$ through constructing its vertices and edges.
 
-\subsection{Vertices}
+\subsection{Vertices Construction}
 \label{sec:abs_prog-vertex}
 Every 
 vertex corresponds to a program execution point, 
@@ -12,7 +12,7 @@ and the vertices set is all the $c$'s program execution points with an extra exi
   \absV(c) = \progl(c)\cup\{{\lex}\}
   \]
 
-\subsection{Edges}
+\subsection{Edges Construction}
 \label{sec:abs_prog-edge}
   In the first step, we generate the \textbf{constraint}
   for the expression in each program command,
