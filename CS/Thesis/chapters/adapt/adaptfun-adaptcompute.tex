@@ -127,7 +127,7 @@ However, it is very common that the domain of program's input variables is infin
 If we traverse on the estimated dependency graph, and decrease the weight of $x^3$ (the weight $k$ is symbolic) by one after every visit,
 we will never terminate because we only know $k \in \mathbb{N}$.
 
-\input{examples/kRoundsWhileSim_alg}
+\input{chapters/adapt/examples/kRoundsWhileSim_alg}
 
 To solve this non-termination challenge, we switch to another walk finding approach:
 finding the longest path in the estimated dependency graph via depth first search and then use this path as the estimated longest walk.
@@ -454,7 +454,7 @@ computes the adaptivity of this SCC by taking the maximum
 % adaptivity reaching every vertex on this SCC.
 value.%
 The soundness is formally guaranteed in Lemma~\ref{lem:adaptalg_soundness_scc} in Appendix~\ref{apdx:adaptalg_soundness}.
-\input{examples/nestedWhile_alg}
+\input{chapters/adapt/examples/nestedWhile_alg}
     %
         \begin{algorithm}
           \caption{
