@@ -4,7 +4,7 @@
 \subsubsection{Language Models}
 \label{sec:intro-methodology-adapt-language}
 \paragraph{Existing Programming Languages and The Limitations}
-The state-of-art data analysis algorithms are mostly implemented in Python equipped with the .panda library for database access, 
+Most of the data analysis algorithms are implemented in Python equipped with the panda, numpy, tensorflow, etc. library for database access and data training computation, 
 or in C with external database access library, etc.
 These languages and external libraries are mainly focusing on efficiency and scalable of the programs that implements these algorithms.
 None of them takes care of the generalization error of the corresponding algorithms that these programs implemented.
@@ -16,16 +16,19 @@ is difficult based on existing programming languages.
 % \todo{Brief Describe Existing Language Models}
 \paragraph{Our Language Model}
 We identify some data analysis models which are usually used as the base of data analysis algorithms.
-Based on these models, we design simple but scalable language based on standard while language that can be used to implement these algorithms and formalize
+Based on these models, we design simple but scalable language model based on standard while language that can be used to implement these algorithms and formalize
 the \emph{adaptivity}, named {\tt QWhile}.
 It is a standard while language enriched with the query request command and labels on each program command.  
 
 
 \subsubsection{Program Property Formalization}
 \label{sec:intro-methodology-adapt-formalization}
-As we introduced in the abstract, this \emph{adaptivity} is commonly used as an intuitive concept in the data analysis area.
-To analyze it as a program property, we need to have a formal model where this concept is formally defined as a program property, specifically a \emph{quantitative-reachability} property.
-There are many ways to formally define a program's conceptual property. However, they all have difficulties in capturing it from both the \emph{quantitative} and \emph{reachability} perspectives. 
+As discussed in the abstract and introduction sections, this \emph{adaptivity} is commonly used as an intuitive concept in the data analysis area.
+To study it as a program property, we need to have 
+% a formal 
+model where 
+this concept formally defined as a program property, specifically a \emph{quantitative-reachability} property.
+There are many ways to formally define a program's conceptual property. However, they all have difficulties in capturing its two perspectives sub-properties, the \emph{quantitative} and \emph{reachability}. 
 We summarize some existing formalization methods with their limitations and then introduce how we formalize this concept.
 
 \paragraph{Existing Methodology and The Limitations}
@@ -61,25 +64,34 @@ However, these methods are limited to certain languages and is not easy to gener
 % \end{enumerate}
 %
 \paragraph{New Methodology}
-Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to defining from both
-the \emph{reachability} and the \emph{quantitative} perspective.
-Our new methodology formalizes this intuitive \emph{adaptivity} as a \emph{quantitative-reachability} program property via a semantics-based definition as follows.
+Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to define from both
+the \emph{reachability} and the \emph{quantitative} perspectives.
+Our new methodology formalizes it
+% this intuitive \emph{adaptivity} as a \emph{quantitative-reachability} program property 
+via a semantics-based definition as follows.
 \begin{enumerate}
-  \item From the \emph{reachability} perspective, our approach formalizes this sub-property as the \emph{data dependency} relation.
+  \item From the \emph{reachability} perspective, our approach defines this sub-property as the \emph{data dependency} relation.
   % based on our trace-based semantics.
   %  The semantics-based definition is inspired from~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
-   The new definition capture both the control influence and value influence between data, which are never fully captured in previous dependency relation~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
+   The new definition captures both the control influence and value influence between data, which are never fully captured in previous dependency relation~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
    It can be used to reason about the dependency between queries.
 
-  \item Then in terms of the \emph{quantitative} sub-property, we define it as the \emph{reachability-bound} with respect to certain data.
-   We borrow the idea from the program complexity analysis works in~\cite{GulwaniJK09}, which works well in capturing the dependency depth between queries.
+  \item Then in terms of the \emph{quantitative}
+  %  sub-property, 
+  we use the \emph{reachability-bound} with respect to certain data to capture it.
+  We borrow the idea from the program complexity analysis works in~\cite{GulwaniJK09}, which works well in capturing the dependency depth between queries.
    
-  \item With the two sub-properties defined above, we construct a dependency graph by combining both the \emph{dependency relation} (as the graph edge) and \emph{dependency quantity} (as the vertex weight) on it. This dependency graph accurately reflects the two perspectives of the intuitive \emph{adaptivity}. Though there are previous works designing the weight dependency graph, none of them are able to carry both dependency and dependency depth.
+  \item With the two sub-properties defined above, we construct a dependency graph by using the
+  % combining both the \emph{dependency relation} (as the graph edge) and \emph{dependency quantity} (as the vertex weight) on it. 
+  \emph{data dependency} relation as the graph edge and the \emph{reachability-bound} as the vertex weight.
+  In this way, we encode both of the two perspective sub-properties of the intuitive \emph{adaptivity} on this graph.
+  % This dependency graph accurately reflects the two perspectives of the intuitive \emph{adaptivity}. 
+  Although there are previous works designing the weighted dependency graph, none of them are able to carry both dependency and dependency depth in terms of the queries used in data analysis algorithms.
   % and apply it into analyzing the \emph{adaptivity}.
    
-   \item Based on this graph, we introduce the longest \emph{finite walk} over this graph, and the \emph{adaptivity} is defined as the length of this walk.
+   \item Based on this graph, we introduce a new concept, the longest \emph{finite walk} over this graph, and the \emph{adaptivity} is defined as the length of this walk.
    To this end, we formally capture the \emph{adaptivity} as a \emph{quantitative-reachability} program property.
-   This longest \emph{finite walk} is also a novel quantity in the graph theory area that is never considered before.
+  %  This longest \emph{finite walk} is also a novel quantity in the graph theory area that is never considered before.
    \end{enumerate}
 
 From the high level, the \emph{adaptivity} is defined by the longest \emph{finite walk} over a dependency graph. This graph contains both
