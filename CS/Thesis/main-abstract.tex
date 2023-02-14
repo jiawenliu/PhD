@@ -1,0 +1,178 @@
+\documentclass[12pt, letterpaper]{report}   % Single-sided printing for the library
+
+% TOGGLE ON TO SEE PAGE MARGINS -- useful to check that your figures and tables don't go over the specified margins - HG 2018
+% \usepackage[showframe]{geometry}
+
+\usepackage[bf]{caption} % Make nice captions with bold "Figure..." and "Table..."
+\setcaptionmargin{0.5in}
+%package for the bu thesis format -- most commonly-used packages added in the style file by HG 2018
+\usepackage{bu_math_thesis}
+
+% \usepackage{titletoc}
+% \usepackage{capt-of}
+\usepackage{tocloft}
+\usepackage{xpatch}
+
+% \usepackage{hyperref}
+
+% Just in case we're not using hyperref
+% \providecommand{\phantomsection}{}
+
+% Generate the separate list of commands for appendix figures and tables
+\newcommand{\listofappendixfiguresname}{List of Figures in Appendices}
+\newlistof{appendixfigures}{apf}{\listofappendixfiguresname}
+\newcommand{\listofappendixtablesname}{List of Tables in Appendix}
+\newlistof{appendixtables}{apt}{\listofappendixtablesname}
+
+\renewcommand{\cftafterapftitle}{\addcontentsline{toc}{chapter}{\listofappendixfiguresname}}
+\renewcommand{\cftafterapttitle}{\phantomsection\addcontentsline{toc}{chapter}{\listofappendixtablesname}}
+
+\xpretocmd{\listofappendixfigures}{\clearpage}{}{}
+\xpretocmd{\listofappendixtables}{\clearpage}{}{}
+
+
+\makeatletter
+\xapptocmd{\appendix}{%
+  \write\@auxout{%
+    \string\let\string\latex@tf@lof\string\tf@lof% Store the original `\tf@lof` file handle
+    \string\let\string\tf@lof\string\tf@apf% 
+    \string\let\string\latex@tf@lof\string\tf@lot% Store the original `\tf@lot` file handle
+    \string\let\string\tf@lot\string\tf@apt% 
+  }%
+}{}{}
+\makeatother
+
+
+\graphicspath{{figures/}{tables/}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%define the frequent formulas shorthands for typing -- note that these do not appear as the function in "Rich Text" format in Overleaf, but rather as the "\shorthand"
+\include{prelude}
+\include{ldefs}
+\newif\ifextra
+\extratrue 
+\newcommand{\THESYSTEM}{\textsf{AdaptFun}}
+\newcommand{\PSRB}{\texttt{psRB}}
+
+
+\newcommand{\lagin}{\ensuremath{\lambda_{1}}}
+\newcommand{\lagout}{\ensuremath{\lambda_{2}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+% \lipsum
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Setup commands for the bu thesis style file
+
+\title{
+{Program Analysis for Quantitative-reachability Properties}
+%  with Generalization on Program Resource Cost
+ }
+\author{Jiawen Liu}
+
+% Type of document prepared for this degree:
+%   2 = Doctor of Philosophy dissertation.
+%   4 = Doctoral Dissertation Prospectus
+\degree=2
+
+% List your bachelors degree before your masters - HG 2018
+\prevdegrees{
+B.A. in Department of Information Science, Central University of Economics and Finance, 2017\\ 
+% MS in Computer Science, University at Buffalo, 2016
+}
+\department{Department of Computer Science}
+\university{Boston University}
+\faculty{Graduate School of Arts and Sciences}
+
+% Degree year is the year the diploma is expected, and defense year is the year the dissertation is written up and defended. Often, these will be the same, except for January graduation, when your defense will be in the fall of year X, and your graduation will be in January of year X+1
+\defenseyear{2023}
+\degreeyear{2023}
+
+% For each reader, specify appropriate label {First, second, third}, then name, then title. Warning: If you have more than five readers you are out of luck, because it will overflow to a new page. Sometimes you may wish to put part of the title in with the name
+% Do NOT put the chair on your approval page - HG 2018
+\reader{First}{Marco Gaboardi, Ph.D.}{Associate Professor, Computer Science}
+\reader{Second}{Alley Stoughton, Ph.D.}{Research Professor, Computer Science}
+\reader{Third}{Assaf Kfoury, Ph.D.}{Professor, Computer Science}
+\reader{Fourth}{Hongwei Xi, Ph.D.}{Associate Professor, Computer Science}
+% \reader{Fifth}{Deepak Garg, Ph.D.}{Associate Professor, MPI-SWS}
+% The Major Professor is the same as the first reader, but must be specified again for the abstract page
+% Just copy and paste the same information
+\majorprof{Marco Gaboardi}{Associate Professor of Computer Science}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% other set up commands which are a good idea
+
+%the bottom margins should be "as close as possible" to 1 inch, so allowdisplaybreaks is a good idea for theses with a lot of equations
+% \allowdisplaybreaks
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                       PRELIMINARY PAGES
+% According to the BU guide the preliminary pages consist of: title, copyright (optional), approval,  acknowledgments (opt.), abstract, preface (opt.), Table of contents, List of tables (if any), List of illustrations (if any). The \tableofcontents, \listoffigures, and \listoftables commands can be used in the appropriate places. For other things like preface, do it manually with something like \newpage\section*{Preface}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is an additional page (do not hand it in at the library) to print boxed-in title, author and degree statement so that they are visible through the opening in BU covers used for reports. This makes a nicely bound copy.
+
+%\buecethesistitleboxpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% TITLE PAGE 
+% Make the titlepage based on the above information.  If you need something special and can't use the standard form, you can specify the exact text of the titlepage yourself.  Put it in a titlepage environment and leave blank lines where you want vertical space. The spaces will be adjusted to fill the entire page.
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% COPYRIGHT PAGE 
+% The copyright page is blank except for the notice at the bottom. You must provide your name in capitals.
+\copyrightpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% APPROVAL PAGE 
+% Now include the approval page based on the readers information
+\approvalpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% DEDICATION			 
+% \section*{Dedication}
+% \begin{flushright}
+% This dissertation is dedicated to \\
+% my loving grandmother \\ Xiuqin Yang 
+% my loving son \\ Taro 
+% \end{flushright}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% ACKNOWLEDGEMENTS	 
+% \newpage
+% \addcontentsline{toc}{chapter}{Acknowledgements}
+% \input{chapters/Acknowledgements}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% ABSTRACT		 
+\newpage
+\addcontentsline{toc}{chapter}{Abstract}
+\input{chapters/Abstract}
+
+% Now you can include a preface. Again, use something like
+% \newpage\section*{Preface} followed by your text
+
+% 
+
+% END OF THE PRELIMINARY PAGES
+
+\newpage
+\endofprelim
+\cleardoublepage
+
+
+
+% \subsection*{Original, Peer Reviewed Publications (newest first):}
+% % Make sure to be consistent with your CV bibliographic info formatting
+% \begin{enumerate}
+% \item 
+% \item 
+% % \hyperlink{https://www.ncbi.nlm.nih.gov/pubmed/XXX}{XXX}.
+% % \item John Famous and Example Student. \emph{A special case of a well known conjecture}. Fancy Math. J. \textbf{46} no. 3 (2007), 473-490.
+% \end{enumerate}
+
+\end{document}
