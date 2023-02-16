@@ -161,6 +161,36 @@ the \emph{Variable Gradient Decent}--
  \end{array}
  \right.
  \]
+
+ \[
+ \left\{ 
+ \begin{array}{ll}
+ \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}} 
+ \Big\{ \highlight{\frac{a - b}{\rfnext(\tpath, c)}} & \rprog_l = \tpath
+ \\ \qquad 
+ ~\vert~
+ x = a \in \rfinit(\tpath, c)
+ \land x = b \in \rffinal(\tpath, c)
+ \land x = v \in \rfnext(\tpath, c) 
+ \Big\} 
+ \\
+ \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}} 
+ \Big\{ \highlight{\frac{\min\{ a, a - v_1 \} - b}{v_2}} 
+ & \rprog_l = \rprog_1;\rprog_2
+ \\ \qquad 
+ ~\vert~
+ x = a \in \rfinit(\rprog_1, c)
+ % \\ \qquad 
+ \land x = b \in \rffinal(\rprog_2;\rprog_2, c)
+ \\ \qquad 
+ \land x = v_1 \in \rfnext(\rprog_1, c)
+ \land x = v_2 \in \rfnext(\rprog_1;\rprog_2, c)
+ \Big\} \\
+ 0 & o.w.
+ \end{array} 
+ \right.
+\]
+
 }
 \end{defn}
   We show that Definition~\ref{def:loopbound} computes a sound loop bound for every loop in a refined program below in Lemma~\ref{lem:loopbound_sound} with proof in \highlight{Appendix~\ref{apdx:loopbound-sound}}.
@@ -275,7 +305,7 @@ For the program in the first interleaving pattern $\rprog_1^1$ in Figure~\ref{fi
  so compute $\outinB(\rprog_1^1, \tpath_1, c) = BD(\rprog_1^1, c) \times \outinB(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4, \tpath_1, c)
  = BD(\rprog_1^1, c) \times (1 + 0) = \lfloor \frac{m}{4} \rfloor $ and the same for $\tpath_2$ and $\tpath_4$.
 
- As discussed in Section~\ref{sec:psrb}, if there isn't a nested loop, we will skip the Section~\ref{sec:looprb} and use this local bound directly as the global \emph{path reachability-bound}, $\inoutB(\rprog, \tpath, c)$ as in Section~\ref{sec:pathrb}. 
+ As discussed in Section~\ref{sec:psRB-psrb}, if there isn't a nested loop, we will skip the Section~\ref{sec:psRB-looprb} and use this local bound directly as the global \emph{path reachability-bound}, $\inoutB(\rprog, \tpath, c)$ as in Section~\ref{sec:psRB-pathrb}. 
  So we already had the $\psRB$ for every program point $l \in \lvar(c)$ by replacing the equation in Definition~\ref{def:point_psrb} with the following one,
  \begin{equation}
  \label{eq:psrb-sub}

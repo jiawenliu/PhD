@@ -120,7 +120,7 @@ Notice that the output is either a symbolic constant in $\constdom$ or a variabl
   For the label $l$ which is not in any while loop, 
   the labeled command with the label $l$ will be 
   evaluated at most once. 
-  The second and third cases are guaranteed by the \emph{Discussion on Soundness} in Section 4 in~\cite{sinn2017complexity}.
+  The second and third cases are guaranteed by the \emph{Discussion on Soundness} in Section 4 in~\cite{SinnZV17}.
   We formalized the soundness and proof by Lemma~\ref{lem:local_bound_sound} in Appendix~\ref{apdx:reachability_soundness}.
 \item \textbf{Reachability-bound Estimation}
 This step aims at determining the \emph{reachability-bound} $\absclr(e, c)$ of every edge $e\in \progE(c)$.
@@ -209,10 +209,10 @@ then its \emph{path-insensitive transition bound} $\absclr(\absevent, c)$
 the execution times of this assignment command in $c$.
   \[
     \begin{array}{l}
-      \forall c \in \cdom, l \in \lvar(c),\trace_0 \in \ftdom_0(c), 
+      \forall c \in \cdom, l, l' \in \lvar(c),\trace_0 \in \ftdom_0(c), 
       \trace \in \ftdom, v \in \mathbb{N}
        \sthat 
-       \config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\vtrace} 
+       \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\vtrace} 
        \\ \qquad 
        \land \config{\absclr(\absevent, c), \trace_0} \aarrow v
        \land
@@ -271,13 +271,30 @@ Then, for each $(x^l, w) \in \progW(c),\vtrace_0 \in \ftdom_0(c), \trace \in \ft
 v \in \mathbb{N}$ we have:
   %
 \[
-\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0 \tracecat\vtrace} 
+  \begin{array}{l}
+    \forall c \in \cdom, x^l \in \lvar(c),\trace_0 \in \ftdom_0(c), \trace \in \ftdom,
+v \in \mathbb{N}, l' \sthat
+\\ \qquad \qquad
+\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat\vtrace} 
 \land 
-\config{\vtrace_0, w} \earrow v
+\config{\vtrace_0, \hat{w}(x^l)} \earrow v
 \land
-% \right\} 
 \implies
 \vcounter(\vtrace, l) \leq v
+\end{array}
+\]
+\[
+  \begin{array}{l}
+    \forall c \in \cdom, x^l \in \lvar(c),\trace_0 \in \ftdom_0(c), \trace \in \ftdom,
+v \in \mathbb{N}, l' \sthat
+\\ \qquad \qquad
+\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat\vtrace} 
+\land 
+\config{\vtrace_0, \hat{w}(x^l)} \earrow v
+\land
+\implies
+w(x^l) \leq v
+\end{array}
 \]
 \end{thm}
 Notice that in this theorem, the evaluation $\config{\vtrace_0, w} \earrow v$ is needed in order to obtain a concrete value $v$ from the symbolic weight $w$ by specifying a value for the input variables through $\vtrace_0$.

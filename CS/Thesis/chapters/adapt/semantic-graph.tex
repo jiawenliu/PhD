@@ -43,8 +43,8 @@ $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is def
   x^l \in \lvar(c) 
   \\ & &
   \quad \land
-  \forall \trace_0 \in \ftdom_0(c), \trace' \in \ftdom \sthat \config{{c}, \trace_0} \to^{*} 
-  \config{\eskip, \trace_0\tracecat\trace'} 
+  \forall \trace_0 \in \ftdom_0(c), \trace' \in \ftdom, l' \sthat \config{{c}, \trace_0} \to^{*} 
+  \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace'} 
   \land w(\trace_0) = \vcounter(\trace', l) \}  
   \\
   \text{Query Annotations} &
@@ -77,11 +77,11 @@ maps from a starting trace $\trace_0 \in \ftdom_0(c)$ to a natural number.
 A weight function $w \in \traceW(c)$ is a function that for every starting trace $\trace_0 \in \ftdom_0(c)$ 
 gives the number of times the assignment of the corresponding vertex $x^l$ is visited. Notice that weight functions are total and with range $\mathbb{N}$. This means that if a program $c$ has some non-terminating behavior, the set $\traceW(c)$ will be empty.
 Again as discussed above in Section~\ref{sec:language-os}, we consider as well-formed only graphs which have a weight for every vertex with the terminating programs. 
-For each vertex $x^l$, it tracks its visiting times (i.e., the evaluation times of the command with the label $l$) when the program $c$ is evaluated from the initial trace $\trace_0$ into $\eskip$, $\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\trace'} $.
+For each vertex $x^l$, it tracks its visiting times (i.e., the evaluation times of the command with the label $l$) when the program $c$ is evaluated from the initial trace $\trace_0$ into $\eskip$, $\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $.
 The visiting times is computed by the counter operator $\vcounter(\trace', l)$
 by counting the occurrence of the label $l$ in $\trace'$.
 As an instance, in the semantics-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight, $w_k$ of the vertex $x^3$ is a function of type $\ftdom_0(\kw{twoRound(k)}) \to \mathbb{N}$.
-Given input $\trace_0$, we execute the program under $\trace_0$ as $\config{\kw{twoRound(k)}, \trace_0} \to^{*} \config{\eskip, \trace_0\tracecat\trace'} $. Then $w_k(\trace_0)$ outputs the occurrence time of the label $3$ in $\trace'$.
+Given input $\trace_0$, we execute the program under $\trace_0$ as $\config{\kw{twoRound(k)}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $. Then $w_k(\trace_0)$ outputs the occurrence time of the label $3$ in $\trace'$.
 \end{enumerate}
 The main novelty of  the semantics-based dependency graph is the combination of the quantitative and dependency information. 
 It can tell both the dependency between queries via the directed edge, and the times they depend on each other via the weight.

@@ -53,10 +53,10 @@ an arithmetic expression $w_i$ where $(v_i, w_i) \in \progV(c)$, is $v_i$'s esti
  The length of a finite walk $k \in \walks(\progG(c))$ is an arithmetic expression
  as well, i.e., $\len(k) \in \mathcal{A}_{in}$
 
-Following the same procedure during defining the adaptivity in Section~\ref{sec:adaptivity}, we define
+Following the same procedure during defining the adaptivity in Definition~\ref{def:qlen}, we define
 the \emph{query length} of a finite walk in the estimated graph, $\progG(c)$ as an arithmetic expression formally as follows.
 \begin{defn}[Query Length of the Finite Walk on estimated dependency graph ($\qlen$)]
-  \label{def:qlen}
+  \label{def:qlen-static}
   Given 
   a program $c$'s semantics-based dependency graph 
   $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
