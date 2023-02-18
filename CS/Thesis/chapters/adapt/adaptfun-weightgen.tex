@@ -287,13 +287,13 @@ v \in \mathbb{N}, l' \sthat
   \begin{array}{l}
     \forall c \in \cdom, x^l \in \lvar(c),\trace_0 \in \ftdom_0(c), \trace \in \ftdom,
 v \in \mathbb{N}, l' \sthat
-\\ \qquad \qquad
+\\ \qquad 
 \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat\vtrace} 
 \land 
-\config{\vtrace_0, \hat{w}(x^l)} \earrow v
+\config{\vtrace_0, \hat{w}(x^l, c)} \earrow v
 \land
 \implies
-w(x^l) \leq v
+w(x^l, c)(\trace_0) \leq v
 \end{array}
 \]
 \end{thm}
