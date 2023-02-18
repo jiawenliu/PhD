@@ -100,13 +100,13 @@
     \\
     $\outinB(\rprog, \tpath_0) = 1$ \\
     $\outinB(\rprog, \tpath_4) = 1$ \\
-    $\outinB(1: \rprog_1^1, \tpath_1) = \frac{n}{4}$ \\
-    $\outinB(1: \rprog_1^1, \tpath_3) = \frac{n}{4}$ \\
-    $\outinB(1: \rprog_1^1, \tpath_5) = \frac{n}{4}$ \\
-    $\outinB(1: \rprog_1^2, \tpath_1) = \frac{n}{4}$ \\
-    $\outinB(1: \rprog_1^2, \tpath_3) = \frac{n}{4}$ \\
-    $\outinB(1: \rprog_1^2, \tpath_5) = \frac{n}{4}$ \\
-    $\outinB(5: \rprepeat(\tpath_2), \tpath_2) = n$ 
+    $\outinB(1: \rprog_1^1, \tpath_1) = \frac{k}{4}$ \\
+    $\outinB(1: \rprog_1^1, \tpath_3) = \frac{k}{4}$ \\
+    $\outinB(1: \rprog_1^1, \tpath_5) = \frac{k}{4}$ \\
+    $\outinB(1: \rprog_1^2, \tpath_1) = \frac{k}{4}$ \\
+    $\outinB(1: \rprog_1^2, \tpath_3) = \frac{k}{4}$ \\
+    $\outinB(1: \rprog_1^2, \tpath_5) = \frac{k}{4}$ \\
+    $\outinB(5: \rprepeat(\tpath_2), \tpath_2) = k$ 
     \\
     Loop Bounds:
     \\
@@ -114,42 +114,42 @@
     \quad
     $BD(\tpath_4) = 1$
     \quad
-    $BD(\rprepeat(\tpath_2)) = n $
+    $BD(\rprepeat(\tpath_2)) = k $
     \quad
-    $BD(\rprog_1^1) = \frac{n}{4} $
+    $BD(\rprog_1^1) = \frac{k}{4} $
     \quad
-    $BD(\rprog_1^2) = \frac{n}{4} $
+    $BD(\rprog_1^2) = \frac{k}{4} $
 
     %
     \item Loop Reachability-bound:
     \\
 
-    $\lpchB(1: \rprog_1^1, \tpath_1) = \frac{n}{4}$ \quad
-    $\lpchB(1: \rprog_1^1, \tpath_3) = \frac{n}{4}$ \quad 
-    $\lpchB(1: \rprog_1^1, \tpath_5) = \frac{n}{4}$ \\ 
-    {$\lpchB(1: \rprog_1^1, \tpath_2) = \frac{n}{4}$} \quad
-    $\lpchB(1: \rprog_1^2, \tpath_1) = \frac{n}{4}$ \quad
-    $\lpchB(1: \rprog_1^2, \tpath_3) = \frac{n}{4}$ \\ 
-    $\lpchB(1: \rprog_1^2, \tpath_5) = \frac{n}{4}$ \quad 
-    \highlight{$\lpchB(1: \rprog_1^2, \tpath_2) = \frac{n}{4}$} \quad
+    $\lpchB(1: \rprog_1^1, \tpath_1) = \frac{k}{4}$ \quad
+    $\lpchB(1: \rprog_1^1, \tpath_3) = \frac{k}{4}$ \quad 
+    $\lpchB(1: \rprog_1^1, \tpath_5) = \frac{k}{4}$ \\ 
+    {$\lpchB(1: \rprog_1^1, \tpath_2) = \frac{k}{4}$} \quad
+    $\lpchB(1: \rprog_1^2, \tpath_1) = \frac{k}{4}$ \quad
+    $\lpchB(1: \rprog_1^2, \tpath_3) = \frac{k}{4}$ \\ 
+    $\lpchB(1: \rprog_1^2, \tpath_5) = \frac{k}{4}$ \quad 
+    \highlight{$\lpchB(1: \rprog_1^2, \tpath_2) = \frac{k}{4}$} \quad
     $\lpchB(5: \rprepeat(\tpath_2), \tpath_2) = n$ 
     %
     %
     \item Path Global Reachability-bound:
     \\
     $\inoutB(\rprog, \tpath_0) = 1$ \quad
-    $\inoutB(\rprog, \tpath_1) = \frac{n}{4}$ \quad
-    $\inoutB(\rprog, \tpath_2) = \frac{n}{4} \times n$ \\
-    $\inoutB(\rprog, \tpath_3) = \frac{n}{4}$ \quad
-    $\inoutB(\rprog, \tpath_5) = \frac{n}{4}$ \quad
+    $\inoutB(\rprog, \tpath_1) = \frac{k}{4}$ \quad
+    $\inoutB(\rprog, \tpath_2) = \frac{k}{4} \times k$ \\
+    $\inoutB(\rprog, \tpath_3) = \frac{k}{4}$ \quad
+    $\inoutB(\rprog, \tpath_5) = \frac{k}{4}$ \quad
     $\inoutB(\rprog, \tpath_4) = 1$
     %
     \item The Reachability-bound:
     \\
     $\psRB(0) = \psRB(\lex) = 1$ \quad
-    $\psRB(1) = \frac{n}{2} + 1$ \quad
-    $\psRB(2) = \frac{n}{2} $ \\
-    $\psRB(3) = \psRB(4) = \psRB(7) = \frac{n}{4} $ \\
-    \highlight{$\psRB(6) = \frac{n}{4} \times n$} \\
-    $\psRB(5) =  \frac{n}{4} \times (n + 1)$
+    $\psRB(1) = \frac{k}{2} + 1$ \quad
+    $\psRB(2) = \frac{k}{2} $ \\
+    $\psRB(3) = \psRB(4) = \psRB(7) = \frac{k}{4} $ \\
+    \highlight{$\psRB(6) = \frac{k}{4} \times k$} \\
+    $\psRB(5) =  \frac{k}{4} \times (k + 1)$
   \end{enumerate}
