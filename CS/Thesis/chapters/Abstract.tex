@@ -1,28 +1,30 @@
 \begin{abstractpage}
     Program analysis analyzes the behaviors of a computer program, such as resource usage, where people analyze whether a piece of code consumes certain resource and how many resources are used by this piece of code
-    People also analyze its safety behavior, where we care if a certain line of code leaks a secret and how much secret it leaks. 
+    People also analyze
+    its safety behavior, where we care if a certain line of code leaks a secret and how much of it is leaked. 
     In terms of privacy behavior, people analyzes whether certain private data is dependent on another data and how many times they are dependent during multiple executions.
-    Analyzing these behaviors are all focusing on analyzing the similar two sub-properties, "How Much" and "Whether" from two perspectives.
+    Analyzing these behaviors are all focusing on analyzing the similar two sub-properties, ``How Much'' and ``Whether'' from two perspectives.
     We refer to the two perspective sub-properties as \emph{quantitative} and \emph{reachability} properties, and we refer to this class of behaviors as a hyper-property named \emph{quantitative-reachability} property.
-    Existing program analysis methods are mainly from one perspective. They are not precise enough to capture this kind of properties.
-    For example, reachability analysis only tells us whether some code pieces are executed, whether the confidential data is leaked, whether certain data relies on  another data, etc., but not how many times or how long these properties hold w.r.t. certain code or data. 
-    Quantitative analysis, such as program complexity analysis, cost analysis, execution time estimation, etc., only tells us the upper bound on the overall worst-case quantity. 
+    Existing program analysis methods are mainly from one perspective. They are not precise enough to capture these kind of properties.
+    For example, reachability analysis only tells us whether some code pieces are executed, whether the confidential data is leaked, whether certain data relies on  another data, etc.
+    But it does not address how many times or how long these properties hold w.r.t. certain code or data. 
+    Quantitative analysis, such as program complexity analysis, cost analysis, execution time estimation, etc. only tell us the upper bound on the overall worst-case quantity. 
     However, these quantities are not associated to certain pieces of code, program locations, data, etc.
-    This thesis presents new program analysis algorithms for analyzing the quantitative-reachability properties.
+    This thesis presents new program analysis algorithms for analyzing the \emph{quantitative-reachability} properties.
     These new analysis methods leverage the limitations in existing analysis from the two lines, and
     control the program's execution behavior in a higher granularity. 
-    We show the effectiveness of the new analysis algorithms through two representative quantitative-reachability properties. 
+    We show the effectiveness of the new analysis algorithms through two representative \emph{quantitative-reachability} properties. 
     
     The first noteworthy property we look into is the \emph{adaptivity} rounds in adaptive data analysis. An adaptive data analysis is usually composed of multiple queries among which the choice of some queries may depend on previous queries' results.
     These queries form dependent relations with each other and the
-    \emph{adaptivity} is intuitively the depth of the chain of dependent queries in these dependence relations.
+    \emph{adaptivity} is intuitively the depth of these dependence relations.
     Reasoning about \emph{adaptivity} is useful in controlling the generalization error of adaptive data analysis, which usually propagates sharply along with the dependency chain.
     Researchers in the data analysis area have found that the generalization error can be controlled well by choosing the appropriate statistic technique according to the \emph{adaptivity}.
     Nevertheless, adaptivity is not always clear to data analysts when they need it.
     To solve this dilemma, we present a program analysis framework, which analyzes this intuitive concept in
     the principle of programming language.
-    Our framework first formalizes the \emph{adaptivity} through a semantics-based definition
-    Then through a new integrated \emph{quantitative-reachability} analysis algorithm,
+    Our framework first formalizes the \emph{adaptivity} through a semantics-based definition.
+    Then with a new integrated \emph{quantitative-reachability} analysis algorithm,
     %  that integrates the \emph{quantitative-reachability} and \emph{quantitative} analysis techniques,
     it estimates the adaptivity of programs that implements certain data analysis strategies statistically and soundly. 
     
