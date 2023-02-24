@@ -13,7 +13,7 @@
     However, these quantities are not associated to any specific piece of code, program locations, data, etc.
     This thesis presents new program analysis algorithms for analyzing the \emph{quantitative-reachability} properties.
     Our new analysis methods leverage the limitations in the two kinds of program analysis methods, which
-    help to control the program's execution behavior in a higher granularity. 
+    help to control program's execution behaviors in a higher granularity. 
     We show the effectiveness of the new analysis algorithms through two representative \emph{quantitative-reachability} properties. 
     
     The first noteworthy property we look into is the \emph{adaptivity} rounds in adaptive data analysis. An adaptive data analysis is usually composed of multiple queries among which the choice of some queries may depend on previous queries' results.
@@ -36,7 +36,7 @@
     Some exiting program complexity analysis methods can be repurposed to analyze and estimate this property.
     However, they are mainly focusing on the overall quantity and ignoring the path sensitivity in the program.
     This gives the over-approximation on the  \emph{reachability-bound}s of the locations in different sub-procedures. 
-    As far as we know, there is not a general analysis algorithm that solves reachability-bound for each program location directly or path-sensitively. 
+    As far as we know, there is not a general analysis algorithm that computes the reachability-bound for every program location directly or path-sensitively. 
     To this end, we present a path-sensitive reachability-bound algorithm.
     In comparison with previous works, our algorithm is the first one to exploit the path sensitivity to compute a precise reachability-bound for every program location.
     By doing this, we bring together two techniques from resource analysis: 1. amortized bound analysis through program abstraction and ranking function estimation, and 2. summarization-based multiple loop paths refinement.
