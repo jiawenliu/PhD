@@ -36,9 +36,9 @@ $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is def
   \text{Weights} &
   \traceW({c}) & := 
   \{ 
-  (x^l, w(x^l, c)) 
+  (x^l, w) 
   ~ \vert ~ 
-  w(x^l, c) : \ftdom_0(c) \to \mathbb{N}
+  w : \ftdom_0(c) \to \mathbb{N}
   \land
   x^l \in \lvar(c) \land
   \\ & &
@@ -48,7 +48,7 @@ $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is def
   \quad 
   \config{{c}, \trace_0} \to^{*} 
   \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace'} 
-  \land w(x^l, c)(\trace_0) = \vcounter(\trace', l) \}  
+  \land w(\trace_0) = \vcounter(\trace', l) \}  
   \\
   \text{Query Annotations} &
   \traceF({c}) & := 

@@ -191,7 +191,7 @@ computed as follows,
 for easier understanding the concept.
 In the implementation, we use the one based on $\resetchain$ in Definition 21 from \cite{SinnZV17} achieving more accurate results.}
 Then we construct the set of reachability bound $w$ for every program point $l$, as $\absW(c)$.
-For each pair $(l, w) \in \absW(c)$, $w = \sum\left\{  \absclr(\absevent, c) \middle\vert \absevent = (l, \_, \_) \right\}$.
+For each pair $(l, \hat{w}) \in \absW(c)$, $\hat{w} = \sum\left\{  \absclr(\absevent, c) \middle\vert \absevent = (l, \_, \_) \right\}$.
 
 \emph{Soundness Informal}
 For a program $c$ and an edge $\absevent \in \absE(c)$,
@@ -251,9 +251,9 @@ $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{A}_{\lin})$ is formally 
 as follows.
 % \\
  \[\progW(c) \triangleq
-   \left\{ (x^l, w) 
+   \left\{ (x^l, \hat{w}) 
 \mid
-x^l \in \progV(c) \land (l, w) \in \absW(c)
+x^l \in \progV(c) \land (l, \hat{w}) \in \absW(c)
 \right\}.
 \]
 %
@@ -267,33 +267,39 @@ in Appendix~\ref{apdx:adapt_soundness}, and Theorem~\ref{thm:rb_soundness} in Ap
 \begin{thm}[Soundness of the Reachability Bounds Estimation]
   \label{thm:addweight_soundness}
 Let  ${c}$ be a program and $\progW(c)$ be its estimated weight set.
-Then, for each $(x^l, w) \in \progW(c),\vtrace_0 \in \ftdom_0(c), \trace \in \ftdom,
-v \in \mathbb{N}$ we have:
+Then, for every $(x^l, \hat{w}) \in \progW(c)$ and $(x^l, w) \in \traceW(c) $,
+we have for every possible 
+$\vtrace_0 \in \ftdom_0(c),
+v \in \mathbb{N}$,
+if  $\config{\vtrace_0, \hat{w}} \earrow v$,
+then $v$ is an upper bound on ${w}(\trace_0)$.
   %
-\[
-  \begin{array}{l}
-    \forall c \in \cdom, x^l \in \lvar(c),\trace_0 \in \ftdom_0(c), \trace \in \ftdom,
-v \in \mathbb{N}, l' \sthat
-\\ \qquad \qquad
-\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat\vtrace} 
-\land 
-\config{\vtrace_0, \hat{w}(x^l)} \earrow v
-\land
-\implies
-\vcounter(\vtrace, l) \leq v
-\end{array}
-\]
+% \[
+%   \begin{array}{l}
+%     \forall c \in \cdom, x^l \in \lvar(c),\trace_0 \in \ftdom_0(c), \trace \in \ftdom,
+% v \in \mathbb{N}, l' \sthat
+% \\ \qquad \qquad
+% \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat\vtrace} 
+% \land 
+% \config{\vtrace_0, \hat{w}} \earrow v
+% \land
+% \implies
+% \vcounter(\vtrace, l) \leq v
+% \end{array}
+% \]
 \[
   \begin{array}{l}
     \forall c \in \cdom, x^l \in \lvar(c),\trace_0 \in \ftdom_0(c), \trace \in \ftdom,
 v \in \mathbb{N}, l' \sthat
 \\ \qquad 
-\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat\vtrace} 
-\land 
-\config{\vtrace_0, \hat{w}(x^l, c)} \earrow v
+(x^l, \hat{w}) \in \progW(c) \land (x^l, w) \in \traceW(c) 
 \land
+% \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat\vtrace} 
+% \land 
+\config{\vtrace_0, \hat{w}} \earrow v
+% \land
 \implies
-w(x^l, c)(\trace_0) \leq v
+w(\trace_0) \leq v
 \end{array}
 \]
 \end{thm}

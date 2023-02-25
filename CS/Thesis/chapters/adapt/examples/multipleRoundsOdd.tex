@@ -55,18 +55,18 @@ In this sense, the estimated adaptivity is $1 + 2 * k$, instead of $1 + k$.
  \caption{}
     \end{subfigure}
 %
-\begin{subfigure}{.48\textwidth}
+\begin{subfigure}{.6\textwidth}
     \begin{centering}
-    \begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
+    \begin{tikzpicture}[scale=\textwidth/10cm,samples=300]
 % Variables Initialization
-\draw[] (5, 1) circle (0pt) node{{ $x^1: {}^{f_1}_{1}$}};
+\draw[] (5, 1) circle (0pt) node{{ $x^1: {}^{\lambda \trace_0. 1}_{1}$}};
 % Variables Inside the Loop
- \draw[] (0, 7) circle (0pt) node{\highlight{ $y^5: {}^{f_{k/2}}_{1}$}};
- \draw[] (0, 4) circle (0pt) node{\highlight{ $p^6: {}^{f_{k/2}}_{1}$}};
- \draw[] (0, 1) circle (0pt) node{{ $x^7: {}^{f_k}_{1}$}};
+ \draw[] (0, 7) circle (0pt) node{\textcolor{blue}{ $y^5: {}^{\lambda \trace_0. \env(\trace_0) \frac{k}{2}}_{1}$}};
+ \draw[] (0, 4) circle (0pt) node{\textcolor{blue}{ $p^6: {}^{\lambda \trace_0. \env(\trace_0) \frac{k}{2}}_{1}$}};
+ \draw[] (0, 1) circle (0pt) node{{ $x^7: {}^{\lambda \trace_0. \env(\trace_0) k}_{1}$}};
  % Counter Variables
- \draw[] (5, 7) circle (0pt) node {{$j^0: {}^{f_1}_{0}$}};
- \draw[] (5, 4) circle (0pt) node {{ $j^3: {}^{f_k}_{0}$}};
+ \draw[] (5, 7) circle (0pt) node {{$j^0: {}^{\lambda \trace_0. 1}_{0}$}};
+ \draw[] (5, 4) circle (0pt) node {{ $j^3: {}^{\lambda \trace_0. \env(\trace_0) k}_{0}$}};
  %
  % Value Dependency Edges:
  \draw[  -latex,]  (0, 3.5) -- (0, 1.5) ;
@@ -76,8 +76,8 @@ In this sense, the estimated adaptivity is $1 + 2 * k$, instead of $1 + k$.
  % Value Dependency Edges on Initial Values:
  \draw[  -latex,] (1.5, 1)  -- (4, 1) ;
  %
-\draw[ ultra thick,  -latex, densely dotted, blue] (-0.6, 1.5)  to  [out=-220,in=220]  (-0.5, 6.5);
-\draw[ ultra thick, -latex, densely dotted, blue]  (0.5, 6.5) to  [out=-30,in=30] (0.6, 1.6) ;
+\draw[  thick, -latex, densely dotted] (-0.6, 1.5)  to  [out=-220,in=220]  (-0.5, 6.5);
+\draw[  thick, -latex, densely dotted]  (0.5, 6.5) to  [out=-30,in=30] (0.6, 1.6) ;
  % Control Dependency
  \draw[ -latex] (1.5, 7)  -- (4, 6) ;
  \draw[ -latex] (1.5, 4)  -- (4, 6) ;
@@ -96,14 +96,14 @@ In this sense, the estimated adaptivity is $1 + 2 * k$, instead of $1 + k$.
  \caption{}
     \end{centering}
     \end{subfigure}
-    \begin{subfigure}{.48\textwidth}
+    \begin{subfigure}{.6\textwidth}
         \begin{centering}
         \begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
     % Variables Initialization
     \draw[] (5, 1) circle (0pt) node{{ $x^1: {}^1_{1}$}};
     % Variables Inside the Loop
-     \draw[] (0, 7) circle (0pt) node{\highlight{ $y^5: {}^{k}_{1}$}};
-     \draw[] (0, 4) circle (0pt) node{\highlight{ ${p^6: {}^{k}_{1}}$}};
+     \draw[] (0, 7) circle (0pt) node{\textcolor{blue}{ ${y^5: {}^{k}_{1}}$}};
+     \draw[] (0, 4) circle (0pt) node{\textcolor{blue}{ ${p^6: {}^{k}_{1}}$}};
      \draw[] (0, 1) circle (0pt) node{{ ${x^7: {}^{k}_{1}}$}};
      % Counter Variables
      \draw[] (5, 7) circle (0pt) node {{$j^0: {}^{1}_{0}$}};
@@ -116,8 +116,8 @@ In this sense, the estimated adaptivity is $1 + 2 * k$, instead of $1 + k$.
  % Value Dependency Edges on Initial Values:
  \draw[  -latex,] (1.5, 1)  -- (4, 1) ;
  %
-    \draw[ultra thick, -latex, densely dotted, blue] (-0.6, 1.5)  to  [out=-220,in=220]  (-0.5, 6.5);
-    \draw[ ultra thick, -latex, densely dotted, blue]  (0.5, 6.5) to  [out=-30,in=30] (0.6, 1.6) ;
+    \draw[thick, -latex, densely dotted] (-0.6, 1.5)  to  [out=-220,in=220]  (-0.5, 6.5);
+    \draw[ thick, -latex, densely dotted]  (0.5, 6.5) to  [out=-30,in=30] (0.6, 1.6) ;
  % Control Dependency
  \draw[ -latex] (1.5, 7)  -- (4, 6) ;
  \draw[ -latex] (1.5, 4)  -- (4, 6) ;
