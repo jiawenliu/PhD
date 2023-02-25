@@ -88,7 +88,7 @@ the performance,
 privacy, etc., of the applications on a mobile device or software on a computer. 
 Suppose we are playing an online game on our smartphones, what do we care about? 
 In games such as racing, 
-we care about the performance of the game, in another word, if it runs fast, if it crashes due to being out of memory, and so on.
+we care about the performance of the game -- in another word, if it runs fast, if it crashes due to being out of memory, and so on.
 In 
 strategy games, people also care about whether their strategies are leaked to
 the other parties, i.e., the privacy quality of the game.
@@ -101,7 +101,7 @@ mainly be determined by
 % are executed.
 % From the same perspective, we observe that whether the data is leaked is also related to
 whether certain pieces of the program code are executed,
-and how times they are executed.
+and how many times they are executed.
 % and their execution times.
 This brings my attention to the two non-functional properties,
 the
@@ -109,7 +109,7 @@ reachability of certain lines of program code, and the times that certain code i
 \\
 These two properties can indeed be captured by a \emph{quantitative-reachability} hyper-property from two perspectives,
 i.e., whether a certain piece of code is executed (the \emph{reachability}) and how many times it is executed (the \emph{quantitative}).
-In \cite{GulwaniJK09}, this property is referred to as \emph{reachability-bound}, which is a worst-case bound on the number of times a given control location 
+In \cite{GulwaniJK09}, this property is referred to as \emph{reachability-bound}, which is a worst-case upper bound on the number of times a given control location 
 inside a procedure is visited during the program execution.
 It has broad applications in analyzing other program properties beyond itself.
 For example in the resource cost analysis, this \emph{quantitative-reachability} property
@@ -131,12 +131,10 @@ Motivated by this, also as a continuation in improving the precision when analyz
 
 
 To study the two conceptual \emph{quantitative-reachability} properties from the principles of programming language, we first formalize them through specific programming language models.
-Then we develop new static program analysis frameworks to best exploit the benefit of these properties in different areas.
-However, to fully utilize the aforementioned benefits of the new analysis frameworks on these non-functional properties, the appropriate implementation is inevitable. 
-To this end, we also take one step in algorithmizing and implementing the analysis frameworks
-which is used to formalize and statically estimate these properties.
+Then we develop new program analysis algorithms to best exploit the benefit of these properties in different areas.
+However, to fully utilize the aforementioned benefits
+% of the new analysis frameworks on these non-functional 
+on these \emph{quantitative-reachability} properties, appropriate implementations are inevitable. 
+To this end, we also take one step in algorithmizing and implementing these analysis frameworks.
+% which is used to formalize and statically estimate these properties.
 The evaluation results over real-world benchmarks report the effectiveness of our work in the real world and its potential applications beyond the program analysis area.
-
-% Last but not least, reasoning these \emph{quantitative-reachability} properties are not limited to static program analysis. 
-% We are not only interested in programs implementing the specific algorithm, but also willing to study the properties of the algorithm itself.
-
