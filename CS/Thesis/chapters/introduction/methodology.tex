@@ -51,7 +51,7 @@ Our new methodology formalizes it
 % this intuitive \emph{adaptivity} as a \emph{quantitative-reachability} program property 
 via a semantics-based definition as follows.
 \begin{enumerate}
- \item From the \emph{reachability} perspective, our approach defines this sub-property as the \emph{data dependency} relation.
+ \item From the \emph{reachability} perspective, our approach defines this sub-property as a \emph{data dependency} relation.
  % based on our trace-based semantics.
  % The semantics-based definition is inspired from~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
  The new definition captures both the control influence and value influence between data, which are never fully captured in previous dependency relation~\cite{Cousot19a, ZanioliC11, CheneyAA11}.
@@ -59,18 +59,18 @@ via a semantics-based definition as follows.
 
  \item Then in terms of the \emph{quantitative}
  % sub-property, 
- we use the \emph{reachability-bound} with respect to certain data to capture it.
- We borrow the idea from the program complexity analysis works in~\cite{GulwaniJK09}, which works well in capturing the dependency depth between queries.
+ we define the weight  with respect to certain data, specifically through the variables that use certain data.
+ We borrow the idea from the \emph{reachability-bound} analysis works in~\cite{GulwaniJK09}, which works well in capturing the dependency depth between queries.
  
- \item With the two sub-properties defined above, we construct a dependency graph by using the
+ \item Then we construct a dependency graph by using the
  % combining both the \emph{dependency relation} (as the graph edge) and \emph{dependency quantity} (as the vertex weight) on it. 
  \emph{data dependency} relation as the graph edge and the \emph{reachability-bound} as the vertex weight.
  In this way, we encode both of the two perspective sub-properties of the intuitive \emph{adaptivity} on this graph.
  % This dependency graph accurately reflects the two perspectives of the intuitive \emph{adaptivity}. 
- Although there are previous works designing the weighted dependency graph, none of them are able to carry both dependency and dependency depth in terms of the queries used in data analysis algorithms.
+ Although there are previous works designing the weighted dependency graph, most of them are unable to carry both \emph{reachability} and \emph{quantitative} w.r.t. the queries in a data analysis algorithm.
  % and apply it into analyzing the \emph{adaptivity}.
  
- \item Based on this graph, we introduce a new concept, the longest \emph{finite walk} over this graph, and the \emph{adaptivity} is defined as the length of this walk.
+ \item Based on this graph, we introduce a new concept, the longest \emph{finite walk} over this graph, and the \emph{adaptivity} is defined as the length of this longest \emph{finite walk}.
  To this end, we formally capture the \emph{adaptivity} as a \emph{quantitative-reachability} program property.
  % This longest \emph{finite walk} is also a novel quantity in the graph theory area that is never considered before.
  \end{enumerate}
