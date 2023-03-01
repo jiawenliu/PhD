@@ -21,9 +21,10 @@
     % through different perspectives.
     For example, the reachability analysis methods only tell us whether some code pieces are executed, whether the confidential data is leaked, whether certain data relies on another data, etc., which are only the \emph{reachability} sub-properties.
     These analysis methods do not address how many times or how long these properties hold with respect to some particular code or data. 
-    Quantitative analysis, such as program complexity analysis, resource cost analysis, execution time estimation, etc. only tells us the upper bound on the overall quantity, i.e., the \emph{quantitative} sub-property.
-    However, these quantities are not associated with any \emph{reachability} sub-property,
-    such as a piece of code, certain program locations, private data, etc.
+    Quantitative analysis methods, such as program complexity analysis, resource cost analysis, execution time estimation, etc. only tell us the upper bound on the overall quantity, i.e., the \emph{quantitative} sub-property.
+    However, these quantities are not associated with 
+    % any \emph{reachability} sub-property,
+    a specific piece of code, program location, private data, etc., which are related to the \emph{reachability} sub-properties.
     This thesis presents new program analysis algorithms for analyzing two representative \emph{quantitative-reachability} hyper-properties.
     Our new analysis methods leverage the limitations in both reachability analysis methods and 
     quantitative analysis methods and
@@ -46,18 +47,18 @@
     % that integrates the \emph{quantitative-reachability} and \emph{quantitative} analysis techniques,
     which estimates a sound upper bound on the adaptivity of the program that implements an adaptive data analysis. 
     
-    As a continuation of the previous work, to get a more precise bound on a data analysis program's \emph{adaptivity}, we look at the second \emph{quantitative-reachability} property -- the number of times a given control location inside a procedure is visited during the program execution.
-    The upper bound on this property is referred to as the \emph{reachability-bound}.
+    As a continuation of the previous work, to get a more precise bound on a data analysis program's \emph{adaptivity}, we look at the second \emph{quantitative-reachability} hyper-property -- the number of times a given control location inside a procedure is visited during the program execution.
+    The upper bound on this hyper-property is referred to as the \emph{reachability-bound}.
     It can help to improve the program analysis results when studying other different program features.
     % beyond itself.
-    For example, the \emph{reachability-bound} on each program location can be used by resource cost analysis to compute a tighter bound on the program's worst-case resource cost.
+    For example, the \emph{reachability-bound} on each program location can be used by resource cost analysis to compute a tighter bound on a program's worst-case resource cost.
     % on a program's resource cost.
     % analysis to compute a tighter bound, 
     The accuracy of the adaptivity analysis algorithm presented in part I can also be improved through a tight \emph{reachability-bound} on every program location.
     % , the information leakage, etc. 
     Some existing program complexity analysis methods can be repurposed to analyze and estimate a \emph{reachability-bound}.
     However, these methods focus only on the overall quantity and ignore the path sensitivity in the program.
-    For this reason, the \emph{reachability-bound}s of the locations in different sub-procedures are over-approximated. 
+    For this reason, the \emph{reachability-bound}s of the locations in different sub-procedures are usually over-approximated. 
     As far as we know, there is no general analysis algorithm that computes the reachability-bound for every program location directly and path-sensitively. 
     To this end, we present a path-sensitive reachability-bound algorithm.
     In comparison with previous works, our algorithm is the first one to exploit the path sensitivity to compute a precise reachability-bound for every program location.
