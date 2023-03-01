@@ -1,28 +1,48 @@
 \begin{abstractpage}
-    Program analysis studies the behaviors of a computer program, such as the resource usage, the safety behavior, the privacy, etc.
-    When analyzing the resource usage, people usually analyze whether a piece of code consumes certain resources and how many resources are used by this piece of code.
-    For a program's safety behavior, we mainly analyze if a particular line of code leaks a secret and how much secret is leaked by this line of code. 
-    In terms of privacy, we analyze whether a specific private data is dependent on other data and how many times they are dependent during multiple executions.
-    We notice that when analyzing these behaviors, there are two perspectives
-    shared by them which we mainly focus on -- ``How Much'' and ``Whether''.
+    Program analysis studies the execution behaviors of a computer program
+    % , 
+    % such as the program's resource usage, 
+    including its safety behavior, privacy behavior, resource usage, etc.
+    % Program analysis, for example, on the resource usage of a computer program involves analyzing whether a piece of code consumes certain resources and how many resources are used by this piece of code.
+    When program analysis is performed on the resource usage of a computer program,
+    % When analyzing the resource usage, 
+    one usually analyze whether a piece of code consumes certain resources and how many resources are used by this piece of code.
+    Program analysis on a program's safety behavior involves analyzing
+    % we mainly analyze 
+    if a particular line of code leaks a secret and how much secret is leaked by this line of code. 
+    Yet another use of program analysis is studying the program privacy by analyzing
+    % In terms of privacy, we analyze 
+    whether a specific private data is dependent on other data and how many times they are dependent during multiple executions.
+    We notice that when analyzing the aforementioned behaviors of a computer program, there are two dominant perspectives
+    shared by them  -- ``How Much'' and ``Whether''.
     % When analyzing these behaviors, we mainly focus on
     % % are focusing on analyzing two
     % two perspectives
     % % sub-properties 
     % shared by them -- ``How Much'' and ``Whether''.
     % Each sub-property is from a different perspective, and w
-    We refer to the two perspectives as two sub-properties named \emph{quantitative} property and \emph{reachability} property.
-    For the class of behaviors that share these two sub-properties, we refer to them as the hyper-properties named \emph{quantitative-reachability} property.
-    Existing program analysis methods are mainly analyzing these \emph{quantitative-reachability} properties from one perspective. 
-    They are not precise enough to capture all the different sub-properties of them through different perspectives.
-    For example, reachability analysis only tells us whether some code pieces are executed, whether the confidential data is leaked, whether certain data relies on another data, etc.
-    However, it does not address how many times or how long these properties hold w.r.t. some particular code or data.    Quantitative analysis, such as program complexity analysis, resource cost analysis, execution time estimation, etc. only tells us the upper bound on the overall quantity. 
-    However, these quantities are not associated with any specific piece of code, program locations, data, etc.
-    This thesis presents new program analysis algorithms for analyzing the \emph{quantitative-reachability} properties.
-    Our new analysis methods leverage the limitations in the two kinds of program analysis methods, and
+    We refer to the two perspectives as 
+    two sub-properties of these program behaviors namely \emph{quantitative} property and \emph{reachability} property.
+    For the class of behaviors that share these two sub-properties, we refer to them as hyper-properties named \emph{quantitative-reachability}.
+    Most of existing program analysis methods are analyzing only one sub-property of a 
+    \emph{quantitative-reachability} hyper-property.
+    %  from one perspective. 
+    These methods are not precise enough to capture all the different perspectives.
+    %  through different perspectives.
+    For example, reachability analysis only tells us whether some code pieces are executed, whether the confidential data is leaked, whether certain data relies on another data, etc., which are only the \emph{reachability} sub-properties.
+    It does not address how many times or how long these properties hold with respect to some particular code or data. 
+    Quantitative analysis, such as program complexity analysis, resource cost analysis, execution time estimation, etc. only tells us the upper bound on the overall quantity, i.e., the \emph{quantitative} sub-property.
+    However, these quantities are not associated with the other \emph{reachability} sub-property,
+    specifically the lines of code, program locations, data, etc.
+    This thesis presents new program analysis algorithms for analyzing two representative \emph{quantitative-reachability} hyper-properties.
+    Our new analysis methods leverage the limitations in both reachability analysis methods and the  
+    quantitative analysis methods, and
     help to control program's execution behaviors in a higher granularity. 
-    We show the effectiveness of the new analysis algorithms through two representative \emph{quantitative-reachability} properties. 
+    We also show the effectiveness of the new analysis algorithms through prototype implementations and experimental evaluations.
+    % two representative \emph{quantitative-reachability} hyper-properties. 
     
+
+
     The first noteworthy property we look into is the \emph{adaptivity} rounds in adaptive data analysis. An adaptive data analysis is usually composed of multiple queries among which the choice of some queries may depend on previous queries' results.
     These queries form dependent relations with each other and the
     \emph{adaptivity} is intuitively the depth of these dependence relations.
