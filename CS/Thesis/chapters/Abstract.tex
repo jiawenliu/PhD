@@ -3,7 +3,7 @@
     including programs' safety behavior, privacy behavior, resource usage, etc.
     % Program analysis, for example, on the resource usage of a computer program involves analyzing whether a piece of code consumes certain resources and how many resources are used by this piece of code.
     When program analysis is performed on the resource usage of a computer program,
-    one usually analyzes whether a piece of code consumes certain resource and how much resource is used by this piece of code.
+    one usually analyzes whether a piece of code consumes a certain resource and how much resource is used by this piece of code.
     Program analysis of a program's safety behavior involves analyzing
     if a particular line of code leaks a secret and how much secret is leaked by this line of code. 
     Yet another use of program analysis is studying the program privacy by analyzing
@@ -17,22 +17,22 @@
     Most existing program analysis methods can analyze only one sub-property of a 
     \emph{quantitative-reachability} hyper-property.
     % from one perspective. 
-    These methods are not precise enough to capture all the different perspectives of it.
+    These methods are not enough to capture all the different perspectives of it.
     % through different perspectives.
-    For example, reachability analysis only tells us whether some code pieces are executed, whether the confidential data is leaked, whether certain data relies on another data, etc., which are only the \emph{reachability} sub-properties.
-    It does not address how many times or how long these properties hold with respect to some particular code or data. 
+    For example, the reachability analysis methods only tell us whether some code pieces are executed, whether the confidential data is leaked, whether certain data relies on another data, etc., which are only the \emph{reachability} sub-properties.
+    These analysis methods do not address how many times or how long these properties hold with respect to some particular code or data. 
     Quantitative analysis, such as program complexity analysis, resource cost analysis, execution time estimation, etc. only tells us the upper bound on the overall quantity, i.e., the \emph{quantitative} sub-property.
-    However, these quantities are not associated with the \emph{reachability} sub-property,
-    specifically a piece of code, certain program locations, private data, etc.
+    However, these quantities are not associated with any \emph{reachability} sub-property,
+    such as a piece of code, certain program locations, private data, etc.
     This thesis presents new program analysis algorithms for analyzing two representative \emph{quantitative-reachability} hyper-properties.
-    Our new analysis methods leverage the limitations in both reachability analysis methods and  
+    Our new analysis methods leverage the limitations in both reachability analysis methods and 
     quantitative analysis methods and
     help to control the program's execution behaviors in higher granularity. 
     We also show the effectiveness of the new analysis algorithms through prototype implementations and experimental evaluations.
     % two representative \emph{quantitative-reachability} hyper-properties. 
     
-   
-   
+    
+    
     The first noteworthy property we look into is the \emph{adaptivity} rounds in adaptive data analysis. An adaptive data analysis is usually composed of multiple queries among which the choice of some queries may depend on previous queries' results.
     These queries form dependent relations with each other and the
     \emph{adaptivity} is intuitively the depth of these dependence relations.
@@ -48,12 +48,12 @@
     
     As a continuation of the previous work, to get a more precise bound on a data analysis program's \emph{adaptivity}, we look at the second \emph{quantitative-reachability} property -- the number of times a given control location inside a procedure is visited during the program execution.
     The upper bound on this property is referred to as the \emph{reachability-bound}.
-    A tight reachability-bound can help to improve the program analysis results when studying other different program features.
-    %  beyond itself.
-    For example, it can be used by resource cost analysis to compute a tighter bound on program's worst case resource cost.
-    %  on a program's resource cost.
-    %  analysis to compute a tighter bound, 
-    The accuracy of the adaptivity analysis algorithm presented in part I can also be improved through a tight reachability-bound.
+    It can help to improve the program analysis results when studying other different program features.
+    % beyond itself.
+    For example, the \emph{reachability-bound} on each program location can be used by resource cost analysis to compute a tighter bound on the program's worst-case resource cost.
+    % on a program's resource cost.
+    % analysis to compute a tighter bound, 
+    The accuracy of the adaptivity analysis algorithm presented in part I can also be improved through a tight \emph{reachability-bound} on every program location.
     % , the information leakage, etc. 
     Some existing program complexity analysis methods can be repurposed to analyze and estimate a \emph{reachability-bound}.
     However, these methods focus only on the overall quantity and ignore the path sensitivity in the program.
