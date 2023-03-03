@@ -6,11 +6,12 @@ The most critical behavior with respect to programs has been the execution corre
 program analysis community to pay a lot of attention to analyzing functional correctness properties.
 It determines whether a program executes correctly and seamlessly without bugs.
 % However, the function of a program has also changed along with the popularity of mobile devices and the wide application of big data.
-However, due to the popularity of mobile devices and the wide application of big data, the expectations on a program have increased. 
+However, due to the popularity of mobile devices and the wide usage of big data in computer programs, the expectations on a program have increased. 
 % It is not enough for a program running on a mobile phone or handling big data to just run without bugs. 
-It is no longer enough for these programs to only run without bugs. 
+It is no longer enough for a program to only run without bugs,
 % The non-functional execution properties have become equally important if not more in the past couple of decades. 
-In the past couple of decades, the \emph{quantitative-reachability} properties 
+% In the past couple of decades, 
+some \emph{quantitative-reachability} properties 
 % have surpassed the functional  properties in importance. 
 have become equally important.
 To provide people with high-quality mobile and computer programs, the \emph{quantitative-reachability} properties of programs are important to study. 
@@ -53,50 +54,59 @@ The recommendation accuracy influences one's convenience and enjoyment as well.
 %
 In both cases, accuracy of the recommendation results and forecasting results
 relies heavily on the
-outputs of the programs which implement certain
-data analysis.
+outputs of the programs that implement certain
+data analysis algorithms.
 This brings my attention to
-some non-functional properties
+the properties
 that can help to improve the output accuracy of
-the programs that implement corresponding data analysis.
+these data analysis programs.
+%  that implement corresponding data analysis.
 We look at the scenario
-where a data analysis program
-analyzes a sample data
-and computes some generalized results
-on the unknown population
-where the sample is drawn.
-Then, these generalized results are used to recommend games, music, clothes, etc. to arbitrary
-users who might come from an unknown population.
-% with personalized recommendations.
-Some users occasionally receive
-% inaccurate 
-recommendations they do not like.
-This is because they are not in the sample data and get recommendations by
-using the
-generalized analysis results which often involve errors.
-% generalized 
-% analysis results.
-In these situations, the generalization error comes into play. 
-It measures the difference between the 
-data analysis result on a sample data 
-and the ideal analysis result is expected to be
-achieved by
-analyzing the entire population.
+where data analyses is composed of multiple queries interrogating some data,
+% analyzes a sample data
+% and computes some generalized results
+% on the unknown population
+% where the sample is drawn.
+and aim to identify some property of the population from which the data are drawn,
+generalizing beyond the specific data sample.
+These generalized results are used by some applications to recommend games, music, clothes, etc. to the
+users beyond the data sample, or the weather forecasting application to make prediction on the future.
+% Some users occasionally receive
+% recommendations they do not like.
+% This is because they are not in the sample data and get recommendations by
+% using the
+% generalized analysis results which often involve errors.
+% In these situations, the generalization error comes into play. 
+The recommendation and predication accuracy are usually measured by the generalization error.
+It measures the difference between the result of a 
+data analysis run on a sample data 
+and the result one would achieve
+% is expected to be
+% achieved 
+by
+running over the entire population.
 % This error shows the reliability of the data analysis and reflects the accuracy of the personalized recommendations.
-High generalization error in the data analysis reduces the accuracy of the personalized recommendations for people using certain mobile applications. This brings in-\emph{convenience} and reduces the \emph{enjoyment} of the mobile experience.
-In light of existing machine learning studies, some researchers found that certain non-functional properties of data analysis algorithms can help to control the generalization error, especially when the data analysis is adaptive.
-\\
-% We notice one of these non-functional properties that is critical in controlling the generalization error can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
-One of the most critical non-functional properties is the \emph{adaptivity} rounds.
-This property captures the generalization error in terms of whether the sample data that is queried by the algorithm are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
-In this sense, it can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
-We are interested in analyzing it as a \emph{quantitative-reachability} property using the principles of programming languages to help reduce the generalization error of the corresponding algorithm.
-In this sense, we can help to improve the accuracy for the recommendation results computed by these algorithms
-and guarantee the \emph{convenience} and the \emph{enjoyment} of people's life.
-We focus in analyzing it in \redd{PART \romannum{1}}.
-% This property captures the generalization error in terms of whether the queries are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
-% Under the light of existing machine learning studies, we want to use this \emph{quantitative-reachability} property to help reduce the generalization errors in data analysis results.
-
+High generalization error in the data analysis reduces the accuracy of recommendation and predication results,
+% the personalized recommendations for people using certain mobile applications. 
+bringing in-\emph{convenience} and reduces the \emph{enjoyment} of the experience when using these programs.
+When a data analysis algorithm is adaptive where the choice of which query to run next may rely on the results of previous queries, the error in each query can propagate through
+the dependency chain and bring to high generalization error. 
+In light of existing machine learning studies, some researchers found that 
+determining the appropriate statistical technique based on the length of this  dependency chain can help in controlling 
+the generalization error.
+In this sense, we are interested in studying the length of this dependency chain in an adaptive data analysis strategy, intuitively the \emph{adaptivity} using the principles of programming languages to help reduce the generalization error.
+Specifically, we consider the data analyses are implemented in a while-like language and formalize this intuitive notion  \emph{adaptivity} as a \emph{quantitative-reachability} property of the programs that implement certain data analyses.
+% % We notice one of these non-functional properties that is critical in controlling the generalization error can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
+% % One of the most critical \emph{quantitative-reachability} properties is the \emph{adaptivity} rounds.
+% This property captures the generalization error in terms of whether the sample data that is queried by the algorithm are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
+% In this sense, it can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
+% We are interested in analyzing it as a \emph{quantitative-reachability} property using the principles of programming languages to help reduce the generalization error.
+% In this sense, we can help to improve the accuracy for the recommendation results computed by these algorithms
+% and guarantee the \emph{convenience} and the \emph{enjoyment} of people's life.
+% We focus in analyzing it in \redd{PART \romannum{1}}.
+% % This property captures the generalization error in terms of whether the queries are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
+% % Under the light of existing machine learning studies, we want to use this \emph{quantitative-reachability} property to help reduce the generalization errors in data analysis results.
+The \emph{adaptivity} captures the generalization error in terms of whether the query asked by a program  are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
 
 \emph{Efficiency And Privacy.}
 % High-quality modern daily life
