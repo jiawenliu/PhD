@@ -1,23 +1,32 @@
-% Program analysis has a long history of analyzing and controlling a program's execution behavior.
-% A few decades ago, computer programs were only used for research or business purposes and the only expectation of programs was to execute correctly without bugs. The most critical behavior with respect to programs has been the execution correctness behavior. This has led the 
-% program analysis community to pay a lot of attention to analyzing functional correctness properties.
-% It determines whether a program executes correctly and seamlessly without bugs.
-% However, the function of programs has also changed along with the popularity of mobile devices and the wide application of big data. 
-% It is not enough for these programs running on mobile phones or those programs handling big data, 
-% to just run without bugs. The non-functional execution properties are equally important if not more in the past couple of decades.  Programs on mobile devices are of great significance in today's life. To provide people with high-quality mobile programs, the non-functional properties of programs are worth studying. This thesis studies two non-functional properties in the \emph{quantitative-reachability} property category which can significantly influence people's daily life in terms of the \emph{convenience},
-% \emph{enjoyment}, \emph{efficiency}, and \emph{privacy}.
-
-People use program analysis as tools to study and control a program’s execution behavior.
-A few decades ago, people employed computer programs solely for research and business purposes with the simple expectation of executing correctly without bugs. 
-That is, with respect to programs, execution correctness is the most critical behavior.
-As a result, the program analysis community has paid a lot of/great attention to analyzing functional correctness properties.
-These properties determine whether a program executes correctly and seamlessly without bugs.
-However, due to the popularity of mobile devices and the wide application of big data, the expectations on programs have increased.
+Program analysis has a long history of analyzing and controlling a program's execution behavior.
+% People use program analysis as tools to study and control a program's execution behavior.
+A few decades ago, computer programs were only used for research or business purposes and the only expectation of a program was to execute correctly without bugs. 
+% A few decades ago, people employed computer programs solely for research and business purposes with the simple expectation of executing correctly without bugs. 
+The most critical behavior with respect to programs has been the execution correctness behavior. This has led the 
+program analysis community to pay a lot of attention to analyzing functional correctness properties.
+It determines whether a program executes correctly and seamlessly without bugs.
+% However, the function of a program has also changed along with the popularity of mobile devices and the wide application of big data.
+However, due to the popularity of mobile devices and the wide application of big data, the expectations on a program have increased. 
+% It is not enough for a program running on a mobile phone or handling big data to just run without bugs. 
 It is no longer enough for these programs to only run without bugs. 
-In the past couple of decades, the “non-functional” execution properties have surpassed the functional  properties in importance. 
-To provide people with high-quality mobile programs, their non-functional properties must be studied. 
-Therefore, we study two non-functional properties, specifically two \emph{quantitative-reachability} properties which can significantly influence people's daily life in terms of the \emph{convenience},
+% The non-functional execution properties have become equally important if not more in the past couple of decades. 
+In the past couple of decades, the \emph{quantitative-reachability} properties 
+% have surpassed the functional  properties in importance. 
+have become equally important.
+To provide people with high-quality mobile and computer programs, the \emph{quantitative-reachability} properties of programs are important to study. 
+This thesis studies two \emph{quantitative-reachability} properties, specifically the \emph{adaptivity} and the \emph{reachability-bound} properties which can influence people's mobile and computer using experiences in terms of the \emph{convenience},
 \emph{enjoyment}, \emph{efficiency}, and \emph{privacy}.
+
+% A few decades ago, people employed computer programs solely for research and business purposes with the simple expectation of executing correctly without bugs. 
+% That is, with respect to programs, execution correctness is the most critical behavior.
+% As a result, the program analysis community has paid a lot of/great attention to analyzing functional correctness properties.
+% These properties determine whether a program executes correctly and seamlessly without bugs.
+% However, due to the popularity of mobile devices and the wide application of big data, the expectations on programs have increased.
+% It is no longer enough for these programs to only run without bugs. 
+% In the past couple of decades, the “non-functional” execution properties have surpassed the functional  properties in importance. 
+% To provide people with high-quality mobile programs, their non-functional properties must be studied. 
+% Therefore, we study two non-functional properties, specifically two \emph{quantitative-reachability} properties which can significantly influence people's daily life in terms of the \emph{convenience},
+% \emph{enjoyment}, \emph{efficiency}, and \emph{privacy}.
 
 
 % \emph{Convenience And Enjoyment.} 
@@ -32,19 +41,20 @@ Therefore, we study two non-functional properties, specifically two \emph{quanti
 
 \emph{Convenience And Enjoyment.}
 People have a variety of experiences when using computer programs and mobile device applications.
-In terms of the convenience and enjoyment of the experience, we notice that these types of experiences are closely related to 
+In terms of the convenience and enjoyment, we notice that these types of experiences are closely related to 
 data analysis programs and applications.
-For example, weather forecasting applications use data analysis programs to predict the weather accurately, providing people with more convenience and enjoyment.
-% Accurate prediction results can bring people more convenience and enjoyment.
+For example, weather forecasting applications use data analysis programs to predict the weather.
+%  accurately, providing people with more convenience and enjoyment.
+Accurate prediction results bring people convenience and enjoyment.
 % , the more convenient user is.
 Other applications, such as video or music players, online games and shopping, use data analysis programs to provide users with personalized recommendations.
-In this sense, the recommendation accuracy influences one's convenience and enjoyment of the mobile experience.
+The recommendation accuracy influences one's convenience and enjoyment as well.
 %
 %
-The accuracy of the recommendation
+In both cases, accuracy of the recommendation results and forecasting results
 relies heavily on the
 outputs of the programs which implement certain
-data analysis using big data.
+data analysis.
 This brings my attention to
 some non-functional properties
 that can help to improve the output accuracy of

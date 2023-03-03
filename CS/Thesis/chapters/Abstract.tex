@@ -34,34 +34,54 @@
     
     
     
-    The first noteworthy property we look into is the \emph{adaptivity} rounds in adaptive data analysis. An adaptive data analysis is usually composed of multiple queries among which the choice of some queries may depend on previous queries' results.
-    These queries form dependent relations with each other and the
-    \emph{adaptivity} is intuitively the depth of these dependence relations.
-    Reasoning about \emph{adaptivity} is useful in controlling the generalization error of adaptive data analysis, which usually propagates sharply along with the dependency chain.
-    Researchers in the data analysis area have found that the generalization error can be controlled well by choosing the appropriate statistic technique according to the \emph{adaptivity}.
-    Nevertheless, adaptivity is not always clear to data analysts when they need it.
-    To solve this dilemma, we present a program analysis framework that analyzes this intuitive concept in
-    the principle of programming language.
-    We first formalize the \emph{adaptivity} through a semantics-based definition.
-    Then we present a \emph{quantitative-reachability} analysis algorithm
+    % The first noteworthy property we look into is the \emph{adaptivity} rounds in the adaptive data analysis algorithm. 
+    The first noteworthy \emph{quantitative-reachability} property we look into is 
+    the \emph{adaptivity}  
+    in the programs that implement adaptive data analyses. 
+    %
+    % An adaptive data analysis is usually composed of multiple queries among which the choice of some queries may depend on previous queries' results.
+    % These queries form dependent relations with each other and the
+    % \emph{adaptivity} property is intuitively the depth of these dependence relations.
+    % Studying the \emph{adaptivity} property is useful in controlling the generalization error of adaptive data analysis, which usually propagates sharply along with the dependency chain.
+    % Researchers in the data analysis area have found that 
+    % determining the appropriate statistical technique based on the value of \emph{adaptivity}  can help in controlling 
+    % the generalization error well.
+    % Nevertheless, adaptivity is not always clear to data analysts when they need it.
+    % To solve this dilemma, we present a program analysis framework that analyzes this intuitive concept in
+    % the principle of programming language.
+    % We first formalize the \emph{adaptivity} through a semantics-based definition.
+    % Then we present a \emph{quantitative-reachability} analysis algorithm
+    % which estimates a sound upper bound on the adaptivity of the program that implements an adaptive data analysis. 
+    %
+    Data analyses are usually designed to identify some properties of the population from which the data are drawn, generalizing beyond the specific data sample. For this reason, data analyses are often designed in a way that guarantees that they produce a low generalization error.
+    An adaptive data analysis can be seen as a process composed by multiple queries interrogating some data, where the choice of which query to run next may rely on the results of previous queries. 
+    The generalization error of each individual query/analysis can be controlled by using an array of well-established statistical techniques.
+    However, when queries are arbitrarily composed, the different errors can propagate through the chain of different queries and bring to high generalization error. 
+    To address this issue, data analysts are designing several techniques that not only guarantee bounds on the generalization errors of single queries, but that also guarantee bounds on the generalization error of the composed analyses. 
+    The choice of which of these techniques to use, often depends on the chain of queries that an adaptive data analysis can generate.
+    To help analyst with identifying which technique to use to control their generalization error, we onsider adaptive data analyses implemented as while-like programs and we design a
+    program analysis framework.
+    We first formalize the intuitive notion of \emph{adaptivity} as a \emph{quantitative-reachability} property. Because the \emph{adaptivity} level is a key measure of an adaptive data analysis to choose the appropriate technique.
+    % through a semantics-based definition.
+    Then we design a program analysis algorithm
     % that integrates the \emph{quantitative-reachability} and \emph{quantitative} analysis techniques,
     which estimates a sound upper bound on the adaptivity of the program that implements an adaptive data analysis. 
     
-    As a continuation of the previous work, to get a more precise bound on a data analysis program's \emph{adaptivity}, we look at the second \emph{quantitative-reachability} hyper-property -- the number of times a given control location inside a procedure is visited during the program execution.
+    As a continuation of the previous work, to get a more precise bound on a data analysis program's \emph{adaptivity}, we look at another \emph{quantitative-reachability} hyper-property -- the number of times a given  location inside a procedure is visited during the program execution.
     The upper bound on this hyper-property is referred to as the \emph{reachability-bound}.
     It can help to improve the program analysis results when studying other different program features.
     % beyond itself.
     For example, the \emph{reachability-bound} on each program location can be used by resource cost analysis to compute a tighter bound on a program's worst-case resource cost.
-    The accuracy of the adaptivity analysis algorithm presented in part I can also be improved through a tight \emph{reachability-bound} on every program location.
+    The accuracy of the adaptivity analysis algorithm discussed above can also be improved through a tight \emph{reachability-bound} on every program location.
     % , the information leakage, etc. 
-    Some existing program complexity analysis methods can be repurposed to analyze and estimate a \emph{reachability-bound}.
+    Some existing program complexity analysis methods can be repurposed to analyze and estimate the \emph{reachability-bound}.
     However, these methods focus only on the overall quantity and ignore the path sensitivity in the program.
     For this reason, the \emph{reachability-bound}s of the locations in different sub-procedures are usually over-approximated. 
     As far as we know, there is no general analysis algorithm that computes the reachability-bound for every program location directly and path-sensitively. 
     To this end, we present a path-sensitive reachability-bound algorithm.
     In comparison with previous works, our algorithm is the first one to exploit the path sensitivity to compute a precise reachability-bound for every program location.
     By doing this, we bring together two techniques from resource analysis: 1. amortized bound analysis through program abstraction and ranking function estimation, and 2. summarization-based multiple loop paths refinement.
-    Building on this combination, we focus on two new quantities, \emph{path reachability-bound} and \emph{loop reachability-bound}, which allow us to leverage the precision and efficiency of the two techniques, and compute precise reachability-bounds for each program point in a path-sensitive way.
+    Building on this combination of techniques, we focus on two new quantities, \emph{path reachability-bound} and \emph{loop reachability-bound}, which allow us to leverage the precision and efficiency of the two techniques mentioned above, and compute precise reachability-bounds for each program point in a path-sensitive way.
     We implemented our algorithm in a prototype, and we report on an experimental comparison with state-of-art tools over four different sets of benchmarks.
     \end{abstractpage}
     
