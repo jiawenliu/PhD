@@ -2,19 +2,28 @@
     Program analysis studies the execution behaviors of computer programs
     including programs' safety behavior, privacy behavior, resource usage, etc.
     % Program analysis, for example, on the resource usage of a computer program involves analyzing whether a piece of code consumes certain resources and how many resources are used by this piece of code.
-    When program analysis is performed on the resource usage of a computer program,
+    When program analysis is performed to study the resource usage of a computer program,
     one usually analyzes whether a piece of code consumes a certain resource and how much resource is used by this piece of code.
     Program analysis of a program's safety behavior involves analyzing
     if a particular line of code leaks a secret and how much secret is leaked by this line of code. 
-    Yet another use of program analysis is studying the program privacy by analyzing
+    Yet another use of program analysis is studying the program privacy behavior by analyzing
     % In terms of privacy, we analyze 
     whether a specific private data is dependent on other data and how many times they are dependent during multiple executions.
-    We notice that when analyzing the aforementioned behaviors of a computer program, there are two dominant perspectives
-    shared by them -- ``How Much'' and ``Whether''.
-    We refer to the two perspectives as 
-    two sub-properties of these program behaviors namely \emph{quantitative} property and \emph{reachability} property.
-    For the class of behaviors that share these two sub-properties, we refer to them as \emph{quantitative-reachability} hyper-properties.
-    Most existing program analysis methods can analyze only one sub-property of a 
+    % We notice that when analyzing the aforementioned behaviors of a computer program, there are two dominant perspectives
+    % shared by them -- ``How Much'' and ``Whether''.
+    % We refer to the two perspectives as 
+    % two sub-properties of the program namely \emph{quantitative} property and \emph{reachability} property.
+    % For the class of behaviors that share these two sub-properties, we refer to them as \emph{quantitative-reachability} hyper-properties.
+    We notice that when studying the aforementioned behaviors, there are two dominant program properties
+    that we are analyzing -- ``How Much'' and ``Whether'',
+    % We refer to the two perspectives as 
+    % two sub-properties of the program,
+    namely \emph{quantitative} property and \emph{reachability} property.
+    % When looking into this kind of behaviors, 
+    In other words, when looking into this kind of behaviors, we are indeed analyzing the hyper-properties of a program that contains \emph{quantitative} and \emph{reachability} as two sub-properties.
+    % For the class of behaviors that share these two sub-properties, we refer to them as \emph{quantitative-reachability} hyper-properties.
+    We refer to this hyper-property as the \emph{quantitative-reachability}.
+    Most existing program analysis methods can analyze only one sub-property of a program's
     \emph{quantitative-reachability} hyper-property.
     % from one perspective. 
     These methods are not enough to capture all the different perspectives of it.
@@ -37,7 +46,7 @@
     % The first noteworthy property we look into is the \emph{adaptivity} rounds in the adaptive data analysis algorithm. 
     The first noteworthy \emph{quantitative-reachability} property we look into is 
     the \emph{adaptivity}  
-    in the programs that implement adaptive data analyses. 
+    in the programs that implement certain adaptive data analyses. 
     %
     % An adaptive data analysis is usually composed of multiple queries among which the choice of some queries may depend on previous queries' results.
     % These queries form dependent relations with each other and the
@@ -58,16 +67,21 @@
     The generalization error of each individual query/analysis can be controlled by using an array of well-established statistical techniques.
     However, when queries are arbitrarily composed, the different errors can propagate through the chain of different queries and bring to high generalization error. 
     To address this issue, data analysts are designing several techniques that not only guarantee bounds on the generalization errors of single queries, but that also guarantee bounds on the generalization error of the composed analyses. 
-    The choice of which of these techniques to use, often depends on the chain of queries that an adaptive data analysis can generate.
-    To help analyst with identifying which technique to use to control their generalization error, we onsider adaptive data analyses implemented as while-like programs and we design a
+    The choice of which of these techniques to use, often depends on the chain of queries that an adaptive data analysis can generate, intuitively the \emph{adaptivity} level in an adaptive data analysis.
+    To help analyst with identifying which technique to use to control their generalization error, we consider adaptive data analyses implemented as while-like programs and we design a
     program analysis framework.
-    We first formalize the intuitive notion of \emph{adaptivity} as a \emph{quantitative-reachability} property. Because the \emph{adaptivity} level is a key measure of an adaptive data analysis to choose the appropriate technique.
+    %  to analyze this \emph{adaptivity}.
+    In this framework, we first formalize the intuitive notion of \emph{adaptivity} as a \emph{quantitative-reachability} property,
+    which
+    %  . Because the \emph{adaptivity} level 
+     is a key measure of an adaptive data analysis to choose the appropriate technique.
     % through a semantics-based definition.
     Then we design a program analysis algorithm
     % that integrates the \emph{quantitative-reachability} and \emph{quantitative} analysis techniques,
-    which estimates a sound upper bound on the adaptivity of the program that implements an adaptive data analysis. 
-    
-    As a continuation of the previous work, to get a more precise bound on a data analysis program's \emph{adaptivity}, we look at another \emph{quantitative-reachability} hyper-property -- the number of times a given  location inside a procedure is visited during the program execution.
+    that estimates a sound upper bound on the adaptivity of the program that implements an adaptive data analysis. 
+    We also implement our program analysis and show that it can help to analyze the adaptivity of several concrete data analyses with different adaptivity structures.
+
+    As a continuation of the previous work, to get a more precise bound on a program's \emph{adaptivity} level, we look at another \emph{quantitative-reachability} hyper-property -- the number of times a given  location inside a procedure is visited during the program execution.
     The upper bound on this hyper-property is referred to as the \emph{reachability-bound}.
     It can help to improve the program analysis results when studying other different program features.
     % beyond itself.

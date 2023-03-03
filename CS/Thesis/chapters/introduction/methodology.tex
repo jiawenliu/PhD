@@ -6,18 +6,23 @@
 \paragraph{Existing Programming Languages and The Limitations}
 Most of the data analysis algorithms are implemented in Python equipped with the panda, numpy, TensorFlow, etc. libraries for database access and data training computation, 
 or in C with some external database access libraries, etc.
-These languages and external libraries are mainly focusing on the efficiency and scalable of the programs that implement these algorithms.
-None of them takes care of the generalization error of the corresponding algorithms that these programs implemented.
+These languages and external libraries
+% are mainly focusing on 
+focuses only on the efficiency and scalable of the programs, but not
+% None of them takes care of 
+the generalization error of the corresponding data analysis algorithms that these programs implemented.
 % In terms of adaptivity, none of them take care of this property w.r.t. these data analysis algorithms implemented.
-In this sense, analyzing the \emph{adaptivity} as a program property in order to control generalization error
+In this sense, to control data analyses' generalization error by analyzing the programs' \emph{adaptivity}
+% as a program property
 is difficult based on existing programming languages.
 % However, the variety of the external API makes the formalization of data analysis algorithms and their adaptivity property over these languages difficult.
 
 \paragraph{Our Language Model}
-We identify some data analysis models which are usually used as the base of data analysis algorithms.
-Based on these models, we design a simple but scalable language model based on standard while language that can be used to implement these algorithms and formalize
-the \emph{adaptivity}, named {\tt QWhile}.
+We identify some data analysis models which are mostly used as the core of data analysis algorithms.
+Based on these models, we design a simple but scalable language model based on standard while language named {\tt QWhile}.
 It is a standard while language enriched with the query request command and labels on each program command. 
+We implement these data analyses algorithm in {\tt QWhile} and then formalize
+the \emph{adaptivity} notation over this language model. 
 
 
 \subsubsection{Program Property Formalization}
