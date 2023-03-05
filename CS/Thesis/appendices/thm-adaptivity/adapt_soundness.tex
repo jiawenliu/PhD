@@ -3,8 +3,8 @@
 	For every program $c$, 
 	its estimated adaptivity is a sound upper bound of its adaptivity.
 	 \[
-	 \forall \trace_0 \in \ftdom_{0}(c), v \in \mathbb{N}^{\infty} \sthat  
-  \config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq c
+		\forall \trace_0 \in \ftdom_{0}(c), v \in (\mathbb{N}\cup \{\infty\}) \sthat
+		\config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq c
   \] 
   \end{theorem}
   %
@@ -30,18 +30,12 @@ Lemma~\ref{lem:weights_map};
 the $\progA(c)$.
 %
 \begin{proof}
-Given a program ${c}$, 
-we construct its 
-\\
-program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
-by Definition~\ref{def:prog_graph}
-\\ and 
-trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$  by Definition~\ref{def:trace_graph}.
-\\
-The parameter $(c)$ for the components in the two graphs are omitted for concise.
+Given a program ${c}$, let $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
+be its semantics-based dependency graph by Definition~\ref{def:trace_graph} and $\progG({c}) = (\progV, \progE, \progW, \progF)$ be its estimated-dependency graph
+by Definition~\ref{def:prog_graph}.
 \\
 %
-According to the Definition \ref{def:prog_adapt} and Definition~\ref{def:trace_adapt}, it is sufficient to show:
+According to the Definition~\ref{def:prog_adapt} and Definition~\ref{def:trace_adapt}, it is sufficient to show:
 %
 $$
 \forall \trace \in \ftdom \sthat 

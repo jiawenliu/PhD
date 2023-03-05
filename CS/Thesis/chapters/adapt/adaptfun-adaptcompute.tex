@@ -1,86 +1,103 @@
-This phase computes the adaptivity upper bound for a program $c$.
-\\
 Based on
 % its 
 $c$'s estimated dependency graph, $\progG({c})$ approximated above,
 %
-its adaptivity upper bound 
-% Defined in Definition~\ref{def:prog_adapt} as 
+we compute a sound upper bound on $c$'s adaptivity in this section in Definition~\ref{def:prog_adapt}
+and Algorithm~\ref{alg:adapt}.
 %
-is estimated as
-the length of the longest finite walk over $\walks(\progG({c}))$ formally in Definition~\ref{def:prog_adapt}, 
-and computed 
-by Algorithm~\ref{alg:adapt}.
-%
-$\walks(\progG(c))$ represents the set of all finite walks on
-% the estimated dependency graph for $c$
- $\progG({c})$.
-Different from the finite walk on $\traceG(c)$, the $\kappa \in \walks(\progG(c))$ doesn't rely on the initial trace.
-The occurrence time of every $v_i$ in $\kappa$'s vertices sequence is bound by 
-an arithmetic expression $w_i$ where $(v_i, w_i) \in \progW(c)$ is $v_i$'s estimated weight.
-Then its query length $\qlen(\kappa)$ and the estimated adaptivity $\progA(c)$ are both arithmetic expression as well.
-%
-They are formally defined as follows.
-\begin{defn}[Finite Walk on estimated dependency graph ($\kappa$)].
+
+Different from the weight on the semantics-based dependency graph, the weight on the estimated graph are symbolic expression. This symbolic expression cannot be used to construct a finite walk
+by definition~\ref{def:finitewalk}. In this sense, to estimate the finite walk
+we first introduction the path on the estimated dependency graph as follows.
+\begin{defn}[Path]
   \label{def:prog_finitewalk}
-  \\
-  Given a program $c$'s estimated dependency graph 
+  Given a program $c$ with its estimated dependency graph 
   $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
-  a \emph{finite walk} $k$ in $\traceG({c})$ is
+  a \emph{path} $p$ in $\traceG({c})$ is
   a sequence of edges $(e_1 \ldots e_{n - 1})$ 
   for which there is a sequence of vertices 
-  $(v_1, \ldots, v_{n})$ such that:
+  $(v_1, \ldots, v_{n})$ 
+  % and weight sequence
+  % $(w_1, \ldots, w_n)$ 
+  such that:
   \begin{itemize}
-      \item $e_i = (v_{i},v_{i + 1}) \in \progE(c)$ for every $1 \leq i < n$.
-      \item every vertex $v_i \in \progV(c)$,
-      and $(v_i, w_i) \in \progW(c)$, 
-       $v_i$ appears in $(v_1, \ldots, v_{n})$ at most 
-    %   \wq{$\traceW({c})(\trace)$} 
-    $w_i$
-      times.  
+      \item $e_i = (v_{i},v_{i + 1}) \in \progE(c)$ for every $1 \leq i < n$,
+      % \item and $(v_{i}, w_i) \in \progW(c)$ for every $1 \leq i < n$,
+      \item and $v_i \neq v_j$ for evey $i, j = 1, \ldots, n$ and $i \neq j$.
   \end{itemize}
   %
-  The length of $k$ is the number of vertices in its vertex sequence, i.e., $\len(k) = a$.
  \end{defn}
-We abuse the notation $\walks(\progG(c))$ represents the walks over the estimated dependency graph for $c$.
-Different from the walks on a program $c$'s semantics based graph,
- $k \in \walks(\traceG(c))$, 
-$k \in \walks(\progG(c))$ doesn't rely on initial trace.
-The occurrence times of every $v_i $ in $k$'s vertex sequence is bound by 
-an arithmetic expression $w_i$ where $(v_i, w_i) \in \progV(c)$, is $v_i$'s estimated weight. 
+
+% Different from the finite walk on $\traceG(c)$, the $\kappa \in \walks(\progG(c))$ doesn't rely on the initial trace.
+% The occurrence time of every $v_i$ in $\kappa$'s vertices sequence is bound by 
+% an arithmetic expression $w_i$ where $(v_i, w_i) \in \progW(c)$ is $v_i$'s estimated weight.
+% Then its query length $\qlen(\kappa)$ and the estimated adaptivity $\progA(c)$ are both arithmetic expression as well.
+% %
+% They are formally defined as follows.
+% \begin{defn}[Finite Walk on estimated dependency graph ($\kappa$)].
+%   \label{def:prog_finitewalk}
+%   \\
+%   Given a program $c$'s estimated dependency graph 
+%   $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
+%   a \emph{finite walk} $k$ in $\traceG({c})$ is
+%   a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+%   for which there is a sequence of vertices 
+%   $(v_1, \ldots, v_{n})$ such that:
+%   \begin{itemize}
+%       \item $e_i = (v_{i},v_{i + 1}) \in \progE(c)$ for every $1 \leq i < n$.
+%       \item every vertex $v_i \in \progV(c)$,
+%       and $(v_i, w_i) \in \progW(c)$, 
+%        $v_i$ appears in $(v_1, \ldots, v_{n})$ at most 
+%     %   \wq{$\traceW({c})(\trace)$} 
+%     $w_i$
+%       times.  
+%   \end{itemize}
+%   %
+%   The length of $k$ is the number of vertices in its vertex sequence, i.e., $\len(k) = a$.
+%  \end{defn}
+% We abuse the notation $\walks(\progG(c))$ represents the walks over the estimated dependency graph for $c$.
+% Different from the walks on a program $c$'s semantics based graph,
+%  $k \in \walks(\traceG(c))$, 
+% $k \in \walks(\progG(c))$ doesn't rely on initial trace.
+% The occurrence times of every $v_i $ in $k$'s vertex sequence is bound by 
+% an arithmetic expression $w_i$ where $(v_i, w_i) \in \progV(c)$, is $v_i$'s estimated weight. 
 % Notice here, for a walk in $\progG(c)$, the occurrence times of every vertex in vertices sequence, 
 %  and its 
- The length of a finite walk $k \in \walks(\progG(c))$ is an arithmetic expression
- as well, i.e., $\len(k) \in \mathcal{A}_{in}$
-
-Following the same procedure during defining the adaptivity in Definition~\ref{def:qlen}, we define
-the \emph{query length} of a finite walk in the estimated graph, $\progG(c)$ as an arithmetic expression formally as follows.
-\begin{defn}[Query Length of the Finite Walk on estimated dependency graph ($\qlen$)]
+We use $\paths(\progG(c))$ to denote the set of all paths on
+% the estimated dependency graph for $c$
+ $\progG({c})$.
+%  The length of a finite walk $k \in \walks(\progG(c))$ is an arithmetic expression
+%  as well, i.e., $\len(k) \in \inpexprdom$
+Following Definition~\ref{def:qlen}, 
+we compute
+the \emph{query length} of a path, $p \in \paths(\progG(c))$ on the estimated graph as an arithmetic expression formally as follows.
+\begin{defn}[Query Length Computation]
   \label{def:qlen-static}
   Given 
-  a program $c$'s semantics-based dependency graph 
+  a program $c$ and its estimated dependency graph 
   $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
-   and a \emph{finite walk} $k \in \walks(\progG(c))$,
-  The query length of $k$, $\qlen(k) \in \mathcal{A}_{in}$ 
-  is the number of vertices which correspond to query variables in the vertices sequence of this walk $k$
-  $(v_1, \ldots, v_{n})$ as follows, 
+  let $p \in \paths(\progG(c))$ be a \emph{path} with edge sequence $(e_1 \ldots e_{n - 1})$ 
+  a sequence of vertices 
+  $(v_1, \ldots, v_{n})$,
+  the query length of $p$, $\hat{\qlen}(p)$ is computed as
   \[
-    \qlen(k) = |\big( v \mid v \in (v_1, \ldots, v_{n}) \land v \in \progF(c) \big)|.
+   \sum\left\{ v \times w
+   \mid v \in (v_1, \ldots, v_{n}) \land (v, 1) \in \progF(c)
+   \land 
+   (v, w) \in \progW(c) 
+   \right\}
   \]
   \end{defn}
-  We estimate the adaptivity upper bound, $\progA(c)$ for a program $c$ as the maximum query length over all finite walks in its \emph{estimated dependency graph}, $\progG({c})$. 
+  We estimate the adaptivity upper bound, $\progA(c)$ for a program $c$ as the maximum query length over all paths in its \emph{estimated dependency graph}, $\progG({c})$. 
 \begin{defn}
 [{Adaptivity Computation}]
 \label{def:prog_adapt}
 {
-Given a program ${c}$, we first compute its \emph{estimated dependency graph} 
-$\progG({c})$, then we compute adaptivity
+Given a program ${c}$ with its \emph{estimated dependency graph} 
+$\progG({c})$ we compute its adaptivity $\progA({c}) \in \inpexprdom$ as
 %
- for $c$ as 
 \[
-\progA({c})
-\triangleq \max
-\left\{ \qlen(k) \ \mid \  k \in \walks(\progG(c))\right \}.
+ \max \left\{ \hat{\qlen}(p) \ \mid \  p \in \paths(\progG(c))\right \}.
 \]
 }
 \end{defn}
@@ -92,16 +109,16 @@ a sound upper bound sound for the \emph{adaptivity} w.r.t the Definition~\ref{de
   For every program $c$, 
   its estimated adaptivity is a sound upper bound of its adaptivity.
    \[
-   \forall \trace_0 \in \ftdom_{0}(c), v \in \mathbb{N}^{\infty} \sthat
-\config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq c
+   \forall \trace_0 \in \ftdom_{0}(c), v \in (\mathbb{N}\cup \{\infty\}) \sthat
+    \config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq c
 \] 
 \end{thm}
 The proof is in Appendix~\ref{apdx:adapt_soundness}.
 
 
-Symbolic expressions as used in the weight  are great to express symbolic bounds but make the computation of 
-a maximal walk harder. 
-However, the computation in Definition~\ref{def:prog_adapt} is non-terminating given the weight as symbolic.
+Symbolic expressions as used in the weight are great to express symbolic bounds, but make the computation of 
+the longest path non-terminating. 
+In this sense, the computation in Definition~\ref{def:prog_adapt} is non-terminating given the weight as symbolic.
 To compute $\progA(c)$ accurately and soundly, we develop an adaptivity approximation algorithm named $\pathsearch$.
 It combines the depth first search and breath first search strategies and computes a sound upper bound on $\progA(c)$.
 $\pathsearch$ also involves another algorithm $\pathsearch_{\kw{SCC}}$ in \ref{alg:adaptscc} recursively, which finds the longest walk for a strong connected component (SCC) (SCC is the maximal strongly connected subgraph) of $\progG(c)$.
@@ -109,7 +126,10 @@ Theorem~\ref{thm:adaptalg_soundness} below formally describes the soundness of t
 \begin{thm}[Soundness of $\pathsearch$]
     \label{thm:adaptalg_soundness}
     For every program $c$, given its \emph{estimated dependency graph} $\progG$,
-    \[ \pathsearch(\progG({c})) \geq \progA(c).\]
+    \[ 
+      \forall \trace_0 \in \ftdom_{0}(c), v \in (\mathbb{N}\cup \{\infty\}) \sthat
+    \config{\pathsearch(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq c.
+    \]
 \end{thm}
 
 By Definition~\ref{def:prog_adapt}, the key point is to find the walks in the estimated dependency graph. 
@@ -329,7 +349,7 @@ It designs a novel adaptivity computation method, which guarantees the visiting 
 The guarantee is achieved by two special parameters $\kw{flowcapacity}$ and $\kw{querynum}$ and the updating operations in line:7 and line:10.
 % 
 \begin{itemize}
-\item $\kw{flowcapacity}$ is a list of arithmetic expression $\mathcal{A}_{in}$.
+\item $\kw{flowcapacity}$ is a list of arithmetic expression $\inpexprdom$.
 % for every vertex,
 It tracks the minimum weight
 along the path during the 

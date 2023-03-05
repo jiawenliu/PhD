@@ -191,7 +191,7 @@ Formally, the environment operator, $\env : {\ftdom}  \to \mathcal{V} \to \mathc
  The rules for assignment and query generate assignment events, while the rules for while and if generate testing events. 
  The rules for the standard while language constructs correspond to the usual rules extended to deal with traces. 
 
-The rule $\textbf{assn}$ evaluates a standard assignment $\assign{x}{\expr}$, the expression $\expr$ is first evaluated by our expression evaluation $\config{\trace, \expr} \earrow v $, presented below.
+The rule \rname{assn} evaluates a standard assignment $\assign{x}{\expr}$, the expression $\expr$ is first evaluated by our expression evaluation $\config{\trace, \expr} \earrow v $, presented below.
 {Different from standard rule, the result $v$ of evaluating $\expr$ is used to construct a new event $\event = (x, l, v,\bullet)$
 and attach it to the previous trace. }
 We have relations $\config{\trace, \expr} \earrow v $  and $\config{\trace, \bexpr} \barrow v $  to evaluate expressions and boolean expressions, respectively in Figure~\ref{fig:expr_eval}.
@@ -201,11 +201,11 @@ The rules for if and while both have two versions,
 when the boolean expressions in the guards are evaluated to true and false, respectively. 
 In these rules, the evaluation of the guard generates a testing event and the trace is updated as well by appending this event.
 
-The only rule that is non-standard is the $\textbf{query}$ rule. When evaluating a query, the query expression $\qexpr$ is first simplified to its normal form $\alpha$ using an evaluation relation 
+The only rule that is non-standard is the $\rname{query}$ rule. When evaluating a query, the query expression $\qexpr$ is first simplified to its normal form $\alpha$ using an evaluation relation 
 $\config{\trace, \qexpr} \qarrow \qval$. 
 Then normal form $\qval$ characterize the linear query that is run against the database. 
 The query result $v$ is the expected value of the function $\lambda \chi.\qval$ applied to each row of the dataset. 
-We summarize this process with the notation $\query(\qval) = v$ which we use in the rule $\textbf{query}$. 
+We summarize this process with the notation $\query(\qval) = v$ which we use in the rule $\rname{query}$. 
 Once the answer of the query is computed, the rules record all the needed information in the trace. 
  
 The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval$ is defined by the following rules which reduce a query expression to its normal form.
@@ -433,7 +433,7 @@ We will extend to the non-terminating programs in {\redd{PART \romannum{2}}.
   \xrightarrow{} 
   \config{\clabel{\eskip}^l, \trace \traceadd \event}
   }
-  ~\textbf{assn}
+  ~\rname{assn}
   %
   \qquad
   %
@@ -447,11 +447,11 @@ We will extend to the non-terminating programs in {\redd{PART \romannum{2}}.
   \event = ({x}, l, v, \qval)
   }
   {
-  \config{{[\assign{x}{\query(\qexpr)}]^l, \trace}}
+  \config{{\clabel{\assign{x}{\query(\qexpr)}}^l, \trace}}
   \xrightarrow{} 
   \config{{\clabel{\eskip}^l,  \trace \traceadd \event} }
   }
-  ~\textbf{query}
+  ~\rname{query}
   }
   %
   \and
@@ -469,7 +469,7 @@ We will extend to the non-terminating programs in {\redd{PART \romannum{2}}.
   c; \ewhile [b]^{l} \edo (c),
   \trace \traceadd \event}}
   }
-  ~\textbf{while-t}
+  ~\rname{while-t}
   %
   %
  \and
@@ -487,7 +487,7 @@ We will extend to the non-terminating programs in {\redd{PART \romannum{2}}.
     \clabel{\eskip}^l,
   \trace \traceadd \event}}
   }
-  ~\textbf{while-f}
+  ~\rname{while-f}
   %
   %
   \and
@@ -504,7 +504,7 @@ We will extend to the non-terminating programs in {\redd{PART \romannum{2}}.
   \xrightarrow{} 
   \config{{c_1'; c_2, \trace'}}
   }
-  ~\textbf{seq1}
+  ~\rname{seq1}
   %
  \qquad
   %
@@ -517,7 +517,7 @@ We will extend to the non-terminating programs in {\redd{PART \romannum{2}}.
   {
   \config{{\clabel{\eskip}^l; c_2, \trace}} \xrightarrow{} \config{{ c_2', \trace'}}
   }
-  ~\textbf{seq2}
+  ~\rname{seq2}
   %
   \and
   %
@@ -535,7 +535,7 @@ We will extend to the non-terminating programs in {\redd{PART \romannum{2}}.
   \xrightarrow{} 
   \config{{c_1, \trace \traceadd \event}}
   }
-  ~\textbf{if-t}
+  ~\rname{if-t}
   %
   \qquad
   %
@@ -550,7 +550,7 @@ We will extend to the non-terminating programs in {\redd{PART \romannum{2}}.
   \xrightarrow{} 
   \config{{c_2, \trace \traceadd \event}}
   }
-  ~\textbf{if-f}
+  ~\rname{if-f}
   % %
   \end{mathpar}
   }
@@ -612,16 +612,20 @@ specifically the trace has the property that its length never decreases during t
 \begin{lem}
 [Trace Non-Decreasing]
 \label{lem:tracenondec}
-For every program $c \in \cdom$ and traces $\trace, \trace' \in \ftdom$, if 
-$\config{c, \trace} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace'}$,
-then there exists a trace $\trace'' \in \ftdom$ with $\trace \tracecat \trace'' = \trace'$
+For any program $c \in \cdom$ and initial trace $\trace_0 \in \ftdom_0(c)$,
+if there exists $\trace \in \tdom$ and $c' \in \cdom $ such that $\config{c, \trace_0} \rightarrow \config{c', \trace} $
+then there exists a trace $\trace' \in \tdom$ such that $\trace_0 \tracecat \trace' = \trace$ formally as follows.
 %
-$$
-\forall \trace, \trace' \in \ftdom, c \in \cdom, l \in \ldom \sthat 
-\config{c, \trace} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace'} 
-\implies \exists \trace'' \in \ftdom \sthat \trace \tracecat \trace'' = \trace'.
-$$
-Again, we want to emphasize that in \redd{PART \romannum{1}}, we consider as well-formed only the finite trace when we say $\trace \in \ftdom$, and the terminating execution.
+\[
+  \begin{array}{l}
+  \forall \trace_0 \in \ftdom_0(c), \trace \in \tdom, c, c' \in \cdom \sthat
+  % \Big( 
+    \config{c, \trace_0} \rightarrow \config{c', \trace} 
+  % \lor  \config{c, \trace_0} \uparrow^{\infty} \trace \Big)
+  \\ \quad
+  \implies \exists \trace' \in \tdom \sthat \trace_0 \tracecat \trace' = \trace 
+  \end{array}
+\]
 \end{lem}
 Since the equivalence over two events is defined over the query value equivalence, 
 when there is an event belonging to a trace, 

@@ -1,23 +1,29 @@
+  \subsection{Proof of Lemma~\ref{lem:psRB-tracenondec}}
   \begin{lemma}[Trace Non-Decreasing]
     % \label{lem:tracenondec}
     For any program $c \in \cdom$ and initial trace $\trace_0 \in \ftdom_0(c)$,
-    if there exists $\trace \in \tdom$ and $c' \in \cdom $ such that $\config{c, \trace_0} \rightarrow^{*} \config{c', \trace} $ or 
-    $\config{c, \trace_0} \uparrow^{\infty} \trace$  
+    if there exists $\trace \in \tdom$ and $c' \in \cdom $ such that $\config{c, \trace_0} \rightarrow \config{c', \trace} $
     then there exists a trace $\trace' \in \tdom$ such that $\trace_0 \tracecat \trace' = \trace$ formally as follows.
     %
     \[
       \begin{array}{l}
       \forall \trace_0 \in \ftdom_0(c), \trace \in \tdom, c, c' \in \cdom \sthat
-      \Big( \config{c, \trace_0} \rightarrow^{*} \config{c', \trace} 
-      \lor  \config{c, \trace_0} \uparrow^{\infty} \trace \Big)
+      % \Big( 
+        \config{c, \trace_0} \rightarrow \config{c', \trace} 
+      % \lor  \config{c, \trace_0} \uparrow^{\infty} \trace \Big)
       \\ \quad
       \implies \exists \trace' \in \tdom \sthat \trace_0 \tracecat \trace' = \trace 
       \end{array}
     \]
 \end{lemma}
 \begin{proof}
-  Taking an arbitrary program $c \in \cdom$, an initial trace $\trace_0 \in \ftdom_0(c)$, by induction on program $c$, we have the following cases.
-  \caseL{$c = [\assign{x}{\expr}]^{l}$}
+  Taking an arbitrary program $c \in \cdom$, an initial trace $\trace_0 \in \ftdom_0(c)$, let
+  $\trace \in \ftdom$ be the execution trace and $c'$ be a program satisfying
+  \[
+    \config{c, \trace_0} \rightarrow \config{c', \trace}.
+  \]
+  By induction on $c$, we have the same cases as the Proof of Lemma~\ref{lem:tracenondec} in Appendices~\ref{apdx:tracenondec} excepting the case \textbf{$c = \clabel{\assign{x}{\query(\qexpr)}}^{l'}$}.
+  \caseL{$c = \clabel{\assign{x}{\expr}}^{l}$}
   By the evaluation rule $\rname{assn}$, we have
   $
   {
@@ -77,10 +83,10 @@
   \subcaseL{$\textbf{while-t}$}
   If the first rule applied to $c$ is $\rname{while-t}$, we have
   \[
-    \config{{\ewhile \clabel{b}^{l_w} \edo c_w, \trace_0}}
+    \config{{\ewhile \clabel{b}^{l_w} \edo (c_w), \trace_0}}
     \xrightarrow{} 
     \config{{
-    c_w; \ewhile \clabel{b}^{l_w} \edo c_w,
+    c_w; \ewhile \clabel{b}^{l_w} \edo (c_w),
     \trace_0 :: (b, l_w, \etrue)}}.
   \]
   Let $\trace = \trace_0 ::(b, l_w, \etrue)$ and $\trace' =  [(b, l_w, \etrue)]$,
@@ -105,13 +111,13 @@
   % Then we have the following execution continued from $(1)$:
   % \\
   % $
-  % \config{{\ewhile \clabel{b}^{l_w} \edo c_w, \trace}}
+  % \config{{\ewhile \clabel{b}^{l_w} \edo (c_w), \trace}}
   %     \xrightarrow{} 
   %     \config{{
-  %     c_w; \ewhile \clabel{b}^{l_w} \edo c_w,
+  %     c_w; \ewhile \clabel{b}^{l_w} \edo (c_w),
   %     \trace :: (b, l_w, \etrue, \bullet)}}
   %     \xrightarrow{*} 
-  %     \config{\ewhile \clabel{b}^{l_w} \edo c_w, \trace :: (b, l_w, \etrue, \bullet) \tracecat \trace_w}
+  %     \config{\ewhile \clabel{b}^{l_w} \edo (c_w), \trace :: (b, l_w, \etrue, \bullet) \tracecat \trace_w}
   %     ~(2)
   % $
   % By repeating the execution (1) and (2) until the program is evaluated into $\eskip$,
@@ -123,13 +129,13 @@
   % Then we have the following execution:
   % \\
   % $
-  % \config{{\ewhile \clabel{b}^{l_w} \edo c_w, \trace}}
+  % \config{{\ewhile \clabel{b}^{l_w} \edo (c_w), \trace}}
   %     \xrightarrow{} 
   %     \config{{
-  %     c_w; \ewhile \clabel{b}^{l_w} \edo c_w,
+  %     c_w; \ewhile \clabel{b}^{l_w} \edo (c_w),
   %     \trace :: (b, l_w, \etrue, \bullet)}}
   %     \xrightarrow{*} 
-  %     \config{\ewhile \clabel{b}^{l_w} \edo c_w, \trace_w^{n'}}
+  %     \config{\ewhile \clabel{b}^{l_w} \edo (c_w), \trace_w^{n'}}
   %     \xrightarrow{}^\rname{{while-f}}
   %     \config{\eskip, \trace_w^{n'}:: (b, l_w, \efalse, \bullet)}
   % $ and $\trace_w^{n'} = \trace :: (b, l_w, \etrue, \bullet) \tracecat \trace_w^{1} :: \cdots :: (b, l_w, \etrue, \bullet) \tracecat \trace_w^{n} $.
@@ -146,8 +152,8 @@
     \xrightarrow{}^\rname{while-f}
     \config{{
     \eskip,
-    \trace_0 :: (b, l_w, \efalse)}}
-  \],
+    \trace_0 :: (b, l_w, \efalse)}},
+  \]
   Let $\trace = \trace_0 ::(b, l_w, \efalse)$ and $\trace' =  [(b, l_w, \efalse)]$,
   then we have $\trace_0 \tracecat \trace' = \trace$ and this case is proved.
   \caseL{$\eif(\clabel{b}^l, c_t, c_f)$}
