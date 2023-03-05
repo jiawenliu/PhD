@@ -191,7 +191,7 @@ Below we summarize some limitations of the relevant methodologies and introduce 
 \subsubsection{Program Abstraction}
 \paragraph{Existing Techniques and Limitation.}
 The program abstraction techniques are widely used in the program analysis area to precisely summarize the key property of the program. They are usually based on some specific abstract interpretation models as introduced in Section~\ref{sec:intro-methodology-adapt}.
-In analyzing the loop bounds, the unified lattice model~\cite{CousotH78}, polyhedra~\cite{CousotC77}, and octagons~\cite{Mine06} are used in~\cite{GulwaniZ10} for summarize the loop transition and generating the transition system.
+In analyzing the loop bounds, the unified lattice model in~\cite{CousotH78}, polyhedra in~\cite{CousotC77}, and octagons in~\cite{Mine06} are used in~\cite{GulwaniZ10} for summarize the loop transition and generating the transition system.
 But none of the three abstraction models can represent the if guard in the multipath loops, and solving the transition system using these abstraction models is low-efficient. The wedge abstract developed in~\cite{KincaidCBR18} for generating the non-linear loop invariant
 computing the \emph{reachability-bound} can also be used. While it only works well for the specific targeting problem, and still low-efficient or inaccuracy in summarizing the multipath loops and solving the path-sensitive \emph{reachability-bound} problem. 
 
@@ -226,12 +226,11 @@ estimation
 and alternatively computing the bound on each ranking function and transition edge.
 It is also efficient and accurate without recursively unrolling the nested loops when composing the bound of different paths.
 However, deployment of the path refinement technique has its limitation as well.
-% But it is not precise enough without considering the effect of the path-interleaving.
-% In order to comput zx the \emph{reachability-bound} path sensitively, we also deploy the path refinement technique.
+
 
 \subsubsection{Loop Summarization and Path Refinement}
 \paragraph{Existing Techniques and Limitation.}
-Another line of loop bound analysis through loop summarization and path refinement seeks precise loop path representation~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19}, and compute loop bound over accurate loop summarization~\cite{GulwaniJK09, ZulegerGSV11}.
+Another line of loop bound analysis through loop summarization and path refinement seeks precise loop path representation such as~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19}, and compute loop bound over accurate loop summarization including~\cite{GulwaniJK09, ZulegerGSV11}.
 They mainly focus on summarizing the loop path and computing the interleaving between paths, as well as computing the precise bound considering the interleaving. However, composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
 \paragraph{Our Method.}
 Our new approach uses a lightweight path refinement algorithm adapted from~\cite{GulwaniJK09}.
@@ -243,15 +242,15 @@ effectively combines this methodology with the \emph{amortized complexity analys
 \paragraph{Existing Techniques and Limitation.}
 As we discussed above, most of the existing static analysis methodologies cannot compute the reachability-bound on a given program control location directly or path-sensitively.
 Most of them focus on one the \emph{quantitative} perspective of this property.
-For example, Gulwani et. al~\cite{GulwaniZ10}
+For example,~\cite{GulwaniZ10}
 give a two-step solution by combining program abstract and proof-rules-based bound computation.
 But it does not compute the \emph{reachability-bound} precisely for every control location.
 % , which is the \emph{reachability} perspective of this property.
 Instead, they only compute the complexity bounds for the overall loop and over-approximate for different locations using this bound,
 which is loose especially when there are multipath loops.
 In this sense, they only estimate the \emph{quantitative} sub-property and lose the \emph{reachability} perspective of the \emph{reachability-bound}.
-Techniques in program complexity analysis~\cite{GustafssonEL05,HumenbergerJK18} 
-or worst-case resource cost analysis
+Techniques in program complexity analysis in the work~\cite{GustafssonEL05,HumenbergerJK18} 
+or worst-case resource cost analysis in
 ~\cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14} can be repurposed to estimate similar quantities such as the
 bounds on loop iterations, execution time, etc.
 While these quantities focus only on 

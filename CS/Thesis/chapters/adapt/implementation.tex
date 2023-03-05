@@ -30,13 +30,13 @@ The second and third parts are the running times of the reachability bound analy
 and the adaptivity computation algorithm, $\pathsearch(c)$.
 
 The first six programs are adapted from real world data analysis algorithms.
-The first two programs $\kw{twoRounds(k)}$, $ \kw{multiRounds(k)}$ are the same as Figure~\ref{fig:twoRounds}(a) and Figure~\ref{fig:multipleRounds}(a).
+The first two programs $\kw{twoRounds(k)}$, $ \kw{multiRounds(k)}$ are the same as Figure~\ref{fig:overview-example}(a) and Figure~\ref{fig:multipleRounds}(a).
 $\THESYSTEM$ computes tight adaptivity bound for the first 3.
 For the forth program $\kw{multiRoundsO(k)}$, $\THESYSTEM$ outputs an over-approximated upper bound $1 + 2*k$ for the $A(c)$, which is consistent with our expectation as discussed in Example~\ref{ex:multiRoundsO}. 
 The fifth program is the evaluation results for the example in Example~\ref{ex:multiRoundsS}, where $\THESYSTEM$ outputs the tight bound for $A(c)$ but $A(c)$ is a loose definition of the program's actual adaptivity rounds.
 %
 
-The next eleven programs from Tab.~\ref{tb:adapt-imp} column 7 to 18 are handcrafted programs based on the code pieces extracted from C library. They all have small size but complex structures in order to test the programs under different situations including
+The next eleven programs from Table~\ref{tb:adapt-imp} column 7 to 18 are handcrafted programs based on the code pieces extracted from C library. They all have small size but complex structures in order to test the programs under different situations including
 data, control dependency,
 the multiple paths nested loop with related counters, etc.
 Both implementations compute the tight bound for examples in line:6-14

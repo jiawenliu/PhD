@@ -2,9 +2,9 @@
 
 \paragraph*{Program Abstraction.}
 The program abstraction techniques are widely used in program analysis area to precisely summarize the key property of the program.
-In analyzing the loop bounds, the unified lattice model~\cite{CousotH78}, polyhedra~\cite{CousotC77} and octagons~\cite{Mine06} are used in~\cite{GulwaniZ10} for summarize the loop transition and generating the transition system.
+In analyzing the loop bounds, the unified lattice model by~\cite{CousotH78}, polyhedra by~\cite{CousotC77} and octagons by~\cite{Mine06} are used in~\cite{GulwaniZ10} for summarize the loop transition and generating the transition system.
 But none of the three abstraction models can represent the if guard in multipath loop, and solving the transition system using these abstraction models is low-efficient.
-The wedge abstract developed in~\cite{KincaidCBR18} for generating the non-linear loop invariant
+The wedge abstract developed by~\cite{KincaidCBR18} for generating the non-linear loop invariant
 computing the reachability-bound can also be used. While it only works well for the specific targeting problem, and still low-efficient or inaccuracy in summarizing the multipath loops and solving the path-sensitive reachability-bound problem. 
 Compare to them, we choose to use the difference constrain based program abstraction model combined with boolean expression abstraction to generate our abstract transition graph. It can represent the program loops path-sensitively more is more accurate than the state-of-art program abstraction models mentioned above.
 While our program abstraction model is based on the difference constrain model in~\cite{SinnZV17} and the size change abstraction in~\cite{SinnZV14}, which is more efficient comparing to the models above. The efficiency also benefit from our
@@ -14,27 +14,27 @@ semantics model, which is inspired from~\cite{Cousot19a} and~\cite{Cousot19} and
 \paragraph{Program Cost Analysis.}
 As already introduced in the introduction section, many works in cost analysis area focus on analyzing the loop iteration bound.
 Though our motivation is mainly inspired from the SPEED tool in paper~\cite{GulwaniZ10}, they only infer overall loop bounds path-insensitively.
-We also implement part of the algorithm in Loopus based on~\cite{SinnZV17} in terms of program abstraction and variable invariant generation,
+We also implement part of the algorithm of Loopus based on the transition bound algorithm by~\cite{SinnZV17} in terms of program abstraction and variable invariant generation,
 and the path refinement algorithm from paper~\cite{GulwaniJK09}, but both of them suffer from the same weakness as~\cite{GulwaniZ10}.
-The works in analyzing the program complexity~\cite{GustafssonEL05, HumenbergerJK18} only focus on estimating 
+The works in analyzing the program complexity including~\cite{GustafssonEL05, HumenbergerJK18} only focus on estimating 
 the overall complexity 
 by inferring the bounds on the loop iteration numbers.
 Similarly, the algorithm of computing a program's worst-case resource cost
 such as~\cite{AlbertAGP08, AliasDFG10} reason the worst-case running time and resource cost of the program's entire execution as well.
-For the same reason, the tools CofloCo~\cite{Montoya17, Flores-MontoyaH14, Flores-Montoya16}, KoAT~\cite{BrockschmidtEFFG16, BrockschmidtEFFG14, FalkeKS12, FalkeKS11}, and the amortized algorithm in~\cite{LuCT21} which we evaluated over our benchmarks all give only the entire loop bound path-insensitively.
+For the same reason, the tools CofloCo from works in~\cite{Montoya17, Flores-MontoyaH14, Flores-Montoya16}, KoAT by~\cite{BrockschmidtEFFG16, BrockschmidtEFFG14, FalkeKS12, FalkeKS11}, and the amortized algorithm in~\cite{LuCT21} which we evaluated over our benchmarks all give only the entire loop bound path-insensitively.
 
 \cite{CraryW00} presents a type system for the certification of resource bounds (once they are provided by the programmer). In contrast, we infer bounds for different program location. 
-\cite{JostHLH10} uses linear programming to infer bounds for functional programs, but they are restricted to computing only linear bounds.
+\cite{JostHLH10} use linear programming to infer bounds for functional programs, but they are restricted to computing only linear bounds.
 Other techniques that are based on
-type system~\cite{CicekBG0H17, RajaniG0021}, the cost analysis via effect systems~\cite{CicekBG0H17, RadicekBG0Z18, QuG019}, and Hoare logic~\cite{CarbonneauxHS15}
+type system (e.g.~\cite{CicekBG0H17, RajaniG0021}), the cost analysis via effect systems (e.g.~\cite{CicekBG0H17, RadicekBG0Z18, QuG019}), and Hoare logic (e.g.~\cite{CarbonneauxHS15})
 give the approximated upper bound of the program's total resource cost as well but still failed to consider the path sensitivity and the resource cost on different program points.
 
 \paragraph{Loop Summarization and Termination Analysis.}
 There are numerous works studying the loop termination, 
 invariant generation. Algorithms and techniques in this area are closely related to the bound analysis and loop path refinement.
-For example, the termination analysis through ranking functions originated from paper~\cite{BradleyMS05} and followed up papers~\cite{FalkeKS11, FalkeKS12, CookSZ13, Zuleger18} are widely developed into bound analysis~\cite{AliasDFG10, SinnZV14, BrockschmidtEFFG16, BrockschmidtEFFG14}.
-Loop summarization and invariant generate through path refinement~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19} techniques are also extended into precise resource cost and loop bound estimation based on multiple loop path refinement~\cite{GulwaniJK09, ZulegerGSV11}. 
+For example, the termination analysis through ranking functions originated from paper~\cite{BradleyMS05} and followed up papers such as~\cite{FalkeKS11, FalkeKS12, CookSZ13, Zuleger18} are widely developed into bound analysis including~\cite{AliasDFG10, SinnZV14, BrockschmidtEFFG16, BrockschmidtEFFG14}.
+Loop summarization and invariant generate through path refinement~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19} techniques are also extended into precise resource cost and loop bound estimation based on multiple loop path refinement e.g.~\cite{GulwaniJK09, ZulegerGSV11}. 
 % Invariant Generation Through Ranking functions~\cite{AliasDFG10} for multipath loops.
-Paper \cite{KincaidBCR19} introduce a precise closed-form loop summarization techniques which can help to improve the accuracy of the path refinement, as well as the non-linear loop summarization techniques~\cite{KincaidCBR18} and the invariant generating algorithm considering recurrence in~\cite{BreckCKR20}. They are all heavy compare to our light-weight path refinement implementation adapted from~\cite{GulwaniJK09}.
+\cite{KincaidBCR19} introduce a precise closed-form loop summarization techniques which can help to improve the accuracy of the path refinement, as well as the non-linear loop summarization techniques in~\cite{KincaidCBR18} and the invariant generating algorithm considering recurrence in~\cite{BreckCKR20}. They are all heavy compare to our light-weight path refinement implementation adapted from~\cite{GulwaniJK09}.
 % \cite{CyphertBKR19} introduced a precise path refinement techniques over regular expression. While it is accurate only for loop summarizing and invariant generating under the specific recurrence loop program, and doesn't work well in multipath loop refinement.
 The contextualization path refinement algorithm, based on the loop termination techniques in~\cite{ManoliosV06} are used in both~\cite{ZulegerGSV11, SinnZV14}. While this refinement only computes the multiple paths interleaving for one iteration, which is loose comparing to our path refinement implementation limited to at most $100$ iterations.
