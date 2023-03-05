@@ -292,17 +292,20 @@ Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
    For every event $\event$ with label $l$ in an execution trace $\trace$ of program $c$, 
    there is an abstract event in program's abstract execution trace of form $(l, \_, \_)$.  
    We also show the soundness of the \emph{abstract event computation} as Theorem~\ref{lem:abscfg_sound} below with proof in Appendix~\ref{apdx:abs_sound}.
-\begin{lem}[Soundness of the Abstract Trace Computation]
-\label{lem:abscfg_sound}
-For every program $c$ and
-a finite execution trace $\trace \in \ftdom$ which is generated w.r.t.
-an initial trace  $\trace_0 \in \ftdom_0(c)$,
-there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
-for every event $\event \in \trace$ having the same label $l$, i.e., $\event = (\_, l, \_)$.
+\begin{lem}[Soundness of the Abstract Execution Trace]
+\label{lem:psRB-abscfg_sound}
+For any program $c$ with 
+  % its abstract control flow graph $\absG(c) = (\absV(c), \absE(c))$,
+  an arbitrary initial trace $\vtrace_0 \in \ftdom_0(c)$ and
+  a finite execution trace $\trace \in \ftdom$ that is generated 
+  when $c$ is executing under $\vtrace_0$,
+  then for every event $\event \in \trace$ such that $\event = (\_, l, \_)$ for some label $l$ in program $c$,
+  % an initial trace  $\vtrace_0 \in \ftdom_0(c)$,
+  there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ and $\absevent = (l, \_, \_)$.
 %
 \[
 \begin{array}{l}
-  \forall c, c' \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom ,  \event = (\_, l, \_) \in \eventset \sthat
+  \forall c, c' \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom ,  \event = (\_, l, \_) \in \eventset, l \in \progl(c) \sthat
   \big(
     \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} 
   % \lor 
@@ -310,8 +313,9 @@ for every event $\event \in \trace$ having the same label $l$, i.e., $\event = (
   \big)
   \land \event \in \trace 
   \\
-  \qquad \implies \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
-  \absevent \in \absflow(c)
+  \qquad \implies \exists 
+  %  \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
+  \absevent \in \absflow(c) \land \absevent = (l, \_, \_)
 \end{array}
 \]
 \end{lem}

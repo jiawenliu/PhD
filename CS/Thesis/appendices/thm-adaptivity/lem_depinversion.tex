@@ -136,6 +136,7 @@ we have the following instance of the first execution in Eq.~\ref{eq:ctlflowsto_
   \\ \qquad \rightarrow^{\rname{assn/query}}
   \config{ c_{3b}', 
   \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_{3a} \tracecat [\event_2]}
+  \\ \qquad
   \rightarrow^{*} 
   \config{c_3, 
   \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b}}
@@ -229,34 +230,7 @@ $\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)},c)$.
 \\
 This lemma is proved.
 	\end{proof}
-	%
-	% \begin{lem}[One Step Dependency Inversion]
-	% 	\label{lem:onestepdep_inv}
-	% For all $ c \in \cdom, D \in \dbdom, x^i \in \lvar_c$, and $\event_y \in \eventset^{\asn}$, 
-	% if $x^i \in VAR(\expr_y)$, 
-	% or there exists $\event_b \in \eventset^{\test}$ such that 
-	% $x^i \in VAR(\pi_1(\event_b)$ and 
-	% $\eventdep^{\ctl}(\event_b, \event_y, c, D)$, then $\flowsto(x^i, \pi_1(\event_y)^{\pi_2(\event_y)}, c)$.
-	% %
-	% 	\[
-	% 	\begin{array}{l}
-	% 		\forall c \in \cdom, D \in \dbdom, x^i \in \lvar_c, \event_y \in \eventset^{\asn}
-	% 		\sthat 
-	% 		\\ \quad
-	% 		(x^i \in VAR(\expr_y)\lor 
-	% 		(\exists \event_b \in \eventset^{\test} \sthat  x^i \in VAR(\pi_1(\event_b)) 
-	% 		\land \eventdep^{\ctl}(\event_b, \event_y, c, D)))
-	% 		\implies \flowsto(x^i, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
-	% 	\end{array}
-	% \]
-	% \end{lem}
-	% \begin{proof}
-	% 	proving by using the Inversion Lemmas~\ref{lem:inv_expr_gnl}, ~\ref{lem:inv_expr},
-	% 	\ref{lem:inv_event}, and \ref{lem:inv_live}, 
-	% 	and Control Dependency Inversion Lemmas~\ref{lem:ctldep_inv}.
-	% \end{proof}
-	%
-	%
+
 \begin{lem}[The Multiple-Steps Event Dependency Inversion]
 	\label{lem:depevents_exist}
 For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and two assignment events 
@@ -265,11 +239,10 @@ if the trace $trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracec
 then $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) $,
 or otherwise there exists
 $\event \in \trace'$ such that
-$\left( 		
-   \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-\land 
-\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
-\right)$.
+$
+\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+$
+and $\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$.
 %
 	\[
 	\begin{array}{l}
@@ -282,21 +255,19 @@ $\left(
 		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
 		\\ \qquad \quad \lor
 		\exists \event \in \trace' \sthat  
-		\left( 		
+		\big( 		
 			\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
 		\land 
 		\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
-	\right) 
+	\big) 
 		% \\ \qquad \qquad \lor
 		% \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
 	\end{array}
 	\]
 \end{lem}
-Proof Summary: 
-\\
-Proving by using Lemma~\ref{lem:inv_indepevents}, Lemma~\ref{lem:ctldep_inv}, and the Inversion Lemmas~\ref{lem:inv_expr}, \ref{lem:inv_expr_gnl},
-\ref{lem:inv_event}, and \ref{lem:inv_live}
-and showing a contradiction.
+The lemmas used in this proof are Lemma~\ref{lem:inv_indepevents}, Lemma~\ref{lem:ctldep_inv}, and the Inversion Lemmas~\ref{lem:inv_expr}, \ref{lem:inv_expr_gnl},
+\ref{lem:inv_event}, and \ref{lem:inv_live}.
+This Lemma is proved by showing the existence of contradiction.
 \begin{proof}
 	Taking arbitrary 
 	$ D \in \dbdom , c \in \cdom, \trace \in \ftdom $ and two events 
@@ -374,14 +345,15 @@ $\pi_1(\event_1) \in VAR(\pi_1(\event_2))$, and $ {\pi_2(\event_1)} = \llabel(\t
 \begin{array}{l}
 	\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1,\in \eventset^{\asn}, \event_2 \in \eventset^{\test} \sthat 
 	 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
-	\implies
+	 \\ \quad 
+	 \implies
 	\eventdep(\event_1, \event_2, \trace, c, D) 
 	\\ \quad 
 	\implies 
-	\left( \forall \event \in \trace' \sthat  
+	\Big( \forall \event \in \trace' \sthat  
 	\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
 	\lor  \pi_1(\event) \notin VAR(\pi_1(\event_2))
-	\right) 
+	\Big) 
 	\\ \quad 
 	\implies 
 	\pi_1(\event_1) \in VAR(\pi_1(\event_2)) \land {\pi_2(\event_1)} = \llabel(\trace)
@@ -424,13 +396,19 @@ By inversion Lemma.~\ref{lem:inv_event} on $\event_2$ and $\event_2'$ in the two
 and $\diff(\event_2, \event_2)$,
  we have the following two execution instances:
 \[
-\config{c_1, \trace_1 \tracecat [\event_1]} \rightarrow^{*} \config{[\assign{\pi_1(\event_2)}{\expr_2 / \query(\qexpr_2)}]{}^{\pi_2(\event_2)};c_2, \trace_1 \tracecat [\event_1] \tracecat \trace_2} 
-\rightarrow^\rname{asn / query} \config{c_2, \trace_1 \tracecat [\event_1] \tracecat \trace_2 \tracecat [\event_2]}  
-\]
+	\begin{array}{l}
+		\config{c_1, \trace_1 \tracecat [\event_1]} \rightarrow^{*} \config{[\assign{\pi_1(\event_2)}{\expr_2 / \query(\qexpr_2)}]{}^{\pi_2(\event_2)};c_2, \trace_1 \tracecat [\event_1] \tracecat \trace_2} 
+		\\ \quad
+		\rightarrow^\rname{assn / query} \config{c_2, \trace_1 \tracecat [\event_1] \tracecat \trace_2 \tracecat [\event_2]}  
+	\end{array}
+	\]
 %
 \[
-\config{c_1, \trace_1 \tracecat [\event_1']} \rightarrow^{*} \config{[\assign{\pi_1(\event_2)}{\expr_2 / \query(\qexpr_2)}]{}^{\pi_2(\event_2)};c_2, \trace_1 \tracecat [\event_1'] \tracecat \trace_2'} 
-\rightarrow^\rname{asn / query} \config{c_2, \trace_1 \tracecat [\event_1'] \tracecat \trace_2' \tracecat [\event_2']}  
+	\begin{array}{l}
+		\config{c_1, \trace_1 \tracecat [\event_1']} \rightarrow^{*} \config{[\assign{\pi_1(\event_2)}{\expr_2 / \query(\qexpr_2)}]{}^{\pi_2(\event_2)};c_2, \trace_1 \tracecat [\event_1'] \tracecat \trace_2'} 
+		\\ \quad
+		\rightarrow^\rname{assn / query} \config{c_2, \trace_1 \tracecat [\event_1'] \tracecat \trace_2' \tracecat [\event_2']}  
+	\end{array}
 \]
 , where $\expr_2 / \qexpr_2$ is the expression of the assignment command associated to the $\event_2$ and $\event_2'$ by the Inversion Lemma.~\ref{lem:inv_event}.
 \\
@@ -448,17 +426,28 @@ In case of $ \pi_1(\event_z) \notin VAR(\expr_2 / \qexpr_2)$, by Inversion Lemma
  of arithmetic and query expression cases, we know:
 %
 \[
-	\forall x^i \in \lvar, \trace, \trace' \in \ftdom, v, v' \sthat 
-	\Big( \forall z^j \in \lvar / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
-	\env(\trace) z = \env(\trace') z \Big) \land 
-	\config{\trace, \expr_2 / \qexpr_2} \aarrow v \land \config{\trace', \expr_2} \aarrow  v' \implies v = v'
-	\]
-	\[
-		\forall x^i \in \lvar, \trace, \trace' \in \ftdom, \qval, \qval' \sthat 
+	\begin{array}{l}
+		\forall x^i \in \lvar, \trace, \trace' \in \ftdom, v, v' \sthat 
+		\\ \qquad 
 		\Big( \forall z^j \in \lvar / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
+		\\ \qquad 
 		\env(\trace) z = \env(\trace') z \Big) \land 
-		\config{\trace, \qexpr_2} \qarrow \qval \land \config{\trace', \qexpr_2} \qarrow \qval' \implies \qval =_{q} \qval'
-		\]
+	\config{\trace, \expr_2 / \qexpr_2} \aarrow v \land \config{\trace', \expr_2} \aarrow  v' \\ \qquad 
+	\implies v = v'
+\end{array}
+\]
+	\[
+		\begin{array}{l}
+			\forall x^i \in \lvar, \trace, \trace' \in \ftdom, \qval, \qval' \sthat 
+			\\ \qquad 
+		\Big( \forall z^j \in \lvar / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
+		\\ \qquad 
+		\env(\trace) z = \env(\trace') z \Big) \land 
+		\config{\trace, \qexpr_2} \qarrow \qval \land \config{\trace', \qexpr_2} \qarrow \qval' 
+		\\ \qquad 
+		\implies \qval =_{q} \qval'
+	\end{array}
+	\]
 for $\expr_2$ or $\qexpr_2$ respectively.
 \\
 Let $\kw{use}_{\trace_2}$ a subset of the events in $\trace_2$, satisfying: 
@@ -683,10 +672,11 @@ we have:
 		\\ \quad
 		\config{c, \trace} \rightarrow^* \config{c_1; c_2, \trace'}
 		\implies
-		c_1 \in_c c_2
-		\implies
+		\\ \qquad
+		(c_1 \in_c c_2
+		\land
 		\exists l \in \mathbb{N}, b \in \mathcal{B}, c_w \in \cdom \sthat  
-		(\ewhile [b]^l \edo c_w) \in_c c_2 \land c_1 \in_c c_w
+		(\ewhile [b]^l \edo c_w) \in_c c_2 \land c_1 \in_c c_w)
 	\end{array}
 	\]
 	\end{lem}	
@@ -1014,7 +1004,8 @@ we have:
 For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and $\event_1, \event_2, \event_3 \in \eventset^{\asn}, \trace_{12}, \trace_{23} \in \ftdom$,
 if $\eventdep(\event_1, \event_2, \trace_{12}, c, D)$
 and $\eventdep(\event_2, \event_3, \trace_{23}, c, D) $,
-then $\eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)$.
+then there is an event dependency relation,
+$\eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)$.
   % An event $\event_2 \in \eventset^{\asn}$ is in the \emph{may-dependency} relation with another
   % event $\event_1 \in \eventset^{\asn}$ in a program ${c}$ with a hidden database $D$, denoted as $\eventdep(\event_1, \event_2, c, D)$,
   % if and only if

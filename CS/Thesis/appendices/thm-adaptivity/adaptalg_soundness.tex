@@ -38,10 +38,10 @@ $\pathsearch(\progG(c)) \geq \progA(c)$.
   \[
     \qlen(k_{x,y}) = \len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \pathsearch(\progG(c))
   \]
-  By line:3 of $\pathsearch(\progG)$ algorithm defined in Algorithm~\ref{alg:adpt_alg}, let $\kw{\sccgraph_1}, \ldots, \kw{\sccgraph_n}$ be all the strong connected components on $\progG$ with $0 \leq n \leq |\vertxs|$,
+  By line:3 of $\pathsearch(\progG)$ algorithm defined in Algorithm~\ref{alg:adapt}, let $\kw{\sccgraph_1}, \ldots, \kw{\sccgraph_n}$ be all the strong connected components on $\progG$ with $0 \leq n \leq |\vertxs|$,
   where each $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$,
   \\
-  By line:5-6 in Algorithm~\ref{alg:adpt_alg}, let $\kw{adapt_{scc}[\sccgraph_i]}$ be the result of $\pathsearch_{\kw{scc}}(\sccgraph_i)$ for each $\sccgraph_i$.
+  By line:5-6 in Algorithm~\ref{alg:adapt}, let $\kw{adapt_{scc}[\sccgraph_i]}$ be the result of $\pathsearch_{\kw{scc}}(\sccgraph_i)$ for each $\sccgraph_i$.
     % i.e.,
   % \[
   %   \]
@@ -53,7 +53,7 @@ $\pathsearch(\progG(c)) \geq \progA(c)$.
     \qlen(k_{x,y}) \leq \max\{\qlen(k) | k \in \walks(\sccgraph)\} \leq \pathsearch_{scc}(\sccgraph)
   \]
 %
-By line:15 and line:18 in $\pathsearch(\progG)$ algorithm in Algorithm~\ref{alg:adpt_alg}, 
+By line:15 and line:18 in $\pathsearch(\progG)$ algorithm in Algorithm~\ref{alg:adapt}, 
 let $\kw{adapt}$ be the output value,
 we know $\pathsearch(\progG(c))  = \kw{adapt} \geq \kw{adapt_{tmp}} \geq  \kw{adapt_{scc}(SSC)} $.
 \\

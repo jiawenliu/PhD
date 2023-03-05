@@ -1,49 +1,51 @@
 \begin{lemma}[Soundness of The Abstract Execution Trace]
-    % \label{lem:abscfg_sound}
-    For every program $c$ and
-    a finite execution trace $\trace \in \ftdom$ which is generated w.r.t.
-    an initial trace  $\trace_0 \in \ftdom_0(c)$,
-    there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
-    for every event $\event \in \trace$ having the same label $l$, i.e., $\event = (\_, l, \_)$.
-    %
-    \[
-    \begin{array}{l}
-      \forall c, c' \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom ,  \event = (\_, l, \_) \in \eventset \sthat
-      \big(
-        \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} 
-      % \lor 
-      % \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
-      \big)
-      \land \event \in \trace 
-      \\
-      \qquad \implies \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
-      \absevent \in \absflow(c)
-    \end{array}
-    \]
+    % \label{lem:psRB-abscfg_sound}
+    For any program $c$ with 
+    % its abstract control flow graph $\absG(c) = (\absV(c), \absE(c))$,
+    an arbitrary initial trace $\vtrace_0 \in \ftdom_0(c)$ and
+    a finite execution trace $\trace \in \ftdom$ that is generated 
+    when $c$ is executing under $\vtrace_0$,
+    then for every event $\event \in \trace$ such that $\event = (\_, l, \_)$ for some label $l$ in program $c$,
+    % an initial trace  $\vtrace_0 \in \ftdom_0(c)$,
+    there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ and $\absevent = (l, \_, \_)$.
+  %
+  \[
+  \begin{array}{l}
+    \forall c, c' \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom ,  \event = (\_, l, \_) \in \eventset, l \in \progl(c) \sthat
+    \big(
+      \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} 
+    % \lor 
+    % \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
+    \big)
+    \land \event \in \trace 
+    \\
+    \qquad \implies \exists 
+    %  \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
+    \absevent \in \absflow(c) \land \absevent = (l, \_, \_)
+  \end{array}
+  \]
   \end{lemma}
   \begin{proof}
-    Taking an arbitrary program $c$, an intermediate program $c' \in \cdom$, an initial trace $\trace_0 \in \ftdom_0(c)$, an arbitrary event $\event = (\_, l, \_) \in \eventset$ and a finite execution trace $\trace \in \ftdom$
+    Taking an arbitrary program $c$, an intermediate program $c' \in \cdom$, an initial trace $\trace_0 \in \ftdom_0(c)$,  a finite execution trace $\trace \in \ftdom$, a label $l \in \progl(c)$ and an event $\event = (\_, l, \_) \in \eventset$
     such that
     \[
-      \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace}.
+      \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} \land \event \in \trace
       % \lor 
       % \config{{c}, \trace_0} \to^{\infty} \config{c', \trace_0 \tracecat \trace}.
     \]
     Then it is sufficient to show,
     \[
-      \event \in \trace  \implies
-      \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
-      \absevent \in \absflow(c)
+      \exists \absevent \in \absflow(c) \land \absevent = (l, \_, \_)
     \]
     By induction on program $c$, we have the following cases:
     \caseL{$c = \clabel{\assign{x}{\expr}}^{l'}$}
     By the evaluation rule $\rname{assn}$, we have
-    $
+    \[
     {
     \config{\clabel{\assign{{x}}{\aexpr}}^{l'},  \trace_0 } 
     \xrightarrow{} 
     \config{\clabel{\eskip}^{l'}, \trace_0 :: ({x}, l', v)}
-    }$, for some $v \in \mathbb{N}$.
+    }\], for some $v \in \mathbb{N}$.
     \\
     There are 2 cases, where $l' = l$ and $l' \neq l$.
     \\
@@ -51,12 +53,12 @@
     \\
     In case of $l' = l$, by the abstract execution trace computation in Definition~\ref{def:absevent_compute}, we have 
     \[
-      \absflow(c) = \absflow'([x := \expr]^{l'}; \clabel{\eskip}^{\lex}) = \{(l', \absexpr(\expr), \lex)\}
+      \absflow(c) = \absflow'(\clabel{\assign{{x}}{\aexpr}}^{l'}; \clabel{\eskip}^{\lex}) = \{(l', \absexpr(\expr), \lex)\}
     \]
     Let $\absevent = (l', \absexpr(\expr), \lex) $, then we have $\absevent \in \absflow(c)$ and this case is proved.
     \caseL{$\ewhile \clabel{b}^{l_w} \edo (c_w)$}
     By the first rule applied to $c$ in operational semantics, there are two cases as follows.
-    \subcaseL{$\textbf{while-t}$}
+    \subcaseL{$\rname{while-t}$}
     In this case, we have
     \[
       \config{{\ewhile \clabel{b}^{l_w} \edo (c_w), \trace_0}}

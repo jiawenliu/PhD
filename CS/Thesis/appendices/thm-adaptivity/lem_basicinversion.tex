@@ -101,6 +101,7 @@
 			\implies 
 			\forall z^j \in \lvar / (\diff \cup \{x^i\} ) \sthat  
 			\exists \trace, \trace' \in \mathcal{T}, v, v'\sthat  
+			\\ \quad
 			\env(\trace) z = \env(\trace') z \land 
 			\config{\trace, \aexpr} \aarrow v \land \config{\trace', \aexpr} \aarrow v' \land v \neq v'
 			\\ \qquad
@@ -130,7 +131,8 @@
 		\implies 
 		\forall z^j \in \lvar / (\diff \cup \{x^i\} ) \sthat  
 		 \exists \trace, \trace' \in \mathcal{T}, v, v'\sthat  
-		\env(\trace) z = \env(\trace') z \land 
+		 \\ \quad
+		 \env(\trace) z = \env(\trace') z \land 
 		\config{\trace, \bexpr} \barrow v \land \config{\trace', \bexpr} \barrow v' \land v \neq v'
 		\\ \qquad
 		\implies x \in VAR(\bexpr) \land i = \llabel(\trace) x
@@ -160,7 +162,8 @@
 		\implies 
 		\forall z^j \in \lvar / (\diff \cup \{x^i\} ) \sthat  
 		 \exists \trace, \trace' \in \mathcal{T}, \qval, \qval'\sthat  
-		\env(\trace) z = \env(\trace') z \land 
+		 \\ \quad
+		 \env(\trace) z = \env(\trace') z \land 
 		\config{\trace, \qexpr} \qarrow \qval \land \config{\trace', \qexpr} \qarrow \qval' \land \qval \neq_{q} \qval'
 		\\ \qquad
 		\implies x \in VAR(\qexpr) \land i = \llabel(\trace) x
