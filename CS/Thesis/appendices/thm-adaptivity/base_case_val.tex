@@ -4,9 +4,11 @@
 We have the following by the definition $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$ for case 1:
 \begin{equation}
   \label{eq:eventdep_def_base_val}
-  \exists \vtrace_0,
+  \begin{array}{l}   
+    \exists \vtrace_0,
     \vtrace_1, \vtrace' \in \mathcal{T},\event_1' \in \eventset^{\asn}, \event_2' \in \eventset, {c}_1, {c}_2  \in \cdom  \sthat 
     \diff(\event_1, \event_1') \land
+    \\
       \left(
       \begin{array}{ll}   
      & \config{{c}, \vtrace_0} \rightarrow^{*} 
@@ -25,7 +27,8 @@ We have the following by the definition $\eventdep(\event_1, \event_2, [\event_1
     \vcounter(\vtrace') ~ \pi_2(\event_2)\\
     \end{array}
     \right)
-  \end{equation}
+  \end{array}
+\end{equation}
   %
 Let $\vtrace_0,
 \vtrace_1, \vtrace' \in \mathcal{T}, \event_2' \in \eventset, \event_1' \in \eventset^{\asn}, {c}_1, {c}_2$ be the traces, events and commands satisfying the executions,
@@ -156,6 +159,7 @@ Then, we have the following possible execution instances
   \config{c_1, \vtrace_1 \tracecat [\event_1']} 
   \rightarrow^{\rname{skip}^*} 
   \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} ; {c}_2, \vtrace_1 \tracecat [\event_1']} 
+  \\ \qquad
   \rightarrow^\rname{assn/query} 
   \config{{c}_2,  \vtrace_1 \tracecat [\event_1']\tracecat [(x_2, l_2,  v_2')]} 
   \\ \qquad

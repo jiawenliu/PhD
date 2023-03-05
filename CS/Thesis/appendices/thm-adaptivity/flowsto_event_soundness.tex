@@ -76,19 +76,24 @@ $\flowsto(x^i,  z_1^{r_1}, c)
 \[
   \begin{array}{l}
 		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset \sthat 
+		\\ \qquad 
     \event_1, \event_2 \in \eventset^{\asn} \land 
 		 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
-		\implies
+		\\ \qquad 
+    \implies
 		\eventdep(\event_1, \event_2, \trace, c, D) 
 		\\ \quad 
 		\implies 
-    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat 
+    \\ \qquad 
+     n \geq 0 \land
 		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
     \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
 	\end{array}
 \]
 \end{thm}
-Proof Summary:
+This proof is summarized informally as below.
+
 I. Vacuously True cases, where trace doesn't satisfy the hypothesis 
 \\
 II. Base case where $\trace = [\event_1;\event_2]$

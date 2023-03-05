@@ -8,12 +8,12 @@
   \] 
   \end{theorem}
   %
-Proof Summary:
+This proof is summarized informally as below.
 \\
-construct the
-program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+Constructing the
+estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
 \\
-and trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
+and semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
 \\
 1. prove the one-on-one mapping from $\progV$ to $\traceV$, in Lemma~\ref{lem:vertex_map};
 \\
@@ -37,26 +37,33 @@ by Definition~\ref{def:prog_graph}.
 %
 According to the Definition~\ref{def:prog_adapt} and Definition~\ref{def:trace_adapt}, it is sufficient to show:
 %
-$$
+\[
+	\begin{array}{l}
 \forall \trace_0 \in \ftdom \sthat
 \config{\max \left\{ \hat{\qlen}(p) \ \mid \  p \in \paths(\progG(c))\right \}
-, \trace_0 } \earrow n \implies
+, \trace_0 } \earrow n 
+\\ \qquad 
+\implies
 n \geq
 \max \big 
 \{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \} (\trace_0)
-$$
+\end{array}
+\]
 %
 %
 Let $\trace_0 \in \ftdom$ be an arbitrary initial trace of $c$,
 then it is sufficient to show that:
 \[
-  \forall 
+	\begin{array}{l}
+\forall 
   k \in \walks(\traceG(c)) \sthat
   \exists p \in \paths(\progG(c)) 
   \land
  ( \config{\hat{\qlen}(p), \trace_0} \earrow n
+   \\ \qquad 
    \implies 
   n \geq \qlen(k(\trace_0)))
+\end{array}
 \]
 %
 Let $k\in \walks(\traceG(c))$ be an arbitrary walk in $\traceG(c)$,
@@ -89,7 +96,7 @@ To show $p \in \progG(c)$, By Lemma~\ref{lem:vertex_map} and Lemma~\ref{lem:edge
   \forall e_i \in k \sthat  e_i = (v_i, v_{i + 1}) \\
   \qquad \implies
   \exists e_i' \sthat  e_i' = (v_i, v_{i + 1}) \land e_i' \in \progE.
-	\end{array}
+\end{array}
   \]
   %
 Since we construct $(e_1', \ldots, e_{(n-1)}')$ be all the unique
@@ -116,7 +123,7 @@ To show $( \config{\hat{\qlen}(p), \trace_0} \earrow n
 \implies 
 n \geq \qlen(k(\trace_0)))$,
 let $n \in \mathbb{N}$ such that 
-$\config{\qlen(p), \trace} \earrow n$,
+$\config{\qlen(p), \trace_0} \earrow n$,
 then, it is sufficient to show
 \[
  n \geq \qlen(k)(\trace_0).
@@ -125,13 +132,13 @@ By Definition~\ref{def:qlen-static}, it is sufficient to show
 \[
   \begin{array}{l}
   \forall v_i \in (v_1, \ldots, v_n),
-  (v_i, w_i) \in \progW(c), (v_i, w'_i) \in \traceW(c), n_i \in \mathbb{N} 
+  (v_i, w_i) \in \progW(c), (v_i, \hat{w}_i) \in \traceW(c), n_i \in \mathbb{N} 
   \sthat 
-  \config{w_i, \trace} \earrow n_i
+  \config{w_i, \trace_0} \earrow n_i
   \\
   \implies
    \sum\limits_{\traceF(c)(v_i) = 1}
-   w'_i(\trace_0) 
+   \hat{w}_i(\trace_0) 
    \leq 
    \sum\limits_{\progF(c)(v_i) = 1}n_i 
   \end{array}
@@ -140,7 +147,7 @@ By Definition~\ref{def:qlen-static}, it is sufficient to show
 \[
   \forall v_i \in (v_1, \ldots, v_n), (v_i, w_i) \in \progW(c), n_i \in \mathbb{N} 
   \sthat 
-  \config{w_i, \trace} \earrow n_i
+  \config{w_i, \trace_0} \earrow n_i
   \implies
    w_i(\trace_0) \leq n_i
 \]
@@ -149,7 +156,7 @@ By Lemma~\ref{lem:queryvertex_map} and Definition~\ref{def:qlen}, we know for ev
 Then  we know 
 \[
 	\sum\limits_{\traceF(c)(v_i) = 1}
-w'_i(\trace_0) 
+\hat{w}_i(\trace_0) 
 \leq 
 \sum\limits_{\progF(c)(v_i) = 1}n_i,
 \]
@@ -161,9 +168,9 @@ showing the correspondence properties between the program based graph and trace 
 \begin{lem}[One-on-One Mapping of vertices from $\traceG$ to $\progG$]
 	\label{lem:vertex_map}
 	Given a program $c$ with its
-	program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
 	and 
-	trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
 	then for every $v \in \mathcal{VAR} \times \mathbb{N}$,
 	$v \in \progV$ if and only if $v \in \traceG$.
 	\[
@@ -186,10 +193,10 @@ Taking arbitrary program $c$,
 by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
 we have   
 \\
-its program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
+its estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
 \\
 and 
-trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
+semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
 \\
 By the two definitions, we also know 
 $\traceV  = \lvar_c$ and $\progV = \lvar_c$.
@@ -201,9 +208,9 @@ for arbitrary $v \in \mathcal{VAR} \times \mathbb{N}$, $v \in \progV \Longleftri
 	\begin{lem}[Mapping from Egdes of $\traceG$ to $\progG$]
 	\label{lem:edge_map}
 	Given a program $c$ with its
-	program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
 	and 
-	trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
 	then for every $e = (v_1, v_2) \in \traceE$, there exists an edge 
 	$e' = (v_1', v_2') \in \progE$ with 
 	$v_1 = v_1' \land v_2 = v_2'$.
@@ -222,16 +229,14 @@ for arbitrary $v \in \mathcal{VAR} \times \mathbb{N}$, $v \in \progV \Longleftri
 	\]
 	\end{lem}
 \begin{proof}
-Proof Summary: Proving by Lemma~\ref{lem:vertex_map}, Lemma~\ref{thm:flowsto_soundness} Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}
-\\
 Taking arbitrary program $c$,
 by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
 we have   
 \\
-its program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
+its estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
 \\
 and 
-trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
+semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
 \\
 Taking arbitrary edge $e = (x^i, y^j) \in \traceE$, it is sufficient to show $(x^i, y^j) \in \progE$.
 \\
@@ -250,9 +255,9 @@ Then by definition of $\progE$, we know $(x^i, y^j) \in \progE$. This Lemma is p
 \begin{lem}[Weights are bounded]
 	\label{lem:weights_map}
 	Given a program $c$ with its
-	program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
 	and 
-	trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
 	for every $v \in \traceV$, there is $v \in \progV$ and $\traceW(v) \leq \progW(v)$.
 	\[
 		\begin{array}{l}
@@ -265,12 +270,12 @@ Then by definition of $\progE$, we know $(x^i, y^j) \in \progE$. This Lemma is p
 			\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)
 			\\ \quad
 			\implies
-			\forall (x^l, w_{t}) \in \traceW,
-			(x^l, w_{p}) \in \progW, \vtrace, \trace' \in \ftdom, v \in \mathbb{N} \sthat 
-			\config{w_{p}, \trace} \earrow v
+			\forall (x^l, w) \in \traceW,
+			(x^l, \hat{w}) \in \progW, \vtrace, \trace' \in \ftdom, v \in \mathbb{N} \sthat 
+			\config{\hat{w}, \trace_0} \earrow v
 			\implies
 			% \right\} 
-			w_{t}(\trace_0) \leq v
+			w(\trace_0) \leq v
 		\end{array}
 		\]
 	\end{lem}
@@ -282,18 +287,18 @@ Taking arbitrary program $c$,
 by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
 we have   
 \\
-its program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
+its estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
 \\
 and 
-trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
+semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
 \\
 Taking arbitrary 
 % $v \in \traceV$, by Lemma~\ref{lem:vertex_map}, we know $v \in \progV$.
-$(x^l, w_{t}) \in \traceW, (x^l, w_{p}) \in \progW, \vtrace, \trace' \in \ftdom$, satisfying:
+$(x^l, w) \in \traceW, (x^l, \hat{w}) \in \progW, \vtrace, \trace' \in \ftdom$, satisfying:
 \\
-$\config{{c}, \trace} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+$\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
 \land 
-\config{w_{p}, \trace} \earrow v$
+\config{\hat{w}, \trace_0} \earrow v$
 \\
 By soundness of reachability bound analysis in Theorem~\ref{thm:rb_soundness}, we know 
 % $\traceW(v) \leq \progW(v)$. This lemma is proved.
@@ -306,9 +311,9 @@ then we have $w_t(\trace_0) \leq v$ and this is proved.
 \begin{lem}[One-on-One Mapping for Query Vertices]
 	\label{lem:queryvertex_map}
 	Given a program $c$ with its
-	program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
 	and 
-	trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
 	then for every $(x^i, n) \in \mathcal{VAR} \times \mathbb{N}  \times \{0, 1\} $,
 	 $(x^i, n) \in \traceF$ if and only if $ (x^i, n) \in \progF$.
 	\[
@@ -332,10 +337,10 @@ Taking arbitrary program $c$,
 by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
 we have   
 \\
-its program-based graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
+its estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
 \\
 and 
-trace-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
+semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
 \\
 By the two definitions, we also know $\traceF  = \progF$, 
 i.e., 
