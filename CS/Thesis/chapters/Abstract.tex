@@ -2,11 +2,12 @@
     Program analysis studies the execution behaviors of computer programs
     including programs' safety behavior, privacy behavior, resource usage, etc.
     % Program analysis, for example, on the resource usage of a computer program involves analyzing whether a piece of code consumes certain resources and how many resources are used by this piece of code.
-    When program analysis is performed to study the resource usage of a computer program,
-    one usually analyzes whether a piece of code consumes a certain resource and how much resource is used by this piece of code.
-    Program analysis of a program's safety behavior involves analyzing
+    The kind of program analysis on the safety behavior of a program involves analyzing
     if a particular line of code leaks a secret and how much secret is leaked by this line of code. 
-    Yet another use of program analysis is studying the program privacy behavior by analyzing
+    % When program analysis is performed to 
+    When studying the resource usage of a program,
+    certain program analysis mainly focuses on analyzing whether a piece of code consumes a certain resource and how much resource is used by this piece of code.
+    Yet another kind of program analysis is studying the program privacy behavior by analyzing
     % In terms of privacy, we analyze 
     whether a specific private data is dependent on other data and how many times they are dependent during multiple executions.
     % We notice that when analyzing the aforementioned behaviors of a computer program, there are two dominant perspectives
@@ -65,10 +66,10 @@
     Data analyses are usually designed to identify some properties of the population from which the data are drawn, generalizing beyond the specific data sample. For this reason, data analyses are often designed in a way that guarantees that they produce a low generalization error.
     An adaptive data analysis can be seen as a process composed by multiple queries interrogating some data, where the choice of which query to run next may rely on the results of previous queries. 
     The generalization error of each individual query/analysis can be controlled by using an array of well-established statistical techniques.
-    However, when queries are arbitrarily composed, the different errors can propagate through the chain of different queries and bring to high generalization error. 
+    However, when queries are arbitrarily composed, the different errors can propagate through the chain of different queries and result in high generalization error. 
     To address this issue, data analysts are designing several techniques that not only guarantee bounds on the generalization errors of single queries, but that also guarantee bounds on the generalization error of the composed analyses. 
     The choice of which of these techniques to use, often depends on the chain of queries that an adaptive data analysis can generate, intuitively the \emph{adaptivity} level in an adaptive data analysis.
-    To help analyst with identifying which technique to use to control their generalization error, we consider adaptive data analyses implemented as while-like programs and we design a
+    To help analysts with identifying which technique to use to control their generalization error, we consider adaptive data analyses implemented as while-like programs and we design a
     program analysis framework.
     %  to analyze this \emph{adaptivity}.
     In this framework, we first formalize the intuitive notion of \emph{adaptivity} as a \emph{quantitative-reachability} property,
