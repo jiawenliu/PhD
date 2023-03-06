@@ -8,40 +8,6 @@
 %package for the bu thesis format -- most commonly-used packages added in the style file by HG 2018
 \usepackage{bu_math_thesis}
 
-% \usepackage{titletoc}
-% \usepackage{capt-of}
-\usepackage{tocloft}
-\usepackage{xpatch}
-
-% \usepackage{hyperref}
-
-% Just in case we're not using hyperref
-% \providecommand{\phantomsection}{}
-
-% Generate the separate list of commands for appendix figures and tables
-\newcommand{\listofappendixfiguresname}{List of Figures in Appendices}
-\newlistof{appendixfigures}{apf}{\listofappendixfiguresname}
-\newcommand{\listofappendixtablesname}{List of Tables in Appendix}
-\newlistof{appendixtables}{apt}{\listofappendixtablesname}
-
-\renewcommand{\cftafterapftitle}{\addcontentsline{toc}{chapter}{\listofappendixfiguresname}}
-\renewcommand{\cftafterapttitle}{\phantomsection\addcontentsline{toc}{chapter}{\listofappendixtablesname}}
-
-\xpretocmd{\listofappendixfigures}{\clearpage}{}{}
-\xpretocmd{\listofappendixtables}{\clearpage}{}{}
-
-
-\makeatletter
-\xapptocmd{\appendix}{%
-  \write\@auxout{%
-    \string\let\string\latex@tf@lof\string\tf@lof% Store the original `\tf@lof` file handle
-    \string\let\string\tf@lof\string\tf@apf% 
-    \string\let\string\latex@tf@lof\string\tf@lot% Store the original `\tf@lot` file handle
-    \string\let\string\tf@lot\string\tf@apt% 
-  }%
-}{}{}
-\makeatother
-
 
 \graphicspath{{figures/}{tables/}}
 
@@ -90,14 +56,13 @@ B.A. in Department of Information Science, Central University of Economics and F
 
 % For each reader, specify appropriate label {First, second, third}, then name, then title. Warning: If you have more than five readers you are out of luck, because it will overflow to a new page. Sometimes you may wish to put part of the title in with the name
 % Do NOT put the chair on your approval page - HG 2018
-\reader{First}{Marco Gaboardi, Ph.D.}{Associate Professor, Computer Science}
-\reader{Second}{Alley Stoughton, Ph.D.}{Research Professor, Computer Science}
-\reader{Third}{Assaf Kfoury, Ph.D.}{Professor, Computer Science}
-\reader{Fourth}{Hongwei Xi, Ph.D.}{Associate Professor, Computer Science}
-% \reader{Fifth}{Deepak Garg, Ph.D.}{Associate Professor, MPI-SWS}
+\reader{First}{Marco Gaboardi, Ph.D.}{Associate Professor of Computer Science}
+\reader{Second}{Alley Stoughton, Ph.D.}{Research Professor of Computer Science}
+\reader{Third}{Assaf Kfoury, Ph.D.}{Professor of Computer Science}
+\reader{Fourth}{Hongwei Xi, Ph.D.}{Associate Professor of Computer Science}
 % The Major Professor is the same as the first reader, but must be specified again for the abstract page
 % Just copy and paste the same information
-\majorprof{Marco Gaboardi}{Associate Professor of Computer Science}
+\majorprof{Marco Gaboardi, Ph.D.}{Associate Professor of Computer Science}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -153,12 +118,11 @@ B.A. in Department of Information Science, Central University of Economics and F
 \addcontentsline{toc}{chapter}{Abstract}
 \input{chapters/Abstract}
 
-% Now you can include a preface. Again, use something like
-% \newpage\section*{Preface} followed by your text
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% CODE FOR CLEANING UP PDF HYPERLINKS - HG 2018
 %remove the hyperlink colors for table of contents
+
 \begingroup
   \hypersetup{linkbordercolor=white,linkcolor=black,
     filecolor=black, urlcolor=black}  
@@ -166,40 +130,23 @@ B.A. in Department of Information Science, Central University of Economics and F
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% TABLE OF CONTENTS	 
 % Table of contents comes after preface
-\begin{centering}
-  \tableofcontents
-  \end{centering}
-\endgroup
-
-% END OF THE PRELIMINARY PAGES
-
-\newpage
-\endofprelim
-\cleardoublepage
+\tableofcontents
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% LIST OF TABLES	 
 % If you have tables this goes here - needs to be in appendix HG 2018
 \newpage
-% \addcontentsline{toc}{chapter}{List of Tables}
-\chapter*{List of Tables}
+\addcontentsline{toc}{chapter}{List of Tables}
 \listoftables
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% LIST OF FIGURES	
 % If you have figures this goes here - needs to be in appendix HG 2018
 \newpage
-% \addcontentsline{toc}{chapter}{List of Figures}
-\chapter*{List of Figures}
+\addcontentsline{toc}{chapter}{List of Figures}
 \listoffigures
-% \startlist[main]{lof}
-% \printlist[main]{lof}{}{\chapter*{List of Figures}}
-
-% \addcontentsline{toc}{chapter}{List of Figures}
-% \startlist[main]{lof}% starts main list of figures
-% % \printlist[main]{lof}{}{\chapter*{List of Figures in Main Part}}% prints main list of figures
-% \printlist[main]{lof}{}{}% prints main list of figures
+\endgroup
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% LIST OF SYMBOLS AND ABBREVIATIONS	 
@@ -210,6 +157,10 @@ B.A. in Department of Information Science, Central University of Economics and F
 % \addcontentsline{toc}{chapter}{List of Symbols and Abbreviations}
 % \include{chapters/Symbols}
 
+% END OF THE PRELIMINARY PAGES
+\newpage
+\endofprelim
+\cleardoublepage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % the body of the thesis goes here.
@@ -502,15 +453,8 @@ B.A. in Department of Information Science, Central University of Economics and F
 
 \addtocontents{toc}{\protect\newpage}
 \chapter*{\redd{PART \romannum{4} \quad  Appendix}}
-\appendix
-% \begin{appendices}
-\begingroup
-  \hypersetup{linkbordercolor=white,linkcolor=black,
-    filecolor=black, urlcolor=black} 
-% \addcontentsline{toc}{chapter}{List of Figures in Appendix}
-\listofappendixfigures
-\endgroup
-%
+
+\begin{appendices}
 \chapter{\redd{PART \romannum{1} \quad  PROGRAM ANALYSIS FOR ADAPTIVE DATA ANALYSIS}}
 \label{apdx:adapt}
 \include{chapters/adapt/appendix}
@@ -519,7 +463,7 @@ B.A. in Department of Information Science, Central University of Economics and F
 \label{apdx:reachability}
 \include{chapters/reachability/appendix}
 
-
+\end{appendices}
 % % \include{chapters/Glossary}
 % \end{appendices}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

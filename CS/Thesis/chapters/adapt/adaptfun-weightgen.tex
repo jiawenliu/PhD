@@ -57,9 +57,14 @@ assigns each transition with a variable that decreases in this transition, as th
 %
 The computation steps are as follows,
 \begin{enumerate}
-\item \textbf{Variable Modifications}
+\item \textbf{Variable Modifications}.
+
 For each variable $x$ in a program $c$, this step computes three edge sets, $\inc(c, x)$, $\dec(c, x)$,
   and $\reset(c, x)$ for $x$.
+  \begin{defn}[Variable Modification]
+    The \emph{Variable Modification} sets for a variable $x$ in a program $c$ are three sets of edges.
+    $\inc(c, x)$, $\dec(c, x)$,
+    and $\reset(c, x) \in  \mathcal{P}(\absevent)$
   Every edge in a set corresponds to a transition in which $x$ is increased,
   %  $\inc(c, x)$,
   decreased
@@ -81,9 +86,11 @@ For each variable $x$ in a program $c$, this step computes three edge sets, $\in
   $\reset: \cdom \to \vardom \to \mathcal{P}(\absevent) $ is the set of the abstract events where the variable is reset,
 %
   \[\reset(c, x) = \left\{ \absevent| \absevent = (l,  x' \leq y - v, l') \land x \neq y \land \absevent \in \absflow(c) \right\}\]
-In the following steps, $c$ is omitted in $\inc(x)$,
+  \end{defn}
+  In the following steps, $c$ is omitted in $\inc(x)$,
 $\dec(x)$ and $\reset(x)$ for concise when the reference of a program $c$ is clear in the context.
-\item {Assigning The Local Bound to An Edge}
+
+\item \textbf{Local Bound Computation.}
 This step adopts the local bound computation method in Section 4 of \cite{SinnZV17}.
 It assigns to each edge  $l \xrightarrow{dc} l'\in \absE(c)$ a \emph{local bound} as follows.
 \begin{defn}[Local Bound  Generatation]
@@ -122,7 +129,8 @@ Notice that the output is either a symbolic constant in $\constdom$ or a variabl
   evaluated at most once. 
   The second and third cases are guaranteed by the \emph{Discussion on Soundness} in Section 4 in~\cite{SinnZV17}.
   We formalized the soundness and proof by Lemma~\ref{lem:local_bound_sound} in Appendix~\ref{apdx:reachability_soundness}.
-\item \textbf{Reachability-bound Estimation}
+\item \textbf{Reachability-bound Estimation.}
+
 This step aims at determining the \emph{reachability-bound} $\absclr(e, c)$ of every edge $e\in \progE(c)$.
 Every bound is a symbolic expression built out of symbols in $\constdom$ and the operations $+, *, \max$.
 For every edge, if the local bound of this edge computed at the previous step is a symbol in $\constdom$ then this is already the reachability-bound. 
@@ -130,25 +138,7 @@ If instead the local bound of the edge is a variable $y$ which is not an input v
 In order to do this, this steps will compute two quantities: first, it will recursively sum the reachability-bounds of all the edges whose difference constraint may increment the variable $y$, plus the corresponding increment;
 second, it will recursively sum the reachability-bounds of all the edges whose difference constraint may reset the variable $y$ to a (symbolic) expression that doesn't depend on it, multiplied by the maximal value of this symbolic expression. The sum of these two quantities provides the symbolic expression that is an upper bound on the number of times the edge can be reached.
 
-To compute these two quantities we use two mutually recursive procedures in a path-insensitive manner.
-
-% \highlight{Notations:}
-% \\ 
-% Bound on the maximum value of $\locbound(\absevent, c)$ assigned to edge $\absevent \in \absE(c)$:
-% % , the 
-% $ \varinvar: (\mathcal{V} \cup \constdom  \times \cdom) \to \mathcal{A}_{\lin}$
-% \\
-% the bound on the iteration times of each corresponding edge, $\absclr(\absevent, c)$:
-% $\absclr: (\absevent \times \cdom) \to \mathcal{A}_{\lin}$
-
-
-
-The first one estimates the upper bound, $\varinvar(x, c) \in \mathcal{A}_{\lin}$
-on the maximum value for each local bound  $x \in  \mathcal{V} \cup \constdom$.
-For a program $c$, the \emph{local bound} of a
-$\varinvar(\locbound(\absevent, c)) \in \mathcal{A}_{\lin}$ is 
-the bound on the maximum value of the local bound 
-assigned to the edge $\absevent \in \absE(c)$, formally in Definition~\ref{def:ranking_bound} and~\ref{def:edge_pathinsensitivebound}.
+To compute these two quantities we use two mutually recursive procedures in a path-insensitive manner as follows.
 \begin{defn}[Local Bound Computation]
   \label{def:ranking_bound}
 For a program $c$ and an edge $\absevent \in \absE(c)$,
@@ -166,6 +156,15 @@ is computed as follows,
 $\incrs(x, c) \triangleq \sum\limits_{\absevent \in \inc(x)}\{\absclr(\absevent, c) \times v ~\mid~ 
 \absevent = (l, x' \leq x + v, l')\}$
 \end{defn}
+
+Definition~\ref{def:ranking_bound} estimates the upper bound, $\varinvar(x, c) \in \mathcal{A}_{\lin}$
+on the maximum value for each local bound  $x \in  \mathcal{V} \cup \constdom$.
+For a program $c$, the \emph{local bound} of a
+$\varinvar(\locbound(\absevent, c)) \in \mathcal{A}_{\lin}$ is 
+the bound on the maximum value of the local bound 
+assigned to the edge $\absevent \in \absE(c)$.
+This computation involves computing the \emph{transition bound} $\absclr(\absevent, c)$ of an edge $\absevent$ as below.
+% , formally in Definition~\ref{def:ranking_bound} and~\ref{def:edge_pathinsensitivebound}.
 
 \begin{defn}[Transition Bound\footnotemark]
   \label{def:edge_pathinsensitivebound}
@@ -209,19 +208,26 @@ then its \emph{path-insensitive transition bound} $\absclr(\absevent, c)$
 the execution times of this assignment command in $c$.
   \[
     \begin{array}{l}
-      \forall c \in \cdom, l, l' \in \lvar(c),\trace_0 \in \ftdom_0(c), 
-      \trace \in \ftdom, v \in \mathbb{N}
+      \forall c \in \cdom, l, l' \in c,\trace_0 \in \ftdom_0(c), 
+      \trace \in \tdom, v \in \mathbb{N}
        \sthat 
-       \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\vtrace} 
        \\ \qquad 
+       \Big(\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\vtrace} 
        \land \config{\absclr(\absevent, c), \trace_0} \aarrow v
        \land
       \vcounter(\trace, l) \leq v
+      \Big)
+      \\ \land \quad 
+      \Big(\config{{c}, \trace_0} \uparrow^{\infty} \trace_0\tracecat\vtrace
+       \implies \absclr(\absevent, c) = \infty 
+       \Big)
     \end{array}
     \]
 \end{thm}
 %
-\paragraph*{Example}
+\end{enumerate}
+
+\paragraph{Example}
 We perform the symbolic reachability bound analysis on the abstract control flow graph in Figure~\ref{fig:abscfg_tworound}(b) and compute the result in Figure~\ref{fig:abscfg_tworound}(c).
 We would like to generate the closure of every edge, which is an equality relation between variables.  Solving this closure gives us the reachability bound for this edge. With all the bound for all the edges in the abstract control flow graph, we can calculate the weight for every vertex in this graph. For example, we show the closure generated for the edge 
 $4 \xrightarrow{j' \leq j - 1} 5$, 
@@ -241,7 +247,6 @@ We use $\absW(c)$ for the set of weights we just computed
 for each label in the abstract control flow graph of $c$.
 %
 The same way for the rest weights' computation.
-\end{enumerate}
 
 \paragraph{Vertex Weight Computation}
 Using the reachability-bound $\absclr(e, c)$ for every edge $e = (l, dc, l')$ we can provide a bound on the visiting times of each vertex $x^l \in \absV(c)$.
@@ -262,7 +267,7 @@ Notice that $w \in \mathcal{A}_{\lin}$ is a symbolic arithmetic expression over 
 We prove that this 
 symbolic expression for $x^l \in \progV(c)$ is a sound upper bound of 
 the weight for the same vertex $x^l$ in Program's semantics-based dependency graph by Lemma~\ref{lem:weights_map}
-in Appendix~\ref{apdx:adapt_soundness}, and Theorem~\ref{thm:rb_soundness} in Appendix~\ref{apdx:weight_soundness}.
+in Appendix~\ref{apdx:adapt_soundness}, and Theorem~\ref{thm:transition_bound_sound} in Appendix~\ref{apdx:weight_soundness}.
 
 \begin{thm}[Soundness of the Reachability Bounds Estimation]
   \label{thm:addweight_soundness}

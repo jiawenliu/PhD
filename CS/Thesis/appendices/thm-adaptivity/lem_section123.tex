@@ -1,16 +1,6 @@
-  \subsection{Proof of Lemma~\ref{lem:lvar_unique}}
-  \label{apdx:lvar_unique}
-  \begin{lemma}[Uniqueness of the Labeled Variables]
-    Given any program $c \in \cdom$ with its label variable set $\lvar(c)$,
-    every two labeled variables in this set are different.
-    \[
-      \forall c \in \cdom, x^i, y^j \in \lvar(c) \sthat i \neq j.
-      \]
-  \end{lemma}
-  \begin{proof}
-    This is proved directly by the consistency property of the command label.
-  \end{proof}
+
   
+
   \subsection{Proof of Lemma~\ref{lem:tracenondec}}
   \label{apdx:tracenondec}
   \begin{lemma}[Trace Non-Decreasing]
@@ -72,9 +62,9 @@
       {
         \config{{\clabel{\assign{x}{\query(\qexpr)}}^l, \trace_0}}
         \xrightarrow{} 
-        \config{{\clabel{\eskip}^l,  \trace_0 \traceadd [({x}, l, v, \qval)]} }.
+        \config{{\clabel{\eskip}^l,  \trace_0 \traceadd ({x}, l, v, \qval)} }.
       }\]
-      Let $\trace = \trace_0 \traceadd [({x}, l, v, \qval)]$ and $\trace' =  [({x}, l, v, \qval) ]$,
+      Let $\trace = \trace_0 \traceadd ({x}, l, v, \qval)$ and $\trace' =  [({x}, l, v, \qval) ]$,
       then we have
         \[
         \trace_0 \tracecat \trace' = \trace,
@@ -124,7 +114,7 @@
   %   with trace $\trace_w^{i'} $ for $i = 1, \cdots, n n \geq 1$ in each iteration, we know 
   %   in the $i-th$ iteration,
   %    there exists  $\trace_w^i \in \ftdom$ such that  
-  %   $\trace_w^{i'} = \trace_w^{(i-1)'} :: (b, l_w, \etrue, \bullet) ++ \trace_w^{i'}$
+  %   $\trace_w^{i'} = \trace_w^{(i-1)'} :: (b, l_w, \etrue, \bullet) \tracecat \trace_w^{i'}$
   %   \\
   %   Then we have the following execution:
   %   \\
@@ -142,7 +132,7 @@
   %   \\
   %   Picking $\trace' = \trace_w^{n'} :: (b, l_w, \efalse, \bullet)$ and $\trace'' = [(b, l_w, \etrue, \bullet)] \tracecat \trace_w^{1} :: \cdots :: (b, l_w, \etrue, \bullet) \tracecat \trace_w^{n}$,
   %   we have 
-  %   $\trace ++ \trace'' = \trace'$.
+  %   $\trace \tracecat \trace'' = \trace'$.
   %   \\
   %   This case is proved.
   %     \subcaseL{$\textbf{while-f}$}
@@ -184,32 +174,32 @@
   %     \]
   %     \end{corollary}
   % \begin{proof}
-  %   By unfolding the $\aq \aqin t$, we have the following cases:
+  %   By unfolding the $\aq \in t$, we have the following cases:
   %   %
-  %   \caseL{$t = []$} The hypothesis is $\efalse$, this case is proved.
+  %   \caseL{$\trace = []$} The hypothesis is $\efalse$, this case is proved.
   %   %
-  %   \caseL{$t = \aq'::t' \land \aq' \aqeq \aq $}
+  %   \caseL{$\trace = \aq'::t' \land \aq' \aqeq \aq $}
   %   %
-  %   Let $t_1 = []$ and $t_2 = t'$, by unfolding the list concatenation operation, we have:
+  %   Let $\trace_1 = []$ and $\trace_2 = t'$, by unfolding the list concatenation operation, we have:
   %   %
   %   \[
-  %       t_1 ++ [\aq'] ++ t_2 = [] ++ [\aq'] ++ t' = t
+  %       \trace_1 \tracecat [\aq'] \tracecat \trace_2 = [] \tracecat [\aq'] \tracecat \trace' = t
   %   \]
   %   %
   %   Since $\aq' \aqeq \aq$ by the hypothesis, this case is proved.
   %   %
-  %   \caseL{$t = \aq'::t' \land \aq' \aqneq \aq $}
+  %   \caseL{$\trace = \aq'::t' \land \aq' \aqneq \aq $}
   %   %
-  %   By induction hypothesis on $\aq \aqin t'$, we know:
+  %   By induction hypothesis on $\aq \in t'$, we know:
   %   %
   %   \[
-  %       \exists t_1', t_2', \aq''. ~ s.t., ~ (\aq \aqeq \aq'') \land t_1' ++ [\aq''] ++ t_2' = t'	
+  %       \exists \trace_1', \trace_2', \aq''. ~ s.t., ~ (\aq \aqeq \aq'') \land \trace_1' \tracecat [\aq''] \tracecat \trace_2' = t'	
   %   \]
   %   %
-  %   Let $t_1 = \aq'::t_1'$ and $t_2 = t_2'$, by unfolding the list concatenation operation, we have:
+  %   Let $\trace_1 = \aq'::\trace_1'$ and $\trace_2 = \trace_2'$, by unfolding the list concatenation operation, we have:
   %   %
   %   \[
-  %       t_1 ++ [\aq''] ++ t_2 = (\aq':: t_1') ++ [\aq''] ++ t_2' = \aq'::t' = t
+  %       \trace_1 \tracecat [\aq''] \tracecat \trace_2 = (\aq':: \trace_1') \tracecat [\aq''] \tracecat \trace_2' = \aq'::t' = t
   %   \]
   %   %
   %   Since $\aq'' \aqeq \aq$ by the hypothesis, this case is proved.    %
@@ -280,12 +270,102 @@
     \eskip,
     \trace_0 :: (b, l_w, \efalse, \bullet)}},
   \]
-  Let $\trace = \trace_0 ::(b, l_w, \efalse)$ and $\trace' =  [(b, l_w, \efalse)]$,
+  Let $\trace = \trace_0 ::(b, l_w, \efalse, \bullet)$ 
+  and $\trace' =  [(b, l_w, \efalse, \bullet)]$,
   then we have $\trace_0 \tracecat \trace' = \trace$ and this case is proved.
   \caseL{$\eif(\clabel{b}^l, c_t, c_f)$}
   By the first rule applied to $\eif(\clabel{b}^l, c_t, c_f)$ in operational semantics,
   we have two cases \rname{if-t} and \rname{{if-f}}.
-  Then both of the two cases will append the evaluation result of the guard $\clabel{b}^l$, $(b, l_w, \etrue)$ and $(b, l_w, \efalse)$ respectively.
+  Both of the two cases will generate event of the evaluation result on the guard expression
+  $\clabel{b}^l$.
   \\
-  Formally, the two cases will be proved in the same way as \textbf{case: $c = \ewhile \clabel{b}^{l} \edo (c_w)$}.
+  By rule \rname{if-t} and \rname{{if-f}},
+  the event $\event $ is either $(b, l_w, \etrue, \bullet)$ or $(b, l, \efalse, \bullet)$ respectively.
+  \\
+  Again by rule \rname{if-t} and \rname{{if-f}}, $\event $ is appended to the initial trace.
+  \\
+  In this sense, let $\trace' =  [(b, l_w, \efalse, \bullet)]$
+  or $\trace' =  [(b, l_w, \efalse, \bullet)]$ respectively,
+  we have 
+  $\trace_0 \tracecat \trace' = \trace$ in both cases and this case is proved.
+  % \\
+  % Formally, the two cases will be proved in the same way as \textbf{case: $c = \ewhile \clabel{b}^{l} \edo (c_w)$}.
 \end{proof}
+
+\subsection{Proof of Lemma~\ref{lem:lvar_unique}}
+\label{apdx:lvar_unique}
+\begin{lemma}[Uniqueness of the Labeled Variables]
+  Given any program $c \in \cdom$ with its label variable set $\lvar(c)$,
+  every two labeled variables in this set are different.
+  \[
+    \forall c \in \cdom, x^i, y^j \in \lvar(c) \sthat i \neq j.
+    \]
+\end{lemma}
+\begin{proof}
+  This is proved directly by the consistency property of the command label.
+\end{proof}
+
+
+\subsection{Proof of Corollary~\ref{coro:aqintrace}}
+     \label{apdx:query_equal}
+\begin{corollary}
+      % \label{coro:query_equal}
+      For any event $\event \in \eventset$  that is generated from a query request, 
+      there exist another event $\event' \in \eventset$ 
+      % and traces $\trace_1, \trace_2 \in \ftdom$
+      such that 
+      $\event$ and $\event'$ are equivalent but different in their query results.
+      \[
+        \forall \event \in \eventset \sthat 
+        \pi_4(\event) \neq \bullet
+      % \event \in \trace 
+      \implies \exists 
+      \event' \in \eventset \sthat 
+      \event =_{q}\event' \land  \pi_3(\event) \neq \pi_3(\event')
+      \]
+\end{corollary}   
+\begin{proof}
+  Let $\event = (x, l, v, \qval) \in \eventset$ be arbitrary event that  is generated from a query request for some variable $x$, label $l$ and a query result $v$.
+  \\
+  By the query evaluation rule \rname{query}, we know $v \in \mathbb{N}$.
+  \\
+  Let $v' = v + 1$, we construct another event $\event' = (x, l, v', \qval) \in \eventset$.
+  \\
+  By definition~\ref{def:query_equal}, we know $\event =_{q}\event'$.
+  \\
+  We also know $ \pi_3(\event) \neq \pi_3(\event')$ since $v' = v + 1 \neq v$.
+  \\
+  So we have this corollary proved.
+\end{proof}  
+
+
+\subsection{Proof of Corollary~\ref{coro:aqintrace}}
+     \label{apdx:aqintrace}
+     \begin{corollary}
+       % \label{coro:aqintrace}
+       For any event $\event \in \eventset$  that is generated from a query request and a trace $\trace \in \ftdom$ contains this event
+       such that $\trace$ can be expressed
+       in the form of $\trace_1 \tracecat [\event] \tracecat \trace_2 = \trace $ for some traces $\trace_1, \trace_2 \in \ftdom$,
+       then there exist another event $\event' \in \eventset$ such that  $ \pi_3(\event) \neq \pi_3(\event') $
+       $\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace $
+       \[
+         \forall \event \in \eventset, \trace, \trace_1, \trace_2 \in \ftdom \sthat 
+         \pi_4(\event) \neq \bullet \land \trace_1 \tracecat [\event] \tracecat \trace_2 = \trace
+       \implies \exists 
+       \event' \in \eventset \sthat 
+       \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  \land \pi_3(\event) \neq \pi_3(\event') 
+       \]
+       \end{corollary}
+   \begin{proof}
+    Let $\event = (x, l, v, \qval) \in \eventset$ be arbitrary event that  is generated from a query request for some variable $x$, label $l$ and a query result $v$.
+    \\
+    Let $ \trace_1 \tracecat [\event] \tracecat \trace_2 = \trace \in \ftdom$ for some finite traces
+    $\trace_1 \tracecat [\event] \tracecat \trace_2 \in \ftdom$.
+    \\
+    Then it is sufficient to show
+    \[
+      \exists \event' \in \eventset \sthat 
+       \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  \land \pi_3(\event) \neq \pi_3(\event') 
+      \]
+        %
+     \end{proof}

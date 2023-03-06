@@ -3,7 +3,7 @@ There are three methods for computing the loop bound, $BD(\rprepeat(\rprog'), c)
 \begin{enumerate}
   \item The first computation fully relies on the soundness of $BOUND(\rprepeat(\rprog'), c)$ from paper\cite{GulwaniJK09}, we do not repeat their soundness in this paper.
   \item The second computation approach by Equation~\ref{eq:absBD} is path-insensitively and sound.
-    Its soundness relies on the soundness of the $\absclr(\absevent, c)$ in Definition~\ref{def:ranking_bound} in Section~\ref{sec:rank}.
+    Its soundness relies on the soundness of the $\absclr(\absevent, c)$ in Definition~\ref{def:ranking_bound} in Section~\ref{sec:psRB-rank}.
     For a program $c$ and an edge $\absevent \in \absE(c)$, $\absclr(\absevent, c)$ is a sound upper bound on the execution times of this transition, formally in Theorem~\ref{thm:pathinsensitive_rb_soundness} with proof in Appendix~\ref{apdx:pathinsensitive_rb_soundness}    
     \item  The soundness of our new approach in Definition~\ref{def:loopbound} is proved below.
   \end{enumerate}

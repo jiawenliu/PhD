@@ -83,27 +83,7 @@ The concatenation preserves the order of every element in the two traces.
   \]
   \end{defn}
   
-The \emph{Belongs To} operator $\in : \eventset \to \ftdom \to \{\etrue, \efalse \} $ and its opposite $\not\in$
-express whether an event belongs to a trace, formally as follows in Definition~\ref{def:event_belong}.
-\begin{defn}[An Event Belongs to A Trace]
-  \label{def:event_belong}
-    An event $\event \in \eventset$ belongs to a trace $\trace$, i.e., $\event \in \trace$ are defined as follows:
-  %
-  \begin{equation}
-    \event \in \trace  
-    \triangleq \left\{
-    \begin{array}{ll} 
-      \etrue                  & \trace =  \trace' :: \event'
-       \land \event = \event'
-                                \\
-      \event \in \trace' & \trace =  \trace' :: \event'
-      \land \event \neq \event' \\ 
-      \efalse                 & \trace = []
-    \end{array}
-    \right.
-  \end{equation}
-  As usual, we denote by $\event \notin \trace$ that the event $\event$ doesn't belong to the trace $\trace$.
-  \end{defn}
+
 
   The \emph{Occurrence Counter} $\vcounter : \ftdom \to \mathbb{N} \to \mathbb{N}$ counts the 
 occurrence of a label in a trace,
@@ -558,7 +538,30 @@ We will extend to the non-terminating programs in {\redd{PART \romannum{2}}.
       \label{fig:os}
   \end{figure}
 
-\paragraph{Properties and Lemmas}
+
+If we observe the operational semantics rules, we can find that no rule will shrink the trace. 
+So we have the Lemma~\ref{lem:tracenondec} with proof in Appendix~\ref{apdx:tracenondec}, 
+specifically the trace has the property that its length never decreases during the program execution.
+\begin{lem}
+[Trace Non-Decreasing]
+\label{lem:tracenondec}
+For any program $c \in \cdom$ and initial trace $\trace_0 \in \ftdom_0(c)$,
+if there exists $\trace \in \tdom$ and $c' \in \cdom $ such that $\config{c, \trace_0} \rightarrow \config{c', \trace} $
+then there exists a trace $\trace' \in \tdom$ such that $\trace_0 \tracecat \trace' = \trace$ formally as follows.
+%
+\[
+  \begin{array}{l}
+  \forall \trace_0 \in \ftdom_0(c), \trace \in \tdom, c, c' \in \cdom \sthat
+  % \Big( 
+    \config{c, \trace_0} \rightarrow \config{c', \trace} 
+  % \lor  \config{c, \trace_0} \uparrow^{\infty} \trace \Big)
+  \\ \quad
+  \implies \exists \trace' \in \tdom \sthat \trace_0 \tracecat \trace' = \trace 
+  \end{array}
+\]
+\end{lem}
+
+\paragraph{Equivalence of the event and expression}
 
 In order to distinguish if a query's choice is affected by previous values, 
 we need to be able to identify whether two queries are the equivalent or not, so that when we change the result of one query, 
@@ -605,46 +608,75 @@ As usual, we denote by $\qexpr_1 \neq_{q} \qexpr_2$  the negation of the equival
   As usual, we denote by $\event_1 \neq \event_2$  the negation of the equivalence.
 \end{defn}
 
+Since the equivalence over two events is defined over the query value equivalence, 
+% when there is an event belonging to a trace, 
+% if this event is a query assignment event, 
+it is possible that two events has different values of query result in the third position, but they
+are equivalent by Definition~\ref{def:query_equal}.
+So we have the following Corollaries~\ref{coro:query_equal} with proof in Appendix~\ref{apdx:query_equal}.
+\begin{coro}
+  \label{coro:query_equal}
+  For any event $\event \in \eventset$  that is generated from a query request, 
+  there exist another event $\event' \in \eventset$ 
+  % and traces $\trace_1, \trace_2 \in \ftdom$
+  such that 
+  $\event$ and $\event'$ are equivalent but different in their query results.
+  \[
+    \forall \event \in \eventset \sthat 
+    \pi_4(\event) \neq \bullet
+  % \event \in \trace 
+  \implies \exists 
+  \event' \in \eventset \sthat 
+  \event =_{q}\event' \land  \pi_3(\event) \neq \pi_3(\event')
+  \]
+  \end{coro}
+
   
-If we observe the operational semantics rules, we can find that no rule will shrink the trace. 
-So we have the Lemma~\ref{lem:tracenondec} with proof in Appendix~\ref{apdx:tracenondec}, 
-specifically the trace has the property that its length never decreases during the program execution.
-\begin{lem}
-[Trace Non-Decreasing]
-\label{lem:tracenondec}
-For any program $c \in \cdom$ and initial trace $\trace_0 \in \ftdom_0(c)$,
-if there exists $\trace \in \tdom$ and $c' \in \cdom $ such that $\config{c, \trace_0} \rightarrow \config{c', \trace} $
-then there exists a trace $\trace' \in \tdom$ such that $\trace_0 \tracecat \trace' = \trace$ formally as follows.
-%
-\[
-  \begin{array}{l}
-  \forall \trace_0 \in \ftdom_0(c), \trace \in \tdom, c, c' \in \cdom \sthat
-  % \Big( 
-    \config{c, \trace_0} \rightarrow \config{c', \trace} 
-  % \lor  \config{c, \trace_0} \uparrow^{\infty} \trace \Big)
-  \\ \quad
-  \implies \exists \trace' \in \tdom \sthat \trace_0 \tracecat \trace' = \trace 
-  \end{array}
-\]
-\end{lem}
+
+
+Then using the equivalence between events, we
+define the \emph{Belongs To}, 
+ $\in : \eventset \to \ftdom \to \{\etrue, \efalse \} $
+ and its opposite $\not\in$ as follows.
+It expresses whether an event belongs to a trace.
+\begin{defn}[An Event Belongs to A Trace]
+  \label{def:event_belong}
+    An event $\event \in \eventset$ belongs to a trace $\trace$, i.e., $\event \in \trace$ are defined as follows:
+  %
+  \begin{equation}
+    \event \in \trace  
+    \triangleq \left\{
+    \begin{array}{ll} 
+      \etrue                  & \trace =  \trace' :: \event'
+       \land \event = \event'
+                                \\
+      \event \in \trace' & \trace =  \trace' :: \event'
+      \land \event \neq \event' \\ 
+      \efalse                 & \trace = []
+    \end{array}
+    \right.
+  \end{equation}
+  As usual, we denote by $\event \notin \trace$ that the event $\event$ doesn't belong to the trace $\trace$.
+  \end{defn}
+
 Since the equivalence over two events is defined over the query value equivalence, 
 when there is an event belonging to a trace, 
-if this event is a query assignment event, 
 it is possible that 
-the event showing up in this trace has a different form of query value, 
+the event showing up in the same trace has a different value of query result in the third position, 
 but they are equivalent by Definition~\ref{def:query_equal}.
-So we have the following Corollary~\ref{coro:aqintrace} with proof in Appendix~\ref{apdx:aqintrace}.
-\begin{coro}
+So we have the following Corollaries~\ref{coro:aqintrace} with proof in Appendix~\ref{apdx:aqintrace}.
+  \begin{coro}
 \label{coro:aqintrace}
-For every event and a trace $\trace \in \ftdom$,
-if $\event \in \trace$, 
-then there exist another event $\event' \in \eventset$ and traces $\trace_1, \trace_2 \in \ftdom$
-such that $\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace $
-with 
-$\event$ and $\event'$ equivalent but may differ in their query value.
+For any event $\event \in \eventset$  that is generated from a query request and a trace $\trace \in \ftdom$ contains this event
+such that $\trace$ can be expressed
+in the form of $\trace_1 \tracecat [\event] \tracecat \trace_2 = \trace $ for some traces $\trace_1, \trace_2 \in \ftdom$,
+then there exist another event $\event' \in \eventset$ such that  $ \pi_3(\event) \neq \pi_3(\event') $
+$\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace $
 \[
-  \forall \event \in \eventset, \trace \in \ftdom \sthat 
-\event \in \trace \implies \exists \trace_1, \trace_2 \in \ftdom, 
-\event' \in \eventset \sthat (\event \in \trace') \land \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  
+  \forall \event \in \eventset, \trace, \trace_1, \trace_2 \in \ftdom \sthat 
+  \pi_4(\event) \neq \bullet \land \trace_1 \tracecat [\event] \tracecat \trace_2 = \trace
+\implies \exists 
+\event' \in \eventset \sthat 
+\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  \land \pi_3(\event) \neq \pi_3(\event') 
 \]
 \end{coro}

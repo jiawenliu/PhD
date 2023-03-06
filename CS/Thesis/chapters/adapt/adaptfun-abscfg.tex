@@ -6,14 +6,13 @@ a vertex set $\absV(c)$ and an edge set $\absE(c)$, $\absG(c) \triangleq (\absV(
 % For a program $c$, this analysis first generates its abstract execution control flow graph notated as follows,
 % \[\absG(c) =(\absV(c), \absE(c))\]
 %
-\\
-Every 
+Specifically,
+every 
 vertex $l \in \absV(c)$ is the label of a labeled command in $c$, which is unique.
 We also call the unique label as program point.
 % corresponds to a program point $l$, which is a unique
 % label of a command in this program.
 % $\absV(c)$ is the set of $c$'s all program points,
-\\
 Each edge $(l \xrightarrow{dc} l') \in \absE(c)$ is an abstract transition
 between two program points $l, l'$. 
 There is an edge from $l$ to $l'$ if and only if
@@ -24,6 +23,7 @@ This constraint describes the abstract execution of the command with $l$.
 %  before the introduction of the edge and weight estimation.  
 % We discuss the vertices and edge of the
 % abstract transition graph for a program $c$, $\absG(c)$.
+Below we present in detail how to compute them and construct this graph.
 
 \paragraph{Abstract Control Flow Graph Vertices Construction}
 \label{sec:alg_abscfg-vertex}
@@ -33,7 +33,7 @@ label of a command in this program.
 Concretely,
 the vertices of this graph is the set of $c$'s labels with the exit label ${\lex}$ formally as follows,
 \[ 
-  \absV(c) = \left\{ l ~\vert~ \exists x \in \vardom \sthat x^l \in \lvar(c)  \right\}\cup\{{\lex}\}
+  \absV(c) = \bigcup\limits_{x^l \in \lvar(c) }\left\{ l  \right\}\cup\{{\lex}\}
 \]
 %  corresponding to a label command in the program.
 
@@ -41,47 +41,51 @@ the vertices of this graph is the set of $c$'s labels with the exit label ${\lex
 \label{sec:alg_abscfg-edge}
 Each edge $(l \xrightarrow{dc} l') \in \absE(c)$ is an abstract transition
 between two program points $l, l'$. 
-There is an edge from $l$ to $l'$ if and only if
+The edge is constructed by the standard control flow analysis satisfying
+there is an edge from $l$ to $l'$ if and only if
 the command with label $l'$ can execute right after the execution of the command with label $l$.
+
 % if and only if there is a control flow between two program points.
 Each edge is annotated by a constraint $dc$ generated from the command with label $l$.
 This constraint describes the abstract execution of the command with $l$. 
 It is either
-the symbol $\top$, a boolean expression or a \emph{difference
-constraint}~\cite{SinnZV17}.
-This step shows how to generate the abstract transition graph $\absG(c)$ of a
-program $c$ through constructing its vertices and edges.
-  \\
-  In the first step, \textbf{Constraint Computation} generates a constraint
-  over the expression for every program's labeled command,
+the symbol $\top$, 
+a boolean expression or 
+a \emph{difference constraint} computed according to the algorithm in~\cite{SinnZV17}.
+% This step shows how to generate the abstract transition graph $\absG(c)$ of a
+% program $c$ through constructing its vertices and edges.
+Below we summarize how to compute the constraints and generate the edges in three steps,
+\begin{enumerate}
+  \item In the first step, we generate the \emph{constraint}
+  of the expression for every program's labeled command,
   which is used as the annotation of an edge.
-  \\
-  In the second step, \textbf{Initial and Final State Computation} generates two sets for each command. 
+
+  \item In the second step, we compute the \emph{initial and continuation state} for each command. 
   The initial state is a set that contains the
   program point where this command {starts} executing, 
   and the final state is a set
   that contains the constraint of this command
   and the continuation program points after the execution of this command.
-  \\ 
-  In the third step, \textbf{Abstract Event Computation} generates a set of edges for the program.
-  Each edge is a pair of initial and finial state.
+
+  \item In the third step, we compute the set of edges for the program, $\absflow(c)$.
+  Each edge is an \emph{abstract event}, which is a pair of initial and finial state.
+\end{enumerate}
 %
 \paragraph{Constraint Computation}
-In this step, we first show how to compute the constraints for expressions in a program $c$,
-by a program abstraction method adopted from the
-algorithm in Section 6 in~\cite{SinnZV17}.
-\\
+% In this step, we first show how to compute the constraints for expressions in a program $c$,
+% by a program abstraction method adopted from the
+% algorithm in Section 6 in~\cite{SinnZV17}.
+% \\
 Given a program $c$,
 every expression in an assignment command or in the guard of a $\eif$ or $\ewhile$ command
-is transformed into a constraint.
-
-
+is transformed into a constraint as follows.
 %
-\begin{defn} 
+%
+\begin{defn}[Difference Constraint, Symbolic Constant]
 The difference constraints $DC(\mathcal{V}  \cup \constdom)$ is the set of all the inequality of
 form $x' \leq y + v$ or $x' \leq v$ where $x \in \mathcal{V} $, 
-$y \in \mathcal{V}$ and $v \in \constdom$.
-The \emph{Symbolic Constant} can be a natural number, $\infty$, or a program's input variable, We use $\scvardom \subseteq \mathbb{N} \cup \vardom \cup \{\infty \}$ to denote the universe of all \emph{Symbolic Constant},
+$y \in \mathcal{V}$ and $v \in \scvardom$.
+The \emph{Symbolic Constant} can be a natural number, $\infty$, or a program's input variable, We use $\scvardom \subseteq \mathbb{N} \cup \vardom \cup \{ \infty \}$ to denote the universe of all \emph{Symbolic Constant},
 which is the set of all natural numbers with $\infty$ and programs' input variables.
 \end{defn}
 An inequality $x' \leq y + v$ describes that the value of $x$ in the current state is
@@ -89,8 +93,13 @@ at most the value of $y$ in the previous state plus the symbolic constant $v$.
 An inequality $x' \leq v$ describes that the value of $x$ in the current state is
 at most the value $v$.
 
-\begin{defn}
-  Constrains, $\dcdom^{\top}$ is composed of the \emph{Difference Constraints} $DC(\mathcal{V}  \cup \constdom)$, the \emph{Boolean Expressions} $\booldom$ and $\top$.
+\begin{defn}[Symbolic Expression]
+  \label{def:adaptfun-symbolic_expr}
+ The \emph{symbolic expression} of a program $\scexpr(c) \subseteq \mathcal{A}$ is the set of all the arithmetic expressions over $\mathbb{N} \cup \inpvar(c) \cup \{\infty \}$ for the program $c$.
+\end{defn}
+
+\begin{defn}[Constraint]
+  The constraint set, $\dcdom^{\top}$ is composed of the \emph{Difference Constraints} $DC(\mathcal{V}  \cup \constdom)$, the \emph{Boolean Expressions} $\booldom$ and $\top$.
   \end{defn}
   
 
@@ -140,7 +149,8 @@ It is a context free computation skeleton overall the variable and value domain.
       \absexpr(y + v, x)  = x' \leq y + v, 
       \grdvar = \grdvar \cup \{y\} & x \in \grdvar \land y \notin \grdvar \land v \in \constdom \\
       \absexpr(\qexpr, x)  = x' \leq Q_m & x \in \grdvar \land \qexpr \text{ is a query expression}  \\
-      \absexpr(\bexpr, \_) = \bexpr, \grdvar = \grdvar \cup FV(\bexpr) &  x \in \grdvar \land \bexpr \text{ is a boolean expression} \\
+      \absexpr(\bexpr, \_) = \bexpr, \grdvar = \grdvar \cup 
+      \kw{FV}(\bexpr) &  x \in \grdvar \land \bexpr \text{ is a boolean expression} \\
       \absexpr(\expr, x) = \top  &  x \notin \grdvar \\
     \end{array}
     \]
@@ -236,19 +246,19 @@ Given a program $c$, its final state, $\absfinal(c)$ is computed as follows,
  \]
  %
 \end{itemize}
- \paragraph{Abstract Event Computation} Each abstract event is an edge between two vertices in the abstract transition graph.
- It is generated by computing the initial state and finial state interactively and recursively for a program $c$.
- 
- \begin{itemize}
-  \item \emph{Abstract Event}: 
-  $\absevent \in $
-  $\ldom \times \dcdom^{\top} \times \ldom$
-  \item \emph{Abstract Event Computation}: $\absflow \in \cdom \to \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$
- \end{itemize}
- Its type is defined as follows,
+ \paragraph{Abstract Event Computation} 
+%  Each abstract event is an edge between two vertices in the abstract transition graph.
+%  It is 
+ The set of abstract events for a program $c$ is generated by computing the initial state and finial state interactively and recursively.
+%  \begin{itemize}
+%   \item \emph{Abstract Event}: 
+%   $\absevent \in $
+%   $\ldom \times \dcdom^{\top} \times \ldom$
+%   \item \emph{Abstract Event Computation}: $\absflow \in \cdom \to \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$
+%  \end{itemize}
  \begin{defn}[Abstract Event]
-   \label{def:abs_event}
-   Abstract Event: 
+   \label{def:adaptfun-abs_event}
+   An \emph{abstract event},
    $\absevent \in $
    $\ldom \times \dcdom^{\top} \times \ldom$
    is a 
@@ -260,7 +270,7 @@ Given a program $c$, its final state, $\absfinal(c)$ is computed as follows,
    \end{defn}
    In an abstract event $(l, dc, l')$ of a program $c$, 
    the first label $l \in \ldom$ corresponds to an initial state of $c$, and 
-   the second label $l' \in \ldom$ with the constraint $dc \in \dcdom^{\top}$ correspond to an abstract final state of $c$.
+   the second label $l' \in \ldom$ with the constraint $dc \in \dcdom^{\top}$ correspond to an abstract continuation state of $c$.
   The abstract initial state is a label from $\ldom$.
 %  The abstract final state is a pair from $\ldom \times \dcdom^{\top}$,  
 %  where first component is a label from $\ldom$ and the second component is a constraint from $\dcdom^{\top}$.

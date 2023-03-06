@@ -344,47 +344,56 @@
   Preliminary Theorem from paper~\cite{SinnZV17}.
   \begin{theorem}[Soundness of the Transition Bound]
     % \label{thm:transition_bound_sound}
-  For each program ${c}$ and an edge $\absevent = (l, \_, \_) \in \absG(c)$, if $l$ is the label of an assignment command,
-  %  label $l \in \lvar(c)$,
-  then its \emph{path-insensitive transition bound} $\absclr(\absevent, c)$ 
-   is a sound upper bound on 
-  %  execution-based reachability bound $w^t$ 
-  the execution times of this assignment command in $c$.
-    \[
-      \begin{array}{l}
-        \forall c \in \cdom, l \in \lvar(c),\trace_0 \in \ftdom_0(c), 
-        \trace \in \ftdom, v \in \mathbb{N}
-         \sthat  
-         \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\vtrace} 
-         \land \config{\absclr(\absevent, c), \trace_0} \aarrow v
-         \land
-        \vcounter(\trace, l) \leq v
-      \end{array}
-      \]
+    For each program ${c}$ and an edge $\absevent = (l, \_, \_) \in \absG(c)$, if $l$ is the label of an assignment command,
+    %  label $l \in \lvar(c)$,
+    then its \emph{path-insensitive transition bound} $\absclr(\absevent, c)$ 
+     is a sound upper bound on 
+    %  execution-based reachability bound $w^t$ 
+    the execution times of this assignment command in $c$.
+      \[
+        \begin{array}{l}
+          \forall c \in \cdom, l, l' \in c,\trace_0 \in \ftdom_0(c), 
+          \trace \in \tdom, v \in \mathbb{N}
+           \sthat 
+           \\ \qquad 
+           \Big(\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\vtrace} 
+           \land \config{\absclr(\absevent, c), \trace_0} \aarrow v
+           \land
+          \vcounter(\trace, l) \leq v
+          \Big)
+          \\ \land \quad 
+          \Big(\config{{c}, \trace_0} \uparrow^{\infty} \trace_0\tracecat\vtrace
+           \implies \absclr(\absevent, c) = \infty 
+           \Big)
+        \end{array}
+        \]
   \end{theorem}
 
   {
-  \begin{thm}[Soundness of the Weight Estimation]
-    \label{thm:rb_soundness}
-  Given a program ${c}$ with its program-based dependency graph 
-  $\progG = (\progV, \progE, \progW, \progF)$,
-  we have:
-    %
-  \[
-  \forall (x^l, w) \in \progW, \vtrace, \trace' \in \mathbb{T},
-  v \in \mathbb{N}
-   \sthat  
-  % \max \left\{ 
-    % \vcounter(\vtrace') l ~ \middle\vert~
-  % \forall \vtrace, \trace' \in \ftdom \sthat  
-  \config{{c}, \trace} \to^{*} \config{\clabel{\eskip}^{l'}, \trace\tracecat\vtrace'} 
-  \land 
-  \config{\trace, w} \earrow v
-  \land
-  % \right\} 
-  \vcounter(\vtrace', l) \leq v
-  \]
-  \end{thm}
+  \begin{theorem}[Soundness of the Weight Estimation]
+    % \label{thm:rb_soundness}
+    Let  ${c}$ be a program and $\progW(c)$ be its estimated weight set.
+    Then, for every $(x^l, \hat{w}) \in \progW(c)$ and $(x^l, w) \in \traceW(c) $,
+    we have for every possible 
+    $\vtrace_0 \in \ftdom_0(c),
+    v \in \mathbb{N}$,
+    if  $\config{\vtrace_0, \hat{w}} \earrow v$,
+    then $v$ is an upper bound on ${w}(\trace_0)$.
+    \[
+      \begin{array}{l}
+        \forall c \in \cdom, x^l \in \lvar(c),\trace_0 \in \ftdom_0(c), \trace \in \ftdom,
+    v \in \mathbb{N}, l', (x^l, w) \in \traceW(c) \sthat
+    \\ \qquad 
+    (x^l, \hat{w}) \in \progW(c) 
+    \land
+    % \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat\vtrace} 
+    % \land 
+    \big(
+      \config{\vtrace_0, \hat{w}} \earrow v \implies w(\trace_0) \leq v
+    \big)
+    \end{array}
+    \]
+  \end{theorem}
   }
 \begin{proof}
   Taking an arbitrary a program ${c}$ with its program-based dependency graph $\progG = (\vertxs, \edges, \weights, \qflag)$, 

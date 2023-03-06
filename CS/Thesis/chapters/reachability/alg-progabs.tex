@@ -14,74 +14,30 @@ and the vertices set is all the $c$'s program execution points with an extra exi
 
 \subsection{Edges Construction}
 \label{sec:abs_prog-edge}
-  In the first step, we generate the \textbf{constraint}
-  for the expression in each program command,
-  which is used as the annotation of each edge.
-  \\
-The second step generates two sets for each command, which are \textbf{Initial and Continuation Execution State}. 
-  The initial execution state contains the
-  program points where this command {starts} to execute, 
-  and the continuation execution state contains both the constraint of this command
-  and the continuation program points after the execution of this command.
-  \\ 
-  In the third step, we compute the \textbf{Abstract Event} and generate the set of edges for the program.
-  Each edge composed of an initial and a continuation execution state.
-%
+Each edge $(l \xrightarrow{dc} l') \in \absE(c)$ is an abstract transition
+between two program points $l, l'$. 
+The edge is constructed by the standard control flow analysis satisfying
+there is an edge from $l$ to $l'$ if and only if
+the command with label $l'$ can execute right after the execution of the command with label $l$.
+We use the same algorithm as in Section~\ref{sec:alg_abscfg-edge} to compute the constraint and edges.
+Specifically we compute the \emph{constraint}, the \emph{initial and continuation state} for each command
+and then generate the set of edges for the program, $\absflow(c)$ in which each edge is an
+\emph{abstract event}.
 \paragraph{Constraint Computation}
-In this step, we first show how to compute the constraints for expressions in a program $c$,
-by a program abstraction method adopted from the
-algorithm in Section 6 in~\cite{SinnZV17}.
-\\
-Given a program $c$,
-every arithmetic expression in an assignment command with label $l$,
-or boolean expression in the guard of a $\eif$ or $\ewhile$ command with label $l$
-is transformed into a constraint.
-\\
-This constraint describes the abstract execution of the assignment command with label $l$,
+% In this step, we first show how to compute the constraints for expressions in a program $c$,
+% by a program abstraction method adopted from the
+% algorithm in Section 6 in~\cite{SinnZV17}.
+% \\
+% Given a program $c$,
+% every arithmetic expression in an assignment command with label $l$,
+% or boolean expression in the guard of a $\eif$ or $\ewhile$ command with label $l$
+% is transformed into a constraint.
+% \\
+% This 
+A constraint describes the abstract execution of the assignment command with label $l$,
 or abstract evaluation of the boolean expression in the guard with label $l$.
 
-% \highlight{Notations / Formal Definitions:}
-% \begin{itemize}
-% \item Operator: $\absexpr : \mathcal{A} \cup \booldom \to DC(\vardom  \cup \scvardom)\cup \booldom \cup \{\top\}$
-% %
-% \item Constraints $\dcdom^{\top}: DC(\vardom  \cup \scvardom) \cup \booldom\cup \{\top\}$  contains:
-% %
-% \begin{itemize}
-% \item The difference constraints $DC(\vardom  \cup \scvardom)$ is the set of all the inequality of
-% form $x' \leq y + v$ or $x' \leq v$ where $x \in \vardom $, 
-% $y \in \vardom$ and $v \in \scvardom$.
-% \\
-% The \emph{Symbolic Constant} can be a natural number, $\infty$, or a program's input variable, We use $\scvardom \subseteq \mathbb{N} \cup \vardom \cup \{\infty \}$ to denote the universe of all \emph{Symbolic Constant},
-% which is the set of all natural numbers with $\infty$ and programs' input variables.
-% \\
-% An inequality $x' \leq y + v$ describes that the value of $x$ in the current state is
-% at most the value of $y$ in the previous state plus the symbolic constant $v$.
-% An inequality $x' \leq v$ describes that the value of $x$ in the current state is
-% at most the value $v$.
-% When a difference constrain shows up as an edge annotation, $l \xrightarrow{x' \leq y + v} l'$,
-% % Then $x'$ 
-% it denotes that
-% the value of variable $x$
-% after executing the command at $l$ is at most
-% % and the right-hand side describes 
-% the value of variable $y$ plus $v$ before the execution,
-% and $l \xrightarrow{x' \leq v} l'$ respectively denotes value of variable $x$
-% after executing the command at $l$ is at most
-% % and the right-hand side describes 
-% the value of the symbolic constant $v$ before the execution.
-% For every expression in each of the label command, it is computed in three steps via program abstraction method adopted from the Section~6 in~\cite{SinnZV17}. 
-% %
-% \item The Boolean Expressions $b$ from the set $\booldom$.
-% $b$ on an edge $l \xrightarrow{b} l'$ describes
-% that after evaluating the guard with label $l$,
-% $b$ holds and the command with label $l$ will execute right after.
-% %
-% \item The top constraint, $\top$ denotes true. It is preserved for $\eskip$ command,
-% or commands that don't interfere any guard variable.
-% \end{itemize}
-% \end{itemize}
-
-% \highlight{Definitions}
+Again we first introduce some components of the constraint. Most of them are the same as the definitions in Section~\ref{sec:alg_abscfg-edge}. We present them in detail in our simplified program model.
 
 \begin{defn}[Symbolic Constant, Symbolic Expression]
   \label{def:symbolic_expr}
@@ -159,7 +115,7 @@ We also have $\top$, which is preserved for $\eskip$ command or the commands tha
       & x \in \grdvar(c) \\
       & \land y \notin \grdvar(c)  \\
       & \land v \in \scvar(c)  \\
-      \absexpr(\bexpr, \_, c) = \bexpr, \grdvar(c) = \grdvar(c) \cup FV(\bexpr) & \bexpr \in \scvar(c) \\
+      \absexpr(\bexpr, \_, c) = \bexpr, \grdvar(c) = \grdvar(c) \cup \kw{FV}(\bexpr) & \bexpr \in \scvar(c) \\
       \absexpr(\expr, x, c) = \top &  {o.w.} \\
     \end{array}
     \]
@@ -292,6 +248,8 @@ Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
    For every event $\event$ with label $l$ in an execution trace $\trace$ of program $c$, 
    there is an abstract event in program's abstract execution trace of form $(l, \_, \_)$.  
    We also show the soundness of the \emph{abstract event computation} as Theorem~\ref{lem:abscfg_sound} below with proof in Appendix~\ref{apdx:abs_sound}.
+
+   Each abstract event in 
 \begin{lem}[Soundness of the Abstract Execution Trace]
 \label{lem:psRB-abscfg_sound}
 For any program $c$ with 
@@ -356,27 +314,28 @@ The edge for $c$'s abstract transition graph is constructed simply by computing 
 For each edge $(l, dc, l') \in \absE(c)$, $dc$ describes either an abstract execution of the assignment command with label $l$,
 or the evaluation of the guard with label $l$.
 %
+
+Again in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b),
+the edge $(0 \xrightarrow{i' \leq n} 1)$ on the top tells us the command 
+$\clabel{\assign{i}{n}}^0$ is executed with a continuation point $1$, and the while loop with header at location $1$ , $\ewhile \clabel{i > 0}^1 \edo \{\ldots\}$ will be executed right after.
+
 \subsection{Abstract Transition Graph Construction} 
 With the vertices $\absV(c)$ and edges $\absE(c)$ ready, we construct the abstract transition graph, formally in
 Definition~\ref{def:abs_cfg}.
 %
 \begin{defn}[Abstract Transition Graph]
-  \label{def:abs_cfg}
+  \label{def:psRB-abs_cfg}
   The \emph{abstract transition graph} of a program $c$ is $\absG(c) \triangleq (\absV(c), \absE(c))$, where
   $\absV(c) \triangleq \progl(c)\cup\{\lex\}$
-  and 
-  % $\absE(c) \triangleq \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}$,
+  and  each edge $(l, dc, l') \in \absE(c)$ is an abstract transition
+  $\absE(c) \triangleq \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}$.
   % and
   % .
-  each edge $(l, dc, l') \in \absE(c)$ is an abstract transition
-between two program points $l, l'$ if and only if
-the command with label $l'$ can execute right after the execution of the command with label $l$.
-% if and only if there is a control flow between two program points.
-The constraint $dc \in \dcdom$ on each edge is generated from the command with label $l$, which describes the abstract execution of this command.
+% between two program points $l, l'$ if and only if
+% the command with label $l'$ can execute right after the execution of the command with label $l$.
+% % if and only if there is a control flow between two program points.
+% The constraint $dc \in \dcdom$ on each edge is generated from the command with label $l$, which describes the abstract execution of this command.
 \end{defn}
-Again in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b),
-the edge $(0 \xrightarrow{i' \leq n} 1)$ on the top tells us the command 
-$\clabel{\assign{i}{n}}^0$ is executed with a continuation point $1$, and the while loop with header at location $1$ , $\ewhile \clabel{i > 0}^1 \edo \{\ldots\}$ will be executed right after.
 
 \begin{defn}[Path]
   \label{def:abs_cfgpath} 
@@ -398,8 +357,8 @@ $\clabel{\assign{i}{n}}^0$ is executed with a continuation point $1$, and the wh
 % \todo{Change Or remove}
 % \input{examples/relatedNestedWhileOdd_abscfg}
 \paragraph{Example.}
-More specifically, in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b).
-The edge $(0 \xrightarrow{i' \leq n} 1)$ on the top tells us the command 
+In Figure~\ref{fig:relatedNestedWhileOdd-overview}(b),
+the edge $(0 \xrightarrow{i' \leq n} 1)$ on the top tells us the command 
 $\clabel{\assign{i}{n}}^0$ is executed with a continuation point $1$, and the
 command $\ewhile \clabel{i > 0}^1 \edo \{\ldots\}$ will be executed next.
 The annotation $i' \leq n$ is a difference constraint 
