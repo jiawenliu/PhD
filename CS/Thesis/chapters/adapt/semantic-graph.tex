@@ -41,22 +41,20 @@ $\traceG({c}) = (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ is def
   w : \ftdom_0(c) \to \mathbb{N}
   \land
   x^l \in \lvar(c) \land
-  \\ & &
-  \quad 
+  \\ & & \qquad 
   \forall \trace_0 \in \ftdom_0(c), \trace' \in \ftdom, l' \sthat 
-  \\ & &
-  \quad 
+  \\ & & \qquad 
   \config{{c}, \trace_0} \to^{*} 
   \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace'} 
   \land w(\trace_0) = \vcounter(\trace', l) \}  
   \\
   \text{Query Annotations} &
   \traceF({c}) & := 
-\left\{(x^l, n)  
-~ \middle\vert ~
- x^l \in \lvar(c) \land
-n = 1 \Leftrightarrow x^l \in \qvar(c) \land n = 0 \Leftrightarrow  x^l \notin \qvar(c)
-\right\}
+  \big\{(x^l, n)  
+  ~ \vert ~  x^l \in \lvar(c) 
+  \\ & & \qquad
+  \land n = 1 \Leftrightarrow x^l \in \qvar(c) \land n = 0 \Leftrightarrow  x^l \notin \qvar(c)
+  \big\},
 \end{array},
 \]
 }
@@ -72,8 +70,10 @@ There are four components in this graph.
     \item The vertices $\traceV({c})$ of a program $c$ are all its labeled variables, $\lvar(c)$ which are statically collected.
     \item $\traceF(c)$ contains the \emph{query annotation} for 
     every vertex $x^l \in \traceV(c)$. It indicates whether $x^l$ comes from a query request (1) or not (0) by checking if the labeled variable $x^l$ of the vertex is in $\qvar(c)$.
-    \item Edges in $\traceE(c)$ are built from the  \emph{variable may-dependency} relation, i.e. $\vardep(x^i, y^j, c)$ in Definition~\ref{def:var_dep} between two labeled variables.
-    This is the key definition in order to formalize the intuitive \emph{adaptivity}, and also ingredients the dependency information of the program.
+    \item Edges in $\traceE(c)$ are all directed.
+    They are built from the  \emph{variable may-dependency} relation, i.e. $\vardep(x^i, y^j, c)$ in Definition~\ref{def:var_dep} between two labeled variables.
+    Intuitively, there is an edge from $x^i$ to $y^j$ if and only if they are in the \emph{variable may-dependency} relation. 
+    This is the key definition in order to formalize the intuitive \emph{adaptivity}. We use this to ingredient the \emph{reachability} sub-property of \emph{adaptivity} on this graph.
     \item 
   The weight function in $\traceW(c)$ for each vertex, $w : \ftdom \to \mathbb{N}$
 maps from a starting trace $\trace_0 \in \ftdom_0(c)$ to a natural number.

@@ -665,18 +665,22 @@ it is possible that
 the event showing up in the same trace has a different value of query result in the third position, 
 but they are equivalent by Definition~\ref{def:query_equal}.
 So we have the following Corollaries~\ref{coro:aqintrace} with proof in Appendix~\ref{apdx:aqintrace}.
-  \begin{coro}
+\begin{coro}
 \label{coro:aqintrace}
 For any event $\event \in \eventset$  that is generated from a query request and a trace $\trace \in \ftdom$ contains this event
 such that $\trace$ can be expressed
 in the form of $\trace_1 \tracecat [\event] \tracecat \trace_2 = \trace $ for some traces $\trace_1, \trace_2 \in \ftdom$,
 then there exist another event $\event' \in \eventset$ such that  $ \pi_3(\event) \neq \pi_3(\event') $
-$\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace $
+and the same $\trace$ has a different form
+$\trace_1 \tracecat [\event'] \tracecat \trace_2 $.
 \[
+  \begin{array}{l}
   \forall \event \in \eventset, \trace, \trace_1, \trace_2 \in \ftdom \sthat 
   \pi_4(\event) \neq \bullet \land \trace_1 \tracecat [\event] \tracecat \trace_2 = \trace
-\implies \exists 
-\event' \in \eventset \sthat 
-\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  \land \pi_3(\event) \neq \pi_3(\event') 
+  \\ \qquad 
+  \implies \exists 
+  \event' \in \eventset \sthat 
+  \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  \land \pi_3(\event) \neq \pi_3(\event') 
+  \end{array}
 \]
 \end{coro}

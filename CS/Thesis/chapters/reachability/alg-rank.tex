@@ -84,11 +84,10 @@ Three steps:
   & \absevent \in SCC(\absG(c)) \land \absevent \in \dec(x, c) \land  \absevent = (\_, \_ , x' \leq x - v) \\
   \rank(\absevent, c) \triangleq \rank(\absevent', c)
   & \exists \absevent' \in \absG(c), \tpath \in \paths( \absG(c)) \sthat \absevent, \absevent' \in \tpath \\
-    % \in SCC(\absG(c)) \land \absevent \in \dec(x, c) \land  \absevent = (\_, \_ , x' \leq x - v) \\
   \rank(\absevent, c) \triangleq x
   & \absevent \in SCC(\absG(c)) \land 
-  \absevent  \notin \bigcup_{x \in \vardom} \dec(x, c)
-  \land \absevent \notin SCC(\absG(c) \setminus \dec(x, c))\\
+  \absevent  \notin \bigcup_{x \in \vardom} \dec(x, c) \\
+  & \qquad \land \absevent \notin SCC(\absG(c) \setminus \dec(x, c))\\
   \rank(\absevent, c) \triangleq \infty
   & o.w..
 \end{array}
@@ -133,8 +132,9 @@ In the same way, ranking for edges on $\tpath_4$ is $i$ as well and $k$ for them
   is computed as follows,
     \[ 
   \begin{array}{lll}
-    \varinvar(x, c) & \triangleq x & x \in \scvar(c) \\
-    \varinvar(x, c) & \triangleq \incrs(x, c) + \max\left\{\varinvar(y, c) + v ~\mid~ (l, x' \leq y + v, l') \in \reset(x, c) \right\} & x \notin \scvar(c)
+    \varinvar(x, c) & \triangleq x & \text{if} ~ x \in \scvar(c) \\
+    \varinvar(x, c) & \triangleq \incrs(x, c)  &  \text{if} ~ x \notin \scvar(c) \\
+            & \qquad + \max\left\{\varinvar(y, c) + v ~\mid~ (l, x' \leq y + v, l') \in \reset(x, c) \right\} &
   \end{array}
   \]
   %
@@ -173,6 +173,7 @@ the execution times of this assignment command in $c$.
   \[
     \begin{array}{l}
       \forall \trace_0 \in \ftdom_0(c), \trace \in \tdom, c \in \cdom, l, l' \in \lvar(c) \sthat
+      \\ \qquad \qquad
       \Big( \config{c, \trace_0} \rightarrow^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace} 
         \lor  \config{c, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace \Big)
        \\ \qquad \qquad

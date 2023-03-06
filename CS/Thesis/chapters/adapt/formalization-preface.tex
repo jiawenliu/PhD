@@ -11,17 +11,22 @@ This new adaptivity formal model defines the intuitive \emph{adaptivity} through
 
  \begin{enumerate}
  \item The first step in 
- Section~\ref{sec:dynamic-datadep} 
- variable \emph{may-dependency} relation based on the trace semantics in Section~\ref{sec:language-os}.
- This is the reachability perspective of this property.
+ Section~\ref{sec:dynamic-datadep}  defines the reachability sub-property of 
+ the \emph{adaptivity} as a
+ variable \emph{may-dependency} relation based on the trace semantics.
+%   in Section~\ref{sec:language-os}.
+%  This is the reachability perspective of this property.
  %
- \item In the second step in Section~\ref{sec:dynamic-graph}, we construct a weighted dependency graph,
-the \emph{semantics-based dependency graph} of a program $c$.
-This graph combines quantitative information with dependency information. 
+ \item In Section~\ref{sec:dynamic-graph}, 
+ we define the quantitative sub-property for a program's \emph{adaptivity} as weight of each labeled variable.
+ Then we construct a weighted dependency graph namely
+the \emph{semantics-based dependency graph} of a program $c$, which carries both 
+sub-properties. 
 
-\item The last step is the intuitive \emph{adaptivity} quantity formalization presented in Section~\ref{sec:dynamic-adapt}.
+\item 
+% The last step is the intuitive \emph{adaptivity} quantity formalization presented in Section~\ref{sec:dynamic-adapt}.
  Based on to the \emph{semantics-based dependency graph},
- I define the formal \emph{adaptivity} model in definition~\ref{def:trace_adapt} as a quantitative reachability property.
+ we define the formal \emph{adaptivity} in definition~\ref{def:trace_adapt} as a quantitative reachability hyper-property in Section~\ref{sec:dynamic-adapt}.
 \end{enumerate}
  Through an example in Section~\ref{sec:dynamic-examples}, I show that the formalized
 adaptivity matches the program's intuitive \emph{adaptivity} more precisely and efficiently than previous works.

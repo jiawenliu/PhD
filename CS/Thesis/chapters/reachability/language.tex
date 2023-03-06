@@ -17,7 +17,9 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \etrue ~|~ \efalse  ~|~ \neg \bexpr
  ~|~ \bexpr \land \bexpr
 %
-~|~ \bexpr \lor \bexpr
+~|~ \bexpr \lor \bexpr 
+\\
+& & &
 ~|~ \aexpr \leq \aexpr 
 ~|~ \aexpr < \aexpr 
 ~|~ \aexpr = \aexpr 
@@ -36,7 +38,9 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \mbox{Labeled Command} 
 & {c} & ::= &  
 \clabel{\assign{x}{\expr}}^l 
-~|~  \clabel{\eskip}^l
+~|~  \clabel{\eskip}^l 
+\\
+& & &
 ~|~ \ewhile \clabel{\bexpr}^{l} \edo ({c})
 ~|~ \eif(\clabel{\bexpr}^{l} , {c}, {c}) 
 ~|~ {c};{c}  
@@ -88,8 +92,8 @@ We denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$, and
 \\
 %
 \ftdom_0(c) & : & \mbox{Set of Program $c$'s Well-formed Initial Traces.}
-\\ & & \mbox{Each well formed initial trace $\trace_0 \in \ftdom_0(c)$ is finite and every input variable}
-\\ & & \mbox{of the program $c$ has an initial value in $\trace_0$.}
+\\ & & \mbox{Each well formed initial trace $\trace_0 \in \ftdom_0(c)$ is finite}
+\\ & & \mbox{and every input variableof the program $c$ has an initial value in $\trace_0$.}
 \end{array}
 \]
 %
@@ -511,6 +515,8 @@ then the program's execution terminates and produces a finite execution trace $\
       \config{c, \trace} \to \config{c_0, \trace_0}
       \\ \qquad \qquad \qquad 
       \land \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \ftdom, \trace'' \in \inftdom, c_i, c_{i + 1} \in \cdom \sthat 
+      \\ \qquad \qquad \qquad 
+      \qquad \qquad \qquad 
       \config{c_i, \trace_i} \to \config{c_{i + 1}, \trace_{i + 1}} 
       \land  \trace' = \trace_{i + 1} \tracecat \trace''
     \Big\}

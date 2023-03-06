@@ -310,19 +310,18 @@
      \label{apdx:query_equal}
 \begin{corollary}
       % \label{coro:query_equal}
-      For any event $\event \in \eventset$  that is generated from a query request, 
-      there exist another event $\event' \in \eventset$ 
-      % and traces $\trace_1, \trace_2 \in \ftdom$
-      such that 
-      $\event$ and $\event'$ are equivalent but different in their query results.
-      \[
-        \forall \event \in \eventset \sthat 
-        \pi_4(\event) \neq \bullet
-      % \event \in \trace 
-      \implies \exists 
-      \event' \in \eventset \sthat 
-      \event =_{q}\event' \land  \pi_3(\event) \neq \pi_3(\event')
-      \]
+  For any event $\event \in \eventset$  that is generated from a query request, 
+  there exist another event $\event' \in \eventset$ 
+  % and traces $\trace_1, \trace_2 \in \ftdom$
+  such that 
+  $\event$ and $\event'$ are equivalent but different in their query results.
+  \[
+    \forall \event \in \eventset \sthat 
+    \pi_4(\event) \neq \bullet
+    \implies \exists 
+    \event' \in \eventset \sthat 
+    \event =_{q}\event' \land  \pi_3(\event) \neq \pi_3(\event')
+  \]
 \end{corollary}   
 \begin{proof}
   Let $\event = (x, l, v, \qval) \in \eventset$ be arbitrary event that  is generated from a query request for some variable $x$, label $l$ and a query result $v$.
@@ -340,32 +339,47 @@
 
 
 \subsection{Proof of Corollary~\ref{coro:aqintrace}}
-     \label{apdx:aqintrace}
-     \begin{corollary}
-       % \label{coro:aqintrace}
-       For any event $\event \in \eventset$  that is generated from a query request and a trace $\trace \in \ftdom$ contains this event
-       such that $\trace$ can be expressed
-       in the form of $\trace_1 \tracecat [\event] \tracecat \trace_2 = \trace $ for some traces $\trace_1, \trace_2 \in \ftdom$,
-       then there exist another event $\event' \in \eventset$ such that  $ \pi_3(\event) \neq \pi_3(\event') $
-       $\trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace $
-       \[
-         \forall \event \in \eventset, \trace, \trace_1, \trace_2 \in \ftdom \sthat 
-         \pi_4(\event) \neq \bullet \land \trace_1 \tracecat [\event] \tracecat \trace_2 = \trace
-       \implies \exists 
-       \event' \in \eventset \sthat 
-       \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  \land \pi_3(\event) \neq \pi_3(\event') 
-       \]
-       \end{corollary}
-   \begin{proof}
+\label{apdx:aqintrace}
+\begin{corollary}
+  % \label{coro:aqintrace}
+  For any event $\event \in \eventset$  that is generated from a query request and a trace $\trace \in \ftdom$ contains this event
+  such that $\trace$ can be expressed
+  in the form of $\trace_1 \tracecat [\event] \tracecat \trace_2 = \trace $ for some traces $\trace_1, \trace_2 \in \ftdom$,
+  then there exist another event $\event' \in \eventset$ such that  $ \pi_3(\event) \neq \pi_3(\event') $
+  and the same $\trace$ has a different form
+  $\trace_1 \tracecat [\event'] \tracecat \trace_2 $.
+  \[
+    \begin{array}{l}
+    \forall \event \in \eventset, \trace, \trace_1, \trace_2 \in \ftdom \sthat 
+    \pi_4(\event) \neq \bullet \land \trace_1 \tracecat [\event] \tracecat \trace_2 = \trace
+    \\ \qquad 
+    \implies \exists 
+    \event' \in \eventset \sthat 
+    \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  \land \pi_3(\event) \neq \pi_3(\event') 
+    \end{array}
+  \]
+\end{corollary}
+
+\begin{proof}
     Let $\event = (x, l, v, \qval) \in \eventset$ be arbitrary event that  is generated from a query request for some variable $x$, label $l$ and a query result $v$.
     \\
-    Let $ \trace_1 \tracecat [\event] \tracecat \trace_2 = \trace \in \ftdom$ for some finite traces
+    Let $ \trace \in \ftdom$ be the trace that contains $\event$ and $\trace = \trace_1 \tracecat [\event] \tracecat \trace_2 = $ for some finite traces
     $\trace_1 \tracecat [\event] \tracecat \trace_2 \in \ftdom$.
     \\
     Then it is sufficient to show
     \[
       \exists \event' \in \eventset \sthat 
-       \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  \land \pi_3(\event) \neq \pi_3(\event') 
-      \]
-        %
-     \end{proof}
+      \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  \land \pi_3(\event) \neq \pi_3(\event') 
+    \]
+    %
+    By Corollary~\ref{coro:query_equal}, let $\event'$ be the event such that 
+    \[
+      \event =_{q}\event' \land  \pi_3(\event) \neq \pi_3(\event').
+    \]
+    Then by definition~\ref{def:event_belong}, we know 
+    $\event' \in \trace$ and 
+    \[
+      \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace
+    \]
+    Then we have this corollary proved.
+\end{proof}

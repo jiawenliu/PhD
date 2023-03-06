@@ -111,10 +111,8 @@ We also have $\top$, which is preserved for $\eskip$ command or the commands tha
       \absexpr(x - v, x, c)  = x' \leq x - v  & x \in \grdvar(c)\land v \in \scvar(c) \\
       \absexpr(y + v, x, c)  = x' \leq y + v  & x, y \in \grdvar(c)\land v \in \scvar(c)\\
       \absexpr(v, x, c)  = x' \leq v  & x \in \grdvar(c)\land v \in \scvar(c) \\
-      \absexpr(y + v, x, c)  = x' \leq y + v, \grdvar(c) = \grdvar(c) \cup \{y\} 
-      & x \in \grdvar(c) \\
-      & \land y \notin \grdvar(c)  \\
-      & \land v \in \scvar(c)  \\
+      \absexpr(y + v, x, c)  = x' \leq y + v,       & x \in \grdvar(c)\land v \in \scvar(c)\\
+      \qquad \grdvar(c) = \grdvar(c) \cup \{y\} & \qquad \land y \notin \grdvar(c) \\
       \absexpr(\bexpr, \_, c) = \bexpr, \grdvar(c) = \grdvar(c) \cup \kw{FV}(\bexpr) & \bexpr \in \scvar(c) \\
       \absexpr(\expr, x, c) = \top &  {o.w.} \\
     \end{array}
@@ -233,7 +231,9 @@ Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
       \absflow'([\eskip]^{l})  & = \emptyset \\
       \absflow'(\eif (\clabel{\bexpr}^l, c_t, c_f))  & =  \absflow'(c_t) \cup \absflow'(c_f)
         \\ & \quad 
-        \cup \{(l, \absexpr(\bexpr, \top, c),  \absinit(c_t) ) ,  (l, \absexpr(\neg\bexpr, \top, c), \absinit(c_f)) \} \\
+        \cup \left \{(l, \absexpr(\bexpr, \top, c),  \absinit(c_t) ) \right \} ,  
+        \\ & \quad 
+        \cup \left \{ (l, \absexpr(\neg\bexpr, \top, c), \absinit(c_f)) \right \} \\
        \absflow'(\ewhile \clabel{\bexpr}^l \edo (c_w))  & =  \absflow'(c_w) \cup \{(l, \absexpr(\bexpr, \top, c), \absinit(c_w)) \} 
        \\ & \quad 
        \cup \{(l', dc, l)| (l', dc) \in \absfinal(c_w) \} \\
@@ -248,8 +248,6 @@ Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
    For every event $\event$ with label $l$ in an execution trace $\trace$ of program $c$, 
    there is an abstract event in program's abstract execution trace of form $(l, \_, \_)$.  
    We also show the soundness of the \emph{abstract event computation} as Theorem~\ref{lem:abscfg_sound} below with proof in Appendix~\ref{apdx:abs_sound}.
-
-   Each abstract event in 
 \begin{lem}[Soundness of the Abstract Execution Trace]
 \label{lem:psRB-abscfg_sound}
 For any program $c$ with 
