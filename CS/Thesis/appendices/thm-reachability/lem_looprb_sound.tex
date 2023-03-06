@@ -183,6 +183,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
     \]
     Same for each abstract event such that $((l', x' \leq x + v, \_) \in \inc(x, c) $ and $(l', x' \leq x + v, \_) \in \dec(x, c)$,
     we know 
+    \\
     $ \begin{array}{l}
       \sum\limits_{\absevent \in \inc(x, c) }
       \left\{ 
@@ -205,6 +206,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
   By Lemma~\ref{lem:pathlocalrb-sound} and Lemma~\ref{lem:loopbound_sound}, we also know $BD(\rprog_t)$ is sound upper bound of $l_t$'s iterations and $\rfnext(\tpath, c)$ is the upper bound of $x$'s value modification in one iteration of $l_t: \rprog_t$.
   \\
   In this sense, we know
+  \\
   $\begin{array}{l}
       \sum\limits_{\absevent \in \inc(x, c) }
       \left\{ 
@@ -227,7 +229,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
       \begin{array}{l}
         \econfig{
         \lpinit(l: \rprog, \tpath, c)}(\trace_0)
-        -
+        - \\ \qquad 
       \econfig{
           \begin{array}{l}
             \sum\limits_{\absevent \in \inc(x, c) }
@@ -259,6 +261,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
   By Lemma~\ref{lem:loopbound_sound}, we know $\rffinal(\tpath, c)$ computes the lower bound on the value of $\rank(\tpath, c)$ after the iteration of $l_t:\rprog_t$ finished.
   \\
   Then we have 
+  \\
   $\rffinal(\tpath, c) \leq \env(\trace') x$ and $\lpinit(\rprog, \tpath, c) - \rffinal(\rprog, \tpath, c) \geq \env(\trace') x$.
 \end{itemize}
 Then there are two subcases as follows.
@@ -267,6 +270,7 @@ In this case, we know loop $l_t: \rprog_t$ will never be entered, and this case 
 
 \subcaseL{$l_t: \rprog_t \in \rprog$}
 In this case, based on the soundness of the three states above, we know 
+\\
 $
   \max\limits_{x = a \in \rffinal(\tpath, c)}
   \frac{\lpinit(\rprog, \tpath, c) - a }{\lpnext(\rprog, \tpath, c)}
@@ -287,7 +291,8 @@ soundly computes the maximum number of $l: \rprog$'s iteration times such that d
       % \\ \qquad \qquad \qquad \qquad
       \trace_{l \to l_t}, \trace' \in \ftdom, \trace'' \in \tdom
       \land \trace = \trace_{l \to l_t} \tracecat \trace''
-      \\ \qquad \qquad \qquad \qquad
+      \\ \qquad \qquad \qquad
+      % \qquad \qquad
       \land \trace_{l \to l_t} = [(\_, l, \etrue)] \tracecat \trace' :: (\_, l_t, \etrue)
       \land \counter(\trace', l) = \counter(\trace', l_t) = 0 
       \big\}
@@ -301,7 +306,10 @@ $\trace_{l \to l_t} \in
     % \\ \qquad \qquad \qquad \qquad
     \trace_{l \to l_t}, \trace' \in \ftdom, \trace'' \in \tdom
     \land \trace = \trace_{l \to l_t} \tracecat \trace''
-    \\ \qquad \qquad \qquad \qquad
+    \\ \qquad 
+    % \qquad 
+    % \qquad 
+    % \qquad
     \land \trace_{l \to l_t} = [(\_, l, \etrue)] \tracecat \trace' :: (\_, l_t, \etrue)
     \land \counter(\trace', l) = \counter(\trace', l_t) = 0 
     \big\}
@@ -318,7 +326,9 @@ Then we know
       % \\ \qquad \qquad \qquad \qquad
       \trace_{l \to l_t}, \trace' \in \ftdom, \trace'' \in \tdom
       \land \trace = \trace_{l \to l_t} \tracecat \trace''
-      \\ \qquad \qquad \qquad \qquad
+      \\ \qquad \qquad 
+      % \qquad 
+      % \qquad
       \land \trace_{l \to l_t} = [(\_, l, \etrue)] \tracecat \trace' :: (\_, l_t, \etrue)
       \land \counter(\trace', l) = \counter(\trace', l_t) = 0 
       \big\}

@@ -51,29 +51,34 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Packages And Definitions For Listing the Code%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{listings}
 \usepackage{xcolor}
-\usepackage{courier}
+% \usepackage{courier}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{azure}{rgb}{0.94, 1.0, 1.0}
+\definecolor{pigment}{rgb}{0.2, 0.2, 0.6}
+\definecolor{beaublue}{rgb}{0.74, 0.83, 0.9}
+\definecolor{aliceblue}{rgb}{0.94, 0.97, 1.0}
 
 \lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},   
+    backgroundcolor=\color{aliceblue},   
     commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
+    keywordstyle=\color{pigment}\bfseries,
     numberstyle=\tiny\color{codegray},
     stringstyle=\color{codepurple},
     basicstyle=\footnotesize\ttfamily,
     breakatwhitespace=false,         
     breaklines=true,                 
-    captionpos=b,                    
+    % captionpos=b,                    
     keepspaces=true,                 
-    numbers=left,                    
+    numbers=right,                    
     numbersep=2pt,                  
     showspaces=false,                
     showstringspaces=false,
     showtabs=false,                  
-    tabsize=2
+    tabsize=2,
+    morekeywords={then, do}
 }
 
 \lstset{style=mystyle}

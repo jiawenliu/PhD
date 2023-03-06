@@ -1,18 +1,20 @@
-
+Below is the detailed version of evaluation table in Table~\ref{tb:adapt-imp}.
+We rename the programs for simplification. All the word $\kw{while}$ in the names is renamed into $\kw{loop}$ and the work $\kw{nestedWhile}$ is renamed into $\kw{loop2}$.
 \begin {table}[H]
     \caption{The Complete Evaluation Results of {\THESYSTEM}}
         \label{tb:adapt-imp-detail}
         \begin{center}
         \centering
-{\scriptsize
-        \begin{tabular}{ >{\tiny}c| r | >{\tiny}c | c | c | c | c | c | c  }
-         & & & & & \multicolumn{4}{c}{performance} \\ 
+{\tiny
+\begin{tabular}{ | >{\tiny}c| r | >{\tiny}c | c | c | c | c | c | c | }
+        \hline
+        & & & & & \multicolumn{4}{c|}{performance} \\ 
          \cline{6-9}
-         {\scriptsize Source} & Program & & True Value & {$\THESYSTEM$ ( I | II)} & \multirow{2}{*}{{\tiny lines}} & \multicolumn{3}{c}{running time (second)} \\ 
+         {\scriptsize Source} & Program & & True Value & {$\THESYSTEM$ ( I | II)} & \multirow{2}{*}{{\tiny lines}} & \multicolumn{3}{c|}{running time (second)} \\ 
          \cline{7-9}
          & & & & & & Ocaml & Weight & {\tiny $\pathsearch$}  \\
-         \cline{1-9} 
-         \cline{1-9}
+         \hline
+         \hline
          & \multirow{2}{*}{$\kw{twoRounds(k)}$}  
          & $A$ &  $2$ & $2| 2$  & \multirow{2}{*}{8} & \multirow{2}{*}{0.0005} & \multirow{2}{*}{0.0017 | 0.0002} & \multirow{2}{*}{0.0003} \\
          \cline{3-5}
@@ -50,68 +52,68 @@
          \cline{3-5}
          & & $Q$ \#   & 3  &   $3| 4$ & & & & \\
          \cline{2-9}
-         & $  \kw{while(k)}$ 
+         & $  \kw{loop(k)}$ 
          & $A$ & $1+k/2$ & $1 +\max(1, k/2) |- $  & 7 & 0.0021 & 0.0015| 0.0001 &  0.0001 \\
          \cline{3-5}
          & & $Q$ \#   &  $1+k/2$ &  $1+k/2 | - $  & & & & \\
          \cline{2-9}
-         & $  \kw{whileM(k)}$ 
+         & $  \kw{loopM(k)}$ 
          & $A$ &  $1 + k$  & $ 2 + \max(1,2k) | -$  &  9 & 0.0017 & 0.0062 | 0.0002 & 0.0001  \\
          \cline{3-5}
          & & $Q$ \#   & $1+2k $ & $1 + 3k | -$  & & & & \\
          \cline{2-9}
-         & $  \kw{whileRV(k)}$ 
+         & $  \kw{loopRV(k)}$ 
          & $A$ & $1 + 2k$ &  $1 + 2k| 1 + \max(1,2k)$  &  9 & 0.0016 & 0.0056| 0.0002 & 0.0001  \\
          \cline{3-5}
          & & $Q$ \#   & {$2 + 3 k$} & $2 + 3 k| -$   & & & & \\
          \cline{2-9}
-         &  ${\kw{whileVCD(k)}} $ 
+         &  ${\kw{loopVCD(k)}} $ 
          & $A$ & ${1 + 2Q}$ &  ${Q_m+\max(1,2Q_m)}$ | - &  6 & 0.0016 & 0.0007 |0.0002 & 0.0001 \\
          \cline{3-5}
          & & $Q$ \#   &{$2+2Q_m$} & $2+2Q_m$ | -   & & & & \\
          \cline{2-9}
          extracted
-         & $ {\kw{whileMPVCD(k)}}$ 
+         & $ {\kw{loopMPVCD(k)}}$ 
          & $A$ &  $2 + Q_m$ & $2+2Q_m$ | -  &   9 & 0.0017 & 0.0043 | 0.0002 & 0.0001 \\
          \cline{3-5}
          & & $Q$ \#   & $2+Q_m$ & $2+2Q_m$ | - & & & & \\
          \cline{2-9}
-         & $\kw{nestWhileRC(k)}$ 
+         & $\kw{loop2RC(k)}$ 
          & $A$ & $1 + 3k$ &  $1 + 3k | 2 + 3k + k^2$   &  11 & 0.019 & 0.2669 | 0.0002 & 0.0007 \\
          \cline{3-5}
          & & $Q$ \#   & $1 + 3k$ &  $1 + 3k | 1 + k + k^2$ & & & & \\
          \cline{2-9}
-         & $\kw{nestWhileVD(k)}$ 
+         & $\kw{loop2VD(k)}$ 
          & $A$ & $2 + k^2$ &   $3 + k^2| -$    &  10 & 0.0018 & 0.0126 | 0.0002 & 0.0001  \\
          \cline{3-5}
          & & $Q$ \#   & $1 + k + k^2$ & $1 + k + k^2|- $ & & & & \\
          \cline{2-9}
-         & $\kw{nestWhileRV(k)}$ 
+         & $\kw{loop2RV(k)}$ 
          & $A$ & $1 + k + k^2$ &  $ 2 + k +  k^2 | -$   &  10 & 0.0017 & 0.0186 | 0.0002 & 0.0001  \\
          \cline{3-5}
          & & $Q$ \#   & {$2 + k + k^2$} &  $2 + k + k^2| -$ & & & & \\
          \cline{2-9}
-         & $\kw{nestWhileMV(k)}$ 
+         & $\kw{loop2MV(k)}$ 
          & $A$ & $1 + 2k $ & $1 + \max(1,2k) | -$  & 10 & 0.0016 & 0.0071 | 0.0002 & 0.0001 \\
          \cline{3-5}
          & & $Q$ \#   & {$1 + k + k^2$} &  $1 + k + k^2 |-$  & & & & \\
          \cline{2-9}
-         & \multirow{2}{*}{$\kw{nestWhileMPRV(k)}$}
+         & \multirow{2}{*}{$\kw{loop2MPRV(k)}$}
          & $A$  &  $1 + k + k^2$ &  $3 + k + k^2| -$  &  10 & 0.019 & 0.0999 | 0.0002 & 0.0002 \\
          \cline{3-5}
          & & $Q$ \#   & $2 + k + k^2 $ & $2 + 2k + k^2 | - $  & & & & \\
          \cline{1-9}
-         & $\kw{mRCompose(k)}$ 
+         & $\kw{mRC(k)}$ 
          & $A$ & $2k$ & $  2k | -$   &  46 & 0.0036 & 5104 | 0.0003 &  0.0013\\
          \cline{3-5}
          & & $Q$ \#   & {$2k$} & $ 2k | -$   & & & & \\
          \cline{2-9}
-         & $\kw{seqCompose(k)}$ 
+         & $\kw{seqC(k)}$ 
          & $A$ & $12$ & $12  $ | -  &  502 & 0.0426  & 1.2743 | 0.0003 & 0.0223 \\
          \cline{3-5}
          & & $Q$ \#   & $326$ & $326 | -$   & & & & \\
          \cline{2-9}
-         & \multirow{2}{*}{$\kw{tRCompose(k)}$} 
+         & \multirow{2}{*}{$\kw{tRC(k)}$} 
          & $A$ & $2$ &  $ * | 2$   &  42 & 0.0026 & * | 0.0003 & 0.0005\\
          \cline{3-5}
          & & $Q$ \#   & $1 + 5k + 2 k^2 $ & $* | 1 + 5k + 2 k^2 $  & & & & \\

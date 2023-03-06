@@ -206,6 +206,7 @@
       \absflow(c_1) = \absflow'(c_1; \clabel{\eskip}^{\lex}) 
       \\ \quad
       = \absflow'(c_1) \cup \absflow'(\clabel{\eskip}^{\lex}) 
+      \\ \qquad
       \cup \{ (l, dc, \absinit(\clabel{\eskip}^{\lex}))) | (l, dc) \in \absfinal(c_1) \} 
       \\ \quad
       = \absflow'(c_1) \cup  \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_1) \} 
@@ -217,6 +218,7 @@
       \absflow(c) = \absflow'(c; \clabel{\eskip}^{\lex}) 
       \\ \quad
       = \absflow'(c_1;c_2) \cup \absflow'(\clabel{\eskip}^{\lex}) 
+      \\ \qquad  
       \cup \{ (l, dc, \absinit(\clabel{\eskip}^{\lex})) | (l, dc) \in \absfinal(c_1; c_2) \} 
       \\ \quad  
       = \absflow'(c_1) \cup \absflow'(c_2) 
@@ -274,6 +276,7 @@
       \absflow(c_2) = \absflow'(c_2; \clabel{\eskip}^{\lex}) 
       \\ \quad
       = \absflow'(c_2) \cup \absflow'(\clabel{\eskip}^{\lex}) 
+      \\ \qquad
       \cup \{ (l, dc, \absinit(\clabel{\eskip}^{\lex}))) | (l, dc) \in \absfinal(c_2) \} 
       \\ \quad
       = \absflow'(c_2) \cup  \{ (l, dc, \lex) | (l, dc) \in \absfinal(c_2) \} 
@@ -285,6 +288,7 @@
       \absflow(c) = \absflow'(c; \clabel{\eskip}^{\lex}) 
       \\ \quad
       = \absflow'(c_1;c_2) \cup \absflow'(\clabel{\eskip}^{\lex}) 
+      \\ \qquad
       \cup \{ (l, dc, \absinit(\clabel{\eskip}^{\lex})) | (l, dc) \in \absfinal(c_1; c_2) \} 
       \\ \quad  
       = \absflow'(c_1) \cup \absflow'(c_2) 
@@ -325,11 +329,12 @@
 \[
   \begin{array}{l}
     \forall c \in \cdom, \vtrace_0 \in \ftdom_0(c), \trace \in \ftdom ,  l, l' \in \absV(c), \event = (\_, l, \_, \_) \in \eventset^{\asn} \sthat 
-\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
-\land \event \in \trace 
-\\
-\qquad \implies \exists! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat  
-\absevent \in \absflow(c)
+    \\ \qquad
+    \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
+  \land \event \in \trace 
+    \\
+    \qquad \implies \exists! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat  
+    \absevent \in \absflow(c)
 \end{array}
 \]
 \end{lemma}
