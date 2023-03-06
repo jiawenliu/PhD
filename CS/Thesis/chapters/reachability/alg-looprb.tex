@@ -101,12 +101,11 @@ Definition~\ref{def:looprb} computes a sound \emph{loop reachability-bound} as i
   \[
     \begin{array}{l}
     \forall c, c_l \in \cdom, \tpath \in \absG(c), \trace_0 \in \ftdom_0(c_l), \trace \in \tdom, l, l' \in \ldom, \rprog \sthat 
-    \rprog = REFINE(\algrewrite(c))
     \\ \qquad
+    \rprog = REFINE(\algrewrite(c)) 
     \land l_t: \rprog_t = \kw{enclosed}(\rprog, \tpath)
-    \land 
-    \rprog = \algrewrite(c_l)
-    \land
+    \land \rprog = \algrewrite(c_l)
+    \\ \qquad \land
     \Big(
     \config{c_l, \trace_0} \to^* \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace}
     \lor \config{c_l, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
@@ -114,14 +113,15 @@ Definition~\ref{def:looprb} computes a sound \emph{loop reachability-bound} as i
     \\ \qquad
     \implies
     \econfig{\lpchB(l: \rprog, \tpath, c)}(\trace_0) 
-    \\ \qquad \geq 
-      \sum\Big\{
-      \lcounter(\trace, \tracel(\trace_{l \to l_t})) ~\vert~ \trace_{l \to l_t} \in 
-      \big\{\trace_{l \to l_t} ~\vert~ 
-      % \\ \qquad \qquad \qquad \qquad
-      \trace_{l \to l_t}, \trace' \in \ftdom, \trace'' \in \tdom
+    \geq 
+      \sum \Big\{
+      \lcounter(\trace, \tracel(\trace_{l \to l_t})) 
+      \\ \qquad \qquad \qquad 
+      ~\vert~ \trace_{l \to l_t} \in 
+      \big\{\trace_{l \to l_t} 
+      ~\vert~  \trace_{l \to l_t}, \trace' \in \ftdom, \trace'' \in \tdom
       \land \trace = \trace_{l \to l_t} \tracecat \trace''
-      \\ \qquad \qquad \qquad \qquad
+      \\ \qquad \qquad \qquad 
       \land \trace_{l \to l_t} = [(\_, l, \etrue)] \tracecat \trace' \tracecat [(\_, l_t, \etrue)]
       \land \counter(\trace', l) = \counter(\trace', l_t) = 0 
       \big\}
@@ -132,7 +132,7 @@ Definition~\ref{def:looprb} computes a sound \emph{loop reachability-bound} as i
 %
 The $\lpchB(l:\rprog, \tpath)$ 
 can also be over-approximated by
-$I(l, l') = \kw{BOUNDFINDERD(INIT(c, i, \absinit(\tpath)), NEXT(c, i, \absinit(\tpath)), V_{\ln})}$ in paper\cite{GulwaniJK09}.
+$I(l, l')$, specifically the function $\kw{BOUNDFINDERD}(INIT(c, i, \absinit(\tpath)), NEXT(c, i, \absinit(\tpath)), V_{\ln})$ in paper\cite{GulwaniJK09}.
 $I(l, l')$ over-approximates this value to a large extend 
 by estimating the bound on iteration numbers of $l'$ in one iteration of $l$.
 

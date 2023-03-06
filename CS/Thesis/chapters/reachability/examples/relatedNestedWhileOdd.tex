@@ -92,8 +92,12 @@
 
   \textbf{Refined Program}:
     \[
-    \tpath_0 ; \rpchoose{ 1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4), 
-    1: \rprepeat(\tpath_4; \tpath_1; 4:\rprepeat(\tpath_3); \tpath_2) }; \tpath_5
+    \tpath_0 ; \rpchoose{ 
+      \begin{array}{l}
+        1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4), \\
+        1: \rprepeat(\tpath_4; \tpath_1; 4:\rprepeat(\tpath_3); \tpath_2) 
+      \end{array}
+      }; \tpath_5
     \]
     Let $\rprog_1^1 = \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4)$
     \\
@@ -118,7 +122,7 @@
     $BD(\tpath_5) = 1$
     \quad
     $BD(\rprepeat(\tpath_3)) = n - m $
-    \quad
+    \\
     $BD(\rprog_1^1) = \frac{m}{4} $
     \quad
     $BD(\rprog_1^2) = \frac{m}{4} $

@@ -89,10 +89,15 @@
       $\tpath_5 = (5 \to 1)$
 
   \textbf{Refined Program}:
-  \[
-    \tpath_0 ; \rpchoose{1: \rprepeat(\tpath_1; 5:\rprepeat(\tpath_2); \tpath_3) , 
-    1: \rprepeat(\tpath_3; \tpath_1; 5:\rprepeat(\tpath_2); \tpath_5 )}; \tpath_4
-    \]
+
+
+    $ \tpath_0 ; \rpchoose{
+      \begin{array}{l}
+        1: \rprepeat(\tpath_1; 5:\rprepeat(\tpath_2); \tpath_3) ,  \\
+        1: \rprepeat(\tpath_3; \tpath_1; 5:\rprepeat(\tpath_2); \tpath_5 )
+      \end{array}
+      }; \tpath_4$
+
     Let $\rprog_1^1 = \rprepeat(\tpath_1; 5:\rprepeat(\tpath_2); \tpath_3)$
     \\
     $\rprog_1^2 = \rprepeat(\tpath_3; \tpath_1; 5:\rprepeat(\tpath_2) ; \tpath_5 )$
@@ -115,7 +120,7 @@
     $BD(\tpath_4) = 1$
     \quad
     $BD(\rprepeat(\tpath_2)) = k $
-    \quad
+    \\
     $BD(\rprog_1^1) = \frac{k}{4} $
     \quad
     $BD(\rprog_1^2) = \frac{k}{4} $

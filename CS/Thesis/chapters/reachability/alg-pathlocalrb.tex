@@ -124,9 +124,11 @@ Now we compute $BD(\rprog, c)$ recursively by interactively computing another qu
 \label{def:loopbound}
 Given a program $c$ with its refined program $\rprog$ and a subprogram $\rprog' = \rprepeat(\rprog_l) \in \rprog$, we compute a \emph{loop bound}, $BD(\rprepeat(\rprog_l), c)$ by interactively computing
 the \emph{Variable Gradient Decent}-- 
- $\varGD(\rprog', c)$-- an invariant of the minimum amount decreased in one execution of $\rprog_l$ for the ranking functions in $\rprog$, as follows, $ BD(\rprepeat(\rprog_l), c) \triangleq$
+ $\varGD(\rprog', c)$-- an invariant of the minimum amount decreased in one execution of $\rprog_l$ for the ranking functions in $\rprog$, as follows, 
+%  $ BD(\rprepeat(\rprog_l), c) \triangleq$
 % and recursively computes the loop bound, $BD(\rprog, c)$ in the meantime.
-{\small
+
+$BD(\rprepeat(\rprog_l), c)\triangleq$
  \[
  \left\{ 
  \begin{array}{ll}
@@ -147,51 +149,52 @@ the \emph{Variable Gradient Decent}--
  % \\ \qquad 
  \land x = b \in \rffinal(\rprog_2;\rprog_2, c)
  \Big\} \\
- 0 & o.w.
+ 0 & o.w.,
  \end{array} 
  \right.
 \]
+where the \emph{Variable Gradient Decent},
+$\varGD(\rprog, c)$ for the ranks in a program $\rprog$ is computed as follows.
+
+$ \varGD(\rprog, c) \triangleq$
 \[
- \varGD(\rprog', c) \triangleq
  \left\{
  \begin{array}{ll}
- BD(\rprog', c) \times {\varGD(\rprog_l', c)} & \rprog' = \rprepeat(\rprog_l') \\
- \varGD(\rprog_1, c) + \varGD(\rprog_2, c) & \rprog' = \rprog_1;\rprog_2 \\
- \min\left\{v ~|~ x = v \in \rfnext(\tpath, c) \right\} & \rprog' = \tpath, 
+ BD(\rprog, c) \times {\varGD(\rprog_l', c)} & \rprog = \rprepeat(\rprog_l') \\
+ \varGD(\rprog_1, c) + \varGD(\rprog_2, c) & \rprog = \rprog_1;\rprog_2 \\
+ \min\left\{v ~|~ x = v \in \rfnext(\tpath, c) \right\} & \rprog = \tpath.
  \end{array}
  \right.
  \]
 
- \[
- \left\{ 
- \begin{array}{ll}
- \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}} 
- \Big\{ \highlight{\frac{a - b}{\rfnext(\tpath, c)}} & \rprog_l = \tpath
- \\ \qquad 
- ~\vert~
- x = a \in \rfinit(\tpath, c)
- \land x = b \in \rffinal(\tpath, c)
- \land x = v \in \rfnext(\tpath, c) 
- \Big\} 
- \\
- \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}} 
- \Big\{ \highlight{\frac{\min\{ a, a - v_1 \} - b}{v_2}} 
- & \rprog_l = \rprog_1;\rprog_2
- \\ \qquad 
- ~\vert~
- x = a \in \rfinit(\rprog_1, c)
- % \\ \qquad 
- \land x = b \in \rffinal(\rprog_2;\rprog_2, c)
- \\ \qquad 
- \land x = v_1 \in \rfnext(\rprog_1, c)
- \land x = v_2 \in \rfnext(\rprog_1;\rprog_2, c)
- \Big\} \\
- 0 & o.w.
- \end{array} 
- \right.
-\]
-
-}
+%  \[
+%  \left\{ 
+%  \begin{array}{ll}
+%  \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}} 
+%  \Big\{ \highlight{\frac{a - b}{\rfnext(\tpath, c)}} & \rprog_l = \tpath
+%  \\ \qquad 
+%  ~\vert~
+%  x = a \in \rfinit(\tpath, c)
+%  \land x = b \in \rffinal(\tpath, c)
+%  \land x = v \in \rfnext(\tpath, c) 
+%  \Big\} 
+%  \\
+%  \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}} 
+%  \Big\{ \highlight{\frac{\min\{ a, a - v_1 \} - b}{v_2}} 
+%  & \rprog_l = \rprog_1;\rprog_2
+%  \\ \qquad 
+%  ~\vert~
+%  x = a \in \rfinit(\rprog_1, c)
+%  % \\ \qquad 
+%  \land x = b \in \rffinal(\rprog_2;\rprog_2, c)
+%  \\ \qquad 
+%  \land x = v_1 \in \rfnext(\rprog_1, c)
+%  \land x = v_2 \in \rfnext(\rprog_1;\rprog_2, c)
+%  \Big\} \\
+%  0 & o.w.
+%  \end{array} 
+%  \right.
+% \]
 \end{defn}
   We show that Definition~\ref{def:loopbound} computes a sound loop bound for every loop in a refined program below in Lemma~\ref{lem:loopbound_sound} with proof in \highlight{Appendix~\ref{apdx:loopbound-sound}}.
 \begin{lem}[Soundness of Loop Bound]
@@ -229,8 +232,10 @@ the $\tpath$ in its closest nested loop as follows in Definition~\ref{def:pathlo
     \label{def:pathlocalrb}
     Given program $c$ with its refined program $\rprog$ and a simple transition path $\tpath$ in this program, 
     let $l: \rprog_l = \kw{enclosed}(\rprog, \tpath)$ be a sub loop program in $\rprog$,
-    then $\tpath$'s \emph{local reachability-bound} $\outinB(\rprog_l, \tpath, c)$ w.r.t. $l: \rprog_l$
-    is computed inductively as 
+    then $\tpath$'s \emph{local reachability-bound} w.r.t. $l: \rprog_l$,
+    $\outinB(\rprog_l, \tpath, c)$
+    is computed inductively as follows.
+
     $\outinB(\rprog_l, \tpath, c) \triangleq$
     \[ 
       \left\{
@@ -244,7 +249,7 @@ the $\tpath$ in its closest nested loop as follows in Definition~\ref{def:pathlo
       & \rprog = \rpchoose{\rprog_1, \ldots, \rprog_m } \\
       % \outinB(\rprepeat(\rprog'), \tpath) & \triangleq 
       % & 
-      BD(\rprepeat(\rprog'), c) \times \outinB(\rprog', \tpath, c) & \rprog = \rprepeat(\rprog')
+      BD(\rprepeat(\rprog'), c) \times \outinB(\rprog', \tpath, c) & \rprog = \rprepeat(\rprog').
       %  \\
       %  \outinB(\rprog_l, \tpath) & \rprog = l: \rprog_l\\
       %  \outinB(l': \rprog', \tpath) & \triangleq & 0  \qquad \text{if } l': \rprog' \neq \kw{enclosed}(\rprog, \tpath)
