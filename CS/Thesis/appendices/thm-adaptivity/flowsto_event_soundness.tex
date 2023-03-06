@@ -1,4 +1,4 @@
-For concise of the proof, we introduce some conventional operators as follows.
+We first introduce some conventional operators as follows, which will be used in the proof.
 \begin{defn}[Subtrace]
   Subtrace: $[ : ] : \mathcal{{T} \to \eventset \to \eventset \to \ftdom}$ 
   \[
@@ -62,6 +62,35 @@ Program Entry Point: $\entry_c : \mbox{Command} \to \mathbb{N}$
   \end{array}
   \right.
 \]
+The \emph{Latest Label}
+operator $\llabel : \ftdom \to \mathcal{V} \to \mathbb{N} \cup \{ \bot\}$,
+takes a trace and a variable as input and returns the label of the latest assignment event which assigns value to that variable. 
+  Its behavior is defined as follows,
+  \begin{defn}[Latest Label]
+    \[
+      % \begin{array}{lll}
+    \llabel(\trace  :: (x, l, \_, \_)) x \triangleq l
+    \qquad~
+    \llabel(\trace  :: (y, l, \_, \_)) x \triangleq \llabel(\trace ) x, y \neq x
+    % &
+    \qquad~
+    \llabel(\trace :: (b, l, v, \bullet)) x \triangleq \llabel(\trace) x
+    \qquad~
+    \llabel({[]}) x \triangleq \bot
+    % \end{array}
+    \]
+  \end{defn}
+  %
+    The operator $\tlabel : \ftdom \to \mathcal{P}{(\ldom)}$ gives the set of labels in every event belonging to 
+    a trace, whose behavior is defined as follows,
+  \[
+    % \begin{array}{llll}
+  \tlabel{(\trace  :: (\_, l, \_, \_)])} \triangleq \{l\} \cup \tlabel{(\trace )}
+  \qquad~
+  \tlabel({[ ]}) \triangleq \{\}
+  % \end{array}
+  \]
+  
 %
 \begin{thm}[$\eventdep$ implies $\flowsto$]
 \label{thm:flowsto_event_soundness}
