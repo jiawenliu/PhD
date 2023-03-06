@@ -21,6 +21,7 @@
     \land l_t: \rprog_t = \kw{enclosed}(\rprog, \tpath)
     \land 
     \rprog = \algrewrite(c_l)
+    \\ \qquad
     \land
     \Big(
     \config{c_l, \trace_0} \to^* \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace}
@@ -32,12 +33,15 @@
     \\ \qquad \geq 
       \sum\Big\{
       \lcounter(\trace, \tracel(\trace_{l \to l_t})) ~\vert~ \trace_{l \to l_t} \in 
-      \big\{\trace_{l \to l_t} ~\vert~ 
+      \big\{\trace_{l \to l_t} 
+      ~\vert~ \trace_{l_s \to l_f}\in \ftdom 
+      \land \exists  \trace' \in \ftdom, \trace''\in \tdom
+      \sthat 
+      \\ \qquad \qquad \qquad
+      \trace = \trace_{l \to l_t} \tracecat \trace''
       % \\ \qquad \qquad \qquad \qquad
-      \trace_{l \to l_t}, \trace' \in \ftdom, \trace'' \in \tdom
-      \land \trace = \trace_{l \to l_t} \tracecat \trace''
-      \\ \qquad \qquad \qquad \qquad
       \land \trace_{l \to l_t} = [(\_, l, \etrue)] \tracecat \trace' :: (\_, l_t, \etrue)
+      \\ \qquad \qquad \qquad
       \land \counter(\trace', l) = \counter(\trace', l_t) = 0 
       \big\}
       \Big\}.
@@ -66,15 +70,18 @@
         \econfig{\lpchB(l: \rprog, \tpath)}(\trace_0) 
         \\ \qquad \geq 
         \sum\Big\{
-          \lcounter(\trace, \tracel(\trace_{l \to l_t})) ~\vert~ \trace_{l \to l_t} \in 
-          \big\{\trace_{l \to l_t} ~\vert~ 
-          % \\ \qquad \qquad \qquad \qquad
-          \trace_{l \to l_t}, \trace' \in \ftdom, \trace'' \in \tdom
-          \land \trace = \trace_{l \to l_t} \tracecat \trace''
-          \\ \qquad \qquad \qquad \qquad
-          \land \trace_{l \to l_t} = [(\_, l, \etrue)] \tracecat \trace' :: (\_, l_t, \etrue)
-          \land \counter(\trace', l) = \counter(\trace', l_t) = 0 
-          \big\}
+            \lcounter(\trace, \tracel(\trace_{l \to l_t})) ~\vert~ \trace_{l \to l_t} \in 
+            \big\{\trace_{l \to l_t} 
+            ~\vert~ \trace_{l_s \to l_f}\in \ftdom 
+            \land \exists  \trace' \in \ftdom, \trace''\in \tdom
+            \sthat 
+            \\ \qquad \qquad \qquad
+            \trace = \trace_{l \to l_t} \tracecat \trace''
+            % \\ \qquad \qquad \qquad \qquad
+            \land \trace_{l \to l_t} = [(\_, l, \etrue)] \tracecat \trace' :: (\_, l_t, \etrue)
+            \\ \qquad \qquad \qquad
+            \land \counter(\trace', l) = \counter(\trace', l_t) = 0 
+            \big\}
           \Big\}.
     \end{array}
     \]
@@ -92,9 +99,8 @@ The soundness is guaranteed by the three states,
  $\lpinit(\rprog, \tpath, c)$, $\rffinal(\rprog, \tpath, c)$, $\lpnext(\rprog, \tpath, )$ computed in Definition~\ref{def:alg-loopabsstate} as follows.
 \begin{itemize}
   \item \emph{Loop Initial State} Soundness.
-  By Definition~\ref{def:alg-loopabsstate}, we have $\lpinit(\rprog, \tpath, c)$ 
+  By Definition~\ref{def:alg-loopabsstate}, we have $\lpinit(\rprog, \tpath, c) = $ 
   \[
-    \lpinit(l: \rprog, \tpath, c) \triangleq 
     \arg\max_{l_1}\left\{
          \varinvar(y, c) + v ~\middle\vert~ 
          \begin{array}{l} 
@@ -138,8 +144,8 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
         \land \absinit(\rprog) \leq l_1 \leq \absinit(\tpath)
       \end{array}
     \right\}}(\trace_0) 
-    \geq \max \left\{ v ~|~  \env(\trace) x = v \right\}  \geq \env(\trace') x
     \]
+    $    \geq \max \left\{ v ~|~  \env(\trace) x = v \right\}  \geq \env(\trace') x$
   %
   \item  $\lpnext(\rprog, \tpath, c)$ computes the variables states of the $\tpath$
   after visited the program point $l$ the second time and before visiting any other program point.
@@ -147,9 +153,8 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
   By Definition~\ref{def:alg-loopabsstate}, we have $\lpnext(l:\rprog_, \tpath, c)$ as
   \[
   \begin{array}{l}
-  \lpnext(l: \rprog, \tpath, c) \triangleq 
-  \\
   \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}}
+  \\
   \left\{
     \begin{array}{l}
   \sum\limits_{\absevent \in \inc(x, c) }
@@ -200,7 +205,8 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
       v 
       ~\middle\vert~ \absevent = (l', x' \leq x + v, \_) \land l' \in \rprog \land l' \notin \tpath \right\}
     \end{array}
-    $ bounds the value modification of $x$ in one iteration of $l: \rprog$.
+    $ 
+    is an upper bound on the modified value  of $x$ in one iteration of $l: \rprog$.
   %
   \\
   By Lemma~\ref{lem:pathlocalrb-sound} and Lemma~\ref{lem:loopbound_sound}, we also know $BD(\rprog_t)$ is sound upper bound of $l_t$'s iterations and $\rfnext(\tpath, c)$ is the upper bound of $x$'s value modification in one iteration of $l_t: \rprog_t$.
@@ -229,22 +235,22 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
       \begin{array}{l}
         \econfig{
         \lpinit(l: \rprog, \tpath, c)}(\trace_0)
-        - \\ \qquad 
+        - \\ \quad 
       \econfig{
           \begin{array}{l}
             \sum\limits_{\absevent \in \inc(x, c) }
             \left\{ 
             v ~\middle\vert~ \absevent = (l', x' \leq x + v, \_) \land  l' \in \rprog 
             \land l' \notin \tpath \right\}
-            \\ \qquad 
+            \\ 
             + \arg\max\limits_{l_2 }
                 \left\{ \varinvar(y, c) + v ~\middle\vert~ 
                 (l_1, x' \leq y + v, l_2) \in \reset(x, c) \land l_1 \in \rprog \land l_1 \notin \tpath\right\}
-            \\ \qquad 
+            \\ 
             - \sum\limits_{ \absevent \in \dec(x, c) }\left\{ 
             v 
             ~\middle\vert~ \absevent = (l', x' \leq x + v, \_) \land l' \in \rprog \land l' \notin \tpath \right\}
-            \\ \qquad 
+            \\
             + BD(l_t: \rprog_t) \times \rfnext(\tpath, c)
           \end{array}
       }(\trace_0) \\
@@ -284,19 +290,22 @@ soundly computes the maximum number of $l: \rprog$'s iteration times such that d
 \[
   \begin{array}{l}
     \econfig{\lpchB(l: \rprog, \tpath, c)}(\trace_0) 
-    \\ \qquad \geq 
+    \\ \quad \geq 
       \sum\Big\{
-      \lcounter(\trace, \tracel(\trace_{l \to l_t})) ~\vert~ \trace_{l \to l_t} \in 
-      \big\{\trace_{l \to l_t} ~\vert~ 
-      % \\ \qquad \qquad \qquad \qquad
-      \trace_{l \to l_t}, \trace' \in \ftdom, \trace'' \in \tdom
-      \land \trace = \trace_{l \to l_t} \tracecat \trace''
+      \lcounter(\trace, \tracel(\trace_{l \to l_t})) 
+      ~\vert~ \trace_{l \to l_t} \in 
+      \big\{\trace_{l \to l_t} 
+      ~\vert~ \trace_{l_s \to l_f}\in \ftdom 
+      \land \exists  \trace' \in \ftdom, \trace''\in \inftdom
+      \sthat 
       \\ \qquad \qquad \qquad
-      % \qquad \qquad
+      \trace = \trace_{l \to l_t} \tracecat \trace''
+      % \\ \qquad \qquad \qquad \qquad
       \land \trace_{l \to l_t} = [(\_, l, \etrue)] \tracecat \trace' :: (\_, l_t, \etrue)
+      \\ \qquad \qquad \qquad
       \land \counter(\trace', l) = \counter(\trace', l_t) = 0 
       \big\}
-      \Big\}.
+    \Big\}.
   \end{array}
 \]
 For each 
@@ -322,14 +331,15 @@ Then we know
 \[
   \begin{array}{l}
       \sum\Big\{ \bot ~\vert~ \trace_{l \to l_t} \in 
-      \big\{\trace_{l \to l_t} ~\vert~ 
+      \big\{\trace_{l \to l_t} 
+      ~\vert~ \trace_{l_s \to l_f}\in \ftdom 
+      \land \exists  \trace' \in \ftdom, \trace''\in \inftdom
+      \sthat 
+      \\ \qquad \qquad \qquad
+      \trace = \trace_{l \to l_t} \tracecat \trace''
       % \\ \qquad \qquad \qquad \qquad
-      \trace_{l \to l_t}, \trace' \in \ftdom, \trace'' \in \tdom
-      \land \trace = \trace_{l \to l_t} \tracecat \trace''
-      \\ \qquad \qquad 
-      % \qquad 
-      % \qquad
       \land \trace_{l \to l_t} = [(\_, l, \etrue)] \tracecat \trace' :: (\_, l_t, \etrue)
+      \\ \qquad \qquad \qquad
       \land \counter(\trace', l) = \counter(\trace', l_t) = 0 
       \big\}
       \Big\} = \bot,

@@ -27,6 +27,7 @@ This assumption comes from the computation of the $\varGD$ and the depth first s
       \rprog \subseteq REFINE(\algrewrite(c))
       \land 
       \rprog = \algrewrite(c_r)
+      \\ \qquad
       \land 
       \Big(
         \config{c_r, \trace_r} \rightarrow^* \config{\clabel{\eskip}^{l}, \trace_r \tracecat \trace}
@@ -244,8 +245,12 @@ By induction hypothesis on $\trace_r$, $c_1$, $\trace_1$ and $c_2$, we also have
   \begin{array}{l}
     \econfig{BD(\rprog_1, c)}(\trace_0)
     \\ \geq
-    \# \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-    \land \trace_1 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+    \# \Big\{\trace_{l_s \to l_f} 
+    ~\vert~ \trace_{l_s \to l_f} \in \ftdom 
+    \land \exists \trace_a, \trace_b \in \ftdom
+    \sthat 
+    \\ \qquad \qquad
+    \trace_1 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
     \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
     \\ \qquad \qquad
     \land (l_{f}, \_) \in \absfinal(c_1)
@@ -259,8 +264,12 @@ By induction hypothesis on $\trace_r$, $c_1$, $\trace_1$ and $c_2$, we also have
   \begin{array}{l}
     \econfig{BD(\rprog_2, c)}(\trace_0)
     \\ \geq
-    \# \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-    \land \trace_2 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+    \# \Big\{\trace_{l_s \to l_f} 
+    ~\vert~ \trace_{l_s \to l_f} \in \ftdom 
+    \land \exists \trace_a, \trace_b \in \ftdom
+    \sthat 
+    \\ \qquad \qquad
+    \trace_2 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
     \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
     \\ \qquad \qquad
     \land (l_{f}, \_) \in \absfinal(\rprog_2)
@@ -276,8 +285,12 @@ By the label consistency, we know
 \[
   \begin{array}{l}
     \forall \trace \in
-    \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-    \land \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+    \Big\{\trace_{l_s \to l_f} 
+    ~\vert~ \trace_{l_s \to l_f} \in \ftdom 
+    \land \exists \trace_a, \trace_b \in \ftdom
+    \sthat 
+    \\ \qquad \qquad
+     \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
     \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
     \\ \qquad \qquad
     \land (l_{f}, \_) \in \absfinal(\rprog_1; \rprog_2)
@@ -286,8 +299,12 @@ By the label consistency, we know
     \Big\},
     \\
     \exists \trace_1 \in
-    \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-    \land \trace_1 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+    \Big\{\trace_{l_s \to l_f} 
+    ~\vert~ \trace_{l_s \to l_f} \in \ftdom 
+    \land \exists \trace_a, \trace_b \in \ftdom
+    \sthat 
+    \\ \qquad \qquad
+    \trace_1 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
     \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
     \\ \qquad \qquad
     \land (l_{f}, \_) \in \absfinal(\rprog_1)
@@ -296,8 +313,12 @@ By the label consistency, we know
     \Big\},
     \\
     \trace_2 \in
-    \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-    \land \trace_2 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+    \Big\{\trace_{l_s \to l_f}
+    ~\vert~ \trace_{l_s \to l_f} \in \ftdom 
+    \land \exists \trace_a, \trace_b \in \ftdom
+    \sthat 
+    \\ \qquad \qquad 
+    \trace_2 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
     \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
    \\ \qquad \qquad
    \land (l_{f}, \_) \in \absfinal(\rprog_2)
@@ -312,18 +333,27 @@ By the label consistency, we know
   Then we have
   \[
     \begin{array}{l}
-      \# \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-      \land \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+      \# \Big\{\trace_{l_s \to l_f} 
+      ~\vert~ \trace_{l_s \to l_f} \in \ftdom 
+      \land \exists \trace_a, \trace_b \in \ftdom
+      \sthat 
+      \\ \qquad \qquad
+      \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
       \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
       \\ \qquad \qquad
       \land (l_{f}, \_) \in \absfinal(\rprog_1; \rprog_2)
       \land l_s = \absinit(\rprog_1; \rprog_2)
+      \\ \qquad \qquad 
       \land \counter(\trace', l_s) = \counter(\trace', l_f) = 0 
       \Big\}
       \\ \leq 
       \min \Bigg\{ \#
-      \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-      \land \trace_1 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+      \Big\{\trace_{l_s \to l_f} 
+      ~\vert~ \trace_{l_s \to l_f} \in \ftdom 
+      \land \exists \trace_a, \trace_b \in \ftdom
+      \sthat 
+      \\ \qquad \qquad
+      \trace_1 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
       \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
         \\ \qquad \qquad
       \land (l_{f}, \_) \in \absfinal(\rprog_1)
@@ -332,8 +362,12 @@ By the label consistency, we know
       \Big\},
       \\ \qquad \quad
       \#
-      \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-      \land \trace_2 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+      \Big\{\trace_{l_s \to l_f} 
+      ~\vert~ \trace_{l_s \to l_f} \in \ftdom 
+      \land \exists \trace_a, \trace_b \in \ftdom
+      \sthat 
+      \\ \qquad \qquad
+      \trace_2 = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
       \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
        \\ \qquad \qquad
      \land (l_{f}, \_) \in \absfinal(\rprog_2)
@@ -352,12 +386,17 @@ By the label consistency, we know
       = \min \Big\{ \econfig{BD(\rprog_1, c)}(\trace_0), \econfig{BD(\rprog_2, c)}(\trace_0) \Big\}
       \\
       \geq
-      \# \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-      \land \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+      \# \Big\{\trace_{l_s \to l_f} 
+      ~\vert~ \trace_{l_s \to l_f} \in \ftdom 
+      \land \exists \trace_a, \trace_b \in \ftdom
+      \sthat 
+      \\ \qquad \qquad
+      \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
       \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
       \\ \qquad \qquad
       \land (l_{f}, \_) \in \absfinal(\rprog_1; \rprog_2)
       \land l_s = \absinit(\rprog_1; \rprog_2)
+      \\ \qquad \qquad
       \land \counter(\trace', l_s) = \counter(\trace', l_f) = 0 
       \Big\}.
         \end{array}
@@ -375,9 +414,8 @@ This case is proved.
 % \\
 % Because $c_1$ and $c_2$ are sub-loop program of $c_r$,
 \caseL{$\rprog = \rprepeat(\rprog_l)$}
-In this case, we have
+In this case, we have $  BD(\rprepeat(\rprog_l), c) =$
 \[
-  BD(\rprepeat(\rprog_l), c) =
   \left\{ 
   \begin{array}{lll}
     \max\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}}
@@ -401,9 +439,8 @@ $\rfinit(\rprog)$, $\rffinal(\rprog)$, $\rfnext(\rprog)$ computed in Definition~
 For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of this path, we prove the soundness of the three states respectively as follows.
 \begin{itemize}
  \item \emph{Initial State} Soundness.
- By Definition~\ref{def:alg-absstate}, we have $\rfinit(\rprog)$ 
+ By Definition~\ref{def:alg-absstate}, we have $\rfinit(\rprog) = $ 
  \[
-  \rfinit(\rprog, c) \triangleq 
   \bigcup_{x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\} }
   \left \{ 
   x = \arg\max_{l_1}\left\{
@@ -455,12 +492,11 @@ For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of thi
  is a
  symbolic expression describing how much $\tpath$'s ranking function ($\rank(\tpath)$) is changed after the first execution of $\rprog$ and before the second execution.
 \\
- By Definition~\ref{def:alg-loopabsstate}, we have
+ By Definition~\ref{def:alg-loopabsstate}, we have $ \rfnext(\tpath, c) = $
  \[
    \begin{array}{l}
-   \rfnext(\tpath, c) \triangleq 
-   \\
    \bigcup\limits_{x \in \left\{ \rank(\absevent, c) | \absevent \in \tpath \right\}}
+   \\
    \left\{ x = \begin{array}{l}
   \sum\limits_{\absevent \in \inc(x, c) }
    \left\{ v ~\middle\vert~ \absevent = (l, x' \leq x + v, \_) \land l \in \tpath\right\}
@@ -489,6 +525,7 @@ For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of thi
    \]
    Same for each abstract event such that $((l', x' \leq x + v, \_) \in \inc(x, c) $ and $(l', x' \leq x + v, \_) \in \dec(x, c)$,
    we know 
+   \\
    $      
    \begin{array}{l}
     \sum\limits_{\absevent \in \inc(x, c) }
@@ -509,6 +546,7 @@ For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of thi
        \econfig{
        \rfinit(l: \rprog)}(\trace_0)
        -
+       \\ \qquad
      \econfig{
       \begin{array}{l}
         \sum\limits_{\absevent \in \inc(x, c) }
@@ -528,8 +566,8 @@ For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of thi
  %
  \item $\rffinal(\rprog, c)$ computes the value of 
  each ranking function 
- $x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\}$ after the iteration of $l_f:\rprog_t$ finished.
- \\
+ $$x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\}$$ 
+ after the iteration of $l_f:\rprog_t$ finished.
  Taking an arbitrary ranking function $x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\}$,
  let $\trace' \in \ftdom$ be the execution trace after the execution of $\rprog$,  then we have
  \[
@@ -604,8 +642,11 @@ the following holds.
   \begin{array}{l}
   \econfig{\frac{a - b}{\varGD(\rprog', c)}}(\trace_0) 
   \\ \geq
-    \# \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-    \land \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+    \# \Big\{\trace_{l_s \to l_f} 
+    ~\vert~ \trace_{l_s \to l_f} \in \ftdom \land \exists  \trace_b, \trace_a \in \ftdom
+    \sthat 
+    \\ \qquad \qquad
+    \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
     \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
     \\ \qquad \qquad
     \land (l_{f}, \_) \in \absfinal(\rprog_2)
@@ -625,8 +666,11 @@ Then in the first subcase, $\rprog' = \rprepeat(\rprog_l) = \tpath$, we have thi
       \right\} 
     }(\trace_0) \\
     \geq
-    \# \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-    \land \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+    \# \Big\{\trace_{l_s \to l_f} 
+    ~\vert~ \trace_{l_s \to l_f} \in \ftdom \land \exists  \trace_b, \trace_a \in \ftdom
+    \sthat 
+    \\ \qquad \qquad
+    \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
     \land \trace_{l_s \to l_f} = \tracecat \trace' \tracecat [(\_, l_f, \_)]
     \\ \qquad \qquad
     \land (l_{f}, \_) \in \absfinal(\tpath)
@@ -654,8 +698,11 @@ Then this subcase is proved by
       \Big\}  
     }(\trace_0) \\
     \geq
-    \# \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace_a \in \ftdom, \trace_b \in \ftdom
-    \land \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+    \# \Big\{\trace_{l_s \to l_f} 
+    ~\vert~ \trace_{l_s \to l_f} \in \ftdom \land \exists  \trace_b, \trace_a \in \ftdom
+    \sthat 
+    \\ \qquad \qquad
+     \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
     \land \trace_{l_s \to l_f} = \tracecat \trace' \tracecat [(\_, l_f, \_)]
     \\ \qquad \qquad
     \land (l_{f}, \_) \in \absfinal(\rprog_l)
@@ -683,8 +730,11 @@ Then we have this case proved trivially by induction hypothesis on $\rprog_l$ an
  \[
   \begin{array}{l}
   \econfig{BD(\rprog, c)}(\trace_0) \geq
-  \# \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace'\in \ftdom, \trace''\in \inftdom
-  \land \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+  \# \Big\{\trace_{l_s \to l_f} 
+  ~\vert~ \trace_{l_s \to l_f}\in \ftdom 
+  \land \exists  \trace' \in \ftdom, \trace''\in \inftdom
+  \sthat \\ \qquad \qquad
+   \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
   \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
 \\ \qquad \qquad
   \land (l_{f}, \_) \in \absfinal(\rprog)
@@ -699,27 +749,37 @@ then we have two cases as follows.
 In this case, we have 
 \[
   \begin{array}{l}
-    \sum \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace'\in \ftdom, \trace''\in \inftdom
-    \land \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+    \sum \Big\{\trace_{l_s \to l_f} 
+    ~\vert~ \trace_{l_s \to l_f}\in \ftdom 
+    \land \exists  \trace' \in \ftdom, \trace''\in \inftdom
+    \sthat \\ \qquad \qquad
+    \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
     \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
     \\ \qquad \qquad
   \land (l_{f}, \_) \in \absfinal(\rprog)
   \land l_s = \absinit(\rprog)
   \land \counter(\trace', l_s) = \counter(\trace', l_f) = 0 
-  \Big\} = \sum \emptyset = 0.
+  \Big\} 
+  \\ \qquad \qquad = \sum \emptyset = 0.
   \end{array}
 \]
 Since $ \econfig{BD(\rprog, c)}(\trace_0) \geq 0$, we have this case proved.
 \caseL{The execution reaches $l_f$}
 In this case, we know $l_f \in \loopl(c)$, and  it is sufficient to show
+
+$ \econfig{BD(\rprog, c)}(\trace_0)
+\geq
+$
 \[
-  \econfig{BD(\rprog, c)}(\trace_0)
-  \geq \begin{array}{l}
+  \begin{array}{l}
     \sum\Bigg\{
       \lcounter(\trace, \tracel(\trace_{l_s \to l_f})) ~\vert~ \trace_{l_s \to l_f} \in 
-    \Big\{\trace_{l_s \to l_f} ~\vert~ \trace_{l_s \to l_f}, \trace'\in \ftdom, \trace''\in \inftdom
+    \Big\{\trace_{l_s \to l_f} 
+    ~\vert~ \trace_{l_s \to l_f}\in \ftdom 
+    \land \exists  \trace' \in \ftdom, \trace''\in \inftdom
+    \sthat 
     \\ \qquad \qquad
-    \land \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
+    \trace = \trace_a \tracecat \trace_{l_s \to l_f} \tracecat \trace_b
     \land \trace_{l_s \to l_f} = [(\_, l_s, \_)] \tracecat \trace' \tracecat [(\_, l_f, \_)]
     \\ \qquad \qquad
   \land (l_{f}, \_) \in \absfinal(\rprog)

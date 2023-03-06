@@ -100,8 +100,11 @@ Then we have this case proved as
   \end{array}
   \] 
 \caseL{$\rprog_l = \rpchoose{\rprog_1, \ldots, \rprog_m }$}
-We have $\outinB(\rpchoose{\rprog_1, \ldots, \rprog_m }, \tpath) = \max\left\{ \outinB(\rprog_1, \tpath), \ldots, \outinB(\rprog_m, \tpath) \right\}$ by Definition~\ref{alg:alg-refine_rewrite}, and
-it is sufficient to show
+By Definition~\ref{alg:alg-refine_rewrite}, we know 
+$\outinB(\rpchoose{\rprog_1, \ldots, \rprog_m }, \tpath)$ 
+\\
+$= \max\left\{ \outinB(\rprog_1, \tpath), \ldots, \outinB(\rprog_m, \tpath) \right\}$.
+Then, it is sufficient to show
 \[
   \econfig{\max\left\{ \outinB(\rprog_1, \tpath), \ldots, \outinB(\rprog_m, \tpath) \right\}}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)) 
 \]
@@ -148,8 +151,12 @@ According to the Algorithm~\ref{alg:alg-refine_rewrite}, we have $c_l = \ewhile 
 \\
 According to the operational semantics, let $\trace' \in \ftdom$ be the execution trace of executing $c'$ one time with a program $c'' \in \cdom$ such that 
 \[
-  \config{\ewhile \clabel{\bexpr}^{l} \edo c', \trace_l} \to \config{c', \trace_l \tracecat (\bexpr, \etrue, l)} \to^* \config{\clabel{\eskip}^{l}; \ewhile \clabel{\bexpr}^{l} \edo c', \trace_l \tracecat (\bexpr, \etrue, l) \tracecat \trace'}
+  \begin{array}{l}
+  \config{\ewhile \clabel{\bexpr}^{l} \edo c', \trace_l} 
+  \to \config{c', \trace_l \tracecat (\bexpr, \etrue, l)} \\
+  \to^* \config{\clabel{\eskip}^{l}; \ewhile \clabel{\bexpr}^{l} \edo c', \trace_l \tracecat (\bexpr, \etrue, l) \tracecat \trace'}\\
   \to^* \config{\clabel{\eskip}^{l}, \trace_l \tracecat \trace}
+  \end{array}
 \]
 By the trace non-decreasing property in Lemma~\ref{lem:tracenondec}, we know $\trace$ contains multiple execution traces of $c'$.
 \\
@@ -283,7 +290,11 @@ Then we have this case proved as
     \] 
    
 \caseL{$\rprog_l = \rpchoose{\rprog_1, \ldots, \rprog_m }$}
-We have $\outinB(\rpchoose{\rprog_1, \ldots, \rprog_m }, \tpath) = \max\left\{ \outinB(\rprog_1, \tpath), \ldots, \outinB(\rprog_m, \tpath) \right\}$ by Definition~\ref{alg:alg-refine_rewrite}.
+By Definition~\ref{alg:alg-refine_rewrite}, we know 
+ $\outinB(\rpchoose{\rprog_1, \ldots, \rprog_m }, \tpath)$
+ 
+ $\max\left\{ \outinB(\rprog_1, \tpath), \ldots, \outinB(\rprog_m, \tpath) \right\}$.
+
 Then it is sufficient to show
 \[
   \econfig{\max\left\{ \outinB(\rprog_1, \tpath), \ldots, \outinB(\rprog_m, \tpath) \right\}}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)).

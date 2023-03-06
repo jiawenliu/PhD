@@ -76,7 +76,7 @@ By Definition~\ref{def:pathrb}, we have
   \highlight{
     \lpchB(l':\rprog', \tpath )
   \times \max\limits_{l': \rprog' = \kw{enclosed}(l'':\rprog'')}
-  \{\inoutB(l'':\rprog'', \tpath)\} }, \qquad o.w. &
+  \{\inoutB(l'':\rprog'', \tpath)\} }, ~~ o.w. &
   \end{array}
 \]
 %
@@ -130,8 +130,10 @@ $\trace'' \in \tdom$ be the execution trace of $c''$ and $\trace_1, \trace_2 \in
   \end{array}
 \]
 By the trace non-decreasing property in Lemma~\ref{lem:tracenondec},
-we know $\trace = [(\bexpr, l', \etrue)] \tracecat \trace_1 \tracecat \trace'' \tracecat \trace_2$.
-\\
+we know 
+
+$\trace = [(\bexpr, l', \etrue)] \tracecat \trace_1 \tracecat \trace'' \tracecat \trace_2$.
+
 By induction hypothesis on $\inoutB(l'':\rprog'', \tpath)$ and $c''$, we have
 \[
   \econfig{\inoutB(l'':\rprog'', \tpath)}(\trace_0) 
@@ -275,8 +277,12 @@ Then we have this case proved as the follows in both subcases.
   \end{array}
   \] 
 \caseL{$\rprog = \rpchoose{\rprog_1, \ldots, \rprog_m }$}
-We have $\inoutB(\rpchoose{\rprog_1, \ldots, \rprog_m }, \tpath) = \max\left\{ \inoutB(\rprog_1, \tpath), \ldots, \inoutB(\rprog_m, \tpath) \right\}$ by Definition~\ref{alg:alg-refine_rewrite}.
-Then it is sufficient to show
+By Definition~\ref{alg:alg-refine_rewrite}, we know 
+ $\inoutB(\rpchoose{\rprog_1, \ldots, \rprog_m }, \tpath)$
+ 
+ $ = \max\left\{ \inoutB(\rprog_1, \tpath), \ldots, \inoutB(\rprog_m, \tpath) \right\}$ by Definition~\ref{alg:alg-refine_rewrite}.
+
+ Then it is sufficient to show
 \[
   \econfig{\max\left\{ \inoutB(\rprog_1, \tpath), \ldots, \inoutB(\rprog_m, \tpath) \right\}}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)) 
 \]
