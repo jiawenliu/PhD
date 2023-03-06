@@ -177,9 +177,10 @@ showing the correspondence properties between the program based graph and trace 
 	\begin{array}{l}
 	\forall c \in \cdom , v \in \mathcal{VAR} \times \mathbb{N} \sthat  
 	\progG({c}) = (\progV, \progE, \progW, \progF)
+	\\ \quad
 	\land 
 	\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)
-	\\ \quad
+	\\ \qquad
 	\implies
 	v \in \progV \Longleftrightarrow v \in \traceV
 	\end{array}
@@ -254,28 +255,35 @@ Then by definition of $\progE$, we know $(x^i, y^j) \in \progE$. This Lemma is p
 %
 \begin{lem}[Weights are bounded]
 	\label{lem:weights_map}
-	Given a program $c$ with its
-	estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
-	and 
-	semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
-	for every $v \in \traceV$, there is $v \in \progV$ and $\traceW(v) \leq \progW(v)$.
+	Given a program $c$ with the weight set $\traceW$ in its
+	semantics-based graph 
+	and the estimated weight set $\progW$ in its
+	estimated dependency graph, 
+	% $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	% $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	for every pair of weight $(x^l, w) \in \traceW$, 
+	there is a pair of estimated weight $(x^l, \hat{w}) \in \progW$ 
+	such that the estimated weight $\hat{w}$ is an upper bound on $w$ for any arbitrary
+	initial trace $\trace_0 \in \ftdom_0(c) $.
 	\[
 		\begin{array}{l}
-			\forall c \in \cdom 
+			\forall c \in \cdom, \trace_0 \in \ftdom_0(c) 
 			% , (v, n) \in \mathcal{VAR} \times \mathbb{N} \times \mathbb{N}
 			 \sthat  
-			%  \\ \quad
+			 \\ \quad
 			 \progG({c}) = (\progV, \progE, \progW, \progF)
-			\land 
+			 \land 
 			\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)
-			\\ \quad
+			\\ \qquad
 			\implies
-			\forall (x^l, w) \in \traceW,
-			(x^l, \hat{w}) \in \progW, \vtrace, \trace' \in \ftdom, v \in \mathbb{N} \sthat 
-			\config{\hat{w}, \trace_0} \earrow v
+			\forall (x^l, w) \in \traceW \sthat
+			\exists (x^l, \hat{w}) \in \progW, v \in \mathbb{N} 
+			\sthat 
+			\\ \qquad \qquad
+			(\config{\hat{w}, \trace_0} \earrow v
 			\implies
 			% \right\} 
-			w(\trace_0) \leq v
+			w(\trace_0) \leq v)
 		\end{array}
 		\]
 	\end{lem}

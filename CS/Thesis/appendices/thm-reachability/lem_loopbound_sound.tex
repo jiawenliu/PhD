@@ -93,7 +93,7 @@ Below we prove the soundness of a more general version Loop Bound Computation, $
     \\ \qquad 
     ~\vert~
     x = a \in \rfinit(\rprog_1, c)
-    % \\ \qquad 
+    \\ \qquad \qquad
     \land x = b \in \rffinal(\rprog_2;\rprog_2, c)
     \Big\}   \\
   0  &  o.w.
@@ -295,6 +295,7 @@ By the label consistency, we know
     \\ \qquad \qquad
     \land (l_{f}, \_) \in \absfinal(\rprog_1; \rprog_2)
     \land l_s = \absinit(\rprog_1; \rprog_2)
+    \\ \qquad \qquad
     \land \counter(\trace', l_s) = \counter(\trace', l_f) = 0 
     \Big\},
     \\
@@ -309,6 +310,7 @@ By the label consistency, we know
     \\ \qquad \qquad
     \land (l_{f}, \_) \in \absfinal(\rprog_1)
     \land l_s = \absinit(\rprog_1)
+    \\ \qquad \qquad
     \land \counter(\trace', l_s) = \counter(\trace', l_f) = 0 
     \Big\},
     \\

@@ -14,14 +14,15 @@
 \[
 \begin{array}{l}
   \forall c, c' \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom ,  \event = (\_, l, \_, \_) \in \eventset, l \in \progl(c) \sthat
-  \big(
+  \\
+  \qquad
+    \big(
     \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} 
   % \lor 
   % \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
   \big)
   \land \event \in \trace 
-  \\
-  \qquad \implies \exists 
+   \implies \exists 
   %  \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
   \absevent \in \absflow(c) \land \absevent = (l, \_, \_)
 \end{array}

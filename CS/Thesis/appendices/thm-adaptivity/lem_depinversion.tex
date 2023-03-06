@@ -2,7 +2,7 @@
 	\label{lem:flowsto_soundness_emptytrace}
 	For every $ c \in \cdom, D \in \dbdom$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn}$,
 	if $\eventdep(\event_1, \event_2, [\event_1; \event_2],  c, D) $,
-	then, $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$.
+	then there is a flows to relation, $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$.
 	%
 	\[
 	\begin{array}{l}
@@ -200,7 +200,8 @@ we also have the instance of second execution as follows:
     \qquad 
      \rightarrow^{\rname{if-b / while-b}} 
     \config{(c_f;c_3' / c_t;c_3') /([\eskip]; c_3' / c_w; \ewhile [b]^{l_b} \edo c_w;{c}_3' ), 
-    \trace_1 \tracecat [\event_1]  \tracecat \trace' \tracecat [\neg \event_b]} 
+	\\ \qquad \qquad \qquad \qquad
+	\trace_1 \tracecat [\event_1]  \tracecat \trace' \tracecat [\neg \event_b]} 
     \\
     \qquad   \rightarrow^{*} 
     \config{c_3, 
@@ -219,7 +220,10 @@ Since $\trace_3= \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b} $, we kn
 of $c_3'$, i.e.,:
 \\
 In the case of $\eif ([b]^{l_b}, c_t, c_f)$, $\event_2$ comes from the evaluation of $c_t$ or $c_f$,
-i.e., $[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_t$ or $c_f$;
+Then we know
+\\
+ $[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_t 
+ \lor [\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_f$;
 \\
 and in the case of $\ewhile [b]^{l_b} \edo c_w$, $\event_2$ comes from the evaluation of $c_w$,
 i.e., $[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_w$.
@@ -235,9 +239,11 @@ This lemma is proved.
 	\label{lem:depevents_exist}
 For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and two assignment events 
 $\event_1, \event_2 \in \eventset^{\asn}$,
-if the trace $trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, and $\eventdep(\event_1, \event_2, \trace, c, D)$
-then $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) $,
-or otherwise there exists
+if the trace $trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, and $\eventdep(\event_1, \event_2, \trace, c, D)$,
+then there is either a flows to relation,
+$\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) $,
+or 
+exists
 $\event \in \trace'$ such that
 $
 \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
@@ -749,14 +755,14 @@ we have:
 		This case is proved.
 		\\
 		By the evaluation rule $\rname{while-f}$, we have
-		$
+		$$
 		{
 			\config{{\ewhile [b]^{l}, \edo c_w, \trace}}
 			\xrightarrow{} 
 			\config{{
 			[\eskip]^l ,
-			\trace \tracecat [((b, l, \efalse))]}}
-		}$.
+			\trace \tracecat [((b, l, \efalse))]}}.
+		}$$
 		\\
 		Since there doesn't exist $c_1, c_2 \in \cdom$ satisfying $\eskip = c_1; c_2$, this theorem is vacuously true.
 	\end{proof}
@@ -777,229 +783,6 @@ we have:
 \begin{proof}
 	Proved trivially by induction on $c$ and enumerate all operational semantic rules.
 \end{proof}
-% \begin{lem}[Independent Events Doesn't Block $\flowsto$ for Testing Event]
-% 	\label{lem:inv_indepeventstest}
-% 	%
-% 	For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, an assignment event
-% 	$\event_1 \in \eventset^{\asn}$ and a test event $\event_2 \in \eventset^{\test}$,
-% 	if the trace $trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, 
-% 	and $\eventdep(\event_1, \event_2, \trace, c, D)$,
-% 	and every $\event \in \trace'$ doesn't have the \emph{May-Dependency} relations both on $\event_1$ and to $\event_2$,
-% 	then 
-% 	$\pi_1(\event_1) \in VAR(\pi_1(\event_2))$, and $ {\pi_2(\event_1)} = \llabel(\trace)$
-% 	%
-% 	\[
-% 	\begin{array}{l}
-% 		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1,\in \eventset^{\asn}, \event_2 \in \eventset^{\test} \sthat 
-% 		 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
-% 		\implies
-% 		\eventdep(\event_1, \event_2, \trace, c, D) 
-% 		\\ \quad 
-% 		\implies 
-% 		\left( \forall \event \in \trace' \sthat  \neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-% 		\lor \neg \eventdep(\event, \event_2, \trace[\event:\event_2], c, D) 
-% 		\right) 
-% 		\\ \quad 
-% 		\implies 
-% 		\pi_1(\event_1) \in VAR(\pi_1(\event_2)) \land {\pi_2(\event_1)} = \llabel(\trace)
-% 	\end{array}
-% 	\]
-% \end{lem}
-%
-% \begin{lem}[Flow Search Algorithm ($\mathcal{A}$) Inversion 1]
-% \label{lem:inv_alg1}
-% For all $D \in \dbdom , c \in \cdom, \trace \in \ftdom, \event_1, \event_2 \in \eventset^{\asn}$, and a list $l$,
-% if $l \in \mathcal{A}(\event_1, \event_2, \trace, c, D)$,
-% then l must have the form $[\pi_1(\event_1)^{\pi_2(\event_1)},\ldots, \pi_1(\event_2)^{\pi_2(\event_2)}]$.
-% \[
-% \begin{array}{l}
-%     \forall D \in \dbdom , c \in \cdom, \trace \in \ftdom, l \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
-%   \\ \quad 
-%  l\in \mathcal{A}(\event_1, \event_2, \trace, c, D)  \implies  l = [\pi_1(\event_1)^{\pi_2(\event_1)},\ldots, \pi_1(\event_2)^{\pi_2(\event_2)}]
-% \end{array}
-% \]
-% \end{lem}
-% %
-% \begin{proof}
-% % Let $l \in \mathcal{A}(\event_1, \event_2, \trace, c, D)$. By definition of $\mathcal{A}$ we have 
-% % \[l\in \kw{setmap} 
-% % 	% \bigcup\limits_{l \in \kw{dfs}(\trace, c, D) \land l = \event_1 :: l'}
-% % 	\left(\emap 
-% % 		(\efun  \event \to \pi_1(\event)^{\pi_2(\event)})	
-% % 	(\efilter 
-% % 		(\efun \event \to  \event \in \eventset^{\asn})) \right)
-% % 	S
-% % \]
-% % for $S=\kw{setfilter}
-% % 		(\efun l \to \exists l' \sthat  l = \event_1 :: l' ++ [\event_2]) ~ \kw{dfs}(\trace, c, D)$.
-% % So, in particular by definition of setmap there is a list $l_1\in S$ such that 
-% % \[
-% % 	% \bigcup\limits_{l \in \kw{dfs}(\trace, c, D) \land l = \event_1 :: l'}
-% % \emap 
-% % 		(\efun  \event \to \pi_1(\event)^{\pi_2(\event)})	
-% % 	(\efilter 
-% % 		(\efun \event \to  \event \in \eventset^{\asn}))
-% % 	l_1 = l
-% % \]
-% % \[
-% % l = [\event_1, \ldots, \event_2]
-% % \]
-% % \\
-% Let  $l \in \mathcal{A}(\event_1, \event_2, \trace, c, D)$,
-% by definition of $\mathcal{A}$, we know 
-% %
-% $$l\in \kw{setmap} 
-% 	% \bigcup\limits_{l \in \kw{dfs}(\trace, c, D) \land l = \event_1 :: l'}
-% 		\left(\efun l \to ( \emap 
-% 		(\efun  \event \to \pi_1(\event)^{\pi_2(\event)})
-% 	(\efilter 
-% 		(\efun \event \to  \event \in \eventset^{\asn}) ~ l) \right)
-% 	~ S,
-% $$
-% %
-% where $S=(\kw{setfilter} ~(\efun l \to l = [\event_1, \ldots, \event_2]) ~ (\kw{dfs} \eapp \trace \eapp c \eapp  D))$.
-% \\
-% Then, by definition of $\kw{setmap}$, we know $l$ is an output of
-% \\
-% $\left(\efun l \to ( \emap 
-% 		(\efun  \event \to \pi_1(\event)^{\pi_2(\event)})
-% 	(\efilter 
-% 		(\efun \event \to  \event \in \eventset^{\asn}) ~ l) \right)$.
-% \\
-% Then we know there exists a preimage
-% $l_e \in S $
-% for $l$ such that 
-% $$
-% \emap (\efun  \event \to \pi_1(\event)^{\pi_2(\event)}) 
-% (\efilter (\efun \event \to  \event \in \eventset^{\asn}) ~ l_e) 
-% = l.
-% $$
-%  %
-% Since $l_e \in (\kw{setfilter} ~(\efun l \to l = [\event_1, \ldots, \event_2]) ~ (\kw{dfs} \eapp \trace \eapp c \eapp  D))$,
-% \\
-% by the $\kw{setfilter}$ function,
-% we know only the lists of events in $(\kw{dfs} \eapp \trace \eapp c \eapp  D)$ having the form
-% $ [\event_1, \ldots, \event_2] $ are preserved in $S$, i.e.,
-% \[
-% 	\forall l \in (\kw{setfilter} ~(\efun l \to l = [\event_1, \ldots, \event_2]) ~ \kw{dfs}(\trace, c, D))
-% 	\sthat  l = [\event_1, \ldots, \event_2]
-% \]
-% %
-% Then we know $l_e$ also has the same form, 
-% i.e., $l_e = [\event_1, \ldots, \event_2]$.
-% %
-% \\
-% Let $l_{ef} = (\efilter (\efun \event \to  \event \in \eventset^{\asn})) ~ l_e$, 
-% by $\event_1, \event_2 \in \eventset^{\asn}$, 
-% we know $\event_1$ and $\event_2$ are preserved in $l_{ef}$, i.e.,:
-% \[
-% 	l_{ef} =[\event_1, \ldots, \event_2]
-% \]
-% %
-% Then, by applying the function
-% $\emap (\efun  \event \to \pi_1(\event)^{\pi_2(\event)})$ to 
-% $l_{ef}$, we have $l$ as follows:
-% \[
-% 	[\pi_1(\event_1)^{\pi_2(\event_1)}, \ldots, \pi_1(\event_2)^{\pi_2(\event_2)}]
-% \]
-% %
-% %
-% This lemma is proved.
-% \end{proof}
-% %
-% \begin{lem}[Flow Search Algorithm ($\mathcal{A}$) Inversion 2]
-% \label{lem:inv_alg2}
-% For every $\event_1, \event_2 \in \eventset^{\asn}, D \in \dbdom , c \in \cdom$, we have either one of the two following cases:
-% \begin{enumerate}
-%   \item $\mathcal{A}(\event_1, \event_2,  [\event_1; \event_2], c, D) = 
-%   \left\{[\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}] \right \}$ 
-%   and $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$.
-%   \item  $\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = \{\}$ 
-%   and $\neg \eventdep(\event_1, \event_2, [\event_1; \event_2] c, D)$;
-% \end{enumerate}
-% \end{lem}
-% % \wq{ Good! I just realize this lemma is only used for case 4 of 5.3.}
-% %\jl{Yes!}
-% \begin{proof}
-% By definition of $A$, we know:
-% %
-% \[
-% 	\begin{array}{l}
-% 	\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D)
-% 	= 
-% 	\kw{setmap} ~
-% 	% \bigcup\limits_{l \in \kw{dfs}(\trace, c, D) \land l = \event_1 :: l'}
-% 	\\ \qquad \qquad
-% 	\left(\efun l \to ( \emap 
-% 		(\efun  \event \to \pi_1(\event)^{\pi_2(\event)})
-% 	(\efilter 
-% 		(\efun \event \to  \event \in \eventset^{\asn}) ~ l) \right)
-% 	\\ \qquad \qquad
-% 	(\kw{setfilter} ~
-% 		(\efun l \to l = [\event_1, \ldots, \event_2]) ~ 
-% 		% \left(\left\{[\event_2]\right\} \cup \left\{ \event_1 \sthat ackrel{[\event_1; \event_2]}{\uplus} [\event_2] \right\} \right))
-% 		\left(\left\{[\event_2]\right\} \cup \left(  {\uplus} \eapp \event_1 \eapp {[\event_1; \event_2]} \eapp [\event_2] \right) \right))
-% 	\end{array}
-% \]
-% by definition of $ {\uplus} \eapp \event_1 \eapp {[\event_1; \event_2]} \eapp [\event_2]  $, we know 
-% \[
-% 	\begin{array}{l}
-% 	% \event_1 \sthat ackrel{[\event_1; \event_2]}{\uplus} [\event_2]
-% 	{\uplus} \eapp \event_1 \eapp {[\event_1; \event_2]} \eapp [\event_2] 
-% 	=   
-% 	\\ \quad \qquad 	
-% 	\ecase \eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)
-% 	\to \left\{ [\event_1, \event_2] \right\}
-% 	\\ \quad \qquad 	
-% 	\ecase \_
-% 	\to \left\{ \right\}
-% \end{array}
-% \]
-% %
-% By simplification of the $\kw{setfilter}$, $\emap$, $\efilter$ and $\kw{setmap}$ functions, we know
-% \\
-% in the case of $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$:
-% % \\
-% $\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = 
-%   \left\{[\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}] \right \}$
-% \\
-% (1) is proved.
-% \\
-% And in the case of $\neg \eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$: 
-% % \\
-% $\mathcal{A}(\event_1, \event_2, \cdot  \event_1 \tracecat [\event_2], c, D) = 
-%   \left\{ \right \}$
-% \\
-% (2) is proved.
-% \end{proof}
-%
-%
-% \begin{lem}[\todo{Assignment Evaluation Inversion}].
-% 	\label{lem:inv_eval_asn}
-% 	\[
-% 	\begin{array}{l}
-% 		\forall x \in \lvar_c, \kw{V_{ptl}} \in \subseteq \lvar_c \expr \sthat  
-% 		\exists \trace, \trace' \in \ftdom \sthat  
-% 		\\ \quad
-% 		\forall z \in \lvar_c \setminus (\{x\} \cup \kw{V_{ptl}}) \sthat  
-% 		\env(\trace) z = \env(\trace') z 
-% 		\\ \quad \land
-% 		\forall \event \in \trace, \event' \in \trace' \sthat  
-% 		\pi_1(\event) \in \kw{V_{ptl}} \land \diff(\event, \event') 
-% 		\\ \quad
-% 		\implies 
-% 		\neg \eventdep(\event, \event_y, \trace[\event:\event_y] ) 
-% 		\implies
-% 		\config{\trace, [\assign{y}{\expr}]{}^l;c'} \rightarrow^{asn} \config{\trace\cdot \event_y, c'}
-% 		\\ \quad
-% 		\implies 
-% 		\config{\trace', [\assign{y}{\expr}]{}^l;c'} \rightarrow^{asn} \config{\trace'\cdot \event_y',c'}
-% 		\land \diff(\event_y, \event_y')
-% 		\implies x \in VAR(\expr)
-% 	\end{array}
-% 	\]
-% 	\end{lem}	
-%
 %
 % \todo{Event Dependency Transitivity}
 \begin{lem}
@@ -1016,10 +799,10 @@ $\eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)$.
   \[
 	  \begin{array}{l}
   \forall D \in \dbdom , c \in \cdom, \event_1, \event_2, \event_3 \in \eventset^{\asn}, \trace_{12}, \trace_{23} \in \ftdom \sthat  
+  \\ \quad
   \eventdep(\event_1, \event_2, \trace_{12}, c, D) 
   \land
   \eventdep(\event_2, \event_3, \trace_{23}, c, D) 
-  \\ \quad
   \implies
   \eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)
 	  \end{array}

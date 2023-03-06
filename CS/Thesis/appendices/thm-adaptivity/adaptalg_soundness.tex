@@ -85,9 +85,12 @@ By Lemma~\ref{lem:sound_adaptalg_scc}, we know for each walk $k_i$:
 %
 Then we have:
 \[ 
-  \qlen(k_{x,y}) = \qlen(k_x) + \qlen(k_1) + \ldots + \qlen(k_y) \leq 
+  \begin{array}{l}
+  \qlen(k_{x,y}) = \qlen(k_x) + \qlen(k_1) + \ldots + \qlen(k_y) 
+  \\\leq 
   \kw{adapt_{scc}[\sccgraph_1]} + \kw{adapt_{scc}[\sccgraph_1]}  + \ldots + \kw{adapt_{scc}[\sccgraph_y]}
   \leq \kw{adapt}
+  \end{array}
   \]
 , where $\kw{adapt}$ is the output of $\pathsearch(\progG)$.
 This case is proved.
@@ -113,10 +116,10 @@ with set of unique vertex $\{v_1, \ldots, x\}$
 there are $\paths(p_{x,x})$ on $\sccgraph$.
 \\
 (2) For every path $p_{x,x}^{i} = (x, v_1, \ldots, x) \in \paths(p_{x,x})$,  
-$\kw{flowcapacity} (p_{x,x}^{i})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, x)$, 
-$\visit(s) (s_1, \ldots, x)) \leq \kw{flowcapacity}(p_{x,x}^{i})$;
+$\kw{flowcapacity} (p_{x,x}^{i})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, x)$. 
+So we know $\visit(s) (s_1, \ldots, x) \leq \kw{flowcapacity}(p_{x,x}^{i})$.
 \\
-(3) $\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i}$)  $\geq\len(s | s \in ( s_1, \ldots, x) \land \qflag(s) = 1) =  \qlen(k)$,
+(3) $\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i})$  $\geq\len(s | s \in ( s_1, \ldots, x) \land \qflag(s) = 1) =  \qlen(k)$,
 \\
 (4) Then, the $\max\limits_{p_{x,x}^{i} \in \paths(p_{x,x})} \geq \max\{\qlen(k_{x, x}) | k_{x, x} \in \walks(k_{x, x})\}$
 \\

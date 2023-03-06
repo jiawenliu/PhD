@@ -1,7 +1,7 @@
 \begin{subproof}[Proof of the Basecase: Case 1]
 %
 \label{pf:eventdep_base_val}
-We have the following by the definition $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$ for case 1:
+By the definition $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$,  we know
 \begin{equation}
   \label{eq:eventdep_def_base_val}
   \begin{array}{l}   
@@ -129,30 +129,36 @@ In this case, we have the following execution instance:
 every evaluation step of this execution is the $\rname{skip}$ rule.}
  %
   \[
+    \begin{array}{l}
   \config{c_1, \vtrace_1 \tracecat [\event_1']} 
   \rightarrow^{\rname{skip}^*} 
-  \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} ; {c}_2, \vtrace_1 \tracecat [\event_1']} 
+  \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} ; {c}_2, \vtrace_1 \tracecat [\event_1']}
+  \\ 
   \rightarrow^\rname{assn/query} 
   \config{{c}_2,  \vtrace_0 \tracecat \vtrace_1 \tracecat [\event_1'; \event_2']} 
+    \end{array}
  \]
 %
 \item{$[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_2$}
 \\
 By Inversion Lemma~\ref{lem:inv_while}, 
-we have a $\ewhile$ conditional command
- $(\ewhile [b_w]^l_w \edo c_w)$ in $c_2$, where
+we know there is a $\ewhile$ conditional command
+ $(\ewhile [b_w]^l_w \edo c_w)$ in $c_2$ and
 % $(\ewhile [b_w]^l_w \edo c_w) \in_c c_2$ and 
 $[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_w$.
 % \\
 Then, we have the following possible execution instances
  %
   \[
-  \config{c_1, \vtrace_1 \tracecat [\event_1']} 
-  \rightarrow^{\rname{skip}^*} 
-  \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} ; {c}_2, \vtrace_1 \tracecat [\event_1']} 
-  \rightarrow^\rname{assn/query} 
-  \config{{c}_2,  \vtrace_1 \tracecat [\event_1']\tracecat [\event_2']} 
- \]
+    \begin{array}{l}
+      \config{c_1, \vtrace_1 \tracecat [\event_1']} 
+      \rightarrow^{\rname{skip}^*} 
+      \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} ; {c}_2, \vtrace_1 \tracecat [\event_1']} 
+      \\ 
+      \rightarrow^\rname{assn/query} 
+      \config{{c}_2,  \vtrace_1 \tracecat [\event_1']\tracecat [\event_2']} 
+\end{array}
+\]
 %
   \[
   \begin{array}{l}

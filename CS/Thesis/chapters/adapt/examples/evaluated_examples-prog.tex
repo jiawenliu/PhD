@@ -196,6 +196,7 @@ The longest dependency depth, i.e., the adaptivity is expectation to be $1 +2 * 
     \Big(
      \clabel{\assign{j}{j-1}}^{4} ;
      \clabel{\assign{z}{\query(\chi(x + \ln(y)))} }^{5}  ; 
+     \\
      \clabel{ \assign{x}{\query(\chi[z])}}^{6} ; 
      \clabel{ \assign{y}{\query(\chi[z])}}^{7} 
     \Big)
@@ -336,13 +337,13 @@ The longest dependency depth, i.e., the adaptivity is expectation to be $2 + k$.
             \begin{array}{l}
                 \clabel{\assign{i}{k} }^{0} ; 
                 \clabel{ \assign{x}{\query(\chi[0])}}^{1} ; 
-                \clabel{ \assign{y}{\query(\chi[1])}}^{2} ; 
+                \clabel{ \assign{y}{\query(\chi[1])}}^{2} ; \\
                 \ewhile ~ \clabel{i > 0}^{3} ~ \edo ~ \\
                 \Big(
                 \clabel{\assign{i}{i-1}}^{4} ;
                 \clabel{\assign{j}{k}}^{5} ;
                 \clabel{\assign{y}{\query(\chi(\ln(x) + y))} }^{6}  ; \\
-                \ewhile ~ \clabel{j > 0}^{7} ~ \edo ~ 
+                \ewhile ~ \clabel{j > 0}^{7} ~ \edo ~ \\
                 \Big(
                 \clabel{\assign{j}{j-1}}^{8};
                 \clabel{\assign{x}{\query(\chi(\ln(y))+\chi[x])} }^{9}
@@ -383,7 +384,7 @@ The longest dependency depth, i.e., the adaptivity is expectation to be $2 + k$.
      \eif(\clabel{x > 0}^6, \clabel{\assign{y}{\query(\chi(\ln(x) + y))} }^{7},
      \clabel{\assign{y}{\query(\chi(x))} }^{8} )
       ; \\
-     \ewhile ~ \clabel{j > 0}^{9} ~ \edo ~ 
+     \ewhile ~ \clabel{j > 0}^{9} ~ \edo ~ \\
      \Big(
       \clabel{\assign{j}{j-1}}^{10};
       \clabel{\assign{x}{\query(\chi(\ln(y))+\chi[x])} }^{11}
