@@ -200,7 +200,7 @@ and
 semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
 \\
 By the two definitions, we also know 
-$\traceV  = \lvar_c$ and $\progV = \lvar_c$.
+$\traceV  = \lvar(c)$ and $\progV = \lvar(c)$.
 \\
 Then we know $\traceV  = \progV$, i.e., 
 for arbitrary $v \in \mathcal{VAR} \times \mathbb{N}$, $v \in \progV \Longleftrightarrow v \in \traceV$.
@@ -245,7 +245,7 @@ By Lemma~\ref{lem:vertex_map}, we know $x^i, y^j \in \progV$.
 \\
 By definition of $\traceE$, we know $\vardep(x^i, y^j, c)$.
 \\
-By Theorem~\ref{thm:flowsto_soundness}, we know $ \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  
+By Theorem~\ref{thm:flowsto_soundness}, we know $ \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c)\sthat  
 n \geq 0 \land
 \flowsto(x^i,  z_1^{r_1}, c) 
 \land \ldots \land \flowsto(z_n^{r_n}, y^j, c) $.
@@ -308,7 +308,7 @@ $\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace\tracecat\vtrace'}
 \land 
 \config{\hat{w}, \trace_0} \earrow v$
 \\
-By soundness of reachability bound analysis in Theorem~\ref{thm:rb_soundness}, we know 
+By soundness of reachability bound analysis in Theorem~\ref{thm:pathinsensitive_rb_soundness}, we know 
 % $\traceW(v) \leq \progW(v)$. This lemma is proved.
 $\vcounter(\vtrace', l) \leq v$
 \\

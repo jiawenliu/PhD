@@ -32,10 +32,10 @@ modified by each other. It is the simplified version of Example~\ref{ex:threeNes
   \caption{}
   \end{centering}
   \end{subfigure}
-\begin{subfigure}{.5\textwidth}
+\begin{subfigure}{.55\textwidth}
   \begin{centering}
 %   \todo{abstract-cfg for two round}
-\begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
+\begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
 \draw[] (-7, 10) circle (0pt) node{{ $0$}};
 \draw[] (0, 10) circle (0pt) node{{ $1$}};
 \draw[] (6, 10) circle (0pt) node {{$\lex$}};
@@ -75,17 +75,17 @@ modified by each other. It is the simplified version of Example~\ref{ex:threeNes
   \\
   The loop free simple transition paths:
   \[
-      % \begin{array}{lllll}
+      \begin{array}{lllll}
           \tpath_0 = (0 \to 1)
           \quad
           \tpath_1 = (1 \to 2 \to 3)
           \quad           
           \tpath_2 = (3 \to 4 \to 3)
-          \quad
+          \\
           \tpath_3 = (3 \to 5 \to 6 \to 1)
           \quad
           \tpath_4 = (1 \to \lex)
-      % \end{array}
+      \end{array}
       \]
   \textbf{Refined Program}:
   \[

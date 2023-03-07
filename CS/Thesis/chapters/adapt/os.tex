@@ -70,7 +70,7 @@ The concatenation preserves the order of every element in the two traces.
 %   \end{defn}
 
   \begin{defn}[Trace Concatenation, $\tracecat: \tdom \to \tdom\to \tdom $]
-    \label{def:trace_concate}
+    \label{def:trace_cat}
   Given two traces $\trace_1 \in \tdom, \trace_2 \in \tdom$, the trace concatenation operator 
   $\tracecat$ is defined as:
   \[
@@ -238,7 +238,7 @@ The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval
 If a program $c$ has some non-terminating behavior, we define its execution as follows.
 \\
 \begin{defn}[Non-terminating and Infinite Trace]
-  \label{def:non-terminating}
+  \label{def:adaptfun-non-terminating}
   Given a program $c$ and an initial trace $\trace \in \ftdom_0(c)$,
   when $c$ executes with $\trace$,  we define the execution of $c$ under $\trace$ is non-terminating and produces an infinite trace $\trace' \in \ftdom \cup \{\infty\}$, as 
   $\config{c, \trace_0} \uparrow^{\infty} \trace' \in \lim(\uparrow)$
@@ -687,7 +687,8 @@ It expresses whether an event belongs to a trace.
 %   As usual, we denote by $\event \notin \trace$ that the event $\event$ doesn't belong to the trace $\trace$.
 %   \end{defn}
   \begin{defn}(An Event Belongs to A Trace)
-    An event $\event \in \eventset$ belongs to a trace $\trace \in \tdom$, i.e., $\event \in \trace$ are defined as follows:
+  \label{def:event_belong}
+An event $\event \in \eventset$ belongs to a trace $\trace \in \tdom$, i.e., $\event \in \trace$ are defined as follows:
   %
   \begin{equation*}
     \event \in \trace  

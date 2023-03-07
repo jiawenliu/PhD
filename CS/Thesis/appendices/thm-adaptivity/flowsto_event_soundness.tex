@@ -38,9 +38,9 @@ We first introduce some conventional operators as follows, which will be used in
   \]
 \end{defn}
 %
-Program Entry Point: $\entry_c : \mbox{Command} \to \mathbb{N}$ 
+Program Entry Point: $\entry(c) : \mbox{Command} \to \mathbb{N}$ 
 \[
-  \entry_c \triangleq 
+  \entry(c) \triangleq 
 \left\{
   \begin{array}{ll} 
      l       
@@ -55,9 +55,9 @@ Program Entry Point: $\entry_c : \mbox{Command} \to \mathbb{N}$
     & c_1 = \eif([b]{}^l, c_t, c_f)
     \\ 
     l         
-    & c = \ewhile [b]^l \edo c'
+    & c = \ewhile [b]^l \edo (c_w)
     \\ 
-    \entry_{c1}
+    \entry({c1})
     & c = c1;c2
   \end{array}
   \right.
@@ -98,7 +98,7 @@ For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_
 \event_1, \event_2 \in \eventset^{\asn}$, 
 if $\exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ and 
 $\eventdep(\event_1, \event_2, \trace, c, D) $, then
- $z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}}$ with $n \geq 0$ such that   
+ $z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c)$ with $n \geq 0$ such that   
 $\flowsto(x^i,  z_1^{r_1}, c) 
 \land \ldots \land \flowsto(z_n^{r_n}, y^j, c)$
 %
@@ -113,7 +113,7 @@ $\flowsto(x^i,  z_1^{r_1}, c)
 		\eventdep(\event_1, \event_2, \trace, c, D) 
 		\\ \quad 
 		\implies 
-    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat 
+    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat 
     \\ \qquad 
      n \geq 0 \land
 		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
@@ -175,7 +175,7 @@ by Lemma~\ref{lem:depevents_exist}.
         \exists \trace' \in \ftdom \sthat  [\event_1'; \event_2'] = [\event_1] \tracecat \trace' \tracecat [\event_2]
         \\ \qquad 
             \implies    
-        % \forall  z^i, y^j \in \lvar_c, l_h, l_t \sthat  
+        % \forall  z^i, y^j \in \lvar(c), l_h, l_t \sthat  
           \eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)
          \implies \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
       \end{array}
@@ -207,7 +207,7 @@ by Lemma~\ref{lem:depevents_exist}.
       % \end{enumerate}
       % %
       % In case of $\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = \{\}$,
-      % since $\not\exists  z^i, y^j \in \lvar_c, l_h, l_t \sthat  l_h ++ [z^i, y^j] ++ l_t \in \{\}$, the theorem is vacuously true.
+      % since $\not\exists  z^i, y^j \in \lvar(c), l_h, l_t \sthat  l_h ++ [z^i, y^j] ++ l_t \in \{\}$, the theorem is vacuously true.
       % %
       % \\
       % Then in the case 1., 
@@ -238,7 +238,7 @@ by Lemma~\ref{lem:depevents_exist}.
           \eventdep(\event_1, \event_2, [\event_1'] \tracecat \trace_{ih} \tracecat [\event_2'], c, D) 
           \\ \quad 
           \implies 
-          \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 
+          \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 
           \\ \quad  
           \land
           \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
@@ -259,7 +259,7 @@ by Lemma~\ref{lem:depevents_exist}.
             \eventdep(\event_{ih1}, \event_{ih2}, \trace[\event_{ih1}:\event_{ih2}], c, D) 
             \\ \quad 
             \implies 
-            \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+            \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 \land
             \flowsto(\pi_1(\event_{ih1})^{\pi_2(\event_{ih1})},  z_1^{r_1}, c) 
             \\ \quad  
             \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_{ih2})^{\pi_2(\event_{ih2})}, c) 
@@ -289,7 +289,7 @@ by Lemma~\ref{lem:depevents_exist}.
             \eventdep(\event_1, \event_2, [\event_1] \tracecat \trace_{ih} \tracecat [\event_2], c, D) 
           \\ \quad 
           \implies 
-          \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+          \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 \land
           \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
           \\ \quad  
           \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
@@ -315,7 +315,7 @@ by Lemma~\ref{lem:depevents_exist}.
         In the second case, let $\event_{ih}$ be this event, from the induction hypothesis, we know:
         \[
           \begin{array}{l}
-            \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} 
+            \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) 
             \sthat  n \geq 0 
             \\ \quad  \land
             \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
@@ -326,7 +326,7 @@ by Lemma~\ref{lem:depevents_exist}.
           Then we know:
           \[
             \begin{array}{l}
-              \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar_{{c}} \sthat  n \geq 0 \land
+              \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 \land
             \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
             \\ \quad  
             \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_{ih})^{\pi_2(\event_{ih})}, c) )

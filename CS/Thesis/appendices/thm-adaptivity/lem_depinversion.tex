@@ -436,9 +436,9 @@ In case of $ \pi_1(\event_z) \notin VAR(\expr_2 / \qexpr_2)$, by Inversion Lemma
 %
 \[
 	\begin{array}{l}
-		\forall x^i \in \lvar, \trace, \trace' \in \ftdom, v, v' \sthat 
+		\forall x^i \in \lvar(c), \trace, \trace' \in \ftdom, v, v' \sthat 
 		\\ \qquad 
-		\Big( \forall z^j \in \lvar / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
+		\Big( \forall z^j \in \lvar(c) / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
 		\\ \qquad 
 		\env(\trace) z = \env(\trace') z \Big) \land 
 	\config{\trace, \expr_2 / \qexpr_2} \aarrow v \land \config{\trace', \expr_2} \aarrow  v' \\ \qquad 
@@ -447,9 +447,9 @@ In case of $ \pi_1(\event_z) \notin VAR(\expr_2 / \qexpr_2)$, by Inversion Lemma
 \]
 	\[
 		\begin{array}{l}
-			\forall x^i \in \lvar, \trace, \trace' \in \ftdom, \qval, \qval' \sthat 
+			\forall x^i \in \lvar(c), \trace, \trace' \in \ftdom, \qval, \qval' \sthat 
 			\\ \qquad 
-		\Big( \forall z^j \in \lvar / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
+		\Big( \forall z^j \in \lvar(c) / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
 		\\ \qquad 
 		\env(\trace) z = \env(\trace') z \Big) \land 
 		\config{\trace, \qexpr_2} \qarrow \qval \land \config{\trace', \qexpr_2} \qarrow \qval' 
@@ -471,7 +471,7 @@ Let $\kw{use}_{\trace_2}$ a subset of the events in $\trace_2$, satisfying:
 Then we also know for every $\event_z \in \kw{use}_{\trace_2}$, 
 $\neg \eventdep(\event_1, \event_z, \trace[\event_1:\event_z], c, D)$, i.e.,:
 \[
-	\forall z^l \in \lvar \setminus 
+	\forall z^l \in \lvar(c) \setminus 
 	\big( 
 		( \lvar_{\trace_2} \setminus \lvar_{\kw{use}_{\trace_2}}) \cup \{\pi_1(\event_1)^{\pi_2(\event_1)}\} \big)
 	\sthat 
@@ -481,7 +481,7 @@ $\neg \eventdep(\event_1, \event_z, \trace[\event_1:\event_z], c, D)$, i.e.,:
  and
  \\ 
 $
-	\forall z^l \in \lvar \setminus ( \lvar_{\trace_2} \setminus \lvar_{\kw{use}_{\trace_2}}), 
+	\forall z^l \in \lvar(c) \setminus ( \lvar_{\trace_2} \setminus \lvar_{\kw{use}_{\trace_2}}), 
 	\trace, \trace' \in \ftdom, v, v' \sthat  
 	\env(\trace) z = \env(\trace') z 
 	\land 
@@ -494,7 +494,7 @@ $
 $;
 \\
 $
-	\forall z^l \in \lvar \setminus ( \lvar_{\trace_2} \setminus \lvar_{\kw{use}_{\trace_2}}), 
+	\forall z^l \in \lvar(c) \setminus ( \lvar_{\trace_2} \setminus \lvar_{\kw{use}_{\trace_2}}), 
 	\trace, \trace' \in \ftdom, \qval, \qval' \sthat  
 	\env(\trace) z = \env(\trace') z 
 	\land 
@@ -839,11 +839,11 @@ $\eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)$.
 %
 \begin{lem}[\emph{Variable May-Dependency} Transitivity]
 	\label{lem:vardep_trans}
-For every $c \in \cdom, x^i, y^j, z^l \in \lvar_c$, 
+For every $c \in \cdom, x^i, y^j, z^l \in \lvar(c)$, 
 if $\vardep(x^i, y^j, c)$ and 
 $\vardep(y^j, z^l, c)$, then $\vardep(x^i, z^l, c)$.
 	\[
-	\forall c \in \cdom, x^i, y^j, z^l \in \lvar_c \sthat  
+	\forall c \in \cdom, x^i, y^j, z^l \in \lvar(c) \sthat  
 	\vardep(x^i, y^j, c) 
 	\land
 	\vardep(y^j, z^l, c) 
