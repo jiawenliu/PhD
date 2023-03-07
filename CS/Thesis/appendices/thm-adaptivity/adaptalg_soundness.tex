@@ -234,7 +234,9 @@ $\visit(s) (x, s_1, \ldots, y)  \leq \kw{flowcapacity}(p_{x, y})$
   $$
   %
   % \\
-Since $\kw{flowcapacity}(p_{x, y} + p_{y, x})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, y, v_1', \ldots, x)$, 
+Since $\kw{flowcapacity}(p_{x, y} + p_{y, x})$ is the maximum visiting times for every $v$ such that
+\\
+ $v \in (x, v_1, \ldots, y, v_1', \ldots, x)$, 
 \\
 By line:7 in Algorithm~\ref{alg:adaptscc}, we know $\kw{flowcapacity}(p_{x, y})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, y)$, 
 \\

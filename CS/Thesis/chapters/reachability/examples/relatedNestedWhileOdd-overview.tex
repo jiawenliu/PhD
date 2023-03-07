@@ -78,16 +78,22 @@
   $\tpath_5 = (1 \to \lex)$
   \\
   $
-  \tpath_0 ; \rpchoose{ 1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4), 
-  1: \rprepeat(\tpath_4; \tpath_1; 4:\rprepeat(\tpath_3); \tpath_2) }; \tpath_5
+  \tpath_0 ; 
+  \rpchoose{ 
+    \begin{array}{l}
+      1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4), \\
+      1: \rprepeat(\tpath_4; \tpath_1; 4:\rprepeat(\tpath_3); \tpath_2) 
+    \end{array}
+    }; \tpath_5
   $
   }
-  % \caption{}
+  \caption{}
     \end{centering}
     \end{subfigure}
   \caption{
-  (a) The program of the two paths loop with a nested Loop in one path,
-    (b) The corresponding \emph{abstract transition graph}, $\absG(\kw{nestedOdd}(n, m))$.}
+    (a) The program of the two paths loop with a nested Loop in one path,
+    (b) The corresponding \emph{abstract transition graph}, $\absG(\kw{nestedOdd}(n, m))$,
+    (c) The refined program.}
       \label{fig:relatedNestedWhileOdd-overview}
   \end{figure}
   }

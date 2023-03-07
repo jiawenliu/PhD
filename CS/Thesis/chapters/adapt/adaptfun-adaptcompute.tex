@@ -283,15 +283,18 @@ $c$'s estimated dependency graph $\progG(c)$ is a DAG, then we prove that the ad
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION OF ADAPTIVITY COMPUTATION ALGORITHM 1: %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph*{Adaptivity Computation Algorithm on An SCC ($\kw{\pathsearch_{scc}(c, SCC_i)}$)}
+\paragraph*{Adaptivity Computation for An Strong Connected Component of $\progG(c)$.}
 \begin{algorithm}
   \caption{
-  {Adaptivity Computation Algorithm on An SCC ({$\kw{\pathsearch_{scc}(c, SCC_i)}$})}
+  {Adaptivity Computation on An SCC ({$\kw{\pathsearch_{scc}(c, SCC_i)}$})}
   \label{alg:adaptscc}
   }
   \begin{algorithmic}[1]
-    \REQUIRE The program $c$, 
-    An strong connected component of $\progG(c)$: $ \kw{SCC_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$
+    \REQUIRE 
+    The program $c$, 
+    \\ \qquad
+    An strong connected component of $\progG(c)$: 
+    $ \kw{SCC_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$
   % {\bf {$\kw{\pathsearch_{scc}(c, SCC_i)}$}:}  
   \STATE {\bf init} 
   \\
@@ -326,8 +329,12 @@ $c$'s estimated dependency graph $\progG(c)$ is a DAG, then we prove that the ad
   \STATE \qquad \qquad \qquad $\kw{dfs(G, v, visited)}$;
   \STATE \qquad \qquad {\bf else}: \#\{There is a cycle finished\}
   % \STATE \qquad \qquad \qquad \#\{update the length of the longest path reaching this vertex\}
-  \STATE \qquad \qquad \qquad 
-  \highlight{$\kw{r[v] =  \max(r[v], r[s] +  \min(\weights_i(v), {flowcapacity}[s]) * (querynum[s] + \qflag_i(v)))}$}; \#\{update the length of the longest walk reaching this vertex on this cycle\}
+  \STATE \qquad \qquad \qquad $\kw{r[v] =  \max(r[v], r[s]}$ 
+  \\ \qquad \qquad \qquad \qquad \qquad
+  $\kw{+ \min(\weights_i(v), {flowcapacity}[s])}$ 
+  $ \kw{* (querynum[s] + \qflag_i(v)))}$; 
+  \\
+  \#\{update the length of the longest walk reaching this vertex on this cycle\}
   \STATE \qquad {\bf return}  $\kw{r[c]}$
   \STATE  {\bf for} every vertex $v$ in $\vertxs_i$:
   \STATE  \qquad initialize the $\kw{visited, r, flowcapacity, querynum}$ with the same value at line:2.
@@ -416,7 +423,8 @@ number of query vertices
 $\kw{querynum}$ so far when the traversing reaches $v$.
 Line:10
 updates the longest query length $\kw{r}$
-alone the path when the traverse arrives vertex $v$ by $\kw{flowcapacity[v] \times querynum[v]}$.
+alone the path when the traverse arrives vertex $v$ by the operation 
+$\kw{flowcapacity[v] \times querynum[v]}$.
 This computation guarantees: 
 1. The visiting times of each vertex on the walk reaching $v$ is no more than 
 the maximum visiting it can be on this walk;

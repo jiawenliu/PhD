@@ -215,7 +215,7 @@ We abuse the notation $\mathcal{P}(\absevent)$ for the power set of all abstract
 The set of the abstract events $\absflow(c)$ for a program $c$
 is computed as follows in Definition~\ref{def:absevent_compute}.
  %
- \begin{defn}[Abstract Trace Computation]
+ \begin{defn}[Abstract Execution Trace Computation]
  \label{def:psRB-absevent_compute}
  The \emph{abstract trace}, $\absflow(c) \in \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$ of a program $c$  is computed as follows.
 
@@ -262,15 +262,12 @@ For any program $c$ with
 \[
 \begin{array}{l}
   \forall c, c' \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom ,  \event = (\_, l, \_) \in \eventset, l \in \progl(c) \sthat
+  \\ \qquad 
   \big(
     \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} 
-  % \lor 
-  % \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
   \big)
   \land \event \in \trace 
-  \\
-  \qquad \implies \exists 
-  %  \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
+  \implies \exists 
   \absevent \in \absflow(c) \land \absevent = (l, \_, \_)
 \end{array}
 \]

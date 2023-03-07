@@ -2,7 +2,7 @@
     \begin{figure}
         \centering
         %
-        \begin{subfigure}{.45\textwidth}
+        \begin{subfigure}{.48\textwidth}
             $
             \begin{array}{l}
                 N < m < n\\
@@ -25,7 +25,7 @@
             \end{subfigure}
         \begin{subfigure}{.48\textwidth}
             \begin{centering}
-                \begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
+                \begin{tikzpicture}[scale=\textwidth/20cm,samples=250]
                     \draw[] (-5, 10) circle (0pt) node{{ $0$}};
                     \draw[] (0, 10) circle (0pt) node{{ $1$}};
                     \draw[] (6, 10) circle (0pt) node {{$\lex$}};
@@ -76,6 +76,8 @@
     \caption{}
     \end{centering}
     \end{subfigure}
+    \begin{subfigure}{.9\textwidth}    
+    \begin{centering}
     % $
     %     \begin{array}{l}
     %         \rprog_1 = {\rprepeat(\tpath_1; 3: {\rprepeat(\tpath_2; 6 : {\rprepeat(\tpath_3)}; \tpath_4)}; \tpath_5)}
@@ -84,8 +86,12 @@
     %     \end{array}
     % $
     $\rprog = \tpath_0; 1: \rprepeat(\tpath_1; 3: {\rprepeat(\tpath_2; 6 : {\rprepeat(\tpath_3)}; \tpath_4)}; \tpath_5);\tpath_6$
-    \caption{
-        (a) An example of three nested loops with related iterator variables.
-        (b) The abstract transition graph, the simple transition paths and loop body.}
-            \label{fig:threeWhile-overview}
-        \end{figure}
+    \caption{}
+    \end{centering}
+    \end{subfigure}
+\caption{
+        (a) An example of three nested loops with related iterator variables,
+        (b) The abstract transition graph, the simple transition paths and loop body,
+        (c) The refined program.}
+\label{fig:threeWhile-overview}
+\end{figure}
