@@ -1,8 +1,11 @@
-\begin{thm}[Soundness of $\pathsearch$]
-  \label{thm:adaptalg_soundness}
-  For every program $c$, given its \emph{Program-Based Dependency Graph} $\progG$,
-  \[ \pathsearch(\progG({c})) \geq \progA(c).\]
-\end{thm}
+\begin{theorem}[Soundness of $\pathsearch$]
+  % \label{thm:adaptalg_soundness}
+  For every well-formed program $c$ with its \emph{estimated dependency graph} $\progG$,
+  \[ 
+    \forall \trace_0 \in \ftdom_{0}(c), v \in (\mathbb{N}\cup \{\infty\}) \sthat
+  \config{\pathsearch(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq v.
+  \]
+\end{theorem}
 proof Summary:
 \\
 1. for every two vertices $x, y$ with a walk $k_{x,y}$ from $x$ to $y$ on $\progG$, 

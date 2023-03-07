@@ -106,11 +106,11 @@ With this symbolic expression we prove that Definition~\ref{def:prog_adapt} comp
 a sound upper bound sound for the \emph{adaptivity} w.r.t the Definition~\ref{def:trace_adapt}.
 \begin{thm}[Soundness of {\THESYSTEM}]
   \label{thm:adaptfun_sound}
-  For every program $c$, 
-  its estimated adaptivity is a sound upper bound of its adaptivity.
+  For every well-formed program $c$, 
+  its estimated adaptivity $\progA({c})$ is a sound upper bound of its adaptivity.
    \[
-   \forall \trace_0 \in \ftdom_{0}(c), v \in (\mathbb{N}\cup \{\infty\}) \sthat
-    \config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq c
+   \forall \trace_0 \in \ftdom_{0}(c), v \in \mathbb{N} \cup \{\infty\} \sthat
+    \config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq v
 \] 
 \end{thm}
 The proof is in Appendix~\ref{apdx:adapt_soundness}.
@@ -125,10 +125,10 @@ $\pathsearch$ also involves another algorithm $\pathsearch_{\kw{SCC}}$ in \ref{a
 Theorem~\ref{thm:adaptalg_soundness} below formally describes the soundness of this algorithm with proof in Appendix~\ref{apdx:adaptalg_soundness}.
 \begin{thm}[Soundness of $\pathsearch$]
     \label{thm:adaptalg_soundness}
-    For every program $c$, given its \emph{estimated dependency graph} $\progG$,
+    For every well-formed program $c$ with its \emph{estimated dependency graph} $\progG$,
     \[ 
       \forall \trace_0 \in \ftdom_{0}(c), v \in (\mathbb{N}\cup \{\infty\}) \sthat
-    \config{\pathsearch(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq c.
+    \config{\pathsearch(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq v.
     \]
 \end{thm}
 
@@ -188,7 +188,7 @@ this two rounds example program's adaptivity rounds, which is supposed to be $2$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION OF THE COMBINED ADAPTIVITY COMPUTATION ALGORITHM: %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\textbf{Adaptivity Computation Algorithm}
+% \textbf{Adaptivity Computation Algorithm}
 To this end, we combine the 
 % DFS and BFS algorithm 
 depth first search and breath first search strategies in our longest walk estimation algorithm.
@@ -283,7 +283,7 @@ $c$'s estimated dependency graph $\progG(c)$ is a DAG, then we prove that the ad
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION OF ADAPTIVITY COMPUTATION ALGORITHM 1: %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph*{Adaptivity Computation for An Strong Connected Component of $\progG(c)$.}
+\paragraph*{Adaptivity Computation for An Strongly Connected Component of $\progG(c)$.}
 \begin{algorithm}
   \caption{
   {Adaptivity Computation on An SCC ({$\kw{\pathsearch_{scc}(c, SCC_i)}$})}
@@ -293,7 +293,7 @@ $c$'s estimated dependency graph $\progG(c)$ is a DAG, then we prove that the ad
     \REQUIRE 
     The program $c$, 
     \\ \qquad
-    An strong connected component of $\progG(c)$: 
+    An strongly connected component of $\progG(c)$: 
     $ \kw{SCC_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$
   % {\bf {$\kw{\pathsearch_{scc}(c, SCC_i)}$}:}  
   \STATE {\bf init} 
@@ -343,13 +343,13 @@ $c$'s estimated dependency graph $\progG(c)$ is a DAG, then we prove that the ad
   \end{algorithmic}
   \end{algorithm}
 
-  This algorithm takes the program, and an SCC (a subgraph), 
+  This algorithm takes the program, and a strongly connected component, 
   $\kw{SCC_i}$ of a program's estimated dependency graph $\progG(c)$ as input
 % to be precise, the input graph is SCC, and 
 and outputs the adaptivity local bound of $\kw{SCC_i}$. 
-For an SCC containing only one vertex without any edge, it returns the query annotation of this vertex as adaptivity.
-For SCC containing at least one edge, 
-there are three steps in this algorithm: 1. It first collects all the paths in the input SCC 2. Then it calculates the adaptivity of every path by a novel adaptivity computation method. 3. The maximal adaptivity among over all paths is the adaptivity of this SCC in the end. Because the input graph is SCC, when the algorithm starts to traverse from a vertex, it finally goes back to the same vertex.
+For a strongly connected component that contains only one vertex without any edge, it returns the query annotation of this vertex as adaptivity.
+For a strongly connected component containing at least one edge, 
+there are three steps in this algorithm: 1. It first collects all the finite paths in the input graph 2. Then it calculates the adaptivity of every path by a novel adaptivity computation method. 3. The maximal adaptivity among over all paths is the adaptivity of this component in the end. Because the input graph is SCC, when the algorithm starts to traverse from a vertex, it finally goes back to the same vertex.
 In this sense, the paths collected in step 1 are all simple cycles with the same starting and ending vertex. 
 The most interesting part is step 2. It recursively computes the adaptivity upper bound on the fly of paths collecting through a depth first search procedure $\kw{dfs}$ from line: 5-15.
 It designs a novel adaptivity computation method, which guarantees the visiting times of each vertex by its weight and addresses the \textbf{Approximation Challenge}.

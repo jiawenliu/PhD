@@ -1,10 +1,10 @@
   
 \begin{theorem}[Soundness of \THESYSTEM]
-	For every program $c$, 
+	For every well-formed program $c$, 
 	its estimated adaptivity is a sound upper bound of its adaptivity.
 	 \[
-		\forall \trace_0 \in \ftdom_{0}(c), v \in (\mathbb{N}\cup \{\infty\}) \sthat
-		\config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq c
+		\forall \trace_0 \in \ftdom_{0}(c), v \in \mathbb{N} \cup \{\infty\} \sthat
+		\config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq v
   \] 
   \end{theorem}
   %

@@ -100,8 +100,10 @@ The soundness is guaranteed by the three states,
 \begin{itemize}
   \item \emph{Loop Initial State} Soundness.
   By Definition~\ref{def:alg-loopabsstate}, we have $\lpinit(\rprog, \tpath, c) = $ 
+  
+  $\arg\max_{l_1}$
   \[
-    \arg\max_{l_1}\left\{
+    \left\{
          \varinvar(y, c) + v ~\middle\vert~ 
          \begin{array}{l} 
            (l_1, x' \leq y + v, l_2) \in \reset(x, c) 
@@ -125,6 +127,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
   \]
 %
   In this sense, we have 
+  \\
   $
   \arg\max_{l_1}\left\{
     \varinvar(y, c) + v ~\middle\vert~ 

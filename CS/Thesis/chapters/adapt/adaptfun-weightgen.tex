@@ -113,7 +113,7 @@ is the variable that decreases on this edge, computed as follows,
   \locbound(\absevent, c) \triangleq \infty  & o.w.
 \end{array}
 \]
-$SCC(\absG(c))$ is the set of all the strong connected components of $\absG(c)$.
+$SCC(\absG(c))$ is the set of all the strongly connected components of $\absG(c)$.
 \end{defn}
 We look at the strongly connected components of $\absG(c)$. 
 If the edge does not belong to any strongly connected components, then the local bound is $1$, representing the fact that the edge is not in a loop and so it gets executed at most once.
@@ -147,9 +147,10 @@ of this edge
 is computed as follows,
   \[ 
 \begin{array}{lll}
-  \varinvar(x, c) & \triangleq x & x \in \constdom \\
+  \varinvar(x, c) & \triangleq x \qquad \qquad \text{if} \quad x \in \constdom \\
   \varinvar(x, c) & \triangleq \incrs(x, c) + 
-  \max(\{\varinvar(y, c) + v ~\mid~ (l, x' \leq y + v, l') \in \reset(x)\}) & x \notin \constdom
+  \max(\{\varinvar(y, c) + v ~\mid~ (l, x' \leq y + v, l') \in \reset(x)\}) \\
+  & \qquad \text{if} \quad x \notin \constdom
 \end{array}
 \]
 %
@@ -200,12 +201,14 @@ The soundness theorem is attached in Theorem~\ref{thm:transition_bound_sound} in
 %
 \begin{thm}[Soundness of the Transition Bound]
   \label{thm:transition_bound_sound}
-For each program ${c}$ and an edge $\absevent = (l, \_, \_) \in \absG(c)$, if $l$ is the label of an assignment command,
+For a program ${c}$ with its abstract transition graph $\absG(c)$, if $l$ is the label of an assignment 
+command and the edge $\absevent = (l, \_, \_) \in \absG(c)$ has the same label,
 %  label $l \in \lvar(c)$,
-then its \emph{path-insensitive transition bound} $\absclr(\absevent, c)$ 
+then its  $\absclr(\absevent, c)$ 
  is a sound upper bound on 
 %  execution-based reachability bound $w^t$ 
-the execution times of this assignment command in $c$.
+the execution times of this assignment command with label $l$ when $c$ is executing under any
+initial trace $\trace_0 \in \ftdom_0(c)$.
   \[
     \begin{array}{l}
       \forall c \in \cdom, l, l' \in c,\trace_0 \in \ftdom_0(c), 
@@ -217,10 +220,10 @@ the execution times of this assignment command in $c$.
        \land
       \vcounter(\trace, l) \leq v
       \Big)
-      \\ \land \quad 
-      \Big(\config{{c}, \trace_0} \uparrow^{\infty} \trace_0\tracecat\vtrace
-       \implies \absclr(\absevent, c) = \infty 
-       \Big)
+      % \\ \qquad  \land
+      % \Big(\config{{c}, \trace_0} \uparrow^{\infty} \trace_0\tracecat\vtrace
+      %  \implies \absclr(\absevent, c) = \infty 
+      %  \Big)
     \end{array}
     \]
 \end{thm}

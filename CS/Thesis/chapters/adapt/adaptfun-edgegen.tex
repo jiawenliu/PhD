@@ -9,7 +9,8 @@ considers both the control flow and data flow and
 is a sound approximation of the edges in the semantics based dependency graph.
 This algorithm is summarized into three steps as follows,
 \begin{enumerate}
-  \item The \textbf{Reaching Definition} analysis computes a set of labeled variables, $\live(l, c)$ for every label $l$ in $c$
+  \item 
+  We first perform the \textbf{reaching definition} analysis and compute a set of labeled variables, $\live(l, c)$ for every label $l$ in $c$
   over its abstract control flow graph, $\absG(c)$.
   The computation performs the standard reaching definition analysis and working-list algorithm over the abstract control flow graph, $\absG(c)$. 
   % as $\live(l, c)$ for every label $l$ in a program $c$. 
@@ -18,15 +19,23 @@ This algorithm is summarized into three steps as follows,
   containing all the labeled variables $x^l$ that are newly generated but not yet reassigned before and after executing the command $l$.
   The analysis iterates over $\absG(c)$, and updates $in(l)$ and $out(l)$ until they  are stable.
   The final $in(l)$ is the set of reaching definitions $\live(l, c)$ for $l$. 
-    \item The \textbf{Feasible Data-Flow} computation combines the $\live(l, c)$, $\absG(c)$ and data flow analysis. 
-  It computes the \emph{feasible data-flow} relation,
+  \item 
+  Then we compute the \textbf{feasible data-flow} relation
+  for every pair of labeled variable in a program $c$.
+  % This computation combines the $\live(l, c)$, $\absG(c)$ and the data flow analysis. 
+  Specifically, the \emph{feasible data-flow} relation denoted by
   % estimates the data dependency relation, 
-  $\flowsto(x^i, y^j, c)$ for each pair of the $c$'s labeled variables, $x^i, y^j \in \lvar(c)$ in Definition~\ref{def:feasible_flowsto}. $\flowsto(x^i, y^j, c)$ is a sound approximation 
+  $\flowsto(x^i, y^j, c)$ for each pair of labeled variables the $c$ in a program $c$, $x^i, y^j \in \lvar(c)$.
+  It combines the $\live(l, c)$, $\absG(c)$ and the data flow analysis, which gives more precise approximation on the \emph{data may-dependency} than single analysis in Appendix.
+  % in Definition~\ref{def:feasible_flowsto}. 
+  We also prove it is a sound approximation 
   of the \emph{variable may-dependency} relation, $\vardep(x^i, y^j, c)$ for every $x^i, y^j \in \lvar(c)$.
-  %  over labeled variables for every program.
-  The formal proof is in the Appendix. We also discuss that the combined analysis gives more precise approximation on the \emph{data may-dependency} than single analysis in Appendix.
-\item \textbf{Edge Estimation}
-Using the $\flowsto(x^i, y^j, c)$ relation, we define the estimated directed edges
+  % The formal proof is in the Appendix. We also discuss that the combined analysis gives more precise approximation on the \emph{data may-dependency} than single analysis in Appendix.
+\item 
+Then 
+% we estimate the edge
+% \textbf{Edge Estimation}
+using the $\flowsto(x^i, y^j, c)$ relation, we define the estimated directed edges
 % for each vertex in $\progV(c)$,
 as set of pairs of vertices $x^i, y^j\in \progV(c)$,
 % as a set of pairs 
@@ -73,9 +82,9 @@ The operator $\mathsf{blk} : \cdom \to blocks$ gives all the blocks in program $
  \[
  \begin{array}{ll}
     % in(l)   \\  \qquad \triangleq \{ (x, ?) | x^l \in \lvar_c \land  l = \absinit(c) \}  
-    in(l)   \\  \qquad \triangleq \{ x^{?} | x^l \in \lvar_c \land  l = \absinit(c) \}  
-    \cup \{ out(l')|  | (l',\_, l) \in \absE(c) \land  l \neq \absinit(c)\}  \\
-     out(l)   \\  \qquad \triangleq  gen(B^{l}) \cup \{ in(l) \setminus kill(B^l)  \}  
+    in(l)   \triangleq \{ x^{?} | x^l \in \lvar_c \land  l = \absinit(c) \}  
+    \\  \qquad \qquad \cup \{ out(l')|  | (l',\_, l) \in \absE(c) \land  l \neq \absinit(c)\}  \\
+     out(l)   \triangleq  gen(B^{l}) \cup \{ in(l) \setminus kill(B^l)  \}  
  \end{array}
  \]
 computing $in(l)$ and $out(l)$ for every $B^l \in blocks(c) $, and repeating these two steps

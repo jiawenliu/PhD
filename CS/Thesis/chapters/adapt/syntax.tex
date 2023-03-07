@@ -15,7 +15,7 @@ The syntax is shown as follows,
 %
 \mbox{Arithmetic Expression} 
 & \aexpr & ::= & 
-n \in \mathbb{N}^{\infty} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr 
+n \in \mathbb{N}\cup\{\infty\} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr 
  ~|~ \elog \aexpr  ~|~ \esign \aexpr
 \\
 %
@@ -63,7 +63,7 @@ n \in \mathbb{N}^{\infty} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \\
 \end{array}
 \]
-We use following notations to represent the set of corresponding terms:
+We denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$, and we use the following notations to represent the sets of corresponding terms:
 \[
 \begin{array}{lll}
 \vardom & : & \mbox{Set of Variables}  
@@ -75,7 +75,7 @@ We use following notations to represent the set of corresponding terms:
 \mathcal{QVAL} & : & \mbox{Set of Query Values} 
 \\ 
 %
-\cdom & : & \mbox{Set of Commands} 
+\cdom & : & \mbox{Set of Well-formed Commands} 
 \\ 
 %
 \eventset  & : & \mbox{Set of Events}  
@@ -114,7 +114,8 @@ We use following notations to represent the set of corresponding terms:
 \]
 %
 Expressions include
-standard arithmetic (with value $n \in \mathbb{N}^{\infty}$) and boolean expression, ($\aexpr$ and $\bexpr$) and extended query expressions $\qexpr$.
+standard arithmetic $\aexpr$ with value $n \in \mathbb{N}\cup \{\infty\}$,
+standard boolean expression $\bexpr$, and the extended query expression $\qexpr$.
 A query expression $\qexpr$ can be either a simple arithmetic expression $a$, an expression of the form $\chi[\aexpr]$ where $\chi$ represents a row of the database  and  $\aexpr$ represents an index used to identify a specific attribute of the row $\chi$, a combination of two query expressions, $\qexpr \oplus_{a} \qexpr$, or a normal form $\qval$.
 For example, the query expression $\chi[3] + 5$  denotes the computation that
 obtains
@@ -126,33 +127,38 @@ The expressions are either the standard one or the extended one.
 A standard expression is
 % can be 
 either a standard arithmetic expression or a boolean expression, or a list of expressions.
+
 An arithmetic expression can be a constant $n$ denoting integer, a variable $x$ from some countable set $\vardom$, binary operation $\oplus_a$ such as addition, product, subtraction, etc, over arithmetic expressions, and also log and sign operation. 
 %
+
 A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq,=,<,$ etc.
 Additionally, I also introduce list in expression.
-Our language supports primitives for queries, 
+
+\paragraph{Query Expression}
+% The key extension is
+% %  language supports 
+% the primitive for queries, where a specific query is specified by a query expression $\qexpr$. 
+Our language extends the standard while language with primitives for queries, 
 where a specific query is specified by a query expression $\qexpr$. 
 A query expression contains the necessary information for a query request, for example, 
 $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
 Query expressions combine access to the database with other expressions, 
 for example, $\chi[3] + 5$ represents a query which asks the value from the column 3 of each database raw $\chi$, adds 5 to each of these values, 
 and then computes the average of these values.
-\paragraph{Query Expression}
-The key extension is
-%  language supports 
-the primitive for queries, where a specific query is specified by a query expression $\qexpr$. 
-A query expression contains the necessary information for a query request, 
-for example, $\chi[\qexpr]$ represents the values at a certain index $\qexpr$ in a row $\chi$ of the database. 
-When this expression is encapsulated by the symbol $\query$,
- $ \query(\chi[\qexpr]) $ represents a query request computation, this computation will compute the average value at certain index over each row of the database as follows,
+% A query expression contains the necessary information for a query request, 
+% for example, $\chi[\qexpr]$ represents the values at a certain index $\qexpr$ in a row $\chi$ of the database. 
+
+When a query expression is encapsulated by the symbol $\query$, it represents a query request and this request will then compute the average value of certain query expression over each row of the hidden database.
+For example, the query request
+$ \query(\chi[\aexpr]) $ will compute the average value at index $\aexpr$ over each row of the database as follows,
  \[
   \query(\chi[\qexpr]) = \frac{1}{n}\sum\limits_{i = 0}^{n}\chi_i[\qexpr]
   \]
-For example, the query expression $\chi[3]$  denotes the computation that
+In another example, the query expression $\chi[3]$  denotes the computation that
 obtains
 the average value in the $3$rd column of $\chi$.
 
-Query expressions combine access to the database with other expressions, 
+Query expressions also combine access to the database with other expressions, 
 for example, 
 $\chi[3] + 5$ represents a query that asks the value from column 3 of each database raw $\chi$, 
 adds 5 to each of these values, and then computes the average of these values as follows, where $n$ is 
@@ -165,12 +171,12 @@ database $\chi$'s number of raw.
 \paragraph{Labeled Command}
 Commands are the typical ones from while languages with an additional command $\assign{x}{\query(\qexpr)}$ 
 for query requests which can be used to interrogate the database and compute the linear query corresponding to $\qexpr$.
-In this the command, the query expression $\qexpr$ is sent to the database server as a request.
-Then the server will compute the average value of $\qexpr$ over each row of the hidden database $\chi$ and return us the result.
-For instance, when we execute the command $\assign{x}{\query(\chi[3] + 5)}$,
-the server will receive query request in form of $\chi[3] + 5$,
-then compute the average value of $\chi[3] + 5$ over each raw of $\chi$, and return the result to us. 
-The server is used as external API for computing the results over the hidden database $\chi$.
+% In this the command, the query expression $\qexpr$ is sent to the database server as a request.
+% Then the server will compute the average value of $\qexpr$ over each row of the hidden database $\chi$ and return us the result.
+% For instance, when we execute the command $\assign{x}{\query(\chi[3] + 5)}$,
+% the server will receive query request in form of $\chi[3] + 5$,
+% then compute the average value of $\chi[3] + 5$ over each raw of $\chi$, and return the result to us. 
+% The server is used as external API for computing the results over the hidden database $\chi$.
 Each command is annotated with a label $l$, we will use natural numbers as labels and we will use them to record
 the location of each command, so that we can uniquely identify them.
 

@@ -18,10 +18,16 @@ It is formally defined in Definition~\ref{def:prog_graph} as follows.
 \begin{defn}
 [Estimated Dependency Graph]
 \label{def:prog_graph}
-Given a program $c$, with its abstract weighted control flow graph $\absG(c) = (\absV, \absE)$ and 
-feasible data flow relation $\flowsto(x^i, y^j, c)$ for every $x^i, y^j \in \lvar(c)$, its estimated dependency graph
+Given a program $c$ 
+% with its abstract control flow graph $\absG(c) = (\absV, \absE)$
+%  and 
+% 
+with the feasible data flow relation $\flowsto(x^i, y^j, c)$ for every $x^i, y^j \in \lvar(c)$, 
+and the $\absW(c)$ as the set of estimsted weight for every program label $l$,
+its estimated dependency graph
 is generated as follows.
 \[\progG(c) = (\progV(c), \progE(c), \progW(c), \progF(c))\]
+Each of the four components is defined as follows.
 {\small
 \[
 \begin{array}{rlcl}
@@ -50,17 +56,21 @@ n \geq 0 \land
 \\
 \text{Weights} &
 \progW & := &
-\left\{ (x^l, w) \in \lvar(c) \times \mathcal{A}_{S}
+\left\{ (x^l, w) \in \lvar(c) \times \scexprdom
 \mid
-x^l \in \lvar(c) \land (l, w) \in \absW(c)
+x^l \in \progV(c) \land (l, \hat{w}) \in \absW(c)
 \right\}
 \\
 \text{Query Annotation} &
 \progF & := & 
-\left\{(x^l, n)  \in  \lvar(c) \times \{0, 1\} 
+\left\{(x^l, n)  
+% \in  \lvar(c) \times \{0, 1\} 
 ~ \middle\vert ~
-x^l \in \lvar(c),
-n = 1 \iff x^l \in \qvar(c) \land n = 0 \iff  x^l \in \qvar(c) .
+\begin{array}{l}
+  x^l \in \lvar(c) \land
+  n = 1 \iff x^l \in \qvar(c) \\
+\land n = 0 \iff  x^l \in \qvar(c) .
+\end{array}
 \right\}
 \end{array}
 \] }

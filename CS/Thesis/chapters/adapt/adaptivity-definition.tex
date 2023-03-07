@@ -3,8 +3,8 @@ We can now define the adaptivity of a program formally. This notion is formulate
 
 \begin{defn}[Walk]
 \label{def:finitewalk}
-Given a program $c$ with its semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ of a program $c$, a \emph{walk} $k:\ftdom_0(c)\to \mathbb{N}$ on $\traceG({c})$ is a function that maps an initial trace $\trace_0$ to a sequence of edges $(e_1 \ldots e_{n - 1})$ 
-for which there is a sequence of vertices $(v_1, \ldots, v_{n})$ satisfying
+Given a well-formed program $c$ with its semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ of a program $c$, a \emph{walk} $k:\ftdom_0(c)\to \mathcal{P}(\traceV)$ on $\traceG({c})$ is a function that maps an initial trace $\trace_0$ to a sequence of vertices $(v_1, \ldots, v_{n})$
+for which there is a sequence of edges $(e_1 \ldots e_{n - 1})$  satisfying
 \begin{itemize}
 \item $e_i = (v_{i},v_{i + 1}) \in \traceE$ for every $1 \leq i < n$,
 \item and every $v_i \in \traceV$ and $(v_i, w_i) \in \traceW$, $v_i$ appears in $(v_1, \ldots, v_{n})$ at most $w(\trace_0)$ times.  
@@ -23,27 +23,32 @@ corresponding to queries.
 \begin{defn}[Query Length]
 \label{def:qlen}
 Given 
-the semantics-based dependency graph $\traceG({c})$ of a program $c$,
+the semantics-based dependency graph $\traceG({c})$ of a well-formed program $c$,
  and a \emph{walk} 
  $k \in \walks(\traceG(c))$ with vertices sequence $(v_1, \ldots, v_{n})$, the \emph{query length} of $k$ is a function $\qlen(k):\ftdom_0(c) \to \mathbb{N}$ that given an initial trace $\trace_0$ returns
 the number of vertices which correspond to query variables in the vertices sequence as follows, 
 \begin{center}
    $
-  \qlen(k)(\trace_0) = |\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 \big)|.
+  \qlen(k) = \lambda \trace_0 \sthat |\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 
+%   \land
+%   k \in \walks(\traceG(c)) 
+  \land k(\trace_0) = (v_1, \ldots, v_{n}) \big)|.
 $
 \end{center}
 \end{defn}
+Then we define for a well-formed program its adaptivity as a function as below.
 \begin{defn}
     [Adaptivity of a Program]
     \label{def:trace_adapt}
-    Given a program ${c}$, 
-    its adaptivity $A(c)$ is function 
+    Given a well-formed program ${c}$, 
+    its adaptivity $A(c)$ is a function 
     $A(c) : \ftdom_0(c)\to \mathbb{N}$ such that for an
     initial trace $\trace_0 \in \ftdom_0(c)$, 
 \begin{center}
 $
-    A(c)(\trace_0) = \max \big 
+    A(c) = \lambda \trace_0 \sthat \max \big 
     \{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \} 
 $
 \end{center}
 \end{defn}
+As discussed above, programs that has non-terminating behaviors do not have the intuitive adaptivity. So we define the adaptivity only for the well-formed program.

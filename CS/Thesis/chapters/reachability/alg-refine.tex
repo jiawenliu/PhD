@@ -133,8 +133,12 @@ $ \tpath_0 ; \rpchoose{ 1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2),
 1: \rprepeat(\tpath_4) }; \tpath_5$.
 Then we compute the refined program as,
 \[
-    \tpath_0 ; \rpchoose{ 1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4), 
-    1: \rprepeat(\tpath_4; \tpath_1; 4:\rprepeat(\tpath_3); \tpath_2) }; \tpath_5.
+    \tpath_0 ; \rpchoose{ 
+      \begin{array}{l}
+        1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4), \\
+        1: \rprepeat(\tpath_4; \tpath_1; 4:\rprepeat(\tpath_3); \tpath_2) 
+      \end{array}
+      }; \tpath_5.
 \]
 
 \begin{example}[Two Counter While]

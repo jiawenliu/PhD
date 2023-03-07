@@ -57,7 +57,7 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \\
 \end{array}
 \]
-We denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$, and we use the following notations to represent the sets of corresponding terms:
+Likewise, we denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$, and we use the following notations to represent the sets of corresponding terms:
 \[
 \begin{array}{lll}
 \vardom & : & \mbox{Set of Variables}  
@@ -158,17 +158,19 @@ $\pi_i : \eventset \to \vardom \cup \booldom \cup \ldom $
 \paragraph{Trace.}
 \input{chapters/reachability/trace}
 %
-\paragraph{Environment.} $\env : {\ftdom}  \to \vardom \to(\mathbb{N} \cup \{\bot, \infty\})$.  
-We don't use separate data structure as the environment to record each variable's value or state. Instead, we use the operator $\env (\trace) x$ to fetch the latest value assigned to $x$ in the trace $\trace$. 
+\paragraph{Environment.} $\env : {\tdom}  \to \vardom \to(\mathbb{N} \cup \{\bot, \infty\})$.  
+Similar to \redd{PART \romannum{1}}, we don't use separate data structure as the environment to record each variable's value or state. Instead, we use the operator $\env (\trace) x$ to fetch the latest value assigned to $x$ in the trace $\trace$. 
 \[
-\begin{array}{llll}
+\begin{array}{lll}
 \env(\trace  \traceadd (x, l, v)) x \triangleq v
 &
 \env(\trace \traceadd (y, l, v)) x \triangleq \env(\trace) x, y \neq x
 &
 \env(\trace \traceadd (b, l, v)) x \triangleq \env(\trace) x
-&
+\\
 \env({[]} ) x \triangleq \bot
+&
+\env(\trace ) x \triangleq \bot ~ \text{if}~ \trace \in \inftdom
 \end{array}
 \]
 %
@@ -181,13 +183,13 @@ We don't use separate data structure as the environment to record each variable'
     \]
 \end{defn}
 %
-In the rest part of the paper, we implicitly consider $\trace$ as a well-formed initial trace of $c$ 
-when $\trace \in \ftdom_0(c)$, and $\ftdom_0(c)$ is used as the set of well-formed initial traces for program $c$.
+% In the rest part of the paper, we implicitly consider $\trace$ as a well-formed initial trace of $c$ 
+% when $\trace \in \ftdom_0(c)$, and
+Again, $\ftdom_0(c)$ is used as the set of well-formed initial traces for program $c$.
 %
 \paragraph{Expression Semantics}
 The evaluation notation for arithmetic expression is $\aconfig{} : \mathcal{A} \to \tdom \to \mathcal{V}$.
 The $\aconfig{\aexpr}(\trace)$ evaluates an arithmetic expression $\aexpr$ under trace $\trace$ following the arithmetic expression evaluation rules in Figure~\ref{fig:aexpr-eval}.
-
 We also define for $\infty$ the following mathematic computation with arbitrary $\trace \in \tdom$.
  \[
   \begin{array}{llll}
@@ -579,9 +581,10 @@ then the program's execution terminates and produces a finite execution trace $\
 %
 This definition has the similar intuition as the maximal trace semantics in Equation (12) from Section 2.5 of paper~\cite{Cousot19a}, and the semantics of the program model in~\cite{SinnZV17}.
 \\
-If we observe the operational semantics rules, we can find that no rule will shrink the trace. 
-So we have the Lemma~\ref{lem:tracenondec} with proof in Appendix~\ref{apdx:lem_language}, 
-specifically the trace has the property that its length never decreases during the program execution.
+% If we observe the operational semantics rules, we can find that no rule will shrink the trace. 
+% So we 
+We also have the trace non-decreasing property in this language model as below.
+It is similar to the Lemma~\ref{lem:tracenondec} with proof in Appendix~\ref{apdx:lem_language}. 
 \begin{lem}
   [Trace Non-Decreasing]
   \label{lem:psRB-tracenondec}
@@ -600,3 +603,4 @@ specifically the trace has the property that its length never decreases during t
     \end{array}
     \]
   \end{lem}
+  Specifically the trace has the property that its length never decreases during the program execution.

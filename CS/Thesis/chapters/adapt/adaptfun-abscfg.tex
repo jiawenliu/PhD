@@ -176,13 +176,13 @@ The counter variable $x$ is generalized into norm when the boolean expression $x
 in $\ewhile$ doesn't have the form $x > 0$.
 The way of normalizing the guards and computing the norms is adopted from the computation step 1 in Section 6.1 in paper \cite{SinnZV17}. 
 % \\
-\begin{defn}[Universe of The Symbolic Expression ($\mathcal{A}_{S}$)]
+\begin{defn}[Universe of The Symbolic Expression ($\scexprdom$)]
   \label{def:symbolic_expr_domain}
-  $\mathcal{A}_{S}$ is the universe of all the arithmetic expressions 
-over $\constdom$, $\mathcal{A}_{S} \subseteq \mathcal{A}$
+  $\scexprdom$ is the universe of all the arithmetic expressions 
+over $\constdom$, $\scexprdom \subseteq \mathcal{A}$
 \end{defn}
 The symbolic expression set is a subset of arithmetic expressions over $\mathbb{N}$ with input variables, 
-i.e., $\mathcal{A}_{S} \subseteq \mathcal{A}_{\lin}$.
+i.e., $\scexprdom \subseteq \inpexprdom$.
 
 \paragraph{Abstract Initial and Final State Computation}
 The initial state is the
@@ -357,11 +357,12 @@ there is a unique abstract event in the program's abstract events set $\absevent
 \[
   \begin{array}{l}
     \forall c \in \cdom, \vtrace_0 \in \ftdom_0(c), \trace \in \ftdom , l, l' \in \absV(c), \event = (\_, l, \_) \in \eventset^{\asn} \sthat
-\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
-\land \event \in \trace 
-\\
-\qquad \implies \exists! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
-\absevent \in \absflow(c)
+    \\
+    \qquad \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
+    \land \event \in \trace 
+    \\
+    \qquad \implies \exists! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
+    \absevent \in \absflow(c)
 \end{array}
 \]
 \end{lem}

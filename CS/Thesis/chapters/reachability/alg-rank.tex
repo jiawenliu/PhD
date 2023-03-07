@@ -1,9 +1,9 @@
-Three steps:
+This section is summarized into three steps as follows,
 \begin{enumerate}
     \item It first collects three edge sets for each variable,
   in which the variable increases, decreases and reset respectively.
   \item
-  Then, it assigns a symbol $x \in \scvardom$ to the edge on which this symbol decreases as this edge's ranking function.
+  Then, it assigns a variable (or a normalized counter expression that is viewed as variable) $x$ to the edge on which this symbol decreases as this edge's ranking function.
   \item
   In the last step, it estimates the upper bound invariant on the maximum value of each ranking function recursively.
   In the meantime, it also computes a loop bound path-insensitivity for each loop, which can be used to compute the path reachability-bound later.
