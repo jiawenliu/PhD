@@ -101,7 +101,7 @@ This case is proved.
 
 \begin{lem}[Soundness of $\pathsearch_{scc}$]
   \label{lem:sound_adaptalg_scc}
-  For every program $c$, given its \emph{Program-Based Dependency Graph} $\progG$, if $\sccgraph$ is a strong connected sub-graph of $\progG$, then
+  For every program $c$, given its \emph{estimated dependency graph} $\progG$, if $\sccgraph$ is a strong connected sub-graph of $\progG$, then
   $\max\{\qlen(k) | k \in \walks(\sccgraph)\} \leq \pathsearch_{scc}(\sccgraph) $.
   %
   \[

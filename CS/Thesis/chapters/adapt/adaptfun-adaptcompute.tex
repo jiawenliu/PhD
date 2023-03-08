@@ -1,14 +1,16 @@
 Based on
 % its 
-$c$'s estimated dependency graph, $\progG({c})$ approximated above,
+the estimated dependency graph of a program $c$,
 %
-we compute a sound upper bound on $c$'s adaptivity in this section in Definition~\ref{def:prog_adapt}
-and Algorithm~\ref{alg:adapt}.
+we compute a sound upper bound on $c$'s adaptivity in this section.
+%  in Definition~\ref{def:prog_adapt}
+% and Algorithm~\ref{alg:adapt}.
 %
 
-Different from the weight on the semantics-based dependency graph, the weight on the estimated graph are symbolic expression. This symbolic expression cannot be used to construct a finite walk
-by definition~\ref{def:finitewalk}. In this sense, to estimate the finite walk
-we first introduction the path on the estimated dependency graph as follows.
+Different from the weight on the semantics-based dependency graph, the weight on the estimated graph are symbolic expression. This symbolic expression cannot be used directly to construct a finite walk
+by definition~\ref{def:finitewalk}. In this sense,
+% to estimate the finite walk
+we first introduction the path on the estimated dependency graph as follows to estimate a finite walk.
 \begin{defn}[Path]
   \label{def:prog_finitewalk}
   Given a program $c$ with its estimated dependency graph 
@@ -71,7 +73,7 @@ We use $\paths(\progG(c))$ to denote the set of all paths on
 Following Definition~\ref{def:qlen}, 
 we compute
 the \emph{query length} of a path, $p \in \paths(\progG(c))$ on the estimated graph as an arithmetic expression formally as follows.
-\begin{defn}[Query Length Computation]
+\begin{defn}[Query Length Estimation]
   \label{def:qlen-static}
   Given 
   a program $c$ and its estimated dependency graph 
@@ -79,7 +81,7 @@ the \emph{query length} of a path, $p \in \paths(\progG(c))$ on the estimated gr
   let $p \in \paths(\progG(c))$ be a \emph{path} with edge sequence $(e_1 \ldots e_{n - 1})$ 
   a sequence of vertices 
   $(v_1, \ldots, v_{n})$,
-  the query length of $p$, $\hat{\qlen}(p)$ is computed as
+  the estimated query length of $p$, $\hat{\qlen}(p)$ is computed as
   \[
    \sum\left\{ v \times \hat{w}
    \mid v \in (v_1, \ldots, v_{n}) \land (v, 1) \in \progF(c)
@@ -197,7 +199,8 @@ Our algorithm reduces the task of computing the longest walk into the computatio
 local adaptivity into global adaptivity.
 %
 We exploit the structure of the estimated dependency graph $\progG(c)$ for a program $c$: 
-1). Partitioning the PDG of programs into its strongly connected components (SCCs) (SCCs are maximal strongly connected subgraphs).
+1). Partitioning the graph of programs into its maximal strongly connected components (SCCs) 
+% (SCCs are maximal strongly connected subgraphs).
 2). Then, for each SCC, we compute an adaptivity bound
 3). In the last, we compose these local bounds to an overall adaptivity bound.
 %
@@ -205,6 +208,7 @@ $\pathsearch(c, \progG(c))$ algorithm in Algorithm~\ref{alg:adapt} arranges the 
 Then $\pathsearch$ shrinks the estimated dependency graph into a directed acyclic graph (DAG) by reducing each SCC into a vertex with the weight equal to its adaptivity local bound.
 In this way, it simply computes the length of the longest path over this DAG.
 
+We discuss in detail as below this adaptivity computation algorithm.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION OF ADAPTIVITY COMPUTATION ALGORITHM 1: %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -212,8 +216,8 @@ In this way, it simply computes the length of the longest path over this DAG.
 \begin{algorithm}
   \caption{
   {Adaptivity Computation Algorithm ({$\kw{\pathsearch(c, \progG(c))}$})}
-  \label{alg:adapt}
   }
+  \label{alg:adapt}
   \begin{algorithmic}[1]
   \REQUIRE The program $c$, 
   Its estimated dependency graph: $\progG(c) = (\vertxs, \edges, \weights, \qflag)$
@@ -481,7 +485,7 @@ Line:16-18 applies $\kw{dfs}$ on every vertex of this SCC and
 computes the adaptivity of this SCC by taking the maximum 
 % adaptivity reaching every vertex on this SCC.
 value.%
-The soundness is formally guaranteed in Lemma~\ref{lem:adaptalg_soundness_scc} in Appendix~\ref{apdx:adaptalg_soundness}.
+The soundness is formally guaranteed in Lemma~\ref{lem:sound_adaptalg_scc} in Appendix~\ref{apdx:adaptalg_soundness}.
 \input{chapters/adapt/examples/nestedWhile_alg}
     %
         \begin{algorithm}

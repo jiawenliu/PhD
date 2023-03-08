@@ -39,9 +39,9 @@ According to the Definition~\ref{def:prog_adapt} and Definition~\ref{def:trace_a
 %
 \[
 	\begin{array}{l}
-\forall \trace_0 \in \ftdom \sthat
+		\forall \trace_0 \in \ftdom_{0}(c), m \in \mathbb{N} \cup \{\infty\} \sthat
 \config{\max \left\{ \hat{\qlen}(p) \ \mid \  p \in \paths(\progG(c))\right \}
-, \trace_0 } \earrow n 
+, \trace_0 } \earrow m 
 \\ \qquad 
 \implies
 n \geq
@@ -51,15 +51,17 @@ n \geq
 \]
 %
 %
-Let $\trace_0 \in \ftdom$ be an arbitrary initial trace of $c$,
+Let $\trace_0 \in \ftdom_(c)$ be an arbitrary initial trace of $c$,
 then it is sufficient to show that:
 \[
 	\begin{array}{l}
 \forall 
-  k \in \walks(\traceG(c)) \sthat
+  k \in \walks(\traceG(c)), 
+  m \in \mathbb{N} \cup \{\infty\}
+  \sthat
   \exists p \in \paths(\progG(c)) 
   \land
- ( \config{\hat{\qlen}(p), \trace_0} \earrow n
+ ( \config{\hat{\qlen}(p), \trace_0} \earrow m
    \\ \qquad 
    \implies 
   n \geq \qlen(k(\trace_0)))
@@ -119,47 +121,138 @@ then we know
 \\
 So we have $p \in \paths(\progG)$ proved.
 
-To show $( \config{\hat{\qlen}(p), \trace_0} \earrow n
+\subcaseL{}
+To show 
+$$
+\forall  m \in \mathbb{N} \cup \{\infty\} \sthat
+\config{\hat{\qlen}(p), \trace_0} \earrow m
 \implies 
-n \geq \qlen(k(\trace_0)))$,
-let $n \in \mathbb{N}$ such that 
-$\config{\qlen(p), \trace_0} \earrow n$,
-then, it is sufficient to show
+ \qlen(k)(\trace_0) \leq m, $$
+by Definition~\ref{def:qlen-static}, we know
 \[
- n \geq \qlen(k)(\trace_0).
-\] 
-By Definition~\ref{def:qlen-static}, it is sufficient to show
-\[
-  \begin{array}{l}
-  \forall v_i \in (v_1, \ldots, v_n),
-  (v_i, w_i) \in \progW(c), (v_i, \hat{w}_i) \in \traceW(c), n_i \in \mathbb{N} 
-  \sthat 
-  \config{w_i, \trace_0} \earrow n_i
-  \\
-  \implies
-   \sum\limits_{\traceF(c)(v_i) = 1}
-   \hat{w}_i(\trace_0) 
-   \leq 
-   \sum\limits_{\progF(c)(v_i) = 1}n_i 
-  \end{array}
-  \]
-  By Lemma~\ref{lem:weights_map}, we know for every 
-\[
-  \forall v_i \in (v_1, \ldots, v_n), (v_i, w_i) \in \progW(c), n_i \in \mathbb{N} 
-  \sthat 
-  \config{w_i, \trace_0} \earrow n_i
-  \implies
-   w_i(\trace_0) \leq n_i
+	\hat{\qlen}(p) = \sum\limits_{ 
+		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \land (v_i', \hat{w}_i) \in \progW(c)\} 
+		} 
+		\hat{w}_i.
 \]
-By Lemma~\ref{lem:queryvertex_map} and Definition~\ref{def:qlen}, we know for every $v_i$, $\traceF(c)(v_i) = \progF(c)(v_i) $ 
-\\
-Then  we know 
+By Definition~\ref{def:qlen}, we know
 \[
-	\sum\limits_{\traceF(c)(v_i) = 1}
-\hat{w}_i(\trace_0) 
-\leq 
-\sum\limits_{\progF(c)(v_i) = 1}n_i,
+	\qlen(k)(\trace_0) = \big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 
+	  \land k(\trace_0) = (v_1, \ldots, v_{n}) \big)|.
 \]
+Since $(v_1', \ldots, v_n')$ are all the unique vertices from 
+the vertices sequence $k(\trace_0) = (v_1, \ldots, v_n)$,
+by the finite walk definition in Definition~\ref{def:finitewalk}, we know
+\[
+	\begin{array}{l}
+		\qlen(k)(\trace_0) = 
+		|\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 
+	  \land k(\trace_0) = (v_1, \ldots, v_{n}) \big)|
+	  \\ \qquad \leq 
+	  \sum\left\{ w_i(\trace_0) ~\vert~ 
+	  v_i' \in (v_1', \ldots, v_n') \land \qvar(c)(v_i') = 1 \land (v_i', w_i) \in \traceW(c) 
+	  \right\}
+	\end{array}
+\]
+Then, it is sufficient to show
+\[
+	\begin{array}{l}
+		\forall m \in \mathbb{N} \cup \{\infty\} \sthat
+	\config{\sum\limits_{ 
+		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \land (v_i', \hat{w}_i) \in \progW(c)\} } 
+		\hat{w}_i, \trace_0} \earrow m
+		\\ \qquad 
+		\implies
+		\sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ \qvar(c)(v_i') = 1 \land (v_i', w_i) \in \traceW(c) 
+	  \right\}} w_i(\trace_0)
+	  \leq m
+	\end{array}
+	\]
+Let $m \in \mathbb{N} \cup \{\infty\} $ be the evaluated result satisfying 
+$$
+\config{\sum\limits_{ 
+	\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \land (v_i', \hat{w}_i) \in \progW(c)\} } 
+	\hat{w}_i, \trace_0} \earrow m.
+$$
+Let $m_1, \ldots, m_n$ be the evaluation results of
+	$\hat{w}_i$ where $(v_i', \hat{w}_i) \in \progW(c)$ for every $v_i' \in (v_1', \ldots, v_n')$ and $\qvar(c)(v_i') = 1$ 
+	such that 
+	\[
+		(\config{\hat{w}_i, \trace_0} \earrow m_i.
+	\]
+Then by operational semantics rules, we know 
+\[
+	m = \sum\limits_{ 
+		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \} } m_i.
+\]
+
+Then it is sufficient to show
+	\[
+		\begin{array}{l}
+			\sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ \qvar(c)(v_i') = 1 \land (v_i', w_i) \in \traceW(c) 
+		\right\}} w_i(\trace_0)
+		\\ \qquad \leq 
+		\sum\limits_{ 
+		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \} } m_i
+		\end{array}
+	\]
+% \[
+%   \begin{array}{l}
+%   \forall v_i \in (v_1, \ldots, v_n),
+%   (v_i, \hat{w}_i) \in \progW(c), (v_i, w_i) \in \traceW(c), n_i \in \mathbb{N} 
+%   \sthat 
+%   \config{\hat{w}_i, \trace_0} \earrow m_i
+%   \\
+%   \implies
+%    \sum\limits_{\qvar(c)(v_i) = 1}
+%    w_i(\trace_0) 
+%    \leq 
+%    \sum\limits_{\qvar(c)(v_i) = 1} n_i 
+%   \end{array}
+%   \]
+By Lemma~\ref{lem:weights_map}, we know
+\[
+	\begin{array}{l}
+		\forall v_i' \in (v_1', \ldots, v_n'), (v_i', w_i) \in \traceW(c), m_i \in \mathbb{N}  \sthat
+  \exists (v_i', \hat{w}_i) \in \progW(c)
+  \sthat 
+  \\ \qquad \qquad
+  (\config{\hat{w}_i, \trace_0} \earrow m_i
+  \implies  w_i(\trace_0) \leq m_i)
+\end{array}
+\]
+Let $m_1, \ldots, m_n$ be the evaluation results of each
+$(v_i', \hat{w}_i)$ for every $v_i' \in (v_1', \ldots, v_n')$,
+then we know 
+\[
+	\begin{array}{l}
+	%  m = \sum\limits_{ 
+	% 	\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \land (v_i', \hat{w}_i) \in \progW(c)\} } m_i
+	% 	\\ \qquad 
+	% 	\leq 
+	% 	\sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ \qvar(c)(v_i') = 1 
+	%   \right\}} w_i(\trace_0)
+	%   \\ \qquad
+	  \sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ \qvar(c)(v_i') = 1 \land (v_i', w_i) \in \traceW(c) 
+	  \right\}} w_i(\trace_0)
+	  \\ \qquad 
+	  \leq 
+	  \sum\limits_{ 
+		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \land (v_i', \hat{w}_i) \in \progW(c)\} } m_i
+		\\ \qquad 
+		= 
+		\sum\limits_{ 
+		  \{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \} } m_i
+		\\ \qquad 
+		= m
+	\end{array}
+	\]
+% \[
+% 	\sum\limits_{\traceF(c)(v_i) = 1}
+% \hat{w}_i(\trace_0) 
+% \leq 
+% \sum\limits_{\progF(c)(v_i) = 1}n_i,
+% \]
 and this sub goal is proved.
 \end{proof}
 The following are the four lemmas used above,
