@@ -51,11 +51,11 @@ Intuitively, the \emph{event differ in value} is a partial negation of the \emph
 The Equation~\ref{eq:diff}(a) is the same as the first line in Equation~\ref{eq:event_eq}.
 In Equation~\ref{eq:diff}(b), when the event corresponded to a query request, we require the query value in forth element to be different obeying the \emph{query equivalence} definition, which is opposite to the last line in Equation~\ref{eq:event_eq}.
 
-Specifically, we look at the Equation~\ref{eq:diff}(a)
+Specifically, we first look at the Equation~\ref{eq:diff}(a)
 in Definition~\ref{def:diff},
 $\pi_1(\event_1) = \pi_1(\event_2) 
   \land  
-  \pi_2(\event_1) = \pi_2(\event_2)$ at 
+  \pi_2(\event_1) = \pi_2(\event_2)$ 
 requires that $\event_1$ and $\event_2$ have the same variable name and label. 
 This guarantees that $\event_1$ and $\event_2$ are generated from the same labeled command.
 In Equation~\ref{eq:diff}(b),
@@ -77,7 +77,40 @@ a trace, whose behavior is defined as follows,
 % \end{array}
 \]
 
-{Below is the \emph{event may-dependency} between events based on formally observing their differences via $\diff$.}
+Then we want to define the dependency relation between events in order to define the \emph{variable may-dependency} relation.
+To define the \emph{event may-dependency}, we first introduce the counter notation,
+$\vcounter : \tdom \to \mathbb{N} \to \mathbb{N}$ to count the 
+occurrence of a label in a trace as below.
+% It is used when define the components on a semantics-based dependency graph.
+  \begin{defn}[Counter $\vcounter : \tdom \to \mathbb{N} \to (\mathbb{N}\cup\{\infty\})$]
+    \label{def:trace_cnt}
+    Given a trace $\trace \in \tdom$ and a label $l$, the occurrence of $l$ in $\trace$ is computed by
+    $\vcounter(\trace, l)$ as follows.
+    \[
+      \begin{array}{ll}
+      \vcounter(\trace :: (\_, l, \_, \_), l ) \triangleq \vcounter(\trace, l) + 1
+      &
+      \vcounter(\trace  ::(b, l, v, \bullet), l) \triangleq \vcounter(\trace, l) + 1
+      \\
+      \vcounter(\trace  :: (x, l, v, \qval), l) \triangleq \vcounter(\trace, l) + 1
+      &
+      % \vcounter(\trace :: (\_, l', \_, \_), l ) \triangleq \vcounter(\trace, l), l' \neq l 
+      % &
+      \vcounter(\trace  :: (x, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
+      \\
+      \vcounter(\trace  :: (b, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
+      &
+      \vcounter(\trace  :: (x, l', v, \qval), l) \triangleq \vcounter(\trace, l), l' \neq l
+      \\
+      \vcounter({[]}, l) \triangleq 0
+      &
+      \vcounter(\trace, l) \triangleq \infty ~ \text{if}~ \trace \in \inftdom
+      \end{array}
+      \]
+\end{defn}
+
+
+{Below is the \emph{event may-dependency} between events based on the \emph{event differ in value}.}
 \begin{defn}[Event May-Dependency]
 \label{def:event_dep}
 An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment event $\event_1 \in \eventset^{\asn}$ in a program ${c}$  with a hidden database $D$ and a witness trace $\trace \in \ftdom$,

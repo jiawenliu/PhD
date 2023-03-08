@@ -58,37 +58,6 @@ We also want to have this graph carrying the \emph{quantitative} sub-property.
 In this sense, we define the \emph{quantitative} sub-property of \emph{adaptivity} as the 
 weight of each vertex  on this graph, i.e., every labeled variable in a program.
 
-To define the weight of each labeled variable $x^l \in \lvar(c)$, we introduce the counter notation,
-$\vcounter : \tdom \to \mathbb{N} \to \mathbb{N}$ to count the 
-occurrence of a label in a trace as below.
-% It is used when define the components on a semantics-based dependency graph.
-  \begin{defn}[Counter $\vcounter : \tdom \to \mathbb{N} \to (\mathbb{N}\cup\{\infty\})$]
-    \label{def:trace_cnt}
-    Given a trace $\trace \in \tdom$ and a label $l$, the occurrence of $l$ in $\trace$ is computed by
-    $\vcounter(\trace, l)$ as follows.
-    \[
-      \begin{array}{ll}
-      \vcounter(\trace :: (\_, l, \_, \_), l ) \triangleq \vcounter(\trace, l) + 1
-      &
-      \vcounter(\trace  ::(b, l, v, \bullet), l) \triangleq \vcounter(\trace, l) + 1
-      \\
-      \vcounter(\trace  :: (x, l, v, \qval), l) \triangleq \vcounter(\trace, l) + 1
-      &
-      % \vcounter(\trace :: (\_, l', \_, \_), l ) \triangleq \vcounter(\trace, l), l' \neq l 
-      % &
-      \vcounter(\trace  :: (x, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
-      \\
-      \vcounter(\trace  :: (b, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
-      &
-      \vcounter(\trace  :: (x, l', v, \qval), l) \triangleq \vcounter(\trace, l), l' \neq l
-      \\
-      \vcounter({[]}, l) \triangleq 0
-      &
-      \vcounter(\trace, l) \triangleq \infty ~ \text{if}~ \trace \in \inftdom
-      \end{array}
-      \]
-\end{defn}
-
 Then, we use the \emph{variable may-dependency} relation and the query variables to 
 define the semantics-based dependency graph for a well-formed program,
 and we define as below the

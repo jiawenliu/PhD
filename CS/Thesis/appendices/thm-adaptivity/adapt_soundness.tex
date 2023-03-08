@@ -45,9 +45,9 @@ According to the Definition~\ref{def:prog_adapt} and Definition~\ref{def:trace_a
 , \trace_0 } \earrow m 
 \\ \qquad 
 \implies
-n \geq
 \max \big 
 \{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \} (\trace_0)
+\leq m
 \end{array}
 \]
 %
@@ -61,11 +61,12 @@ then it is sufficient to show that:
   m \in \mathbb{N} \cup \{\infty\}
   \sthat
   \exists p \in \paths(\progG(c)) 
+  \\ \qquad 
   \land
- ( \config{\hat{\qlen}(p), \trace_0} \earrow m
-   \\ \qquad 
+ \Big( \config{\hat{\qlen}(p), \trace_0} \earrow m
    \implies 
-  n \geq \qlen(k(\trace_0)))
+  \qlen(k)(\trace_0) \leq m
+  \Big)
 \end{array}
 \]
 %

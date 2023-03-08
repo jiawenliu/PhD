@@ -33,14 +33,44 @@ proof Summary:
 4. Then we have
 $\pathsearch(\progG(c)) \geq \progA(c)$.
 \begin{proof}
-  Taking arbitrary program $c \in \cdom$, let $\progG(c) = (\progV, \progE, \progW, \progF)$ be its 
-  program based dependency graph.
-  \\
-  Taking an arbitrary walk $k_{x,y} \in \walks{(\progG)}$, with vertices sequence
-  $(x, s_1, \ldots, y)$, it is sufficient to show:
+  For an arbitrary well-formed program ${c}$, let $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
+  be its semantics-based dependency graph by Definition~\ref{def:trace_graph} and $\progG({c}) = (\progV, \progE, \progW, \progF)$ be its estimated-dependency graph
+  by Definition~\ref{def:prog_graph}.
+  %
+  
+  According to the Definition~\ref{def:prog_adapt} and Definition~\ref{def:trace_adapt}, it is sufficient to show:
+  %
   \[
-    \qlen(k_{x,y}) = \len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \pathsearch(\progG(c))
+    \begin{array}{l}
+      \forall \trace_0 \in \ftdom_{0}(c), m \in \mathbb{N} \cup \{\infty\} \sthat
+      \config{\pathsearch(c), \trace_0} \earrow m 
+    \\ \qquad 
+    \implies
+      \max \big 
+      \{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \} (\trace_0) 
+      \leq m
+  \end{array}
   \]
+  %
+  %
+  Let $\trace_0 \in \ftdom_0(c)$ be an arbitrary initial trace of $c$,
+  then it is sufficient to show that:
+  \[
+    \begin{array}{l}
+      \forall m \in \mathbb{N} \cup \{\infty\} \sthat
+      \config{\pathsearch(c), \trace_0} \earrow m 
+    \\ \qquad 
+    \implies
+      \max \big 
+      \{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \} (\trace_0) 
+      \leq m
+  \end{array}
+  \]
+  %
+  Let $k\in \walks(\traceG(c))$ be an arbitrary walk in $\traceG(c)$,
+   $(e_{1}, \ldots, e_{(n-1)}) $ and
+  $(v_1, \ldots, v_n)$ be the edges and vertices sequence of $k(\trace_0)$.
+  
   By line:3 of $\pathsearch(\progG)$ algorithm defined in Algorithm~\ref{alg:adapt}, let $\kw{\sccgraph_1}, \ldots, \kw{\sccgraph_n}$ be all the strong connected components on $\progG$ with $0 \leq n \leq |\vertxs|$,
   where each $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$,
   \\
@@ -53,7 +83,12 @@ $\pathsearch(\progG(c)) \geq \progA(c)$.
   \caseL{$x, y$ on the same SCC}
   Let  $\sccgraph$ be this SCC where vertices $x$ and $y$ on, by Lemma~\ref{lem:sound_adaptalg_scc}, we know
   \[
-    \qlen(k_{x,y}) \leq \max\{\qlen(k) | k \in \walks(\sccgraph)\} \leq \pathsearch_{scc}(\sccgraph)
+    \begin{array}{l}
+      \forall m \in \mathbb{N} \cup \{\infty\} \sthat
+      \config{\pathsearch_{scc}(\sccgraph)(c), \trace_0} \earrow m_{scc}
+    \\ \qquad   \implies
+    \qlen(k_{x,y})(\trace_0) \leq \max\{\qlen(k)(\trace_0) | k \in \walks(\sccgraph)\} \leq m_{scc}
+  \end{array}
   \]
 %
 By line:15 and line:18 in $\pathsearch(\progG)$ algorithm in Algorithm~\ref{alg:adapt}, 
@@ -62,8 +97,13 @@ we know $\pathsearch(\progG(c))  = \kw{adapt} \geq \kw{adapt_{tmp}} \geq  \kw{ad
 \\
 i.e., 
 \[
-  \qlen(k_{x,y}) \leq \pathsearch(\progG(c)) 
-  \]
+  \begin{array}{l}
+    \forall m \in \mathbb{N} \cup \{\infty\} \sthat
+    \config{\pathsearch(c), \trace_0} \earrow m 
+    \\ \qquad   \implies
+  \qlen(k_{x,y})(\trace_0) \leq m
+\end{array}
+\]
 This case is proved.
 %
 %
@@ -83,19 +123,28 @@ $k_y = (s_{scc_m}, \ldots, s_y)$;
 \\
 where $k_x \in \walks(\sccgraph_x), \ldots, k_y \in \walks(\sccgraph_y)$.
 \\
+Let $m_i$ be the evaluation results of $\pathsearch_{scc}(\sccgraph_i)$ for every $k_i$ as follows,
+\[
+  \config{\pathsearch(c), \trace_0} \earrow m_i
+\]
 By Lemma~\ref{lem:sound_adaptalg_scc}, we know for each walk $k_i$:
-\[ \qlen(k_i) \leq \max\{\qlen(k_i) | k_i \in \walks(\sccgraph_i)\} \leq \pathsearch_{scc}(\sccgraph_i) = \kw{adapt_{scc}[\sccgraph_i]} \]
+\[ \qlen(k_i)(\trace_0) \leq \max\{\qlen(k_i)(\trace_0) | k_i \in \walks(\sccgraph_i)\} \leq m_i \]
 %
+By Algorithm, we know $\pathsearch_{scc}(\sccgraph_i) = \kw{adapt_{scc}[\sccgraph_i]}$ 
+for each $k_i$
+and $\pathsearch(c) = \sum_{k_i} \kw{adapt_{scc}[\sccgraph_i]}$.
+Then we know
+\[
+  \config{\pathsearch(c), \trace_0} \earrow \sum_{k_i} m_i
+\]
 Then we have:
 \[ 
   \begin{array}{l}
-  \qlen(k_{x,y}) = \qlen(k_x) + \qlen(k_1) + \ldots + \qlen(k_y) 
+  \qlen(k_{x,y})(\trace_0) = \qlen(k_x)(\trace_0) + \qlen(k_1)(\trace_0) + \ldots + \qlen(k_y) (\trace_0)
   \\\leq 
-  \kw{adapt_{scc}[\sccgraph_1]} + \kw{adapt_{scc}[\sccgraph_1]}  + \ldots + \kw{adapt_{scc}[\sccgraph_y]}
-  \leq \kw{adapt}
+  \sum_{k_i} m_i
   \end{array}
   \]
-, where $\kw{adapt}$ is the output of $\pathsearch(\progG)$.
 This case is proved.
 \end{proof}
 

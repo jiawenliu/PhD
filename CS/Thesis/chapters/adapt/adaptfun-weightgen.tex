@@ -108,7 +108,7 @@ is the variable that decreases on this edge, computed as follows,
   & \absevent \in SCC(\absG(c)) \land \absevent \in \dec(x) \land  \absevent = (\_, \_ , x' \leq x - v) \\
   \locbound(\absevent, c) \triangleq x
   & \absevent \in SCC(\absG(c)) \land 
-  \absevent  \notin \bigcup_{x \in \mathcal{V}} \dec(x)
+  \absevent  \notin \bigcup\limits_{x \in \mathcal{V}} \dec(x)
   \land \absevent \notin SCC(\absG(c) \setminus \dec(x)). \\
   \locbound(\absevent, c) \triangleq \infty  & o.w.
 \end{array}

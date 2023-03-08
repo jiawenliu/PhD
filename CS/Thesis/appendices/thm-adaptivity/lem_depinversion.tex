@@ -435,9 +435,9 @@ In case of $ \pi_1(\event_z) \notin VAR(\expr_2 / \qexpr_2)$, by Inversion Lemma
 %
 \[
 	\begin{array}{l}
-		\forall x^i \in \lvar(c), \trace, \trace' \in \ftdom, v, v' \sthat 
+		\forall x^i \in \mathcal{LV}, \trace, \trace' \in \ftdom, v, v' \sthat 
 		\\ \qquad 
-		\Big( \forall z^j \in \lvar(c) / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
+		\Big( \forall z^j \in \mathcal{LV} / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
 		\\ \qquad 
 		\env(\trace) z = \env(\trace') z \Big) \land 
 	\config{\trace, \expr_2 / \qexpr_2} \aarrow v \land \config{\trace', \expr_2} \aarrow  v' \\ \qquad 
@@ -446,9 +446,9 @@ In case of $ \pi_1(\event_z) \notin VAR(\expr_2 / \qexpr_2)$, by Inversion Lemma
 \]
 	\[
 		\begin{array}{l}
-			\forall x^i \in \lvar(c), \trace, \trace' \in \ftdom, \qval, \qval' \sthat 
+			\forall x^i \in \mathcal{LV}, \trace, \trace' \in \ftdom, \qval, \qval' \sthat 
 			\\ \qquad 
-		\Big( \forall z^j \in \lvar(c) / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
+		\Big( \forall z^j \in \mathcal{LV} / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
 		\\ \qquad 
 		\env(\trace) z = \env(\trace') z \Big) \land 
 		\config{\trace, \qexpr_2} \qarrow \qval \land \config{\trace', \qexpr_2} \qarrow \qval' 
@@ -467,21 +467,26 @@ Let $\kw{use}_{\trace_2}$ a subset of the events in $\trace_2$, satisfying:
 	\pi_1(\event) \in VAR(\expr_2 / \qexpr_2)
 \end{array}		
 \]
+Let $\lvar({\trace_2}) $ denotes the set of all labeled variables in $\trace_2$
+and $\lvar({\kw{use}_{\trace_2}})$ the set of all labeled variables in ${\kw{use}_{\trace_2}}$.
+
 Then we also know for every $\event_z \in \kw{use}_{\trace_2}$, 
-$\neg \eventdep(\event_1, \event_z, \trace[\event_1:\event_z], c, D)$, i.e.,:
+$\neg \eventdep(\event_1, \event_z, \trace[\event_1:\event_z], c, D)$
+as follows.
 \[
 	\forall z^l \in \lvar(c) \setminus 
 	\big( 
-		( \lvar_{\trace_2} \setminus \lvar_{\kw{use}_{\trace_2}}) \cup \{\pi_1(\event_1)^{\pi_2(\event_1)}\} \big)
+		( \lvar({\trace_2}) \setminus \lvar({\kw{use}_{\trace_2}})) \cup \{\pi_1(\event_1)^{\pi_2(\event_1)}\} \big)
 	\sthat 
 	\env(\trace_1 \tracecat [\event_1] \tracecat \trace_2) z = \env(\trace_1 \tracecat [\event_1'] \tracecat \trace_2') z
 	~ (1)
 \]
- and
- \\ 
-$
-	\forall z^l \in \lvar(c) \setminus ( \lvar_{\trace_2} \setminus \lvar_{\kw{use}_{\trace_2}}), 
+and 
+\[
+	\begin{array}{l}
+	\forall z^l \in \lvar(c) \setminus ( \lvar({\trace_2}) \setminus \lvar({\kw{use}_{\trace_2}})), 
 	\trace, \trace' \in \ftdom, v, v' \sthat  
+	\\ \qquad
 	\env(\trace) z = \env(\trace') z 
 	\land 
 	\config{\trace, \expr_2} \aarrow v 
@@ -490,11 +495,14 @@ $
 	\implies 
 	v = v' 
 	~ (2a)
-$;
-\\
-$
-	\forall z^l \in \lvar(c) \setminus ( \lvar_{\trace_2} \setminus \lvar_{\kw{use}_{\trace_2}}), 
+\end{array}
+\]
+and
+\[
+	\begin{array}{l}
+	\forall z^l \in \lvar(c) \setminus ( \lvar({\trace_2}) \setminus \lvar({\kw{use}_{\trace_2}})), 
 	\trace, \trace' \in \ftdom, \qval, \qval' \sthat  
+	\\ \qquad
 	\env(\trace) z = \env(\trace') z 
 	\land 
 	\config{\trace, \qexpr_2} \qarrow \qval 
@@ -503,10 +511,11 @@ $
 	\implies 
 	\qval =_q \qval' 
 	~ (2q)
-$,
-\\
-where $\lvar_{\trace_2}$ and $\lvar_{\kw{use}_{\trace_2}}$ are
- the sets of labelled variables of every event in $\trace_2$ and $\kw{use}_{\trace_2}$ respectively .
+\end{array}
+\]
+% \\
+% where $\lvar_{\trace_2}$ and $\lvar_{\kw{use}_{\trace_2}}$ are
+%  the sets of labelled variables of every event in $\trace_2$ and $\kw{use}_{\trace_2}$ respectively .
 % \\
 % and 
 % $

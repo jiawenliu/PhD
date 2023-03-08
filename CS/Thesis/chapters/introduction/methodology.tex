@@ -12,9 +12,9 @@ focuses only on the efficiency and scalable of the programs, but not
 % None of them takes care of 
 the generalization error of the corresponding data analysis algorithms that these programs implemented.
 % In terms of adaptivity, none of them take care of this property w.r.t. these data analysis algorithms implemented.
-In this sense, to control data analyses' generalization error by analyzing the programs' \emph{adaptivity}
+In this sense, it is difficult to control data analyses' generalization error by analyzing the programs' \emph{adaptivity}
 % as a program property
-is difficult based on existing programming languages.
+ based on existing programming languages.
 % However, the variety of the external API makes the formalization of data analysis algorithms and their adaptivity property over these languages difficult.
 
 \paragraph{Our Language Model}
@@ -36,7 +36,8 @@ There are many ways to formally define a program's conceptual property. However,
 We summarize some existing formalization methods with their limitations and then introduce how we formalize this concept.
 
 \paragraph{Existing Methodology and The Limitations}
-The \emph{abstract interpretation} based methodology which is originated from Cousot's influential paper~\cite{CousotH78, CousotC77} and intensively developed in~\cite{Mine06, ZanioliC11, MastroeniZ17, KincaidCBR18, Cousot19a, JanaHAGC20}, etc. This category of methods is focusing on formalizing property from the \emph{reachability} perspective,
+The \emph{abstract interpretation} based methodology is originated from Cousot's influential paper in~\cite{CousotH78, CousotC77}.
+This category of methods is intensively developed in~\cite{Mine06, ZanioliC11, MastroeniZ17, KincaidCBR18, Cousot19a, JanaHAGC20}, etc. Majority of these methods are focusing on formalizing property from the \emph{reachability} perspective,
 such as the dependency relation defined in~\cite{Cousot19a}, program point reachability formalized in~\cite{MastroeniZ08}, etc.
 However, they are not able to capture the \emph{quantitative} sub-property for the \emph{adaptivity}.
 
@@ -180,9 +181,15 @@ We present this algorithm in Chapter~\ref{sec:adapt-static} and name it as {\THE
 
 This property is a worst-case bound on the number of times a given control location 
 inside a procedure is visited during the program execution.
-Many works in the program analysis area develop algorithms estimating the program's loop bound or overall complexity.
-However, there isn't a general analysis algorithm that solves this problem directly or path-sensitively for each program location.
-Existing methods from different areas have different limitations in computing the reachability-bound.
+% Some existing program complexity analysis methods can be repurposed to analyze and estimate the \emph{reachability-bound}.
+%     However, these methods focus only on the overall quantity and ignore the path sensitivity in the program.
+%     For this reason, the \emph{reachability-bound}s of the locations in different sub-procedures are usually over-approximated. 
+%     As far as we know, there is no general analysis algorithm that computes the reachability-bound for every program location directly and path-sensitively. 
+% Many works in the program analysis area develop algorithms estimating the program's complexity.
+% However, these methods focus only on the overall quantity and ignore the path sensitivity in the program.
+% For this reason, the \emph{reachability-bound}s of the locations in different sub-procedures are usually over-approximated.
+% As far as we know, there isn't a general analysis algorithm that solves this problem directly or path-sensitively for each program location.
+Existing methods from different areas have different limitations in computing a precise \emph{reachability-bound} for each program location.
 Below we summarize some limitations of the relevant methodologies and introduce how we leverage them in our new approach.
 % To solve these issues and improve the analysis results on this problem, we present a new algorithm
 % aiming to find the precise symbolic \emph{reachability-bound} on the program's every location.
