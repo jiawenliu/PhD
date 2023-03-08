@@ -35,6 +35,7 @@ Given a program ${c}$, let $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$
 be its semantics-based dependency graph by Definition~\ref{def:trace_graph} and $\progG({c}) = (\progV, \progE, \progW, \progF)$ be its estimated-dependency graph
 by Definition~\ref{def:prog_graph}.
 %
+
 According to the Definition~\ref{def:prog_adapt} and Definition~\ref{def:trace_adapt}, it is sufficient to show:
 %
 \[
@@ -51,7 +52,7 @@ n \geq
 \]
 %
 %
-Let $\trace_0 \in \ftdom_(c)$ be an arbitrary initial trace of $c$,
+Let $\trace_0 \in \ftdom_0(c)$ be an arbitrary initial trace of $c$,
 then it is sufficient to show that:
 \[
 	\begin{array}{l}
@@ -131,13 +132,13 @@ $$
 by Definition~\ref{def:qlen-static}, we know
 \[
 	\hat{\qlen}(p) = \sum\limits_{ 
-		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \land (v_i', \hat{w}_i) \in \progW(c)\} 
+		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  (v_i, 1) \in \progF(c) \land (v_i', \hat{w}_i) \in \progW(c) \} 
 		} 
 		\hat{w}_i.
 \]
 By Definition~\ref{def:qlen}, we know
 \[
-	\qlen(k)(\trace_0) = \big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 
+	\qlen(k)(\trace_0) = |\big( v_i \mid v_i \in (v_1, \ldots, v_{n}) \land (v_i, 1) \in \traceF(c)
 	  \land k(\trace_0) = (v_1, \ldots, v_{n}) \big)|.
 \]
 Since $(v_1', \ldots, v_n')$ are all the unique vertices from 
@@ -146,11 +147,13 @@ by the finite walk definition in Definition~\ref{def:finitewalk}, we know
 \[
 	\begin{array}{l}
 		\qlen(k)(\trace_0) = 
-		|\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 
-	  \land k(\trace_0) = (v_1, \ldots, v_{n}) \big)|
-	  \\ \qquad \leq 
-	  \sum\left\{ w_i(\trace_0) ~\vert~ 
-	  v_i' \in (v_1', \ldots, v_n') \land \qvar(c)(v_i') = 1 \land (v_i', w_i) \in \traceW(c) 
+		|\big(  v_i  ~\vert~  v_i \in (v_1, \ldots, v_{n}) \land (v_i, 1) \in \traceF(c)
+		\land k(\trace_0) = (v_1, \ldots, v_{n}) \big)|
+		\\ \qquad \leq 
+	  \sum\left\{ 
+			w_i(\trace_0) ~\vert~ 
+			v_i' \in (v_1', \ldots, v_n') \land (v_i', 1) \in \traceF(c) 
+			\land (v_i', w_i) \in \traceW(c) 
 	  \right\}
 	\end{array}
 \]
@@ -158,24 +161,26 @@ Then, it is sufficient to show
 \[
 	\begin{array}{l}
 		\forall m \in \mathbb{N} \cup \{\infty\} \sthat
-	\config{\sum\limits_{ 
-		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \land (v_i', \hat{w}_i) \in \progW(c)\} } 
+		\config{\sum\limits_{ 
+		\{  v_i' \in (v_1', \ldots, v_n') ~\vert~  (v_i, 1) \in \progF(c) \land (v_i', \hat{w}_i) \in \progW(c)\} } 
 		\hat{w}_i, \trace_0} \earrow m
 		\\ \qquad 
 		\implies
-		\sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ \qvar(c)(v_i') = 1 \land (v_i', w_i) \in \traceW(c) 
+		\sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ (v_i', 1) \in \traceF(c) \land (v_i', w_i) \in \traceW(c) 
 	  \right\}} w_i(\trace_0)
 	  \leq m
 	\end{array}
 	\]
+
+
 Let $m \in \mathbb{N} \cup \{\infty\} $ be the evaluated result satisfying 
 $$
 \config{\sum\limits_{ 
-	\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \land (v_i', \hat{w}_i) \in \progW(c)\} } 
+	\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  (v_i, 1) \in \progF(c) \land (v_i', \hat{w}_i) \in \progW(c)\} } 
 	\hat{w}_i, \trace_0} \earrow m.
 $$
 Let $m_1, \ldots, m_n$ be the evaluation results of
-	$\hat{w}_i$ where $(v_i', \hat{w}_i) \in \progW(c)$ for every $v_i' \in (v_1', \ldots, v_n')$ and $\qvar(c)(v_i') = 1$ 
+	$\hat{w}_i$ where $(v_i', \hat{w}_i) \in \progW(c)$ for every $v_i' \in (v_1', \ldots, v_n')$ and $(v_i', 1) \in \progF(c)$ 
 	such that 
 	\[
 		(\config{\hat{w}_i, \trace_0} \earrow m_i.
@@ -183,17 +188,40 @@ Let $m_1, \ldots, m_n$ be the evaluation results of
 Then by operational semantics rules, we know 
 \[
 	m = \sum\limits_{ 
-		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \} } m_i.
+		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  (v_i', 1) \in \progF(c) \} } m_i.
 \]
 
 Then it is sufficient to show
 	\[
 		\begin{array}{l}
-			\sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ \qvar(c)(v_i') = 1 \land (v_i', w_i) \in \traceW(c) 
+			\sum\limits_{\left\{
+				v_i' \in (v_1', \ldots, v_n') ~\vert~ (v_i', 1) \in \traceF(c) \land (v_i', w_i) \in \traceW(c) 
 		\right\}} w_i(\trace_0)
 		\\ \qquad \leq 
 		\sum\limits_{ 
-		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \} } m_i
+		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  (v_i', 1) \in \progF(c) \} } m_i
+		\end{array}
+	\]
+	By Lemma~\ref{lem:queryvertex_map}, we know 
+	\[
+		\forall v_i' \in (v_1', \ldots, v_n')
+		\sthat
+		(v_i', 1) \in \traceF(c) \iff  (v_i', 1) \in \progF(c)		
+		\]
+	We also know by Definition~\ref{def:trace_graph} and~\ref{def:prog_graph}
+	\[
+		(v_i', 1) \in \progF(c) \iff v_i' \in \qvar(c)
+		\land 
+		(v_i', 1) \in \traceF(c) \iff v_i' \in \qvar(c)
+	\]
+	Then it is sufficient to show
+	\[
+		\begin{array}{l}
+			\sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ v_i' \in \qvar(c)\land (v_i', w_i) \in \traceW(c) 
+		\right\}} w_i(\trace_0)
+		\\ \qquad \leq 
+		\sum\limits_{ 
+		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  v_i' \in \qvar(c) \} } m_i
 		\end{array}
 	\]
 % \[
@@ -213,7 +241,7 @@ Then it is sufficient to show
 By Lemma~\ref{lem:weights_map}, we know
 \[
 	\begin{array}{l}
-		\forall v_i' \in (v_1', \ldots, v_n'), (v_i', w_i) \in \traceW(c), m_i \in \mathbb{N}  \sthat
+\forall v_i' \in (v_1', \ldots, v_n'), (v_i', w_i) \in \traceW(c), m_i \in \mathbb{N} \cup \{\infty\}  \sthat
   \exists (v_i', \hat{w}_i) \in \progW(c)
   \sthat 
   \\ \qquad \qquad
@@ -227,22 +255,22 @@ then we know
 \[
 	\begin{array}{l}
 	%  m = \sum\limits_{ 
-	% 	\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \land (v_i', \hat{w}_i) \in \progW(c)\} } m_i
+	% 	\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  (v_i, 1) \in \traceF(c) \land (v_i', \hat{w}_i) \in \progW(c)\} } m_i
 	% 	\\ \qquad 
 	% 	\leq 
-	% 	\sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ \qvar(c)(v_i') = 1 
+	% 	\sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ (v_i, 1) \in \traceF(c) 
 	%   \right\}} w_i(\trace_0)
 	%   \\ \qquad
-	  \sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ \qvar(c)(v_i') = 1 \land (v_i', w_i) \in \traceW(c) 
+	  \sum\limits_{\left\{v_i' \in (v_1', \ldots, v_n') ~\vert~ (v_i, 1) \in \traceF(c) \land (v_i', w_i) \in \traceW(c) 
 	  \right\}} w_i(\trace_0)
 	  \\ \qquad 
 	  \leq 
 	  \sum\limits_{ 
-		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \land (v_i', \hat{w}_i) \in \progW(c)\} } m_i
+		\{ v_i' \in (v_1', \ldots, v_n') ~\vert~  v_i' \in \qvar(c) \land (v_i', \hat{w}_i) \in \progW(c)\} } m_i
 		\\ \qquad 
 		= 
 		\sum\limits_{ 
-		  \{ v_i' \in (v_1', \ldots, v_n') ~\vert~  \qvar(c)(v_i') = 1 \} } m_i
+		  \{ v_i' \in (v_1', \ldots, v_n') ~\vert~  v_i' \in \qvar(c) \} } m_i
 		\\ \qquad 
 		= m
 	\end{array}
@@ -268,7 +296,8 @@ showing the correspondence properties between the program based graph and trace 
 	$v \in \progV$ if and only if $v \in \traceG$.
 	\[
 	\begin{array}{l}
-	\forall c \in \cdom , v \in \mathcal{VAR} \times \mathbb{N} \sthat  
+	\forall c \in \cdom , v \in \mathcal{LV} 
+	\sthat  
 	\progG({c}) = (\progV, \progE, \progW, \progF)
 	\\ \quad
 	\land 
@@ -281,22 +310,18 @@ showing the correspondence properties between the program based graph and trace 
 	%
 	\end{lem}
 \begin{proof}
-Proof Summary: Proving by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}.
-\\
-Taking arbitrary program $c$,
-by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
-we have   
-\\
-its estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
-\\
-and 
-semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
-\\
+% Proof Summary: Proving by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}.
+% \\
+Given a program ${c}$, let $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
+be its semantics-based dependency graph by Definition~\ref{def:trace_graph} and $\progG({c}) = (\progV, \progE, \progW, \progF)$ be its estimated-dependency graph
+by Definition~\ref{def:prog_graph}.
+
 By the two definitions, we also know 
 $\traceV  = \lvar(c)$ and $\progV = \lvar(c)$.
-\\
+
 Then we know $\traceV  = \progV$, i.e., 
-for arbitrary $v \in \mathcal{VAR} \times \mathbb{N}$, $v \in \progV \Longleftrightarrow v \in \traceV$.
+$$v \in \mathcal{LV}  \sthat v \in \progV \iff v \in \traceV,$$
+and this case is proved
 \end{proof}
 %
 	\begin{lem}[Mapping from Egdes of $\traceG$ to $\progG$]
@@ -323,26 +348,26 @@ for arbitrary $v \in \mathcal{VAR} \times \mathbb{N}$, $v \in \progV \Longleftri
 	\]
 	\end{lem}
 \begin{proof}
-Taking arbitrary program $c$,
-by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
-we have   
-\\
-its estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
-\\
-and 
-semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
-\\
-Taking arbitrary edge $e = (x^i, y^j) \in \traceE$, it is sufficient to show $(x^i, y^j) \in \progE$.
-\\
+	Taking arbitrary program $c$.
+	By Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
+	we construct
+	its estimated graph 
+	$$\progG({c}) = (\progV, \progE, \progW, \progF)$$
+	and 
+	semantics-based graph 
+	$$\traceG({c}) = (\traceV, \traceE, \traceW, \traceF).$$
+
+Taking an arbitrary edge $e = (x^i, y^j) \in \traceE$, it is sufficient to show $(x^i, y^j) \in \progE$.
+
 By Lemma~\ref{lem:vertex_map}, we know $x^i, y^j \in \progV$.
-\\
+
 By definition of $\traceE$, we know $\vardep(x^i, y^j, c)$.
-\\
+
 By Theorem~\ref{thm:flowsto_soundness}, we know $ \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c)\sthat  
 n \geq 0 \land
 \flowsto(x^i,  z_1^{r_1}, c) 
 \land \ldots \land \flowsto(z_n^{r_n}, y^j, c) $.
-\\
+
 Then by definition of $\progE$, we know $(x^i, y^j) \in \progE$. This Lemma is proved.
 \end{proof}
 %
@@ -369,8 +394,9 @@ Then by definition of $\progE$, we know $(x^i, y^j) \in \progE$. This Lemma is p
 			\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)
 			\\ \qquad
 			\implies
-			\forall (x^l, w) \in \traceW \sthat
-			\exists (x^l, \hat{w}) \in \progW, v \in \mathbb{N} 
+			\forall (x^l, w) \in \traceW , v \in \mathbb{N} \cup\{ \infty\}
+			\sthat
+			\exists (x^l, \hat{w}) \in \progW
 			\sthat 
 			\\ \qquad \qquad
 			(\config{\hat{w}, \trace_0} \earrow v
@@ -381,32 +407,48 @@ Then by definition of $\progE$, we know $(x^i, y^j) \in \progE$. This Lemma is p
 		\]
 	\end{lem}
 \begin{proof}
-Proof Summary: Proving by Definition~\ref{def:prog_graph}, Definition~\ref{def:trace_graph} and relying on the soundness of Reachability Bound 
-Analysis.
-\\
-Taking arbitrary program $c$,
-by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
-we have   
-\\
-its estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
-\\
+% Proof Summary: Proving by Definition~\ref{def:prog_graph}, Definition~\ref{def:trace_graph} and relying on the soundness of Reachability Bound 
+% Analysis.
+% \\
+Taking arbitrary program $c$ and an initial trace $\trace_0 \in \ftdom_0(c)$.
+By Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
+we construct
+its estimated graph 
+$$\progG({c}) = (\progV, \progE, \progW, \progF)$$
 and 
-semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
-\\
-Taking arbitrary 
-% $v \in \traceV$, by Lemma~\ref{lem:vertex_map}, we know $v \in \progV$.
-$(x^l, w) \in \traceW, (x^l, \hat{w}) \in \progW, \vtrace, \trace' \in \ftdom$, satisfying:
-\\
-$\config{{c}, \trace_0} \to^{*} \config{\eskip, \trace\tracecat\vtrace'} 
+semantics-based graph 
+$$\traceG({c}) = (\traceV, \traceE, \traceW, \traceF).$$
+
+By the well-formed program in Definition~\ref{def:adaptfun-wfprog}, we know $c$ terminates when executing under $\trace_0$.
+Let $\vtrace \in \ftdom$ be the execution trace satisfying:
+$$
+\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\vtrace} 
 \land 
-\config{\hat{w}, \trace_0} \earrow v$
-\\
-By soundness of reachability bound analysis in Theorem~\ref{thm:pathinsensitive_rb_soundness}, we know 
+\config{\hat{w}, \trace_0} \earrow v$$
+
+Taking
+arbitrary 
+% $v \in \traceV$, by Lemma~\ref{lem:vertex_map}, we know $v \in \progV$.
+$(x^l, w) \in \traceW$,
+by Lemma~\ref{lem:abscfg_sound},
+we know there exists $\absevent = (l, \_, \_) \in \absflow(c)$.
+
+Then by definition~\ref{def:adaptfun-weight}, we know 
+\[
+	\sum\left\{  \absclr(\absevent, c) \middle\vert \absevent \in \absflow(c) \land \absevent = (l, \_, \_) \right\}
+\]
+ is the corresponded estimated weight.
+
+Let $\hat{w} = \sum\left\{  \absclr(\absevent, c) \middle\vert \absevent \in \absflow(c) \land \absevent = (l, \_, \_) \right\}$
+ and $v \in \mathbb{N} \cup\{ \infty\}$ be the evaluation result of $\hat{w}$.
+By soundness of reachability bound analysis in Theorem~\ref{thm:transition_bound_sound}, we know 
 % $\traceW(v) \leq \progW(v)$. This lemma is proved.
-$\vcounter(\vtrace', l) \leq v$
-\\
-By definition~\ref{def:trace_graph}, we know $w_t(\trace_0) = \vcounter(\vtrace', l)$,
-then we have $w_t(\trace_0) \leq v$ and this is proved.
+$\vcounter(\vtrace, l) \leq v$
+
+By definition~\ref{def:trace_graph}, we know 
+$$w(\trace_0) = \vcounter(\vtrace, l).$$
+
+Then we have $w(\trace_0) \leq v$ and this is proved.
 \end{proof}
 %
 \begin{lem}[One-on-One Mapping for Query Vertices]
@@ -419,7 +461,7 @@ then we have $w_t(\trace_0) \leq v$ and this is proved.
 	 $(x^i, n) \in \traceF$ if and only if $ (x^i, n) \in \progF$.
 	\[
 	\begin{array}{l}
-	\forall c \in \cdom , (x^i, n) \in \mathcal{VAR} \times \mathbb{N}  \times \{0, 1\} 
+	\forall c \in \cdom , x^i \in \lvar(c), n \in \{0, 1\} 
 	 \sthat  
 	 \\ \quad
 	 \progG({c}) = (\progV, \progE, \progW, \progF)
@@ -432,21 +474,22 @@ then we have $w_t(\trace_0) \leq v$ and this is proved.
 	\]
 	\end{lem}
 \begin{subproof}
-Proving by Definition~\ref{def:prog_graph}, Definition~\ref{def:trace_graph}.
-\\
-Taking arbitrary program $c$,
-by Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
-we have   
-\\
-its estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$ 
-\\
-and 
-semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$.
-\\
-By the two definitions, we also know $\traceF  = \progF$, 
-i.e., 
-for arbitrary $ (x^i, n) \in \mathcal{VAR} \times \mathbb{N}  \times \{0, 1\} $,
- $(x^i, n) \in \traceF \Longleftrightarrow  (x^i, n) \in \progF$.
- \\
+	Given a program ${c}$, let $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
+	be its semantics-based dependency graph by Definition~\ref{def:trace_graph} and $\progG({c}) = (\progV, \progE, \progW, \progF)$ be its estimated-dependency graph
+	by Definition~\ref{def:prog_graph}.
+	
+By the two definitions, we also know
+\[
+	\forall  x^i \in \lvar(c), n \in \{0, 1\} \sthat
+	(x^i, n) \in \progF(c) \iff x^i \in \qvar(c)
+	\land 
+	(x^i, m) \in \traceF(c) \iff x^i \in \qvar(c)
+\]
+Then we have 
+\[
+	\forall  x^i \in \lvar(c), n \in \{0, 1\} \sthat
+	(x^i, n) \in \progF(c) \iff 
+	(x^i, m) \in \traceF(c).
+	\]
  This lemma is proved.
 \end{subproof}

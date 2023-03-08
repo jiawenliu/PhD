@@ -191,7 +191,8 @@ computed as follows,
 for easier understanding the concept.
 In the implementation, we use the one based on $\resetchain$ in Definition 21 from \cite{SinnZV17} achieving more accurate results.}
 Then we construct the set of reachability bound $w$ for every program point $l$, as $\absW(c)$.
-For each pair $(l, \hat{w}) \in \absW(c)$, $\hat{w} = \sum\left\{  \absclr(\absevent, c) \middle\vert \absevent = (l, \_, \_) \right\}$.
+% For each pair $(l, \hat{w}) \in \absW(c)$, 
+% $\hat{w} = \sum\left\{  \absclr(\absevent, c) \middle\vert \absevent = (l, \_, \_) \right\}$.
 
 \emph{Soundness Informal}
 For a program $c$ and an edge $\absevent \in \absE(c)$,
@@ -252,20 +253,28 @@ for each label in the abstract control flow graph of $c$.
 The same way for the rest weights' computation.
 
 \paragraph{Vertex Weight Computation}
-Using the reachability-bound $\absclr(e, c)$ for every edge $e = (l, dc, l')$ we can provide a bound on the visiting times of each vertex $x^l \in \absV(c)$.
-The weight $\progW(c)$
-for each vertex $x^l \in \lvar(c)$ maps to a symbolic expression over $\constdom$.
-$\progW(c) \in \mathcal{P}(\mathcal{LV} \times \mathcal{A}_{\lin})$ is formally computed
-as follows.
+Using the reachability-bound $\absclr(\absevent, c)$ for every edge $\absevent = (l, dc, l')$ we can provide a bound on the visiting times of each vertex $x^l \in \absV(c)$.
+\begin{defn}[Weight Estimation]
+  \label{def:adaptfun-weight}
 % \\
- \[\progW(c) \triangleq
+The weight set $\progW(c)$ of program $c$ is a set of pairs $\progW(c) \in \mathcal{P}(\mathcal{LV} \times \scexprdom)$.
+Each pair maps
+a vertex $x^l \in \lvar(c)$ to a symbolic expression over $\constdom$,
+%  is formally computed
+as follows.
+ \[
+  \progW(c) \triangleq
    \left\{ (x^l, \hat{w}) 
 \mid
-x^l \in \progV(c) \land (l, \hat{w}) \in \absW(c)
+x^l \in \progV(c) 
+\land 
+\hat{w} = 
+\sum\left\{  \absclr(\absevent, c) \middle\vert \absevent \in \absflow(c) \land \absevent = (l, \_, \_) \right\}
 \right\}.
 \]
+\end{defn}
 %
-Notice that $w \in \mathcal{A}_{\lin}$ is a symbolic arithmetic expression over symbols in $\constdom$. In particular, it may contain the input variables and so it may effectively be used as a function of the input - and capture loop bounds in terms of these inputs.
+Notice that $\hat{w} \in \scexprdom$ is a symbolic arithmetic expression over symbols in $\constdom$. In particular, it may contain the input variables and so it may effectively be used as a function of the input - and capture loop bounds in terms of these inputs.
  
 We prove that this 
 symbolic expression for $x^l \in \progV(c)$ is a sound upper bound of 

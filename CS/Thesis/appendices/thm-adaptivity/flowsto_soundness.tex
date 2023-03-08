@@ -1,4 +1,4 @@
-\begin{thm}[$\vardep$ implies $\flowsto$]
+\begin{thm}[$\flowsto$ Soundness]
 \label{thm:flowsto_soundness}
 Given a program ${c}$, for all  $ x^i, y^j \in \lvar(c)$, if $\vardep(x^i, y^j, {c})$,
 then
@@ -13,7 +13,8 @@ $\flowsto(x^i,  z_1^{r_1}, c)
   \forall x^i, y^j \in \lvar(c).
   \vardep(x^i, y^j, {c})
   \\ \quad \implies
-  \Big( \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 \land
+  \Big( \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 
+  \\ \qquad \qquad \land
   \flowsto(x^i,  z_1^{r_1}, c) 
   \land \ldots \land \flowsto(z_n^{r_n}, y^j, c) \Big)
 \end{array}
@@ -38,13 +39,14 @@ For  arbitrary two $x^i, y^j \in \lvar(c)$, with \emph{Variable May-Dependency} 
   \[
     \begin{array}{l}
     \exists z^l \in \lvar(c).
-  \big(\vardep(x^i, z^l, {c})   
+  \Big(\vardep(x^i, z^l, {c})   
   \\ \implies
-   \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 \land
+   \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 
+   \\ \qquad
+   \land
   \flowsto(x^i,  z_1^{r_1}, c) 
   \land \ldots \land \flowsto(z_n^{r_n}, z^l, c)
-  \big)
-  \\ \qquad
+  \Big)
   \land  \flowsto(z^l, y^j, {c})
 \end{array}
     \]

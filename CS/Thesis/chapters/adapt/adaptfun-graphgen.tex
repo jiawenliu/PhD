@@ -30,15 +30,13 @@ is generated as follows.
 Each of the four components is defined as follows.
 {\small
 \[
-\begin{array}{rlcl}
-\text{Vertices} &
+\begin{array}{lll}
 \progV & := & \left\{ 
 x^l
 ~ \middle\vert ~
 x^l \in \lvar(c)
 \right\}
 \\
-\text{Directed Edges} &
 \progE & := & 
 \left\{ 
 (x^i, y^j) 
@@ -54,14 +52,15 @@ n \geq 0 \land
 \end{array}
 \right\}
 \\
-\text{Weights} &
 \progW & := &
-\left\{ (x^l, w) \in \lvar(c) \times \scexprdom
+\left\{ (x^l, \hat{w}) 
+% \in \lvar(c) \times \scexprdom
 \mid
-x^l \in \progV(c) \land (l, \hat{w}) \in \absW(c)
+x^l \in \progV(c) \land 
+\hat{w} = 
+\sum\left\{  \absclr(\absevent, c) \middle\vert \absevent \in \absflow(c) \land \absevent = (l, \_, \_) \right\}
 \right\}
 \\
-\text{Query Annotation} &
 \progF & := & 
 \left\{(x^l, n)  
 % \in  \lvar(c) \times \{0, 1\} 
