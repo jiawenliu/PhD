@@ -7,9 +7,9 @@ Given a well-formed program $c$ with its semantics-based dependency graph $\trac
 for which there is a sequence of edges $(e_1 \ldots e_{n - 1})$  satisfying
 \begin{itemize}
 \item $e_i = (v_{i},v_{i + 1}) \in \traceE$ for every $1 \leq i < n$,
-\item and every $v_i \in \traceV$ and $(v_i, w_i) \in \traceW$, $v_i$ appears in $(v_1, \ldots, v_{n})$ at most $w(\trace_0)$ times.  
+\item and $v_i$ appears in $(v_1, \ldots, v_{n})$ at most $w_i(\trace_0)$ times for every $v_i \in \traceV$ and $(v_i, w_i) \in \traceW$.  
 \end{itemize}
-$(v_1, \ldots, v_{n})$ is the vertex sequence of $k(\trace_0)$,
+$k(\trace_0) = (v_1, \ldots, v_{n})$
 %  and the length of $k(\trace_0)$ is the number of vertices in its vertex sequence, i.e., $|k(\trace_0)| = n$.}
 % The length of $k(\trace_0)$ is the number of vertices in its vertices sequence, i.e., $\len(k)(\trace_0) = n$.
 and we denote by $\walks(\traceG(c))$
@@ -25,8 +25,13 @@ corresponding to queries.
 Given 
 the semantics-based dependency graph $\traceG({c})$ of a well-formed program $c$,
  and a \emph{walk} 
- $k \in \walks(\traceG(c))$ with vertices sequence $(v_1, \ldots, v_{n})$, the \emph{query length} of $k$ is a function $\qlen(k):\ftdom_0(c) \to \mathbb{N}$ that given an initial trace $\trace_0$ returns
-the number of vertices which correspond to query variables in the vertices sequence as follows, 
+ $k \in \walks(\traceG(c))$ 
+%  with vertices sequence $(v_1, \ldots, v_{n})$, 
+the \emph{query length} of $k$ is a function $\qlen(k):\ftdom_0(c) \to \mathbb{N}$ that 
+% given an initial trace $\trace_0$ 
+gives
+the number of vertices that correspond to query variables in the vertices sequence of $k(\trace_0)$
+for any initial trace $\trace_0 \in \ftdom_0(c)$ as follows, 
 \begin{center}
    $
   \qlen(k) = \lambda \trace_0 \sthat |\big( v \mid v \in (v_1, \ldots, v_{n}) \land \qflag(v) = 1 

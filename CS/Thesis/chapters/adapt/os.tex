@@ -617,21 +617,29 @@ As usual, we denote by $\qexpr_1 \neq_{q} \qexpr_2$  the negation of the equival
 \end{defn}
 %
 \begin{defn}[Event Equivalence]
+  \label{def:event_eq}
   Two events $\event_1, \event_2 \in \eventset$ are equivalent, 
   denoted as $\event_1 = \event_2$ 
   if and only if:
-  \[
+  \begin{equation}
+    \label{eq:event_eq}
     \begin{array}{l}
   \pi_1(\event_1) = \pi_1(\event_2) 
   \land  
   \pi_2(\event_1) = \pi_2(\event_2) 
-  \land
-  \pi_{3}(\event_1) = \pi_{3}(\event_2)\\
+\\
   \land 
-  \big(\pi_{4}(\event_1) = \pi_{4}(\event_2) = \bullet
-  \lor \pi_{4}(\event_1) =_q \pi_{4}(\event_2)\big)
+  \Big( 
+    \big(\pi_{4}(\event_1) = \pi_{4}(\event_2) = \bullet   \land
+  \pi_{3}(\event_1) = \pi_{3}(\event_2) \big)
+  \\ \qquad 
+  \lor \big(
+    \pi_{4}(\event_1) \neq \bullet \land \pi_{4}(\event_2) \neq \bullet
+    \land
+    \pi_{4}(\event_1) =_q \pi_{4}(\event_2)\big)
+  \Big)
     \end{array}
-  \]
+  \end{equation}
   %
   As usual, we denote by $\event_1 \neq \event_2$  the negation of the equivalence.
 \end{defn}

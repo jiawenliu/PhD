@@ -224,40 +224,7 @@ Labeled variables in $c$ is the set of assigned variables.
   }
   \end{defn}
 %
-We also defined the set of query variables for a program $c$,
-it is the set of variables set to the result of a query in the program formally in Definition~\ref{def:qvar}.
-\begin{defn}[Query Variables a program $c$, $\qvar(c)$] 
-  \label{def:qvar}
-Given a program $c$, its query variables 
-$\qvar(c)$ is the set of variables set to the result of a query in the program.
-It is defined as follows:
-{
-\[
-  \qvar(c) \triangleq
-  \left\{
-  \begin{array}{ll}
-      \{\}                  
-      & {c} = \clabel{\assign x \expr}^{l} 
-      \\
-      \{{x}^l\}                  
-      & {c} = \clabel{\assign x \query(\qexpr)}^{l} 
-      \\
-      \qvar(c_1) \cup \qvar(c_2)  
-      & {c} = {c_1};{c_2}
-      \\
-      \qvar(c_1) \cup \qvar(c_2) 
-      & {c} =\eif(\clabel{\bexpr}^{l}, c_1, c_2) 
-      \\
-      \qvar(c_w)
-      & {c}   = \ewhile \clabel{\bexpr}^{l} \edo (c_w)
-\end{array}
-\right.
-\]
-}
-\end{defn}
-%
-It is easy to see that a program $c$'s query variables is a subset of 
-its labeled variables, $\qvar(c) \subseteq \lvar(c)$.
+
 %
 %
 Every labeled variable in a program is unique, formally as follows with proof in Appendix~\ref{apdx:lvar_unique}.

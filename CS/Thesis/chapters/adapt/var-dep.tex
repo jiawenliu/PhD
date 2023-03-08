@@ -22,34 +22,43 @@ denoted as $\diff(\event_1, \event_2)$, if and only if:
 & \pi_1(\event_1) = \pi_1(\event_2) 
   \land  
   \pi_2(\event_1) = \pi_2(\event_2) \\
-& \land  
+& 
+\begin{array}{l}
+  \land  
   \Big(
-   \big(\pi_3(\event_1) \neq \pi_3(\event_2)
+   \big(\pi_{4}(\event_1) = \pi_{4}(\event_2) = \bullet  
   \land 
-  \pi_{4}(\event_1) = \pi_{4}(\event_2) = \bullet 
+  \pi_3(\event_1) \neq \pi_3(\event_2)
   \big)
-  \lor 
+  \\ \qquad \lor 
   \big(\pi_4(\event_1) \neq \bullet
   \land 
   \pi_4(\event_2) \neq \bullet
   \land 
   \pi_{4}(\event_1) \neq_q \pi_{4}(\event_2)
   \big ) 
-  \Big),
+  \Big).
+\end{array}
 \end{align}
 \label{eq:diff}
 \end{subequations}
 }
-where $\qexpr_1 =_{q} \qexpr_2$ denotes the semantics equivalence between query values
-% \footnote{The formal definition is in the supplementary material},
-and $\pi_i$ projects the $i^{th}$ element from the quadruple of an event.
+% where $\qexpr_1 =_{q} \qexpr_2$ denotes the semantics equivalence between query values
+% % \footnote{The formal definition is in the supplementary material},
+% and $\pi_i$ projects the $i^{th}$ element from the quadruple of an event.
 \end{defn}
+Intuitively, the \emph{event differ in value} is a partial negation of the \emph{event equivalence} in Definition~\ref{def:event_eq}.
+The Equation~\ref{eq:diff}(a) is the same as the first line in Equation~\ref{eq:event_eq}.
+In Equation~\ref{eq:diff}(b), when the event corresponded to a query request, we require the query value in forth element to be different obeying the \emph{query equivalence} definition, which is opposite to the last line in Equation~\ref{eq:event_eq}.
+
+Specifically, we look at the Equation~\ref{eq:diff}(a)
+in Definition~\ref{def:diff},
 $\pi_1(\event_1) = \pi_1(\event_2) 
   \land  
-  \pi_2(\event_1) = \pi_2(\event_2)$ at Eq.~\ref{eq:diff}(a)
+  \pi_2(\event_1) = \pi_2(\event_2)$ at 
 requires that $\event_1$ and $\event_2$ have the same variable name and label. 
 This guarantees that $\event_1$ and $\event_2$ are generated from the same labeled command.
-In Eq.~\ref{eq:diff}(b),
+In Equation~\ref{eq:diff}(b),
 two kinds of comparisons between the third and fourth element are for the non-query assignment and query request separately.
 For events generated from the non-query assignments (via checking
 $\pi_{4}(\event_1) =_q \pi_{4}(\event_2) = \bullet$), we only compare their assigned values through $\pi_3(\event_1) \neq \pi_3(\event_2)$.
@@ -57,6 +66,16 @@ But for these from query requests (via checking
 $\pi_{4}(\event_1) \neq \bullet \land \pi_{4}(\event_2) \neq \bullet$),
 we are comparing their query expressions by $\pi_{4}(\event_1) \neq_q \pi_{4}(\event_2)$ rather than the assigned value computed from the unknown database server.
 This matches the intuitive data dependency between queries, where one query is influenced by others as long as the query request is changed.
+
+We introduce the operator $\tlabel : \ftdom \to \mathcal{P}{(\ldom)}$ gives the set of labels in every event belonging to 
+a trace, whose behavior is defined as follows,
+\[
+% \begin{array}{llll}
+\tlabel{(\trace  :: (\_, l, \_, \_)])} \triangleq \{l\} \cup \tlabel{(\trace )}
+\qquad~
+\tlabel({[ ]}) \triangleq \{\}
+% \end{array}
+\]
 
 {Below is the \emph{event may-dependency} between events based on formally observing their differences via $\diff$.}
 \begin{defn}[Event May-Dependency]
@@ -111,7 +130,7 @@ $\eventdep(\event_1, \event_2, [\event_1] \tracecat \trace \tracecat [\event_2],
 \end{align}
 \label{eq:eventdep}
 \end{subequations}
-where $\tlabel(\trace) \subseteq \ldom$ is the set of the labels in all the events from trace $\trace$ and $\event_2 \in \trace_3$ or $\event_2 \notin \trace_3$ denotes that $\event_2$ belongs to $\trace_3$ or not.
+% where $\tlabel(\trace) \subseteq \ldom$ is the set of the labels in all the events from trace $\trace$ and $\event_2 \in \trace_3$ or $\event_2 \notin \trace_3$ denotes that $\event_2$ belongs to $\trace_3$ or not.
 \end{defn}
 The first line in Eq.~\ref{eq:eventdep}(a) requires that $\event_1$ comes from an assignment command and then modifies its assigned value via $\diff(\event_1, \event_1')$.
 

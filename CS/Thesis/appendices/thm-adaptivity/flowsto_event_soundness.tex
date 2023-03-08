@@ -81,15 +81,7 @@ takes a trace and a variable as input and returns the label of the latest assign
     \]
   \end{defn}
   %
-    The operator $\tlabel : \ftdom \to \mathcal{P}{(\ldom)}$ gives the set of labels in every event belonging to 
-    a trace, whose behavior is defined as follows,
-  \[
-    % \begin{array}{llll}
-  \tlabel{(\trace  :: (\_, l, \_, \_)])} \triangleq \{l\} \cup \tlabel{(\trace )}
-  \qquad~
-  \tlabel({[ ]}) \triangleq \{\}
-  % \end{array}
-  \]
+
   
 %
 \begin{thm}[$\eventdep$ implies $\flowsto$]

@@ -1,19 +1,67 @@
 We can now define the \emph{semantics-based dependency graph} for a well-formed program $c$. We want this graph to carry both quantitative perspective information and the reachability perspective (via dependency) information. 
 
-There are some notations we want to remind.
-The labeled variables of $c$,
-$\lvar(c) \subseteq \mathcal{LV}$ contains all the variables in $c$'s assignment commands, with the command labels as superscripts. 
-The set of query-associated variables (in query request assignments),
-$\qvar(c) \subseteq \lvar(c)$ contains all labeled variables in $c$'s query requests. Both of them are defined in Section~\ref{sec:language-syntax} in Definition~\ref{def:lvar} and~\ref{def:qvar}.
+% There are some notations we want to remind.
+% The labeled variables of $c$,
+% $\lvar(c) \subseteq \mathcal{LV}$ contains all the variables in $c$'s assignment commands, with the command labels as superscripts. 
+% The set of query-associated variables (in query request assignments),
+% $\qvar(c) \subseteq \lvar(c)$ contains all labeled variables in $c$'s query requests. Both of them are defined in Section~\ref{sec:language-syntax} in Definition~\ref{def:lvar} and~\ref{def:qvar}.
 % The set of initial traces of $c$,
 % $\ftdom_0(c) \subseteq \ftdom$
 % contains all the initial trace of $c$.
 % Each initial trace,  $\trace_0 \in \ftdom_0(c)$ contains the initial values of all input variables of $c$. 
 % For instance, the initial trace of $\kw{twoRounds(k)}$ example contains the initial value of the input variable $k$.
 
-We define \emph{counter} $\vcounter : \tdom \to \mathbb{N} \to \mathbb{N}$ to count the 
-occurrence of a label in a trace as below. It is used when define the components on a semantics-based dependency graph.
 
+In order to track the adaptivity with respect to the query,
+we also define the set of query variables for a program $c$, $\qvar(c)$ as below.
+It is the set of query-associated variables (in query request assignments) contains all labeled variables in $c$'s query requests, and $\qvar(c) \subseteq \lvar(c)$.
+% it is the set of variables set to the result of a query in the program
+% as below.
+%  formally in Definition~\ref{def:qvar}.
+\begin{defn}[Query Variables a program $c$, $\qvar(c)$] 
+  \label{def:qvar}
+Given a program $c$, its query variables 
+$\qvar(c)$ is the set of variables set to the result of a query in the program.
+It is defined as follows:
+{
+\[
+  \qvar(c) \triangleq
+  \left\{
+  \begin{array}{ll}
+      \{\}                  
+      & {c} = \clabel{\assign x \expr}^{l} 
+      \\
+      \{{x}^l\}                  
+      & {c} = \clabel{\assign x \query(\qexpr)}^{l} 
+      \\
+      \qvar(c_1) \cup \qvar(c_2)  
+      & {c} = {c_1};{c_2}
+      \\
+      \qvar(c_1) \cup \qvar(c_2) 
+      & {c} =\eif(\clabel{\bexpr}^{l}, c_1, c_2) 
+      \\
+      \qvar(c_w)
+      & {c}   = \ewhile \clabel{\bexpr}^{l} \edo (c_w)
+\end{array}
+\right.
+\]
+}
+\end{defn}
+%
+
+% We use the \emph{variable may-dependency} relation, the query variables to 
+% define the semantics-based dependency graph for a well-formed program.
+Since we want to define the \emph{adaptivity} as a \emph{quantitative-reachability} hyper-property through constructing the semantics-based dependency graph,
+% To define the semantics-based dependency graph, 
+the \emph{variable may-dependency} relation and the query variables are not enough.
+We also want to have this graph carrying the \emph{quantitative} sub-property.
+In this sense, we define the \emph{quantitative} sub-property of \emph{adaptivity} as the 
+weight of each vertex  on this graph, i.e., every labeled variable in a program.
+
+To define the weight of each labeled variable $x^l \in \lvar(c)$, we introduce the counter notation,
+$\vcounter : \tdom \to \mathbb{N} \to \mathbb{N}$ to count the 
+occurrence of a label in a trace as below.
+% It is used when define the components on a semantics-based dependency graph.
   \begin{defn}[Counter $\vcounter : \tdom \to \mathbb{N} \to (\mathbb{N}\cup\{\infty\})$]
     \label{def:trace_cnt}
     Given a trace $\trace \in \tdom$ and a label $l$, the occurrence of $l$ in $\trace$ is computed by
@@ -40,11 +88,19 @@ occurrence of a label in a trace as below. It is used when define the components
       \end{array}
       \]
 \end{defn}
+
+Then, we use the \emph{variable may-dependency} relation and the query variables to 
+define the semantics-based dependency graph for a well-formed program,
+and we define as below the
+weight of each vertex on this graph  as the \emph{quantitative} sub-property.
+%  of \emph{adaptivity} as the 
 \begin{defn}[Semantics-based Dependency Graph]
 \label{def:trace_graph}
 For a well-formed program ${c} \in \cdom$,
-its \emph{semantics-based dependency graph} 
-$\traceG({c}) \triangleq (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$.
+its \emph{semantics-based dependency graph} has for components as follows,
+\[
+  \traceG({c}) \triangleq (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c})).
+\]
 Each of the four components is defined as follows,
 {\small
 \[
@@ -95,7 +151,7 @@ Each of the four components is defined as follows,
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% The Explanation of Dependency Graph %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-There are four components in this graph.
+Below we discuss in detail the four components.
 \begin{enumerate}
     \item The vertices $\traceV({c})$ of a program $c$ are all its labeled variables, $\lvar(c)$ which are statically collected.
     \item $\traceF(c)$ contains the \emph{query annotation} for 
