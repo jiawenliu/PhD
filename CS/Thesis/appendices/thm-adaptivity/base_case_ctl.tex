@@ -21,7 +21,7 @@ By definition $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$ of cas
     \config{{c}_1, \vtrace_1 \tracecat [\event_1']}  \rightarrow^{*} 
     \config{c_2,  \vtrace_1 \tracecat [\event_1'] \tracecat \trace' \tracecat [(\neg \event_b)] \tracecat \trace_3'} 
     \\
-    & \qquad \bigwedge  \tlabel_{\trace_3} \cap \tlabel_{\trace_3'} = \emptyset
+    & \qquad \bigwedge  \tlabel({\trace_3}) \cap \tlabel({\trace_3'}) = \emptyset
      \land \vcounter(\trace') ~  \pi_2(\event_b) = \vcounter(\trace) ~  \pi_2(\event_b)
       \land \event_2 \eventin \trace_3
     \land \event_2 \not\eventin \trace_3'

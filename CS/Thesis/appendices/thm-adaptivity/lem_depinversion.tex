@@ -83,7 +83,7 @@ show x is directly used by the boolean expression for a conditional command and 
 			  \config{{c}_1, \vtrace_1 \tracecat [\event_1']}  \rightarrow^{*} 
 			  \config{c_2,  \vtrace_1 \tracecat [\event_1'] \tracecat \trace' \tracecat [(\neg \event_b)] \tracecat \trace_3'} 
 			  \\ \qquad \land
-			\tlabel_{\trace_3} \cap \tlabel_{\trace_3'} = \emptyset
+			\tlabel({\trace_3}) \cap \tlabel({\trace_3'}) = \emptyset
 			   \land \vcounter(\trace') ~  \pi_2(\event_b) = \vcounter(\trace) ~  \pi_2(\event_b)
 				\land \event_2 \eventin \trace_3
 			  \land \event_2 \not\eventin \trace_3'
@@ -210,11 +210,10 @@ we also have the instance of second execution as follows:
   \end{array}
 \end{equation}
 %
-By the label consistency, and $\tlabel_{\trace_3} \cap \tlabel_{\trace_3'} = \emptyset$, 
+By the label consistency, and $\tlabel({\trace_3}) \cap \tlabel({\trace_3'}) = \emptyset$, 
 % i.e., 
-% $ \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b} \cap \tlabel_{\trace_3'} = \emptyset$
 we know $\trace_3$ and $\trace_3'$ doesn't contain any event of evaluating the commands in $c_3'$.
-Otherwise, $\tlabel_{\trace_3} \cap \tlabel_{\trace_3'} \neq \emptyset$, which is a contradiction.
+Otherwise, $\tlabel({\trace_3}) \cap \tlabel({\trace_3'}) \neq \emptyset$, which is a contradiction.
 \\
 Since $\trace_3= \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b} $, we know $\event_2$ doesn't comes from evaluating
 of $c_3'$, i.e.,:
