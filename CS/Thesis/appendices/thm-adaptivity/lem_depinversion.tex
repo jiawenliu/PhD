@@ -42,14 +42,14 @@ show x is directly used by the boolean expression for a conditional command and 
 		\\
 		1. Let $\event_b$ be the testing event,
 		in the same way of case 1, we get:
-		 $\pi_1(\event_1) \in VAR(\pi_1(\event_b)) 
+		 $\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_b)) 
 		 \land 
 		%  l_1 \in \live^{l_b}$
 		\pi_1(\event_1)^{l_1} \in \live(l_b, c)$
 		%
 		 \\
 		 2. By Lemma~\ref{lem:ctldep_inv}, we know:
-		   $\forall z \in VAR(\pi_1(\event_b)) \sthat  \exists i \in \mathbb{N} \sthat 
+		   $\forall z \in \kw{FV}(\pi_1(\event_b)) \sthat  \exists i \in \mathbb{N} \sthat 
 		 \flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)$
 		 %
 		 \\
@@ -62,7 +62,7 @@ show x is directly used by the boolean expression for a conditional command and 
 	\label{lem:ctldep_inv}
 	For every $c \in \cdom$, $D \in \dbdom, \trace \in \ftdom$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn} $, if they are in the second case of the \emph{Event May-Dependency} relation from Definition.~\ref{def:event_dep},
 	$\eventdep(\event, \event, c, \trace, D)$ as Eq.~\ref{eq:ctlflowsto_inv},
-	then for all  $z \in VAR(\pi_1(\event_b))$ there exists a label $i \in \mathbb{N}$ such that 
+	then for all  $z \in \kw{FV}(\pi_1(\event_b))$ there exists a label $i \in \mathbb{N}$ such that 
 	$\flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)$
 	\begin{equation}
 		\label{eq:ctlflowsto_inv},		
@@ -88,7 +88,7 @@ show x is directly used by the boolean expression for a conditional command and 
 				\land \event_2 \eventin \trace_3
 			  \land \event_2 \not\eventin \trace_3'
 		\\ \quad \implies	
-		\forall z \in VAR(\pi_1(\event_b)) \sthat  
+		\forall z \in \kw{FV}(\pi_1(\event_b)) \sthat  
 		\exists l \in \mathbb{N} \sthat  
 		\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)},c)
 	\end{array}
@@ -122,12 +122,12 @@ we have the following instance of the first execution in Eq.~\ref{eq:ctlflowsto_
 %  \config{c_1, \vtrace_1 \tracecat [\event_1]} 
 %  \\ \qquad 
 %  \rightarrow^{*} 
-  \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo c_w;{c}_3', 
+  \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
   \vtrace_1 \tracecat [\event_1] \tracecat \trace} 
   \\
   \qquad 
    \rightarrow^{\rname{if-b / while-b}} 
-  \config{(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo c_w;c_3'/[\eskip]; c_3'), 
+  \config{(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3'/[\eskip]; c_3'), 
   \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
   \\
   \qquad  \rightarrow^{*} 
@@ -147,28 +147,28 @@ we have the following instance of the first execution in Eq.~\ref{eq:ctlflowsto_
 , where $\trace_3 = \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b}$,
 % $x_1 = \pi_1(\event_1)$, $l_1 = {\pi_2(\event_1)}$, 
 $x_2 = \pi_1(\event_2)$, $l_2 = \pi_2(\event_2)$, 
-and $\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo c_w$ 
+and $\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w)$ 
 is the conditional command of the assignment commands associated to the 
 $\event_b$ from Inversion Lemma~\ref{lem:inv_event} of testing event.
 \\
 % \[\begin{array}{l}   
-% 	  \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo c_w;{c}_3', 
+% 	  \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
 % 	  \vtrace_1 \tracecat [\event_1] \tracecat \trace} 
 % 	  \\
 % 	  \qquad 
 % 	   \rightarrow^{\rname{if-b / while-b}} 
-% 	  \config{(c_t;c_3' / c_f;c_3') /(c_3' / c_w; \ewhile [b]^{l_b} \edo c_w;{c}_3'), 
+% 	  \config{(c_t;c_3' / c_f;c_3') /(c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3'), 
 % 	  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
 % 	  % 
 % 	\end{array}
 % 	\]
-% $\config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo c_w;{c}_3', 
+% $\config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
 % \vtrace_1 \tracecat [\event_1] \tracecat \trace} 
 %  \rightarrow^{\rname{if-b / while-b}} 
-% \config{(c_t;c_3' / c_f;c_3') /(c_3' / c_w; \ewhile [b]^{l_b} \edo c_w;{c}_3'), 
+% \config{(c_t;c_3' / c_f;c_3') /(c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3'), 
 % \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
 % $
-The notation $(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo c_w;c_3' / [\eskip]; c_3')$ represents:
+The notation $(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3' / [\eskip]; c_3')$ represents:
 \\
 In case of $\eif ([b]^{l_b}, c_t, c_f)$, if $\pi_3(\event_b) = \etrue$, we have the evaluation:
 $$
@@ -180,7 +180,7 @@ $$
 $$
 %
 The same for case of $\eif ([b]^{l_b}, c_t, c_f)$ with $\pi_3(\event_b) = \efalse$,
-and case of $\ewhile [b]^{l_b} \edo c_w$ with $\pi_3(\event_b) = \etrue$ and $\pi_3(\event_b) = \efalse$.
+and case of $\ewhile [b]^{l_b} \edo (c_w)$ with $\pi_3(\event_b) = \etrue$ and $\pi_3(\event_b) = \efalse$.
 %
 \\
 By the command label consistency,
@@ -194,12 +194,12 @@ we also have the instance of second execution as follows:
 %    \config{c_1, \vtrace_1 \tracecat [\event_1]} 
 %    \\
 %     \qquad \rightarrow^{*} 
-    \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo c_w;{c}_3', 
+    \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
     \vtrace_1 \tracecat [\event_1] \tracecat \trace'} 
     \\
     \qquad 
      \rightarrow^{\rname{if-b / while-b}} 
-    \config{(c_f;c_3' / c_t;c_3') /([\eskip]; c_3' / c_w; \ewhile [b]^{l_b} \edo c_w;{c}_3' ), 
+    \config{(c_f;c_3' / c_t;c_3') /([\eskip]; c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3' ), 
 	\\ \qquad \qquad \qquad \qquad
 	\trace_1 \tracecat [\event_1]  \tracecat \trace' \tracecat [\neg \event_b]} 
     \\
@@ -224,10 +224,10 @@ Then we know
  $[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_t 
  \lor [\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_f$;
 \\
-and in the case of $\ewhile [b]^{l_b} \edo c_w$, $\event_2$ comes from the evaluation of $c_w$,
+and in the case of $\ewhile [b]^{l_b} \edo (c_w)$, $\event_2$ comes from the evaluation of $c_w$,
 i.e., $[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_w$.
 \\
-In both of the two cases, we know $\forall z \in VAR(\pi_1(\event_b)) $ there is a label $l \in \mathbb{N}$ for this variable,
+In both of the two cases, we know $\forall z \in \kw{FV}(\pi_1(\event_b)) $ there is a label $l \in \mathbb{N}$ for this variable,
 and by the $\flowsto$ definition, 
 $\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)},c)$.
 \\
@@ -345,9 +345,9 @@ This Lemma is proved by showing the existence of contradiction.
 		\item
 If $\event_2 \in \eventset^{\test}$, 
 then for every $\event \in \trace'$, if it either doesn't have the \emph{Event May-Dependency} relations on $\event_1$,
-or $\pi_1(\event) \notin VAR(\pi_1(\event_2)) $,
+or $\pi_1(\event) \notin \kw{FV}(\pi_1(\event_2)) $,
 then 
-$\pi_1(\event_1) \in VAR(\pi_1(\event_2))$, and $ {\pi_2(\event_1)} = \llabel(\trace)$
+$\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2))$, and $ {\pi_2(\event_1)} = \llabel(\trace)$
 %
 \[
 \begin{array}{l}
@@ -360,11 +360,11 @@ $\pi_1(\event_1) \in VAR(\pi_1(\event_2))$, and $ {\pi_2(\event_1)} = \llabel(\t
 	\implies 
 	\Big( \forall \event \in \trace' \sthat  
 	\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-	\lor  \pi_1(\event) \notin VAR(\pi_1(\event_2))
+	\lor  \pi_1(\event) \notin \kw{FV}(\pi_1(\event_2))
 	\Big) 
 	\\ \quad 
 	\implies 
-	\pi_1(\event_1) \in VAR(\pi_1(\event_2)) \land {\pi_2(\event_1)} = \llabel(\trace)
+	\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2)) \land {\pi_2(\event_1)} = \llabel(\trace)
 \end{array}
 \]
 \end{itemize}
@@ -422,7 +422,7 @@ and $\diff(\event_2, \event_2)$,
 \\
 Taking arbitrary $\event_z \in \trace_2$, we know 
 $\neg \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D)
-\lor  \pi_1(\event_z) \notin VAR(\expr_2 / \qexpr_2)$.
+\lor  \pi_1(\event_z) \notin \kw{FV}(\expr_2 / \qexpr_2)$.
 \\
 In case of $\neg \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D)$,
 by Definition~\ref{def:event_dep}, we know $\event_z \in \trace_2'$ and 
@@ -430,7 +430,7 @@ by Definition~\ref{def:event_dep}, we know $\event_z \in \trace_2'$ and
 	\env(\trace_1 \tracecat \trace[\event_1:\event_z]) \pi_1(\event_z) = \env(\trace_1 \tracecat \trace[\event_1':\event_z]) \pi_1(\event_z)
 	\]
 %
-In case of $ \pi_1(\event_z) \notin VAR(\expr_2 / \qexpr_2)$, by Inversion Lemma~\ref{lem:inv_expr}
+In case of $ \pi_1(\event_z) \notin \kw{FV}(\expr_2 / \qexpr_2)$, by Inversion Lemma~\ref{lem:inv_expr}
  of arithmetic and query expression cases, we know:
 %
 \[
@@ -464,7 +464,7 @@ Let $\kw{use}_{\trace_2}$ a subset of the events in $\trace_2$, satisfying:
 		\forall \event \in \eventset^{\asn} \sthat  
 	\event \in \kw{use}_{\trace_2} \Longleftrightarrow 
 	\event \in \trace_2 \land
-	\pi_1(\event) \in VAR(\expr_2 / \qexpr_2)
+	\pi_1(\event) \in \kw{FV}(\expr_2 / \qexpr_2)
 \end{array}		
 \]
 Let $\lvar({\trace_2}) $ denotes the set of all labeled variables in $\trace_2$
@@ -572,7 +572,7 @@ and
 % \env(\trace_1 \tracecat [\event_1] \tracecat \trace_2) z = \env(\trace_1 \tracecat [\event_1'] \tracecat \trace_2') z $,
 % \\
 % where $\mathbb{LV}_{\diff_{\eventset}}$ is the set of labelled variables of every event in $\diff_{\eventset}$.
-% We also know for all $\event_z \in  \diff_{\eventset}$, $\pi_1(\event_z) \notin VAR(\pi_1(\event_2))$ and follows:
+% We also know for all $\event_z \in  \diff_{\eventset}$, $\pi_1(\event_z) \notin \kw{FV}(\pi_1(\event_2))$ and follows:
 % $\neg \eventdep(\event_z, \event_2, \trace[\event_z:\event_2], c, D) $.
 % \\
 % Then by $\eventdep$ definition, we know 
@@ -629,7 +629,7 @@ $\trace_1 \tracecat [\event_1'] \tracecat \trace_2'$
 satisfying this lemma by $(1)$, $(2a)$ and $(2q)$, 
 we know
 \[
-  \pi_1(\event_1) \in VAR(\expr_2 / \qexpr_2) \land {\pi_2(\event_1)} = \llabel(\trace_1 \tracecat [\event_1] \tracecat \trace_2) \pi_1(\event_1) 
+  \pi_1(\event_1) \in \kw{FV}(\expr_2 / \qexpr_2) \land {\pi_2(\event_1)} = \llabel(\trace_1 \tracecat [\event_1] \tracecat \trace_2) \pi_1(\event_1) 
 \]
 %
 By $\flowsto$ definition:
@@ -663,12 +663,12 @@ taking $ \event_1' \in \eventset^{\asn},
 %
 Taking arbitrary $\event_z \in \trace_2$, we know 
 $\neg \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D)
-\lor  \pi_1(\event_z) \notin VAR(\expr_2 / \qexpr_2)$.
+\lor  \pi_1(\event_z) \notin \kw{FV}(\expr_2 / \qexpr_2)$.
 \\
 Then by the same proof in \textbf{case: $\event_2 \in \eventset^{\asn}$}, and applying the Inversion Lemma~\ref{lem:inv_expr} and \ref{lem:inv_expr_gnl} of the boolean expression case,
 we have:
 \[ 
-	\pi_1(\event_1) \in VAR(\pi_1(\event_2)) \land {\pi_2(\event_1)} = \llabel(\trace)
+	\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2)) \land {\pi_2(\event_1)} = \llabel(\trace)
 	\]
 	This case is proved.
 \end{proof}
@@ -682,7 +682,7 @@ we have:
 	$c_1 \in_c c_2$, 
 	then there must exist a $\ewhile$ command in $c_2$ and $c_1$ must shows up in the body of that $\ewhile$ command,
 	 i.e., $\exists l \in \mathbb{N}, b \in \mathcal{B}, c_w \in \cdom \sthat  
-	(\ewhile [b]^l \edo c_w) \in_c c_2 \land c_1 \in_c c_w$.
+	(\ewhile [b]^l \edo (c_w)) \in_c c_2 \land c_1 \in_c c_w$.
 	%
 	\[
 	\begin{array}{l}
@@ -694,7 +694,7 @@ we have:
 		(c_1 \in_c c_2
 		\land
 		\exists l \in \mathbb{N}, b \in \mathcal{B}, c_w \in \cdom \sthat  
-		(\ewhile [b]^l \edo c_w) \in_c c_2 \land c_1 \in_c c_w)
+		(\ewhile [b]^l \edo (c_w)) \in_c c_2 \land c_1 \in_c c_w)
 	\end{array}
 	\]
 	\end{lem}	
@@ -740,10 +740,10 @@ we have:
 		\caseL{$\ewhile [b]^{l} \edo c$}
 		By rule $\rname{while-t}$, we have:
 		\[
-			\config{{\ewhile [b]^{l} \edo c_w, \trace}}
+			\config{{\ewhile [b]^{l} \edo (c_w), \trace}}
 			\xrightarrow{} 
 			\config{{
-			c_w; \ewhile [b]^{l} \edo c_w,  \eskip),
+			c_w; \ewhile [b]^{l} \edo (c_w),
 			\trace \tracecat [\event]}}
 		\]
 		%
@@ -751,21 +751,21 @@ we have:
 		let $c_1 = c_{w1}$ be the any possible command in this sequence, for all possible $c_{w1}$ and $c_{w2}$ 
 		such that $c_w$ has the form $c_w = c_{w1};c_{w2}$.
 		\\
-		Then we have $c_2 = c_{w2};\ewhile [b]^{l} \edo c_w,  \eskip)$ and $c_1 \in_c c_2$.
+		Then we have $c_2 = c_{w2};\ewhile [b]^{l} \edo (c_w)$ and $c_1 \in_c c_2$.
 		\\
-		And we also have the existence of $l = l_b, b$ and $c_w$, and $\ewhile [b]^{l} \edo c_w \in_c c_2$ and  $c_1 \in c_w$.
+		And we also have the existence of $l = l_b, b$ and $c_w$, and $\ewhile [b]^{l} \edo (c_w) \in_c c_2$ and  $c_1 \in c_w$.
 		\\
-		If $c_w$ isn't a sequence command, let $c_1 = c_w$, then we have $c_2 = \ewhile [b]^{l} \edo c_w,  \eskip)$ 
+		If $c_w$ isn't a sequence command, let $c_1 = c_w$, then we have $c_2 = \ewhile [b]^{l} \edo (c_w),  \eskip)$ 
 		and $c_1 \in_c c_2$.
 		\\
-		And we also have the existence of $l = l_b, b$ and $c_w$, and $\ewhile [b]^{l} \edo c_w \in_c c_2$ and  $c_1 \in c_w$.
+		And we also have the existence of $l = l_b, b$ and $c_w$, and $\ewhile [b]^{l} \edo (c_w) \in_c c_2$ and  $c_1 \in c_w$.
 		\\
 		This case is proved.
 		\\
 		By the evaluation rule $\rname{while-f}$, we have
 		$$
 		{
-			\config{{\ewhile [b]^{l}, \edo c_w, \trace}}
+			\config{{\ewhile [b]^{l}, \edo (c_w), \trace}}
 			\xrightarrow{} 
 			\config{{
 			[\eskip]^l ,

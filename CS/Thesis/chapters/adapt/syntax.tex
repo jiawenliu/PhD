@@ -45,7 +45,7 @@ n \in \mathbb{N}\cup\{\infty\} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \\
 %
 \mbox{Label} 
-& l & \in & \mathbb{N} \cup \{\lin, \lex\} 
+& l & \in & \mathbb{N} \cup \{\lex\} 
 \\ 
 %
 \mbox{Labeled Command} 
@@ -68,12 +68,18 @@ We denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$, and
 \begin{array}{lll}
 \vardom & : & \mbox{Set of Variables}  
 \\ 
+% \ldom  & : & \mbox{Set of Labels}  
+% \\
+%%
+\mathcal{LV}  & : & \mbox{Set of Labeled Variables}  
+\\
+%%
 %
-\mathcal{VAL} & : & \mbox{Set of Values} 
-\\ 
-%
-\mathcal{QVAL} & : & \mbox{Set of Query Values} 
-\\ 
+% \mathcal{VAL} & : & \mbox{Set of Values} 
+% \\ 
+% %
+% \mathcal{QVAL} & : & \mbox{Set of Query Values} 
+% \\ 
 %
 \cdom & : & \mbox{Set of Well-formed Commands} 
 \\ 
@@ -87,12 +93,6 @@ We denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$, and
 \eventset^{\test}  & : & \mbox{Set of Testing Events}  
 \\
 %
-\ldom  & : & \mbox{Set of Labels}  
-\\
-%%
-% \mathcal{VAL}  & : & \mbox{Set of Labeled Variables}  
-% \\
-%%
 \dbdom  & : & \mbox{{Set of Databases}} 
 \\
 %
@@ -186,19 +186,21 @@ the location of each command, so that we can uniquely identify them.
   expression $\aexpr$, boolean expression $\bexpr$ and query expression $\qexpr$ respectively.
   All the free variables
   showing up in $c$ such that they are never defined before using, are actually the input variables of this program.
-  We denote by $\mathcal{V}_{\lin}$ the universe of all input variables and $\kw{V_{\lin}}(c)$ the set of input variables in a given program $c$.
+  We denote by $\inpvardom$ the universe of all input variables and $\kw{V_{\lin}}(c)$ the set of input variables in a given program $c$.
  
 \paragraph{Labeled Variables}
 The labeled variables and assigned variables are set of variables annotated by a label. 
 We use  
 $\mathcal{LV}$ represents the universe of all the labeled variables and 
-$\lvar(c) \in \mathcal{P}(\mathcal{V} \times \ldom) \subseteq \mathcal{LV}$,
+$\lvar(c) \subseteq \mathcal{LV}$,
 represents the set of labeled variables in program $c$,
 defined in Definition~\ref{def:lvar}.
-Labeled variables in $c$ is the set of assigned variables.
+Labeled variable set, $\lvar(c)$ of a program $c$ is the set of all the labeled variables in every assignment command
+and query command computed as follows.
 %
-\begin{defn}[labelled Variables of a program $c$, $\lvar(c)$]
+\begin{defn}[labelled variable set of a program $c$, $\lvar(c)$]
   \label{def:lvar}
+For a program $c$, its \emph{labeled variable set}, $\lvar(c)$ is computed as below.
   {
   \[
     \lvar(c) \triangleq

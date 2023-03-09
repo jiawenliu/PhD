@@ -143,9 +143,9 @@ every evaluation step of this execution is the $\rname{skip}$ rule.}
 \\
 By Inversion Lemma~\ref{lem:inv_while}, 
 we know there is a $\ewhile$ conditional command
- $(\ewhile [b_w]^l_w \edo c_w)$ in $c_2$ and
-% $(\ewhile [b_w]^l_w \edo c_w) \in_c c_2$ and 
-$[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_w$.
+ $(\ewhile [b_w]^{l_w} \edo (c_w))$ in $c_2$ and
+% $(\ewhile [b_w]^l_w \edo (c_w)) \in_c c_2$ and 
+$[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c (c_w)$.
 % \\
 Then, we have the following possible execution instances
  %
@@ -181,7 +181,7 @@ Then, we have the following possible execution instances
   \cdots
 \] 
 , where each execution instance iterates the conditional command 
-$(\ewhile [b_w]^l_w \edo c_w)$ in $c_2$, $0, 1$ or more times.
+$(\ewhile [b_w]^l_w \edo (c_w))$ in $c_2$, $0, 1$ or more times.
 %
 \\
 %
@@ -224,7 +224,7 @@ $\vtrace_1 \tracecat [\event_1']$, i.e.,
 %
 By {Inversion Lemma~\ref{lem:inv_expr}} of arithmetic expression evaluation, we have
 \[
-  x_1 \in VAR(\expr_2 / \qexpr_2) 
+  x_1 \in  \kw{FV}(\expr_2 / \qexpr_2) 
 \]
 Since $\llabel(\vtrace_1 \tracecat [\event_1]) x_1 = l_1$, 
 % by Inversion Lemma~\ref{lem:inv_live} we know $x_1^{l_1} \in \live^{l_2}(c)$.

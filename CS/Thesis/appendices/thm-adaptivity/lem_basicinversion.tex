@@ -9,25 +9,25 @@
 		and $\config{\trace, \aexpr} \aarrow v $ and 
 	$\config{\trace', \aexpr} \aarrow v' $ with $v' \neq v$, 
 	then $ x $ is in the free variables of $\aexpr$ and $i$ is the latest label for $x$ 
-    in $\trace$, i.e., $x \in VAR(\aexpr)$ and $i = \llabel(\trace) x$.
+    in $\trace$, i.e., $x \in \kw{FV}(\aexpr)$ and $i = \llabel(\trace) x$.
 %
 	\item $\expr$ is a boolean expression $\bexpr$,
 	% \\
   and $\config{\trace, \bexpr} \barrow v $ and 
  $\config{\trace', \bexpr} \barrow v' $ with $v' \neq v$, then $ x $ is in the free variables of $\bexpr$ and $i$ is the latest label for $x$ 
- in $\trace$, i.e., $x \in VAR(\bexpr)$ and $i = \llabel(\trace) x$.
+ in $\trace$, i.e., $x \in \kw{FV}(\bexpr)$ and $i = \llabel(\trace) x$.
 % 
 	\item $\expr$ is a query expression $\qexpr$,
 	% \\
 	and $\config{\trace, \qexpr} \qarrow \qval $ and 
 	$\config{\trace', \qexpr} \qarrow \qval' $ with $\qval \neq_{q} \qval'$, then $ x $ is in the free variables of $\qexpr$ and $i$ is the latest label for $x$ 
-    in $\trace$, i.e., $x \in VAR(\qexpr)$ and $i = \llabel(\trace) x$.
+    in $\trace$, i.e., $x \in \kw{FV}(\qexpr)$ and $i = \llabel(\trace) x$.
 \end{itemize}	%
 	\end{lem}
     Proof Summary:
     \\
-    To show $x \in VAR(\aexpr)$, by showing contradiction ($\forall \trace, \trace'$ in second hypothesis  $v = v'$)
-     if $x \notin VAR(\aexpr)$.
+    To show $x \in \kw{FV}(\aexpr)$, by showing contradiction ($\forall \trace, \trace'$ in second hypothesis  $v = v'$)
+     if $x \notin \kw{FV}(\aexpr)$.
      \\
     To show $i = \llabel(\trace)$, by showing contradiction ($\forall \trace, \trace'$ in second hypothesis  $v = v'$ ) 
     if $j = \llabel(\trace) x$ and $i \neq j$.
@@ -39,22 +39,22 @@
 	We have $\config{\trace, \bexpr} \barrow v $ and 
 	$\config{\trace', \bexpr} \barrow v' $ with $v' \neq v$ from the lemma hypothesis.
 	\\
-	To show $x \in VAR(\qexpr)$ and $i = \llabel(\trace) x$: 
+	To show $x \in \kw{FV}(\qexpr)$ and $i = \llabel(\trace) x$: 
 	\\
-	Assuming $x \notin VAR(\aexpr)$,
+	Assuming $x \notin \kw{FV}(\aexpr)$,
 	% by $\config{\trace, \aexpr} \aarrow v $	and $\config{\trace', \aexpr} \aarrow v'$, 
 	since
-	%  $x \notin VAR(\aexpr)$ and 
+	%  $x \notin \kw{FV}(\aexpr)$ and 
 	$ \forall z^j \in \mathcal{LV} / \{x^i\} \sthat  
 		\env(\trace) z = \env(\trace') z $,
 	we know $v = v'$, which is contradicted to $v' \neq v$.
 	\\
-	Then we know $x \in VAR(\qexpr)$.
+	Then we know $x \in \kw{FV}(\qexpr)$.
 	\\
 	Assuming $j = \llabel(\trace) x \land i \neq j$,
 	by 
 	% $\config{\trace, \aexpr} \aarrow v $	and $\config{\trace', \aexpr} \aarrow v'$, 
-	% since $x \notin VAR(\aexpr)$ and 
+	% since $x \notin \kw{FV}(\aexpr)$ and 
 	$ \forall z^j \in \mathcal{LV} / \{x^i\} \sthat  
 		\env(\trace) z = \env(\trace') z $, we know 
 		$\env(\trace) x = \env(\trace') x$, i.e., 
@@ -89,7 +89,7 @@
 		$\env(\trace) z = \env(\trace') z$, and 
 		$
 		\config{\trace, \aexpr} \aarrow v$, and $\config{\trace', \aexpr} \aarrow v'$ with $v \neq v'$,
-		then $x \in VAR(\aexpr)$ and $i = \llabel(\trace) x$.
+		then $x \in \kw{FV}(\aexpr)$ and $i = \llabel(\trace) x$.
 		\[
 			\begin{array}{l}
 			\forall \mathcal{DF} \subset \mathcal{LV},  x^i \in (\mathcal{LV} \setminus \mathcal{DF}), \aexpr \sthat 
@@ -106,7 +106,7 @@
 			\env(\trace) z = \env(\trace') z \land 
 			\config{\trace, \aexpr} \aarrow v \land \config{\trace', \aexpr} \aarrow v' \land v \neq v'
 			\\ \qquad
-			\implies x \in VAR(\aexpr) \land i = \llabel(\trace) x
+			\implies x \in \kw{FV}(\aexpr) \land i = \llabel(\trace) x
 			\end{array}
 		\]
 	\item $\expr$ is a boolean expression $\bexpr$,
@@ -119,7 +119,7 @@
 	\env(\trace) z = \env(\trace') z \land 
 	\config{\trace, \bexpr} \barrow v \land \config{\trace', \bexpr} \barrow v' \land v \neq v'$
 	then 
-	 $x \in VAR(\bexpr) \land i = \llabel(\trace) x$
+	 $x \in \kw{FV}(\bexpr) \land i = \llabel(\trace) x$
 	% \\
 	\[
 		\begin{array}{l}
@@ -137,7 +137,7 @@
 		 \env(\trace) z = \env(\trace') z \land 
 		\config{\trace, \bexpr} \barrow v \land \config{\trace', \bexpr} \barrow v' \land v \neq v'
 		\\ \qquad
-		\implies x \in VAR(\bexpr) \land i = \llabel(\trace) x
+		\implies x \in \kw{FV}(\bexpr) \land i = \llabel(\trace) x
 		\end{array}
 	\]
 % 
@@ -151,7 +151,7 @@
   \exists \trace, \trace' \in \ftdom, \qval, \qval'\sthat  
  \env(\trace) z = \env(\trace') z \land 
  \config{\trace, \qexpr} \qarrow \qval \land \config{\trace', \qexpr} \qarrow \qval' \land \qval \neq_{q} \qval'$,
- then  $x \in VAR(\qexpr) \land i = \llabel(\trace) x$.
+ then  $x \in \kw{FV}(\qexpr) \land i = \llabel(\trace) x$.
 	% \\
 	\[
 		\begin{array}{l}
@@ -169,7 +169,7 @@
 		 \env(\trace) z = \env(\trace') z \land 
 		\config{\trace, \qexpr} \qarrow \qval \land \config{\trace', \qexpr} \qarrow \qval' \land \qval \neq_{q} \qval'
 		\\ \qquad
-		\implies x \in VAR(\qexpr) \land i = \llabel(\trace) x
+		\implies x \in \kw{FV}(\qexpr) \land i = \llabel(\trace) x
 		\end{array}
 	\]
 	\end{itemize}
@@ -177,8 +177,8 @@
 	%
 Proof Summary: 
 \\
-To show $x \in VAR(\aexpr)$, by showing contradiction ($\forall \trace, \trace'$ in second hypothesis  $v = v'$)
- if $x \notin VAR(\aexpr)$.
+To show $x \in \kw{FV}(\aexpr)$, by showing contradiction ($\forall \trace, \trace'$ in second hypothesis  $v = v'$)
+ if $x \notin \kw{FV}(\aexpr)$.
  \\
 To show $i = \llabel(\trace)$, by showing contradiction ($\forall \trace, \trace'$ in second hypothesis  $v = v'$ ) 
 if $j = \llabel(\trace) x$ and $i \neq j$.
@@ -203,9 +203,9 @@ Taking an arbitrary set of labelled variables
 	\\
 	Let $\trace, \trace' \in \ftdom, v, v'$ be the two traces and values satisfies hypothesis $(2)$.
 	\\
-	To show: $x \in VAR(\aexpr) \land i = \llabel(\trace) x$:
+	To show: $x \in \kw{FV}(\aexpr) \land i = \llabel(\trace) x$:
 	\\
-Assuming $x \notin VAR(\aexpr)$, we know from the Inversion Lemma~\ref{lem:inv_expr} of the arithmetic expression case,
+Assuming $x \notin \kw{FV}(\aexpr)$, we know from the Inversion Lemma~\ref{lem:inv_expr} of the arithmetic expression case,
 \\
 $\forall z^j \in \mathcal{LV} \setminus \{x^i\}, \trace, \trace' \in \ftdom, v, v' \sthat  
 \env(\trace) z = \env(\trace') z \land 
@@ -219,12 +219,12 @@ $\forall z^j \in \mathcal{LV} \setminus (\mathcal{DF} \cup \{x^i\} ), \trace, \t
 \\
 This is contradicted to the hypothesis $(2)$.
 \\
-Then we know $x \in VAR(\expr)$.
+Then we know $x \in \kw{FV}(\expr)$.
 \\
 Assuming $j = \llabel(\trace) x \land i \neq j$,
 by hypothesis $(2)$ where 
 % $\config{\trace, \aexpr} \aarrow v $	and $\config{\trace', \aexpr} \aarrow v'$, 
-% since $x \notin VAR(\aexpr)$ and 
+% since $x \notin \kw{FV}(\aexpr)$ and 
 $ \forall z^j \in \mathcal{LV} \setminus (\mathcal{DF} \cup \{x^i\} )  \sthat \env(\trace) z = \env(\trace') z $, 
 we know $\env(\trace) x = \env(\trace') x$, i.e., 
 \\
@@ -242,7 +242,7 @@ This case is proved trivially in the same way as the case of the arithmetic expr
 \begin{lem}[Event Inversion]
 \label{lem:inv_event}
 For all $c\in \cdom, \trace_0 \in \ftdom, \event \in \eventset$such that 
-$\config{c, \trace_0} \rightarrow^* \config{\eskip, \trace_0 \tracecat \trace_1}$, 
+$\config{c, \trace_0} \rightarrow^* \config{ \clabel{\eskip}^{l'}, \trace_0 \tracecat \trace_1}$, 
 and $\event \eventin \trace_1$, if 
 \begin{itemize}
 	\item $\event \in \eventset^{\asn}$, then either
@@ -253,7 +253,7 @@ and $\event \eventin \trace_1$, if
 		\config{c, \trace_0} \rightarrow^* \config{ [\assign{x}{\expr}]^l;c', \trace_0  \tracecat  \trace'} 
 		\rightarrow^\rname{assn}
 		\config{c', \trace_0 \tracecat \trace_1'\tracecat [\event]} \rightarrow^{*}
-		\config{\eskip, \trace_0  \tracecat  \trace_1}
+		\config{ \clabel{\eskip}^{l'}, \trace_0  \tracecat  \trace_1}
 \end{array}
 \]
 \item or there exists $\trace_1' \in \ftdom, c' \in \cdom, \qexpr$ such that 
@@ -280,17 +280,17 @@ and $\event \eventin \trace_1$, if
 		\\ \qquad
 		\rightarrow^\rname{if-b}
 		\config{c'', \trace_0 \tracecat \trace_1'\tracecat [\event] } \rightarrow^{*}
-		\config{\eskip, \trace_0 \tracecat \trace_1} 
+		\config{ \clabel{\eskip}^{l'}, \trace_0 \tracecat \trace_1} 
 \end{array}
 \]
 \item or there exists $ \trace_1' \in \ftdom, c', c_w, c'' \in \cdom, \bexpr$ such that 
 \[
 	\begin{array}{l}
-		\config{c, \trace_0} \rightarrow^* \config{ \ewhile([b]^l, c_w);c', \trace_0 \tracecat  \trace_1'} 
+		\config{c, \trace_0} \rightarrow^* \config{ \ewhile \clabel{b}^l \edo (c_w);c', \trace_0 \tracecat  \trace_1'} 
 		\\ \qquad
 		\rightarrow^\rname{while-b}
 		\config{c'', \trace_0 \tracecat \trace_1'\tracecat [\event] } \rightarrow^{*}
-		\config{\eskip, \trace_0  \tracecat \trace_1}
+		\config{ \clabel{\eskip}^{l'}, \trace_0  \tracecat \trace_1}
 % 	\big)
 \end{array}
 \]
@@ -307,7 +307,7 @@ Proof Summary: trivially by induction on $c$ and enumerate all operational seman
 		{
 		\config{[\assign{{x}}{\aexpr}]^{l},  \trace } 
 		\xrightarrow{} 
-		\config{\eskip, \trace \tracecat [({x}, l, v) ]}
+		\config{ \clabel{\eskip}^{l'}, \trace \tracecat [({x}, l, v) ]}
 		}$.
 		\\
 		Then we know $\trace_1 = [({x}, l, v)]$ and there is only 1 event $(x, l, v) \in \trace_1$.
@@ -316,7 +316,7 @@ Proof Summary: trivially by induction on $c$ and enumerate all operational seman
 		\\
 		$\config{c, \trace_0} \rightarrow^* \config{ [\assign{x}{\expr}]^l;c', \trace_0  \tracecat  \trace'} \rightarrow^\rname{assn}
 		\config{c', \trace_0 \tracecat \trace_1'\tracecat [\event]} \rightarrow^{*}
-		\config{\eskip, \trace_0  \tracecat  \trace_1}$.
+		\config{ \clabel{\eskip}^{l'}, \trace_0  \tracecat  \trace_1}$.
 		\\
 		This case is proved.
 		\caseL{$c = [\assign{x}{\query(\qexpr)}]^l$}
@@ -342,9 +342,9 @@ Proof Summary: trivially by induction on $c$ and enumerate all operational seman
 		\\
 		Let $\trace' = []$, $c' = \eskip$ and $c'' = c_w; \ewhile [b]^{l} \edo (c_w)$, we know that they satisfy
 		\\
-		$\config{c, \trace_0} \rightarrow^* \config{ \ewhile([b]^l, c_w);c', \trace_0 \tracecat  \trace_1'} \rightarrow^{while-b}
+		$\config{c, \trace_0} \rightarrow^* \config{ \ewhile \clabel{b}^l \edo (c_w);c', \trace_0 \tracecat  \trace_1'} \rightarrow^{while-b}
 		\config{c'', \trace_0 \tracecat \trace_1'\tracecat [\event] } \rightarrow^{*}
-		\config{\eskip, \trace_0  \tracecat \trace_1}$
+		\config{ \clabel{\eskip}^{l'}, \trace_0  \tracecat \trace_1}$
 		\\
 		% And we also have the existence of $l = l_b, b$ and $c_w$, and $\ewhile [b]^{l} \edo (c_w) \in_c c_2$ and  $c_1 \in c_w$.
 		% \\
@@ -374,7 +374,7 @@ Proof Summary: trivially by induction on $c$ and enumerate all operational seman
 		\config{ \ewhile [b]^{l} \edo (c_w);c', \trace_0 \tracecat  \trace_1'} 
 		\rightarrow^\rname{while-f}
 		\config{c'', \trace_0 \tracecat \trace_1'\tracecat [(b, l, \efalse)] } \rightarrow^{*}
-		\config{\eskip, \trace_0  \tracecat \trace_1}$
+		\config{ \clabel{\eskip}^{l'}, \trace_0  \tracecat \trace_1}$
 		\\
 		This case is proved.
 		\caseL{$\eif([b]^l, c_t, c_f)$}

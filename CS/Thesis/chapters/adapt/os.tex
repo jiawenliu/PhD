@@ -604,11 +604,15 @@ Instead, we define the equivalence of query expression by quantifying over all v
 Two query expressions $\qexpr_1$, $\qexpr_2$ are equivalent, denoted as $\qexpr_1 =_{q} \qexpr_2$, if and only if
 \[
  \begin{array}{l} 
-   \forall \trace \in \ftdom \sthat \exists \qval_1, \qval_2 \in \mathcal{QVAL} \sthat
+   \forall \trace \in \ftdom \sthat \exists \qval_1, \qval_2 
+  %  \in \mathcal{QVAL}
+   \sthat
     (\config{\trace,  \qexpr_1} \qarrow \qval_1 \land \config{\trace,  \qexpr_2 } \qarrow \qval_2) 
     \\
     \quad \land (\forall D \in \dbdom, r \in D \sthat 
-    \exists v \in \mathcal{VAL} \sthat 
+    \exists v 
+    % \in \mathcal{VAL} 
+    \sthat 
           \config{\trace, \qval_1[r/\chi]} \aarrow v \land \config{\trace,  \qval_2[r/\chi] } \aarrow v),  
   \end{array}
   \]

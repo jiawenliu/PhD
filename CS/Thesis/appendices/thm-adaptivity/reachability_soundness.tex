@@ -145,11 +145,11 @@
     \absflow(c) = \absflow'(c; \clabel{\eskip}^{\lex}) = \{(l_w, \top, \init(c_w))\} \cup \cdots.
   \]
   Let $\absevent = (l_w, \top, \init(c_w))$, then we have this case is proved.
-  \caseL{$\eif(\clabel{b}^{l'}, c_t, c_f)$}
+  \caseL{$\eif(\clabel{b}^{l}, c_t, c_f)$}
   By the first rule applied to $\eif(\clabel{b}^l, c_t, c_f)$ in operational semantics,
   we have two subcases \rname{if-t} and \rname{{if-f}}.
   \\
-  Then both of the two cases will append the evaluation result of the guard $\clabel{b}^l$, i.e., $(b, l', \etrue, \bullet)$ and $(b, l', \efalse, \bullet)$ respectively.
+  Then both of the two cases will append the evaluation result of the guard $\clabel{b}^l$, i.e., $(b, l, \etrue, \bullet)$ and $(b, l, \efalse, \bullet)$ respectively.
   \\
   By abstract trace computation in Definition~\ref{def:absevent_compute}, we have
   \[
