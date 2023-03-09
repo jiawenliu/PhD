@@ -367,10 +367,10 @@
            \land
           \vcounter(\trace, l) \leq v
           \Big)
-          \\ \land \quad 
-          \Big(\config{{c}, \trace_0} \uparrow^{\infty} \trace_0\tracecat\vtrace
-           \implies \absclr(\absevent, c) = \infty 
-           \Big)
+          % \\ \land \quad 
+          % \Big(\config{{c}, \trace_0} \uparrow^{\infty} \trace_0\tracecat\vtrace
+          %  \implies \absclr(\absevent, c) = \infty 
+          %  \Big)
         \end{array}
         \]
   \end{theorem}
@@ -410,15 +410,16 @@
   $\config{{c}, \trace} \to^{*} \config{\clabel{\eskip}^{l'}, \trace\tracecat\vtrace'} 
   \land 
   \config{\trace, w} \earrow v$
-  \\
-  % By definition of $\progV$ in $\progG(c)$, we know $ x^l \in \vertxs$ and we have. 
-  \\
+
+  
   By Definition of $\progW$ in $\progG(c)$, we know 
   $  w = \absW(l) = \max \{ \absclr(\absevent) | \absevent = (l, \_, \_)\}$.
-  \\
+
+  
   By Lemma~\ref{lem:abscfg_sound}, there exists an abstract event in $\absflow(c)$ of form $(\absevent) = (l, \_, \_)$,
   corresponding to the assignment command associated to labeled variable $x^l$. 
-  \\
+
+  
   Let $(\absevent) = (l, dc, l') \in \absflow(c)$ be this event for some $dc$ and $l'$ such that  $(\absevent) = (l, dc, l') \in \absflow(c)$,
   by the last step of phase 2, we know
   $
@@ -469,7 +470,7 @@ Incr(\locbound(\absevent)) +
   \]
 %
  By the soundness of the (1) Transition Bound and (2) Variable Bound Invariant 
- in \cite{sinn2017complexity} Theorem 1 (attached above in Theorem~\ref{thm:transition_bound_sound}), 
+ in Theorem 1 by \cite{SinnZV17} (attached above in Theorem~\ref{thm:transition_bound_sound}), 
 This case is proved.
 \end{proof}
 

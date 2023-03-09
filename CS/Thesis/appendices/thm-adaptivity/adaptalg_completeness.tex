@@ -33,7 +33,7 @@
 \begin{proof}
   Taking arbitrary program $c \in \cdom$, let $\progG(c) = (\progV, \progE, \progW, \progF)$ be its 
   estimated dependency graph.
-  \\
+
   Taking an arbitrary initial trace $ \trace_0 \in \ftdom_0(c)$,
   let the walk $k_{max} \in \walks{(\progG(c))}$ be the finite walk with the longest query length, and the vertices sequence
   $k_{max}(\trace_0) = (s_1, \ldots, s_n)$, 
@@ -41,9 +41,12 @@
   \[
     \qlen(k_{max})(\trace_0) = |(s | s \in (s_1, \ldots, s_n) \land (s, 1) \in \progF(c))| = \pathsearch(\progG(c))
   \]
-  We denote by $M_{\config{\kw{adapt_{p_{max}}}}, \trace_0}$ the evaluation result of $\config{\kw{adapt_{p_{max}}}, \trace_0} \aarrow$.
-  In order to show the completeness, it is sufficient to show two following items,
-  \\
+
+  We denote by $M_{\config{\expr, \trace_0}}$ the evaluation result of $\config{\expr, \trace_0} \aarrow$ 
+  for arbitrary expression $\expr$ under trace $\trace_0$.
+
+  In order to show the completeness, it is sufficient to show two following two sub goals,
+
   1. By line: 15, $\pathsearch(\progG(c))$ can find a path $p_{max}$ such that 
   $$M_{\config{\kw{adapt_{p_{max}}}, \trace_0}} = \qlen(k_{max})(\trace_0)$$ 
 
@@ -58,8 +61,10 @@
   %
   By line: 13, through searching on all the vertices connected on $\progG(c)$ from the starting node $s_i$,
   we know that $\pathsearch(\progG(c))$ finds this path $p_{max} = (s_1, \ldots, s_n)$.
-  \\
-  Then, it is sufficient to show 
+
+  So we have (2) proved.
+  
+  Then, to show (1), it is sufficient to show 
   $$
   M_{\config{\kw{adapt_{p_{max}}}, \trace_0}} =  |(s | s \in (s_1, \ldots, s_n) \land (s, 1) \in \progF(c))|.
   $$
@@ -141,5 +146,5 @@
 %   \]
 % , where $\kw{adapt}$ is the output of $\pathsearch(\progG)$.
 % This case is proved.
-Then, we have (2) proved.
+Then, we have (1) proved.
 \end{proof}
