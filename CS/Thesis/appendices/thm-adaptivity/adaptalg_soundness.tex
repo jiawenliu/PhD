@@ -1,37 +1,39 @@
 \begin{theorem}[Soundness of $\pathsearch$]
   % \label{thm:adaptalg_soundness}
-  For every well-formed program $c$ with its \emph{estimated dependency graph} $\progG$,
+  For every well-formed program $c$, $\pathsearch(c)$ computes an upper bound on 
+  the adaptivity of program $c$.
+  %  with its \emph{estimated dependency graph} $\progG$,
   \[ 
     \forall \trace_0 \in \ftdom_{0}(c), v \in (\mathbb{N}\cup \{\infty\}) \sthat
   \config{\pathsearch(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq v.
   \]
 \end{theorem}
-proof Summary:
-\\
-1. for every two vertices $x, y$ with a walk $k_{x,y}$ from $x$ to $y$ on $\progG$, 
-\\
-2 if they are on the same SCC, 
-\\
-2.1 Then this walk must also be in this SCC.
-(By the property that each SCC are single direct connected, otherwise they are the same SCC)
-\\
-2.2 By Lemma~\ref{lem:sound_adaptalg_scc}, $\qlen$ of this walk is bound by the longest walk of this SCC.
-\\
-2.3 The output of $\pathsearch(\progG)$ is greater than longest walk of a single SCC.
-\\
-3. if they are on different SCC. 
-\\
-3.1 Then this walk can be split into $n, 2 \leq n$ sub-walks, and each sub-walk belongs to a different SCC. (Also by the property of SCC)
-\\
-3.2 By Lemma~\ref{lem:sound_adaptalg_scc}, $\qlen$ of each sub-walk is bound by the longest walk of the SCC it belongs to.
-\\
-% we have a path
-%  $p_{x,y} = (x, v_1, \ldots, y)$ by the $\kw{bfs}$ algorithm,
-% and $adapt[\sccgraph(x)] + adapt[\sccgraph(v_1)] + \ldots + adapt[\sccgraph(y)] \geq \{\qlen(k_{x,y})\}$.
-3.3 By line: in algorithm, the output of $\pathsearch(\progG)$ is greater than sum up the $\qlen$ of longest walk in every SCC that each sub-walk belongs to.
-\\
-4. Then we have
-$\pathsearch(\progG(c)) \geq \progA(c)$.
+% proof Summary:
+% \\
+% 1. for every two vertices $x, y$ with a walk $k_{x,y}$ from $x$ to $y$ on $\progG$, 
+% \\
+% 2 if they are on the same SCC, 
+% \\
+% 2.1 Then this walk must also be in this SCC.
+% (By the property that each SCC are single direct connected, otherwise they are the same SCC)
+% \\
+% 2.2 By Lemma~\ref{lem:sound_adaptalg_scc}, $\qlen$ of this walk is bound by the longest walk of this SCC.
+% \\
+% 2.3 The output of $\pathsearch(\progG)$ is greater than longest walk of a single SCC.
+% \\
+% 3. if they are on different SCC. 
+% \\
+% 3.1 Then this walk can be split into $n, 2 \leq n$ sub-walks, and each sub-walk belongs to a different SCC. (Also by the property of SCC)
+% \\
+% 3.2 By Lemma~\ref{lem:sound_adaptalg_scc}, $\qlen$ of each sub-walk is bound by the longest walk of the SCC it belongs to.
+% \\
+% % we have a path
+% %  $p_{x,y} = (x, v_1, \ldots, y)$ by the $\kw{bfs}$ algorithm,
+% % and $adapt[\sccgraph(x)] + adapt[\sccgraph(v_1)] + \ldots + adapt[\sccgraph(y)] \geq \{\qlen(k_{x,y})\}$.
+% 3.3 By line: in algorithm, the output of $\pathsearch(\progG)$ is greater than sum up the $\qlen$ of longest walk in every SCC that each sub-walk belongs to.
+% \\
+% 4. Then we have
+% $\pathsearch(\progG(c)) \geq \progA(c)$.
 \begin{proof}
   For an arbitrary well-formed program ${c}$, let $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
   be its semantics-based dependency graph by Definition~\ref{def:trace_graph} and $\progG({c}) = (\progV, \progE, \progW, \progF)$ be its estimated-dependency graph
@@ -123,9 +125,9 @@ $k_y = (s_{scc_m}, \ldots, s_y)$;
 \\
 where $k_x \in \walks(\sccgraph_x), \ldots, k_y \in \walks(\sccgraph_y)$.
 \\
-Let $m_i$ be the evaluation results of $\pathsearch_{scc}(\sccgraph_i)$ for every $k_i$ as follows,
+Let $m_i$ be the evaluation results of $\pathsearch_{scc}(\sccgraph_i)$ for every $\sccgraph_i$ as follows,
 \[
-  \config{\pathsearch(c), \trace_0} \earrow m_i
+  \config{\pathsearch_{scc}(\sccgraph_i), \trace_0} \earrow m_i
 \]
 By Lemma~\ref{lem:sound_adaptalg_scc}, we know for each walk $k_i$:
 \[ \qlen(k_i)(\trace_0) \leq \max\{\qlen(k_i)(\trace_0) | k_i \in \walks(\sccgraph_i)\} \leq m_i \]
@@ -150,14 +152,22 @@ This case is proved.
 
 \begin{lem}[Soundness of $\pathsearch_{scc}$]
   \label{lem:sound_adaptalg_scc}
-  For every program $c$, given its \emph{estimated dependency graph} $\progG$, if $\sccgraph$ is a strong connected sub-graph of $\progG$, then
-  $\max\{\qlen(k) | k \in \walks(\sccgraph)\} \leq \pathsearch_{scc}(\sccgraph) $.
+  For any well-formed program $c$ with its \emph{estimated dependency graph} $\progG$, 
+for any strongly connected component,  $\sccgraph$ on this graph, 
+$\pathsearch_{scc}(\sccgraph)$ computes a sound upper bound on the length
+of the longest walk on $\sccgraph$.
+  % $\max\{\qlen(k) | k \in \walks(\sccgraph)\} \leq \pathsearch_{scc}(\sccgraph) $.
   %
   \[
-    \forall c \in \cdom, \sccgraph \sthat  \sccgraph \subseteq_{\kw{graph}} \progG(c)
-    \implies 
-    \max\{\qlen(k) | k \in \walks(\sccgraph)\} \leq \pathsearch_{scc}(\sccgraph) 
-    \]
+    \begin{array}{l}
+      \forall c \in \cdom, \sccgraph \subseteq_{\kw{graph}} \progG(c),
+    \trace_0 \in \ftdom_0(c), m \in \mathbb{N} \cup \{\infty\} \sthat
+    \\ \qquad   
+      \config{\pathsearch_{scc}(\sccgraph)(c), \trace_0} \earrow m
+      \implies
+    \max\{\qlen(k)(\trace_0) | k \in \walks(\sccgraph)\} \leq m
+  \end{array}
+  \]
 \end{lem}
 
 Proof Summary:
@@ -194,7 +204,7 @@ $\pathsearch_{scc}(\sccgraph) \geq \progA(\sccgraph)$
 \\
 \begin{proof}
   Taking arbitrary program $c \in \cdom$, let $\progG(c) = (\vertxs, \edges, \weights, \qflag)$ be its 
-  program based dependency graph and $\sccgraph = (\sccV, \sccE, \sccW, \sccF)$ be an arbitrary sub SCC graph of $\progG$.
+  estimated dependency graph and $\sccgraph = (\sccV, \sccE, \sccW, \sccF)$ be an arbitrary strongly connected component of $\progG$.
   \\
 There are 2 cases:
 \caseL{$\sccgraph$ contains no edge and only 1 vertex $v$, i.e., $|\edges| = 0 \land |\vertxs| = 1$}
@@ -207,18 +217,48 @@ This case is proved.
   %
   \caseL{$\sccgraph$ contains at least 1 edge and at least 1 vertex $v$, i.e., $1 \leq |\edges| \land 1 \leq |\vertxs|$}
 %
-  Taking arbitrary walk $k_{x,y} \in \walks{(\sccgraph})$, with vertices sequence
-  $(x, s_1, \ldots, y)$, it is sufficient to show:
+  Taking arbitrary walk $k_{x,y} \in \walks{(\sccgraph})$, and an arbitrary initial trace $\trace_0 \in \ftdom_0(c)$, such that $k_{x,y}(\trace_0)$ has the vertices sequence
+  $k_{x,y}(\trace_0) = (x, s_1, \ldots, y)$.
+  By Definition~\ref{def:qlen}, we know
   \[
-    \qlen(k_{x,y}) = \len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \pathsearch_{scc}(\sccgraph)
+    \qlen(k_{x,y})(\trace_0) = |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))|
   \]
+  
+ Then, it is sufficient to show:
+  \[
+    \begin{array}{l}
+      \forall m \in \mathbb{N} \cup \{\infty\} \sthat
+      \config{\pathsearch_{scc}(\sccgraph)(c), \trace_0} \earrow m
+      \\ \qquad   
+      \implies
+      |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq m
+    \end{array}
+\]
+Let $M_{\pathsearch_{scc}(\sccgraph)(c), \trace_0}\in \mathbb{N} \cup \{\infty\} $ be the evaluation result of $\config{\pathsearch_{scc}(\sccgraph)(c), \trace_0}$, i.e.,
+\[
+  \config{\pathsearch_{scc}(\sccgraph)(c), \trace_0} \earrow
+  M_{\pathsearch_{scc}(\sccgraph)(c), \trace_0}
+  \]
+  Then, it is sufficient to show:
+  \[
+    \begin{array}{l}
+      |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq 
+      M_{\pathsearch_{scc}(\sccgraph)(c), \trace_0}
+    \end{array}
+\]
+
   By $\pathsearch_{scc}(\sccgraph)$ algorithm line 19, in the iteration where $x$ is the starting vertex,
   we know $\pathsearch_{scc}(\sccgraph) = \kw{r_{scc}} = \max(\kw{r_{scc}, \kw{dfs(\sccgraph, x, visited)}})$,
   then it is sufficient to show:
   $$
-  \len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \kw{dfs(\sccgraph, x, visited)}.
+  |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq M_{(\kw{dfs(\sccgraph, x, visited)}, \trace_0)}.
   $$
+  where $M_{(\kw{dfs(\sccgraph, x, visited)}, \trace_0)}$ is the evaluation result of $\config{\kw{dfs(\sccgraph, x, visited)}, \trace_0}$ as well.
   %
+
+  For convenience, in the following proof, we use notation $M_{(\expr, \trace_0)}$ to represent the evaluation
+  result of $\expr$ under trace $\trace_0$.
+
   Let  $\{v_1, \ldots, x\}$ be the set of all the distinct vertices of $k_{x,y}$'s vertices sequence $(x, s_1, \ldots, y)$, and 
   $(v_1, \ldots, x)$ be a subsequence containing all the vertices in $\{x, v_1, \ldots, y\}$.
   \\
@@ -240,41 +280,24 @@ This case is proved.
   % Then we know 
   % \\
   $$ 
-  \len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y} ) 
+  |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq M_{(\kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y} ) )}
   $$
-  %
-  % , where $(p_{x, y} + p_{y, x})$ is the path $p_{x, y}$ concatenated by path $p_{y, x}$ and we know $(p_{x, y} + p_{y, x}) \in \paths(\sccgraph)$.
-  \\
 By line:7 and line:13 in Algorithm~\ref{alg:adaptscc}, we know $\kw{flowcapacity}(p_{x, y})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, y)$, 
-\\
 we know for every $s$ in the vertices sequence of walk $k_{x,y}$, 
 $\visit(s) (x, s_1, \ldots, y)  \leq \kw{flowcapacity}(p_{x, y})$
-  \\
-  Also by line:8 and line:13 in Algorithm~\ref{alg:adaptscc}, we know $\kw{querynum}(p_{x, y})$ is the number of vertices with $\qflag$ equal to $1$,
-  \\
+
+By line:8 and line:13 in Algorithm~\ref{alg:adaptscc}, we know $\kw{querynum}(p_{x, y})$ is the number of vertices with $\qflag$ equal to $1$.
   Then we know 
-  \\
-  $\len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y}) $
-  \\
+  $$
+  |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq M_{(\kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y} ) )}.
+   $$
   This case is proved.
   \caseL{$x \neq y$}
   we also have a path start from $y$ and go back to $x$.
   % \todo{pass through the same vertices sequence.}
   \\
   Let $p_{y, x}$ be this path with vertices sequence $(y, v_1', \ldots, x)$, we have a path $p_{x,x}$, which is the path $p_{x, y}$ concatenated by path $p_{y, x}$ with vertices sequence $ (x, v_1, \ldots, y, v_1', \ldots, v_{m}', x)$, where $m \geq 0$.
-  \\
-  % Then we have a potential walk $k_{x,x}$ with vertices sequence $(x, s_1, \ldots, y) + (v_1', \ldots, x)$, and
-  % we know $\qlen(k_{x,y}) \leq \qlen(k_{x,x})$.
-  % Then, it is sufficient to show 
-  % $$
-  % \qlen(k_{x,x}) = \len(s | s \in (x, s_1, \ldots, y, v_1', \ldots, x) \land \qflag(s) = 1) \leq \kw{dfs(\sccgraph, x, visited)}
-  % $$
-  %
-  % By line:13 of the $\kw{dfs(\sccgraph, x, visited)}$ in Algorithm~\ref{alg:adaptscc},
-  % \\
-  % we know $\kw{dfs(\sccgraph, x, visited)} = r[x]$ and
-  % $r[x] = \max\{\kw{flowcapacity}(p) \times \kw{querynum}(p) | p \in \paths_{x,x}(\sccgraph)\}$.
-  % \\
+  
   Then in this case, it is sufficient to show: 
   % $\len(s | s \in (x, s_1, \ldots, y, v_1', \ldots, x) \land \qflag(s) = 1) \leq r[x]$.
   % \\
@@ -282,7 +305,7 @@ $\visit(s) (x, s_1, \ldots, y)  \leq \kw{flowcapacity}(p_{x, y})$
   % Then we know 
   % \\
   $$ 
-  \len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, x}) \times \kw{querynum}(p_{x, x}) 
+  |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq M_{(\kw{flowcapacity}(p_{x, x}) \times \kw{querynum}(p_{x, x}) , \trace_0)} = M_{(r[x], \trace_0)}
   $$
   %
   % \\
@@ -299,11 +322,13 @@ $\visit(s) (x, s_1, \ldots, y)  \leq \kw{flowcapacity}(p_{x, y})$
   \\
   Then we know 
   \\
-  $\len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq \kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y}) = r[y]$
+  $|(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq M_{(\kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y}), \trace_0)} = M_{(r[y], \trace_0)}$
   \\
-  By line:13, we also know $r[x] = \max(r[x], r[v_{m}'] + \kw{flowcapacity}(p_{x, x}) \times \kw{querynum}(p_{x, x})$, and $r[y] \leq r[w_{m}']$
-  then we know $r[y] \leq r[x]$, i.e., 
-  $\len(s | s \in (x, s_1, \ldots, y) \land \qflag(s) = 1) \leq r[x]$
+  By line:13, we also know $r[x] = \max(r[x], r[v_{m}'] + \kw{flowcapacity}(p_{x, x}) \times \kw{querynum}(p_{x, x})$, and $r[y] \leq r[v_{m}']$
+  then we know 
+  $M_{(r[y], \trace_0)} \leq M_{(r[x], \trace_0)}$, i.e., 
+
+  $$|(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq M_{(r[x], \trace_0)}$$
   \\
   This case is proved.
   %
