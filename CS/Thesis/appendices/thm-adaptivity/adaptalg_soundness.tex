@@ -170,49 +170,47 @@ of the longest walk on $\sccgraph$.
   \]
 \end{lem}
 
-Proof Summary:
-\\
-(1) for each node $x$ on SCC, by property of SCC, 
+The proof summary informally:
+\begin{enumerate}
+\item (1) for each node $x$ on SCC, by property of SCC, 
 for every walk on SCC $k_{x, x} = (x, s_1, \ldots, x)$,
 with set of unique vertex $\{v_1, \ldots, x\}$
 there are $\paths(p_{x,x})$ on $\sccgraph$.
-\\
-(2) For every path $p_{x,x}^{i} = (x, v_1, \ldots, x) \in \paths(p_{x,x})$,  
+\item (2) For every path $p_{x,x}^{i} = (x, v_1, \ldots, x) \in \paths(p_{x,x})$,  
 $\kw{flowcapacity} (p_{x,x}^{i})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, x)$. 
 So we know $\visit(s) (s_1, \ldots, x) \leq \kw{flowcapacity}(p_{x,x}^{i})$.
-\\
+\item 
 (3) $\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i})$  $\geq\len(s | s \in ( s_1, \ldots, x) \land \qflag(s) = 1) =  \qlen(k)$,
-\\
+\item 
 (4) Then, the $\max\limits_{p_{x,x}^{i} \in \paths(p_{x,x})} \geq \max\{\qlen(k_{x, x}) | k_{x, x} \in \walks(k_{x, x})\}$
-\\
+\item 
 (5) Then,  $\max\{\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i}) | x \in \sccgraph \land {p_{x,x}^{i} \in \paths(p_{x,x})} \} 
 \geq \max\{\qlen(k_{x, x}^i) |x \in \sccgraph \land  k_{x, x}^i \in \walks(k_{x, x})\}$
-\\
+\item 
 (6) We also know by the property of SCC, $\forall x, y \in \sccgraph, $ let $k_{x, y}$ be arbitrary walk on $\sccgraph$,
  $\qlen(k_{x, y}) \leq \max\{\qlen(k_{x, x}^i) | k_{x, x}^i \in \walks(k_{x, x})\}$.
-\\
+ \item 
 (7) Then,$ \max\{\qlen(k_{x, x}^i) |x \in \sccgraph \land  k_{x, x}^i \in \walks(k_{x, x})\} \geq  \max\{\qlen(k_{x, y}^i) |x, y \in \sccgraph \land  k_{x, y}^i \in \walks(k_{x, y})\}$
-\\
 i.e., 
 $ \max\{\qlen(k_{x, x}^i) |x \in \sccgraph \land  k_{x, x}^i \in \walks(k_{x, x})\} \geq  \max\{\qlen(k) | k\in \walks(\sccgraph)\} = \progA(\sccgraph)$.
-\\
+\item 
 (8) We also know 
 $\pathsearch_{scc}(\sccgraph) = \max\{\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i}) | x \in \sccgraph \land {p_{x,x}^{i} \in \paths(p_{x,x})} \} $ by the $\pathsearch_{scc}$ algorithm.
-\\
+
 Then we have
 $\pathsearch_{scc}(\sccgraph) \geq \progA(\sccgraph)$
-\\
+\end{enumerate}
+
 \begin{proof}
   Taking arbitrary program $c \in \cdom$, let $\progG(c) = (\vertxs, \edges, \weights, \qflag)$ be its 
   estimated dependency graph and $\sccgraph = (\sccV, \sccE, \sccW, \sccF)$ be an arbitrary strongly connected component of $\progG$.
-  \\
-There are 2 cases:
-\caseL{$\sccgraph$ contains no edge and only 1 vertex $v$, i.e., $|\edges| = 0 \land |\vertxs| = 1$}
+
+  There are 2 cases:
+\caseL{$\sccgraph$ contains no edge and only 1 vertex $v \in \sccV$, i.e., $| \sccE| = 0 \land |\sccV| = 1$}
 %
 In this case there is no walk in this graph, i.e., $\walks(\sccgraph) = \emptyset$.
-\\
-The adaptivity is $\qflag(v)$.
-\\
+The adaptivity is at most 1 if $(v, 1) \in \progF(c)$.
+
 This case is proved.
   %
   \caseL{$\sccgraph$ contains at least 1 edge and at least 1 vertex $v$, i.e., $1 \leq |\edges| \land 1 \leq |\vertxs|$}
