@@ -274,20 +274,22 @@
   and $\trace' =  [(b, l_w, \efalse, \bullet)]$,
   then we have $\trace_0 \tracecat \trace' = \trace$ and this case is proved.
   \caseL{$\eif(\clabel{b}^l, c_t, c_f)$}
-  By the first rule applied to $\eif(\clabel{b}^l, c_t, c_f)$ in operational semantics,
-  we have two cases \rname{if-t} and \rname{{if-f}}.
-  Both of the two cases will generate event of the evaluation result on the guard expression
+  By the first rule applied to $\eif(\clabel{b}^l, c_t, c_f)$,
+  %  in operational semantics,
+  we have two subcases \rname{if-t} and \rname{{if-f}}.
+  
+  Both of the two  subcases will generate event of the evaluation result on the guard expression
   $\clabel{b}^l$.
-  \\
-  By rule \rname{if-t} and \rname{{if-f}},
-  the event $\event $ is either $(b, l_w, \etrue, \bullet)$ or $(b, l, \efalse, \bullet)$ respectively.
-  \\
+
+  In the two subcases,
+  the event $\event $ is either $(b, l, \etrue, \bullet)$ or $(b, l, \efalse, \bullet)$ respectively.
+
   Again by rule \rname{if-t} and \rname{{if-f}}, $\event $ is appended to the initial trace.
-  \\
-  In this sense, let $\trace' =  [(b, l_w, \efalse, \bullet)]$
-  or $\trace' =  [(b, l_w, \efalse, \bullet)]$ respectively,
+
+  Let $\trace' =  [(b, l, \efalse, \bullet)]$
+  and $\trace' =  [(b, l, \efalse, \bullet)]$ in each subcases respectively,
   we have 
-  $\trace_0 \tracecat \trace' = \trace$ in both cases and this case is proved.
+  $\trace_0 \tracecat \trace' = \trace$ in both subcases and this case is proved.
   % \\
   % Formally, the two cases will be proved in the same way as \textbf{case: $c = \ewhile \clabel{b}^{l} \edo (c_w)$}.
 \end{proof}

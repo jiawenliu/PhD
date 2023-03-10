@@ -82,12 +82,12 @@
     that estimates a sound upper bound on the adaptivity of the program that implements an adaptive data analysis. 
     We also implement our program analysis and show that it can help to analyze the adaptivity of several concrete data analyses with different adaptivity structures.
 
-    As a continuation of the previous work, to get a more precise bound on a program's \emph{adaptivity} level, we look at another \emph{quantitative-reachability} hyper-property -- the number of times a given  location inside a procedure is visited during the program execution.
+    As a continuation of the previous work, to get a more precise bound on a program's \emph{adaptivity} level, we look at another \emph{quantitative-reachability} hyper-property -- \emph{the number of times a given  location inside a procedure is visited during the program execution}.
     The upper bound on this hyper-property is referred to as the \emph{reachability-bound}.
     It can help to improve the program analysis results when studying other different program features.
     % beyond itself.
-    For example, the \emph{reachability-bound} on each program location can be used by resource cost analysis to compute a tighter bound on a program's worst-case resource cost.
-    The accuracy of the adaptivity analysis algorithm discussed above can also be improved through a tight \emph{reachability-bound} on every program location.
+    For example, the \emph{reachability-bound} on each program location can be used by some resource cost analysis techniques to compute a precise bound on a program's worst-case resource consumption.
+    When we analyze the adaptivity in an adaptive data analysis program as discussed above, the accuracy of our program analysis result can also be improved through a tight \emph{reachability-bound} on every program location.
     % , the information leakage, etc. 
     Some existing program complexity analysis methods can be repurposed to analyze and estimate the \emph{reachability-bound}.
     However, these methods focus only on the overall quantity and ignore the path sensitivity in the program.

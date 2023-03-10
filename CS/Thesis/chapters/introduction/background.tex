@@ -15,7 +15,9 @@ some \emph{quantitative-reachability} properties
 % have surpassed the functional  properties in importance. 
 have become equally important.
 To provide people with high-quality mobile and computer programs, the \emph{quantitative-reachability} properties of programs are important to study. 
-This thesis studies two \emph{quantitative-reachability} properties, specifically the \emph{adaptivity} and the \emph{reachability-bound} properties which can influence people's experience when using the mobile and computer programs, in terms of the \emph{convenience},
+This thesis studies two \emph{quantitative-reachability} properties, specifically the \emph{adaptivity} and the \emph{number of times
+that each program location is visited during the program execution}.
+These two properties influence people's experience when using the mobile and computer programs in terms of the \emph{convenience},
 \emph{enjoyment}, \emph{efficiency}, and \emph{privacy}.
 
 % A few decades ago, people employed computer programs solely for research and business purposes with the simple expectation of executing correctly without bugs. 
@@ -48,7 +50,7 @@ For example, weather forecasting applications use data analysis programs to pred
 %  accurately, providing people with more convenience and enjoyment.
 Accurate prediction results bring people convenience and enjoyment.
 % , the more convenient user is.
-Other applications, such as video or music players, online games and shopping, use data analysis programs to provide users with personalized recommendations.
+Other applications, such as video or music players, online games and shopping use data analysis programs to provide users with personalized recommendations.
 The recommendation accuracy influences one's convenience and enjoyment as well.
 %
 %
@@ -62,13 +64,13 @@ that can help to improve the output accuracy of
 these data analysis programs.
 %  that implement corresponding data analysis.
 We look at the scenario
-where data analyses is composed of multiple queries interrogating some data,
+where a data analysis is composed of multiple queries interrogating some data.
 % analyzes a sample data
 % and computes some generalized results
 % on the unknown population
 % where the sample is drawn.
-and aim to identify some property of the population from which the data are drawn,
-generalizing beyond the specific data sample.
+It aims to identify some property of the population from which the data are drawn
+and then generalizes beyond the specific data sample.
 These generalized results are used by some applications to recommend games, music, clothes, etc. to the
 users beyond the data sample, or the weather forecasting application to make prediction on the future.
 % Some users occasionally receive
@@ -107,8 +109,10 @@ Specifically, we consider the data analyses are implemented in a while-like lang
 % We focus in analyzing it in \redd{PART \romannum{1}}.
 % % This property captures the generalization error in terms of whether the queries are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
 % % Under the light of existing machine learning studies, we want to use this \emph{quantitative-reachability} property to help reduce the generalization errors in data analysis results.
-The \emph{adaptivity} captures the generalization error in terms of whether the query asked by a program are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
-By analyzing the \emph{adaptivity} and help data analyst to reduce the generalization error of the programs that implement certain data analyses, we can provide people with more \emph{convenience} and the \emph{enjoyment} when using these programs.
+This \emph{adaptivity} property captures the generalization error in terms of whether the query asked by a program are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
+By analyzing the \emph{adaptivity} and help data analyst to reduce the generalization error of the programs that implement certain data analyses, we can
+improve the user experience with respect to \emph{convenience} and \emph{enjoyment}.
+% provide people with more \emph{convenience} and the \emph{enjoyment} when using these programs.
 
 \emph{Efficiency And Privacy.}
 % High-quality modern daily life
@@ -136,20 +140,24 @@ This brings my attention to two program properties,
 the
 reachability of certain lines of code, and the times that certain code is executed.
 % \\
-These two properties can indeed be captured as two sub-properties by a \emph{quantitative-reachability} hyper-property,
+These two properties can indeed be captured as two sub-properties by a \emph{quantitative-reachability} hyper-property
 %  from two perspectives,
 -- the number of times that each program location is visited during the program execution.
 % i.e., whether a certain piece of code is executed (the \emph{reachability}) and how many times it is executed (the \emph{quantitative}).
-In \cite{GulwaniJK09}, this property is referred to as the \emph{reachability-bound}, specifically a worst-case upper bound on the number of times a given program location 
+In \cite{GulwaniJK09}, an upper bound on this property is referred to as the \emph{reachability-bound}. Specifically, it is a worst-case upper bound on the number of times a given program location 
 inside a procedure is visited during the program execution.
-It has broad applications in analyzing other program properties beyond itself.
-For example in the resource cost analysis, this \emph{quantitative-reachability} property
-can help to provide a tighter
-bound on the resources consumed by a program such as time, memory,
-network traffic, power, etc.
-In the data analysis area when we analyze the program's \emph{adaptivity}
-as introduced above,
-the \emph{reachability-bound} on each program location
+The \emph{reachability-bound} on each program location has broad applications in analyzing other program properties beyond itself.
+For example in the resource cost analysis area, 
+it
+% this \emph{quantitative-reachability} property
+can help to provide an accurate
+bound on a program's resources consumption
+%  by a program 
+such as time consumption, memory consumption,
+network traffic, power consumption, etc.
+In the data analysis area, when we analyze a program's \emph{adaptivity}
+as discussed above,
+an accurate \emph{reachability-bound} on each program location
 can improve the precision of the \emph{adaptivity} analysis result.
 In this sense, analyzing and controlling the \emph{reachability-bound} can help to improve programs reliability, security, privacy, usability, etc., and then bring the
 % high-quality
@@ -160,7 +168,8 @@ In this sense, analyzing and controlling the \emph{reachability-bound} can help 
 % 's life than just from a single view. 
 Motivated by this and continued from 
 % improving the precision when analyzing the \emph{adaptivity} rounds in 
-the previous work, we look into the \emph{reachability-bound} in the \redd{PART \romannum{2}}
+the previous work, we look into this \emph{quantitative-reachability} property and present an algorithm 
+that computes an accurate and sound \emph{reachability-bound} on each program location in \redd{PART \romannum{2}}
 
 
 To study the two conceptual \emph{quantitative-reachability} properties from the principles of programming language, we first formalize them through specific programming language models.

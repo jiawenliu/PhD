@@ -1,7 +1,7 @@
 \begin{lem}[Expression Inversion]
 	\label{lem:inv_expr}
 	For all {$ x^i \in \mathcal{LV}$, and $\trace, \trace' \in \tdom$, and an expression $\expr$} if
-	$ \forall z^j \in \mathcal{LV} / \{x^i\} \sthat  
+	$ \forall z^j \in \mathcal{LV}  \setminus \{x^i\} \sthat  
 	\env(\trace) z = \env(\trace') z $, and if
 	\begin{itemize}
 		\item $\expr$ is an arithmetic expression $\aexpr$,
@@ -33,7 +33,7 @@
     if $j = \llabel(\trace) x$ and $i \neq j$.
     \begin{proof}
 		Take two arbitrary traces $\trace, \trace' \in \tdom$, and an expression $\expr$ satisfying
-		$ \forall z^j \in \mathcal{LV} / \{x^i\} \sthat  
+		$ \forall z^j \in \mathcal{LV}  \setminus \{x^i\} \sthat  
 		\env(\trace) z = \env(\trace') z $, we have the following three cases.
     \caseL{$\expr$ is an arithmetic expression $\aexpr$}
 	We have $\config{\trace, \bexpr} \barrow v $ and 
@@ -45,7 +45,7 @@
 	% by $\config{\trace, \aexpr} \aarrow v $	and $\config{\trace', \aexpr} \aarrow v'$, 
 	since
 	%  $x \notin \kw{FV}(\aexpr)$ and 
-	$ \forall z^j \in \mathcal{LV} / \{x^i\} \sthat  
+	$ \forall z^j \in \mathcal{LV}  \setminus \{x^i\} \sthat  
 		\env(\trace) z = \env(\trace') z $,
 	we know $v = v'$, which is contradicted to $v' \neq v$.
 	\\
@@ -55,7 +55,7 @@
 	by 
 	% $\config{\trace, \aexpr} \aarrow v $	and $\config{\trace', \aexpr} \aarrow v'$, 
 	% since $x \notin \kw{FV}(\aexpr)$ and 
-	$ \forall z^j \in \mathcal{LV} / \{x^i\} \sthat  
+	$ \forall z^j \in \mathcal{LV}  \setminus \{x^i\} \sthat  
 		\env(\trace) z = \env(\trace') z $, we know 
 		$\env(\trace) x = \env(\trace') x$, i.e., 
 	\\
@@ -84,7 +84,7 @@
 		$\env(\trace) z = \env(\trace') z$, and 
 		$
 		\config{\trace, \aexpr} \aarrow v$, and $\config{\trace', \aexpr} \aarrow v'$ with $v = v'$;
-		and for all $z^j \in \mathcal{LV} / (\mathcal{DF} \cup \{x^i\} )$ 
+		and for all $z^j \in \mathcal{LV}  \setminus (\mathcal{DF} \cup \{x^i\} )$ 
 		there exist $\trace, \trace' \in \ftdom, v, v'$ such that 
 		$\env(\trace) z = \env(\trace') z$, and 
 		$
@@ -100,7 +100,7 @@
 			\config{\trace, \aexpr} \aarrow v \land \config{\trace', \aexpr} \aarrow v' \land v = v'
 			\\ \quad
 			\implies 
-			\forall z^j \in \mathcal{LV} / (\mathcal{DF} \cup \{x^i\} ) \sthat  
+			\forall z^j \in \mathcal{LV}  \setminus (\mathcal{DF} \cup \{x^i\} ) \sthat  
 			\exists \trace, \trace' \in \ftdom, v, v'\sthat  
 			\\ \quad
 			\env(\trace) z = \env(\trace') z \land 
@@ -114,7 +114,7 @@
 	$ \env(\trace) z = \env(\trace') z \land 
 	\config{\trace, \bexpr} \barrow v \land \config{\trace', \bexpr} \barrow v' \land v = v'$;
 	and for all
-	$ z^j \in \mathcal{LV} / (\mathcal{DF} \cup \{x^i\} ) \sthat  
+	$ z^j \in \mathcal{LV}  \setminus (\mathcal{DF} \cup \{x^i\} ) \sthat  
 	 \exists \trace, \trace' \in \ftdom, v, v'\sthat  
 	\env(\trace) z = \env(\trace') z \land 
 	\config{\trace, \bexpr} \barrow v \land \config{\trace', \bexpr} \barrow v' \land v \neq v'$
@@ -131,7 +131,7 @@
 		\config{\trace, \bexpr} \barrow v \land \config{\trace', \bexpr} \barrow v' \land v = v'
 		\\ \quad
 		\implies 
-		\forall z^j \in \mathcal{LV} / (\mathcal{DF} \cup \{x^i\} ) \sthat  
+		\forall z^j \in \mathcal{LV}  \setminus (\mathcal{DF} \cup \{x^i\} ) \sthat  
 		 \exists \trace, \trace' \in \ftdom, v, v'\sthat  
 		 \\ \quad
 		 \env(\trace) z = \env(\trace') z \land 
@@ -147,7 +147,7 @@
  \env(\trace) z = \env(\trace') z \land 
  \config{\trace, \qexpr} \qarrow \qval \land \config{\trace', \qexpr} \qarrow \qval' \land \qval =_q \qval'$;
  and for all 
-	$ z^j \in \mathcal{LV} / (\mathcal{DF} \cup \{x^i\} ) \sthat  
+	$ z^j \in \mathcal{LV}  \setminus (\mathcal{DF} \cup \{x^i\} ) \sthat  
   \exists \trace, \trace' \in \ftdom, \qval, \qval'\sthat  
  \env(\trace) z = \env(\trace') z \land 
  \config{\trace, \qexpr} \qarrow \qval \land \config{\trace', \qexpr} \qarrow \qval' \land \qval \neq_{q} \qval'$,
@@ -163,7 +163,7 @@
 		\config{\trace, \qexpr} \qarrow \qval \land \config{\trace', \qexpr} \qarrow \qval' \land \qval =_q \qval'
 		\\ \quad
 		\implies 
-		\forall z^j \in \mathcal{LV} / (\mathcal{DF} \cup \{x^i\} ) \sthat  
+		\forall z^j \in \mathcal{LV}  \setminus (\mathcal{DF} \cup \{x^i\} ) \sthat  
 		 \exists \trace, \trace' \in \ftdom, \qval, \qval'\sthat  
 		 \\ \quad
 		 \env(\trace) z = \env(\trace') z \land 

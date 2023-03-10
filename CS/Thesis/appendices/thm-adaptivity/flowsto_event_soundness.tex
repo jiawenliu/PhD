@@ -67,6 +67,9 @@ operator $\llabel : \ftdom \to \mathcal{V} \to \mathbb{N} \cup \{ \bot\}$,
 takes a trace and a variable as input and returns the label of the latest assignment event which assigns value to that variable. 
   Its behavior is defined as follows,
   \begin{defn}[Latest Label]
+    \label{def:latest_label}
+    Given the trace $\trace \in \tdom$ and a variable $x \in \mathcal{VAR}$,
+    the \emph{latest label} of $x$ is computed as follows.
     \[
       \begin{array}{l}
     \llabel(\trace  :: (x, l, \_, \_)) x \triangleq l
@@ -143,14 +146,14 @@ by Lemma~\ref{lem:depevents_exist}.
   \begin{case}($\trace = {[]}$)
     \\
     Since for all $\event_1, \event_2 \in \eventset^{\asn}$,
-     $\not\exists \trace' \in \ftdom$,satisfies $
+     $\nexists \trace' \in \ftdom$,satisfies $
     {[]}  = [\event_1] \tracecat \trace' \tracecat [\event_2]$, the theorem is vacuously true.
     \end{case}
     %
     \begin{case}($\event \in \eventset, \trace = [\event]$)
     \\
     Since for all $\event_1, \event_2 \in \eventset^{\asn}$,
-     $\not\exists \trace' \in \ftdom$,satisfies $
+     $\nexists \trace' \in \ftdom$,satisfies $
     {[]} = [\event_1] \tracecat \trace' \tracecat [\event_2]$, the theorem is vacuously true.
     \end{case}
     %
@@ -180,7 +183,7 @@ by Lemma~\ref{lem:depevents_exist}.
       $\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$
       \\
       In case of $\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$, since 
-      $\not\exists \trace' \in \ftdom$,satisfies $
+      $\nexists \trace' \in \ftdom$,satisfies $
       [\event_1'; \event_2'] = [\event_1] \tracecat \trace' \tracecat [\event_2]$, 
       the theorem is vacuously true.
       \\
@@ -199,7 +202,7 @@ by Lemma~\ref{lem:depevents_exist}.
       % \end{enumerate}
       % %
       % In case of $\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = \{\}$,
-      % since $\not\exists  z^i, y^j \in \lvar(c), l_h, l_t \sthat  l_h ++ [z^i, y^j] ++ l_t \in \{\}$, the theorem is vacuously true.
+      % since $\nexists  z^i, y^j \in \lvar(c), l_h, l_t \sthat  l_h ++ [z^i, y^j] ++ l_t \in \{\}$, the theorem is vacuously true.
       % %
       % \\
       % Then in the case 1., 
@@ -266,7 +269,7 @@ by Lemma~\ref{lem:depevents_exist}.
         $\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$
         \\
         In case of $\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$, since 
-        $\not\exists \trace' \in \ftdom$,satisfies $
+        $\nexists \trace' \in \ftdom$,satisfies $
         [\event_1'] \tracecat \trace_{ih} \tracecat [\event_2']  = [\event_1] \tracecat \trace' \tracecat [\event_2]$, 
         the theorem is vacuously true.
         \\

@@ -148,12 +148,12 @@ From Eq.~\ref{eq:eventdep_def_base_ctl}, we also have
 %
 By the same proof steps from case 1 in Subproof~\ref{pf:eventdep_base_val}, we have
 \[
-  x_1 \in VAR(b)  \land x_1^{l_1} \in \live(l_b, c)
+  x_1 \in \kw{FV}(b)  \land x_1^{l_1} \in \live(l_b, c)
 \]
 %
 By Lemma~\ref{lem:ctldep_inv}, we also know:
 \[
-  \forall z \in VAR(\pi_1(\event_b)) \sthat  \exists i \in \mathbb{N} \sthat 
+  \forall z \in \kw{FV}(\pi_1(\event_b)) \sthat  \exists i \in \mathbb{N} \sthat 
 \flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)
 \]
 %

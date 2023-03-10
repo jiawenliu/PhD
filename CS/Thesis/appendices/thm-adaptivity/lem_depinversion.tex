@@ -127,7 +127,7 @@ we have the following instance of the first execution in Eq.~\ref{eq:ctlflowsto_
   \\
   \qquad 
    \rightarrow^{\rname{if-b / while-b}} 
-  \config{(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3'/[\eskip]; c_3'), 
+  \config{(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3'/\clabel{\eskip}^{l'}; c_3'), 
   \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
   \\
   \qquad  \rightarrow^{*} 
@@ -168,7 +168,7 @@ $\event_b$ from Inversion Lemma~\ref{lem:inv_event} of testing event.
 % \config{(c_t;c_3' / c_f;c_3') /(c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3'), 
 % \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
 % $
-The notation $(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3' / [\eskip]; c_3')$ represents:
+The notation $(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3' / \clabel{\eskip}^{l'}; c_3')$ represents:
 \\
 In case of $\eif ([b]^{l_b}, c_t, c_f)$, if $\pi_3(\event_b) = \etrue$, we have the evaluation:
 $$
@@ -199,7 +199,7 @@ we also have the instance of second execution as follows:
     \\
     \qquad 
      \rightarrow^{\rname{if-b / while-b}} 
-    \config{(c_f;c_3' / c_t;c_3') /([\eskip]; c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3' ), 
+    \config{(c_f;c_3' / c_t;c_3') /(\clabel{\eskip}^{l'}; c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3' ), 
 	\\ \qquad \qquad \qquad \qquad
 	\trace_1 \tracecat [\event_1]  \tracecat \trace' \tracecat [\neg \event_b]} 
     \\
@@ -437,7 +437,7 @@ In case of $ \pi_1(\event_z) \notin \kw{FV}(\expr_2 / \qexpr_2)$, by Inversion L
 	\begin{array}{l}
 		\forall x^i \in \mathcal{LV}, \trace, \trace' \in \ftdom, v, v' \sthat 
 		\\ \qquad 
-		\Big( \forall z^j \in \mathcal{LV} / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
+		\Big( \forall z^j \in \mathcal{LV} \setminus \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
 		\\ \qquad 
 		\env(\trace) z = \env(\trace') z \Big) \land 
 	\config{\trace, \expr_2 / \qexpr_2} \aarrow v \land \config{\trace', \expr_2} \aarrow  v' \\ \qquad 
@@ -448,7 +448,7 @@ In case of $ \pi_1(\event_z) \notin \kw{FV}(\expr_2 / \qexpr_2)$, by Inversion L
 		\begin{array}{l}
 			\forall x^i \in \mathcal{LV}, \trace, \trace' \in \ftdom, \qval, \qval' \sthat 
 			\\ \qquad 
-		\Big( \forall z^j \in \mathcal{LV} / \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
+		\Big( \forall z^j \in \mathcal{LV} \setminus \{\pi_1(\event_z)^{\pi_2(\event_z)} \} \sthat  
 		\\ \qquad 
 		\env(\trace) z = \env(\trace') z \Big) \land 
 		\config{\trace, \qexpr_2} \qarrow \qval \land \config{\trace', \qexpr_2} \qarrow \qval' 
@@ -707,7 +707,7 @@ we have:
 		{
 		\config{[\assign{{x}}{\aexpr}]^{l},  \trace } 
 		\xrightarrow{} 
-		\config{\eskip, \trace \tracecat [({x}, l, v) ]}
+		\config{\clabel{\eskip}^{l'}, \trace \tracecat [({x}, l, v) ]}
 		}$.
 		\\
 		Since there doesn't exist $c_1, c_2 \in \cdom$ satisfying $\eskip = c_1; c_2$, this theorem is vacuously true.
@@ -717,7 +717,7 @@ we have:
 		{
 		\config{[\assign{{x}}{\query(\qexpr)}]^{l},  \trace } 
 		\xrightarrow{} 
-		\config{\eskip, \trace \tracecat [({x}, l, \qval, v) ]}
+		\config{\clabel{\eskip}^{l'}, \trace \tracecat [({x}, l, \qval, v) ]}
 		}$.
 		\\
 		Since there doesn't exist $c_1, c_2 \in \cdom$ satisfying $\eskip = c_1; c_2$, this theorem is vacuously true.
@@ -755,7 +755,7 @@ we have:
 		\\
 		And we also have the existence of $l = l_b, b$ and $c_w$, and $\ewhile [b]^{l} \edo (c_w) \in_c c_2$ and  $c_1 \in c_w$.
 		\\
-		If $c_w$ isn't a sequence command, let $c_1 = c_w$, then we have $c_2 = \ewhile [b]^{l} \edo (c_w),  \eskip)$ 
+		If $c_w$ isn't a sequence command, let $c_1 = c_w$, then we have $c_2 = \ewhile [b]^{l} \edo (c_w)$ 
 		and $c_1 \in_c c_2$.
 		\\
 		And we also have the existence of $l = l_b, b$ and $c_w$, and $\ewhile [b]^{l} \edo (c_w) \in_c c_2$ and  $c_1 \in c_w$.
@@ -765,11 +765,11 @@ we have:
 		By the evaluation rule $\rname{while-f}$, we have
 		$$
 		{
-			\config{{\ewhile [b]^{l}, \edo (c_w), \trace}}
+			\config{{\ewhile [b]^{l} \edo (c_w), \trace}}
 			\xrightarrow{} 
 			\config{{
-			[\eskip]^l ,
-			\trace \tracecat [((b, l, \efalse))]}}.
+			\clabel{\eskip}^l ,
+			\trace \tracecat [(b, l, \efalse)]}}.
 		}$$
 		\\
 		Since there doesn't exist $c_1, c_2 \in \cdom$ satisfying $\eskip = c_1; c_2$, this theorem is vacuously true.
@@ -779,13 +779,13 @@ we have:
 \begin{lem}[Only $\eskip$ Command doesn't Produce Event].
 	\label{lem:inv_skip}
 	For all trace $\trace\in \ftdom$, and $c, c' \in \cdom$,  
-	$\config{c, \trace} \rightarrow \config{c', \trace}$ if and only if $c = [\eskip];c'$. 
+	$\config{c, \trace} \rightarrow \config{c', \trace}$ if and only if $c = \clabel{\eskip}^{l'};c'$. 
 	\[
 		\forall \trace\in \ftdom, c, c' \in \cdom \sthat 
 		\config{c, \trace} \rightarrow \config{c', \trace}
 		\Leftrightarrow 
-		c = [\eskip];c'
-	% \footnote{$([\eskip];){}^*$ denotes a sequence command only composed of $[\eskip]$ commands.}
+		c = \clabel{\eskip}^{l'};c'
+	% \footnote{$(\clabel{\eskip}^{l'};){}^*$ denotes a sequence command only composed of $\clabel{\eskip}^{l'}$ commands.}
 	\]
 	\end{lem}
 \begin{proof}
