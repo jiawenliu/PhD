@@ -30,20 +30,25 @@ This section is summarized into three steps as follows,
   or reset
   % $\reset(x, c)$, 
   respectively.
-  \\
+  The computation follows the same way as the Definition~\ref{def:var_modification}, we present them again as follows.
+  \begin{itemize}
+    \item
   $\inc: \cdom \to \vardom \to \mathcal{P}(\absevent) $
   is the set of the edges where the variable increase, 
   %\\
   \[ \inc(x, c) = \left\{ \absevent | \absevent = (l, x' \leq x + v, l') \land \absevent \in \absflow(c) \right\} \]
   %\\
+  \item
   $\dec: \vardom \to \mathcal{P}(\absevent) $
   is the set of abstract events where the variable decrease,
   %\\
   \[\dec(x, c) = \left\{\absevent| \absevent = (l,  x' \leq x - v, l') \land \absevent \in \absflow(c) \right\}\]
   %\\
+  \item
   $\reset: \cdom \to \vardom \to \mathcal{P}(\absevent) $ is the set of the abstract events where the variable is reset,
 %
   \[\reset(x, c) = \left\{ \absevent| \absevent = (l,  x' \leq y - v, l') \land x \neq y \land \absevent \in \absflow(c) \right\}\]
+  \item
   Additionally,
   we also compute the reset graph $\resetG(c)$ and the reset chain, $\resetchain(x, c) \in \mathcal{P}(\mathcal{P}(\absevent))$ for every rank $x$.
   The $\resetchain(x, c)$ for every rank $x$ contains all the paths in $\resetG(c)$ that are end at $x$.
@@ -60,7 +65,7 @@ This section is summarized into three steps as follows,
   resets a variable $x_i$ by another variable $x_{i + 1}$ such that $x_{i + 1}$
   is reset on edge $e_{i + 1}$ recursively. The first edge $e_0$ of each sequence resets the variable $x$.}
   % 
-  \\
+  \end{itemize}
   In the following steps, $c$ is omitted in $\inc(x, c)$,
   $\dec(x, c)$ and $\reset(x, c)$ for concise when the reference of a program $c$ is clear in the context.
 
@@ -195,7 +200,7 @@ $\rank(3 \to 4) = i$,
 $\rank(4 \to 5) = k$,
 $\rank(5 \to 4) = k$,
 $\rank(4\to 6) = \rank(6 \to 7) = \rank(7 \to 1) = i$,
-and $\rank(2 \to 8) = \rank(8 \to 1) = i$,
+and $\rank(2 \to 8) = \rank(8 \to 1) = i$.
 Then we estimate the upper bound invariant for the ranking function $i$ and $k$ by computing the transition bound in the same time.
 We get $\varinvar(i, c) = n$ and $\varinvar(k, c) = m$.
 While the transition bound for each transition is the same as the upper bound invariant of its ranking function.

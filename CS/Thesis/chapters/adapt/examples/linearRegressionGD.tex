@@ -106,14 +106,17 @@ for concise, but these edges exist in $\traceG(\kw{lR(k, r)})$  because they can
 Given an input $\trace_0$, there are multiple walks having the same longest query length in 
 $\traceG(\kw{lR(k, r)})$,
 such as the walks 
-$c^7 \to dc^5 : \to c^7 \to \cdots \to dc^5$ and
+$c^7 \to dc^5 \to c^7 \to \cdots \to dc^5$ and
 $a^6 \to da^4  \to a^6 \to \cdots \to da^4 $ along the 
 dotted arrows.
 The vertices $c^7, dc^5, a^6, da^4$ in the two walks are visited $w_{c^7}, w_{dc^5}, w_{a^6}, w_{da^4}$ respectively.
-Though the different weight functions count the execution times of the different corresponding command,
-the counts are expected to be the same number, i.e., the loop iterations.
-And the loop iterations are indeed the initial value of input $k$ from initial trace $\trace_0$.
-In this sense, $A(\kw{lR(k, r)})(\trace_0) = w_{dc^5}(\trace_0) = w_{da^4}(\trace_0)$.
+% Though the different weight functions count the execution times of the different corresponding command,
+% the counts are expected to be the same, i.e., the loop iterations.
+Since all of them are in the same path of the loop, their weight function are expected to be the same, i.e., 
+$\lambda \trace_0 \sthat \env(\trace_0) k$. 
+Specifically the value of the input variable in the initial trace, which is also the loop iterations.
+% And the loop iterations are indeed the initial value of input $k$ from initial trace $\trace_0$.
+In this sense, $A(\kw{lR(k, r)}) = w_{dc^5} = w_{da^4} = \lambda \trace_0 \sthat \env(\trace_0) k$.
 Similar to Example~\ref{ex:multipleRounds}, $\THESYSTEM$ estimates the tight adaptivity bound, $k$ for this example.
 
 %

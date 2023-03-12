@@ -58,10 +58,10 @@ assigns each transition with a variable that decreases in this transition, as th
 The computation steps are as follows,
 \begin{enumerate}
 \item \textbf{Variable Modifications}.
-
 For each variable $x$ in a program $c$, this step computes three edge sets, $\inc(c, x)$, $\dec(c, x)$,
   and $\reset(c, x)$ for $x$.
   \begin{defn}[Variable Modification]
+    \label{def:var_modification}
     The \emph{Variable Modification} sets for a variable $x$ in a program $c$ are three sets of edges.
     $\inc(c, x)$, $\dec(c, x)$,
     and $\reset(c, x) \in  \mathcal{P}(\absevent)$
@@ -71,8 +71,8 @@ For each variable $x$ in a program $c$, this step computes three edge sets, $\in
   % $\dec(c, x)$ and 
   or reset
   % $\reset(c, x)$, 
-  respectively.
-  \\
+  respectively as follows.
+  
   $\inc: \cdom \to \vardom \to \mathcal{P}(\absevent) $
   is the set of the edges where the variable increase, 
   %\\
