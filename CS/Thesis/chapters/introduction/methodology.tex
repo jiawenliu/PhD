@@ -276,7 +276,7 @@ and then introduce how we leverage these limitations in our proposed approach.
 % Below are the methodologies we adopted in our new algorithm and their existing limitations.
 
 \subsubsection{Program Abstraction}
-\paragraph{Existing Techniques and Limitation.}
+\paragraph{Existing Techniques and Limitations.}
 The program abstraction techniques are widely used in the program analysis area to precisely summarize the key property of the program. They are usually based on some specific abstract interpretation models as introduced in Section~\ref{sec:intro-methodology-adapt}.
 In analyzing the loop bounds, the unified lattice model in~\cite{CousotH78}, polyhedra in~\cite{CousotC77}, and octagons in~\cite{Mine06} are used in~\cite{GulwaniZ10} for summarize the loop transition and generating the transition system.
 But none of the three abstraction models can represent the if guard in the multipath loops, and solving the transition system using these abstraction models is low-efficient. The wedge abstract developed in~\cite{KincaidCBR18} for generating the non-linear loop invariant
@@ -296,42 +296,47 @@ In this sense, it is more accurate than the state-of-art program abstraction mod
 % It is based on the difference constrain model in~\cite{SinnZV17} and the size change abstraction in~\cite{SinnZV14}. The efficiency also benefits from our
 % semantics model, which is inspired from~\cite{Cousot19a} and~\cite{Cousot19} and has similar intuition with the program model in~\cite{SinnZV17}.
 
+\subsubsection{Loop Summarization and Path Refinement}
+\paragraph{Existing Techniques and Limitations.}
+One kind of loop bound analysis through loop summarization and path refinement seeks precise loop path representation such as~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19}, and compute loop bound over accurate loop summarization including~\cite{GulwaniJK09, ZulegerGSV11}.
+They mainly focus on summarizing the loop path and computing the interleaving between paths, as well as computing the precise bound considering the interleaving. However, composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
+\paragraph{Proposed Method.}
+To leverage the efficiency problem, we use a lightweight path refinement algorithm adapted from~\cite{GulwaniJK09}.
+It computes the refined program over the abstract transition graph generated above.
+% , and then we
+% effectively combines this methodology with the \emph{amortized complexity analysis} above through ranking function estimation.
+
 
 \subsubsection{Amortized Complexity Analysis through Ranking Function}
-\paragraph{Existing Techniques and Limitation.}
-This method is originated from Tarjan's influential paper~\cite{PotechinP17} combined with \emph{ranking function} estimation from~\cite{BradleyMS05} and developed in~\cite{ZulegerGSV11, SinnZV14, SinnZV17, LuCT21, AliasDFG10}.
+\paragraph{Existing Techniques and Limitations.}
+This kind of methods is originated from Tarjan's influential paper~\cite{PotechinP17} combined with \emph{ranking function} estimation from~\cite{BradleyMS05} and developed in~\cite{ZulegerGSV11, SinnZV14, SinnZV17, LuCT21, AliasDFG10}.
 Indeed, using techniques like ranking functions, counter increments, difference constraints, etc.
 one can estimate 
 precise bounds on loop iterations and execution time,
-and in turn, obtain reachability bounds for complex programs.
-However, these techniques are designed to capture the worst-case or overall complexity, and again they may over-approximate the reachability-bounds of certain locations.
-When there are multiple paths and the interleaving affects the loop execution, the over-approximation is more evident.
+and in turn, obtain reachability bounds for program locations.
+However, these techniques are designed to capture the worst-case or overall complexity, and again they may over-approximate the reachability-bounds of some locations.
+When there are multiple paths and the path interleaving affects the loop execution, the over-approximation is more evident.
 
 \paragraph{Proposed Method.}
-To improve these limitations, our methodology deploys the loop path refinement technique and performs the \emph{amortized complexity analysis} over the refined programs.
-The \emph{amortized complexity analysis} techniques we use is through the ranking function 
+In our approach, the \emph{amortized complexity analysis} techniques we use is through the ranking function 
 % $\locbound(\absevent, c)$ 
 estimation
 % $\absevent$, 
 and alternatively computing the bound on each ranking function and transition edge.
-It is also efficient and accurate without recursively unrolling the nested loops when composing the bound of different paths.
-However, deployment of the path refinement technique has its limitation as well.
+To overcome the over-approximation limitations, we deploy the loop path refinement technique and performs the \emph{amortized complexity analysis} over the refined programs.
+In this sense, we estimate the ranking function in a path sensitive manner.
+Moreover, this deployment does not reduce the efficiency, since the \emph{amortized complexity analysis} algorithm
+does not require to unroll the nested loop recursively.
+%   without recursively unrolling the nested loops when composing the bound of different paths.
+% However, deployment of the path refinement technique has its limitation as well.
 
 
-\subsubsection{Loop Summarization and Path Refinement}
-\paragraph{Existing Techniques and Limitation.}
-Another line of loop bound analysis through loop summarization and path refinement seeks precise loop path representation such as~\cite{ManoliosV06, BalakrishnanSIG09, SharmaDDA11, Flores-MontoyaH14, HumenbergerJK18, CyphertBKR19}, and compute loop bound over accurate loop summarization including~\cite{GulwaniJK09, ZulegerGSV11}.
-They mainly focus on summarizing the loop path and computing the interleaving between paths, as well as computing the precise bound considering the interleaving. However, composing the bound between nested loops. Recursively unrolling the nested loops and computing the interleaving between unrolled paths are heavy and non-terminating.
-\paragraph{Proposed Method.}
-Our new approach uses a lightweight path refinement algorithm adapted from~\cite{GulwaniJK09}.
-It computes the refined program based on the abstract transition graph and then
-effectively combines this methodology with the \emph{amortized complexity analysis} above through ranking function estimation.
 % The next methodology introduced in the next part 
 
 \subsubsection{Reachability-bound Computation}
-\paragraph{Existing Techniques and Limitation.}
-As we discussed above, most of the existing static analysis methodologies cannot compute the reachability-bound on a given program control location directly or path-sensitively.
-Most of them focus on one the \emph{quantitative} perspective of this property.
+\paragraph{Existing Techniques and Limitations.}
+Existing static analysis techniques cannot compute the \emph{reachability-bound} on a given program control location directly or path-sensitively.
+Most of them focus only on the \emph{quantitative} sub-property, specifically the overall program execution complexity.
 For example,~\cite{GulwaniZ10}
 give a two-step solution by combining program abstract and proof-rules-based bound computation.
 But it does not compute the \emph{reachability-bound} precisely for every control location.
@@ -348,11 +353,13 @@ the overall complexity,
 none of them compute the reachability-bound on a given program control location directly or path-sensitively.
 For the same reason, they also lose the \emph{reachability} perspective of the \emph{reachability-bound}.
 
-\paragraph{Our Method}
+\paragraph{Proposed Method.}
 To overcome these limitations, 
-our algorithm is built over an abstract transition graph which effectively combines \emph{amortized complexity analysis} with \emph{loop summarization-based multipath refinement}.
-This combination mitigates the limitations faced by either technique individually. 
-Building on this combination, we introduce two novel quantities,
+we design
+our algorithm
+over the abstract transition graph and effectively uses the \emph{amortized complexity analysis} and \emph{loop summarization-based multipath refinement} techniques in the first step.
+In this way, the new algorithm firstly mitigates the limitations faced by each technique individually. 
+Then, we introduce two novel quantities,
 the \emph{path reachability-bound} and \emph{loop reachability-bound}.
 They are the main novelty of our new path-sensitive reachability-bound algorithm built on traditional methods.
 The first one bounds the evaluation times of each loop-free and interleave-free path in a refined program, and the second one bounds the number of iterations of an outer loop w.r.t. an inner loop, counting only the iterations when the inner loop is ``entered''. 
