@@ -3,54 +3,68 @@
 
 \subsubsection{Language Models}
 \label{sec:intro-methodology-adapt-language}
-\paragraph{Existing Programming Languages and The Limitations}
-Most of the data analysis algorithms are implemented in Python equipped with the panda, numpy, TensorFlow, etc. libraries for database access and data training computation, 
-or in C with some external database access libraries, etc.
+\paragraph{Existing Languages Models and Limitations}
+Most of the data analysis algorithms are implemented in Python.
+Python is equipped with external libraries such as the panda, numpy, TensorFlow, etc. for database access and data training computation.
+Another language frequently used is C with some external database access libraries.
 These languages and external libraries
 % are mainly focusing on 
-focuses only on the efficiency and scalable of the programs, but not
+focus only on the efficiency and scalability of the programs, but not
 % None of them takes care of 
-the generalization error of the corresponding data analysis algorithms that these programs implemented.
+the generalization error of the corresponding data analysis algorithms that these programs implement.
 % In terms of adaptivity, none of them take care of this property w.r.t. these data analysis algorithms implemented.
-In this sense, it is difficult to control data analyses' generalization error by analyzing the programs' \emph{adaptivity}
+It is generally difficult to 
+% control data analyses' generalization error 
+% by analyzing the programs' \emph{adaptivity}
+estimate generalization error of these data analysis algorithms 
 % as a program property
  based on existing programming languages.
 % However, the variety of the external API makes the formalization of data analysis algorithms and their adaptivity property over these languages difficult.
 
 \paragraph{Our Language Model}
-We identify some data analysis models which are mostly used as the core of data analysis algorithms.
-Based on these models, we design a simple but scalable language model based on standard while language named {\tt QWhile}.
+We extract some data analysis models which are mostly used as the core of data analysis algorithms.
+Based on these models, we design a simple but scalable language model based on ``standard while language'' named {\tt QWhile}.
 It is a standard while language enriched with the query request command and labels on each program command. 
-We implement these data analyses algorithm in {\tt QWhile} and then formalize
-the \emph{adaptivity} notation over this language model. 
+We implement these data analyses algorithms in {\tt QWhile}, and then formalize
+the \emph{adaptivity} property over the corresponding programs. 
 
 
 \subsubsection{Program Property Formalization}
 \label{sec:intro-methodology-adapt-formalization}
-As discussed in the abstract and introduction sections, this \emph{adaptivity} is commonly used as an intuitive concept in the data analysis area.
+% As discussed in the abstract and introduction sections,
+\emph{Adaptivity} is commonly used as an intuitive concept in the
+machine learning area.
+%  data analysis area.
 To study it as a program property, we need to have 
 % a formal 
-model where 
-this concept is formally defined as a program property, specifically a \emph{quantitative-reachability} property.
-There are many ways to formally define a program's conceptual property. However, they all have difficulties in capturing its two perspectives sub-properties, the \emph{quantitative} and \emph{reachability}. 
-We summarize some existing formalization methods with their limitations and then introduce how we formalize this concept.
+this concept 
+% where 
+% this concept is 
+formally defined.
+%  as a program property, specifically a \emph{quantitative-reachability} property.
+There are many ways to formally define a program's conceptual property. However, they all have difficulties in capturing its two sub-properties, the \emph{quantitative} and \emph{reachability} properties. 
+We summarize some existing formalization methods with their limitations and then introduce how we formalize the concept of \emph{adaptivity}.
 
-\paragraph{Existing Methodology and The Limitations}
-The \emph{abstract interpretation} based methodology is originated from Cousot's influential paper in~\cite{CousotH78, CousotC77}.
-This category of methods is intensively developed in~\cite{Mine06, ZanioliC11, MastroeniZ17, KincaidCBR18, Cousot19a, JanaHAGC20}, etc. Majority of these methods are focusing on formalizing property from the \emph{reachability} perspective,
+\paragraph{Existing Formalization Methods and Limitations}
+The \emph{abstract interpretation}-based methods were developed in the Cousot's seminal paper~\cite{CousotH78, CousotC77}.
+This category of methods is extensively developed 
+in~\cite{Mine06, ZanioliC11, MastroeniZ17, KincaidCBR18, Cousot19a, JanaHAGC20}, etc. Majority of these methods are focusing on formalizing property from the \emph{reachability} perspective,
 such as the dependency relation defined in~\cite{Cousot19a}, program point reachability formalized in~\cite{MastroeniZ08}, etc.
-However, they are not able to capture the \emph{quantitative} sub-property for the \emph{adaptivity}.
+However, they are not able to capture the \emph{quantitative} sub-property of \emph{adaptivity}.
 
-The \emph{execution history and program simulation}-based methodology~\cite{Israel56, Kildall73}
+The \emph{execution history and program simulation}-based formalization methods by~\cite{Israel56, Kildall73}
 are also widely used in defining
 and formalizing the program's properties.
-However, they have the same limitation as the abstract interpretation-based methodology. It is not straightforward how to apply them to define the \emph{adaptivity} as a \emph{quantitative-reachability} property from two perspectives.
+However, they have the same limitation as the \emph{abstract interpretation}-based methodology. It is not straightforward how to apply them to define the \emph{adaptivity}
+%  as a \emph{quantitative-reachability} property from two perspectives.
+involving its \emph{quantitative} and \emph{reachability} sub-properties. 
 
-There is also purely \emph{syntactic}-based methodology originated from~\cite{Weiser84} and developed in~\cite{DenningD77} in defining a property (the data dependency relation).
-However, these methods are limited to certain languages and are not easy to generalize into other language models.
+There is also a purely \emph{syntactic}-based formalization method originated from~\cite{Weiser84} and developed in~\cite{DenningD77}.
+%  in defining a property (the data dependency relation).
+However, this method is limited to certain languages and are not easy to generalize into other language models.
 
 %
-\paragraph{New Methodology}
+\paragraph{Proposed Methodology}
 Because of its nature as a \emph{quantitative-reachability} property, defining \emph{adaptivity} requires us to define from both
 the \emph{reachability} and the \emph{quantitative} perspectives.
 Our new methodology formalizes it
