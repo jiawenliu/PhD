@@ -50,21 +50,28 @@ For example, weather forecasting applications use data analysis programs to pred
 %  accurately, providing people with more convenience and enjoyment.
 Accurate prediction results bring people convenience and enjoyment.
 % , the more convenient user is.
-Other applications, such as video or music players, online games and shopping use data analysis programs to provide users with personalized recommendations.
+Other examples, such as video or music players, online games and shopping applications use data analysis programs to provide users with personalized recommendations.
 The recommendation accuracy influences one's convenience and enjoyment as well.
 %
 %
-In both cases, accuracy of the recommendation results and forecasting results
-relies heavily on the
-outputs of the programs that implement certain
-data analysis algorithms.
+% In both cases, accuracy of the
+% results
+% % the recommendation results and forecasting results
+% relies heavily on the
+% outputs of the programs that implement certain
+% data analysis algorithms.
+In both cases, accuracy of the program
+results influence the user's experiences with respect to convenience and enjoyment.
+% , we need the 
 This brings my attention to
-the properties
-that can help to improve the output accuracy of
-these data analysis programs.
+the program properties
+that can help to improve the accuracy of
+these
+ data analysis 
+programs.
 %  that implement corresponding data analysis.
 We look at the scenario
-where a data analysis is composed of multiple queries interrogating some data.
+in which the data analysis is composed of multiple queries interrogating some data.
 % analyzes a sample data
 % and computes some generalized results
 % on the unknown population
@@ -72,7 +79,7 @@ where a data analysis is composed of multiple queries interrogating some data.
 It aims to identify some property of the population from which the data are drawn
 and then generalizes beyond the specific data sample.
 These generalized results are used by some applications to recommend games, music, clothes, etc. to the
-users beyond the data sample, or the weather forecasting application to make prediction on the future.
+users beyond the data sample, or by the weather forecasting application to make predictions on the climate in the future.
 % Some users occasionally receive
 % recommendations they do not like.
 % This is because they are not in the sample data and get recommendations by
@@ -83,8 +90,6 @@ The recommendation and predication accuracy are usually measured by the generali
 It measures the difference between the result of a 
 data analysis run on a sample data 
 and the result one would achieve
-% is expected to be
-% achieved 
 by
 running over the entire population.
 % This error shows the reliability of the data analysis and reflects the accuracy of the personalized recommendations.
@@ -96,9 +101,13 @@ the dependency chain and brings to high generalization error.
 In light of existing machine learning studies, some researchers found that 
 determining the appropriate statistical technique based on the length of this  dependency chain can help in controlling 
 the generalization error.
-In this sense, we are interested in studying the length of this dependency chain in an adaptive data analysis strategy, intuitively the \emph{adaptivity} level using the principles of programming languages to help reduce the generalization error in \redd{PART \romannum{1}}.
+In this sense, we are interested in studying the length of this dependency chain
+by using the principles of programming languages in \redd{PART \romannum{1}}.
+% We study this intuitive \emph{adaptivity} level help 
+Then we can help to reduce the generalization error of the data anlaysis programs.
 % \\
-Specifically, we consider the data analyses are implemented in a while-like language and formalize this intuitive notion  \emph{adaptivity} as a \emph{quantitative-reachability} property of the programs that implement certain data analyses.
+Specifically, we consider the data analyses are implemented in a while-like language and formalize this intuitive notion -- the \emph{adaptivity} level as a \emph{quantitative-reachability} hyper-property.
+%  of the programs that implement certain data analyses.
 % % We notice one of these non-functional properties that is critical in controlling the generalization error can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
 % % One of the most critical \emph{quantitative-reachability} properties is the \emph{adaptivity} rounds.
 % This property captures the generalization error in terms of whether the sample data that is queried by the algorithm are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
@@ -111,24 +120,25 @@ Specifically, we consider the data analyses are implemented in a while-like lang
 % % Under the light of existing machine learning studies, we want to use this \emph{quantitative-reachability} property to help reduce the generalization errors in data analysis results.
 This \emph{adaptivity} property captures the generalization error in terms of whether the query asked by a program are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
 By analyzing the \emph{adaptivity} and help data analyst to reduce the generalization error of the programs that implement certain data analyses, we can
-improve the user experience with respect to \emph{convenience} and \emph{enjoyment}.
+improve the user's experience with respect to \emph{convenience} and \emph{enjoyment}.
 % provide people with more \emph{convenience} and the \emph{enjoyment} when using these programs.
 
 \emph{Efficiency And Privacy.}
 % High-quality modern daily life
 % is not only
 % determined by the enjoyment or convenience of using some mobile device applications,
-When using the mobile device applications or computer programs, people are not just caring about how enjoyable or convenient,
-but also
+When using the mobile device applications or computer programs, people do not only care about how enjoyable or convenient the experiences are,
+but also about
 the performance, 
-privacy, etc., of these applications and programs. 
-For example, suppose we are playing an online game on our smartphones, what do we care about? 
+privacy, etc.
+For example, suppose we are playing an online game on our smartphones; what do we care about? 
 In games such as racing, 
-we care about the performance of the game -- in another word, if it runs fast, if it crashes due to being out of memory, and so on.
+we care about the performance of the game.
+%  -- in the other word, if it runs fast, if it crashes due to being out of memory, and so on.
 In 
 strategy games, people also care about whether their strategies are leaked to
-the other parties, i.e., the privacy quality of the game.
-We observe that both the performance and privacy
+the other parties, i.e., the privacy of the game.
+We observe that both performance and privacy
 are influenced by
 % whether some lines of code are executed and how times they
 % are executed.
@@ -136,23 +146,22 @@ are influenced by
 whether certain pieces of the program code are executed,
 and how many times they are executed.
 % and their execution times.
-This brings my attention to two program properties,
+This brings my attention to two program properties -- 
 the
-reachability of certain lines of code, and the times that certain code is executed.
+reachability of certain lines of code and the times that certain code is executed.
 % \\
 These two properties can indeed be captured as two sub-properties by a \emph{quantitative-reachability} hyper-property
 %  from two perspectives,
--- the number of times that each program location is visited during the program execution.
+-- \emph{the number of times that each program location is visited during the program execution}.
 % i.e., whether a certain piece of code is executed (the \emph{reachability}) and how many times it is executed (the \emph{quantitative}).
-In \cite{GulwaniJK09}, an upper bound on this property is referred to as the \emph{reachability-bound}. Specifically, it is a worst-case upper bound on the number of times a given program location 
+In~\cite{GulwaniJK09}, an upper bound on this property is referred to as the \emph{reachability-bound}. Specifically, it is a worst-case upper bound on the number of times a given program location 
 inside a procedure is visited during the program execution.
 The \emph{reachability-bound} on each program location has broad applications in analyzing other program properties beyond itself.
 For example in the resource cost analysis area, 
 it
 % this \emph{quantitative-reachability} property
 can help to provide an accurate
-bound on a program's resources consumption
-%  by a program 
+bound on a program's resources consumption,
 such as time consumption, memory consumption,
 network traffic, power consumption, etc.
 In the data analysis area, when we analyze a program's \emph{adaptivity}
@@ -168,8 +177,10 @@ In this sense, analyzing and controlling the \emph{reachability-bound} can help 
 % 's life than just from a single view. 
 Motivated by this and continued from 
 % improving the precision when analyzing the \emph{adaptivity} rounds in 
-the previous work, we look into this \emph{quantitative-reachability} property and present an algorithm 
-that computes an accurate and sound \emph{reachability-bound} on each program location in \redd{PART \romannum{2}}
+the previous work, we look into this
+%  \emph{quantitative-reachability} 
+property in \redd{PART \romannum{2}} and present an algorithm 
+that computes an accurate and sound \emph{reachability-bound} on each program location.
 
 
 To study the two conceptual \emph{quantitative-reachability} properties from the principles of programming language, we first formalize them through specific programming language models.
@@ -177,6 +188,6 @@ Then we develop new program analysis algorithms to best exploit the benefit of t
 However, to fully utilize the aforementioned benefits
 % of the new analysis frameworks on these non-functional 
 on these \emph{quantitative-reachability} properties, appropriate implementations are inevitable. 
-To this end, we also take one step in algorithmizing and implementing these analysis frameworks.
+To this end, we also take one step in implementing these analysis algorithms.
 % which is used to formalize and statically estimate these properties.
-The evaluation results over real-world benchmarks report the effectiveness of our work in the real world and its potential applications beyond the program analysis area.
+The evaluation results over different benchmarks report the effectiveness of our work in the real world and its potential applications beyond the program analysis area.
