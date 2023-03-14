@@ -57,20 +57,21 @@ This motivates us to design a static program analysis aimed at giving good \emph
 
 \subsection{Challenges of Analyzing Adaptivity}
 \label{sec:adapt-intro-challenge}
-Given the significance of this \emph{adaptivity} quantity in the data analysis area,
-I'm motivated to analyze this property.
-In order to analyze this property, there are mainly three challenges introduced in Section~\ref{sec:adapt-intro-challenge}.
-Then targeting the three challenges, I give a technical overview of the new adaptivity analysis framework
-with respect to the limitations of previous works, in Section~\ref{sec:adapt-intro-overview}.
+% Given the significance of this \emph{adaptivity} quantity in the data analysis area,
+% I'm motivated to analyze this property.
+In order to analyze this \emph{adaptivity} as a program property, there are mainly three challenges.
+We discuss them in detail as below.
+%  introduced in Section~\ref{sec:adapt-intro-challenge}.
+% Then targeting the three challenges, I give a technical overview of the new adaptivity analysis framework
+% with respect to the limitations of previous works, in Section~\ref{sec:adapt-intro-overview}.
 
-There are mainly three challenges in order to analyze this adaptivity property, 
-and the full-spectrum analysis of this property is 
-developed w.r.t. the three challenges accordingly.
+% There are mainly three challenges in order to analyze this adaptivity property, 
+% and the full-spectrum analysis of this property is 
+% developed w.r.t. the three challenges accordingly.
 
-\begin{enumerate}
- \item
- \textbf{Adaptive Data Analysis Formalization}
-
+% \begin{enumerate}
+%  \item
+\subsubsection{Adaptive Data Analysis Formalization.}
 The first challenge is \emph{how to define formally} a model for adaptive data analysis which is general enough to support the methods I discussed above and would permit to the formulation of the notion of adaptivity these methods use. 
 I take the approach of designing a programming framework for submitting queries to some \emph{mechanism} giving access 
 to the data mediated by one of the techniques which are mentioned before, 
@@ -83,8 +84,8 @@ The mechanism runs the queries on the data applying one of the methods discussed
 Motivated by this, I present a new while-like language 
 named {\tt Query While} language with extensions on query requests in Section~\ref{sec:adapt-language}.
 
-\item 
-\textbf{Adaptivity Formalization}
+% \item 
+\subsubsection{Adaptivity Formalization}
 
 The second challenge is \emph{how to define the adaptivity of a given program}.
 Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
@@ -99,8 +100,9 @@ To formalize this intuitive \emph{adaptivity} as a quantitative program property
 I analyze the program's execution based on its semantics
 %  develop an semantics-based analysis 
 in Section~\ref{sec:adapt-exe}.
-\item 
-\textbf{Adaptivity Estimation}
+
+
+\subsubsection{Adaptivity Estimation}
 
 The third challenge is \emph{how to estimate the adaptivity of a given program}. 
 The adaptive data analysis model I consider and our definition of adaptivity suggest that for this task 
@@ -114,8 +116,8 @@ Hence, it needs to consider some form of data flow analysis.
 Hence, it needs to consider some quantitative information about the program dependencies. 
 To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
 I develop a static program analysis in Section~\ref{sec:adapt-static}, named {\THESYSTEM}.
+
 %%%%% To reason about%
-\end{enumerate}
 % \\
 %
 \subsection{Technical Motivations}
@@ -131,8 +133,8 @@ As we discussed in Section~\ref{sec:intro-methodology-adapt-language}, existing 
 This makes the analysis of the \emph{adaptivity} as a program property difficult.
 This motivates us to design a simple and scalable language  that can be used to implement these data analysis algorithms and analyze the \emph{adaptivity}.
 
-\paragraph{Limitations of Previous Works}
-There are previous works from~\cite{weihao22} developing language formalizing the adaptive data analysis.
+% \paragraph{Limitations of Previous Works}
+Previous works from~\cite{weihao22} develops language formalizing the adaptive data analysis.
 However, these language designs are limited in their expressiveness largely.
 Most of the general data analyses are not supported by the previous language design.
 In Section~\ref{sec:prework-language}, I introduce in detail the previous language design and limitations.
@@ -175,7 +177,7 @@ This requires us to design new formal model in order to define this property pre
 % here isn't any research combining the two pieces of information. No need to mention the adaptivity analysis.
 \end{enumerate}
 
-\paragraph{Technique Limitations in Previous Works.} 
+% \paragraph{Technique Limitations in Previous Works.} 
 Techniques in previous works~\cite{weihao22} on formalizing this quantity
 are limited in expressiveness and accuracy significantly.
 The \emph{adaptivity} quantities in many general data analysis programs are unable to be defined in the previous \emph{adaptivity} definition.
@@ -277,7 +279,7 @@ This motivates us to design new algorithm to compute the longest \emph{finite wa
 %  but not both of them.
 %  \end{enumerate}
 
-\paragraph{Technique Limitations in Previous Works}
+% \paragraph{Technique Limitations in Previous Works}
 The previous works from~\cite{weihao22}
 develop program analysis algorithm for estimating the adaptivity.
 However, this algorithm is low efficiency, and in-precise. It is not automatic either. 
