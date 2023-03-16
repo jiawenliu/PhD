@@ -1,4 +1,4 @@
-We would focus on two aspects in the future, the practical applications of {\THESYSTEM} and the
+We would focus on two aspects in the future, the potential practical applications  of {\THESYSTEM} and how to improve the
 accuracy of {\THESYSTEM}.
 %
 % We plan to investigate the potential integration of {\THESYSTEM} in an adaptive data analysis framework like Guess and check by Rogers at al.~\cite{RogersRSSTW20}. As we discussed, this framework is designed to support adaptive data analyses with limited generalization error. As our experiments show, this framework could benefit from the information provided by {\THESYSTEM} to provide a more precise estimation and improved confidence intervals. Another direction we will explore is to make 
@@ -15,26 +15,32 @@ the upper bounds provided by {\THESYSTEM} are more precise by integrating our al
 Specifically, we plan to improve the accuracy from the following two aspects.
 
 \paragraph{The Adaptivity Definition.}
-The program's adaptivity definition in Section~\ref{sec:adapt-exe}
-(specifically in Definition~\ref{def:trace_adapt}), isn't precise enough w.r.t. the intuitive \emph{adaptivity} rounds.
-It comes across an over-approximation.
-The Example~\ref{ex:multiRoundsS} in Section~\ref{sec:adapt-example} shows this limitation.
+The adaptivity definition we give in Definition~\ref{def:trace_adapt}
+is not precise enough with respect to the intuitive \emph{adaptivity} notion.
+There are  some cases in which the definition over-approximate the intuitive \emph{adaptivity} of the programs.
+The Example~\ref{ex:multiRoundsS} in Section~\ref{sec:adapt-example} shows one example of this over-approximation.
 % It is 
-In this example, the formalized adaptivity by execution-based analysis in Section~\ref{sec:adapt-exe} 
-is the initial value of the input variable $k$.
-However, the intuitive \emph{adaptivity} is only $2$ given whatever initial trace.
-This is resulted from the
+In this example, the adaptivity by semantics-based definition in Section~\ref{sec:adapt-exe} 
+is $\lambda \trace_0 \sthat \env(\trace_0) k$, i.e., the initial variable of the input variable.
+However, the intuitive \emph{adaptivity} is only $2$ given whatever initial trace, i.e., $\lambda \trace_0 \sthat 2$.
+This over-approximation is resulted from the
 % difference 
 irrelevance between the 
 % dependency Depth 
-dependency quantity (i.e., the vertex weight) and 
-the data dependency relation (the edge) in \emph{variable may-dependency} definition in Section~\ref{sec:dynamic-datadep}.
+weight
+%  (i.e., the vertex weight) 
+and 
+% the data dependency relation (the edge) in
+the \emph{variable may-dependency} relation.
+%  in Section~\ref{sec:dynamic-datadep}.
 Specifically the irrelevance between the vertex weight and the edge on the \emph{semantics-based dependency} graph.
-It occurs when the 
+When the 
 % weight 
-dependency quantity is computed over the traces different from the traces used in 
+% dependency quantity
+weight of a vertex is counted from the execution trace that is different from the witness traces used in 
 % witness 
-analyzing the \emph{variable may-dependency} relation.
+% analyzing 
+the \emph{variable may-dependency} relation of that vertex, there is an inaccuracy.
 
 % \paragraph{Proposed Methodology}
 % \label{para:furthers-dep-depth}
@@ -44,19 +50,19 @@ of
 \emph{adaptivity} definition is planned to develop in the following steps.
 \begin{enumerate}
 \item In the first stage of formalization, 
-I will give an alternative variable \emph{may-dependency} definition 
-by referring to the analysis methodology in \cite{Cousot19a}.
+I will give an alternative \emph{variable may-dependency} definition 
+by referring to the methodology in~\cite{Cousot19a}.
 %
 Specifically, I will define the variables' dependency relation over two witness traces and an initial trace. Comparing to 
-the existing \emph{may-dependency} definition, which quantifies overall possible execution traces, the alternative
+the existing \emph{variable may-dependency} definition, which quantifies overall possible execution traces, the alternative
 the definition explicitly relies on two specific witness traces from the program executions.
 This externalization helps in analyzing the \emph{dependency quantity} based on the same 
-witness traces as the \emph{may-dependency} relation. In this way, the over-approximation as illustrated above
+witness traces as the \emph{variable may-dependency} relation. In this way, the over-approximation as illustrated above
 can be reduced.
 %
-\item Then based on the new \emph{may-dependency} definition,
+\item Then based on the new \emph{variable may-dependency} definition,
 I will add the weight of every edge constructed from 
-\emph{may-dependency} relation in the \emph{semantics-based dependency} graph, w.r.t. to the witness traces.
+\emph{variable may-dependency} relation in the \emph{semantics-based dependency} graph, with respect to to the witness traces.
 %
 \item Then in the third stage, the \emph{adaptivity} is still defined as the 
 length of the longest finite walk. Differently, the finite walk is added
@@ -67,37 +73,51 @@ Through these steps above, ideally, we will give a more accurate definition of t
 
 \paragraph{Adaptivity Static Analysis.}
 % \label{sec:future-adaptfun}
-In static program analysis framework $\THESYSTEM$, specifically on the dependency quantity, 
-I adopt the reachability bound analysis technique to estimate this dependency quantity.
+In the adaptivity analysis algorithm $\THESYSTEM$,
+%  specifically on the dependency quantity, 
+we use the reachability bound analysis technique to estimate the weight for each
+labeled variable.
+%  dependency quantity.
 % In existing static reachability bound analysis, 
-However, it isn't precise enough w.r.t. the execution-based reachability bound on every program command.
-It comes across an over-approximation due to its path-insensitive nature.
-The Example~\ref{ex:multiRoundsO} shows this limitation in Section~\ref{sec:adapt-example}.
+However,
+it comes across an over-approximation due to its path-insensitive nature.
+Specifically, it is not precise enough with respect to the semantics-based weight for the labeled
+variables in different loop paths.
+The Example~\ref{ex:multiRoundsO} shows this limitation.
 % It is 
 In this example, the estimated adaptivity by static analysis in Section~\ref{sec:adapt-static} 
-is $1 + 2*k$ where $k$ is the initial value of the input variable.
-However, the formal \emph{adaptivity} is only $1 + k$ from the execution-based analysis.
-This is because of the path-insensitive of the weight estimations in Section~\ref{sec:alg_weightgen}.
+is $1 + 2*k$ where $k$ is the input variable.
+However, the formal \emph{adaptivity} is only $1 + k$ from the semantics-based analysis.
+This is because that the weight estimation algorithm in Section~\ref{sec:alg_weightgen} is path-insensitive.
 It occurs when the control flow can be decided in a particular way in front of conditional branches, 
 while the static analysis fails to witness. 
 
 The accurate static adaptivity analysis is planned to be improved by using our \emph{path-sensitive reachability-bound} algorithm
 from \redd{PART \romannum{2} } as follows.
 \begin{itemize}
- \item New $\THESYSTEM$ will construct different abstract control flow graphs based on the requirement of the newly-designed
- path-sensitive reachability bound algorithm.
+ \item New $\THESYSTEM$ will first construct the abstract control flow graphs with extended constraints
+%   based on the requirement of the newly-designed
+ according to the \emph{path-sensitive reachability bound} algorithm.
 
- \item The improved $\THESYSTEM$ will first perform the same algorithm for analyzing the dependency relations.
- \item However, in the second stage, the improved $\THESYSTEM$
- apply the newly-designed path-sensitive reachability bound algorithm for analyzing the dependency quantity.
+ \item We will still perform the same algorithm for analyzing the dependency relations.
+ \item Then in the second step, we improve the $\THESYSTEM$ by
+ performing the newly-designed \emph{path-sensitive reachability bound} algorithm 
+ on each program location for estimating its visiting times during the program execution.
+%   of each labeled variable.
+%   the dependency quantity.
  The result from the new algorithm 
- gives a tighter approximation of the dependency quantity,
- specifically on the reachability times of the program's every location.
- \item Based on the two results analyzed from the steps above, 
- i.e., the estimated dependency relation and the tighter reachability bound, the improved $\THESYSTEM$ will construct
-a more accurate program-based data dependency graph.
-Then, by applying Algorithm~\ref{alg:adapt} in Section~\ref{sec:alg_adaptcompute}, 
-the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.%
+ gives us a tighter approximation
+ on
+%   of the dependency quantity,
+%  specifically on 
+the weight of each labeled variable.
+ \item At the end, we still construct the same \emph{estimated dependency graph}
+ but using more accurate estimated result, and compute a tighter \emph{adaptivity} for the programs.
+%  Based on the two results analyzed from the steps above, 
+%  i.e., the estimated dependency relation and the tighter reachability bound, the improved $\THESYSTEM$ will construct
+% a more accurate program-based data dependency graph.
+% Then, by applying Algorithm~\ref{alg:adapt} in Section~\ref{sec:alg_adaptcompute}, 
+% the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.%
 \end{itemize}
 % \end{enumerate}
 Again as shown in Figure~\ref{fig:multiRoundsO}(b), ideally we will compute $\frac{k}{2}$ as the weight for vertices $p^6$ and $x^7$ through the newly-designed path-sensitive reachability bound analysis algorithm!
