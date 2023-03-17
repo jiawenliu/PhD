@@ -1,6 +1,6 @@
 \subsection{Some Results in Adaptive Data Analysis}
 In Adaptive Data Analysis an \emph{analyst} is interested in studying some distribution $\dist$ over some domain $\univ$.  Following previous works~\cite{DworkFHPRR15,HardtU14,BassilyNSSSU16}, we focus on the setting where the analyst is interested in answers to \emph{statistical queries} (also known as \emph{linear queries}) over the distribution.  A statistical query is usually defined by some function $\query \from \univ \to [-1,1]$ (often other codomains such as $[0,1]$ or $[-R,+R]$, for some $R$, are considered).  The analyst wants to learn the \emph{population mean}, which (abusing notation) is defined as 
-$\query(\dist) = {\sample \sim \dist}{\query(\sample)}$. 
+$\query(\dist) = \ex{\sample \sim \dist}{\query(\sample)}$. 
 %
 We assume that the distribution $\dist$ can only be accessed via a set of \emph{samples} $\sample_1,\dots,\sample_n$ drawn independently and identically distributed (i.i.d.)from $\dist$.  These samples are held by a mechanism $\mech(\sample_1,\dots,\sample_n)$ who receives the query $\query$ and computes an answer 
 $\answer \approx \query(\dist)$.
@@ -71,17 +71,24 @@ We discuss them in detail as below.
 
 % \begin{enumerate}
 %  \item
-\subsubsection{Adaptive Data Analysis Formalization.}
-The first challenge is \emph{how to define formally} a model for adaptive data analysis which is general enough to support the methods I discussed above and would permit to the formulation of the notion of adaptivity these methods use. 
-I take the approach of designing a programming framework for submitting queries to some \emph{mechanism} giving access 
-to the data mediated by one of the techniques which are mentioned before, 
-including the mechanism of adding Gaussian noise, 
+\subsubsection{Language Model for Adaptive Data Analysis.}
+The first challenge is \emph{how to define formally} a language model for adaptive data analysis which is general enough to support the methods discussed above and would permit to formulate the notion of adaptivity these methods use. 
+We take the approach of designing a simple programming language for submitting queries to some \emph{mechanism} giving access 
+to the data, such as
+% These mechanisms
+% include 
+the mechanism of adding Gaussian noise, 
 the mechanism that randomly selects a subset of the data, 
 and the mechanism that uses the reusable holdout technique, etc. 
+These mechanisms intermediate between the program and data, and answer these queries.
 In this approach, a program models an \emph{analyst} asking a sequence of queries to the mechanism. 
 The mechanism runs the queries on the data applying one of the methods discussed above and returns the result to the program. The program can then use this result to decide which query to run next. 
 
-As we discussed in Section~\ref{sec:intro-methodology-adapt-language}, existing language mainly focuses on efficiency and scalable of the programs but not the generalization error of the corresponding algorithms that these programs implemented.
+As we discussed in Section~\ref{sec:intro-methodology-adapt-language}, the existing language mainly focuses on efficiency and scalability of the programs.
+They are not able to model the query and mechanisms in the way that allow
+us to analyze the \emph{rounds of adaptivity}
+% generalization error 
+of the corresponding algorithms that these programs implement.
 This makes the analysis of the \emph{adaptivity} as a program property difficult.
 This motivates us to design a simple and scalable language  that can be used to implement these data analysis algorithms and analyze the \emph{adaptivity}.
 
@@ -95,7 +102,7 @@ Motivated by this, we present a new while-like language
 named {\tt Query While} language with extensions on query requests in Section~\ref{sec:adapt-language}.
 
 % \item 
-\subsubsection{Adaptivity Formalization}
+\subsubsection{Adaptivity Property Formalization}
 
 The second challenge is \emph{how to define the adaptivity of a given program}.
 Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
@@ -107,10 +114,9 @@ simultaneously in tracking whether the result of the query may further cause som
 This is because I'm focusing on the generalization error which could be propagated by queries.
 In this sense, we need to consider both the dependency relation between queries, namely the \emph{reachability} sub-property
 and the depth of this dependency relation, namely the \emph{quantitative} sub-property.
-This is the reason we claim that the \emph{adaptivity} of a program is a specific of
-the \emph{quantitative-reachability} property.
+This is the reason we claim that the \emph{adaptivity} of a program is a specific \emph{quantitative-reachability} property.
 
-As we discussed in Section~\ref{sec:intro-methodology-adapt-formalization}, existing formalization methodology cannot
+As we discussed in Section~\ref{sec:intro-methodology-adapt-formalization}, existing formalization methodologies cannot
 capture the two sub-properties of the \emph{adaptivity}.
 Techniques in previous works~\cite{weihao22} on formalizing this quantity
 are limited in expressiveness and accuracy significantly.
@@ -119,7 +125,7 @@ For the program which is able to be expressed,
 they cannot give the most precise adaptivity definitions matching the intuitive \emph{adaptivity}.
 These previous works and limitations on formalizing the adaptivity are introduced in more detail in Section~\ref{sec:prework-formalization}.
 
-In this sense, we formalize this intuitive \emph{adaptivity} notion as a \emph{quantitative-reachability} program property, 
+In this sense, we formalize this intuitive \emph{adaptivity} notion as a \emph{quantitative-reachability} program property 
 % I analyze the program's execution based on its 
 semantically
 %  develop an semantics-based analysis 
@@ -129,15 +135,19 @@ in Section~\ref{sec:adapt-exe}.
 \subsubsection{Adaptivity Estimation}
 
 The third challenge is \emph{how to estimate the adaptivity of a given program}. 
-The adaptive data analysis model I consider and our definition of adaptivity suggest that for this task 
-I can use a program analysis that is based on some form of dependency analysis.
- This analysis needs to take into consideration:
-1) the fact that, in general, a query $Q$ is not a monolithic block but rather it may depend, through the use of variables and values, on other parts of the program. 
-Hence, it needs to consider some form of data flow analysis. 
-2) the fact that, in general, the decision on whether to run a query or not may depend on some other value. Hence, 
- it needs to consider some form of control flow analysis.
-3) the fact that. In general, I am not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
-Hence, it needs to consider some quantitative information about the program dependencies. 
+The adaptive data analysis model and the adaptivity definition suggest
+% that for this task 
+% I can use 
+a program analysis
+%  that is 
+based on some form of dependency analysis for \emph{adaptivity} estimation.
+ This analysis needs to take into consideration the following,
+1) generally, a query $Q$ is not a monolithic block but rather it may depend on other parts of the program through the use of variables and values. 
+Hence, the analysis needs to consider some form of data flow analysis. 
+2) the decision on whether to run a query or not may depend on some other value. Hence, 
+the analysis  needs to consider some form of control flow analysis.
+3) we are not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
+Hence, the analysis needs to consider some quantitative information about the program dependencies. 
 
 We also discussed in Section~\ref{sec:intro-methodology-adapt-formalization}, most existing techniques are limited
 in analyzing the \emph{adaptivity}.
