@@ -83,15 +83,15 @@ and the mechanism that uses the reusable holdout technique, etc.
 These mechanisms intermediate between the program and data, and answer these queries.
 In this approach, a program models an \emph{analyst} asking a sequence of queries to the mechanism. 
 The mechanism runs the queries on the data applying one of the methods discussed above and returns the result to the program. The program can then use this result to decide which query to run next. 
+Overall, we are interested in controlling the generalization of the query results returned by the mechanism, by means of the adaptivity. 
 
-As we discussed in Section~\ref{sec:intro-methodology-adapt-language}, the existing language mainly focuses on efficiency and scalability of the programs.
+However, as discussed in Section~\ref{sec:intro-methodology-adapt-language}, the existing language mainly focuses on efficiency and scalability of the programs.
 They are not able to model the query and mechanisms in the way that allow
-us to analyze the \emph{rounds of adaptivity}
+us to analyze and control the \emph{adaptivity}
 % generalization error 
 of the corresponding algorithms that these programs implement.
 This makes the analysis of the \emph{adaptivity} as a program property difficult.
 This motivates us to design a simple and scalable language  that can be used to implement these data analysis algorithms and analyze the \emph{adaptivity}.
-
 % \paragraph{Limitations of Previous Works}
 Previous works from~\cite{weihao22} develops language formalizing the adaptive data analysis.
 However, these language designs are limited in their expressiveness largely.
@@ -116,8 +116,8 @@ In this sense, we need to consider both the dependency relation between queries,
 and the depth of this dependency relation, namely the \emph{quantitative} sub-property.
 This is the reason we claim that the \emph{adaptivity} of a program is a specific \emph{quantitative-reachability} property.
 
-As we discussed in Section~\ref{sec:intro-methodology-adapt-formalization}, existing formalization methodologies cannot
-capture the two sub-properties of the \emph{adaptivity}.
+Since existing formalization methodologies cannot
+capture the two sub-properties of the \emph{adaptivity}, as in Section~\ref{sec:intro-methodology-adapt-formalization}.
 Techniques in previous works~\cite{weihao22} on formalizing this quantity
 are limited in expressiveness and accuracy significantly.
 The \emph{adaptivity} quantities in many general data analysis programs are unable to be defined in the previous \emph{adaptivity} definition.
@@ -127,10 +127,10 @@ These previous works and limitations on formalizing the adaptivity are introduce
 
 In this sense, we formalize this intuitive \emph{adaptivity} notion as a \emph{quantitative-reachability} program property 
 % I analyze the program's execution based on its 
-semantically
 %  develop an semantics-based analysis 
-in Section~\ref{sec:adapt-exe}.
-
+in Section~\ref{sec:adapt-exe}. 
+% To formalize this intuition as a quantitative program property,
+We use a trace semantics recording the execution history of programs on some given input --- and we create a dependency graph, where the dependency between different variables (queries are also assigned to variables) is explicit and track which variable is associated with a query request. We then enrich this graph with weights describing the number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph\footnote{Formally, graphs will be well-defined only for terminating programs, this will guarantee that the longest walk is finite}. In other words, we define adaptivity as a \emph{quantitative form of program dependency}.
 
 \subsubsection{Adaptivity Estimation}
 
@@ -149,15 +149,20 @@ the analysis  needs to consider some form of control flow analysis.
 3) we are not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
 Hence, the analysis needs to consider some quantitative information about the program dependencies. 
 
-We also discussed in Section~\ref{sec:intro-methodology-adapt-formalization}, most existing techniques are limited
-in analyzing the \emph{adaptivity}.
+% We also discussed in Section~\ref{sec:intro-methodology-adapt-formalization}, 
+Most existing techniques are failed
+in analyzing the \emph{adaptivity} in the sense of considering its two sub-properties.
 The previous works from~\cite{weihao22}
 develop program analysis algorithm for estimating the adaptivity.
 However, this algorithm is low efficiency, and in-precise. It is not automatic either. 
 This analysis algorithm and limitations are introduced with more details in Section~\ref{sec:prework-formalization}.
 
 To address these challenges and technical limitations to estimate a sound upper bound on the adaptivity of a program, 
-I develop a static program analysis in Section~\ref{sec:adapt-static}, named {\THESYSTEM}.
+we develop a static program analysis in Section~\ref{sec:adapt-static}, named {\THESYSTEM}.
+% To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
+% we develop a static program analysis algorithm, named {\THESYSTEM}, 
+It combines data flow and control flow analysis with reachability bound analysis~\cite{GulwaniZ10}. This combination gives tighter bounds on the adaptivity of a program than the ones one would achieve by directly using the data and control flow analyses or the ones that one would achieve by directly using reachability bound analysis techniques alone. We evaluate {\THESYSTEM} on a number of examples showing that it is able to efficiently estimate precise upper bounds on the adaptivity of different programs. 
+All the proofs and extended definitions can be found in the supplementary material.
 %%%%% To reason about%
 % \\
 %
