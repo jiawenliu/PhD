@@ -1,0 +1,21 @@
+In comparison to those related works, this dissertation has the following contributions.
+
+\begin{itemize}
+    \item 
+    In \redd{PART \romannum{1}}, we propose a programming framework for adaptive data analyses where programs represent analysts that can query generalization-preserving mechanisms mediating the access to some data. 
+    Over this framework, we give a ormal definition of the notion of adaptivity under the analyst-mechanism model. 
+    \item 
+    Then we design a static program analysis algorithm {\THESYSTEM} combining data flow, control flow and  reachability bound analysis in order to provide tight bounds on the adaptivity of a program.
+    We also provide a soundness proof of the program analysis showing that the adaptivity estimated by {\THESYSTEM} bounds the \emph{adaptivity} of the program given by the formal definition. 
+    % \item We give a soundness proof of the program analysis showing that the adaptivity estimated by {\THESYSTEM} bounds the \emph{adaptivity} of the program given by the formal definition. 
+    \item An implementation of {\THESYSTEM} and an experimental evaluation of the bounds this implementation provides on several examples.
+    \item In \redd{PART \romannum{2}}, we propose
+    a path-sensitive reachability-bound algorithm, which computes sound bound on the evaluation times of each program point path-sensitively. This algorithm combines the \emph{amortized bound analysis} through ranking function estimation and the path refinement approach in our algorithm.
+    % \item 
+    % 2. The combination of the \emph{amortized bound analysis} through ranking function estimation and the path refinement approach in our algorithm.
+    \item 
+    We introduce two novel quantities, the \emph{path reachability-bound} and \emph{loop reachability-bound} and the corresponding estimating algorithms.
+    \item 
+    4. A prototype implementation with evaluation over four different benchmarks.
+    The evaluation shows that we can compute different bounds on the evaluation times of different program points in the same loop accurately.
+  \end{itemize} 
