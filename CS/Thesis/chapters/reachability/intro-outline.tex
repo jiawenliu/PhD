@@ -25,13 +25,11 @@ and then shows the implementation and evaluation results over five real world be
 \paragraph{Contributions}
 The contributions of this work can be summarized as follows,
 \begin{itemize}
-  \item 
-  1. A path-sensitive reachability-bound algorithm, which computes sound bound on the evaluation times of each program point path-sensitively.
-  \item 
-  2. The combination of the \emph{amortized bound analysis} through ranking function estimation and the path refinement approach in our algorithm.
-  \item 
-  3. Two novel quantities, the \emph{path reachability-bound} and \emph{loop reachability-bound} and the corresponding estimating algorithms.
-  \item 
-  4. A prototype implementation with evaluation over four different benchmarks.
-  The evaluation shows that we can compute different bounds on the evaluation times of different program points in the same loop accurately.
+  \item We introduce a path-sensitive reachability-bound algorithm 
+  combining \emph{amortized bound analysis}  and \emph{path refinement}. The algorithm computes tight bounds on the times that each program point is evaluated.
+
+  \item We identify two quantities,  \emph{path reachability-bound} and \emph{loop reachability-bound}, which are useful to measure precise information about the program execution.  We also propose two algorithms for soundly estimating these two quantities.
+  \item We develop a prototype implementation with evaluation over 290 programs.
+  The evaluation shows improvement in precision compared to other tools for reachability-bound analysis and the worst-case complexity analysis.
+
 \end{itemize}
