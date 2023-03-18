@@ -1,14 +1,16 @@
 Our new adaptivity analysis framework for
-adaptive data analysis is composed of three parts as in Figure~\ref{fig:adaptfun-structure}.
+adaptive data analysis has three major components
+%  is composed of three parts 
+as shown in Figure~\ref{fig:adaptfun-structure}.
 % There are mainly three parts, each targeting on a challenge above.
 % It is composed of three parts as well, with each part targeting on a challenge introduced in Chapter~\ref{sec:adapt-intro}.
-The first block on the top is the {\tt Query While} language designed for formalizing the 
+The first component on the top of Figure~\ref{fig:adaptfun-structure} is the {\tt QWhile} language designed for formalizing the 
 adaptive data analysis. 
 Building on this, 
-we formally define the intuitive \emph{adaptivity} as in the second block, the ``Adaptivity Formalization'' block,
+we formally define the intuitive \emph{adaptivity} as in the second component at the middle of Figure~\ref{fig:adaptfun-structure}, the ``Adaptivity Formalization'',
 and then design a static program analysis algorithm for approximating the upper bound of the 
-adaptivity as 
-in the block in the bottom, the ``Adaptivity Analysis'' block.
+adaptivity as shown
+in the block at the bottom of Figure~\ref{fig:adaptfun-structure}, the ``Adaptivity Analysis''.
 % This new framework improves the expressiveness, accuracy and the efficiency.
 \begin{figure}
    \centering   
@@ -44,8 +46,8 @@ However, capturing this concept formally is surprisingly difficult. The difficul
 \subsection{Adaptivity Definition}
 \label{sec:adaptivity-informal}
 The central property we are after in this work is the \emph{adaptivity of a program},
-which corresponds to the second block, the ``Adaptivity Formalization'' block in Figure~\ref{fig:adaptfun-structure}.
-We define formally this notion in three steps, which we will describe in details in Section~\ref{sec:adapt-exe}. First, we define a notion of dependency, or better \emph{may-dependency}, between variables. To do this we take inspiration from previous works on dependency analysis and information flow control and we say that a variable \emph{may depend} on another one if changing the execution of the latter can affect the execution of the former. 
+which corresponds to the second component, the ``Adaptivity Formalization'' block at the middle of Figure~\ref{fig:adaptfun-structure}.
+As shown in the flow-chart in this block, we define formally this notion in three steps, which we will describe in details in Section~\ref{sec:adapt-exe}. First, we define a notion of dependency, or better \emph{may-dependency}, between variables. To do this we take inspiration from previous works on dependency analysis and information flow control and we say that a variable \emph{may depend} on another one if changing the execution of the latter can affect the execution of the former. 
 We can see in Fig.~\ref{fig:overview-example}(a) that the value of the variable $l$, which corresponds to the result of the execution of the query in the second phase (in the command with label 6), is affected by the value of the variable $x$, which corresponds to the result of the execution of the query at line 3 in the first phase, via the variable $a$.
 To formally define this notion of dependency, as in information flow control, we use the execution history of programs recorded by a trace semantics (see Definition~\ref{def:var_dep}).
 
@@ -66,7 +68,7 @@ the walk along the dashed arrows,  $l^{6} \to a^5 \to x^3 $ has two vertices wit
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Previous Version Above for Reference  %%%%%%%%%%%%%%%%%
 To compute statically a sound and accurate upper bound on the \emph{adaptivity} of a program $c$,
 we design a program analysis framework named {\THESYSTEM} which we will describe formally in \ref{sec:adapt-static}. 
-This program analysis framework corresponds to the last block, in Figure~\ref{fig:adaptfun-structure}.
+This program analysis framework corresponds to the ``Adaptivity Analysis'' block at the bottom of Figure~\ref{fig:adaptfun-structure}.
 The detail structure of {\THESYSTEM} is illustrated in Figrue~\ref{fig:adaptfun-overview}, which reflects in part the definition of adaptivity we discussed in the previous section. Specifically, {\THESYSTEM} is composed by two algorithms (the ones in dashed boxes in the figure), one for building a dependency graph, which we call \emph{estimated dependency graph}, and the other to estimate the adaptivity from this graph.  
 The first algorithm, which we will describe formally in Section~\ref{sec:adapt-static}, generates the \emph{estimated dependency graph} using several program analysis techniques. Specifically, {\THESYSTEM} extracts the vertices and the query annotations by looking at the assigned variables of the program, it estimates the edges by using control flow and data flow analysis, and it estimates the weights by using symbolic reachability-bound analysis---weights in this graph are symbolic expressions over input variables. 
 The second algorithm estimates the longest walk which respect the weights and which visit as many query nodes as possible. 
