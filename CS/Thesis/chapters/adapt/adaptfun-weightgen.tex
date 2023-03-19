@@ -276,10 +276,11 @@ x^l \in \progV(c)
 %
 Notice that $\hat{w} \in \scexprdom$ is a symbolic arithmetic expression over symbols in $\constdom$. In particular, it may contain the input variables and so it may effectively be used as a function of the input - and capture loop bounds in terms of these inputs.
  
-We prove that this 
+We guarantee that this 
 symbolic expression for $x^l \in \progV(c)$ is a sound upper bound of 
-the weight for the same vertex $x^l$ in Program's semantics-based dependency graph by Lemma~\ref{lem:weights_map}
-in Appendix~\ref{apdx:adapt_soundness}, and Theorem~\ref{thm:transition_bound_sound} in Appendix~\ref{apdx:weight_soundness}.
+the weight for the same vertex $x^l$ in Program's semantics-based dependency graph as follows.
+The proof is  in Appendix~\ref{apdx:weight_soundness}, which is based on the Lemma~\ref{lem:weights_map}
+in Appendix~\ref{apdx:adapt_soundness}, and Theorem~\ref{thm:transition_bound_sound}.
 
 \begin{thm}[Soundness of the Reachability Bounds Estimation]
   \label{thm:addweight_soundness}
@@ -309,6 +310,7 @@ then $v$ is an upper bound on ${w}(\trace_0)$.
     \forall c \in \cdom, x^l \in \lvar(c),\trace_0 \in \ftdom_0(c), \trace \in \ftdom,
 v \in \mathbb{N}, l', (x^l, w) \in \traceW(c) \sthat
 \\ \qquad 
+\exists
 (x^l, \hat{w}) \in \progW(c) 
 \land
 % \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat\vtrace} 
