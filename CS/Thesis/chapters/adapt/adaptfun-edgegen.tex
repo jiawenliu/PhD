@@ -1,7 +1,7 @@
 The set of edges $\progE(c)$ is estimated through a combined data and control flow analysis with three components.
 
 Since the edges of the semantics-based graph of a program relies on the dependency relation, it contains both control flow and data flow. 
-In this sense, We first develop a \emph{feasible data-flow} relation to estimate the data dependency relation, which catches these two flows.
+In this sense, We first compute a \emph{feasible data-flow} relation to estimate the  \emph{variable may-dependency} relation, which catches these two flows.
 Then we construct the edges for $\progG(c)$ based on this \emph{feasible data-flow} relation.
 % This algorithm named Feasible Data-Flow Generation. 
 It 

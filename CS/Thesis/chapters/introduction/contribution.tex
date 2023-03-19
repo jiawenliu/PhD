@@ -2,17 +2,23 @@ In comparison to those related works, this dissertation has the following contri
 
 \begin{itemize}
     \item 
-    In \redd{PART \romannum{1}}, we propose a programming framework for adaptive data analyses where programs represent analysts that can query generalization-preserving mechanisms mediating the access to some data. 
-    Based on this  framework, we give formal definition of the notion of adaptivity under the analyst-mechanism model. 
+    In \redd{PART \romannum{1}}, we present a programming language framework for adaptive data analyses where programs represent analysts that can query generalization-preserving mechanisms mediating the access to some data. 
+    
+    Based on this language framework, we give formal definition of the intuitive adaptivity under the analyst-mechanism model.
+    The new formalization methodology considers both the \emph{reachability} and the \emph{quantitative} sub-properties of this \emph{adaptivity} program property.
+    % \emph{quantitative-reachability} property
     % \item 
 
-    Then we design a static program analysis algorithm {\THESYSTEM} combining data flow, control flow and  reachability bound analysis in order to provide tight bounds on the adaptivity of a program.
+    Then we design a static program analysis algorithm {\THESYSTEM}
+    %  combining data flow, control flow and  reachability bound analysis in order to p
+    to estimate the \emph{adaptivity} of a program. This new analysis method estimates
+    both the \emph{reachability} and the \emph{quantitative} sub-properties and compute the \emph{adaptivity} of a program accurately.
     We also provide a soundness proof of the program analysis showing that the adaptivity estimated by {\THESYSTEM} bounds the \emph{adaptivity} of the program given by the formal definition. 
     
     We also implement this algorithm and reports the experimental evaluation results on several examples.
     % \item An implementation of {\THESYSTEM} and an experimental evaluation of the bounds this implementation provides on several examples.
     \item In \redd{PART \romannum{2}}, we propose
-    a path-sensitive reachability-bound algorithm, which computes sound bound on the evaluation times of each program point path-sensitively. This algorithm combines the \emph{amortized bound analysis} through ranking function estimation and the path refinement approach in our algorithm.
+    a path-sensitive reachability-bound algorithm, which computes sound bound on the evaluation times of each program point path-sensitively. This algorithm integrates the path refinement approach into the \emph{amortized bound analysis} through ranking function estimation.
     We introduce two novel quantities in this algorithm, the \emph{path reachability-bound} and \emph{loop reachability-bound} and the corresponding estimating algorithms.
     
     Then we implement this algorithm as a prototype and present the evaluation results over four different benchmarks.

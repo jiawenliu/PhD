@@ -1,8 +1,10 @@
-In this section, we present the new static
-program analysis algorithm for estimating as the adaptivity the third part of 
-the framework in Figure~\ref{fig:adaptfun-structure}. 
-It effectively combines the quantitative and reachability analysis techniques for analyzing
-adaptivity by considering its two sub-properties.
+In this section, we introduce in detail our static
+program analysis algorithm, {\THESYSTEM} for estimating the \emph{adaptivity} of a program,
+which corresponds to
+%  as the adaptivity the 
+third part at the bottom of Figure~\ref{fig:adaptfun-structure}. 
+% It effectively combines the quantitative and reachability analysis techniques for analyzing
+% adaptivity by considering its two sub-properties.
 % The effective combination complements the weakness of two lines of work in comparison with any single one.
 % Also, it computes more accurate adaptivity comparing to the previous adaptivity analysis with higher efficiency.
 It is presented through the following sections.
@@ -20,11 +22,11 @@ similar to the semantics-based adaptivity formalization procedure.
    % the data \emph{dependency relation} 
    through a combined data and control flow analysis technique, and estimate the
    \emph{variable may-dependency} relation.
-   \item The Section~\ref{sec:alg_weightgen} analyzes the \emph{quantitative} sub-property
+   \item In Section~\ref{sec:alg_weightgen}, we analyze the \emph{quantitative} sub-property
    %  -- the \emph{dependency depth} 
    through
    the reachability bound analysis techniques, and estimates the weight of each labeled variable on the \emph{semantics-based dependency graph}.
-   \item Then Section~\ref{sec:alg_graphgen} constructs the \emph{estimated dependency graph} encoding two estimated results above, together with the statically collected vertices and query annotation.
+   \item Then in Section~\ref{sec:alg_graphgen}, we construct the \emph{estimated dependency graph} encoding two estimated results above, together with the statically collected vertices and query annotation.
    \end{enumerate}
    \item The second phase in Section~\ref{sec:alg_adaptcompute} computes program's adaptivity.
    % the program adaptivity estimation, 

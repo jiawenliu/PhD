@@ -99,7 +99,7 @@ Most of the general data analyses are not supported by the previous language des
 In Section~\ref{sec:prework-language}, I introduce in detail the previous language design and limitations.
 
 Motivated by this, we present a new while-like language 
-named {\tt Query While} language with extensions on query requests in Section~\ref{sec:adapt-language}.
+named {\tt QWhile} language with extensions on query requests in Section~\ref{sec:adapt-language}.
 
 % \item 
 \subsubsection{Adaptivity Property Formalization}
@@ -158,11 +158,13 @@ However, this algorithm is low efficiency, and in-precise. It is not automatic e
 This analysis algorithm and limitations are introduced with more details in Section~\ref{sec:prework-formalization}.
 
 To address these challenges and technical limitations to estimate a sound upper bound on the adaptivity of a program, 
-we develop a static program analysis in Section~\ref{sec:adapt-static}, named {\THESYSTEM}.
+we develop a static program analysis algorithm in Section~\ref{sec:adapt-static}, named {\THESYSTEM}.
 % To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
 % we develop a static program analysis algorithm, named {\THESYSTEM}, 
-It combines data flow and control flow analysis with reachability bound analysis~\cite{GulwaniZ10}. This combination gives tighter bounds on the adaptivity of a program than the ones one would achieve by directly using the data and control flow analyses or the ones that one would achieve by directly using reachability bound analysis techniques alone. We evaluate {\THESYSTEM} on a number of examples showing that it is able to efficiently estimate precise upper bounds on the adaptivity of different programs. 
-All the proofs and extended definitions can be found in the supplementary material.
+It performs both data flow and control flow analysis, and the reachability bound analysis. 
+Then it computes the \emph{adaptivity} through a longest walk estimation algorithm.
+In this way, {\THESYSTEM} gives tighter bounds on the \emph{adaptivity} of a program than the ones one would achieve by only using the data and control flow analyses or the ones that one would achieve by directly performing reachability bound analysis techniques alone. We evaluate {\THESYSTEM} on a number of examples showing that it is able to efficiently estimate precise upper bounds on the adaptivity of different programs. 
+All the proofs and extended definitions are in the Appendix.
 %%%%% To reason about%
 % \\
 %

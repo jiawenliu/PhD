@@ -55,10 +55,13 @@ The previous operational semantics is defined based on labeled command and trace
 Below is a summary of their designs.
 
 \paragraph*{Labeled Commands}
-They first annotate each command with a label $l$,
-a natural number standing for the line of code where the command appears.
-They associate the label $l$ to the conditional predicate $\bexpr$ in the if statement,
-and to the loop counter $\aexpr$ in the loop statement.
+Each command is labeled with
+% with a label $l$,
+a natural number $l$ standing for the line of code where the command appears.
+For the if statement, the label is associated to the conditional predicate $\bexpr$
+and for the loop statement, it is associated to the loop counter $\aexpr$.
+% They associate the label $l$ to the conditional predicate $\bexpr$ in the if statement,
+% and to the loop counter $\aexpr$ in the loop statement.
 \[
 \begin{array}{llll}
      \mbox{Labeled commands} & c & ::= &   [\assign x \expr]^{l} ~|~  [\assign x q(e_q)]^{l}
@@ -68,7 +71,7 @@ and to the loop counter $\aexpr$ in the loop statement.
 \]
 % Each command is now labeled 
 \paragraph*{Loop Map}
-Then, they have the Loop map, which is a map from the label $l$ to the iteration number $n$.
+The loop map is a map from the label $l$ to the iteration number $n$.
 %   Because statements in the loop share the same line number,  varied iterations , the label $l$ is not enough to distinguish statements.
   A mapping $[k \to n]$ gives accurate information on which loop a statement is in by its key $k$ (label at loop counter),
   and which iteration $n$ the statement belongs to.
@@ -90,11 +93,16 @@ Then, they have the Loop map, which is a map from the label $l$ to the iteration
 %   % For example, the loop map $w=[3:1, 4:2]$ indicates that the statement is currently in a nested loop, the outer loop starting from label $3$ and in its first iteration, the statement is now in the inner loop starting from label $4$ and in the second iteration. We use $\emptyset$ to represent an empty map, indicating the statement is not in any loop.
 
  \paragraph*{Annotated Query} 
- They 
-distinctively design the annotated query, in order to analyze the relation between queries. This is a key extension for analyzing the \emph{adaptivity}
-Through this annotation, queries can be uniquely annotated as $\mathcal{AQ}$,
-  and the annotation $(l,w)$ considers the location of the query
-  by line number $l$ and which iteration the query is at when it appears in a loop statement, specified by $w$.
+ To analyze the relation between queries, the previous work
+ designs a data structure, the \emph{annotated query}. 
+%  This is a key extension for analyzing the \emph{adaptivity}
+Through this annotation, queries can be uniquely annotated 
+% as $\mathcal{AQ}$,
+  % and the annotation 
+  by $(l,w)$, which considers the location of the query
+  through the line number $l$ and
+  the iteration index where this query is located
+  if the query appears in a loop statement, specified by $w$.
   %% trace
 \paragraph{Trace} 
 A trace $t$ is a list of annotated queries accumulated along with the execution of the program. 
@@ -106,8 +114,9 @@ collected through
   % \paragraph{Memory}
   % The memory in their language is standard, which is a map from variables to values.
   \paragraph*{Operational Semantics Rules}
-Figure~\ref{fig:evaluation} is a selection of rules of their trace-based operational semantics from {Thesis~\cite{weihao22}}.
-Only the rules related to query requests and the while loop evaluations are selected here.
+Figure~\ref{fig:evaluation} is a selection of rules of the trace-based operational semantics from {Thesis~\cite{weihao22}}.
+We present only the rules related to query requests and the while loop evaluations.
+%  are selected here.
 The rule $\textbf{l-query-e}$ evaluates the argument $\expr_q$ of a query request $q(\expr_q)$ using the query evaluation $\qarrow$.
 When the query expression is in the normal form, this query will be answered.
 The rule $\textbf{l-query-v}$ modifies the starting memory $m$ to $m[v_q/x]$ using the answer $v$ of the query $q(v_q)$ from the mechanism, with the trace expanded by appending the query $q(v_q)$ with the current annotation $(l,w)$.
@@ -268,7 +277,10 @@ The rules for loop modify the loop map $w$. In the rule $\textbf{l-loop}$, the l
 This language model is limited in the following aspects:
  
 \emph{Expressiveness.}
- By the operational semantics rule design, trace design, and their annotated query design, the loop iteration number can only be a constant number or an arithmetic expression evaluated to a nature number.
+The loop command in this language model can only iterate constant number of times,
+specifically the guard in the loop command can only be a constant number or an arithmetic expression which must be evaluated to a nature number.
+Below we analyze the reasons.
+%  By the operational semantics rule design, trace design, and their annotated query design, the loop iteration number can only be a constant number or an arithmetic expression evaluated to a nature number.
  In the rule \rname{l-loop}, a nature number $v_N$ is required on the premise of tracking the iteration times.
  This requires that the loop iteration number has to be a nature number or evaluated to a nature number in advance to execute the loop.
  Then in their trace and annotated query design,
@@ -295,11 +307,17 @@ This language model is limited in the following aspects:
 
  \emph{Accuracy.}
  This operational semantics design causes in-precision in formalizing the \emph{adaptivity}.
- Because there is information loss in their trace generated through the operational semantic rules.
- The trace only tracks the query requests. This lost the information of the variables
- which are assigned by query values even if they are not assigned by query requests. However, these variables
+ Because 
+%  there is information loss in their trace generated through the operational semantic rules.
+%  The 
+the trace only tracks the query requests, which lost the data dependency
+passed through
+%  of 
+the variables
+ which are assigned by query result but not a query request.
+  % even if they are not assigned by query requests.
+  However, these variables
  are critical in analyzing the \emph{adaptivity}.
- This will be analyzed in detail in the limitation in Section~\ref{sec:prework-formalization}.
  
  \emph{Efficiency.}
  There are four components in their configuration in order to evaluate the program. 

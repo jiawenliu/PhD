@@ -2,19 +2,19 @@ We first introduce some conventional operators as follows, which will be used in
 \begin{defn}[Subtrace]
   Subtrace: $[ : ] : \mathcal{{T} \to \eventset \to \eventset \to \ftdom}$ 
   \[
-    \trace[\event_1 : \event_2] \triangleq
+    \trace[\event_x : \event_y] \triangleq
     \left\{
     \begin{array}{ll} 
-    \trace'[\event_1: \event_2]             & \trace = \event :: \trace' \land \event \eventneq \event_1 \\
-    \event_1 :: \trace'[:\event_2]  & \trace = \event :: \trace' \land \event \eventeq \event_1 \\
+    \trace'[\event_x: \event_y]             & \trace = \event :: \trace' \land \event \eventneq \event_x \\
+    \event_x :: \trace'[:\event_y]  & \trace = \event :: \trace' \land \event \eventeq \event_x \\
     {[]} & \trace = [] \\
     \end{array}
     \right.
   \]
-  For any trace $\trace$ and two events $\event_1, \event_2 \in \eventset$,
-  $\trace[\event_1 : \event_2]$ takes the subtrace of $\trace$ starting with $\event_1$ and ending with $\event_2$ including $\event_1$ and $\event_2$.
+  For any trace $\trace$ and two events $\event_x, \event_y \in \eventset$,
+  $\trace[\event_x : \event_y]$ takes the subtrace of $\trace$ starting with $\event_x$ and ending with $\event_y$ including $\event_x$ and $\event_y$.
   \\
-  We use $\trace[:\event_2] $ as the shorthand of subtrace starting from head and ending with $\event_2$, and similary for $\trace[\event_1:]$.
+  We use $\trace[:\event_y] $ as the shorthand of subtrace starting from head and ending with $\event_y$, and similary for $\trace[\event_x:]$.
   \[
     \trace[:\event] \triangleq
     \left\{
@@ -85,123 +85,175 @@ takes a trace and a variable as input and returns the label of the latest assign
   \end{defn}
   %
 
+  \begin{thm}[$\eventdep$ implies $\flowsto$]
+    \label{thm:flowsto_event_soundness}
+    For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_x, \event_y \in \eventset \sthat 
+    \event_x, \event_y \in \eventset^{\asn}$, 
+    if $\exists \trace' \in \ftdom \sthat  \trace = [\event_x] \tracecat \trace' \tracecat [\event_y]$ and 
+    $\eventdep(\event_x, \event_y, \trace, c, D) $, then
+    there exists $z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c)$ with $n \geq 0$ such that   
+    $\flowsto(x^i,  z_1^{r_1}, c) 
+    \land \ldots \land \flowsto(z_n^{r_n}, y^j, c)$
+    %
+    \[
+      \begin{array}{l}
+        \forall D \in \dbdom , c \in \cdom, \trace \in \ftdom, \event_x, \event_y \in \eventset, x^i, y^j \in \lvar(c) \sthat 
+        \\ \qquad 
+        \pi_1(\event_x)^{\pi_2(\event_x)} = x^i
+        \land 
+        \pi_1(\event_y)^{\pi_2(\event_y)} = y^j
+      \land 
+        %  \exists \trace' \in \ftdom \sthat  \trace = [\event_x] \tracecat \trace' \tracecat [\event_y]
+        % \\ \qquad 
+        % \implies
+        \eventdep(\event_x, \event_y, \trace, c, D) 
+        \\ \quad 
+        \implies 
+        \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat 
+        \\ \qquad 
+         n \geq 0 \land
+        \flowsto(x^i,  z_1^{r_1}, c) 
+        \land \ldots \land \flowsto(z_n^{r_n},  y^j, c) 
+      \end{array}
+    \]
+    \end{thm}
   
 %
-\begin{thm}[$\eventdep$ implies $\flowsto$]
-\label{thm:flowsto_event_soundness}
-For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset \sthat 
-\event_1, \event_2 \in \eventset^{\asn}$, 
-if $\exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ and 
-$\eventdep(\event_1, \event_2, \trace, c, D) $, then
- $z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c)$ with $n \geq 0$ such that   
-$\flowsto(x^i,  z_1^{r_1}, c) 
-\land \ldots \land \flowsto(z_n^{r_n}, y^j, c)$
-%
-\[
-  \begin{array}{l}
-		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset \sthat 
-		\\ \qquad 
-    \event_1, \event_2 \in \eventset^{\asn} \land 
-		 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
-		\\ \qquad 
-    \implies
-		\eventdep(\event_1, \event_2, \trace, c, D) 
-		\\ \quad 
-		\implies 
-    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat 
-    \\ \qquad 
-     n \geq 0 \land
-		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
-    \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
-	\end{array}
-\]
-\end{thm}
-This proof is summarized informally as below.
-
-I. Vacuously True cases, where trace doesn't satisfy the hypothesis 
-\\
-II. Base case where $\trace = [\event_1;\event_2]$
-\\
-III. inductive case where $\trace = [\event_1, \ldots, \event_2]$.
-\\
-1. Existence of a middle event:
-\\
-Proved by showing a contradiction, with detail in Lemma~\ref{lem:depevents_exist}.
-%
-\\
-2. The middle event with a sub-trace implies a "sub flowsto-chain", informally:
-%
-\\
-(1). obtaining the existence of $\event_z \in \eventset^{\asn} $ with dependency on $\event_x$, and a "direct flowsto" from $\event_z$ to $\event_y$
-by Lemma~\ref{lem:depevents_exist}.
- \\
-(2). from the dependency of the $\event_z$ with $\event_x$ on the subtrace,
- obtaining a "sub flowsto-chain" by induction  hypothesis;
- \\
-(3). composing the "sub flowsto-chain" from (2) with the  "direct flowsto" from (1), and getting the conclusion of
- the complete "flowsto chain".
-%
+% \begin{thm}[$\eventdep$ implies $\flowsto$]
+% \label{thm:flowsto_event_soundness}
+% For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_x, \event_y \in \eventset \sthat 
+% \event_x, \event_y \in \eventset^{\asn}$, 
+% if $\exists \trace' \in \ftdom \sthat  \trace = [\event_x] \tracecat \trace' \tracecat [\event_y]$ and 
+% $\eventdep(\event_x, \event_y, \trace, c, D) $, then
+% there exists $z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c)$ with $n \geq 0$ such that   
+% $\flowsto(x^i,  z_1^{r_1}, c) 
+% \land \ldots \land \flowsto(z_n^{r_n}, y^j, c)$
+% %
+% \[
+%   \begin{array}{l}
+% 		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_x, \event_y \in \eventset \sthat 
+% 		\\ \qquad 
+%     \event_x, \event_y \in \eventset^{\asn} \land 
+% 		 \exists \trace' \in \ftdom \sthat  \trace = [\event_x] \tracecat \trace' \tracecat [\event_y]
+% 		\\ \qquad 
+%     \implies
+% 		\eventdep(\event_x, \event_y, \trace, c, D) 
+% 		\\ \quad 
+% 		\implies 
+%     \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat 
+%     \\ \qquad 
+%      n \geq 0 \land
+% 		\flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
+%     \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
+% 	\end{array}
+% \]
+% \end{thm}
+% This proof is summarized informally as below.
+% \\
+% I. Vacuously True cases, where trace doesn't satisfy the hypothesis 
+% \\
+% II. Base case where $\trace = [\event_x;\event_y]$
+% \\
+% III. inductive case where $\trace = [\event_x, \ldots, \event_y]$.
+% \\
+% 1. Existence of a middle event:
+% \\
+% Proved by showing a contradiction, with detail in Lemma~\ref{lem:depevents_exist}.
+% %
+% \\
+% 2. The middle event with a sub-trace implies a "sub flowsto-chain", informally:
+% %
+% \\
+% (1). obtaining the existence of $\event_z \in \eventset^{\asn} $ with dependency on $\event_x$, and a "direct flowsto" from $\event_z$ to $\event_y$
+% by Lemma~\ref{lem:depevents_exist}.
+%  \\
+% (2). from the dependency of the $\event_z$ with $\event_x$ on the subtrace,
+%  obtaining a "sub flowsto-chain" by induction  hypothesis;
+%  \\
+% (3). composing the "sub flowsto-chain" from (2) with the  "direct flowsto" from (1), and getting the conclusion of
+%  the complete "flowsto chain".
+% %
 \begin{proof}
-  Taking arbitrary $D \in \dbdom , c \in \cdom,$ by induction on the trace $\trace$ we have the following cases:
+
+  % By Definition~\ref{def:event_dep}, we know 
+  Taking arbitrary $D \in \dbdom , c \in \cdom, \trace \in \ftdom, \event_x, \event_y \in \eventset, x^i, y^j \in \lvar(c)$
+  such that
+  \[
+  \pi_1(\event_x)^{\pi_2(\event_x)} = x^i
+  \land 
+  \pi_1(\event_y)^{\pi_2(\event_y)} = y^j
+\land 
+  %  \exists \trace' \in \ftdom \sthat  \trace = [\event_x] \tracecat \trace' \tracecat [\event_y]
+  % \\ \qquad 
+  % \implies
+  \eventdep(\event_x, \event_y, \trace, c, D).\]
+  Then it is sufficient to show
+  \[
+    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat 
+         n \geq 0 \land
+        \flowsto(x^i,  z_1^{r_1}, c) 
+        \land \ldots \land \flowsto(z_n^{r_n},  y^j, c).
+  \]
+   By induction on the trace $\trace$ we have the following cases:
   \begin{case}($\trace = {[]}$)
     \\
-    Since for all $\event_1, \event_2 \in \eventset^{\asn}$,
+    Since for all $\event_x, \event_y \in \eventset^{\asn}$,
      $\nexists \trace' \in \ftdom$,satisfies $
-    {[]}  = [\event_1] \tracecat \trace' \tracecat [\event_2]$, the theorem is vacuously true.
+    {[]}  = [\event_x] \tracecat \trace' \tracecat [\event_y]$, the theorem is vacuously true.
     \end{case}
     %
     \begin{case}($\event \in \eventset, \trace = [\event]$)
     \\
-    Since for all $\event_1, \event_2 \in \eventset^{\asn}$,
+    Since for all $\event_x, \event_y \in \eventset^{\asn}$,
      $\nexists \trace' \in \ftdom$,satisfies $
-    {[]} = [\event_1] \tracecat \trace' \tracecat [\event_2]$, the theorem is vacuously true.
+    {[]} = [\event_x] \tracecat \trace' \tracecat [\event_y]$, the theorem is vacuously true.
     \end{case}
     %
     \begin{case}
       \label{case:soundness_basecase}
-      ($\event_1', \event_2' \in \eventset $, $\trace = [\event_1'; \event_2']$)
+      ($\event_x', \event_y' \in \eventset $, $\trace = [\event_x'; \event_y']$)
       \\
       To show:
-      % \wq{$\forall l \in \mathcal{A}(\event_1, \event_2, \trace, c, D)$ below?}
+      % \wq{$\forall l \in \mathcal{A}(\event_x, \event_y, \trace, c, D)$ below?}
       %\jl{yes, there is a typo}
       \[
       \begin{array}{l}
-        \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
-        \exists \trace' \in \ftdom \sthat  [\event_1'; \event_2'] = [\event_1] \tracecat \trace' \tracecat [\event_2]
+        \forall \event_x, \event_y \in \eventset^{\asn} \sthat 
+        \exists \trace' \in \ftdom \sthat  [\event_x'; \event_y'] = [\event_x] \tracecat \trace' \tracecat [\event_y]
         \\ \qquad 
             \implies    
         % \forall  z^i, y^j \in \lvar(c), l_h, l_t \sthat  
-          \eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)
-         \implies \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+          \eventdep(\event_x, \event_y, [\event_x; \event_y], c, D)
+         \implies \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
       \end{array}
       \]
       %
-      Taking arbitrary $ \event_1, \event_2 \in \eventset^{\asn}$, by law of excluded middle, there are 2 cases:
+      Taking arbitrary $ \event_x, \event_y \in \eventset^{\asn}$, by law of excluded middle, there are 2 cases:
       \\
-      $\event_1 = \event_1' \land  \event_2 = \event_2'$
+      $\event_x = \event_x' \land  \event_y = \event_y'$
       \\
-      $\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$
+      $\neg(\event_x = \event_x' \land  \event_y = \event_y')$
       \\
-      In case of $\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$, since 
+      In case of $\neg(\event_x = \event_x' \land  \event_y = \event_y')$, since 
       $\nexists \trace' \in \ftdom$,satisfies $
-      [\event_1'; \event_2'] = [\event_1] \tracecat \trace' \tracecat [\event_2]$, 
+      [\event_x'; \event_y'] = [\event_x] \tracecat \trace' \tracecat [\event_y]$, 
       the theorem is vacuously true.
       \\
       %
-      In case of $\event_1 = \event_1' \land  \event_2 = \event_2'$,
+      In case of $\event_x = \event_x' \land  \event_y = \event_y'$,
       let $\trace' = []$, we know $\exists \trace' \in \ftdom$ satisfying 
-      $[\event_1; \event_2] = [\event_1] \tracecat \trace' \tracecat [\event_2]$.
+      $[\event_x; \event_y] = [\event_x] \tracecat \trace' \tracecat [\event_y]$.
       \\
       % By Inversion Lemma~\ref{lem:inv_alg2}, we have either one of the two following cases:
       % \begin{enumerate}
-      %   \item $\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = 
-      %   \left\{[\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}] \right \}$ 
-      %   and $\eventdep(\event_1, \event_2, \cdot  \event_1 \cdot \event_2, c, D)$.
-      %   \item  $\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = \{\}$ 
-      %   and $\neg \eventdep(\event_1, \event_2, \cdot  \event_1 \cdot \event_2, c, D)$;
+      %   \item $\mathcal{A}(\event_x, \event_y, [\event_x; \event_y], c, D) = 
+      %   \left\{[\pi_1(\event_x)^{\pi_2(\event_x)}, \pi_1(\event_y)^{\pi_2(\event_y)}] \right \}$ 
+      %   and $\eventdep(\event_x, \event_y, \cdot  \event_x \cdot \event_y, c, D)$.
+      %   \item  $\mathcal{A}(\event_x, \event_y, [\event_x; \event_y], c, D) = \{\}$ 
+      %   and $\neg \eventdep(\event_x, \event_y, \cdot  \event_x \cdot \event_y, c, D)$;
       % \end{enumerate}
       % %
-      % In case of $\mathcal{A}(\event_1, \event_2, [\event_1; \event_2], c, D) = \{\}$,
+      % In case of $\mathcal{A}(\event_x, \event_y, [\event_x; \event_y], c, D) = \{\}$,
       % since $\nexists  z^i, y^j \in \lvar(c), l_h, l_t \sthat  l_h ++ [z^i, y^j] ++ l_t \in \{\}$, the theorem is vacuously true.
       % %
       % \\
@@ -210,9 +262,9 @@ by Lemma~\ref{lem:depevents_exist}.
       % \wq{Because $l \in A \implies DEP$ }
       % \jl{yes}
       \[
-        \eventdep(\event_1, \event_2, [\event_1; \event_2], c, D) 
-        \implies \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-        % \land \eventdep(\event_1, \event_2, \cdot  \event_1 \cdot \event_2, c, D)
+        \eventdep(\event_x, \event_y, [\event_x; \event_y], c, D) 
+        \implies \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+        % \land \eventdep(\event_x, \event_y, \cdot  \event_x \cdot \event_y, c, D)
       \]
       %
      By Lemma~\ref{lem:flowsto_soundness_emptytrace}, we have this case proved.
@@ -221,23 +273,23 @@ by Lemma~\ref{lem:depevents_exist}.
       %
         %
         \begin{case}
-        ($\event_1', \event_2' \in \eventset$, $\trace_{ih} \in \ftdom, \trace = [\event_1'] \tracecat \trace_{ih} \tracecat [\event_2'] \land \trace_{ih} \neq {[]}$)
+        ($\event_x', \event_y' \in \eventset$, $\trace_{ih} \in \ftdom, \trace = [\event_x'] \tracecat \trace_{ih} \tracecat [\event_y'] \land \trace_{ih} \neq {[]}$)
         \\
         It is sufficient to show:
         \[    \begin{array}{l}
-         \forall \event_1, \event_2 \in \eventset \sthat 
-          \event_1, \event_2 \in \eventset^{\asn} \land 
-           \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
+         \forall \event_x, \event_y \in \eventset \sthat 
+          \event_x, \event_y \in \eventset^{\asn} \land 
+           \exists \trace' \in \ftdom \sthat  \trace = [\event_x] \tracecat \trace' \tracecat [\event_y]
            \\ \quad  
            \implies
-          \eventdep(\event_1, \event_2, [\event_1'] \tracecat \trace_{ih} \tracecat [\event_2'], c, D) 
+          \eventdep(\event_x, \event_y, [\event_x'] \tracecat \trace_{ih} \tracecat [\event_y'], c, D) 
           \\ \quad 
           \implies 
           \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 
           \\ \quad  
           \land
-          \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
-          \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+          \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
+          \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
         \end{array}
         \]
         %
@@ -262,50 +314,50 @@ by Lemma~\ref{lem:depevents_exist}.
         \]
         %
         %
-        Taking arbitrary $ \event_1, \event_2 \in \eventset^{\asn}$, by law of excluded middle, there are 2 cases:
+        Taking arbitrary $ \event_x, \event_y \in \eventset^{\asn}$, by law of excluded middle, there are 2 cases:
         \\
-        $\event_1 = \event_1' \land  \event_2 = \event_2'$
+        $\event_x = \event_x' \land  \event_y = \event_y'$
         \\
-        $\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$
+        $\neg(\event_x = \event_x' \land  \event_y = \event_y')$
         \\
-        In case of $\neg(\event_1 = \event_1' \land  \event_2 = \event_2')$, since 
+        In case of $\neg(\event_x = \event_x' \land  \event_y = \event_y')$, since 
         $\nexists \trace' \in \ftdom$,satisfies $
-        [\event_1'] \tracecat \trace_{ih} \tracecat [\event_2']  = [\event_1] \tracecat \trace' \tracecat [\event_2]$, 
+        [\event_x'] \tracecat \trace_{ih} \tracecat [\event_y']  = [\event_x] \tracecat \trace' \tracecat [\event_y]$, 
         the theorem is vacuously true.
         \\
         %
-        In case of $\event_1 = \event_1' \land  \event_2 = \event_2'$,
+        In case of $\event_x = \event_x' \land  \event_y = \event_y'$,
         let $\trace' = \trace_{ih}$, we know $\exists \trace' \in \ftdom$ satisfying 
-        $[\event_1'] \tracecat \trace_{ih} \tracecat [\event_2'] = [\event_1] \tracecat \trace' \tracecat [\event_2]$.
+        $[\event_x'] \tracecat \trace_{ih} \tracecat [\event_y'] = [\event_x] \tracecat \trace' \tracecat [\event_y]$.
         \\
         To show:
         \[
           \begin{array}{l}
-            \eventdep(\event_1, \event_2, [\event_1] \tracecat \trace_{ih} \tracecat [\event_2], c, D) 
+            \eventdep(\event_x, \event_y, [\event_x] \tracecat \trace_{ih} \tracecat [\event_y], c, D) 
           \\ \quad 
           \implies 
           \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 \land
-          \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
+          \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
           \\ \quad  
-          \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+          \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
         \end{array}
         \]
         %
         By Lemma~\ref{lem:depevents_exist}, we know:
         \[
           \begin{array}{l}
-            \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+            \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
         \\ \qquad \quad \lor
         \exists \event \in \trace_{ih} \sthat  
         % \left( 		
-          \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+          \eventdep(\event_x, \event, \trace[\event_x:\event], c, D)
           \\ \quad  
           \land 
-        \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+        \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
       \end{array}
       \]
         \\
-        In first case, we have $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) $ proved directly.
+        In first case, we have $\flowsto(\pi_1(\event_x)^{\pi_2(\event_x)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) $ proved directly.
         \\
         In the second case, let $\event_{ih}$ be this event, from the induction hypothesis, we know:
         \[
@@ -313,7 +365,7 @@ by Lemma~\ref{lem:depevents_exist}.
             \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) 
             \sthat  n \geq 0 
             \\ \quad  \land
-            \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
+            \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
             \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_{ih})^{\pi_2(\event_{ih})}, c) 
           \end{array}
           \]
@@ -322,11 +374,11 @@ by Lemma~\ref{lem:depevents_exist}.
           \[
             \begin{array}{l}
               \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 \land
-            \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
+            \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
             \\ \quad  
             \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_{ih})^{\pi_2(\event_{ih})}, c) )
              \\ \quad  
-             \land  \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+             \land  \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
             \end{array}
             \]
             This case is proved.

@@ -10,7 +10,7 @@ $\flowsto(x^i,  z_1^{r_1}, c)
 %
 \[
 \begin{array}{l}
-  \forall x^i, y^j \in \lvar(c).
+  \forall x^i, y^j \in \lvar(c) \sthat
   \vardep(x^i, y^j, {c})
   \\ \quad \implies
   \Big( \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 
@@ -129,8 +129,14 @@ with the induction hypothesis:
 %
 by definition of $\vardep(x^i, y^j, {c})$, 
 let $D \in \dbdom$ be the dataset,
-and $\trace \in \ftdom$, $\event_x, \event_y$ be the trace and two events satisfying the definition, 
-with $\pi_1(\event_x)^{\pi_2(\event_x)} = x^i$ and $\pi_1(\event_y)^{\pi_2(\event_y)} = y^j$,  it is sufficient to show:
+$\trace \in \ftdom$, $\event_x, \event_y$ be the trace and two events such that,
+%  the definition, 
+% with 
+\[\pi_1(\event_x)^{\pi_2(\event_x)} = x^i
+\land 
+\pi_1(\event_y)^{\pi_2(\event_y)} = y^j
+\land \eventdep(\event_x, \event_y, \trace, c, D). \]  
+Then, it is sufficient to show,
 $$
 \begin{array}{l}
   \eventdep(\event_x, \event_y, \trace, c, D) 

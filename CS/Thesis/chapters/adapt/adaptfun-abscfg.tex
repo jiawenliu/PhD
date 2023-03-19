@@ -334,11 +334,13 @@ For every event $\event$ with label $l$, if it is in an execution trace $\trace$
    \[
      \begin{array}{l}
     \forall c \in \cdom, \vtrace_0 \in \ftdom_0(c), \trace \in \ftdom ,  l, l' \in \absV(c),  \event = (\_, l, \_, \_) \in \eventset \sthat
-   \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
-   \land \event \in \trace 
-   \\
-   \qquad \implies \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
-   \absevent \in \absflow(c)
+    \\
+    \quad
+    \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \vtrace} 
+    \land \event \in \trace 
+    \\
+    \qquad \implies \exists \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
+    \absevent \in \absflow(c)
    \end{array}
    \]
    \end{lem}
