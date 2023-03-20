@@ -30,12 +30,12 @@ show x is directly used by the boolean expression for a conditional command and 
 	By the Definition~\ref{def:event_dep} for $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$, 
 	we know there are 2 cases:
 	%
-	\caseL{Value Dependency in Equation~\ref{eq:eventdep}(b)}
+	\caseL{$\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$ satisfies Equation~\ref{eq:eventdep}(b)}
 		% \textbf{(the labelled unique assignment command associated to the $\event_2$ 
 		% is executed but the value assigned to the variable in this event is changed in second execution).}
 \input{appendices/thm-adaptivity/base_case_val}
 	% \end{case}
-	\caseL{Control Dependency in Equation~\ref{eq:eventdep}(c)}
+	\caseL{$\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$ satisfies Equation~\ref{eq:eventdep}(c)}
 		% \textbf{(the labelled unique assignment command associated to the $\event_2$ isn't executed in second execution).}
 		\\
 		Proof Summary:
@@ -55,6 +55,7 @@ show x is directly used by the boolean expression for a conditional command and 
 		 \\
 		 3. By $\flowsto$ definition we have:
 		   $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$
+
 		\input{appendices/thm-adaptivity/base_case_ctl}
 \end{proof}
 %

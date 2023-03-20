@@ -193,10 +193,13 @@ takes a trace and a variable as input and returns the label of the latest assign
   \]
   Then it is sufficient to show
   \[
+    \begin{array}{l}
     \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat 
+    \\
          n \geq 0 \land
          \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
          \land \ldots \land \flowsto(z_n^{r_n},  \pi_1(\event_y)^{\pi_2(\event_y)}, c) .
+    \end{array}
   \]
    By induction on the trace $\trace$ we have the following cases:
     \begin{case}($\trace = {[]}$)
@@ -356,8 +359,8 @@ takes a trace and a variable as input and returns the label of the latest assign
           \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
         \end{array}
         \]
-        By Definition~\ref{def:event_dep}, we have two cases.
-        \caseL{$\eventdep(\event_x, \event_y, \trace, c, D)$ satisfies the Equation~\ref{eq:eventdep}(b)}
+        By $\eventdep(\event_x, \event_y, [\event_x] \tracecat \trace_{ih} \tracecat [\event_y], c, D)$ and  Definition~\ref{def:event_dep}, we have two cases.
+        \caseL{$\eventdep(\event_x, \event_y, [\event_x] \tracecat \trace_{ih} \tracecat [\event_y], c, D)$ satisfies the Equation~\ref{eq:eventdep}(b)}
         %
         In this case, by Lemma~\ref{lem:inv_indepevents_asn}, we know:
         \[
@@ -365,10 +368,12 @@ takes a trace and a variable as input and returns the label of the latest assign
             \Big( 
               \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
               \Big)
-        \\ \qquad \quad \lor
+        \\ \qquad \lor
         \Big( 
           \exists \event \in \trace_{ih} \sthat  
         % \left( 		
+          \event \in \eventset^{\asn}
+          \land
           \eventdep(\event_x, \event, \trace[\event_x:\event], c, D)
           % \\ \quad  
           \land 
@@ -385,13 +390,15 @@ takes a trace and a variable as input and returns the label of the latest assign
           $
           \exists \event \in \trace_{ih} \sthat  
         % \left( 		
+          \event \in \eventset^{\asn}
+          \land
           \eventdep(\event_x, \event, \trace[\event_x:\event], c, D)
           % \\ \quad  
           \land 
         \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
         $
         }
-        In this case, let $\event_{ih}\in \trace_{ih} $ be the event such that
+        In this case, let $\event_{ih}\in \trace_{ih} $ be the assignment event such that
         \[
         \eventdep(\event_x, \event_{ih}, \trace[\event_x:\event_{ih}], c, D)
           % \\ \quad  
@@ -491,7 +498,8 @@ takes a trace and a variable as input and returns the label of the latest assign
           \\
           \lor 
           \big(
-            \exists \event \in \trace_{ih} \sthat \pi_1(\event) \in  \kw{FV}(\pi_1(\event_b)) 
+            \exists \event \in \trace_{ih} \sthat 
+            \event \in \eventset^{\asn} \land \pi_1(\event) \in  \kw{FV}(\pi_1(\event_b)) 
           \land \dep(\event_x, \event, \trace_{ih}[\event_x:\event], c)
           \big)
           \end{array}
@@ -502,9 +510,9 @@ takes a trace and a variable as input and returns the label of the latest assign
           \[
             \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
           \]
-          \subcaseL{$\exists \event \in \trace_{ih} \sthat \pi_1(\event) \in  \kw{FV}(\pi_1(\event_b)) 
+          \subcaseL{$\exists \event \in \trace_{ih} \sthat \event \in \eventset^{\asn} \land  \pi_1(\event) \in  \kw{FV}(\pi_1(\event_b)) 
           \land \dep(\event_x, \event, \trace_{ih}[\event_x:\event], c)$}
-          In this case, let $\event_{ih}\in \trace_{ih} $ be the event such that
+          In this case, let $\event_{ih}\in \trace_{ih} $ be the assignment event such that
           \[
             \pi_1(\event_{ih}) \in  \kw{FV}(\pi_1(\event_b)) 
             \land \dep(\event_x, \event, \trace_{ih}[\event_x:\event_{ih}], c)
@@ -571,13 +579,3 @@ takes a trace and a variable as input and returns the label of the latest assign
       \end{case}
 
 \end{proof}
-\subsection{One-step Soundness}
-\input{appendices/thm-adaptivity/lem_flowsto_event_onestep}
-
-\subsection*{Multiple-step Soundness}
-\input{appendices/thm-adaptivity/lem_flowsto_event_multiplestep}
-
-\subsection{Inversion Lemmas and Helper Lemmas}
-The following are the inversion lemmas and helper lemmas used in the proof of Theorem~\ref{thm:flowsto_event_soundness} above,
-showing the correspondence properties between the trace based semantics and the program analysis results.
-\input{appendices/thm-adaptivity/lem_flowsto_soundness_inversion}

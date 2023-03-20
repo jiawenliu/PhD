@@ -12,13 +12,25 @@
 \section{Soundness of Edge Estimation}
 \label{apdx:flowsto_soundness}
 
-\subsection{Main Soundness Theorem - 1}
+\subsection{Main Theorem}
 \input{appendices/thm-adaptivity/flowsto_soundness}
 \clearpage
 
-\subsection{Main Soundness Theorem - 2}
+\subsection{Soundness w.r.t. Event May-dependency}
 \label{apdx:flowsto_event_soundness}
 \input{appendices/thm-adaptivity/flowsto_event_soundness}
+\clearpage
+
+\subsection{One-step Soundness}
+\input{appendices/thm-adaptivity/lem_flowsto_event_onestep}
+\clearpage
+
+\subsection{Multiple-step Soundness}
+\input{appendices/thm-adaptivity/lem_flowsto_event_multiplestep}
+\clearpage
+
+\subsection{Inversion Lemmas and Helper Lemmas}
+\input{appendices/thm-adaptivity/lem_flowsto_soundness_inversion}
 \clearpage
 
 \section{Soundness of The Weight Estimation}
@@ -26,13 +38,13 @@
 \input{appendices/thm-adaptivity/reachability_soundness}
 \clearpage
 
-\section{Soundness of Algorithm~\ref{alg:adapt}}
+\section{Soundness of $\pathsearch$ Algorithm}
 \label{apdx:adaptalg_soundness}
 \input{appendices/thm-adaptivity/adaptalg_soundness}
 \clearpage
 
 
-\section{Conditional Completeness of Algorithm~\ref{alg:adapt}}
+\section{Conditional Completeness of $\pathsearch$ Algorithm}
 \label{apdx:adaptalg_completeness}
 \input{appendices/thm-adaptivity/adaptalg_completeness}
 \clearpage
@@ -43,12 +55,12 @@
 \input{chapters/adapt/tables/adapt-eval-detail}
 \clearpage
 
-\section{The Programs in Evaluation Table~\ref{tb:adapt-imp-detail} line:6 - 15}
+\section{The Programs in Evaluation Table}
 \label{apdx:evaluated_examples}
 \input{chapters/adapt/examples/evaluated_examples-prog}
 \clearpage
 
-\section{The Codes in Evaluation Table~\ref{tb:adapt-imp-detail} from line:16 - 20 }
+\section{The Codes in Evaluation Table}
 \label{apdx:evaluated_codes}
 \input{chapters/adapt/examples/evaluated_examples-code}
 \clearpage

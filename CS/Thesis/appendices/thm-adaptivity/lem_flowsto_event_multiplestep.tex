@@ -2,21 +2,32 @@
 		\label{lem:inv_indepevents_asn}
 		For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, one assignment events 
 		$\event_1\in \eventset^{\asn}$, and another event $\event_2 \in \eventset$,
-		if the trace $\trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, 
-		and $\eventdep(\event_1, \event_2, \trace, c, D)$,
-		then the following two conclusions hold when $\event_2$ is an assignment.
+		if the trace $\trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$
+		and $\eventdep(\event_1, \event_2, \trace, c, D)$
+		where $\event_1$ and $\event_2$ satisfying the Equation~\ref{eq:eventdep}(b)
+		in this relation,
+		% then the following two conclusions hold when $\event_2$ is an assignment.
 		%  event and a testing event respectively.
 	% \begin{itemize}
 	% 	\item
-		If $\event_2 \in \eventset^{\asn}$,
-		% For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and two assignment events 
-		% $\event_1, \event_2 \in \eventset^{\asn}$,
-		% if the trace $\trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, and $\eventdep(\event_1, \event_2, \trace, c, D)$,
-		then for every $\event \in \trace'$, 
-		if it either doesn't have the \emph{Event May-Dependency} relation on $\event_1$, 
-		or $\pi_1(\event)^{\pi_2(\event)}$ doesn't have the $\flowsto$ relation with $ \pi_1(\event_2)^{\pi_2(\event_2)}$,
-		then the labelled variable $\pi_1(\event_1)^{\pi_2(\event_1)}$ directly flows to the other one $\pi_1(\event_2)^{\pi_2(\event_2)}$, 
-		i.e., $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$.
+		then either there is a direct \emph{feasible flows to} relation between
+		$\pi_1(\event_1)^{\pi_2(\event_1)}$ and $\pi_1(\event_2)^{\pi_2(\event_2)}$, i.e.,
+		$\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$
+		or
+		there exists an assignment event $\event \in \trace'$
+		such that
+		$\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)$ and 
+		$\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$.
+
+		% If $\event_2 \in \eventset^{\asn}$,
+		% % For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and two assignment events 
+		% % $\event_1, \event_2 \in \eventset^{\asn}$,
+		% % if the trace $\trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, and $\eventdep(\event_1, \event_2, \trace, c, D)$,
+		% then for every $\event \in \trace'$, 
+		% if it either doesn't have the \emph{Event May-Dependency} relation on $\event_1$, 
+		% or $\pi_1(\event)^{\pi_2(\event)}$ doesn't have the $\flowsto$ relation with $ \pi_1(\event_2)^{\pi_2(\event_2)}$,
+		% then the labelled variable $\pi_1(\event_1)^{\pi_2(\event_1)}$ directly flows to the other one $\pi_1(\event_2)^{\pi_2(\event_2)}$, 
+		% i.e., $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$.
 		%
 		\[
 		\begin{array}{l}
@@ -26,21 +37,19 @@
 			 \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
 			 \land
 			\eventdep(\event_1, \event_2, \trace, c, D) 
-			\\ \quad 
-			\land 
-			\Big( 
-			\forall \event \in \trace' \sthat  
-				\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-				\\ \qquad 
-				\lor 
-				\neg \big( 
-					\event \in \eventset^{\asn} \implies 
-					\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-				\big)
-			\Big) 
+			\land Equation~\ref{eq:eventdep}(b) = \etrue
 			\\ \quad 
 			\implies 
 			\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+			\\ \quad \lor
+			\Big( 
+			\exists \event \in \trace' \sthat  
+			\event \in \eventset^{\asn} \land
+				\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+				% \\ \qquad 
+				\land 
+				\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+			\Big) 
 		\end{array}
 		\]
 % 		\item
@@ -92,7 +101,8 @@ taking arbitrary trace has the form $\trace = [\event_1, \ldots, \event_2]$
 % %
 % \caseL{$\event_2 \in \eventset^{\asn}$}
 %
-By the definition of $\eventdep(\event_1, \event_2, \trace, c, D)$ in Definition~\ref{def:event_dep}, 
+By the definition of $\eventdep(\event_1, \event_2, \trace, c, D)$ in Definition~\ref{def:event_dep}
+and Equation~\ref{eq:eventdep}(b), 
 taking $ \event_1', \event_2' \in \eventset^{\asn},
 \trace_2' \in \ftdom, c_1, c_2 \in \cdom$ as the events, traces and commands
 such that
@@ -141,12 +151,50 @@ and $\diff(\event_2, \event_2')$,
 \]
 , where $\expr_2 / \qexpr_2$ is the expression of the assignment command associated to the $\event_2$ and $\event_2'$ by the Inversion Lemma.~\ref{lem:inv_event}.
 \\
-Taking arbitrary $\event_z \in \trace_2$ and $\event_z \in \eventset^{\asn}$, by the assumption we know 
+To show
 \[
-\neg \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D)
-\lor  \neg \flowsto(\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c).
+	\begin{array}{l}
+		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+		\\ \quad \lor
+		\Big( 
+		\exists \event \in \trace' \sthat  
+		\event \in \eventset^{\asn} \land
+			\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+			% \\ \qquad 
+			\land 
+			\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+		\Big) 
+	\end{array}
+	\]
+It is sufficient to show
+\[
+	\begin{array}{l}
+		\Big( 
+		\forall \event \in \trace' \sthat  
+		\neg \event \in \eventset^{\asn} \lor
+			\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+			% \\ \qquad 
+			\lor 
+			\neg 
+				\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+		\Big) 
+		\\ \quad 
+		\implies 
+		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+	\end{array}
+	\]
+Taking arbitrary $\event_z \in \trace_2$, let $\event_z \in \eventset^{\asn}$, then it is sufficient to show
+\[
+\begin{array}{l}
+	\neg \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D)
+	\lor  \neg \flowsto(\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+	\\ \quad 
+	\implies 
+	\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+\end{array}
+.
 \]
-Splitting the formula above, we have the following two subcases.
+Splitting the precondition, we have the following two subcases.
 \subcaseL{$\neg \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D)$}
 In case of $\neg \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D)$,
 by Definition~\ref{def:event_dep}, we know 
@@ -308,19 +356,18 @@ This case is proved.
 \begin{lem}[Multi-step $\flowsto$ Soundness through Testing Event]
 	\label{lem:inv_indepevents_ctl}
 	For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, one assignment events 
-	$\event_1\in \eventset^{\asn}$, and another event $\event_2 \in \eventset$,
+	$\event_1\in \eventset^{\asn}$, and another testing event $\event_2 \in \eventset^{\test}$,
 	if the trace $\trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, 
-	and $\eventdep(\event_1, \event_2, \trace, c, D)$,
-then for every $\event \in \trace'$, if it either doesn't have the \emph{Event May-Dependency} relations on $\event_1$,
-or $\pi_1(\event) \notin \kw{FV}(\pi_1(\event_2)) $,
-then 
-$\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2))$, and $ {\pi_2(\event_1)} = \llabel(\trace)$
-%
-If $\event_2 \in \eventset^{\test}$, 
-then for every $\event \in \trace'$, if it either doesn't have the \emph{Event May-Dependency} relations on $\event_1$,
-or $\pi_1(\event) \notin \kw{FV}(\pi_1(\event_2)) $,
-then 
-$\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2))$, and $ {\pi_2(\event_1)} = \llabel(\trace)$
+	and $\eventdep(\event_1, \event_2, \trace, c, D)$
+	where $\event_1, \event_2$ satisfy Equation~\ref{eq:eventdep}(b),
+	then either variable in $\event_1$ directly shows up in the boolean expression 
+	in $\event_2$,
+	or there exists an assignment event
+	$\event \in \trace'$ such that 
+	the variable in $\event$ shows up in the boolean expression 
+	in $\event_2$ and
+	% $\pi_1(\event) \in \kw{FV}(\pi_1(\event_2))$ and 
+	$\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)$.
 %
 \[
 \begin{array}{l}
@@ -329,16 +376,19 @@ $\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2))$, and $ {\pi_2(\event_1)} = \llabe
 	 \\ \quad 
 	 \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
 	 \land
-	\eventdep(\event_1, \event_2, \trace, c, D) 
-	\\ \quad 
-	\land 
-	\Big( \nexists \event \in \trace' \sthat  
-	\pi_1(\event) \in \kw{FV}(\pi_1(\event_2)) \land
-	\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-	\Big) 
+	\eventdep(\event_1, \event_2, \trace, c, D) \land Equation~\ref{eq:eventdep}(b) = \etrue
 	\\ \quad 
 	\implies 
 	\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2)) \land {\pi_2(\event_1)} = \llabel(\trace)
+	\\ \qquad 
+	\lor
+	\Big( 
+		\exists \event \in \trace' \sthat 
+	\event \in \eventset^{\asn}
+	\land 
+	\pi_1(\event) \in \kw{FV}(\pi_1(\event_2)) \land
+	\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+	\Big) 
 \end{array}
 \]
 \end{lem}
@@ -372,31 +422,89 @@ taking $ \event_1' \in \eventset^{\asn},
 \begin{array}{l}
 \config{c, \trace_0} \rightarrow^{*}
 \config{c_1, \trace_1 \tracecat [\event_1]} \rightarrow^{*} \config{c_2, \trace_1 \tracecat [\event_1] \tracecat \trace_2 \tracecat [\event_2]} 
-\\ \quad
-% \land
+\\ 
+\land
 \config{c_1, \trace_1 \tracecat [\event_1']} \rightarrow^{*} \config{c_2, \trace_1 \tracecat [\event_1'] \tracecat \trace_2' \tracecat [\event_2']} 
+\\
+\land \diff(\event_2,\event_2' ) ~(\star) 
+\\
+\land 
+    \vcounter(\trace_2, \pi_2(\event_2))
+    = 
+    \vcounter(\trace_2', \pi_2(\event_2'))
 \end{array}
 \]
+To show
+\[
+\begin{array}{l}
+	\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2)) \land {\pi_2(\event_1)} = \llabel(\trace)
+	\\ \qquad 
+	\lor
+	\Big( 
+		\exists \event \in \trace' \sthat 
+	\event \in \eventset^{\asn}
+	\land 
+	\pi_1(\event) \in \kw{FV}(\pi_1(\event_2)) \land
+	\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+	\Big) 
+\end{array}
+\]
+It is sufficient to show
+\[
+\begin{array}{l}
+	\forall \event \in \trace' \sthat 
+	\neg \event \in \eventset^{\asn}
+	\lor 
+	\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+	\lor
+	\pi_1(\event) \notin \kw{FV}(\pi_1(\event_2)) 
+	\\ \quad 
+	\implies 
+	\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2)) \land {\pi_2(\event_1)} = \llabel(\trace)
+\end{array}
+\]
+
 %
-Taking arbitrary $\event_z \in \trace_2$, we know 
-$\neg \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D)
-\lor  \pi_1(\event_z) \notin \kw{FV}(\expr_2 / \qexpr_2)$.
+Taking arbitrary $\event_z \in \trace_2$, let $\event_z \in \eventset^{\asn}$, it is sufficient to show
+\[
+\begin{array}{l}
+	\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+	\lor
+	\pi_1(\event) \notin \kw{FV}(\pi_1(\event_2)) 
+	\\ \quad 
+	\implies 
+	\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2)) \land {\pi_2(\event_1)} = \llabel(\trace)
+\end{array}
+\]
+Splitting the precondition in the same way as the proof of Lemma~\ref{lem:inv_indepevents_asn},
+we have the same two subcases.
+\subcaseL{$\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)$}
+In this case, 
+by the same proof in the first case of Lemma~\ref{lem:inv_indepevents_asn}, 
+we have
+$\neg \diff(\event_2,\event_2')$.
 \\
-Then by the same proof in Lemma~\ref{lem:inv_indepevents_asn}, and applying the Inversion Lemma~\ref{lem:inv_expr} and \ref{lem:inv_expr_gnl} of the boolean expression case,
-we have:
+Then we have this case proved by the contradiction between $(\star)$ and $\neg \diff(\event_2,\event_2')$.
+
+\subcaseL{$\eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D) \land  \pi_1(\event) \notin \kw{FV}(\pi_1(\event_2)) $}
+In this case,
+by the Inversion Lemma~\ref{lem:inv_expr} and \ref{lem:inv_expr_gnl} of the boolean expression case,
+and the same proof in the second case of Lemma~\ref{lem:inv_indepevents_asn},
+we have
 \[ 
 	\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2)) \land {\pi_2(\event_1)} = \llabel(\trace)
 	\]
-	This case is proved.
+This case is proved.
 \end{proof}
 
 \begin{lem}[Equation~\ref{eq:eventdep}(c) Inversion]
 	\label{lem:ctldep_inv}
-	For every $c \in \cdom$, $D \in \dbdom, \trace \in \ftdom$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn} $, if $\eventdep(\event_1, \event_2, c, \trace, D)$ and
-	satisfying the Equation~\ref{eq:eventdep}(c) in Definition~\ref{def:event_dep}
+	For every $c \in \cdom$, $D \in \dbdom, \trace \in \ftdom$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn} $, if $\eventdep(\event_1, \event_2, c, \trace, D)$ 
+	where $\event_1$ and $\event_2$
+	satisfy the Equation~\ref{eq:eventdep}(c) in Definition~\ref{def:event_dep},
 	% they are in the second case of the \emph{Event May-Dependency} relation from Definition~\ref{def:event_dep},
 	% $\eventdep(\event, \event, c, \trace, D)$ as Eq.~\ref{eq:ctlflowsto_inv},
-	and $\event_b \in \eventset^{\test}$ be the witness of the testing event,
+	$\event_b \in \eventset^{\test}$ is the witness of the testing event,
 	then for all  $z \in \kw{FV}(\pi_1(\event_b))$ there exists a label $i \in \mathbb{N}$ such that 
 	$\flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)$
 	\begin{equation}
