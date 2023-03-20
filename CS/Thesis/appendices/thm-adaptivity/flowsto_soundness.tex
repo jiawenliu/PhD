@@ -92,7 +92,7 @@ in Lemma~\ref{lem:depevents_exist}.
     \event_1, \event_2 \in \eventset^{\asn} \land 
 		 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
 		\\ \qquad 
-    \implies
+    \land
 		\eventdep(\event_1, \event_2, \trace, c, D) 
 		\\ \qquad 
 		\implies 
@@ -110,7 +110,7 @@ with the induction hypothesis:
 		 \exists \trace' \in \ftdom \sthat  
      \trace[\event_{ih1}:\event_{ih2}] = [\event_{ih1}] \tracecat \trace' \tracecat [\event_{ih2}]
 		\\ \qquad 
-    \implies
+    \land
 		\eventdep(\event_{ih1}, \event_{ih2}, \trace[\event_{ih1}:\event_{ih2}], c, D) 
 		\\ \quad 
 		\implies 

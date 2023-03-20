@@ -30,13 +30,13 @@ show x is directly used by the boolean expression for a conditional command and 
 	By the Definition~\ref{def:event_dep} for $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$, 
 	we know there are 2 cases:
 	%
-	\caseL{1}
-		\textbf{(the labelled unique assignment command associated to the $\event_2$ 
-		is executed but the value assigned to the variable in this event is changed in second execution).}
+	\caseL{Value Dependency in Equation~\ref{eq:eventdep}(b)}
+		% \textbf{(the labelled unique assignment command associated to the $\event_2$ 
+		% is executed but the value assigned to the variable in this event is changed in second execution).}
 \input{appendices/thm-adaptivity/base_case_val}
 	% \end{case}
-	\caseL{2}
-		\textbf{(the labelled unique assignment command associated to the $\event_2$ isn't executed in second execution).}
+	\caseL{Control Dependency in Equation~\ref{eq:eventdep}(c)}
+		% \textbf{(the labelled unique assignment command associated to the $\event_2$ isn't executed in second execution).}
 		\\
 		Proof Summary:
 		\\
@@ -434,7 +434,9 @@ such that
 % \land
 \config{c_1, \trace_1 \tracecat [\event_1']} \rightarrow^{*} \config{c_2, \trace_1 \tracecat [\event_1'] \tracecat \trace_2' \tracecat [\event_2']} 
 \\
-\land \diff(\event_2,\event_2' ) ~\star \land 
+\land \diff(\event_2,\event_2' ) ~(\star) 
+\\
+\land 
     \vcounter(\trace_2, \pi_2(\event_2))
     = 
     \vcounter(\trace_2', \pi_2(\event_2'))
@@ -462,10 +464,10 @@ and $\diff(\event_2, \event_2')$,
 \]
 , where $\expr_2 / \qexpr_2$ is the expression of the assignment command associated to the $\event_2$ and $\event_2'$ by the Inversion Lemma.~\ref{lem:inv_event}.
 \\
-Taking arbitrary $\event_z \in \trace_2$ and $\event_z \in \eventset^{\asn}$, we know 
+Taking arbitrary $\event_z \in \trace_2$ and $\event_z \in \eventset^{\asn}$, by the assumption we know 
 \[
 \neg \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D)
-\lor  \neg \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c).
+\lor  \neg \flowsto(\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c).
 \]
 Splitting the formula above, we have the following two subcases.
 \subcaseL{$\neg \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D)$}
@@ -494,19 +496,17 @@ Then by Definition~\ref{def:adapt_env}, we know
 Then by the determinism of the execution, we know $\event_2 = \event_2'$.
 Then we have the following by Definition~\ref{def:event_eq}.
 \[
-	(\pi_4(\event_2) = \bullet \land \pi_4(\event_2') = \bullet) \land \pi_3(\event_2) = \pi_3(\event_2')
-	\]
-	or
-	\[
-		(\pi_4(\event_2) \neq \bullet \land \pi_4(\event_2') \neq \bullet) \land \pi_4(\event_2) = \pi_4(\event_2')
+	\Big( (\pi_4(\event_2) = \bullet \land \pi_4(\event_2') = \bullet) \land \pi_3(\event_2) = \pi_3(\event_2') \Big)
+	\lor
+		\Big((\pi_4(\event_2) \neq \bullet \land \pi_4(\event_2') \neq \bullet) \land \pi_4(\event_2) = \pi_4(\event_2') \Big)
 		\]
 Then by Definition~\ref{def:diff}, we know
 \[
 	\neg \diff(\event_2, \event_2').
 	\]
-This is contradicted to $\star$ in the assumption, and we have this case proved.
+We also know $\diff(\event_2, \event_2')$ by $(\star)$, and we have this case proved by the contradiction.
 %
-\subcaseL{$ \neg \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
+\subcaseL{$ \neg \flowsto(\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
 In this case, by Definition~\ref{def:feasible_flowsto}, we know
 \[
 	\pi_1(\event_z) \notin \kw{FV}(\expr_2 / \qexpr_2).

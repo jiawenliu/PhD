@@ -356,8 +356,9 @@ or worst-case resource cost analysis in
 bounds on loop iterations, execution time, etc.
 While these quantities focus only on 
 the overall complexity,
-none of them compute the reachability-bound on a given program control location directly or path-sensitively.
-For the same reason, they also lose the \emph{reachability} sub-property of this property.
+none of them compute the \emph{reachability-bound} on a given program control location directly or path-sensitively.
+For the same reason, these methods also over-approximate the \emph{reachability-bound}
+by using the overall quantity.
 
 \paragraph{Proposed Method.}
 To overcome these limitations, 
