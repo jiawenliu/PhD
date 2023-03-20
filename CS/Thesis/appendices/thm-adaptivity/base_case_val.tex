@@ -125,10 +125,10 @@ or $[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \notin_c c_2$.
 \begin{enumerate}
 \item{$[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2}\notin_c c_2$}
 \\
-In this case, we have the following execution instance:
+In this case, we have the following execution instance
 %
-\footnote{$\rightarrow^{\rname{skip}^*}$ denotes the rule applied on 
-every evaluation step of this execution is the $\rname{skip}$ rule.}
+% \footnote{$\rightarrow^{\rname{skip}^*}$ denotes the rule applied on 
+% every evaluation step of this execution is the $\rname{skip}$ rule.}
  %
   \[
     \begin{array}{l}
@@ -206,8 +206,8 @@ i.e., $\trace' = []$.
 \end{enumerate}
 In conclusion, we have the only qualified execution instance as follows where $\trace' = []$.
   \[
-    \config{c_1, \vtrace_1 \tracecat [\event_1']} 
-    \rightarrow^{\rname{skip}^*} 
+    % \config{c_1, \vtrace_1 \tracecat [\event_1']} 
+    % \rightarrow^{\rname{skip}^*} 
     \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} ; {c}_2, \vtrace_1 \tracecat [\event_1']} 
     \rightarrow^\rname{assn/query} 
     \config{{c}_2,  \vtrace_1 \tracecat [\event_1']\tracecat [\event_2']} 

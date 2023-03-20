@@ -104,63 +104,63 @@ showing the correspondence properties between the trace based semantics and the 
 	\end{proof}
 %
 %
-\begin{lem}[Only $\eskip$ Command doesn't Produce Event].
-	\label{lem:inv_skip}
-	For all trace $\trace\in \ftdom$, and $c, c' \in \cdom$,  
-	$\config{c, \trace} \rightarrow \config{c', \trace}$ if and only if $c = \clabel{\eskip}^{l'};c'$. 
-	\[
-		\forall \trace\in \ftdom, c, c' \in \cdom \sthat 
-		\config{c, \trace} \rightarrow \config{c', \trace}
-		\Leftrightarrow 
-		c = \clabel{\eskip}^{l'};c'
-	% \footnote{$(\clabel{\eskip}^{l'};){}^*$ denotes a sequence command only composed of $\clabel{\eskip}^{l'}$ commands.}
-	\]
-	\end{lem}
-\begin{proof}
-	Proved trivially by induction on $c$ and enumerate all operational semantic rules.
-\end{proof}
-%
-% \todo{Event Dependency Transitivity}
-\begin{lem}
-	\label{lem:valdep_trans}
-(Event Dependency Transitivity)
-For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and $\event_1, \event_2, \event_3 \in \eventset^{\asn}, \trace_{12}, \trace_{23} \in \ftdom$,
-if $\eventdep(\event_1, \event_2, \trace_{12}, c, D)$
-and $\eventdep(\event_2, \event_3, \trace_{23}, c, D) $,
-then there is an event dependency relation,
-$\eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)$.
-  % An event $\event_2 \in \eventset^{\asn}$ is in the \emph{may-dependency} relation with another
-  % event $\event_1 \in \eventset^{\asn}$ in a program ${c}$ with a hidden database $D$, denoted as $\eventdep(\event_1, \event_2, c, D)$,
-  % if and only if
-  \[
-	  \begin{array}{l}
-  \forall D \in \dbdom , c \in \cdom, \event_1, \event_2, \event_3 \in \eventset^{\asn}, \trace_{12}, \trace_{23} \in \ftdom \sthat  
-  \\ \quad
-  \eventdep(\event_1, \event_2, \trace_{12}, c, D) 
-  \land
-  \eventdep(\event_2, \event_3, \trace_{23}, c, D) 
-  \implies
-  \eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)
-	  \end{array}
-  \]
-\end{lem}
-%
-%
+% \begin{lem}[Only $\eskip$ Command doesn't Produce Event].
+% 	\label{lem:inv_skip}
+% 	For all trace $\trace\in \ftdom$, and $c, c' \in \cdom$,  
+% 	$\config{c, \trace} \rightarrow \config{c', \trace}$ if and only if $c = \clabel{\eskip}^{l'};c'$. 
+% 	\[
+% 		\forall \trace\in \ftdom, c, c' \in \cdom \sthat 
+% 		\config{c, \trace} \rightarrow \config{c', \trace}
+% 		\Leftrightarrow 
+% 		c = \clabel{\eskip}^{l'};c'
+% 	% \footnote{$(\clabel{\eskip}^{l'};){}^*$ denotes a sequence command only composed of $\clabel{\eskip}^{l'}$ commands.}
+% 	\]
+% 	\end{lem}
+% \begin{proof}
+% 	Proved trivially by induction on $c$ and enumerate all operational semantic rules.
+% \end{proof}
+% %
+% % \todo{Event Dependency Transitivity}
+% \begin{lem}
+% 	\label{lem:valdep_trans}
+% (Event Dependency Transitivity)
+% For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and $\event_1, \event_2, \event_3 \in \eventset^{\asn}, \trace_{12}, \trace_{23} \in \ftdom$,
+% if $\eventdep(\event_1, \event_2, \trace_{12}, c, D)$
+% and $\eventdep(\event_2, \event_3, \trace_{23}, c, D) $,
+% then there is an event dependency relation,
+% $\eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)$.
+%   % An event $\event_2 \in \eventset^{\asn}$ is in the \emph{may-dependency} relation with another
+%   % event $\event_1 \in \eventset^{\asn}$ in a program ${c}$ with a hidden database $D$, denoted as $\eventdep(\event_1, \event_2, c, D)$,
+%   % if and only if
+%   \[
+% 	  \begin{array}{l}
+%   \forall D \in \dbdom , c \in \cdom, \event_1, \event_2, \event_3 \in \eventset^{\asn}, \trace_{12}, \trace_{23} \in \ftdom \sthat  
+%   \\ \quad
+%   \eventdep(\event_1, \event_2, \trace_{12}, c, D) 
+%   \land
+%   \eventdep(\event_2, \event_3, \trace_{23}, c, D) 
+%   \implies
+%   \eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)
+% 	  \end{array}
+%   \]
+% \end{lem}
+% %
+% %
 
-%
-\begin{lem}[\emph{Variable May-Dependency} Transitivity]
-	\label{lem:vardep_trans}
-For every $c \in \cdom, x^i, y^j, z^l \in \lvar(c)$, 
-if $\vardep(x^i, y^j, c)$ and 
-$\vardep(y^j, z^l, c)$, then $\vardep(x^i, z^l, c)$.
-	\[
-	\forall c \in \cdom, x^i, y^j, z^l \in \lvar(c) \sthat  
-	\vardep(x^i, y^j, c) 
-	\land
-	\vardep(y^j, z^l, c) 
-	\implies
-	\vardep(x^i, z^l, c)
-	\]
-  \end{lem}
+% %
+% \begin{lem}[\emph{Variable May-Dependency} Transitivity]
+% 	\label{lem:vardep_trans}
+% For every $c \in \cdom, x^i, y^j, z^l \in \lvar(c)$, 
+% if $\vardep(x^i, y^j, c)$ and 
+% $\vardep(y^j, z^l, c)$, then $\vardep(x^i, z^l, c)$.
+% 	\[
+% 	\forall c \in \cdom, x^i, y^j, z^l \in \lvar(c) \sthat  
+% 	\vardep(x^i, y^j, c) 
+% 	\land
+% 	\vardep(y^j, z^l, c) 
+% 	\implies
+% 	\vardep(x^i, z^l, c)
+% 	\]
+%   \end{lem}
   %
 %
