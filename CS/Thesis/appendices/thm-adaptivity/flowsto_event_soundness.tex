@@ -391,12 +391,12 @@ takes a trace and a variable as input and returns the label of the latest assign
         }
         In this case, let $\event_{ih}\in \trace_{ih} $ be the event such that
         \[
-        \eventdep(\event_x, \event, \trace[\event_x:\event], c, D)
+        \eventdep(\event_x, \event_{ih}, \trace[\event_x:\event_{ih}], c, D)
           % \\ \quad  
           \land 
-        \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c).
+        \flowsto(\pi_1(\event_{ih})^{\pi_2(\event_{ih})}, \pi_1(\event_y)^{\pi_2(\event_y)}, c).
         \]
-        By induction hypothesis on $\eventdep(\event_x, \event, \trace[\event_x : \event], c, D)$, we know:
+        By induction hypothesis on $\eventdep(\event_x, \event_{ih}, \trace[\event_x : \event_{ih}], c, D)$, we know:
         \[
           \begin{array}{l}
             \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) 
@@ -411,7 +411,7 @@ takes a trace and a variable as input and returns the label of the latest assign
           $m$ labeled variables such that
           \[
             \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
-          \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_{ih})^{\pi_2(\event_{ih})}, c).
+          \land \ldots \land \flowsto(z_m^{r_m}, \pi_1(\event_{ih})^{\pi_2(\event_{ih})}, c).
           \]
           Then we have the following by the assumption.
           \[
@@ -439,9 +439,10 @@ takes a trace and a variable as input and returns the label of the latest assign
               Then we know
               \[
                 \begin{array}{l}
-                  \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 1 \land
+                  \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 1 
+                  \\ \quad  
+                  \land
                 \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
-                \\ \quad  
                 \land \ldots 
                 % \land \flowsto(z_m^{r_m}, \pi_1(\event_{ih})^{\pi_2(\event_{ih})}, c) )
                 %  \\ \quad  

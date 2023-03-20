@@ -140,6 +140,7 @@ The environment is simply an efficient operator, $\env$ where $\env(\trace) x$ f
   the value assigned to variables can be recovered from trace directly.
   In this sense, it is more efficiently by reading value from trace directly rather than using a separate memory recording the variable values.
   \begin{defn}[Environment $\env : {\tdom}  \to \mathcal{V} \to \mathcal{VAL} \cup \{\bot\}$]
+    \label{def:adapt_env}
 Given a trace $\trace \in \tdom$ and a variable $x$,
 the environment operator $\env(\trace) l $ fetches the latest value assigned to $x$ on the trace $\trace$ as below.
 \[
