@@ -356,8 +356,10 @@ takes a trace and a variable as input and returns the label of the latest assign
           \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
         \end{array}
         \]
+        By Definition~\ref{def:event_dep}, we have two cases.
+        \caseL{$\eventdep(\event_x, \event_y, \trace, c, D)$ satisfies the Equation~\ref{eq:eventdep}(b)}
         %
-        By Lemma~\ref{lem:depevents_exist}, we know:
+        In this case, by Lemma~\ref{lem:inv_indepevents_asn}, we know:
         \[
           \begin{array}{l}
             \Big( 
@@ -450,12 +452,119 @@ takes a trace and a variable as input and returns the label of the latest assign
                 \end{array}
                 \]               
             This case is proved.
+        \caseL{$\eventdep(\event_x, \event_y, \trace, c, D)$ satisfies the Equation~\ref{eq:eventdep}(c)}
+        By Definition~\ref{def:event_dep}, let $\vtrace_0,
+        \vtrace_1, \vtrace', \vtrace_3, \vtrace_3' \in \mathcal{T}, 
+        \event_y' \in \eventset, \event_x' \in \eventset^{\asn}, \event_b, {c}_1, {c}_2$ be the traces, events and commands satisfying
+        \[
+          \begin{array}{ll}   
+            & \diff(\event_x, \event_x') 
+        \land
+           \Big(
+          \config{{c}, \vtrace_0} \rightarrow^{*} 
+              \config{{c}_1, \vtrace_1 \tracecat [\event_x]}  \rightarrow^{*} 
+              \config{c_2,  \trace_1 \tracecat [\event_x;\event_b] \tracecat  \trace_3} 
+            \\   
+           & \qquad \bigwedge 
+            \config{{c}_1, \vtrace_1 \tracecat [\event_x']}  \rightarrow^{*} 
+            \config{c_2,  \vtrace_1 \tracecat [\event_x'] \tracecat \trace' \tracecat [(\neg \event_b)] \tracecat \trace_3'} 
+            \\
+            & \qquad \bigwedge  \tlabel({\trace_3}) \cap \tlabel({\trace_3'}) = \emptyset
+             \land \vcounter(\trace') ~  \pi_2(\event_b) = \vcounter(\trace) ~  \pi_2(\event_b)
+              \land \event_y \eventin \trace_3
+            \land \event_y \not\eventin \trace_3'
+           \Big)
+         \end{array}
+         \]
+         Then by Lemma~\ref{lem:ctldep_inv} we know 
+         \[
+          \forall z \in \kw{FV}(\pi_1(\event_b)) \sthat  
+          \exists l \in \mathbb{N} \sthat  
+          \flowsto(z^l, \pi_1(\event_y)^{\pi_2(\event_y)},c)~(\star)
+        \]
+         By Lemma~\ref{lem:inv_indepevents_ctl}, we know
+         \[
+          \pi_1(\event_x) \in \kw{FV}(\pi_1(\event_b)) \land {\pi_2(\event_x)} = \llabel(\trace)
+          \lor 
+          \\
+          \exists \event \in \trace_{ih} \sthat \pi_1(\event) \in  \kw{FV}(\pi_1(\event_b)) 
+          \land \dep(\event_x, \event, \trace_{ih}[\event_x:\event], c)
+          \]
+          Then we have two subcases.
+          \subcaseL{$ \pi_1(\event_x) \in \kw{FV}(\pi_1(\event_y)) \land {\pi_2(\event_x)} = \llabel(\trace)$}
+          In this case, by Definition~\ref{def:feasible_flowsto} and $(\star)$ we know
+          \[
+            \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+          \]
+          \subcaseL{$\exists \event \in \trace_{ih} \sthat \pi_1(\event) \in  \kw{FV}(\pi_1(\event_b)) 
+          \land \dep(\event_x, \event, \trace_{ih}[\event_x:\event], c)$}
+          In this case, let $\event_{ih}\in \trace_{ih} $ be the event such that
+          \[
+            \pi_1(\event_{ih}) \in  \kw{FV}(\pi_1(\event_b)) 
+            \land \dep(\event_x, \event, \trace_{ih}[\event_x:\event_{ih}], c)
+          \]
+          By induction hypothesis on $\dep(\event_x, \event, \trace_{ih}[\event_x:\event_{ih}], c)$ we know
+          \[
+            \begin{array}{l}
+              \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) 
+              \sthat  n \geq 0 
+              \\ \quad  \land
+              \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
+              \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_{ih})^{\pi_2(\event_{ih})}, c) 
+            \end{array}
+            \]
+            % \\
+            Let $m \geq 0 \in \mathbb{N}$ and $z_1^{r_1}, \ldots, z_m^{r_m} \in \lvar(c) $ be 
+            $m$ labeled variables such that
+            \[
+              \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
+            \land \ldots \land \flowsto(z_m^{r_m}, \pi_1(\event_{ih})^{\pi_2(\event_{ih})}, c).
+            \]
+            By $\pi_1(\event_{ih}) \in  \kw{FV}(\pi_1(\event_b)) $ and $(\star)$ and Definition~\ref{def:feasible_flowsto}, we also know
+            \[
+              \flowsto(\pi_1(\event_{ih})^{\pi_2(\event_{ih})}, \pi_1(\event_y)^{\pi_2(\event_y)}, c)
+              \]
+            Then we have the following by the assumption.
+            \[
+              \begin{array}{l}
+                % \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 1\land
+              \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
+              \land \ldots \land \flowsto(z_m^{r_m}, \pi_1(\event_{ih})^{\pi_2(\event_{ih})}, c) )
+               \\ \quad  
+               \land  \flowsto(\pi_1(\event_{ih})^{\pi_2(\event_{ih})}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
+              \end{array}
+              \]
+              Then let $n = m + 1$,
+              and $z_{m+1}^{r_{m+1}} = (\event_{ih})^{\pi_2(\event_{ih})}$, we know
+              \[
+                \begin{array}{l}
+                  % \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 1\land
+                \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
+                % \\ \quad  
+                \land \ldots 
+                % \land \flowsto(z_m^{r_m}, \pi_1(\event_{ih})^{\pi_2(\event_{ih})}, c) )
+                %  \\ \quad  
+                 \land  \flowsto(z_{m+1}^{r_{m+1}}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
+                \end{array}
+                \]            
+                Then we know
+                \[
+                  \begin{array}{l}
+                    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 1 
+                    \\ \quad  
+                    \land
+                  \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)},  z_1^{r_1}, c) 
+                  \land \ldots 
+                  % \land \flowsto(z_m^{r_m}, \pi_1(\event_{ih})^{\pi_2(\event_{ih})}, c) )
+                  %  \\ \quad  
+                   \land  \flowsto(z_{n}^{r_{n}}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
+                  \end{array}
+                  \]               
+              This case is proved.
+
       \end{case}
 
 \end{proof}
-\subsection{One-step Soundness}
-
-\subsection{Multiple-step Soundness}
 
 \subsection{Inversion Lemmas and Helper Lemmas}
 The following are the inversion lemmas and helper lemmas used in the proof of Theorem~\ref{thm:flowsto_event_soundness} above,

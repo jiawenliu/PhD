@@ -60,137 +60,148 @@ show x is directly used by the boolean expression for a conditional command and 
 %
 
 
-\begin{lem}[Multiple-step $\flowsto$ Soundness]
-	\label{lem:depevents_exist}
-For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and two assignment events 
-$\event_1, \event_2 \in \eventset^{\asn}$,
-if the trace $trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, and 
-if $\eventdep(\event_1, \event_2, \trace, c, D)$,
-then either there is a flows to relation between the labeled variables from $\event_1$ and $\event_2$, i.e.,
-$\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) $,
-or 
-there exists
-$\event \in \trace'$ such that
-$
-\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-$
-and $\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$ if $\event \in \eventset^{\asn}$
-or 
-$\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$ if $\event \in \eventset^{\test}$
-for every $z \in \kw{FV}(\pi_2(\event))$ and some label $l \in \lvar(c)$.
-%
-	\[
-	\begin{array}{l}
-		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
-		 \exists \trace' \in \ftdom \sthat  
-		 \\ \quad 
-		 \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
-		\land
-		\eventdep(\event_1, \event_2, \trace, c, D) 
-		% \\ \quad 
-		\implies 
-		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
-		\\ \qquad  \lor
-		\Big( 		
-		\exists \event \in \trace' \sthat  
-		\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-		\\ \qquad \quad
-		\land 
-		\event \in \eventset^{\asn} \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-		\\ \qquad \quad
-		\land 
-		\event \in \eventset^{\test} \implies \forall z \in \kw{FV}(\pi_2(\event)) \sthat \exists l \in \lvar(c) \sthat
-		\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-		\Big) 
-		% \\ \qquad \quad  \lor
-		% \Big( 		
-		% \exists \event \in \eventset^{\test} \sthat  
-		% \event \in \trace' \land
-		% 	\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-		% \land 
-		% \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
-		% \Big) 
-		% \\ \qquad \qquad \lor
-		% \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
-	\end{array}
-	\]
-\end{lem}
-\begin{proof}
-	Taking arbitrary 
-	$ D \in \dbdom , c \in \cdom, \trace \in \ftdom $ and two events 
-	$\event_1, \event_2 \in \eventset^{\asn}$, where $\trace$ has the form 
-	$\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ 
-	for some 
-	$\trace' \in \ftdom$ and $\eventdep(\event_1, \event_2, \trace, c, D)$.
-	\\
-	Then it is sufficient to show
-	\[
-		\begin{array}{l}
-			\neg\Big( 		
-			\exists \event \in \trace' \sthat  
-			\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-			\\ \qquad 
-			\land 
-			\big( 
-				\event \in \eventset^{\asn} \implies 
-				\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-			\big)
-			\\ \qquad
-			\land 
-			\big(
-			\event \in \eventset^{\test} \implies \forall z \in \kw{FV}(\pi_2(\event)) \sthat \exists l \in \lvar(c) \sthat
-			\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-			\big)
-			\Big) 
-			\\ \qquad \quad
-			\implies
-			\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-		\end{array}
-		\]
-		Take arbitrary $ \event \in \trace'$, it is sufficient to show
-		\[
-			\begin{array}{l}
-				\Big( 		
-				\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D) ~(\star)
-				\\ \qquad 
-				\lor 
-				\neg \big( 
-					\event \in \eventset^{\asn} \implies 
-					\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-				\big) ~(\diamond)
-				\\ \qquad
-				\lor 
-				\neg \big(
-				\event \in \eventset^{\test} \implies \forall z \in \kw{FV}(\pi_2(\event)) \sthat \exists l \in \lvar(c) \sthat
-				\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-				\big)
-				\Big)  ~(\square)
-				\\ \qquad \quad
-				\implies
-				\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-			\end{array}
-		\]
-		Splitting the preconditions, it is sufficient to show the following cases.
-		\[
-			\begin{array}{l}
-			(1) (\star) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-			\\
-			(2) 
-			\neg(\star) \land (\diamond) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-			\\
-			(3)
-			\neg(\star) \land (\square) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-		\end{array}
-		\]
-	\caseL{$(\star) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
-	This case is proved by the first case in Lemma~\ref{lem:inv_indepevents_asn}.
+% \begin{lem}[Multiple-step $\flowsto$ Soundness]
+% 	\label{lem:depevents_exist}
+% For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and two assignment events 
+% $\event_1, \event_2 \in \eventset^{\asn}$,
+% if the trace $trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, and 
+% if $\eventdep(\event_1, \event_2, \trace, c, D)$,
+% then either there is a flows to relation between the labeled variables from $\event_1$ and $\event_2$, i.e.,
+% $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) $,
+% or 
+% there exists
+% $\event \in \trace'$ such that
+% $
+% \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+% $
+% and $\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$ and 
+% $\event \in \eventset^{\asn}$
+% if $\eventdep(\event_1, \event_2, \trace, c, D)$ satisfies
+% the Equation~\ref{eq:eventdep}(b)
+% or 
+% $
+% \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+% $
+% and $\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$ and $\event \in \eventset^{\test}$
+% for every $z \in \kw{FV}(\pi_2(\event))$ and some label $l \in \lvar(c)$
+% if $\eventdep(\event_1, \event_2, \trace, c, D)$ satisfies
+% the Equation~\ref{eq:eventdep}(c).
+% %
+% 	\[
+% 	\begin{array}{l}
+% 		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset^{\asn} \sthat 
+% 		 \exists \trace' \in \ftdom \sthat  
+% 		 \\ \quad 
+% 		 \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
+% 		\land
+% 		\eventdep(\event_1, \event_2, \trace, c, D) 
+% 		% \\ \quad 
+% 		\implies 
+% 		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+% 		\\ \qquad  \lor
+% 		\Big( 		
+% 		\exists \event \in \trace' \sthat  
+% 		\big(\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+% 		\land 
+% 		\event \in \eventset^{\asn} \big) 
+% 		\\ \qquad \qquad
+% 		\land \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% 		% \\ \qquad \quad
+% 		% \land 
+% 		% \big(\eventdep(\event_1, \event, \trace[\event_1:\event], c, D) \land \event \in \eventset^{\test} \big)
+% 		% \\ \qquad \qquad
+% 		% \implies \forall z \in \kw{FV}(\pi_2(\event)) \sthat \exists l \in \lvar(c) \sthat
+% 		% \flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% 		\Big) 
+% 		% \\ \qquad \quad  \lor
+% 		% \Big( 		
+% 		% \exists \event \in \eventset^{\test} \sthat  
+% 		% \event \in \trace' \land
+% 		% 	\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+% 		% \land 
+% 		% \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+% 		% \Big) 
+% 		% \\ \qquad \qquad \lor
+% 		% \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+% 	\end{array}
+% 	\]
+% \end{lem}
+% \begin{proof}
+% 	Taking arbitrary 
+% 	$ D \in \dbdom , c \in \cdom, \trace \in \ftdom $ and two events 
+% 	$\event_1, \event_2 \in \eventset^{\asn}$, where $\trace$ has the form 
+% 	$\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ 
+% 	for some 
+% 	$\trace' \in \ftdom$ and $\eventdep(\event_1, \event_2, \trace, c, D)$.
+% 	\\
+% 	Then it is sufficient to show
+% 	\[
+% 		\begin{array}{l}
+% 			\neg\Big( 		
+% 			\exists \event \in \trace' \sthat  
+% 			\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+% 			\\ \qquad 
+% 			\land 
+% 			\big( 
+% 				\event \in \eventset^{\asn} \implies 
+% 				\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% 			\big)
+% 			\\ \qquad
+% 			\land 
+% 			\big(
+% 			\event \in \eventset^{\test} \implies \forall z \in \kw{FV}(\pi_2(\event)) \sthat \exists l \in \lvar(c) \sthat
+% 			\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% 			\big)
+% 			\Big) 
+% 			\\ \qquad \quad
+% 			\implies
+% 			\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% 		\end{array}
+% 		\]
+% 		Take arbitrary $ \event \in \trace'$, it is sufficient to show
+% 		\[
+% 			\begin{array}{l}
+% 				\Big( 		
+% 				\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D) ~(\star)
+% 				\\ \qquad 
+% 				\lor 
+% 				\neg \big( 
+% 					\event \in \eventset^{\asn} \implies 
+% 					\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% 				\big) ~(\diamond)
+% 				\\ \qquad
+% 				\lor 
+% 				\neg \big(
+% 				\event \in \eventset^{\test} \implies \forall z \in \kw{FV}(\pi_2(\event)) \sthat \exists l \in \lvar(c) \sthat
+% 				\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% 				\big)
+% 				\Big)  ~(\square)
+% 				\\ \qquad \quad
+% 				\implies
+% 				\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% 			\end{array}
+% 		\]
+% 		Splitting the preconditions, it is sufficient to show the following cases.
+% 		\[
+% 			\begin{array}{l}
+% 			(1) (\star) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% 			\\
+% 			(2) 
+% 			\neg(\star) \land (\diamond) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% 			\\
+% 			(3)
+% 			\neg(\star) \land (\square) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% 		\end{array}
+% 		\]
+% 	\caseL{$(\star) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
+% 	This case is proved by the first case in Lemma~\ref{lem:inv_indepevents_asn}.
 
-	\caseL{$\neg(\star) \land (\diamond) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
-	This case is proved by the second case in Lemma~\ref{lem:inv_indepevents_asn}.
+% 	\caseL{$\neg(\star) \land (\diamond) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
+% 	This case is proved by the second case in Lemma~\ref{lem:inv_indepevents_asn}.
 
-	\caseL{$\neg(\star) \land (\square) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
-	This case is proved by Lemma~\ref{lem:inv_indepevents_ctl} and Lemma~\ref{lem:ctldep_inv}. 
-\end{proof}
+% 	\caseL{$\neg(\star) \land (\square) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
+% 	This case is proved by Lemma~\ref{lem:inv_indepevents_ctl} and Lemma~\ref{lem:ctldep_inv}. 
+% \end{proof}
 %
 %
 %
@@ -209,7 +220,8 @@ for every $z \in \kw{FV}(\pi_2(\event))$ and some label $l \in \lvar(c)$.
 		% For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and two assignment events 
 		% $\event_1, \event_2 \in \eventset^{\asn}$,
 		% if the trace $\trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, and $\eventdep(\event_1, \event_2, \trace, c, D)$,
-		then for every $\event \in \trace'$, if it either doesn't have the \emph{Event May-Dependency} relation on $\event_1$, 
+		then for every $\event \in \trace'$, 
+		if it either doesn't have the \emph{Event May-Dependency} relation on $\event_1$, 
 		or $\pi_1(\event)^{\pi_2(\event)}$ doesn't have the $\flowsto$ relation with $ \pi_1(\event_2)^{\pi_2(\event_2)}$,
 		then the labelled variable $\pi_1(\event_1)^{\pi_2(\event_1)}$ directly flows to the other one $\pi_1(\event_2)^{\pi_2(\event_2)}$, 
 		i.e., $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$.
@@ -226,13 +238,13 @@ for every $z \in \kw{FV}(\pi_2(\event))$ and some label $l \in \lvar(c)$.
 			\land 
 			\Big( 
 			\forall \event \in \trace' \sthat  
-				\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D) ~(\star)
+				\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
 				\\ \qquad 
 				\lor 
 				\neg \big( 
 					\event \in \eventset^{\asn} \implies 
 					\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-				\big) ~(\diamond)
+				\big)
 			\Big) 
 			\\ \quad 
 			\implies 
@@ -586,12 +598,13 @@ we have:
 	This case is proved.
 \end{proof}
 
-\begin{lem}[Control Dependency Inversion]
+\begin{lem}[Equation~\ref{eq:eventdep}(c) Inversion]
 	\label{lem:ctldep_inv}
 	For every $c \in \cdom$, $D \in \dbdom, \trace \in \ftdom$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn} $, if $\eventdep(\event_1, \event_2, c, \trace, D)$ and
-	satisfying the Equation~\ref{eq:eventdep}(c) in Definition~\ref{def:event_dep},
+	satisfying the Equation~\ref{eq:eventdep}(c) in Definition~\ref{def:event_dep}
 	% they are in the second case of the \emph{Event May-Dependency} relation from Definition~\ref{def:event_dep},
 	% $\eventdep(\event, \event, c, \trace, D)$ as Eq.~\ref{eq:ctlflowsto_inv},
+	and $\event_b \in \eventset^{\test}$ be the witness of the testing event,
 	then for all  $z \in \kw{FV}(\pi_1(\event_b))$ there exists a label $i \in \mathbb{N}$ such that 
 	$\flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)$
 	\begin{equation}
