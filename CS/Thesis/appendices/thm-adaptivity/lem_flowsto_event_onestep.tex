@@ -1,0 +1,60 @@
+\begin{lem}[One-step $\flowsto$ Soundness]
+	\label{lem:flowsto_soundness_emptytrace}
+	For every $ c \in \cdom, D \in \dbdom$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn}$,
+	if $\eventdep(\event_1, \event_2, [\event_1; \event_2],  c, D) $,
+	then there is a flows to relation, $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$.
+	%
+	\[
+	\begin{array}{l}
+		\forall \event_1, \event_2 \in \eventset^{\asn}, c \in \cdom, D \in \dbdom 
+		\sthat  
+		\eventdep(\event_1, \event_2, [\event_1; \event_2],  c, D) 
+		\\ \quad 
+		\implies 
+		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+	\end{array}
+	\]
+\end{lem}
+Proof Summary:
+\\
+1. case of (the labelled unique assignment command associated to the $\event_2$ 
+is executed but the value assigned to the variable in this event is changed in second execution)
+\\
+show x directly used by the assignment of the second event
+\\
+2.(the labelled unique assignment command associated to the $\event_2$ isn't executed in second execution)
+\\
+show x is directly used by the boolean expression for a conditional command and second event shows in the body of that conditional command 
+%
+\begin{proof}
+	By the Definition~\ref{def:event_dep} for $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$, 
+	we know there are 2 cases:
+	%
+	\caseL{Value Dependency in Equation~\ref{eq:eventdep}(b)}
+		% \textbf{(the labelled unique assignment command associated to the $\event_2$ 
+		% is executed but the value assigned to the variable in this event is changed in second execution).}
+\input{appendices/thm-adaptivity/base_case_val}
+	% \end{case}
+	\caseL{Control Dependency in Equation~\ref{eq:eventdep}(c)}
+		% \textbf{(the labelled unique assignment command associated to the $\event_2$ isn't executed in second execution).}
+		\\
+		Proof Summary:
+		\\
+		1. Let $\event_b$ be the testing event,
+		in the same way of case 1, we get:
+		 $\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_b)) 
+		 \land 
+		%  l_1 \in \live^{l_b}$
+		\pi_1(\event_1)^{l_1} \in \live(l_b, c)$
+		%
+		 \\
+		 2. By Lemma~\ref{lem:ctldep_inv}, we know:
+		   $\forall z \in \kw{FV}(\pi_1(\event_b)) \sthat  \exists i \in \mathbb{N} \sthat 
+		 \flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)$
+		 %
+		 \\
+		 3. By $\flowsto$ definition we have:
+		   $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$
+		\input{appendices/thm-adaptivity/base_case_ctl}
+\end{proof}
+%

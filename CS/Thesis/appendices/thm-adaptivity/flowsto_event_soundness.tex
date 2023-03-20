@@ -484,12 +484,18 @@ takes a trace and a variable as input and returns the label of the latest assign
         \]
          By Lemma~\ref{lem:inv_indepevents_ctl}, we know
          \[
-          \pi_1(\event_x) \in \kw{FV}(\pi_1(\event_b)) \land {\pi_2(\event_x)} = \llabel(\trace)
-          \lor 
+          \begin{array}{l}
+            \big(
+              \pi_1(\event_x) \in \kw{FV}(\pi_1(\event_b)) \land {\pi_2(\event_x)} = \llabel(\trace)
+            \big)
           \\
-          \exists \event \in \trace_{ih} \sthat \pi_1(\event) \in  \kw{FV}(\pi_1(\event_b)) 
+          \lor 
+          \big(
+            \exists \event \in \trace_{ih} \sthat \pi_1(\event) \in  \kw{FV}(\pi_1(\event_b)) 
           \land \dep(\event_x, \event, \trace_{ih}[\event_x:\event], c)
-          \]
+          \big)
+          \end{array}
+        \]
           Then we have two subcases.
           \subcaseL{$ \pi_1(\event_x) \in \kw{FV}(\pi_1(\event_y)) \land {\pi_2(\event_x)} = \llabel(\trace)$}
           In this case, by Definition~\ref{def:feasible_flowsto} and $(\star)$ we know
@@ -565,8 +571,13 @@ takes a trace and a variable as input and returns the label of the latest assign
       \end{case}
 
 \end{proof}
+\subsection{One-step Soundness}
+\input{appendices/thm-adaptivity/lem_flowsto_event_onestep}
+
+\subsection*{Multiple-step Soundness}
+\input{appendices/thm-adaptivity/lem_flowsto_event_multiplestep}
 
 \subsection{Inversion Lemmas and Helper Lemmas}
 The following are the inversion lemmas and helper lemmas used in the proof of Theorem~\ref{thm:flowsto_event_soundness} above,
 showing the correspondence properties between the trace based semantics and the program analysis results.
-\input{appendices/thm-adaptivity/lem_depinversion}
+\input{appendices/thm-adaptivity/lem_flowsto_soundness_inversion}
