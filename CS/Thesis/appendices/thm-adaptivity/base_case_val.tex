@@ -103,10 +103,12 @@ From Eq.~\ref{eq:eventdep_def_base_val}, we also have
 \label{eq:valdep_invn}
   \vcounter(\vtrace') l_2 = \vcounter( [] ) l_2 = 0
 \end{equation}
-By Inversion Lemma~\ref{lem:inv_skip} and the execution in Eq.~\ref{eq:valdep_inv1}, we know:
+By 
+% Inversion Lemma~\ref{lem:inv_skip} and 
+the execution in Eq.~\ref{eq:valdep_inv1}, we know:
  \[
  c_1 =_c 
- [\eskip]{}^*;[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2};{c}_2
+ [\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2};{c}_2
  	\footnote{$([\eskip];){}^*$ denotes a sequence command only composed of $[\eskip]$ commands.}
  \]
  %
@@ -130,8 +132,8 @@ every evaluation step of this execution is the $\rname{skip}$ rule.}
  %
   \[
     \begin{array}{l}
-  \config{c_1, \vtrace_1 \tracecat [\event_1']} 
-  \rightarrow^{\rname{skip}^*} 
+  % \config{c_1, \vtrace_1 \tracecat [\event_1']} 
+  % \rightarrow^{\rname{skip}^*} 
   \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} ; {c}_2, \vtrace_1 \tracecat [\event_1']}
   \\ 
   \rightarrow^\rname{assn/query} 
@@ -151,8 +153,8 @@ Then, we have the following possible execution instances
  %
   \[
     \begin{array}{l}
-      \config{c_1, \vtrace_1 \tracecat [\event_1']} 
-      \rightarrow^{\rname{skip}^*} 
+      % \config{c_1, \vtrace_1 \tracecat [\event_1']} 
+      % \rightarrow^{\rname{skip}^*} 
       \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} ; {c}_2, \vtrace_1 \tracecat [\event_1']} 
       \\ 
       \rightarrow^\rname{assn/query} 
@@ -162,8 +164,8 @@ Then, we have the following possible execution instances
 %
   \[
   \begin{array}{l}
-  \config{c_1, \vtrace_1 \tracecat [\event_1']} 
-  \rightarrow^{\rname{skip}^*} 
+  % \config{c_1, \vtrace_1 \tracecat [\event_1']} 
+  % \rightarrow^{\rname{skip}^*} 
   \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} ; {c}_2, \vtrace_1 \tracecat [\event_1']} 
   \\ \qquad
   \rightarrow^\rname{assn/query} 
@@ -178,9 +180,9 @@ Then, we have the following possible execution instances
  \end{array}
  \]
 \[
-  \cdots
+  \ldots,
 \] 
-, where each execution instance iterates the conditional command 
+where each execution instance iterates the conditional command 
 $(\ewhile [b_w]^l_w \edo (c_w))$ in $c_2$, $0, 1$ or more times.
 %
 \\
