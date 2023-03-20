@@ -58,183 +58,7 @@ show x is directly used by the boolean expression for a conditional command and 
 		\input{appendices/thm-adaptivity/base_case_ctl}
 \end{proof}
 %
-\begin{lem}[Control Dependency Inversion]
-	\label{lem:ctldep_inv}
-	For every $c \in \cdom$, $D \in \dbdom, \trace \in \ftdom$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn} $, if $\eventdep(\event_1, \event_2, c, \trace, D)$ and
-	satisfying the Equation~\ref{eq:eventdep}(c) in Definition~\ref{def:event_dep},
-	% they are in the second case of the \emph{Event May-Dependency} relation from Definition~\ref{def:event_dep},
-	% $\eventdep(\event, \event, c, \trace, D)$ as Eq.~\ref{eq:ctlflowsto_inv},
-	then for all  $z \in \kw{FV}(\pi_1(\event_b))$ there exists a label $i \in \mathbb{N}$ such that 
-	$\flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)$
-	\begin{equation}
-		\label{eq:ctlflowsto_inv},		
-		\begin{array}{l}
-			\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom,
-			\event_1, \event_2 \in \eventset^{\asn} \sthat  
-			\\ 
-			\exists \vtrace_0,
-			\vtrace_1, \vtrace', \vtrace_3, \vtrace_3' \in \ftdom,\event_1' \in \eventset^{\asn}, {c}_1, {c}_2  \in \cdom, 
-			\event_b \in \eventset^{\test},
-			\trace_{ih} \in \ftdom \sthat  
-		\trace = [\event_1] \tracecat \trace_{ih} \tracecat [\event_2]
-		\\ \quad \land	  
-			  \config{{c}, \vtrace_0} \rightarrow^{*} 
-				\config{{c}_1, \vtrace_1 \tracecat [\event_1]}  \rightarrow^{*} 
-				\config{c_2,  \vtrace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_3} 
-			  \\ \qquad \land
-			  \config{{c}_1, \vtrace_1 \tracecat [\event_1']}  \rightarrow^{*} 
-			  \config{c_2,  \vtrace_1 \tracecat [\event_1'] \tracecat \trace' \tracecat [(\neg \event_b)] \tracecat \trace_3'} 
-			  \\ \qquad \land
-			\tlabel({\trace_3}) \cap \tlabel({\trace_3'}) = \emptyset
-			   \land \vcounter(\trace') ~  \pi_2(\event_b) = \vcounter(\trace) ~  \pi_2(\event_b)
-				\land \event_2 \eventin \trace_3
-			  \land \event_2 \not\eventin \trace_3'
-		\\ \quad \implies	
-		\forall z \in \kw{FV}(\pi_1(\event_b)) \sthat  
-		\exists l \in \mathbb{N} \sthat  
-		\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)},c)
-	\end{array}
-\end{equation}
-	\end{lem}
-	Proof Summary:
-	\\
-	Proving by using the Inversion Lemmas~\ref{lem:inv_expr}, \ref{lem:inv_expr_gnl}, 
-	\ref{lem:inv_event}, and \ref{lem:inv_live}, and the \emph{Event May-Dependency} definition of the second case.
-%
-	\begin{proof}
-		Take arbitrary $D \in \dbdom , c \in \cdom, \trace \in \ftdom,
-		\event_1, \event_2 \in \eventset^{\asn} $,
-%
-let $\vtrace_0,
-\vtrace_1, \vtrace', \vtrace_3, \vtrace_3' \in \ftdom, 
-\event_2' \in \eventset, \event_1' \in \eventset^{\asn}, \event_b, {c}_1, {c}_2$ be the traces, 
-events and commands satisfying the executions,
-by Inversion Lemma~\ref{lem:inv_event} on 
-$\event_2$, and $\event_b$,
-we have the following instance of the first execution in Eq.~\ref{eq:ctlflowsto_inv},
- %
-%
-% Let $\event_{ih} = (b, l_b, n_b, v_b)$, by Eq.~\ref{eq:ctldep_inv1} and {Inversion Lemma~\ref{lem:inv_test}}, we have:
-\begin{equation}
-% \label{eq:ctldep_inv1}
-  \begin{array}{l}   
-\config{{c}, \vtrace_0} \rightarrow^{*} 
-% \config{[\assign{{x}_1}{\expr_1 / \query(\qexpr_1)}]^{l_1} ; {c}_1, \vtrace_1}  
-% \rightarrow^{\rname{assn/query}}
-%  \config{c_1, \vtrace_1 \tracecat [\event_1]} 
-%  \\ \qquad 
-%  \rightarrow^{*} 
-  \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
-  \vtrace_1 \tracecat [\event_1] \tracecat \trace} 
-  \\
-  \qquad 
-   \rightarrow^{\rname{if-b / while-b}} 
-  \config{(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3'/\clabel{\eskip}^{l'}; c_3'), 
-  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
-  \\
-  \qquad  \rightarrow^{*} 
-  \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2}; c_{3b}', 
-  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_{3a}}
-  \\ \qquad \rightarrow^{\rname{assn/query}}
-  \config{ c_{3b}', 
-  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_{3a} \tracecat [\event_2]}
-  \\ \qquad
-  \rightarrow^{*} 
-  \config{c_3, 
-  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b}}
-  % 
-\end{array}
-\end{equation}
-%  %
-, where $\trace_3 = \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b}$,
-% $x_1 = \pi_1(\event_1)$, $l_1 = {\pi_2(\event_1)}$, 
-$x_2 = \pi_1(\event_2)$, $l_2 = \pi_2(\event_2)$, 
-and $\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w)$ 
-is the conditional command of the assignment commands associated to the 
-$\event_b$ from Inversion Lemma~\ref{lem:inv_event} of testing event.
-\\
-% \[\begin{array}{l}   
-% 	  \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
-% 	  \vtrace_1 \tracecat [\event_1] \tracecat \trace} 
-% 	  \\
-% 	  \qquad 
-% 	   \rightarrow^{\rname{if-b / while-b}} 
-% 	  \config{(c_t;c_3' / c_f;c_3') /(c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3'), 
-% 	  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
-% 	  % 
-% 	\end{array}
-% 	\]
-% $\config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
-% \vtrace_1 \tracecat [\event_1] \tracecat \trace} 
-%  \rightarrow^{\rname{if-b / while-b}} 
-% \config{(c_t;c_3' / c_f;c_3') /(c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3'), 
-% \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
-% $
-The notation $(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3' / \clabel{\eskip}^{l'}; c_3')$ represents:
-\\
-In case of $\eif ([b]^{l_b}, c_t, c_f)$, if $\pi_3(\event_b) = \etrue$, we have the evaluation:
-$$
-\config{\eif ([b]^{l_b}, c_t, c_f) ;{c}_3', 
-\vtrace_1 \tracecat [\event_1] \tracecat \trace} 
- \rightarrow^{\rname{if-b}} 
-\config{c_t;c_3' 
-\trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
-$$
-%
-The same for case of $\eif ([b]^{l_b}, c_t, c_f)$ with $\pi_3(\event_b) = \efalse$,
-and case of $\ewhile [b]^{l_b} \edo (c_w)$ with $\pi_3(\event_b) = \etrue$ and $\pi_3(\event_b) = \efalse$.
-%
-\\
-By the command label consistency,
-we also have the instance of second execution as follows:
-\begin{equation}
-\label{eq:ctldep_inv2}
-\begin{array}{l}   
-  \config{{c}, \vtrace_0} \rightarrow^{*} 
-%   \config{[\assign{{x}_1}{\expr_1 / \query(\qexpr_1)}]^{l_1} ; {c}_1, \vtrace_1}  
-%   \rightarrow^{\rname{\rname{assn/query}}}
-%    \config{c_1, \vtrace_1 \tracecat [\event_1]} 
-%    \\
-%     \qquad \rightarrow^{*} 
-    \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
-    \vtrace_1 \tracecat [\event_1] \tracecat \trace'} 
-    \\
-    \qquad 
-     \rightarrow^{\rname{if-b / while-b}} 
-    \config{(c_f;c_3' / c_t;c_3') /(\clabel{\eskip}^{l'}; c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3' ), 
-	\\ \qquad \qquad \qquad \qquad
-	\trace_1 \tracecat [\event_1]  \tracecat \trace' \tracecat [\neg \event_b]} 
-    \\
-    \qquad   \rightarrow^{*} 
-    \config{c_3, 
-    \trace_1 \tracecat [\event_1]  \tracecat \trace' \tracecat [\neg \event_b] \tracecat  \trace_3'}
-    % 
-  \end{array}
-\end{equation}
-%
-By the label consistency, and $\tlabel({\trace_3}) \cap \tlabel({\trace_3'}) = \emptyset$, 
-% i.e., 
-we know $\trace_3$ and $\trace_3'$ doesn't contain any event of evaluating the commands in $c_3'$.
-Otherwise, $\tlabel({\trace_3}) \cap \tlabel({\trace_3'}) \neq \emptyset$, which is a contradiction.
-\\
-Since $\trace_3= \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b} $, we know $\event_2$ doesn't comes from evaluating
-of $c_3'$, i.e.,:
-\\
-In the case of $\eif ([b]^{l_b}, c_t, c_f)$, $\event_2$ comes from the evaluation of $c_t$ or $c_f$,
-Then we know
-\\
- $[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_t 
- \lor [\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_f$;
-\\
-and in the case of $\ewhile [b]^{l_b} \edo (c_w)$, $\event_2$ comes from the evaluation of $c_w$,
-i.e., $[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_w$.
-\\
-In both of the two cases, we know $\forall z \in \kw{FV}(\pi_1(\event_b)) $ there is a label $l \in \mathbb{N}$ for this variable,
-and by the $\flowsto$ definition, 
-$\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)},c)$.
-\\
-This lemma is proved.
-	\end{proof}
+
 
 \begin{lem}[Multiple-step $\flowsto$ Soundness]
 	\label{lem:depevents_exist}
@@ -242,7 +66,7 @@ For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and two assignment ev
 $\event_1, \event_2 \in \eventset^{\asn}$,
 if the trace $trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, and 
 if $\eventdep(\event_1, \event_2, \trace, c, D)$,
-then either there is a flows to relation,
+then either there is a flows to relation between the labeled variables from $\event_1$ and $\event_2$, i.e.,
 $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) $,
 or 
 there exists
@@ -250,7 +74,10 @@ $\event \in \trace'$ such that
 $
 \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
 $
-and $\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$.
+and $\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$ if $\event \in \eventset^{\asn}$
+or 
+$\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$ if $\event \in \eventset^{\test}$
+for every $z \in \kw{FV}(\pi_2(\event))$ and some label $l \in \lvar(c)$.
 %
 	\[
 	\begin{array}{l}
@@ -263,13 +90,17 @@ and $\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, 
 		% \\ \quad 
 		\implies 
 		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
-		\\ \qquad \quad \lor
+		\\ \qquad  \lor
 		\Big( 		
-		\exists \event \in \eventset \sthat  
-		\event \in \trace' \land
-			\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+		\exists \event \in \trace' \sthat  
+		\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+		\\ \qquad \quad
 		\land 
-		\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+		\event \in \eventset^{\asn} \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+		\\ \qquad \quad
+		\land 
+		\event \in \eventset^{\test} \implies \forall z \in \kw{FV}(\pi_2(\event)) \sthat \exists l \in \lvar(c) \sthat
+		\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
 		\Big) 
 		% \\ \qquad \quad  \lor
 		% \Big( 		
@@ -284,9 +115,6 @@ and $\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, 
 	\end{array}
 	\]
 \end{lem}
-The lemmas used in this proof are Lemma~\ref{lem:inv_indepevents_asn,lem:inv_indepevents_ctl}, Lemma~\ref{lem:ctldep_inv}, and the Inversion Lemmas~\ref{lem:inv_expr}, \ref{lem:inv_expr_gnl},
-\ref{lem:inv_event}, and \ref{lem:inv_live}.
-This Lemma is proved by showing the existence of contradiction.
 \begin{proof}
 	Taking arbitrary 
 	$ D \in \dbdom , c \in \cdom, \trace \in \ftdom $ and two events 
@@ -295,33 +123,73 @@ This Lemma is proved by showing the existence of contradiction.
 	for some 
 	$\trace' \in \ftdom$ and $\eventdep(\event_1, \event_2, \trace, c, D)$.
 	\\
-	Let $ \event \in \eventset$ be a trace such that
-	 \[
-		\event \in \trace' \land
-	\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-	\land 
-	\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-	\]
-	By type of $\event$, we have two cases,
-	\caseL{$\event \in \eventset^{\asn}$}
-	This case is proved by Lemma~\ref{lem:inv_indepevents_asn}.
-	\caseL{$\event \in \eventset^{\test}$}
+	Then it is sufficient to show
+	\[
+		\begin{array}{l}
+			\neg\Big( 		
+			\exists \event \in \trace' \sthat  
+			\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
+			\\ \qquad 
+			\land 
+			\big( 
+				\event \in \eventset^{\asn} \implies 
+				\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+			\big)
+			\\ \qquad
+			\land 
+			\big(
+			\event \in \eventset^{\test} \implies \forall z \in \kw{FV}(\pi_2(\event)) \sthat \exists l \in \lvar(c) \sthat
+			\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+			\big)
+			\Big) 
+			\\ \qquad \quad
+			\implies
+			\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+		\end{array}
+		\]
+		Take arbitrary $ \event \in \trace'$, it is sufficient to show
+		\[
+			\begin{array}{l}
+				\Big( 		
+				\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D) ~(\star)
+				\\ \qquad 
+				\lor 
+				\neg \big( 
+					\event \in \eventset^{\asn} \implies 
+					\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+				\big) ~(\diamond)
+				\\ \qquad
+				\lor 
+				\neg \big(
+				\event \in \eventset^{\test} \implies \forall z \in \kw{FV}(\pi_2(\event)) \sthat \exists l \in \lvar(c) \sthat
+				\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+				\big)
+				\Big)  ~(\square)
+				\\ \qquad \quad
+				\implies
+				\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+			\end{array}
+		\]
+		Splitting the preconditions, it is sufficient to show the following cases.
+		\[
+			\begin{array}{l}
+			(1) (\star) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+			\\
+			(2) 
+			\neg(\star) \land (\diamond) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+			\\
+			(3)
+			\neg(\star) \land (\square) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+		\end{array}
+		\]
+	\caseL{$(\star) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
+	This case is proved by the first case in Lemma~\ref{lem:inv_indepevents_asn}.
+
+	\caseL{$\neg(\star) \land (\diamond) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
+	This case is proved by the second case in Lemma~\ref{lem:inv_indepevents_asn}.
+
+	\caseL{$\neg(\star) \land (\square) \implies \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
 	This case is proved by Lemma~\ref{lem:inv_indepevents_ctl} and Lemma~\ref{lem:ctldep_inv}. 
-	% \\ 
-	% Assume 
-	% \[
-	% 	\begin{array}{l}
-	% \neg \flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) ~ (1)
-	% \\ \quad 
-	% \land 
-	% \Big( 
-	% 	\nexists \event \in \trace' \sthat  
-	% \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-	% \land\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
-	% \Big) ~ (2)
-	% \end{array}
-	% \]
-	we prove the two cases in Lemma~\ref{lem:inv_indepevents_asn} and~\ref{lem:inv_indepevents_ctl}.
 \end{proof}
 %
 %
@@ -357,9 +225,14 @@ This Lemma is proved by showing the existence of contradiction.
 			\\ \quad 
 			\land 
 			\Big( 
-			\nexists \event \in \trace' \sthat  
-			\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
-			\land\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+			\forall \event \in \trace' \sthat  
+				\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D) ~(\star)
+				\\ \qquad 
+				\lor 
+				\neg \big( 
+					\event \in \eventset^{\asn} \implies 
+					\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+				\big) ~(\diamond)
 			\Big) 
 			\\ \quad 
 			\implies 
@@ -506,7 +379,7 @@ Then by Definition~\ref{def:diff}, we know
 	\]
 We also know $\diff(\event_2, \event_2')$ by $(\star)$, and we have this case proved by the contradiction.
 %
-\subcaseL{$ \neg \flowsto(\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
+\subcaseL{$ \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D) \land \neg \flowsto(\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
 In this case, by Definition~\ref{def:feasible_flowsto}, we know
 \[
 	\pi_1(\event_z) \notin \kw{FV}(\expr_2 / \qexpr_2).
@@ -712,6 +585,184 @@ we have:
 	\]
 	This case is proved.
 \end{proof}
+
+\begin{lem}[Control Dependency Inversion]
+	\label{lem:ctldep_inv}
+	For every $c \in \cdom$, $D \in \dbdom, \trace \in \ftdom$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn} $, if $\eventdep(\event_1, \event_2, c, \trace, D)$ and
+	satisfying the Equation~\ref{eq:eventdep}(c) in Definition~\ref{def:event_dep},
+	% they are in the second case of the \emph{Event May-Dependency} relation from Definition~\ref{def:event_dep},
+	% $\eventdep(\event, \event, c, \trace, D)$ as Eq.~\ref{eq:ctlflowsto_inv},
+	then for all  $z \in \kw{FV}(\pi_1(\event_b))$ there exists a label $i \in \mathbb{N}$ such that 
+	$\flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)$
+	\begin{equation}
+		\label{eq:ctlflowsto_inv},		
+		\begin{array}{l}
+			\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom,
+			\event_1, \event_2 \in \eventset^{\asn} \sthat  
+			\\ 
+			\exists \vtrace_0,
+			\vtrace_1, \vtrace', \vtrace_3, \vtrace_3' \in \ftdom,\event_1' \in \eventset^{\asn}, {c}_1, {c}_2  \in \cdom, 
+			\event_b \in \eventset^{\test},
+			\trace_{ih} \in \ftdom \sthat  
+		\trace = [\event_1] \tracecat \trace_{ih} \tracecat [\event_2]
+		\\ \quad \land	  
+			  \config{{c}, \vtrace_0} \rightarrow^{*} 
+				\config{{c}_1, \vtrace_1 \tracecat [\event_1]}  \rightarrow^{*} 
+				\config{c_2,  \vtrace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_3} 
+			  \\ \qquad \land
+			  \config{{c}_1, \vtrace_1 \tracecat [\event_1']}  \rightarrow^{*} 
+			  \config{c_2,  \vtrace_1 \tracecat [\event_1'] \tracecat \trace' \tracecat [(\neg \event_b)] \tracecat \trace_3'} 
+			  \\ \qquad \land
+			\tlabel({\trace_3}) \cap \tlabel({\trace_3'}) = \emptyset
+			   \land \vcounter(\trace') ~  \pi_2(\event_b) = \vcounter(\trace) ~  \pi_2(\event_b)
+				\land \event_2 \eventin \trace_3
+			  \land \event_2 \not\eventin \trace_3'
+		\\ \quad \implies	
+		\forall z \in \kw{FV}(\pi_1(\event_b)) \sthat  
+		\exists l \in \mathbb{N} \sthat  
+		\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)},c)
+	\end{array}
+\end{equation}
+	\end{lem}
+	Proof Summary:
+	\\
+	Proving by using the Inversion Lemmas~\ref{lem:inv_expr}, \ref{lem:inv_expr_gnl}, 
+	\ref{lem:inv_event}, and \ref{lem:inv_live}, and the \emph{Event May-Dependency} definition of the second case.
+%
+	\begin{proof}
+		Take arbitrary $D \in \dbdom , c \in \cdom, \trace \in \ftdom,
+		\event_1, \event_2 \in \eventset^{\asn} $,
+%
+let $\vtrace_0,
+\vtrace_1, \vtrace', \vtrace_3, \vtrace_3' \in \ftdom, 
+\event_2' \in \eventset, \event_1' \in \eventset^{\asn}, \event_b, {c}_1, {c}_2$ be the traces, 
+events and commands satisfying the executions,
+by Inversion Lemma~\ref{lem:inv_event} on 
+$\event_2$, and $\event_b$,
+we have the following instance of the first execution in Eq.~\ref{eq:ctlflowsto_inv},
+ %
+%
+% Let $\event_{ih} = (b, l_b, n_b, v_b)$, by Eq.~\ref{eq:ctldep_inv1} and {Inversion Lemma~\ref{lem:inv_test}}, we have:
+\begin{equation}
+% \label{eq:ctldep_inv1}
+  \begin{array}{l}   
+\config{{c}, \vtrace_0} \rightarrow^{*} 
+% \config{[\assign{{x}_1}{\expr_1 / \query(\qexpr_1)}]^{l_1} ; {c}_1, \vtrace_1}  
+% \rightarrow^{\rname{assn/query}}
+%  \config{c_1, \vtrace_1 \tracecat [\event_1]} 
+%  \\ \qquad 
+%  \rightarrow^{*} 
+  \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
+  \vtrace_1 \tracecat [\event_1] \tracecat \trace} 
+  \\
+  \qquad 
+   \rightarrow^{\rname{if-b / while-b}} 
+  \config{(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3'/\clabel{\eskip}^{l'}; c_3'), 
+  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
+  \\
+  \qquad  \rightarrow^{*} 
+  \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2}; c_{3b}', 
+  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_{3a}}
+  \\ \qquad \rightarrow^{\rname{assn/query}}
+  \config{ c_{3b}', 
+  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_{3a} \tracecat [\event_2]}
+  \\ \qquad
+  \rightarrow^{*} 
+  \config{c_3, 
+  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b] \tracecat  \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b}}
+  % 
+\end{array}
+\end{equation}
+%  %
+, where $\trace_3 = \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b}$,
+% $x_1 = \pi_1(\event_1)$, $l_1 = {\pi_2(\event_1)}$, 
+$x_2 = \pi_1(\event_2)$, $l_2 = \pi_2(\event_2)$, 
+and $\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w)$ 
+is the conditional command of the assignment commands associated to the 
+$\event_b$ from Inversion Lemma~\ref{lem:inv_event} of testing event.
+\\
+% \[\begin{array}{l}   
+% 	  \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
+% 	  \vtrace_1 \tracecat [\event_1] \tracecat \trace} 
+% 	  \\
+% 	  \qquad 
+% 	   \rightarrow^{\rname{if-b / while-b}} 
+% 	  \config{(c_t;c_3' / c_f;c_3') /(c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3'), 
+% 	  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
+% 	  % 
+% 	\end{array}
+% 	\]
+% $\config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
+% \vtrace_1 \tracecat [\event_1] \tracecat \trace} 
+%  \rightarrow^{\rname{if-b / while-b}} 
+% \config{(c_t;c_3' / c_f;c_3') /(c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3'), 
+% \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
+% $
+The notation $(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3' / \clabel{\eskip}^{l'}; c_3')$ represents:
+\\
+In case of $\eif ([b]^{l_b}, c_t, c_f)$, if $\pi_3(\event_b) = \etrue$, we have the evaluation:
+$$
+\config{\eif ([b]^{l_b}, c_t, c_f) ;{c}_3', 
+\vtrace_1 \tracecat [\event_1] \tracecat \trace} 
+ \rightarrow^{\rname{if-b}} 
+\config{c_t;c_3' 
+\trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
+$$
+%
+The same for case of $\eif ([b]^{l_b}, c_t, c_f)$ with $\pi_3(\event_b) = \efalse$,
+and case of $\ewhile [b]^{l_b} \edo (c_w)$ with $\pi_3(\event_b) = \etrue$ and $\pi_3(\event_b) = \efalse$.
+%
+\\
+By the command label consistency,
+we also have the instance of second execution as follows:
+\begin{equation}
+\label{eq:ctldep_inv2}
+\begin{array}{l}   
+  \config{{c}, \vtrace_0} \rightarrow^{*} 
+%   \config{[\assign{{x}_1}{\expr_1 / \query(\qexpr_1)}]^{l_1} ; {c}_1, \vtrace_1}  
+%   \rightarrow^{\rname{\rname{assn/query}}}
+%    \config{c_1, \vtrace_1 \tracecat [\event_1]} 
+%    \\
+%     \qquad \rightarrow^{*} 
+    \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
+    \vtrace_1 \tracecat [\event_1] \tracecat \trace'} 
+    \\
+    \qquad 
+     \rightarrow^{\rname{if-b / while-b}} 
+    \config{(c_f;c_3' / c_t;c_3') /(\clabel{\eskip}^{l'}; c_3' / c_w; \ewhile [b]^{l_b} \edo (c_w);{c}_3' ), 
+	\\ \qquad \qquad \qquad \qquad
+	\trace_1 \tracecat [\event_1]  \tracecat \trace' \tracecat [\neg \event_b]} 
+    \\
+    \qquad   \rightarrow^{*} 
+    \config{c_3, 
+    \trace_1 \tracecat [\event_1]  \tracecat \trace' \tracecat [\neg \event_b] \tracecat  \trace_3'}
+    % 
+  \end{array}
+\end{equation}
+%
+By the label consistency, and $\tlabel({\trace_3}) \cap \tlabel({\trace_3'}) = \emptyset$, 
+% i.e., 
+we know $\trace_3$ and $\trace_3'$ doesn't contain any event of evaluating the commands in $c_3'$.
+Otherwise, $\tlabel({\trace_3}) \cap \tlabel({\trace_3'}) \neq \emptyset$, which is a contradiction.
+\\
+Since $\trace_3= \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b} $, we know $\event_2$ doesn't comes from evaluating
+of $c_3'$, i.e.,:
+\\
+In the case of $\eif ([b]^{l_b}, c_t, c_f)$, $\event_2$ comes from the evaluation of $c_t$ or $c_f$,
+Then we know
+\\
+ $[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_t 
+ \lor [\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_f$;
+\\
+and in the case of $\ewhile [b]^{l_b} \edo (c_w)$, $\event_2$ comes from the evaluation of $c_w$,
+i.e., $[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} \in_c c_w$.
+\\
+In both of the two cases, we know $\forall z \in \kw{FV}(\pi_1(\event_b)) $ there is a label $l \in \mathbb{N}$ for this variable,
+and by the $\flowsto$ definition, 
+$\flowsto(z^l, \pi_1(\event_2)^{\pi_2(\event_2)},c)$.
+\\
+This lemma is proved.
+	\end{proof}
 %
 \input{appendices/thm-adaptivity/lem_basicinversion}
 %
@@ -858,32 +909,7 @@ $\eventdep(\event_1, \event_3, \trace_{12}\tracecat\trace_{23}, c, D)$.
 \end{lem}
 %
 %
-% \begin{lem}(Control Dependency Transitivity)
-% \label{lem:ctl_trans}
-% For every $D \in \dbdom , c \in \cdom, \event_1, \event_2 \in \eventset^{\test}, \event_3 \in \eventset$
-% if $\eventdep^{\ctl}(\event_1, \event_2, c, D)$ and $\eventdep^{\ctl}(\event_2, \event_3, c, D)$,
-% then $\eventdep^{\ctl}(\event_1, \event_3, c, D)$.
-% %
-% \[
-%   \forall D \in \dbdom , c \in \cdom, \event_1, \event_2 \in \eventset^{\test}, \event_3 \in \eventset \sthat 
-%   \eventdep^{\ctl}(\event_1, \event_2, c, D) 
-%   \land \eventdep^{\ctl}(\event_2, \event_3, c, D)
-%   \implies \eventdep^{\ctl}(\event_1, \event_3, c, D)
-% \]
-% \end{lem}
-%
-% \begin{lem}
-% 	\label{lem:eventdep_trans}
-% (\emph{Variable May-Dependency} Transitivity)
-% 	\[
-% 	\forall c \in \cdom, D \in \dbdom , \event_1, \event_2, \event_3 \in \eventset^{\asn}\sthat  
-% 	\eventdep(\event_1, \event_2, c, D) 
-% 	\land
-% 	\eventdep(\event_2, \event_3, c, D) 
-% 	\implies
-% 	\eventdep(\event_1, \event_3, c, D)
-% 	\]
-%   \end{lem}
+
 %
 \begin{lem}[\emph{Variable May-Dependency} Transitivity]
 	\label{lem:vardep_trans}
