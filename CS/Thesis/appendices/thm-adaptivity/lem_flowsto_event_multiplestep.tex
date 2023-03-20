@@ -10,7 +10,7 @@
 		%  event and a testing event respectively.
 	% \begin{itemize}
 	% 	\item
-		then either there is a direct \emph{feasible flows to} relation between
+		then either there is a direct \emph{feasible data-flow} relation between
 		$\pi_1(\event_1)^{\pi_2(\event_1)}$ and $\pi_1(\event_2)^{\pi_2(\event_2)}$, i.e.,
 		$\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$
 		or
@@ -24,7 +24,7 @@
 		% % $\event_1, \event_2 \in \eventset^{\asn}$,
 		% % if the trace $\trace$ has the form $\trace = [\event_1] \tracecat \trace' \tracecat [\event_2]$ with $\trace' \in \ftdom$, and $\eventdep(\event_1, \event_2, \trace, c, D)$,
 		% then for every $\event \in \trace'$, 
-		% if it either doesn't have the \emph{Event May-Dependency} relation on $\event_1$, 
+		% if it either doesn't have the \emph{Event May-dependency} relation on $\event_1$, 
 		% or $\pi_1(\event)^{\pi_2(\event)}$ doesn't have the $\flowsto$ relation with $ \pi_1(\event_2)^{\pi_2(\event_2)}$,
 		% then the labelled variable $\pi_1(\event_1)^{\pi_2(\event_1)}$ directly flows to the other one $\pi_1(\event_2)^{\pi_2(\event_2)}$, 
 		% i.e., $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$.
@@ -54,7 +54,7 @@
 		\]
 % 		\item
 % If $\event_2 \in \eventset^{\test}$, 
-% then for every $\event \in \trace'$, if it either doesn't have the \emph{Event May-Dependency} relations on $\event_1$,
+% then for every $\event \in \trace'$, if it either doesn't have the \emph{Event May-dependency} relations on $\event_1$,
 % or $\pi_1(\event) \notin \kw{FV}(\pi_1(\event_2)) $,
 % then 
 % $\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_2))$, and $ {\pi_2(\event_1)} = \llabel(\trace)$
@@ -502,7 +502,7 @@ This case is proved.
 	For every $c \in \cdom$, $D \in \dbdom, \trace \in \ftdom$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn} $, if $\eventdep(\event_1, \event_2, c, \trace, D)$ 
 	where $\event_1$ and $\event_2$
 	satisfy the Equation~\ref{eq:eventdep}(c) in Definition~\ref{def:event_dep},
-	% they are in the second case of the \emph{Event May-Dependency} relation from Definition~\ref{def:event_dep},
+	% they are in the second case of the \emph{Event May-dependency} relation from Definition~\ref{def:event_dep},
 	% $\eventdep(\event, \event, c, \trace, D)$ as Eq.~\ref{eq:ctlflowsto_inv},
 	$\event_b \in \eventset^{\test}$ is the witness of the testing event,
 	then for all  $z \in \kw{FV}(\pi_1(\event_b))$ there exists a label $i \in \mathbb{N}$ such that 
@@ -540,7 +540,7 @@ This case is proved.
 	Proof Summary:
 	\\
 	Proving by using the Inversion Lemmas~\ref{lem:inv_expr}, \ref{lem:inv_expr_gnl}, 
-	\ref{lem:inv_event}, and \ref{lem:inv_live}, and the \emph{Event May-Dependency} definition of the second case.
+	\ref{lem:inv_event}, and \ref{lem:inv_live}, and the \emph{Event May-dependency} definition of the second case.
 %
 	\begin{proof}
 		Take arbitrary $D \in \dbdom , c \in \cdom, \trace \in \ftdom,

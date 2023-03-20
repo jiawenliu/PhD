@@ -111,7 +111,7 @@ occurrence of a label in a trace as below.
 
 
 {Below is the \emph{event may-dependency} between events based on the \emph{event differ in value}.}
-\begin{defn}[Event May-Dependency]
+\begin{defn}[Event May-dependency]
 \label{def:event_dep}
 An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment event $\event_1 \in \eventset^{\asn}$ in a program ${c}$  with a hidden database $D$ and a witness trace $\trace \in \ftdom$,
 $\eventdep(\event_1, \event_2, [\event_1] \tracecat \trace \tracecat [\event_2], c, D)$ if and only if
@@ -198,7 +198,7 @@ This is correct because the control dependency can only be passed through the gu
 and this guard must be evaluated into two different values ($\event_b$ and $\neg \event_b$) in the two executions.
 
 We can now extend the dependency relation to variables by considering all the assignment events generated during the program’s execution. 
-\begin{defn}[Variable May-Dependency]
+\begin{defn}[Variable May-dependency]
   \label{def:var_dep}
 A variable ${x}_2^{l_2} \in \lvar(c)$  \emph{may-dependend} on the 
   variable ${x}_1^{l_1} \in \lvar(c)$ in a program ${c}$,
