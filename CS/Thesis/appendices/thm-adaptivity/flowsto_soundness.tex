@@ -25,17 +25,17 @@ The proof is summarized informally as below.
 For  arbitrary two $x^i, y^j \in \lvar(c)$, with \emph{Variable May-Dependency} relation, in order to show there exists a 
 "flows-to chain" relation from the static analysis results from $x^i$ to $y^j$, it is sufficient to show:
   \\
-  1. $x^i$ is directly used in the expression of the assignment command associated to $y^j$, or a boolean
+  1. \textbf{One-step Soundness.} $x^i$ is directly used in the expression of the assignment command associated to $y^j$, or a boolean
   expression of the guard for a $\eif$ or $\ewhile$ command with the assignment command associated to $y^j$ showing up in the body of that command, 
   we call it, $x^i$ directly flows to $y^j$,
   i.e.,
-  $ \flowsto(x^i, y^j, {c})$;
-  \\
-  2. otherwise, there exists another labelled variable $z^l$ with \emph{variable May-Dependency} relation on $x^i$ and 
+  \[\flowsto(x^i, y^j, {c})\]
+
+  2. \textbf{Multiple-step Soundness.}, 
+  there exists another labelled variable $z^l$ with \emph{variable May-Dependency} relation on $x^i$ and 
   $z^l$ directly flows to $y^j$, where the \emph{variable May-Dependency} relation between $x^i$ and $z^l$
    implies a "sub flowsto-chain" from $z^i$ to $z^l$, 
   i.e., 
-  \\
   \[
     \begin{array}{l}
     \exists z^l \in \lvar(c).
@@ -54,73 +54,79 @@ For  arbitrary two $x^i, y^j \in \lvar(c)$, with \emph{Variable May-Dependency} 
 %
 By definition of $\vardep(x^i, y^j, {c})$, 
 let $D \in \dbdom$ be the dataset,
-and $\trace \in \ftdom$, $\event_x, \event_y$ be the trace and two events satisfying the definition, 
+and $\trace \in \ftdom$, $\event_x, \event_y$ be the trace and two events 
 with $\pi_1(\event_x) = x$ and $\pi_1(\event_y) = y$,
-$$
-\begin{array}{l}
-(\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-\\ \qquad 
-\lor 
-(\exists \event_z \in \trace' \sthat  \event_z \in \eventset^{\asn} \land 
-    \eventdep(\event_x, \event_z, \trace[\event_x: \event_z], c, D)
-    \\ \qquad 
-    \implies 
-    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  
-    \\ \qquad
-    n \geq 0 \land
-    \flowsto(x^i,  z_1^{r_1}, c) 
-    \land \ldots \land \flowsto(z_n^{r_n},  \pi_1(\event_z)^{\pi_2(\event_z)}, c)
-  )
-  \\ \qquad \qquad
-  \land 
-    \flowsto(\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
-\end{array}
-$$
-%
-Then, it is clearer to prove the following two lemmas,
-\\
-1. Existence of a middle event:
-in Lemma~\ref{lem:depevents_exist}.
-%
-\\
-2. The middle event with a sub-trace implies a "sub flowsto-chain", 
- by induction on the trace $\trace$
-%
-\[
-  \begin{array}{l}
-		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset \sthat 
-    \event_1, \event_2 \in \eventset^{\asn} \land 
-		 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
-		\\ \qquad 
-    \land
-		\eventdep(\event_1, \event_2, \trace, c, D) 
-		\\ \qquad 
-		\implies 
-    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  
-    \\ \qquad n \geq 0 \land
-		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
-    \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
-	\end{array}
-\]
-with the induction hypothesis:
-\[
-  \begin{array}{l}
-    \forall \event_{ih1}, \event_{ih2} \in \trace \sthat  \event_{ih1}, \event_{ih2} \in \eventset^{\asn} 
-    \land
-		 \exists \trace' \in \ftdom \sthat  
-     \trace[\event_{ih1}:\event_{ih2}] = [\event_{ih1}] \tracecat \trace' \tracecat [\event_{ih2}]
-		\\ \qquad 
-    \land
-		\eventdep(\event_{ih1}, \event_{ih2}, \trace[\event_{ih1}:\event_{ih2}], c, D) 
-		\\ \quad 
-		\implies 
-    \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  
-    \\ \qquad 
-    n \geq 0 \land
-		\flowsto(\pi_1(\event_{ih1})^{\pi_2(\event_{ih1})},  z_1^{r_1}, c) 
-    \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_{ih2})^{\pi_2(\event_{ih2})}, c) 
-  \end{array}
+such that
+\[ \eventdep(\event_x, \event_y, \trace, c, D). 
   \]
+Then we show the soundness w.r.t. the \emph{Event May-dependency} relation
+through the
+\textbf{One-step Soundness} and the \textbf{Multiple-step Soundness} cases.
+% $$
+% \begin{array}{l}
+% (\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
+% \\ \qquad 
+% \lor 
+% (\exists \event_z \in \trace' \sthat  \event_z \in \eventset^{\asn} \land 
+%     \eventdep(\event_x, \event_z, \trace[\event_x: \event_z], c, D)
+%     \\ \qquad 
+%     \implies 
+%     \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  
+%     \\ \qquad
+%     n \geq 0 \land
+%     \flowsto(x^i,  z_1^{r_1}, c) 
+%     \land \ldots \land \flowsto(z_n^{r_n},  \pi_1(\event_z)^{\pi_2(\event_z)}, c)
+%   )
+%   \\ \qquad \qquad
+%   \land 
+%     \flowsto(\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+% \end{array}
+% $$
+% %
+% Then, it is clearer to prove the following two lemmas,
+% \\
+% 1. Existence of a middle event:
+% in Lemma~\ref{lem:depevents_exist}.
+% %
+% \\
+% 2. The middle event with a sub-trace implies a "sub flowsto-chain", 
+%  by induction on the trace $\trace$
+% %
+% \[
+%   \begin{array}{l}
+% 		\forall D \in \dbdom , c \in \cdom, \trace \in \ftdom \sthat  \forall \event_1, \event_2 \in \eventset \sthat 
+%     \event_1, \event_2 \in \eventset^{\asn} \land 
+% 		 \exists \trace' \in \ftdom \sthat  \trace = [\event_1] \tracecat \trace' \tracecat [\event_2]
+% 		\\ \qquad 
+%     \land
+% 		\eventdep(\event_1, \event_2, \trace, c, D) 
+% 		\\ \qquad 
+% 		\implies 
+%     \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  
+%     \\ \qquad n \geq 0 \land
+% 		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)},  z_1^{r_1}, c) 
+%     \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) 
+% 	\end{array}
+% \]
+% with the induction hypothesis:
+% \[
+%   \begin{array}{l}
+%     \forall \event_{ih1}, \event_{ih2} \in \trace \sthat  \event_{ih1}, \event_{ih2} \in \eventset^{\asn} 
+%     \land
+% 		 \exists \trace' \in \ftdom \sthat  
+%      \trace[\event_{ih1}:\event_{ih2}] = [\event_{ih1}] \tracecat \trace' \tracecat [\event_{ih2}]
+% 		\\ \qquad 
+%     \land
+% 		\eventdep(\event_{ih1}, \event_{ih2}, \trace[\event_{ih1}:\event_{ih2}], c, D) 
+% 		\\ \quad 
+% 		\implies 
+%     \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  
+%     \\ \qquad 
+%     n \geq 0 \land
+% 		\flowsto(\pi_1(\event_{ih1})^{\pi_2(\event_{ih1})},  z_1^{r_1}, c) 
+%     \land \ldots \land \flowsto(z_n^{r_n}, \pi_1(\event_{ih2})^{\pi_2(\event_{ih2})}, c) 
+%   \end{array}
+%   \]
 %
 %
 \begin{proof}
