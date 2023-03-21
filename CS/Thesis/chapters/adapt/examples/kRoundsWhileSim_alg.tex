@@ -19,9 +19,9 @@
     \end{centering}
     \end{subfigure}
     \quad
-      \begin{subfigure}{.45\textwidth}
+      \begin{subfigure}{.55\textwidth}
       \begin{centering}
-      \begin{tikzpicture}[scale=\textwidth/22cm,samples=200]
+      \begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
     \draw[] (0, 7) circle (0pt) node
     {\textbf{$x^1: {}^{1}_{1}$}};
     \draw[] (0, 4) circle (0pt) node
@@ -31,8 +31,8 @@
     \draw[] (10, 4) circle (0pt) node {{ $j^4: {}^{k}_{0}$}};
     %
     % Value Dependency Edges:
-    \draw[ ultra thick, -latex, densely dotted,] (0, 4.2)  -- (0, 6.5) ;
-    \draw[ ultra thick, -Straight Barb, densely dotted,] (2, 4.5) arc (150:-180:1);
+    \draw[ thick, -latex, densely dotted,] (0, 4.2)  -- (0, 6.5) ;
+    \draw[ thick, -Straight Barb, densely dotted,] (2, 4.5) arc (150:-180:1);
     \draw[  -Straight Barb] (11.3, 4.7) arc (150:-150:1);
     \draw[  -latex] (10, 4.6)  -- (10, 6.5) ;
     % Control Dependency
@@ -46,6 +46,6 @@
       \end{subfigure}
     }
      \caption{(a) The k adaptivity rounds example with simple while loop (b).
-      The estimated dependency graph generated from $\THESYSTEM$.}
+      The estimated dependency graph by $\THESYSTEM$.}
     \label{fig:kadaptwhile_alg}
     \end{figure}

@@ -25,74 +25,74 @@
     As shown in the semantics-based dependency graph in Figure~\ref{fig:multiRoundsS}(b), 
     there is an edge from $p^7$ to itself representing the existence of \emph{Variable May-Dependency} from $p^7$ on itself,
     and the visiting times of labeled variable $p^7$ is 
-    $w_{}(\trace_0)$. $w_{}(\trace_0)$ will count the execution times of command $\clabel{\assign{p}{\query(\chi[y]+p)} }^{7}$ during execution, which is expected to be equal to the loop iteration numbers, i.e., initial value of input $k$ from the initial trace $\trace_0$.
+    $\lambda \trace_0 \sthat k$. 
+    The function $\lambda \trace_0 \sthat \env(\trace_0) k$ counts the execution times of command $\clabel{\assign{p}{\query(\chi[y]+p)} }^{7}$ during execution, which is expected to be equal to the loop iteration numbers, i.e., initial value of input $k$ from the initial trace $\trace_0$.
     As a result, the walk with the longest query length 
     is
-    $p^7  \to \cdots \to p^7 \to y^4  \to z^1 $ with the vertex $p^7$ visited $w_{p^7}(\trace_0)$, as the dotted arrows. 
+    $p^7  \to \cdots \to p^7 \to y^4  \to z^1 $ with the vertex $p^7$ visited $\env(\trace_0) k$ times, as the dotted arrows. 
     The adaptivity based on this walk
-    is $2 + w_{p^7}(\trace_0)$, instead of $2$. 
+    is $\lambda \trace_0 \sthat \env(\trace_0) k + 2$, instead of $2$. 
     Though the $\THESYSTEM$ is able to give us $2 + k$,  as an accurate bound w.r.t this definition.
         {\small
         \begin{figure}
             \centering
            %}
            \quad
-           \begin{subfigure}{.3\textwidth}
+           \begin{subfigure}{.8\textwidth}
            \begin{centering}
-       {\footnotesize
+       {
            $ \begin{array}{l}
                    \kw{multiRoundsS(k)} \triangleq \\
                       \clabel{ \assign{j}{0}}^{0} ; 
-                       \clabel{\assign{z}{\query(0)} }^{1} ;  \\           
-                       \clabel{\assign{p}{0} }^{2} ; 
-                       \eif(\clabel{ k = 0}^{3}, \\
-                        \quad \clabel{ \assign{y}{\query(z)}}^{4}, \\
-                        \quad \clabel{\eskip}^5);\\
+                       \clabel{\assign{z}{\query(0)} }^{1} ;      
+                       \clabel{\assign{p}{0} }^{2} ;  \\
+                       \eif(\clabel{ k = 0}^{3},
+                         \clabel{ \assign{y}{\query(z)}}^{4},
+                         \clabel{\eskip}^5);\\
                        \ewhile ~ \clabel{j \neq k}^{6} ~ \edo ~ \Big(
                         \\
-                        \quad \clabel{\assign{p}{\query(\chi[y]+p)} }^{7}  ; \\
-                        \quad \clabel{\assign{j}{j + 1}}^{8}\\
-                        \eif(\clabel{ j \neq k - 2}^{9}, \\
-                        \quad \quad \clabel{ \assign{p}{0}}^{10} ,\\ 
-                        \quad \quad \clabel{\eskip}^{10})
-                        \quad \Big);\\
+                         \qquad \clabel{\assign{p}{\query(\chi[y]+p)} }^{7}  ; \\
+                        \qquad \clabel{\assign{j}{j + 1}}^{8} ; \\
+                        \qquad  \eif(\clabel{ j \neq k - 2}^{9}, 
+                        \clabel{ \assign{p}{0}}^{10} ,
+                        \clabel{\eskip}^{10}) \Big) \\ 
                    \end{array}
            $       
        }
            \caption{}
            \end{centering}
            \end{subfigure}
-           \begin{subfigure}{.65\textwidth}
+           \begin{subfigure}{.8\textwidth}
                \begin{centering}
                \begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
            % Variables Initialization
-           \draw[] (-5, 2) circle (0pt) node{{ $z^1: {}^{w_{z^1}}_{1}$}};
-           \draw[] (-5, 7) circle (0pt) node{{$p^2: {}^{w_{p^2}}_{0}$}};
-           \draw[] (-5, 4) circle (0pt) node{{ $y^4: {}^{w_{y^4}}_{1}$}};
+           \draw[] (-5, 2) circle (0pt) node{{ $z^1: {}^{\lambda \trace_0 \sthat 1}$}};
+           \draw[] (-5, 7) circle (0pt) node{{$p^2: {}^{\lambda \trace_0 \sthat 1}$}};
+           \draw[] (-5, 4) circle (0pt) node{{ $y^4: {}^{\lambda \trace_0 \sthat 1}$}};
            % Variables Inside the Loop
-            \draw[] (0, 6) circle (0pt) node{{ $p^7: {}^{w_{p^7}}_{1}$}};
-            \draw[] (0, 2) circle (0pt) node{{ $p^{10}: {}^{w_{p^{10}}}_{0}$}};
+            \draw[] (0, 6) circle (0pt) node{ $p^7: {}^{\lambda \trace_0 \sthat \env(\trace_0) k}$};
+            \draw[] (0, 2) circle (0pt) node{ $p^{10}: {}^{\lambda \trace_0 \sthat \env(\trace_0) k}$};
             % Counter Variables
-            \draw[] (5, 6) circle (0pt) node {{$j^0: {}^{w_{j^0}}_{0}$}};
-            \draw[] (5, 2) circle (0pt) node {{ $j^8: {}^{w_{j^8}}_{0}$}};
+            \draw[] (5, 6) circle (0pt) node {$j^0: {}^{\lambda \trace_0 \sthat 1}$};
+            \draw[] (5, 2) circle (0pt) node { $j^8: {}^{\lambda \trace_0 \sthat \env(\trace_0) k}$};
             %
             % Value Dependency Edges:
-            \draw[ ultra thick, -Straight Barb, densely dotted,] (0.8, 7) arc (220:-100:1);
-            \draw[  -latex] (-1.5, 6)  to  [out=-130,in=130]  (-1.5, 2);
+            \draw[ thick, -Straight Barb, densely dotted,] (0.8, 7) arc (220:-100:1);
+            \draw[  -latex] (-1.5, 5.5)  to  [out=-130,in=130]  (-1.5, 2);
             % Value Dependency Edges on Initial Values:
-            \draw[ ultra thick, -latex, densely dotted,] (-5, 3.5)  -- (-5, 2.5) ;
-            \draw[  -latex,] (-1.5, 6)  -- (-4, 7) ;
-            \draw[  ultra thick, -latex, densely dotted,] (-1.5, 6)  -- (-4, 4.7) ;
+            \draw[ thick, -latex, densely dotted,] (-5, 3.5)  -- (-5, 2.5) ;
+            \draw[  -latex,] (-1.5, 5.5)  -- (-4, 7) ;
+            \draw[  thick, -latex, densely dotted,] (-1.5, 5.5)  -- (-4, 4.7) ;
+            \draw[  -latex,] (-1.5, 5.5)  -- (-4, 2) ;
             %
             % Value Dependency For Control Variables:
             \draw[  -Straight Barb] (6.5, 2.5) arc (150:-150:1);
             % Control Dependency
             \draw[  -latex] (5, 2.5)  -- (5, 5.5) ;
-            \draw[ -latex] (1.5, 6)  -- (3.5, 6) ;
-            \draw[ -latex] (1.5, 6)  -- (3.5, 2) ;
+            \draw[ -latex] (1.2, 6)  -- (3.5, 6) ;
+            \draw[ -latex] (1.2, 6)  -- (3.5, 2) ;
             \draw[ -latex] (1.5, 1.8)  -- (3.5, 2) ; 
             % Edges Produced by Transitivity
-            \draw[  -latex,] (-1.5, 6)  -- (-4, 2) ;
             \draw[ -latex] (1.5, 1.8)  -- (3.5, 6) ; 
            \end{tikzpicture}
             \caption{}

@@ -28,7 +28,7 @@
     \end{subfigure}
     \begin{subfigure}{.55\textwidth}
       \begin{centering}
-      \begin{tikzpicture}[scale=\textwidth/18cm,samples=300]
+      \begin{tikzpicture}[scale=\textwidth/15cm,samples=300]
 % Variables Initialization
 \draw[] (-6, 1) circle (0pt) node{{ $a^0: {}^1_{0}$}};
 \draw[] (-6, 7) circle (0pt) node{{ $x^1: {}^{1}_{0}$}};
@@ -42,16 +42,16 @@
    \draw[] (6, 0) circle (0pt) node {{ $j^8: {}^{k}_{0}$}};
    %
    % Value Dependency Edges:
-   \draw[ ultra thick, -latex, densely dotted,] (0.5, 7.2) arc (220:-100:1.2);
+   \draw[ thick, -latex, densely dotted,] (0.5, 7.2) arc (220:-100:1.2);
    \draw[  -latex] (6, 6.5)  -- (6, 8.5) ;
    \draw[  -latex] (6, 0.5)  -- (6, 2.5) ;
-   \draw[ ultra thick, -latex, densely dotted,] (1.5, 1.0) arc (120:-200:1.2);
+   \draw[ thick, -latex, densely dotted,] (1.5, 1.0) arc (120:-200:1.2);
    % Value Dependency Edges on Initial Values:
    \draw[  -latex,] (-1.5, 2)  -- (-3.5, 2) ;
    \draw[  -latex,] (-1.5, 6)  -- (-3.5, 6) ;
    %
-   \draw[ ultra thick, -latex, densely dotted,] (-1, 2.5)  to  [out=-220,in=220]  (-1, 5.5);
-   \draw[ ultra thick, -latex, densely dotted,]  (0.5, 5.5) to  [out=-60,in=60] (0.6, 2.5) ;
+   \draw[ thick, -latex, densely dotted,] (-1, 2.5)  to  [out=-220,in=220]  (-1, 5.5);
+   \draw[ thick, -latex, densely dotted,]  (0.5, 5.5) to  [out=-60,in=60] (0.6, 2.5) ;
    % Control Dependency
   \draw[  -latex, ] (7.5, 6.5) arc (150:-150:1);
   \draw[  -latex, ] (7.5, 0.5) arc (150:-150:1);
