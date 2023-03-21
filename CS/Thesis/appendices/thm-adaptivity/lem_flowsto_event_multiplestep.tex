@@ -17,8 +17,8 @@
 		there exists an assignment event $\event \in \trace'$
 		such that
 		$\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)$ and 
+		$\event$ and $\event_2$ are in the \emph{feasible flows to} relation,
 		$\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$.
-
 		% If $\event_2 \in \eventset^{\asn}$,
 		% % For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, and two assignment events 
 		% % $\event_1, \event_2 \in \eventset^{\asn}$,
@@ -229,7 +229,7 @@ Then by Definition~\ref{def:diff}, we know
 \[
 	\neg \diff(\event_2, \event_2').
 	\]
-We also know $\diff(\event_2, \event_2')$ by $(\star)$, and we have this case proved by the contradiction.
+Since we know $\diff(\event_2, \event_2')$ by $(\star)$, then we have this case proved by the contradiction.
 %
 \subcaseL{$ \eventdep(\event_1, \event, \trace[\event_1:\event_z], c, D) \land \neg \flowsto(\pi_1(\event_z)^{\pi_2(\event_z)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$}
 In this case, by Definition~\ref{def:feasible_flowsto}, we know
@@ -364,7 +364,7 @@ This case is proved.
 	in $\event_2$,
 	or there exists an assignment event
 	$\event \in \trace'$ such that 
-	the variable in $\event$ shows up in the boolean expression 
+	the variable assigned in $\event$ shows up in the boolean expression 
 	in $\event_2$ and
 	% $\pi_1(\event) \in \kw{FV}(\pi_1(\event_2))$ and 
 	$\eventdep(\event_1, \event, \trace[\event_1:\event], c, D)$.
