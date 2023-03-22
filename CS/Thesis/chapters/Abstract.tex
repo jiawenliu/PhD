@@ -93,10 +93,10 @@
     However, these methods focus only on the overall quantity and ignore the path sensitivity in the program.
     For this reason, the \emph{reachability-bound}s of the locations in different sub-procedures are usually over-approximated. 
     As far as we know, there is no general analysis algorithm that computes the reachability-bound for every program location directly and path-sensitively. 
-    To this end, we present a path-sensitive reachability-bound algorithm.
-    In comparison with previous works, our algorithm is the first one to exploit the path sensitivity to compute a precise reachability-bound for every program location.
-    By doing this, we bring together two techniques from resource analysis: 1. amortized bound analysis through program abstraction and ranking function estimation, and 2. summarization-based multiple loop paths refinement.
-    Building on this combination of techniques, we focus on two new quantities, \emph{path reachability-bound} and \emph{loop reachability-bound}, which allow us to leverage the precision and efficiency of the two techniques mentioned above, and compute precise reachability-bounds for each program point in a path-sensitive way.
+    To this end, we present a path-sensitive reachability-bound algorithm, which exploit the path sensitivity to compute a precise reachability-bound for every program location.
+    % In comparison with previous works, our algorithm is the first one to exploit the path sensitivity to compute a precise reachability-bound for every program location.
+    % By doing this, we bring together two techniques from resource analysis: 1. amortized bound analysis through program abstraction and ranking function estimation, and 2. summarization-based multiple loop paths refinement.
+    % Building on this combination of techniques, we focus on two new quantities, \emph{path reachability-bound} and \emph{loop reachability-bound}, which allow us to leverage the precision and efficiency of the two techniques mentioned above, and compute precise reachability-bounds for each program point in a path-sensitive way.
     We implemented our algorithm in a prototype, and we report on an experimental comparison with state-of-art tools over four different sets of benchmarks.
     \end{abstractpage}
     
