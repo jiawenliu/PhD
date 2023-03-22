@@ -64,7 +64,7 @@ Third, we can finally define adaptivity using the semantics-based dependency gra
 Looking again at Figure~\ref{fig:overview-example}(b), and assuming that $\tau(k) \geq 1$, we can see that the 
 the walk along the dashed arrows,  $l^{6} \to a^5 \to x^3 $ has two vertices with query annotation $1$, and we cannot find another walk having more than $2$ vertices with query annotation $1$. So the adaptivity of the program in Figure~\ref{fig:overview-example}(a) with respect to $\tau$ is $2$. If we consider an initial state $\tau$ such that $\tau(k)=0$ we have that the adaptivity with respect to $\tau$ is instead $1$. 
 
-\subsection{Static Analysis}
+\subsection{Program Analysis}
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Previous Version Above for Reference  %%%%%%%%%%%%%%%%%
 To compute statically a sound and accurate upper bound on the \emph{adaptivity} of a program $c$,
 we design a program analysis framework named {\THESYSTEM} which we will describe formally in \ref{sec:adapt-static}. 
