@@ -48,11 +48,15 @@
   In order to show the completeness, it is sufficient to show two following two sub goals,
 
   1. By line: 15, $\pathsearch(\progG(c))$ can find a path $p_{max}$ such that 
-  $$M_{\config{\kw{adapt_{p_{max}}}, \trace_0}} = \qlen(k_{max})(\trace_0)$$ 
+  $$
+  M_{\config{\kw{adapt_{p_{max}}}, \trace_0}} = \qlen(k_{max})(\trace_0)
+  $$ 
 
-  2. This $p_{x,y}$ is the longest weighted path found by $\pathsearch(\progG(c))$, and $\kw{adapt_{p_{max}}}$ is returned as the final output.
+  2. $\pathsearch(\progG(c))$ finds this longest path $p_{x,y}$ 
+  % is the longest weighted path found by $\pathsearch(\progG(c))$,
+  and $\kw{adapt_{p_{max}}}$ is returned as the final output.
 
-  By the property of ACG, we know
+  By the property of an acyclic directed graph, we know
   every $s_i \in (s_1, \ldots, s_n)$ shows up exactly once. 
   Then we know this walk is a path and
   \[
@@ -60,15 +64,20 @@
   \]
   %
   By line: 13, through searching on all the vertices connected on $\progG(c)$ from the starting node $s_i$,
-  we know that $\pathsearch(\progG(c))$ finds this path $p_{max} = (s_1, \ldots, s_n)$.
-
+  by the soundness of the breath first search strategy,
+  we know that
+  % we know that 
+  $\pathsearch(\progG(c))$ finds this path $p_{max} = (s_1, \ldots, s_n)$ and 
+  \[
+    \pathsearch(\progG(c)) = \kw{adapt_{p_{max}}}
+  \]
   So we have (2) proved.
   
   Then, to show (1), it is sufficient to show 
   $$
   M_{\config{\kw{adapt_{p_{max}}}, \trace_0}} =  |(s | s \in (s_1, \ldots, s_n) \land (s, 1) \in \progF(c))|.
   $$
-  By line: 15, let $\sccgraph_1, \ldots, \sccgraph_m$ be all the SCC, where each vertex in 
+  By line: 15, let $\sccgraph_1, \ldots, \sccgraph_m$ be all the strongly connected components, where each vertex in 
   $(s_1, \ldots, s_n) $ belongs to, we know
   \[
     \kw{adapt_{p_{max}}} = \sum_{\sccgraph_i \in (\sccgraph_1, \ldots, \sccgraph_m)} \kw{adapt_{scc}[\sccgraph_i]}. 
