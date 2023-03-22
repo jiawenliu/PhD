@@ -36,7 +36,11 @@
 % $\pathsearch(\progG(c)) \geq \progA(c)$.
 \begin{proof}
   For an arbitrary well-formed program ${c}$, let $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
-  be its semantics-based dependency graph by Definition~\ref{def:trace_graph} and $\progG({c}) = (\progV, \progE, \progW, \progF)$ be its estimated-dependency graph
+  be its semantics-based dependency graph by Definition~\ref{def:trace_graph} and 
+  \[
+    \progG({c}) = (\progV, \progE, \progW, \progF)
+    \]
+   be its estimated-dependency graph
   by Definition~\ref{def:prog_graph}.
   %
   
@@ -44,13 +48,13 @@
   %
   \[
     \begin{array}{l}
-      \forall \trace_0 \in \ftdom_{0}(c), m \in \mathbb{N} \cup \{\infty\} \sthat
-      \config{\pathsearch(c), \trace_0} \earrow m 
+      \forall \trace_0 \in \ftdom_{0}(c), v \in \mathbb{N} \cup \{\infty\} \sthat
+      \config{\pathsearch(c), \trace_0} \earrow v
     \\ \qquad 
     \implies
-      \max \big 
+      \lambda \trace_0 \sthat \max \big 
       \{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \} (\trace_0) 
-      \leq m
+      \leq v
   \end{array}
   \]
   %
@@ -59,61 +63,163 @@
   then it is sufficient to show that:
   \[
     \begin{array}{l}
-      \forall m \in \mathbb{N} \cup \{\infty\} \sthat
-      \config{\pathsearch(c), \trace_0} \earrow m 
+      \forall v \in \mathbb{N} \cup \{\infty\} \sthat
+      \config{\pathsearch(c), \trace_0} \earrow v 
     \\ \qquad 
     \implies
-      \max \big 
-      \{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \} (\trace_0) 
-      \leq m
+    \max \big 
+      \{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \}
+      \leq v
   \end{array}
   \]
+  Equally, it is sufficient to show
+  \[
+    \begin{array}{l}
+      \forall v \in \mathbb{N} \cup \{\infty\},
+      k \in \walks(\traceG(c))  \sthat
+      \\ \qquad 
+    \config{\pathsearch(c), \trace_0} \earrow v 
+    \implies
+    % \forall k \in \walks(\traceG(c)) \sthat
+    \qlen(k)(\trace_0) \leq v
+  \end{array}
+    \]
   %
-  Let $k\in \walks(\traceG(c))$ be an arbitrary walk in $\traceG(c)$,
-   $(e_{1}, \ldots, e_{(n-1)}) $ and
-  $(v_1, \ldots, v_n)$ be the edges and vertices sequence of $k(\trace_0)$.
-  
-  By line:3 of $\pathsearch(\progG)$ algorithm defined in Algorithm~\ref{alg:adapt}, let $\kw{\sccgraph_1}, \ldots, \kw{\sccgraph_n}$ be all the strong connected components on $\progG$ with $0 \leq n \leq |\vertxs|$,
-  where each $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$,
-  \\
-  By line:5-6 in Algorithm~\ref{alg:adapt}, let $\kw{adapt_{scc}[\sccgraph_i]}$ be the result of $\pathsearch_{\kw{scc}}(\sccgraph_i)$ for each $\sccgraph_i$.
+  Let $k_{x, y} \in \walks(\traceG(c))$ be an arbitrary finite walk in $\traceG(c)$ and 
+  $k_{x,y}(\trace_0)$  has the edge sequence
+  \[
+    (e_{1}, \ldots, e_{(n-1)}),
+    \]
+    and the vertices sequence
+  \[
+    (x, v_1, \ldots, v_{n-1}, y).
+    \]
+  %  $(e_{1}, \ldots, e_{(n-1)})$ and
+  % $(v_1, \ldots, v_n)$ be the edges and vertices sequence of $k(\trace_0)$.
+  Then it is sufficient to show
+  \[
+    \begin{array}{l}
+      \forall v \in \mathbb{N} \cup \{\infty\},
+    \config{\pathsearch(c), \trace_0} \earrow v 
+    \implies
+    % \forall k \in \walks(\traceG(c)) \sthat
+    \qlen(k)(\trace_0) \leq v
+  \end{array}
+    \]
+
+  By line:3 of $\pathsearch(\progG)$ in Algorithm~\ref{alg:adapt}, let $\kw{\sccgraph_1}, \ldots, \kw{\sccgraph_m}$ be all the strongly connected components on $\progG$ with $0 \leq n \leq |\vertxs|$,
+  where 
+  \[
+    \kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i),
+  \]
+  for every $i = 1, \ldots, m$. 
+
+  By line:5-6 of $\pathsearch(\progG)$  in Algorithm~\ref{alg:adapt}, 
+  let $\kw{adapt_{scc}[\sccgraph_i]}$ be the result of $\pathsearch_{\kw{scc}}(\sccgraph_i)$ for each $\sccgraph_i$.
     % i.e.,
   % \[
   %   \]
-  \\
+
   There are 2 cases:
-  \caseL{$x, y$ on the same SCC}
-  Let  $\sccgraph$ be this SCC where vertices $x$ and $y$ on, by Lemma~\ref{lem:sound_adaptalg_scc}, we know
+  \caseL{vertices $x, y$ are on the same strongly connected component}
+  Let  $\sccgraph_{j}$ be this component for some $j \in \{ 1, \ldots, m\}$ and
+  \[
+    \pathsearch_{\kw{scc}}(\sccgraph_j) (c) =  \kw{adapt_{scc}[\sccgraph_j]}.
+  \]
+  By line:15 and line:18 in $\pathsearch(\progG)$ algorithm in Algorithm~\ref{alg:adapt}, 
+  let $\kw{adapt}$ be the output value,
+  we know 
+  \[
+    \pathsearch(\progG(c))  \geq \kw{adapt_{scc}[\sccgraph_j]} 
+    \land \pathsearch_{\kw{scc}}(\sccgraph_j) (c) =  \kw{adapt_{scc}[\sccgraph_j]}.
+  \]
+  Then it is sufficient to show
   \[
     \begin{array}{l}
-      \forall m \in \mathbb{N} \cup \{\infty\} \sthat
-      \config{\pathsearch_{scc}(\sccgraph)(c), \trace_0} \earrow m_{scc}
+      \forall v \in \mathbb{N} \cup \{\infty\} \sthat
+      \\ \qquad 
+      \config{\pathsearch_{\kw{scc}}(\sccgraph_j)(c), \trace_0} \earrow v
+      \implies
+    \qlen(k)(\trace_0) \leq v
+  \end{array}
+    \]
+    % Let $v$ be the evaluation result of $\config{\pathsearch_{\kw{scc}}(\sccgraph_j)(c), \trace_0} $,
+    % then it is sufficient to show
+    % \[
+    %   \begin{array}{l}
+    %   \qlen(k)(\trace_0) \leq v
+    % \end{array}
+    % \]
+  By Lemma~\ref{lem:sound_adaptalg_scc}, we know
+  \[
+    \begin{array}{l}
+      \forall v \in \mathbb{N} \cup \{\infty\} \sthat
+      \config{\pathsearch_{scc}(\sccgraph)(c), \trace_0} \earrow v
     \\ \qquad   \implies
-    \qlen(k_{x,y})(\trace_0) \leq \max\{\qlen(k)(\trace_0) | k \in \walks(\sccgraph)\} \leq m_{scc}
+    \max\{\qlen(k)(\trace_0) | k \in \walks(\sccgraph)\} \leq v
   \end{array}
   \]
-%
-By line:15 and line:18 in $\pathsearch(\progG)$ algorithm in Algorithm~\ref{alg:adapt}, 
-let $\kw{adapt}$ be the output value,
-we know $\pathsearch(\progG(c))  = \kw{adapt} \geq \kw{adapt_{tmp}} \geq  \kw{adapt_{scc}(SSC)} $.
-\\
-i.e., 
+Since $\sccgraph_j $ is we know 
+  \[
+    \begin{array}{l}
+      \forall v \in \mathbb{N} \cup \{\infty\} \sthat
+      \\ \qquad 
+      \config{\pathsearch_{\kw{scc}}(\sccgraph_j)(c), \trace_0} \earrow v
+      \implies
+      \max\{\qlen(k)(\trace_0) | k \in \walks(\sccgraph)\} \leq v
+  \end{array}
+    \]
+  Since we know
+  \[
+    \qlen(k)(\trace_0) \leq  \max\{\qlen(k)(\trace_0) | k \in \walks(\sccgraph)\} 
+    \]
+Then we know
 \[
   \begin{array}{l}
-    \forall m \in \mathbb{N} \cup \{\infty\} \sthat
-    \config{\pathsearch(c), \trace_0} \earrow m 
-    \\ \qquad   \implies
-  \qlen(k_{x,y})(\trace_0) \leq m
+    \forall v \in \mathbb{N} \cup \{\infty\} \sthat
+    \\ \qquad 
+    \config{\pathsearch_{\kw{scc}}(\sccgraph_j)(c), \trace_0} \earrow v
+    \implies
+  \qlen(k)(\trace_0) \leq v
 \end{array}
-\]
-This case is proved.
+  \]
+  and we have this case proved.
+% Then it is sufficient to show
+% \[
+%   \begin{array}{l}
+%     \forall m \in \mathbb{N} \cup \{\infty\} \sthat
+%     \config{\pathsearch_{scc}(\sccgraph)(c), \trace_0} \earrow m
+%   \\ \qquad   \implies
+%   \max\{\qlen(k)(\trace_0) | k \in \walks(\sccgraph)\} \leq m
+%   \end{array}
+%   \]
+% %
+% By line:15 and line:18 in $\pathsearch(\progG)$ algorithm in Algorithm~\ref{alg:adapt}, 
+% let $\kw{adapt}$ be the output value,
+% we know $\pathsearch(\progG(c))  = \kw{adapt} \geq \kw{adapt_{tmp}} \geq  \kw{adapt_{scc}(SSC)} $.
+% \\
+% i.e., 
+% \[
+%   \begin{array}{l}
+%     \forall m \in \mathbb{N} \cup \{\infty\} \sthat
+%     \config{\pathsearch(c), \trace_0} \earrow m 
+%     \\ \qquad   \implies
+%   \qlen(k_{x,y})(\trace_0) \leq m
+% \end{array}
+% \]
+% This case is proved.
 %
 %
-\caseL{$x, y$ on different SSC}
-Let $\sccgraph_x, \sccgraph_1, \ldots, \sccgraph_m, \sccgraph_y, 0 \leq m$ be all the SCC this walk pass by, where each vertex in 
-$(x, s_1, \ldots, s_n, y) $ belongs to a single SCC number. 
-\\
-By the property of SCC, we know every 2 SCCs are single direct connected. Then we can divide this walk into $m+2$ sub-walks:
+\caseL{Vertices $x, y$ are on different strongly connected components}
+Let $\sccgraph_x, \sccgraph_1, \ldots, \sccgraph_m, \sccgraph_y, 0 \leq m$ be all the strongly connected components that the walk $k_{x,y}$ is passed by.
+% where each vertex in 
+% $(x, s_1, \ldots, s_n, y) $ belongs to a single SCC number. 
+
+Since each $\sccgraph_i$ is strongly connected, 
+we also know every two $\sccgraph_i$ and $\sccgraph_j$ where $i\neq j$
+are single direct connected. 
+
+Then we can divide this walk into $m+2$ sub-walks:
 \\
 $k_x = (x, s_1, \ldots, s_{scc_x})$;
 \\
@@ -132,21 +238,49 @@ Let $m_i$ be the evaluation results of $\pathsearch_{scc}(\sccgraph_i)$ for ever
 By Lemma~\ref{lem:sound_adaptalg_scc}, we know for each walk $k_i$:
 \[ \qlen(k_i)(\trace_0) \leq \max\{\qlen(k_i)(\trace_0) | k_i \in \walks(\sccgraph_i)\} \leq m_i \]
 %
-By Algorithm, we know $\pathsearch_{scc}(\sccgraph_i) = \kw{adapt_{scc}[\sccgraph_i]}$ 
-for each $k_i$
-and $\pathsearch(c) = \sum_{k_i} \kw{adapt_{scc}[\sccgraph_i]}$.
-Then we know
-\[
-  \config{\pathsearch(c), \trace_0} \earrow \sum_{k_i} m_i
-\]
-Then we have:
+By Definition~\ref{def:qlen},  we also have,
 \[ 
   \begin{array}{l}
-  \qlen(k_{x,y})(\trace_0) = \qlen(k_x)(\trace_0) + \qlen(k_1)(\trace_0) + \ldots + \qlen(k_y) (\trace_0)
-  \\\leq 
-  \sum_{k_i} m_i
+  \qlen(k_{x,y})(\trace_0) = \sum_{k_i \in \{k_x, \ldots, k_y\}} \qlen(k_i)(\trace_0)
+  \leq 
+  \sum_{k_i \in \{k_x, \ldots, k_y\}} m_i
   \end{array}
   \]
+Then it is sufficient to show
+\[
+  \begin{array}{l}
+    \forall v \in \mathbb{N} \cup \{ \infty \} \sthat
+  \config{\pathsearch(c), \trace_0} \earrow v 
+  \implies
+  \sum_{k_i \in \{k_x, \ldots, k_y\}} m_i \leq v
+\end{array}
+  \]
+By Algorithm, we know 
+\[
+  \begin{array}{l}
+    \forall i = 1, \ldots, m \sthat
+  \pathsearch_{scc}(\sccgraph_i)(c) = \kw{adapt_{scc}[\sccgraph_i]}
+  \\ \qquad
+  \land 
+  \pathsearch(c) \geq \sum_{k_i} \kw{adapt_{scc}[\sccgraph_i]}
+\end{array}
+\]
+% for each $k_i$
+% and $\pathsearch(c) \geq \sum_{k_i} \kw{adapt_{scc}[\sccgraph_i]}$.
+Then we know
+\[
+  \forall v \in \mathbb{N} \cup \{ \infty \} \sthat
+  \config{\pathsearch(c), \trace_0} \earrow v
+  \implies v \geq \sum_{k_i} m_i
+\]
+% Then we have:
+% \[ 
+%   \begin{array}{l}
+%   \qlen(k_{x,y})(\trace_0) = \qlen(k_x)(\trace_0) + \qlen(k_1)(\trace_0) + \ldots + \qlen(k_y) (\trace_0)
+%   \\\leq 
+%   \sum_{k_i} m_i
+%   \end{array}
+%   \]
 This case is proved.
 \end{proof}
 

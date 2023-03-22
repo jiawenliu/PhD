@@ -1,4 +1,4 @@
-\begin{lem}[Multi-step $\flowsto$ through Assignment Event]
+\begin{lem}[Multi-step Soundness through Assignment Event]
 		\label{lem:inv_indepevents_asn}
 		For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, one assignment events 
 		$\event_1\in \eventset^{\asn}$, and another event $\event_2 \in \eventset$,
@@ -353,7 +353,7 @@ By $\flowsto$ definition:
 This case is proved.
 %
 \end{proof}
-\begin{lem}[Multi-step $\flowsto$ Soundness through Testing Event]
+\begin{lem}[Multi-step Soundness through Testing Event]
 	\label{lem:inv_indepevents_ctl}
 	For every $D \in \dbdom , c \in \cdom, \trace \in \ftdom$, one assignment events 
 	$\event_1\in \eventset^{\asn}$, and another testing event $\event_2 \in \eventset^{\test}$,
@@ -501,10 +501,10 @@ This case is proved.
 	\label{lem:ctldep_inv}
 	For every $c \in \cdom$, $D \in \dbdom, \trace \in \ftdom$ and two assignment events $\event_1, \event_2 \in \eventset^{\asn} $, if $\eventdep(\event_1, \event_2, c, \trace, D)$ 
 	where $\event_1$ and $\event_2$
-	satisfy the Equation~\ref{eq:eventdep}(c) in Definition~\ref{def:event_dep},
+	satisfy the Equation~\ref{eq:eventdep}(c) in Definition~\ref{def:event_dep} and
 	% they are in the second case of the \emph{Event May-dependency} relation from Definition~\ref{def:event_dep},
 	% $\eventdep(\event, \event, c, \trace, D)$ as Eq.~\ref{eq:ctlflowsto_inv},
-	$\event_b \in \eventset^{\test}$ is the witness of the testing event,
+	$\event_b \in \eventset^{\test}$ is the testing event witness,
 	then for all  $z \in \kw{FV}(\pi_1(\event_b))$ there exists a label $i \in \mathbb{N}$ such that 
 	$\flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)$
 	\begin{equation}

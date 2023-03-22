@@ -11,9 +11,9 @@
 This proof is summarized informally as below.
 \\
 Constructing the
-estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+estimated dependency graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
 \\
-and semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
+and semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
 \\
 1. prove the one-on-one mapping from $\progV$ to $\traceV$, in Lemma~\ref{lem:vertex_map};
 \\
@@ -44,9 +44,9 @@ According to the Definition~\ref{def:prog_adapt} and Definition~\ref{def:trace_a
 \config{\max \left\{ \hat{\qlen}(p) \ \mid \  p \in \paths(\progG(c))\right \}
 , \trace_0 } \earrow m 
 \\ \qquad 
-\implies
-\max \big 
-\{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \} (\trace_0)
+\implies 
+\lambda \trace_0 \sthat 
+\max \big \{ \qlen(k)(\trace_0) \mid k \in \walks(\traceG(c)) \big \} (\trace_0)
 \leq m
 \end{array}
 \]
@@ -184,7 +184,7 @@ Let $m_1, \ldots, m_n$ be the evaluation results of
 	$\hat{w}_i$ where $(v_i', \hat{w}_i) \in \progW(c)$ for every $v_i' \in (v_1', \ldots, v_n')$ and $(v_i', 1) \in \progF(c)$ 
 	such that 
 	\[
-		(\config{\hat{w}_i, \trace_0} \earrow m_i.
+		\config{\hat{w}_i, \trace_0} \earrow m_i.
 	\]
 Then by operational semantics rules, we know 
 \[
@@ -284,16 +284,19 @@ then we know
 % \]
 and this sub goal is proved.
 \end{proof}
-The following are the four lemmas used above,
-showing the correspondence properties between the program based graph and trace based graph.
 
-\begin{lem}[One-on-One Mapping of vertices from $\traceG$ to $\progG$]
+The following are four helper lemmas used above,
+showing the correspondence between
+each component on the \emph{estimated dependency graph} and 
+\emph{semantics-based dependency graph}.
+
+\begin{lem}[Vertex One-to-one Correspondence]
 	\label{lem:vertex_map}
 	Given a program $c$ with its
-	estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	estimated dependency graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
 	and 
-	semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
-	then for every $v \in \mathcal{VAR} \times \mathbb{N}$,
+	semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	then for every labeled variable $v \in \mathcal{LV}$,
 	$v \in \progV$ if and only if $v \in \traceG$.
 	\[
 	\begin{array}{l}
@@ -325,12 +328,12 @@ $$v \in \mathcal{LV}  \sthat v \in \progV \iff v \in \traceV,$$
 and this case is proved
 \end{proof}
 %
-	\begin{lem}[Mapping from Egdes of $\traceG$ to $\progG$]
+	\begin{lem}[Edge Correspondence]
 	\label{lem:edge_map}
 	Given a program $c$ with its
-	estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	estimated dependency graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
 	and 
-	semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
 	then for every $e = (v_1, v_2) \in \traceE$, there exists an edge 
 	$e' = (v_1', v_2') \in \progE$ with 
 	$v_1 = v_1' \land v_2 = v_2'$.
@@ -352,30 +355,33 @@ and this case is proved
 	Taking arbitrary program $c$.
 	By Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
 	we construct
-	its estimated graph 
+	its estimated dependency graph 
 	$$\progG({c}) = (\progV, \progE, \progW, \progF)$$
 	and 
-	semantics-based graph 
+	semantics-based dependency graph 
 	$$\traceG({c}) = (\traceV, \traceE, \traceW, \traceF).$$
 
 Taking an arbitrary edge $e = (x^i, y^j) \in \traceE$, it is sufficient to show $(x^i, y^j) \in \progE$.
 
 By Lemma~\ref{lem:vertex_map}, we know $x^i, y^j \in \progV$.
 
-By definition of $\traceE$, we know $\vardep(x^i, y^j, c)$.
+By definition of $\traceE$ in Definition~\ref{def:trace_graph}, we know $\vardep(x^i, y^j, c)$.
 
-By Theorem~\ref{thm:flowsto_soundness}, we know $ \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c)\sthat  
+By Theorem~\ref{thm:flowsto_soundness}, we know 
+\[
+	\exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c)\sthat  
 n \geq 0 \land
 \flowsto(x^i,  z_1^{r_1}, c) 
-\land \ldots \land \flowsto(z_n^{r_n}, y^j, c) $.
+\land \ldots \land \flowsto(z_n^{r_n}, y^j, c).
+\]
 
-Then by definition of $\progE$, we know $(x^i, y^j) \in \progE$. This Lemma is proved.
+Then by definition of $\progE$ in Definition~\ref{def:prog_graph}, we know $(x^i, y^j) \in \progE$. This Lemma is proved.
 \end{proof}
 %
-\begin{lem}[Weights are bounded]
+\begin{lem}[Weight Correspondence]
 	\label{lem:weights_map}
 	Given a program $c$ with the weight set $\traceW$ in its
-	semantics-based graph 
+	semantics-based dependency graph 
 	and the estimated weight set $\progW$ in its
 	estimated dependency graph, 
 	% $\progG({c}) = (\progV, \progE, \progW, \progF)$
@@ -387,7 +393,7 @@ Then by definition of $\progE$, we know $(x^i, y^j) \in \progE$. This Lemma is p
 	\[
 		\begin{array}{l}
 			\forall c \in \cdom, \trace_0 \in \ftdom_0(c) 
-			% , (v, n) \in \mathcal{VAR} \times \mathbb{N} \times \mathbb{N}
+			% , (v, n) \in \mathcal{LV} \times \mathbb{N}
 			 \sthat  
 			 \\ \quad
 			 \progG({c}) = (\progV, \progE, \progW, \progF)
@@ -414,18 +420,17 @@ Then by definition of $\progE$, we know $(x^i, y^j) \in \progE$. This Lemma is p
 Taking arbitrary program $c$ and an initial trace $\trace_0 \in \ftdom_0(c)$.
 By Definition~\ref{def:prog_graph} and Definition~\ref{def:trace_graph}, 
 we construct
-its estimated graph 
+its estimated dependency graph 
 $$\progG({c}) = (\progV, \progE, \progW, \progF)$$
 and 
-semantics-based graph 
+semantics-based dependency graph 
 $$\traceG({c}) = (\traceV, \traceE, \traceW, \traceF).$$
 
 By the well-formed program in Definition~\ref{def:adaptfun-wfprog}, we know $c$ terminates when executing under $\trace_0$.
 Let $\vtrace \in \ftdom$ be the execution trace satisfying:
 $$
 \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\vtrace} 
-\land 
-\config{\hat{w}, \trace_0} \earrow v$$
+$$
 
 Taking
 arbitrary 
@@ -436,15 +441,20 @@ we know there exists $\absevent = (l, \_, \_) \in \absflow(c)$.
 
 Then by definition~\ref{def:adaptfun-weight}, we know 
 \[
-	\sum\left\{  \absclr(\absevent, c) \middle\vert \absevent \in \absflow(c) \land \absevent = (l, \_, \_) \right\}
+	\hat{w} = \sum\left\{  \absclr(\absevent, c) \middle\vert \absevent \in \absflow(c) \land \absevent = (l, \_, \_) \right\}.
 \]
- is the corresponded estimated weight.
+%  is the corresponded estimated weight.
 
-Let $\hat{w} = \sum\left\{  \absclr(\absevent, c) \middle\vert \absevent \in \absflow(c) \land \absevent = (l, \_, \_) \right\}$
- and $v \in \mathbb{N} \cup\{ \infty\}$ be the evaluation result of $\hat{w}$.
+Let 
+% $\hat{w} = \sum\left\{  \absclr(\absevent, c) \middle\vert \absevent \in \absflow(c) \land \absevent = (l, \_, \_) \right\}$
+%  and 
+$v \in \mathbb{N} \cup\{ \infty\}$ be the evaluation result of $\hat{w}$, i.e.,
+ \[
+\config{\hat{w}, \trace_0} \earrow v
+\]
 By soundness of reachability bound analysis in Theorem~\ref{thm:transition_bound_sound}, we know 
 % $\traceW(v) \leq \progW(v)$. This lemma is proved.
-$\vcounter(\vtrace, l) \leq v$
+\[\vcounter(\vtrace, l) \leq v .\]
 
 By definition~\ref{def:trace_graph}, we know 
 $$w(\trace_0) = \vcounter(\vtrace, l).$$
@@ -452,13 +462,13 @@ $$w(\trace_0) = \vcounter(\vtrace, l).$$
 Then we have $w(\trace_0) \leq v$ and this is proved.
 \end{proof}
 %
-\begin{lem}[One-on-One Mapping for Query Vertices]
+\begin{lem}[Query Annotaion One-to-one Correspondence]
 	\label{lem:queryvertex_map}
 	Given a program $c$ with its
-	estimated graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	estimated dependency graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
 	and 
-	semantics-based graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
-	then for every $(x^i, n) \in \mathcal{VAR} \times \mathbb{N}  \times \{0, 1\} $,
+	semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	then for every $(x^i, n) \in \mathcal{LV}  \times \{0, 1\} $,
 	 $(x^i, n) \in \traceF$ if and only if $ (x^i, n) \in \progF$.
 	\[
 	\begin{array}{l}

@@ -39,14 +39,15 @@ For  arbitrary two $x^i, y^j \in \lvar(c)$, with \emph{Variable May-Dependency} 
   \[
     \begin{array}{l}
     \exists z^l \in \lvar(c).
-  \Big(\vardep(x^i, z^l, {c})   
-  \\ \implies
-   \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 
-   \\ \qquad
-   \land
-  \flowsto(x^i,  z_1^{r_1}, c) 
-  \land \ldots \land \flowsto(z_n^{r_n}, z^l, c)
-  \Big)
+  % \Big(
+    \vardep(x^i, z^l, {c})   
+  % \\ \implies
+  %  \exists n \in \mathbb{N}, z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat  n \geq 0 
+  %  \\ \qquad
+  %  \land
+  % \flowsto(x^i,  z_1^{r_1}, c) 
+  % \land \ldots \land \flowsto(z_n^{r_n}, z^l, c)
+  % \Big)
   \land  \flowsto(z^l, y^j, {c})
 \end{array}
     \]
@@ -62,6 +63,26 @@ such that
 Then we show the soundness w.r.t. the \emph{Event May-dependency} relation
 through the
 \textbf{One-step Soundness} and the \textbf{Multiple-step Soundness} cases.
+\[
+  \begin{array}{l}
+    \eventdep(\event_x, \event_y, \trace, c, D)
+    \implies
+      \Big( 
+      \flowsto(x^i, y^j, c) 
+      \Big)
+\\ \qquad \lor
+\Big( 
+  \exists \event \in \trace \sthat  
+% \left( 		
+  \event \in \eventset^{\asn}
+  \land
+  \eventdep(\event_x, \event, \trace[\event_x:\event], c, D)
+  % \\ \quad  
+  \land 
+\flowsto(\pi_1(\event)^{\pi_2(\event)}, y^j, c) 
+\Big)
+\end{array}
+  \]
 % $$
 % \begin{array}{l}
 % (\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)

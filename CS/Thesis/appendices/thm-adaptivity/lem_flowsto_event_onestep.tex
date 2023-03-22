@@ -17,14 +17,12 @@
 \end{lem}
 Proof Summary:
 \\
-1. case of (the labelled unique assignment command associated to the $\event_2$ 
-is executed but the value assigned to the variable in this event is changed in second execution)
+1. In the case of the value dependency -- the labelled unique assignment command associated to the $\event_2$ 
+is executed but the value assigned to the variable in this event is changed in second execution,
+we show x directly used by the assignment of the second event
 \\
-show x directly used by the assignment of the second event
-\\
-2.(the labelled unique assignment command associated to the $\event_2$ isn't executed in second execution)
-\\
-show x is directly used by the boolean expression for a conditional command and second event shows in the body of that conditional command 
+2.In the case of the control dependency -- (the labelled unique assignment command associated to the $\event_2$ isn't executed in second execution,
+we show x is directly used by the boolean expression for a conditional command and second event shows in the body of that conditional command.
 %
 \begin{proof}
 	By the Definition~\ref{def:event_dep} for $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$, 
@@ -33,29 +31,25 @@ show x is directly used by the boolean expression for a conditional command and 
 	\caseL{$\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$ satisfies Equation~\ref{eq:eventdep}(b)}
 		% \textbf{(the labelled unique assignment command associated to the $\event_2$ 
 		% is executed but the value assigned to the variable in this event is changed in second execution).}
-\input{appendices/thm-adaptivity/base_case_val}
+\input{appendices/thm-adaptivity/flowsto_event_onestep_val}
 	% \end{case}
 	\caseL{$\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$ satisfies Equation~\ref{eq:eventdep}(c)}
-		% \textbf{(the labelled unique assignment command associated to the $\event_2$ isn't executed in second execution).}
-		\\
 		Proof Summary:
-		\\
-		1. Let $\event_b$ be the testing event,
+		\begin{enumerate}
+		\item Let $\event_b$ be the testing event,
 		in the same way of case 1, we get:
 		 $\pi_1(\event_1) \in \kw{FV}(\pi_1(\event_b)) 
 		 \land 
 		%  l_1 \in \live^{l_b}$
 		\pi_1(\event_1)^{l_1} \in \live(l_b, c)$
 		%
-		 \\
-		 2. By Lemma~\ref{lem:ctldep_inv}, we know:
+		 \item By Lemma~\ref{lem:ctldep_inv}, we know:
 		   $\forall z \in \kw{FV}(\pi_1(\event_b)) \sthat  \exists i \in \mathbb{N} \sthat 
 		 \flowsto(z^i, \pi_1(\event)^{\pi_2(\event)}, c)$
 		 %
-		 \\
-		 3. By $\flowsto$ definition we have:
+		 \item By $\flowsto$ definition we have:
 		   $\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)$
-
-		\input{appendices/thm-adaptivity/base_case_ctl}
+		\end{enumerate}
+		\input{appendices/thm-adaptivity/flowsto_event_onestep_ctl}
 \end{proof}
 %

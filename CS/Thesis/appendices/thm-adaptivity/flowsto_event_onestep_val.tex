@@ -1,4 +1,4 @@
-\begin{subproof}[Proof of the Basecase: Case 1]
+\begin{subproof}
 %
 \label{pf:eventdep_base_val}
 By the definition $\eventdep(\event_1, \event_2, [\event_1; \event_2], c, D)$,  we know
@@ -49,17 +49,14 @@ $\event_1$, $\event_2$, we have the following instance of the first execution in
   \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2};{c}_2, 
   \vtrace_1 \tracecat [\event_1]} 
   \rightarrow^\rname{assn/query} 
-  \config{{c}_2,  \vtrace_1 \tracecat [\event_1; \event_2]} 
+  \config{{c}_2,  \vtrace_1 \tracecat [\event_1; \event_2]},
   % 
 \end{array}
 \footnote{
 $\assign{x}{\expr / \query(\qexpr)}$ denotes variable $x$ is assigned by either an expression $\expr$ or query $\query(\qexpr)$
 }
 \end{equation}
-%
-% \wqside{Some typo in equation 4, but I can follow:-)}
-% \jl{thanks}
-, where $x_1 = \pi_1(\event_1)$, $l_1 = {\pi_2(\event_1)}$, $x_2 = \pi_1(\event_2)$, $l_2 = \pi_2(\event_2)$, 
+where $x_1 = \pi_1(\event_1)$, $l_1 = {\pi_2(\event_1)}$, $x_2 = \pi_1(\event_2)$, $l_2 = \pi_2(\event_2)$, 
 and $\expr_1 / \qexpr_1$, $\expr_2 / \qexpr_2$ are the expressions of the assignment commands 
 associated to the $\event_1$ and $\event_2$ from  Lemma~\ref{lem:inv_event}.
 \\

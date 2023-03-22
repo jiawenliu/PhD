@@ -363,11 +363,12 @@
 \end{corollary}
 
 \begin{proof}
-    Let $\event = (x, l, v, \qval) \in \eventset$ be arbitrary event that  is generated from a query request for some variable $x$, label $l$ and a query result $v$.
+    Let $\event = (x, l, v, \qval) \in \eventset$ be arbitrary event that  is generated from a query request command for some variable $x$, label $l$, query result $v$ and query value $\qval$.
     \\
-    Let $ \trace \in \ftdom$ be the trace that contains $\event$ and $\trace = \trace_1 \tracecat [\event] \tracecat \trace_2 = $ for some finite traces
-    $\trace_1 \tracecat [\event] \tracecat \trace_2 \in \ftdom$.
-    \\
+    Let $ \trace \in \ftdom$ be the trace that contains $\event$ and two finite traces $\trace_1, \trace_2$ satisfying
+    \[
+      \trace = \trace_1 \tracecat [\event] \tracecat \trace_2.
+      \]
     Then it is sufficient to show
     \[
       \exists \event' \in \eventset \sthat 
