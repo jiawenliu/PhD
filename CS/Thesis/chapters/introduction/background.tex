@@ -4,7 +4,7 @@ A few decades ago, computer programs were only used for research or business pur
 % A few decades ago, people employed computer programs solely for research and business purposes with the simple expectation of executing correctly without bugs. 
 The most critical behavior with respect to programs has been the execution correctness behavior. This has led the 
 program analysis community to pay a lot of attention to analyzing functional correctness properties.
-It determines whether a program executes correctly and seamlessly without bugs.
+% It determines whether a program executes correctly and seamlessly without bugs.
 % However, the function of a program has also changed along with the popularity of mobile devices and the wide application of big data.
 However, due to the popularity of mobile devices and the wide usage of big data in mobile and computer programs, the expectations on a program have increased. 
 % It is not enough for a program running on a mobile phone or handling big data to just run without bugs. 
@@ -119,7 +119,7 @@ Specifically, we consider the data analyses are implemented in a while-like lang
 % We focus in analyzing it in \redd{PART \romannum{1}}.
 % % This property captures the generalization error in terms of whether the queries are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
 % % Under the light of existing machine learning studies, we want to use this \emph{quantitative-reachability} property to help reduce the generalization errors in data analysis results.
-This \emph{adaptivity} property captures the generalization error in terms of whether the query asked by a program are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
+This \emph{adaptivity} property captures the generalization error in terms of whether the query asked by a program are dependent on each other (the \emph{reachability} sub-property of \emph{adaptivity}) and how many times they are dependent (the \emph{quantitative} sub-property of \emph{adaptivity}).
 By analyzing the \emph{adaptivity} and help data analyst to reduce the generalization error of the programs that implement certain data analyses, we can
 improve the user's experience with respect to \emph{convenience} and \emph{enjoyment}.
 % provide people with more \emph{convenience} and the \emph{enjoyment} when using these programs.
@@ -149,7 +149,7 @@ and how many times they are executed.
 % and their execution times.
 This brings my attention to two program properties -- 
 the
-reachability of certain lines of code and the times that certain code is executed.
+reachability of certain lines of code (a \emph{reachability} property) and the times that certain code is executed (a \emph{quantitative} property).
 % \\
 These two properties can indeed be captured as two sub-properties by a \emph{quantitative-reachability} hyper-property
 %  from two perspectives,
@@ -191,4 +191,4 @@ However, to fully utilize the aforementioned benefits
 on these \emph{quantitative-reachability} properties, appropriate implementations are inevitable. 
 To this end, we also take one step in implementing these analysis algorithms.
 % which is used to formalize and statically estimate these properties.
-The evaluation results over different benchmarks report the effectiveness of our work in the real world and its potential applications beyond the program analysis area.
+The evaluation results over different benchmarks show the effectiveness of our work in the real world and its potential applications beyond the program analysis area.

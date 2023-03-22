@@ -2,7 +2,7 @@
 \begin{figure}
 \centering
 %
-\begin{subfigure}{.27\textwidth}
+\begin{subfigure}{.3\textwidth}
     $
     \begin{array}{l}
       \kw{twoPathsWhile}(n, m) \triangleq \\
@@ -19,10 +19,9 @@
         $
 \caption{}
 \end{subfigure}
-\begin{subfigure}{.71\textwidth}
-\begin{subfigure}{.67\textwidth}
+\begin{subfigure}{.65\textwidth}
 \begin{centering}
-\begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
+\begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
 \draw[] (-8, 10) circle (0pt) node{{ $0$}};
 \draw[] (-4, 10) circle (0pt) node{{ $1$}};
 \draw[] (0, 10) circle (0pt) node{{ $2$}};
@@ -46,28 +45,26 @@
 \end{centering}
 \end{subfigure}
 {\small
-\begin{subfigure}{.3\textwidth}
+\begin{subfigure}{.8\textwidth}
 \begin{centering}
-    $\tpath_0 = 0 \to 1 \to 2$ \\
-    $\tpath_2 = 2 \to 3 \to 6 \to 2$ \\ 
-    $\tpath_1 = 2 \to 3 \to 4 \to 5 \to 2$ \\
+    $\tpath_0 = 0 \to 1 \to 2$,
+    $\tpath_2 = 2 \to 3 \to 6 \to 2$, \\
+    $\tpath_1 = 2 \to 3 \to 4 \to 5 \to 2$,
     $\tpath_3 = 2 \to \lex$
     \caption{}
 \end{centering}
 \end{subfigure}
 }
-{\small
 \begin{subfigure}{.8\textwidth}
-\begin{centering}
-$
-\tpath_0 ; 
-\rpchoose{2: \rprepeat(\rprepeat(\tpath_1); \tpath_2), 
-2: \rprepeat(\tpath_1)}; \tpath_3.
-$
-\end{centering}
-\end{subfigure}
-}
-{\small
+  \begin{centering}
+  $
+  \tpath_0 ; 
+  \rpchoose{2: \rprepeat(\rprepeat(\tpath_1); \tpath_2), 
+  2: \rprepeat(\tpath_1)}; \tpath_3.
+  $
+  \end{centering}
+  \end{subfigure}
+{
 \begin{subfigure}{.8\textwidth}
 \begin{centering}
 $
@@ -77,7 +74,6 @@ $
 \end{centering}
 \end{subfigure}
 }
-\end{subfigure}
 \caption{
 (a) The two paths loop example.
 (b) The abstract transition graph for $\kw{twoPathsWhile}(n, m)$.

@@ -45,7 +45,7 @@ n \in \mathbb{N}\cup\{\infty\} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \\
 %
 \mbox{Label} 
-& l & \in & \mathbb{N} \cup \{\lex\} 
+& l & \in & \mathbb{N} \cup \{\lin, \lex\} 
 \\ 
 %
 \mbox{Labeled Command} 
@@ -177,8 +177,10 @@ for query requests which can be used to interrogate the database and compute the
 % the server will receive query request in form of $\chi[3] + 5$,
 % then compute the average value of $\chi[3] + 5$ over each raw of $\chi$, and return the result to us. 
 % The server is used as external API for computing the results over the hidden database $\chi$.
-Each command is annotated with a label $l$, we will use natural numbers as labels and we will use them to record
+Each command is annotated with a label $l$, which is a natural number to record
 the location of each command, so that we can uniquely identify them.
+We use the label $\lin$ as the labels of the variables in an initial trace if a program has input variables,
+and the label $\lex$ for annotating the exit of a program when we perform the program analysis later.
 
 \paragraph*{Free Variables and Input Variables}
   We denote by $\kw{FV}$ the operator $\kw{FV}: \expr \to \mathcal{P}(\mathcal{V})$, which computes the set of free variables in an expression. To be precise,

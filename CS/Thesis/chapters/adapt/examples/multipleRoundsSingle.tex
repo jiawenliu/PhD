@@ -33,7 +33,7 @@
     The adaptivity based on this walk
     is $\lambda \trace_0 \sthat \env(\trace_0) k + 2$, instead of $2$. 
     Though the $\THESYSTEM$ is able to give us $2 + k$,  as an accurate bound w.r.t this definition.
-        {\small
+        {
         \begin{figure}
             \centering
            %}
@@ -51,8 +51,8 @@
                          \clabel{\eskip}^5);\\
                        \ewhile ~ \clabel{j \neq k}^{6} ~ \edo ~ \Big(
                         \\
-                         \qquad \clabel{\assign{p}{\query(\chi[y]+p)} }^{7}  ; \\
-                        \qquad \clabel{\assign{j}{j + 1}}^{8} ; \\
+                         \qquad \clabel{\assign{p}{\query(\chi[y]+p)} }^{7}  ; 
+                        \clabel{\assign{j}{j + 1}}^{8} ; \\
                         \qquad  \eif(\clabel{ j \neq k - 2}^{9}, 
                         \clabel{ \assign{p}{0}}^{10} ,
                         \clabel{\eskip}^{10}) \Big) \\ 
@@ -98,7 +98,7 @@
             \caption{}
                \end{centering}
                \end{subfigure}
-            \caption{(a) The multi rounds single example.
+            \caption{(a) The loop example with single adaptivity rounds.
             (b) The corresponding semantics-based dependency graph.}
            \label{fig:multiRoundsS}
            \end{figure}

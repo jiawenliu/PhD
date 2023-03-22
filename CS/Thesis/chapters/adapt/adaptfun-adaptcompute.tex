@@ -120,7 +120,9 @@ The proof is in Appendix~\ref{apdx:adapt_soundness}.
 
 Symbolic expressions as used in the weight are great to express symbolic bounds, but make the computation of 
 the longest path non-terminating. 
-In this sense, the computation in Definition~\ref{def:prog_adapt} is non-terminating given the weight as symbolic.
+In this sense, the computation by Definition~\ref{def:prog_adapt} have to
+over-approximate the adaptivity in a large scale in order to address the non-terminating problem.
+% given the weight as symbolic.
 To compute $\progA(c)$ accurately and soundly, we develop an adaptivity approximation algorithm named $\pathsearch$.
 It combines the depth first search and breath first search strategies and computes a sound upper bound on $\progA(c)$.
 $\pathsearch$ also involves another algorithm $\pathsearch_{\kw{SCC}}$ in \ref{alg:adaptscc} recursively, which finds the longest walk for a strong connected component (SCC) (SCC is the maximal strongly connected subgraph) of $\progG(c)$.

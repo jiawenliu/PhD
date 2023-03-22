@@ -81,8 +81,8 @@ The operator $\mathsf{blk} : \cdom \to blocks$ gives all the blocks in program $
 \item The operator  $in(l)$, $out(l)$: $ \ldom \to \mathcal{LV} \cup \{?\}$ for every block in program $c$ is defined as follows,
  \[
  \begin{array}{ll}
-    % in(l)   \\  \qquad \triangleq \{ (x, ?) | x^l \in \lvar_c \land  l = \absinit(c) \}  
-    in(l)   \triangleq \{ x^{?} | x^l \in \lvar_c \land  l = \absinit(c) \}  
+    % in(l)   \\  \qquad \triangleq \{ (x, ?) | x^l \in \lvar(c) \land  l = \absinit(c) \}  
+    in(l)   \triangleq \{ x^{?} | x^l \in \lvar(c) \land  l = \absinit(c) \}  
     \\  \qquad \qquad \cup \{ out(l')|  | (l',\_, l) \in \absE(c) \land  l \neq \absinit(c)\}  \\
      out(l)   \triangleq  gen(B^{l}) \cup \{ in(l) \setminus kill(B^l)  \}  
  \end{array}
