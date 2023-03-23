@@ -94,9 +94,9 @@ This makes the analysis of the \emph{adaptivity} as a program property difficult
 This motivates us to design a simple and scalable language  that can be used to implement these data analysis algorithms and analyze the \emph{adaptivity}.
 % \paragraph{Limitations of Previous Works}
 Previous works from~\cite{weihao22} develops language formalizing the adaptive data analysis.
-However, these language designs are limited in their expressiveness largely.
+However, these language designs are largely limited in their expressiveness.
 Most of the general data analyses are not supported by the previous language design.
-In Section~\ref{sec:prework-language}, I introduce in detail the previous language design and limitations.
+In Section~\ref{sec:prework-language}, we introduce in detail the previous language design and limitations.
 
 Motivated by this, we present a new while-like language 
 named {\tt QWhile} language with extensions on query requests in Section~\ref{sec:adapt-language}.
@@ -105,18 +105,20 @@ named {\tt QWhile} language with extensions on query requests in Section~\ref{se
 \subsubsection{Adaptivity Property Formalization}
 
 The second challenge is \emph{how to define the adaptivity of a given program}.
-Intuitively, a query $Q$ may depend on another query $P$, if there are two values that $P$ can return which affect in different ways the execution of $Q$. 
+Intuitively, a query $Q$ may depend on another query $P$, if there are different values that $P$ can return,
+then the execution of $Q$ is affected.
+%  which affect in different ways the execution of $Q$. 
 For example, as shown in~\cite{DworkFHPRR15}, and as we did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
 If one feature's correlation changes, the classifier depending on features is also affected. 
 This notion of dependency builds on the execution trace as a \emph{causal history}. 
 In particular, I am interested in the history or provenance of a query up until this is executed, 
 simultaneously in tracking whether the result of the query may further cause some other query. 
 This is because I'm focusing on the generalization error which could be propagated by queries.
-In this sense, we need to consider both the dependency relation between queries, namely the \emph{reachability} sub-property
+In this sense, we need to consider both the dependency relation between queries, namely the \emph{reachability} sub-property,
 and the depth of this dependency relation, namely the \emph{quantitative} sub-property.
 This is the reason we claim that the \emph{adaptivity} of a program is a specific \emph{quantitative-reachability} property.
 
-Since existing formalization methodologies cannot
+Existing formalization methodologies cannot
 capture the two sub-properties of the \emph{adaptivity}, as in Section~\ref{sec:intro-methodology-adapt-formalization}.
 Techniques in previous works~\cite{weihao22} on formalizing this quantity
 are limited in expressiveness and accuracy significantly.
@@ -130,19 +132,17 @@ In this sense, we formalize this intuitive \emph{adaptivity} notion as a \emph{q
 %  develop an semantics-based analysis 
 in Section~\ref{sec:adapt-exe}. 
 % To formalize this intuition as a quantitative program property,
-We use a trace semantics recording the execution history of programs on some given input --- and we create a dependency graph, where the dependency between different variables (queries are also assigned to variables) is explicit and track which variable is associated with a query request. We then enrich this graph with weights describing the number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph\footnote{Formally, graphs will be well-defined only for terminating programs, this will guarantee that the longest walk is finite}. In other words, we define adaptivity as a \emph{quantitative form of program dependency}.
+We use a trace semantics recording the execution history of programs on some given input and we create a dependency graph, where the dependency between different variables (queries are also assigned to variables) is explicit and track which variable is associated with a query request. We then enrich this graph with weights describing the number of times each variable is evaluated in a program evaluation starting with an initial state. The adaptivity is then defined as the length of the walk visiting most query-related variables on this graph.\footnote{Formally, graphs will be well-defined only for terminating programs, this will guarantee that the longest walk is finite} In other words, we define adaptivity as a \emph{quantitative form of program dependency}.
 
 \subsubsection{Adaptivity Estimation}
 
 The third challenge is \emph{how to estimate the adaptivity of a given program}. 
 The adaptive data analysis model and the adaptivity definition suggest
-% that for this task 
-% I can use 
 a program analysis
 %  that is 
 based on some form of dependency analysis for \emph{adaptivity} estimation.
  This analysis needs to take into consideration the following,
-1) generally, a query $Q$ is not a monolithic block but rather it may depend on other parts of the program through the use of variables and values. 
+1) generally, a query $Q$ is not a monolithic block, but rather it may depend on other parts of the program through the use of variables and values. 
 Hence, the analysis needs to consider some form of data flow analysis. 
 2) the decision on whether to run a query or not may depend on some other value. Hence, 
 the analysis  needs to consider some form of control flow analysis.
@@ -150,11 +150,11 @@ the analysis  needs to consider some form of control flow analysis.
 Hence, the analysis needs to consider some quantitative information about the program dependencies. 
 
 % We also discussed in Section~\ref{sec:intro-methodology-adapt-formalization}, 
-Most existing techniques are failed
+Most existing techniques fail
 in analyzing the \emph{adaptivity} in the sense of considering its two sub-properties.
 The previous works from~\cite{weihao22}
-develop program analysis algorithm for estimating the adaptivity.
-However, this algorithm is low efficiency, and in-precise. It is not automatic either. 
+develop a program analysis algorithm for estimating the adaptivity.
+However, this algorithm is low efficiency and in-precise. It is not automatic either. 
 This analysis algorithm and limitations are introduced with more details in Section~\ref{sec:prework-formalization}.
 
 To address these challenges and technical limitations to estimate a sound upper bound on the adaptivity of a program, 
@@ -163,7 +163,9 @@ we develop a static program analysis algorithm in Section~\ref{sec:adapt-static}
 % we develop a static program analysis algorithm, named {\THESYSTEM}, 
 It performs both data flow and control flow analysis, and the reachability bound analysis. 
 Then it computes the \emph{adaptivity} through a longest walk estimation algorithm.
-In this way, {\THESYSTEM} gives tighter bounds on the \emph{adaptivity} of a program than the ones one would achieve by only using the data and control flow analyses or the ones that one would achieve by directly performing reachability bound analysis techniques alone. We evaluate {\THESYSTEM} on a number of examples showing that it is able to efficiently estimate precise upper bounds on the adaptivity of different programs. 
+In this way, {\THESYSTEM} gives tighter bounds on the \emph{adaptivity} of a program than the ones one would achieve by only using any analysis techniques alone.
+%  the data and control flow analyses or the ones that one would achieve by directly performing reachability bound analysis techniques alone. 
+We evaluate {\THESYSTEM} on a number of examples showing that it is able to efficiently estimate precise upper bounds on the adaptivity of different programs. 
 All the proofs and extended definitions are in the Appendix.
 %%%%% To reason about%
 % \\
