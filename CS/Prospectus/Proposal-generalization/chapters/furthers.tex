@@ -1,0 +1,155 @@
+\subsection{{\tt Query While} Language Extension}
+\label{subsec:furthers-language}
+The {\tt Query While} Language presented in Section~\ref*{sec:language} is limited to 
+standard while language with only $\eif$ and $\ewhile$ commands and basic assignment commands.
+I plan to extend it with inter-procedure call in following two steps,
+\begin{itemize}
+    \item I plan to firstly extend the syntax with  function definition and function call commands, sketching as follows,
+\[
+\highlight
+{\mbox{Labeled Command} 
+c ::= 
+\clabel{\efun}^l: x(r, x_1, \ldots, x_n) := c
+~|~ \clabel{\assign{x}{\ecall(x, e_1, \ldots, e_n)}}^l
+}
+\]
+    \item Accordingly, I will extend the operational semantics with function definition and call rules.
+\end{itemize}
+
+\subsection{Execution-Based Adaptivity Analysis Extension}
+\label{subsec:furthers-dep-depth}
+%
+\subsubsection{Introduction}
+\label{sec:furthers-exe-intro}
+The program's adaptivity in the formal model through the execution-based analysis in Section~\ref{sec:dynamic}
+% which we define over the program's execution-based dependency graph from the dynamic 
+% analysis 
+(specifically in Definition~\ref{def:trace_adapt}), isn't precise enough w.r.t. the intuitive adaptivity rounds.
+It comes across an over-approximation 
+% on the program's
+% intuitive adaptivity rounds.
+as shown in the Example~\ref{ex:multipleRoundsSingle_example}.
+% It is 
+In this example, the formalized adaptivity by execution-based analysis in Section~\ref{sec:dynamic} 
+is the initial value of the input variable $k$.
+However, the intuitive \emph{adaptivity} is only $2$ given whatever initial trace.
+This is resulted from the
+%  difference 
+disconnection between the 
+% dependency Depth 
+dependency quantity analysis in Section~\ref{subsubsec:dynamic-reachability} and 
+the data dependency analysis in \emph{variable may-dependency} definition in Section~\ref{subsubsec:dynamic-datadep}.
+It occurs when the 
+% weight 
+dependency quantity is computed over the traces different from the traces used in 
+% witness 
+analyzing the \emph{variable may-dependency} relation.
+% As shown in the Example~\ref{ex:multipleRoundsSingle_example}.
+\input{examples/multipleRoundsSingle}
+%%
+\subsubsection{Proposed Methodology}
+\label{subsubsec:furthers-dep-depth}
+% \input{~/dynamic/relatedwork.tex}
+Based on the execution-based dependency analysis in Section~\ref{sec:dynamic}, the improvement on the accuracy 
+of formalizing the
+\emph{adaptivity} is planned to develop in following three-steps.
+\begin{enumerate}
+\item In the first stage of the execution-based analysis, 
+I will give an alternative variable \emph{may-dependency} definition 
+by referring to the analysis methodology in \cite{Cousot19a}.
+%
+Specifically, I will define the variables' dependency relation over two witness traces and an initial trace. Comparing to 
+the existing \emph{may-dependency} definition, which quantifies overall possible execution traces, the alternative
+the definition explicitly relies on two specific witness traces from execution.
+This externalization helps in analyzing the dependency quantity through the same 
+witness traces as the \emph{may-dependency} relation. In this way, the over-approximation as illustrated above
+can be reduced.
+%
+\item In the second stage of the execution-based analysis, 
+based on the new \emph{may-dependency} definition,
+I will compute the weight of every edge constructed from 
+\emph{may-dependency} relation in the execution-based dependency graph, w.r.t. to the witness traces.
+%
+\item Then in the third stage, I will formalize the \emph{adaptivity} still as the 
+length of the longest finite walk. Differently, the finite walk is re-defined 
+%  from the basic one, I restrict 
+with extra restriction.
+The occurrence of every edge in a finite walk is restricted to be no more than its weight as well.
+\end{enumerate}
+Through the three steps above, I give a more accurate formalization of the intuitive \emph{adaptivity}.
+%
+\subsection{Static Program Adaptivity Analysis Extension}
+\label{subsec:furthers-reachability}
+\subsubsection{Introduction}
+\label{sec:furthers-static-intro}
+In static program analysis framework $\THESYSTEM$, specifically on the dependency quantity, 
+I adopt the reachability bound analysis technique to estimate this dependency quantity.
+% In existing static reachability bound analysis, 
+However, it isn't precise enough w.r.t. the execution-based reachability bound on every program command.
+It comes across an over-approximation on estimation due to its path-insensitive nature,
+as shown in the Example~\ref{ex:multipleRoundsOdd_example}.
+% It is 
+In this example, the estimated adaptivity by static analysis in Section~\ref{sec:static} 
+is $1 + 2*k$ where $k$ is the initial value of the input variable.
+However, the formal \emph{adaptivity} is only $1 + k$ from the execution-based analysis.
+
+This is resulted from the  path-insensitive of the dependency quantity in
+second stage of the static analysis in Section~\ref{subsubsec:static-reachability}.
+It occurs when the control flow can be decided in a particular way in front of conditional branches, 
+while the static analysis fails to witness. 
+% As shown in Example~\ref{ex:overapproximate}.
+\input{examples/multipleRoundsOdd}
+
+% as follo
+\subsubsection{Proposed Methodology}
+\label{subsubsec:furthers-reachability}
+The accurate static adaptivity analysis is planned to be improved in following two steps.
+\begin{enumerate}
+    \item \textbf{Path Sensitive Reachability Bound Algorithm Design}
+    
+    The imprecision comes from the second stage of the static program analysis.
+    The algorithm in this stage is to statically estimate the 
+    reachability bound for every location of program.
+    Specifically, this reachability bound analysis algorithm isn't path sensitive. 
+    There are many works in the program complexity analysis area, estimating the path-sensitive loop bound 
+    or reachability bound
+    \cite{GustafssonEL05, HumenbergerJK18}, 
+    \cite{BrockschmidtEFFG16,AlbertAGP08,AliasDFG10,Flores-MontoyaH14}, 
+    \cite{GulwaniZ10, SinnZV17,GulwaniJK09, GulwaniMC09, abs-2203-04243}. 
+    But they aren't analyzing the reachability
+    bound in a path-sensitive way.
+    \\
+    Motivated by this observation, I will first design path-sensitive reachability bound analysis algorithm computing the 
+    reachability bounds for every labeled command taking the different paths inside while loop into consideration.
+% Compared to just computing the reachability bound for the while loop command, the new methodology improves the accuracy of the 
+% reachability bound for every labeled command.
+% \\
+    \item \textbf{$\THESYSTEM$ via Path Sensitive Reachability Bound Algorithm Design}
+
+    Then follow the same static program analysis based $\THESYSTEM$ framework in Section~\ref{sec:static},
+% and design a new algorithm for this stage.
+% Then, I will 
+this improved analysis result will be applied to estimate the dependency quantity as follows,
+\begin{itemize}
+    \item $\THESYSTEM$ will construct different abstract control flow graph based on the requirement of the newly-designed
+    path-sensitive reachability bound algorithm.
+
+    \item The improved $\THESYSTEM$ will perform the same algorithm for analyzing the dependency relation in the first stage.
+    \item But in the second stage, the improved $\THESYSTEM$ 
+    apply the newly-designed  path-sensitive reachability bound algorithm for analyzing the dependency quantity.
+    The result from the new algorithm 
+    give a tighter approximation on the dependency quantity,
+    specifically on the reachability times of the program's every location.
+    \item Based on the two results analyzed from the steps above, 
+    i.e., the estimated dependency relation and the tighter reachability bound, the improved $\THESYSTEM$ will construct
+a more accurate program-based data dependency graph.
+%  constructed in Section~\ref{subsubsec:static-adapt}
+Then, by applying the same algorithm as in Section~\ref{subsubsec:static-adapt}, 
+the improved $\THESYSTEM$ will compute a tighter \emph{adaptivity} for a program.%
+\end{itemize}
+\end{enumerate}
+As shown in Figure~\ref{fig:multipleRoundsOdd_example}, 
+through the newly-designed path-sensitive reachability bound analysis,
+ideally the weight for vertex $p^6$ and $x^7$ will be $\frac{k}{2}$.
+% \subsection{Static Adaptivity Computation towards Completeness}
+% \label{subsec:furthers-adaptcomplete}

@@ -1,0 +1,204 @@
+\begin{example}[Execution Trace of a Program with While Command].
+\\
+\[
+\ewhile [(x > 0)]{}^0 \edo [x = x - 1]{}^1;
+\]
+Let $\trace_0 \in \mathcal{T}$ be the initial trace, 
+without loss of generalization, let $\env(\trace_0) x = 1$.
+\\
+By operational semantics rules, we have following evaluation:
+  \begin{mathpar}
+\inferrule
+  {
+   \vtrace_0, (x > 0) \barrow \etrue
+   \and 
+   \event = ((x > 0), 0, 1, \etrue)
+  }
+  {
+  \config{{\ewhile [(x > 0)]{}^0 \edo [x = x - 1]{}^1;, \vtrace_0}}
+  \\
+  \xrightarrow{} 
+  \config{{[x = x - 1]{}^1; \ewhile [(x > 0)]{}^0 \edo [x = x - 1]{}^1;, \vtrace_0 \cdot ((x > 0), 0, 1, \etrue)}}
+  }
+  ~\textbf{while-t}
+\and
+\inferrule
+  {
+  \inferrule
+  {
+	\config{x - 1, \vtrace_0 \cdot ((x > 0), 0, 1, \etrue)} \aarrow 0
+  }
+   {
+   \config{{[x = x - 1]{}^1;, \vtrace_0 \cdot ((x > 0), 0, 1, \etrue)}}
+  \xrightarrow{} 
+  \config{{\eskip;, \vtrace_0 \cdot ((x > 0), 0, 1, \etrue) \cdot (x, 1, 1, 0)}}
+   }~\textbf{asn}
+  }
+  {
+  \config{{[x = x - 1]{}^1; \ewhile [(x > 0)]{}^0 \edo [x = x - 1]{}^1;, \vtrace_0 \cdot \event}}
+  \\
+  \xrightarrow{} 
+  \config{{\eskip; \ewhile [(x > 0)]{}^0 \edo [x = x - 1]{}^1;, \vtrace_0 \cdot ((x > 0), 0, 1, \etrue) \cdot (x, 1, 1, 0)}}
+  }
+  ~\textbf{seq1}
+\and
+\inferrule
+  {
+  \inferrule
+  {
+   \vtrace_0, (x > 0) \barrow \efalse
+   \and 
+   \event = ((x > 0), 0, 2, \efalse)
+  }
+   {
+   \config{{\ewhile [(x > 0)]{}^0 \edo [x = x - 1]{}^1;, \vtrace_0 \cdot ((x > 0), 0, 1, \etrue)}}
+  \\
+  \xrightarrow{} 
+  \config{{\eskip;, \vtrace_0 \cdot ((x > 0), 0, 1, \etrue) \cdot (x, 1, 1, 0)\cdot ((x > 0), 0, 2, \efalse)}}
+   }~\textbf{while-f}
+  }
+  {
+  \config{{\eskip; \ewhile [(x > 0)]{}^0 \edo [x = x - 1]{}^1;, \vtrace_0 \cdot ((x > 0), 0, 1, \etrue) \cdot (x, 1, 1, 0)}}
+  \\
+  \xrightarrow{} 
+  \config{{\eskip;, 
+  \vtrace_0 \cdot ((x > 0), 0, 1, \etrue) \cdot (x, 1, 1, 0) \cdot ((x > 0), 0, 2, \efalse)}}
+  }
+  ~\textbf{seq2}
+\end{mathpar}
+%
+Then we have following execution, where $\trace_0 \in \mathcal{T}$ and $\env(\trace_0) x = 1$.:
+\[
+\config{\ewhile [(x > 0)]{}^0 \edo [x = x - 1]{}^1;, \trace_0}
+	\rightarrow^{*}
+\config{{\eskip;, 
+  \vtrace_0 \cdot ((x > 0), 0, 1, \etrue) \cdot (x, 1, 1, 0) \cdot ((x > 0), 0, 2, \efalse)}}
+\]
+\end{example}
+%
+%
+\clearpage
+\begin{example}[Example of Timing Channel under Trace Semantics].
+\label{ex:timingdep}
+\\
+Using the same example from Example.~\ref{ex:excltiming}
+\[
+	\ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3
+\]
+In this example, $y$'s execution times relies on value of $x$. Under the adaptivity scenario, $y$ depends on $x$ (control dependency).
+%
+This example shows we can derive by Definition.~\ref{def:var_dep}:
+\[
+	\vardep(x^2, y^3, {\ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3})
+\]
+%
+\begin{proof}
+Let $\trace_0 = \cdot (x, 0, 1, 2) \in \mathcal{T}$, by semantics definition, we have:
+%
+\begin{equation}
+\label{eq:os_timingdep}
+\begin{array}{ll}
+& \config{\ewhile [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3 , \trace_0} \\
+& \rightarrow^\rname{while-t}
+\config{[x = x - 1;]{}^2  [y = 1;]{}^3; \ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3, \trace_0 \cdot ((x > 0), 1, 1, \etrue)} \\
+& \rightarrow^\rname{seq1}
+\config{[\eskip]{}^2  [y = 1;]{}^3; \ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3, \trace_0 \cdot ((x > 0), 1, 1, \etrue) \cdot(x, 2, 1, 1)} \\
+& \rightarrow^\rname{seq2}
+\config{[\eskip]{}^3; \ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3, \trace_0 \cdot ((x > 0), 1, 1, \etrue) \cdot(x, 2, 1, 1) \cdot(y, 3, 1, 1)} \\
+&\rightarrow^\rname{seq2}
+\config{[x = x - 1;]{}^2  [y = 1;]{}^3; \ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3, \trace_0 \cdot ((x > 0), 1, 1, \etrue) \cdot (x, 2, 1, 1) \\
+& \quad \cdot(y, 3, 1, 1) \cdot ((x > 0), 1, 2, \etrue)} \\
+& \rightarrow^\rname{seq1}
+\config{[\eskip]{}^2  [y = 1;]{}^3; \ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3, \trace_0 \cdot ((x > 0), 1, 1, \etrue) \cdot(x, 2, 1, 1) \\
+& \quad \cdot(y, 3, 1, 1) \cdot ((x > 0), 1, 2, \etrue) \cdot(x, 2, 2, 0)} \\
+& \rightarrow^\rname{seq2}
+\config{[\eskip]{}^3; \ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3, \trace_0 \cdot ((x > 0), 1, 1, \etrue) \cdot (x, 2, 1, 1) \\
+& \quad \cdot(y, 3, 1, 1) \cdot ((x > 0), 1, 2, \etrue) \cdot(x, 2, 2, 0) \cdot(y, 3, 2, 1)} \\
+& \rightarrow^\rname{seq2}
+\config{[\eskip]{}^1;, \trace_0 \cdot ((x > 0), 1, 1, \etrue) \cdot(x, 2, 1, 1) \\
+& \quad \cdot(y, 3, 1, 1) \cdot ((x > 0), 1, 2, \etrue) \cdot(x, 2, 2, 0) \cdot(y, 3, 2, 1) \cdot ((x > 0), 1, 3, \efalse)} \\
+\end{array}
+\end{equation}
+%
+Let $\event_1 = (x, 2, 1, 1)$,  $\event_1' = (x, 2, 1, 0)$ and $\event_2 = ((y, 3, 2, 1))$, then we have another execution as follows:
+\[
+\begin{array}{ll}
+& \config{[\eskip]{}^2  [y = 1;]{}^3; \ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3, \trace_0 \cdot ((x > 0), 1, 1, \etrue) \cdot \event_1'} \\
+& \rightarrow^\rname{seq2}
+\config{[\eskip]{}^3; \ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3, \trace_0 \cdot ((x > 0), 1, 1, \etrue) \cdot \event_1' \cdot(y, 3, 1, 1)} \\
+&\rightarrow^\rname{seq2}
+\config{[\eskip;]{}^1, \trace_0 \cdot ((x > 0), 1, 1, \etrue) \cdot \event_1' \cdot(y, 3, 1, 1) \cdot ((x > 0), 1, 2, \efalse)} \\
+\end{array}
+\]
+%
+Then, we have:
+\[
+\begin{array}{l}
+\event_2 \ismin \trace_0 \cdot ((x > 0), 1, 1, \etrue) \cdot \event_1' \cdot(y, 3, 1, 1) \cdot ((x > 0), 1, 2, \etrue) \cdot(x, 2, 2, 0) \cdot(y, 3, 2, 1) \cdot ((x > 0), 1, 3, \efalse)\\
+\land
+\event_2 \notismin \trace_0 \cdot ((x > 0), 1, 1, \etrue) \cdot \event_1' \cdot(y, 3, 1, 1) \cdot ((x > 0), 1, 2, \efalse)
+\end{array}
+\]
+%
+By Definition~\ref{def:event_ctldep}, we have:
+%
+\[
+	\eventdep^{\ctl}(\event_1, \event_2, \ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3, D)
+\]
+%
+By Definition~\ref{def:event_dep}, we have: 
+\[
+	\eventdep(\event_1, \event_2, \ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3, D)
+\]
+%
+By Definition~\ref{def:event_dep}, we have:
+\[
+	\vardep(x^2, y^3, {\ewhile  [(x > 0)]{}^1 \edo [x = x - 1;]{}^2  [y = 1;]{}^3})
+\]
+%
+\end{proof}
+\end{example}
+%
+\clearpage
+\begin{example}[Excluding the Over approximation in Example.~\ref{eq:sem_timingoverapp}].
+\\
+Consider the same example in Example.~\ref{eq:sem_timingoverapp}, where the dependency is over approximated by Definition~2 (in \cite{cousot2019abstract}):
+\[
+	\ewhile [(x > 0)] {}^2 [ y = 1;]{}^3 
+\]
+Let $z^i \in \lvar_{C} \setminus \{x^1\}$ be arbitrary variable different from $x$,
+in this example, $y$ doesn't rely on $z$. 
+This example shows by the modified data dependency in Definition~\ref{def:var_dep}, the dependency between $z^i$ and $y^3$ cannot be derived.
+%
+\begin{proof}
+%
+Without loss of generalization, 
+let $\trace_0 \in \mathcal{T}$ be arbitrary initial trace where $\env(\trace_0) x = v$ and $v > 0$.
+\\
+By operational semantics, let $\trace_j = \cdot ((x > 0), 2, j, \etrue) \cdot(y, 3, j, 1)$ we have:
+\[
+\label{eq:os_timingdep}
+\config{\ewhile  [(x > 0)]{}^2 \edo [y = 1;]{}^3 , \trace_0} \rightarrow^*
+\config{[\eskip]{}^1;, \trace_0 \cdot \trace_1 \cdot \trace_2 \cdots}
+\]
+%
+For arbitrary initial trace $\trace_0 \in \mathcal{T}$, there doesn't exist an event $\event$ s.t. 
+$(\pi_1(\event), \pi_2(\event)) = (z, i)$ in $\cdot \trace_1 \cdot \trace_2 \cdots$, i.e.,
+\[
+  \not\exists \event \st (\pi_1(\event), \pi_2(\event)) = (z, i) \land
+ \event \ismin \cdot \trace_1 \cdot \trace_2 \cdots
+\]
+%
+Let $\event_y = (y, 3, j, 1)$ for arbitrary $j$, then, by definition of variable dependency, we know:
+\[ 
+\forall  \event_2 \st (\pi_1(\event_2), \pi_2(\event_2)) = (y, 3) 
+\st \not\exists \event_1 \st \pi_1(\event_1) = (z, i) \land \eventdep(\event_z, \event_y)
+\]
+%
+i.e., there isn't dependency relations between $z^i$ and $y^3$ by Definition~\ref{def:var_dep}
+\[
+  \neg \vardep(z^1, y^3, \ewhile  [(x > 0)]{}^2 \edo [y = 1;]{}^3, D)
+\]
+\end{proof}
+\end{example}
+%
