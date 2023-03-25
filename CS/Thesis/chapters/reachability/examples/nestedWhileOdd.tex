@@ -19,8 +19,8 @@
             \eif(\clabel{i \% 2 = 0 }^{2},\\
             \qquad \clabel{\assign{i}{i - 1}}^{3};
             \clabel{\assign{j}{k}}^{4}; \\
-            \qquad \ewhile ~ \clabel{j > 0}^{5} ~ \edo ~
-            \Big( \clabel{\assign{j}{j - 1}}^{6} \Big),\\
+            \qquad \ewhile ~ \clabel{j > 0}^{5} ~ \edo ~\\
+            \qquad \Big( \clabel{\assign{j}{j - 1}}^{6} \Big),\\
             \qquad \clabel{\assign{i}{i - 3}}^{7});
             \Big)
       \end{array}
@@ -29,7 +29,7 @@
     \caption{}
     \end{centering}
     \end{subfigure}
-  \begin{subfigure}{.5\textwidth}
+  \begin{subfigure}{.55\textwidth}
     \begin{centering}
   \begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
   \draw[] (-7, 10) circle (0pt) node{{ $0$}};
@@ -38,7 +38,7 @@
   \draw[] (0, 4) circle (0pt) node{{ $3$}};
   \draw[] (-4, 4) circle (0pt) node{{ $4$}};
   \draw[] (-8, 4) circle (0pt) node{{ $5$}};
-  \draw[] (-8, 1) circle (0pt) node{{ $6$}};
+  \draw[] (-8, 0) circle (0pt) node{{ $6$}};
   \draw[] (4, 4) circle (0pt) node{{ $7$}};
   % Counter Variables
   \draw[] (6, 10) circle (0pt) node {\textbf{$\lex$}};
@@ -54,8 +54,8 @@
   \draw[ thick, -latex]  (-0.5, 4) -- node [below] {$i' \leq i - 1$ }  (-3.5, 4) ;
   \draw[ thick, -latex]  (-4.5, 4) -- node [above] {$j' \leq k$ }  (-7.5, 4);
   \draw[ thick, -latex] (0.5, 10)  -- node [above] {$i \leq 0$}  (5.5, 10);
-  \draw[ thick, -latex] (-8, 3.5)  -- node [left] {$j > 0$}  (-8, 1.5);
-  \draw[ thick, -latex] (-7, 1.5)  to  [out=0,in=0] node [right] {$j' \leq j - 1$}  (-7, 3.5);
+  \draw[ thick, -latex] (-8, 3.5)  -- node [left] {$j > 0$}  (-8, 0.5);
+  \draw[ thick, -latex] (-7, 0.5)  to  [out=0,in=0] node [right] {$j' \leq j - 1$}  (-7, 3.5);
   \draw[ thick, -latex] (0.5, 10)  -- node [above] {$i \leq 0$}  (5.5, 10);
   % \draw[ thick, -latex] (6, 6.5)  -- node [right] {$\top$} (6, 4.5) ;
   \end{tikzpicture}
