@@ -40,16 +40,16 @@ compute the \emph{reachability-bound} for each program point in a path-sensitive
 We have implemented our algorithm in a prototype and evaluated it on 290 programs extracted from different benchmarks. Our evaluation %Section~\ref{sec:eval} 
 shows that we can accurately estimate different bounds for different locations in programs with loops containing multiple paths. Based on this, we can also compute a tighter overall complexity compared to the state-of-art worst-case complexity analysis tools.
 
-To summarize, our contributions are as follows.
-\\
-% \begin{itemize}
-% \item 
-1. We introduce a path-sensitive reachability-bound algorithm 
-combining \emph{amortized bound analysis}  and \emph{path refinement}. The algorithm computes tight bounds on the times that each program point is evaluated.
-\\
-2. We identify two quantities,  \emph{path reachability-bound} and \emph{loop reachability-bound}, which are useful to measure precise information about the program execution.  We also propose two algorithms for soundly estimating these two quantities.
-% \item 
-\\
-3. We develop a prototype implementation with evaluation over 290 programs.
- The evaluation shows improvement in precision compared to other tools for reachability-bound analysis and the worst-case complexity analysis.
-% \end{itemize}
+% To summarize, our contributions are as follows.
+% \\
+% % \begin{itemize}
+% % \item 
+% 1. We introduce a path-sensitive reachability-bound algorithm 
+% combining \emph{amortized bound analysis}  and \emph{path refinement}. The algorithm computes tight bounds on the times that each program point is evaluated.
+% \\
+% 2. We identify two quantities,  \emph{path reachability-bound} and \emph{loop reachability-bound}, which are useful to measure precise information about the program execution.  We also propose two algorithms for soundly estimating these two quantities.
+% % \item 
+% \\
+% 3. We develop a prototype implementation with evaluation over 290 programs.
+%  The evaluation shows improvement in precision compared to other tools for reachability-bound analysis and the worst-case complexity analysis.
+% % \end{itemize}
