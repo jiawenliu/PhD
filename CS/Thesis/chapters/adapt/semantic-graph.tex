@@ -80,7 +80,7 @@ Each of the four components is defined as follows,
   ~ \middle\vert ~ x^l \in \lvar(c)
   \right\}
   \\
-  \text{Directed Edges} &
+  \text{Edges} &
   \traceE({c}) & := 
   \left\{ 
   (x^i, y^j) 
@@ -103,19 +103,18 @@ Each of the four components is defined as follows,
   \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace'} 
   \land w(\trace_0) = \vcounter(\trace', l) \}  
   \\
-  \text{Query Annotations} &
+  \text{Query} &
   \traceF({c}) & := 
   \big\{(x^l, n)  
   ~ \vert ~  x^l \in \lvar(c) 
-  \\ & & \qquad
+  \\ \text{Annotations} & & \qquad
   \land n = 1 \Leftrightarrow x^l \in \qvar(c) \land n = 0 \Leftrightarrow  x^l \notin \qvar(c)
   \big\},
 \end{array},
 \]
 }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% The Detailed Version in Explaining the Trace Operators %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% A semantics-based dependency graph $\traceG({c})= (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ 
-% is \emph{well-formed} if and only if $ \{x^l \ |\ (x^l,w)\in \traceW({c})\} = \traceV({c}) $.
+A semantics-based dependency graph $\traceG({c})= (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ 
+is \emph{well-formed} if and only if $ \{x^l \ |\ (x^l,w)\in \traceW({c})\} = \traceV({c}) $.
 \end{defn}
 
 
