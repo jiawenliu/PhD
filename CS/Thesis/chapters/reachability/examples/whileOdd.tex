@@ -63,71 +63,75 @@ The two paths are iterating alternatively with each other.
   %
   \end{example}    
   \begin{enumerate}
-    \item  \textbf{The Abstract Execution Control Flow Graph} is generated in Figure~\ref{fig:whileOdd}(b).
+    \item  \textbf{The Abstract Transition Graph} is generated in Figure~\ref{fig:whileOdd}(b).
     \item \textbf{Program Refinement}
     \\
     The loop free simple transition paths are computed as follows,
-    \[
-    \begin{array}{llll}
-      \tpath_0 = (0 \to 1)
-      &
-      \tpath_1 = (1 \to 2 \to 3 \to 1)
-      \\
-      \tpath_2 = (1 \to 2 \to 4 \to 1)
-      &
-      \tpath_3 = (1 \to \lex)
-    \end{array}
-    \]
-  \textbf{Refined Program}:
-  \[
-    \tpath_0 ; \rpchoose{1: \rprepeat(\tpath_1; \tpath_2) , 
-    1: \rprepeat(\tpath_2; \tpath_1)}; \tpath_3
-  \]
-    \item \textbf{Path Local Reachability-bound} for every simple transition path $\tpath$.
-    \[
-      \outinB(1, \tpath_1) = \lfloor \frac{n}{4} \rfloor \quad
-      \outinB(1, \tpath_2) = \lfloor \frac{n}{4} \rfloor
-    \]
-  Loop Bounds:
-    \[
-      \begin{array}{lll}
-        BD(\tpath_0) = 1
-        &
-        BD(\tpath_3) = 1
-        &
-        BD(\rprepeat(\tpath_1; \tpath_2)) = \lfloor \frac{n}{4} \rfloor
-        \\
-        BD(\tpath_1) = 1 
-        &
-        BD(\tpath_2) = 1 
-        &
-        BD(\rprepeat(\tpath_2; \tpath_1)) = \lfloor \frac{n}{4} \rfloor
-      \end{array}
-      \]
 
+    
+      $\tpath_0 = (0 \to 1)$
+      \quad
+      $\tpath_1 = (1 \to 2 \to 3 \to 1)$
+      \\
+      $\tpath_2 = (1 \to 2 \to 4 \to 1)$
+      \quad
+      $\tpath_3 = (1 \to \lex)$
+
+      
+  \textbf{Refined Program}:
+
+  % \[
+    $\tpath_0 ; \rpchoose{1: \rprepeat(\tpath_1; \tpath_2) , 
+    1: \rprepeat(\tpath_2; \tpath_1)}; \tpath_3$
+  % \]
+
+    \item \textbf{Path Local Reachability-bound} for every simple transition path $\tpath$.
+
+      $\outinB(1, \tpath_1) = \frac{n}{4}$ 
+      \quad
+      $\outinB(1, \tpath_2) = \frac{n}{4}$
+
+  Loop Bounds:
+    % \[
+    %   \begin{array}{lll}
+        $BD(\tpath_0) = 1$
+        \quad
+       $ BD(\tpath_3) = 1$
+        \quad
+       $ BD(\rprepeat(\tpath_1; \tpath_2)) = \frac{n}{4}$
+        \\
+        $BD(\tpath_1) = 1 $
+        \quad
+        $BD(\tpath_2) = 1 $
+        \quad
+       $ BD(\rprepeat(\tpath_2; \tpath_1)) = \frac{n}{4}$
+      % \end{array}
+      % \]
       %
     \item \textbf{{Loop Reachability-bound}} for every simple transition path $\tpath$.
-    \[
-      \begin{array}{lll}
-        \lpchB(1, \tpath_1) = \lfloor \frac{n}{4} \rfloor
+    
+    % \[
+    %   \begin{array}{lll}
+       $ \lpchB(1, \tpath_1) = \frac{n}{4}$
         \qquad
-        \lpchB(1, \tpath_2) = \lfloor \frac{n}{4} \rfloor
+        $\lpchB(1, \tpath_2) = \frac{n}{4}$
         \\
-        \lpchB(\bot, \tpath_0) = 1
+        $\lpchB(\bot, \tpath_0) = 1$
         \qquad
-        \lpchB(\bot, \tpath_3) = 1
-      \end{array}
-      \]
+        $\lpchB(\bot, \tpath_3) = 1$
+      % \end{array}
+      % \]
     \item \textbf{Path Global Reachability-bound} for every simple transition path $\tpath$
     \\
-    $\inoutB(\tpath_1) = \lfloor \frac{n}{4} \rfloor $ \quad
-    $\inoutB(\tpath_2) = \lfloor \frac{n}{4} \rfloor $ \\
+    $\inoutB(\tpath_1) = \frac{n}{4} $ \quad
+    $\inoutB(\tpath_2) = \frac{n}{4} $ \\
     $\inoutB(\tpath_0) = 1$ \quad
     $\inoutB(\tpath_3) = 1$ 
 
     \item \textbf{Program Point Path-sensitive Reachability-Bound} on every program control location
   \\
   $\psRB(0) = \psRB(\lex) = 1$ \quad
-  $\psRB(3) = \psRB(4) = \lfloor \frac{n}{4} \rfloor$ \\
-  $\psRB(1) = \psRB(2) = \lfloor \frac{n}{2} \rfloor + 1$ \quad
+  $\psRB(3) = \psRB(4) = \frac{n}{4}$ \\
+  $\psRB(2) = \frac{n}{2}$ \quad 
+  $\psRB(1) = \frac{n}{2} + 1$
   \end{enumerate}

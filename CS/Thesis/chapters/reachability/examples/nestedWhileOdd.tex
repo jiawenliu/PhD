@@ -71,7 +71,7 @@
   %
   \end{example}    
   \begin{enumerate}
-    \item  \textbf{The Abstract Execution Control Flow Graph} is generated in Figure~\ref{fig:nestedWhileOdd}(b).
+    \item  \textbf{The Abstract Transition Graph} is generated in Figure~\ref{fig:nestedWhileOdd}(b).
     \item \textbf{Program Refinement}
     \\
     The loop free simple transition paths are computed as follows,
@@ -98,7 +98,9 @@
       \end{array}
       }; \tpath_4$
 
-    Let $\rprog_1^1 = \rprepeat(\tpath_1; 5:\rprepeat(\tpath_2); \tpath_3)$
+      Define the sub-loop program as follows,
+
+      $\rprog_1^1 = \rprepeat(\tpath_1; 5:\rprepeat(\tpath_2); \tpath_3)$
     \\
     $\rprog_1^2 = \rprepeat(\tpath_3; \tpath_1; 5:\rprepeat(\tpath_2) ; \tpath_5 )$
     \item {Path Local Reachability-bound}:
@@ -128,16 +130,15 @@
     %
     \item Loop Reachability-bound:
     \\
-
-    $\lpchB(1: \rprog_1^1, \tpath_1) = \frac{k}{4}$ \quad
-    $\lpchB(1: \rprog_1^1, \tpath_3) = \frac{k}{4}$ \quad 
-    $\lpchB(1: \rprog_1^1, \tpath_5) = \frac{k}{4}$ \\ 
-    {$\lpchB(1: \rprog_1^1, \tpath_2) = \frac{k}{4}$} \quad
-    $\lpchB(1: \rprog_1^2, \tpath_1) = \frac{k}{4}$ \quad
-    $\lpchB(1: \rprog_1^2, \tpath_3) = \frac{k}{4}$ \\ 
-    $\lpchB(1: \rprog_1^2, \tpath_5) = \frac{k}{4}$ \quad 
-    \highlight{$\lpchB(1: \rprog_1^2, \tpath_2) = \frac{k}{4}$} \\
-    $\lpchB(5: \rprepeat(\tpath_2), \tpath_2) = n$ 
+    % $\lpchB(1: \rprog_1^1, \tpath_1) = \frac{k}{4}$ \quad
+    % $\lpchB(1: \rprog_1^1, \tpath_3) = \frac{k}{4}$ \quad 
+    % $\lpchB(1: \rprog_1^1, \tpath_5) = \frac{k}{4}$ \\ 
+    $\lpchB(1: \rprog_1^1, \tpath_2) = \frac{k}{4}$ \quad
+    % $\lpchB(1: \rprog_1^2, \tpath_1) = \frac{k}{4}$ \quad
+    % $\lpchB(1: \rprog_1^2, \tpath_3) = \frac{k}{4}$ \\ 
+    % $\lpchB(1: \rprog_1^2, \tpath_5) = \frac{k}{4}$ \quad 
+    \highlight{$\lpchB(1: \rprog_1^2, \tpath_2) = \frac{k}{4}$} 
+    % $\lpchB(5: \rprepeat(\tpath_2), \tpath_2) = n$ 
     %
     %
     \item Path Global Reachability-bound:
@@ -154,7 +155,7 @@
     $\psRB(0) = \psRB(\lex) = 1$ \quad
     $\psRB(1) = \frac{k}{2} + 1$ \quad
     $\psRB(2) = \frac{k}{2} $ \\
-    $\psRB(3) = \psRB(4) = \psRB(7) = \frac{k}{4} $ \\
-    \highlight{$\psRB(6) = \frac{k}{4} \times k$} \\
+    $\psRB(3) = \psRB(4) = \psRB(7) = \frac{k}{4} $ \quad
+    \highlight{$\psRB(6) = \frac{k}{4} \times k$} \quad
     $\psRB(5) =  \frac{k}{4} \times (k + 1)$
   \end{enumerate}

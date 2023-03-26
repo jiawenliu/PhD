@@ -112,7 +112,9 @@ $
 1: \rprepeat(\tpath_1; 3: \rprepeat(\tpath_2; 6: \rprepeat(\tpath_3); \tpath_4); \tpath_5); \tpath_6
 $
 \\
-Let $\rprog_1 = \rprepeat(\tpath_1; 3: \rprepeat(\tpath_2; 6: \rprepeat(\tpath_3); \tpath_4); \tpath_5)$
+Define sub loop programs as follows,
+
+$\rprog_1 = \rprepeat(\tpath_1; 3: \rprepeat(\tpath_2; 6: \rprepeat(\tpath_3); \tpath_4); \tpath_5)$
 \\
 $\rprog_3 = \rprepeat(\tpath_2; 6: \rprepeat(\tpath_3); \tpath_4)$
 \\
@@ -132,7 +134,7 @@ $BD(\tpath_0) = 1$
 \quad
 $BD(\tpath_6) = 1$
 \quad
-$BD( \rprepeat(\tpath_3)) = N $
+$BD( \rprog_6) = N $
 \\
 $BD(\rprog_3) = m $
 \quad
@@ -140,38 +142,37 @@ $BD(\rprog_1) = n - N $
 %
 \item Loop Reachability-bound:
 \\
-\highlight{
-$\lpchB(1: \rprog_1, \tpath_1) = n - N$ \quad
-$\lpchB(1: \rprog_1, \tpath_5) = n - N$ \quad
-$\lpchB(1: \rprog_1, \tpath_2) = n$ \\ 
-$\lpchB(1: \rprog_1, \tpath_4) = n$ \quad
+% $\lpchB(1: \rprog_1, \tpath_1) = n - N$ \quad
+% $\lpchB(1: \rprog_1, \tpath_5) = n - N$ \\
+$\lpchB(1: \rprog_1, \tpath_2) = n - N$ \quad 
+$\lpchB(1: \rprog_1, \tpath_4) = n - N$ \\
 $\lpchB(1: \rprog_1, \tpath_3) = 1$ \quad
-$\lpchB(3: \rprog_3, \tpath_4) = m$ \\
-$\lpchB(3: \rprog_3, \tpath_2) = m$ \quad
+% $\lpchB(3: \rprog_3, \tpath_4) = m$ \quad
+% $\lpchB(3: \rprog_3, \tpath_2) = m$ \\
 $\lpchB(3: \rprog_3, \tpath_3) = 1$ \quad 
-$\lpchB(6: \rprog_6, \tpath_3) = N$
-}
+% $\lpchB(6: \rprog_6, \tpath_3) = N$
 %
 %
 \item Path Global Reachability-bound:
 \\
 $\inoutB(\rprog, \tpath_1) = n - N$ \quad
-$\inoutB(\rprog, \tpath_2) = n \times m$ \quad
-$\inoutB(\rprog, \tpath_0) = 1$ 
-\\
 $\inoutB(\rprog, \tpath_5) = n - N$ \quad
-$\inoutB(\rprog, \tpath_4) = n \times m$ \quad
-$\inoutB(\rprog, \tpath_6) = 1$ 
+\\
+$\inoutB(\rprog, \tpath_2) = (n - N) \times m$ \quad
+$\inoutB(\rprog, \tpath_4) = (n - N) \times m$ 
 \\
 $\inoutB(\rprog, \tpath_3) = N$
+\\
+$\inoutB(\rprog, \tpath_6) = 1$ \quad
+$\inoutB(\rprog, \tpath_0) = 1$ 
 %
 \item The Reachability-bound:
 \\
 $\psRB(0) = \psRB(\lex) = 1$ \quad
 $\psRB(1) = n - N + 1$ \quad
 $\psRB(2) = \psRB(9) = n - N$ \\
+$\psRB(3) = n - N + (n - N) \times m$ \\
+$\psRB(4) = \psRB(5) = \psRB(8) = (n - N) \times m$ \\
+$\psRB(6) = N + (n - N) \times m$ \quad
 $\psRB(7) = N$ \quad
-$\psRB(3) = n - N + n \times m$ \quad
-$\psRB(4) = \psRB(5) = \psRB(8) = n \times m$ \\
-$\psRB(6) = N + n \times m$ 
 \end{enumerate}

@@ -69,30 +69,35 @@ modified by each other. It is the simplified version of Example~\ref{ex:threeNes
 \end{example}
 
 \begin{enumerate}
-  \item  \textbf{Abstract Control Flow Graph} is generated in Figure~\ref{fig:relatedNestedWhileSim}(b).
+  \item  \textbf{Abstract Transition Graph} is generated in Figure~\ref{fig:relatedNestedWhileSim}(b).
 
   \item \textbf{Program Refinement}
   \\
   The loop free simple transition paths:
-  \[
-      \begin{array}{lllll}
-          \tpath_0 = (0 \to 1)
+  % \[
+  %     \begin{array}{lllll}
+          $\tpath_0 = (0 \to 1)$
           \quad
-          \tpath_1 = (1 \to 2 \to 3)
+          $\tpath_1 = (1 \to 2 \to 3)$
           \quad           
-          \tpath_2 = (3 \to 4 \to 3)
+          $\tpath_2 = (3 \to 4 \to 3)$
           \\
-          \tpath_3 = (3 \to 5 \to 6 \to 1)
+          $\tpath_3 = (3 \to 5 \to 6 \to 1)$
           \quad
-          \tpath_4 = (1 \to \lex)
-      \end{array}
-      \]
+          $\tpath_4 = (1 \to \lex)$
+      % \end{array}
+      % \]
+
   \textbf{Refined Program}:
-  \[
-  \rprog = \tpath_0 ; 1: \rprepeat(\tpath_1; 3: \rprepeat(\tpath_2); \tpath_3); \tpath_4
-  \]
+
+  % \[
+  $\rprog = \tpath_0 ; 1: \rprepeat(\tpath_1; 3: \rprepeat(\tpath_2); \tpath_3); \tpath_4$
+  % \]
   %
- Let $\rprog_1 = \rprepeat(\tpath_1; 3: \rprepeat(\tpath_2); \tpath_3)$
+  
+  Define sub loop programs as follows,
+
+  $\rprog_1 = \rprepeat(\tpath_1; 3: \rprepeat(\tpath_2); \tpath_3)$
 \item {Path Local Reachability-bound}:
 \\
 $\outinB(\rprog, \tpath_0) = 1$ \quad

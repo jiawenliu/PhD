@@ -73,7 +73,7 @@ the counter variables are reset by each other.
 \end{example}
 
 \begin{enumerate}
-  \item  \textbf{Abstract Control Flow Graph} is generated in Figure~\ref{fig:nestedWhileResetChain}(b).
+  \item  \textbf{Abstract Transition Graph} is generated in Figure~\ref{fig:nestedWhileResetChain}(b).
 
   \item \textbf{Program Refinement}
   The loop free simple transition paths:
@@ -92,10 +92,12 @@ the counter variables are reset by each other.
           $
           \\
   \textbf{Refined Program}:
-  \[
-  \rprog = \tpath_0 ; 2: \rprepeat(\tpath_1; 5: \rprepeat(\tpath_2); \tpath_3); \tpath_4
-  \]
-Let $\rprog_2 = \rprepeat(\tpath_1; 5: \rprepeat(\tpath_2); \tpath_3)$
+
+  $\rprog = \tpath_0 ; 2: \rprepeat(\tpath_1; 5: \rprepeat(\tpath_2); \tpath_3); \tpath_4$
+
+Define the sub-loop program as follows,
+
+$\rprog_2 = \rprepeat(\tpath_1; 5: \rprepeat(\tpath_2); \tpath_3)$
 \item {Path Local Reachability-bound}:
 \\
 $\outinB(\rprog, \tpath_0) = 1$ \quad
@@ -117,14 +119,14 @@ $BD(\rprepeat(\tpath_1; 5: \rprepeat(\tpath_2); \tpath_3)) = n $
 %
 \item Loop Reachability-bound:
 \\
-$\lpchB(2: \rprog_2, \tpath_1) = n$ \quad
-$\lpchB(2: \rprog_2, \tpath_3) = n$ \quad 
-$\lpchB(2: \rprog_2, \tpath_2) = \frac{(n + 1) - 0}{n}$ 
-\\
-$\lpchB(5: \rprepeat(\tpath_2), \tpath_2) = n + 1$ \\
-$\lpchB(2: \rprog_2, \tpath_4) = 0$ \quad
-$\lpchB(2: \rprog_2, \tpath_0) = 0$ \quad
-$\lpchB(2: \rprog_2, \tpath_0) = 0$ \quad
+% $\lpchB(2: \rprog_2, \tpath_1) = n$ \quad
+% $\lpchB(2: \rprog_2, \tpath_3) = n$ \quad 
+$\lpchB(2: \rprog_2, \tpath_2) = \frac{(n + 1)}{n}$ 
+% \\
+% $\lpchB(5: \rprepeat(\tpath_2), \tpath_2) = n + 1$ \\
+% $\lpchB(2: \rprog_2, \tpath_4) = 0$ \quad
+% $\lpchB(2: \rprog_2, \tpath_0) = 0$ \quad
+% $\lpchB(2: \rprog_2, \tpath_0) = 0$ \quad
 %
 %
 \item Path Global Reachability-bound:

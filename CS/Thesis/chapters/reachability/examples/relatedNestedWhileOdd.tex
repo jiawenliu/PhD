@@ -73,7 +73,7 @@
   %
   \end{example}    
   \begin{enumerate}
-    \item  \textbf{The Abstract Execution Control Flow Graph} is generated in Figure~\ref{fig:relatedNestedWhileOdd}(b).
+    \item  \textbf{The Abstract Transition Graph} is generated in Figure~\ref{fig:relatedNestedWhileOdd}(b).
     \item \textbf{Program Refinement}
     \\
     The loop free simple transition paths are computed as follows,
@@ -99,7 +99,9 @@
       \end{array}
       }; \tpath_5
     \]
-    Let $\rprog_1^1 = \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4)$
+    Define the sub-loop program as follows,
+    
+    $\rprog_1^1 = \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4)$
     \\
     $\rprog_1^2 = \rprepeat(\tpath_4; \tpath_1; 4:\rprepeat(\tpath_3); \tpath_2) $
     %
@@ -130,17 +132,15 @@
     %
     \item Loop Reachability-bound:
     \\
-    \highlight{
-    $\lpchB(1: \rprog_1^1, \tpath_1) = \frac{n-m}{4}$ \quad
-    $\lpchB(1: \rprog_1^1, \tpath_2) = \frac{m}{4}$ \quad 
-    $\lpchB(1: \rprog_1^1, \tpath_4) = \frac{m}{4}$ \\
+    % $\lpchB(1: \rprog_1^1, \tpath_1) = \frac{n-m}{4}$ \quad
+    % $\lpchB(1: \rprog_1^1, \tpath_2) = \frac{m}{4}$ \quad 
+    % $\lpchB(1: \rprog_1^1, \tpath_4) = \frac{m}{4}$ \\
     \highlight{$\lpchB(1: \rprog_1^1, \tpath_3) = 1$} \quad 
-    $\lpchB(1: \rprog_1^2, \tpath_1) = \frac{m}{4}$ \quad
-    $\lpchB(1: \rprog_1^2, \tpath_2) = \frac{m}{4}$ \\
-    $\lpchB(1: \rprog_1^2, \tpath_4) = \frac{m}{4}$ \quad 
-    \highlight{$\lpchB(1: \rprog_1^2, \tpath_2) = 1$} \quad
-    $\lpchB(5: \rprepeat(\tpath_2), \tpath_2) = n - m$ 
-    }
+    % $\lpchB(1: \rprog_1^2, \tpath_1) = \frac{m}{4}$ \quad
+    % $\lpchB(1: \rprog_1^2, \tpath_2) = \frac{m}{4}$ \\
+    % $\lpchB(1: \rprog_1^2, \tpath_4) = \frac{m}{4}$ \quad 
+    \highlight{$\lpchB(1: \rprog_1^2, \tpath_3) = 1$} \quad
+    % $\lpchB(5: \rprepeat(\tpath_2), \tpath_2) = n - m$ 
     %
     %
     \item Path Global Reachability-bound:
@@ -148,7 +148,7 @@
     $\inoutB(\rprog, \tpath_0) = 1$ \quad
     $\inoutB(\rprog, \tpath_1) = \frac{m}{4}$ \quad
     $\inoutB(\rprog, \tpath_2) = \frac{m}{4}$ \\
-    $\inoutB(\rprog, \tpath_3) = \frac{m}{4} \times 1$ \quad
+    $\inoutB(\rprog, \tpath_3) = n - m \times 1$ \quad
     $\inoutB(\rprog, \tpath_4) = \frac{m}{4}$ \quad
     $\inoutB(\rprog, \tpath_5) = 1$
     %
@@ -157,7 +157,7 @@
     $\psRB(0) = \psRB(\lex) = 1$ \quad
     $\psRB(1) = \frac{m}{2} + 1$ \quad
     $\psRB(2) = \frac{m}{2} $ \\
-    $\psRB(3) = \psRB(6) = \psRB(7)  = \psRB(8) = \frac{m}{4} $ \\
-    \highlight{$\psRB(5) = \frac{m}{4} \times 1$} \\
-    $\psRB(4) =  \frac{m}{4} + n - m + 1$
+    $\psRB(3) = \psRB(6) = \psRB(7)  = \psRB(8) = \frac{m}{4} $ \quad
+    \highlight{$\psRB(5) = n - m$} \\
+    $\psRB(4) =  \frac{m}{4} + n - m$
   \end{enumerate}
