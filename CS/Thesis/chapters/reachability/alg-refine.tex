@@ -61,7 +61,7 @@ the edge sequence $(e_1, \ldots, e_n)$, where $e_i = (l_{i - 1}, dc_i, l_{i}) \i
 %
 is a \emph{simple transition path} if and only if it satisfies,
 \begin{itemize}
-  \item $l_i \neq l_j$ for every $i = 0, \ldots, n$ and $j = 0, \ldots, {n - 1}$,
+  \item $l_i \neq l_j$ for every $i = 0, \ldots, n$ and $j = 1, \ldots, {n - 1}$,
   \item $l_0$ is either the program point of a loop header or the program entrance ($l_0 = 0$),
   i.e., $l_0 \in \loopl(c) \cup \{ 0 \}$
   \item and $l_n$ is either the program point of a loop header or the program exit ($l_n = \lex$),
