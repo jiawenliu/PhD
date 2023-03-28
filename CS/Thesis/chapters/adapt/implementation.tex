@@ -12,6 +12,8 @@ the abstract transition graph,
 feeds into the python program and the python program provides the adaptivity upper bound and the query number as the final output.
 
 We evaluated this implementation on $23$ example programs with the evaluation results shown in Table~\ref{tb:adapt-imp}.
+\input{chapters/adapt/tables/eval-table}
+
 In this table,
 the first column is the name of each program.
 For each program $c$, the second column is its intuitive adaptivity rounds,
@@ -47,14 +49,13 @@ The last six programs are synthesized programs composed of the previous programs
 From the evaluation results, the performance bottleneck is the reachability bound analysis algorithm.
 By implementing the bound analysis algorithm in Section~\ref{sec:alg_weightgen} (adapted from \cite{SinnZV17}), we are unable to evaluate the $\kw{Jumbo}$ in a reasonable time period.
 Alternatively, we implement another light reachability bound analysis algorithm and compute the \emph{adaptivity} for
-$\kw{jumboS}, \kw{jumbo}$ and $\kw{big}$ effectively.
+$\kw{jumboS}, \kw{jumbo}$ and $\kw{big}$ effectively. We also show our alternative implement evaluation result in Table~\ref{tb:adapt-imp-alternatives}.
 
 Overall, our system gives the accurate estimated
 adaptivity upper bound and our adaptivity formalization also gives precise adaptivity definition w.r.t. the intuitive \emph{adaptivity rounds}.
 %  and analysis framework $\THESYSTEM$.
-The complete programs and detailed evaluation table are in in the Appendix~\ref{apdx:evaluated_examples} and Appendix~\ref{apdx:evaluated_codes}.
-
-\input{chapters/adapt/tables/adapt-eval}
+\input{chapters/adapt/tables/eval-table-alternatives}
+The programs we evaluated in the Appendix~\ref{apdx:evaluated_examples} and Appendix~\ref{apdx:evaluated_codes}.
 
 %  \subsection{More Discussions on The Evaluated Examples}  
  Below we discuss in detail the real-world adaptive data analyses that we evaluated.

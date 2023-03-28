@@ -1,0 +1,50 @@
+{
+\begin {table}[H]
+% \vspace{-0.4cm}
+    \caption{Results of the alternative {\THESYSTEM} implementation}
+%     \vspace{-0.5cm}
+        \label{tb:adapt-imp-alternatives}
+        \begin{center}
+        \centering
+{\scriptsize
+        \begin{tabular}{ | >{\tiny}r | c | c | c | c | c  |}
+        \hline \hline
+        \multirow{2}{*}{Program $c$}
+         & \multicolumn{2}{c|}{$\THESYSTEM$-I}
+         & \multirow{2}{*}{running time (second)} \\ 
+         \cline{2-3}
+         & {$\progA$ } & {$\query$\# } & \\ 
+        %  \cline{2-6}
+        %  ~  & $\THESYSTEM$-I & $\THESYSTEM$-II & $\THESYSTEM$-III  \\
+         \hline \hline
+         $  \kw{twoRound(k)}$ &  $2$    & $k+1 $  ~ & 0.0010 ~  \\
+         $  \kw{mR(k)}$ &   $\max(1,k)$ & $k$  &  ~ 0.0016 ~ \\
+         $  \kw{lRGD(k, r)}$ & $\max(1,k) $ & $ 2k $  &  ~ 0.0019 ~  \\
+         $  \kw{mROdd(k)}$  &  $2+\max(1,2k)  $ & $1 + 3 k  $  &  ~ 0.0019 ~\\
+         $  \kw{mRSingle(k)}$    & $1+ \max(1, k) $ & $1 + k$  &  ~ 0.0015 ~ \\
+         $  \kw{ifCD()}$   & $4$ &   $4$  ~ & 0.0007 ~ \\
+         $  \kw{loop(k)}$ &    $1 + \max(1, \frac{k}{2}) $  &  $1+\frac{k}{2} $ ~ & 0.0023 ~ \\
+         $  \kw{loopRV(k)}$   &  $ 1 + \max(1,2k)$ & $2 + 3 k$  &  ~ 0.0019 ~ \\
+         $  {\kw{loopVCD(k)}} $  &  ${Q_m+\max(1,2Q_m)}$  & $2+2Q_m$   &  ~ 0.0019 ~ \\
+         $ {\kw{loopMPVCD(k)}}$  &  $2 + Q_m$  & $2+2Q_m$   &   ~ 0.0020 ~ \\
+         $  \kw{loop2VD(k)}$  &   $3 + k^2$ & $1 + k + k^2$   &  ~ 0.0021 ~ \\
+         $  \kw{loop2RV(k)}$  &  $ 2 + k +  k^2 $    &  $2 + k + k^2$   &  ~ 0.0021 ~ \\
+         $  \kw{loop2MV(k)}$  & $1 + \max(1,2k) $ &  $1 + k + k^2 $  ~ & 0.0019 ~ \\
+         $ \kw{loop2MPRV(k)}$  &  $3 + k + k^2  $ &  $2 + 2k + k^2  $  &  ~ 0.0194 ~ \\
+         {$ \kw{loopM(k)}$}  &  $ 2 + \max(1,2k) $ & $1 + 3k  $  &  ~ 0.0021 ~ \\
+         {$ \kw{loopM2(k)}$}  &  $ 2 + k $ & $1 + 3k  $  &  ~ 0.0021 ~ \\
+         {$\kw{loop2RC(k)}$}&  $2 + 3k + k^2$ &  $1 + k + k^2$  &  ~ 0.0199 ~ \\
+         $  \kw{mR(k, N)}$ & $ k   $ & $k $   &  ~ 0.0033 ~ \\
+         $  \kw{mRC(k)}$  & $  2k $ & $ 2k $   &  ~ 0.0052 ~ \\
+         $  \kw{seqC(k)}$ & $12  $  & $326 $  &  ~ 0.0652 ~ \\
+         $  \kw{tRC(k)}$ &  $ 2$ & $ 1 + 5k + 2 k^2 $  &  ~ 0.0034 ~ \\
+         $  \kw{{jumbo(k)}}$ & $  \max(20, 6+k+k^2)$   &   $ {44+k+k^2} $  &  ~ 0.0123 ~ \\
+         $  {\kw{big(k)}} $ &   $28 + k + k^2$ &  $121+11k+4k^2 $  &  ~ 0.0181 ~ \\
+        \hline \hline 
+        \end{tabular}
+}
+\end{center}
+\end{table}
+}
+
+
