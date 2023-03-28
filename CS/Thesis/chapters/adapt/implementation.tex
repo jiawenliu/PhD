@@ -41,17 +41,24 @@ The fifth program is the evaluation results for the example in Example~\ref{ex:m
 The next eleven programs from Table~\ref{tb:adapt-imp} column 7 to 18 are handcrafted programs based on the code pieces extracted from C library. They all have small size but complex structures in order to test the programs under different situations including
 data, control dependency,
 the multiple paths nested loop with related counters, etc.
-Both implementations compute the tight bound for examples in line:6-14
-and over-approximate the adaptivities for $15^{th}$ and $16^{th}$ due to path-insensitivity.
-For the $17^{th}$ one, implementation I gives tight bound while II gives loose bound, so we keep both implementations.
+The algorithm computes the tight bound for examples from line:6, $\kw{ifCD()}$ to line:{$14$}, $\kw{loop2MPRV(k)}$
+and over-approximate the \emph{adaptivity} for the $15^{th}$ and $16^{th}$ examples in the table due to path-insensitivity.
+% For the $17^{th}$ one, implementation I gives tight bound while II gives loose bound, so we keep both implementations.
 
 The last six programs are synthesized programs composed of the previous programs in order to test the performance limitation when the input program is large. 
 From the evaluation results, the performance bottleneck is the reachability bound analysis algorithm.
+
+
 By implementing the bound analysis algorithm in Section~\ref{sec:alg_weightgen} (adapted from \cite{SinnZV17}), we are unable to evaluate the $\kw{Jumbo}$ in a reasonable time period.
 Alternatively, we implement another light reachability bound analysis algorithm and compute the \emph{adaptivity} for
-$\kw{jumboS}, \kw{jumbo}$ and $\kw{big}$ effectively. We also show our alternative implement evaluation result in Table~\ref{tb:adapt-imp-alternatives}.
+$\kw{jumboS}, \kw{jumbo}$ and $\kw{big}$ effectively.
+We also show our alternative implement evaluation result in Table~\ref{tb:adapt-imp-alternatives}.
+The alternative implementation computes the tight bound for all the examples from line:1 to line:14
+and over-approximate the \emph{adaptivity} for $15^{th}$ and $16^{th}$ due to path-insensitivity similar to the
+$\THESYSTEM$.
+For the $17^{th}$ example ($\kw{loop2RC}$), {\THESYSTEM} gives tight bound while the alternative implementation gives loose bound, so we keep both implementations.
 
-Overall, our system gives the accurate estimated
+Overall, {\THESYSTEM} gives the accurate estimated
 adaptivity upper bound and our adaptivity formalization also gives precise adaptivity definition w.r.t. the intuitive \emph{adaptivity rounds}.
 %  and analysis framework $\THESYSTEM$.
 \input{chapters/adapt/tables/eval-table-alternatives}
