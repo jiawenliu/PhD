@@ -4,8 +4,8 @@ is visited during program execution.
 Obtaining tight reachability-bounds is useful in many applications.
 For example from a privacy and security perspective,
 how much secret information is leaked by a program may depend on the number of times a certain operation that leaks the data
-is executed~\cite{Malacaria07};
-from an efficiency perspective, when different program locations consume different resources, a precise reachability-bound for each location can help to estimate the resource cost more accurately than just computing the overall complexity.
+is executed~\cite{Malacaria07}.
+From an efficiency perspective, when different program locations consume different resources, a precise reachability-bound for each location can help to estimate the resource cost more accurately than just computing the overall complexity.
 %Existing works all have different limitations when inferring the \emph{reachability-bound}.
 ~\cite{GulwaniZ10}
 give a two-step solution combining program abstraction with a set of proof-rules that are used to compute the actual reachability-bounds. This combination is effective at computing reachability-bounds for a rich class of programs, however, it also has limitations. 
@@ -14,7 +14,7 @@ computes complexity bounds for loops and over-approximate the reachability-bound
 %
 A similar approach to reachability-bounds can be also computed, in principle, using techniques from \emph{amortized program complexity analysis} such as~\cite{BradleyMS05,CookSZ13,Zuleger18,SinnZV14,SinnZV17,LuCT21,AliasDFG10}. Indeed, using techniques like ranking functions, counter increments, difference constraints, etc.
 one can estimate 
-precise bounds on loop iterations and execution time, and in turn obtain reachability bounds for complex programs. However, these techniques are designed to capture the worst-case or overall complexity, and again they may over-approximate the reachability-bounds of certain locations. This is again particularly evident when a loop contains multiple paths, since in this situation one usually obtains an overall complexity bound which is greater than the reachability-bounds on some locations of some paths. 
+precise bounds on loop iterations and execution time, and in turn obtain reachability bounds for complex programs. However, these techniques are designed to capture the worst-case or overall complexity, and again they may over-approximate the reachability-bounds of certain locations. This is again particularly evident when a loop contains multiple paths, since in this situation, one usually obtains an overall complexity bound which is greater than the reachability-bounds on some locations of some paths. 
 
 To overcome these limitations, 
 we introduce a new path-sensitive reachability-bound analysis that combines ideas from amortized complexity analysis with ideas from 
