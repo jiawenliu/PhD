@@ -11,7 +11,7 @@ We can now define the \emph{semantics-based dependency graph} for a well-formed 
 % Each initial trace,  $\trace_0 \in \ftdom_0(c)$ contains the initial values of all input variables of $c$. 
 % For instance, the initial trace of $\kw{twoRounds(k)}$ example contains the initial value of the input variable $k$.
 
-
+\paragraph{Query Variables.}
 In order to track the adaptivity with respect to the query,
 we also define the set of query variables for a program $c$, $\qvar(c)$ as below.
 It is the set of query-associated variables (in query request assignments) contains all labeled variables in $c$'s query requests, and $\qvar(c) \subseteq \lvar(c)$.
@@ -49,6 +49,7 @@ It is defined as follows:
 \end{defn}
 %
 
+\paragraph{Weight of Labeled Variables.}
 % We use the \emph{variable may-dependency} relation, the query variables to 
 % define the semantics-based dependency graph for a well-formed program.
 Since we want to define the \emph{adaptivity} as a \emph{quantitative-reachability} hyper-property through constructing the semantics-based dependency graph,
@@ -58,7 +59,54 @@ We also want to have this graph carrying the \emph{quantitative} sub-property.
 In this sense, we define the \emph{quantitative} sub-property of \emph{adaptivity} as the 
 weight of each vertex  on this graph, i.e., every labeled variable in a program.
 
-Then, we use the \emph{variable may-dependency} relation and the query variables to 
+\begin{defn}[Weight of Labeled Variables]
+  \label{def:lvar_weight}
+$f({c}, x^l): \ftdom_0(c) \to (\mathbb{N})$ is a \emph{weight function} of labeled
+variable $x^l$ if and only if,
+\[
+  \begin{array}{l}
+    \forall \trace_0 \in \ftdom_0(c), \trace' \in \ftdom, l' \sthat 
+  \\ \qquad 
+  \config{{c}, \trace_0} \to^{*} 
+  \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace'} 
+  \land w(\trace_0) = \vcounter(\trace', l) \}.  
+    \end{array}
+    \]
+\end{defn}
+% A weight function $w \in \traceW(c)$ is a function that 
+Specifically, for every initial trace $\trace_0 \in \ftdom_0(c)$,
+the weight for a labeled variable $x^l$ under this initial trace, $w(\trace_0)$
+gives the number of times that the assignment command with the label $l$ is evaluated.
+% the corresponding vertex $x^l$ is visited. 
+% For each vertex $x^l$, 
+In other words, it tracks for each vertex $x^l$ its visiting times 
+% (i.e., the evaluation times of the command with the label $l$)
+ when the program $c$ is executing under the initial trace $\trace_0$.
+ The weight functions are total and with range $\mathbb{N}$. 
+ As discussed above in Definition~\ref{def:adaptfun-wfprog}, since a well-formed program $c$ is always terminating, we have
+ for any initial trace $\trace_0 \in \ftdom_0(c)$ a terminating execution 
+ $\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $
+ which produce a finite execution trace $\trace \in \ftdom$.
+The visiting times are computed by the counter operator $\vcounter(\trace', l)$
+by counting the occurrence of the label $l$ in $\trace'$.
+
+As an instance, in the semantics-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight of the vertex $x^3$ is 
+$\lambda \trace_0 \sthat \env(\trace_0) k$, i.e.
+a function of type $\ftdom_0(\kw{twoRound(k)}) \to \mathbb{N}$.
+$\env(\trace_0) k$ fetch the initial value assigned to variable $k$ from the initial trace $\trace_0$.
+Specifically, 
+% given input $\trace_0$, 
+we execute the $\kw{twoRound(k)}$ program under input $\trace_0$ as $\config{\kw{twoRound(k)}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $.
+Then $w_k(\trace_0)$ outputs the occurrence times of the label $3$ in $\trace'$, which is always
+the value of $k$ in the initial trace, i.e., $\env(\trace_0) k$.
+So we have its weight function $\lambda \trace_0 \sthat \env(\trace_0) k$ always equal to the 
+occurrence times of the label $3$ in the execution trace of $\kw{twoRound(k)}$.
+
+
+
+\paragraph{Semantics-based Dependency Graph.}
+Then, we use the \emph{variable may-dependency} relation, the query variables and the \emph{weight function}
+of each labeled variable to 
 define the semantics-based dependency graph for a well-formed program,
 and we define as below the
 weight of each vertex on this graph  as the \emph{quantitative} sub-property.
@@ -126,38 +174,52 @@ Below we discuss in detail the four components.
     every vertex $x^l \in \traceV(c)$. It indicates whether $x^l$ comes from a query request (1) or not (0) by checking if the labeled variable $x^l$ of the vertex is in $\qvar(c)$.
     \item Edges in $\traceE(c)$ are all directed.
     They are built from the  \emph{variable may-dependency} relation, i.e. $\vardep(x^i, y^j, c)$ in Definition~\ref{def:var_dep} between two labeled variables.
-    Intuitively, there is an edge from $x^i$ to $y^j$ if and only if they are in the \emph{variable may-dependency} relation. 
-    This is the key definition in order to formalize the intuitive \emph{adaptivity}. We use this to ingredient the \emph{reachability} sub-property of \emph{adaptivity} on this graph.
+    There is an edge from $y^j$ to $x^i$ if and only if they are in the \emph{variable may-dependency} relation, $\vardep(x^i, y^j, c)$. 
+    This is the key definition in order to formalize the intuitive \emph{adaptivity}. We use this to ingredient the \emph{reachability} sub-property of \emph{adaptivity} into this graph.
     \item 
 The weight function in $\traceW(c)$ for each vertex (also a labeled variable), $w : \ftdom_0(c) \to \mathbb{N}$
-maps from an initial trace $\trace_0 \in \ftdom_0(c)$ to a natural number.
-% A weight function $w \in \traceW(c)$ is a function that 
-Specifically, for every initial trace $\trace_0 \in \ftdom_0(c)$,
-the weight for a labeled variable $x^l$ under this initial trace, $w(\trace_0)$
-gives the number of times that the assignment command with the label $l$ is evaluated.
-% the corresponding vertex $x^l$ is visited. 
-% For each vertex $x^l$, 
-In other words, it tracks for each vertex $x^l$ its visiting times 
-% (i.e., the evaluation times of the command with the label $l$)
- when the program $c$ is executing under the initial trace $\trace_0$.
- The weight functions are total and with range $\mathbb{N}$. 
- As discussed above in Definition~\ref{def:adaptfun-wfprog}, since a well-formed program $c$ is always terminating, we have
- for any initial trace $\trace_0 \in \ftdom_0(c)$ a terminating execution 
- $\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $
- which produce a finite execution trace $\trace \in \ftdom$.
-The visiting times are computed by the counter operator $\vcounter(\trace', l)$
-by counting the occurrence of the label $l$ in $\trace'$.
-As an instance, in the semantics-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight of the vertex $x^3$ is 
-$\lambda \trace_0 \sthat \env(\trace_0) k$, i.e.
-a function of type $\ftdom_0(\kw{twoRound(k)}) \to \mathbb{N}$.
-$\env(\trace_0) k$ fetch the initial value assigned to variable $k$ from the initial trace $\trace_0$.
-Specifically, 
-% given input $\trace_0$, 
-we execute the $\kw{twoRound(k)}$ program under input $\trace_0$ as $\config{\kw{twoRound(k)}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $.
-Then $w_k(\trace_0)$ outputs the occurrence times of the label $3$ in $\trace'$, which is always
-the value of $k$ in the initial trace, i.e., $\env(\trace_0) k$.
-So we have its weight function $\lambda \trace_0 \sthat \env(\trace_0) k$ always equal to the 
-occurrence times of the label $3$ in the execution trace of $\kw{twoRound(k)}$.
+maps from an initial trace $\trace_0 \in \ftdom_0(c)$ to a natural number as defined in Definition~\ref{def:lvar_weight}.
+% \begin{defn}[Weight of Labeled Variables]
+%   \label{def:lvar_weight}
+% $f({c}, x^l): \ftdom_0(c) \to (\mathbb{N})$ is a \emph{weight function} of labeled
+% variable $x^l$ if and only if,
+% \[
+%   \begin{array}{l}
+%     \forall \trace_0 \in \ftdom_0(c), \trace' \in \ftdom, l' \sthat 
+%   \\ \qquad 
+%   \config{{c}, \trace_0} \to^{*} 
+%   \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace'} 
+%   \land w(\trace_0) = \vcounter(\trace', l) \}.  
+%     \end{array}
+%     \]
+% \end{defn}
+% % A weight function $w \in \traceW(c)$ is a function that 
+% Specifically, for every initial trace $\trace_0 \in \ftdom_0(c)$,
+% the weight for a labeled variable $x^l$ under this initial trace, $w(\trace_0)$
+% gives the number of times that the assignment command with the label $l$ is evaluated.
+% % the corresponding vertex $x^l$ is visited. 
+% % For each vertex $x^l$, 
+% In other words, it tracks for each vertex $x^l$ its visiting times 
+% % (i.e., the evaluation times of the command with the label $l$)
+%  when the program $c$ is executing under the initial trace $\trace_0$.
+%  The weight functions are total and with range $\mathbb{N}$. 
+%  As discussed above in Definition~\ref{def:adaptfun-wfprog}, since a well-formed program $c$ is always terminating, we have
+%  for any initial trace $\trace_0 \in \ftdom_0(c)$ a terminating execution 
+%  $\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $
+%  which produce a finite execution trace $\trace \in \ftdom$.
+% The visiting times are computed by the counter operator $\vcounter(\trace', l)$
+% by counting the occurrence of the label $l$ in $\trace'$.
+% As an instance, in the semantics-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight of the vertex $x^3$ is 
+% $\lambda \trace_0 \sthat \env(\trace_0) k$, i.e.
+% a function of type $\ftdom_0(\kw{twoRound(k)}) \to \mathbb{N}$.
+% $\env(\trace_0) k$ fetch the initial value assigned to variable $k$ from the initial trace $\trace_0$.
+% Specifically, 
+% % given input $\trace_0$, 
+% we execute the $\kw{twoRound(k)}$ program under input $\trace_0$ as $\config{\kw{twoRound(k)}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $.
+% Then $w_k(\trace_0)$ outputs the occurrence times of the label $3$ in $\trace'$, which is always
+% the value of $k$ in the initial trace, i.e., $\env(\trace_0) k$.
+% So we have its weight function $\lambda \trace_0 \sthat \env(\trace_0) k$ always equal to the 
+% occurrence times of the label $3$ in the execution trace of $\kw{twoRound(k)}$.
 % Notice that weight functions are total and with range $\mathbb{N}$. 
 % This means that if a program $c$ has some non-terminating behavior, the set $\traceW(c)$ will be empty.
 % As discussed above in Definition~\ref{def:adaptfun-wfprog},
