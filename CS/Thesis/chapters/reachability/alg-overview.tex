@@ -40,7 +40,7 @@ Section~\ref{sec:psRB-pathrb} computes $\inoutB(\rprog, \tpath_3, c) = \max\{ 1 
 %
 Now for every program point $l$, we sum up the $\inoutB(\rprog, \tpath)$ over all $\tpath$ that contains $l$ and get $\psRB(l, c)$.
 Since point $5$ only shows up on $\tpath_3$, we compute \highlight{$\psRB(5, c) = n - m$}.
-The points $0$ and $\lex$ are not in any loop, so $\psRB(0, c) = \psRB(\lex, c) = 1$,
+The points $0$ and $\lex$ are not in any loop, so we have $\psRB(0, c) = \psRB(\lex, c) = 1$.
 The points $3, 6, 7$ and $8$ which only show up once on $\tpath_2$ and $\tpath_4$ are all equal to $\lfloor\frac{m}{4}\rfloor$ the same as their $\inoutB$.
 For the loop headers $1$ and $4$, we only count the $\tpath$ where they show up as a start-point.
 So $\psRB(4, c) = \lfloor\frac{m}{4}\rfloor + n - m + 1$ and $\psRB(1,c) = 2 \times \lfloor\frac{m}{4}\rfloor + 1$ all as expected.
