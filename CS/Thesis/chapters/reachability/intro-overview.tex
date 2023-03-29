@@ -4,26 +4,29 @@ This running example program in Figure~\ref{ex:relatedNestedWhileOdd-overview}(a
 The first one comes with the if condition in the outer loop.
 The bounds for different locations in the same loop $L_1$ are different.
 Given $n \geq m \geq 0$,
-the expected \emph{reachability-bound}s for locations in outer loop $3, 6, 7$ and $8$ are all $\lfloor\frac{m}{4}\rfloor$,
+the overall loop iteration times of this outer loop is expected to be $\lfloor\frac{m}{2}\rfloor$.
+However, the expected \emph{reachability-bound}s for locations  $3, 6, 7$ and $8$ in  $L_1$ are all $\lfloor\frac{m}{4}\rfloor$,
 %  for $8$ is $\lfloor\frac{m}{4}\rfloor + 1$,
 for location $2$ is $\lfloor\frac{m}{2}\rfloor$ and $\lfloor\frac{m}{2}\rfloor + 1$ for location $1$.
+These \emph{reachability-bound}s for different locations in a loop are different from the bound on loop iterations.
 
 The second one comes in the nested loop.
 In line 6, $i$ is reset by $k + m$ and $k$ is reset by $i - m$ at line 3. So the
 loop $L_4$ is only executed in the first iteration of while loop $L_1$.
+So we say the nested loop, $L_4$ is only ``reached'' in $1$ iteration of the outer loop,
 % \\
 % The while loop $L_1$ at line 3 is executed only in 
 % the first $m - N$ iterations of the 
 % $L_1$ because $j$ is reset by $i$ in line 2.
 % \\
-So the total iterations of all the two loops are
-$n - m + \lfloor\frac{m}{2}\rfloor + 1$,
+% So the total iterations of all the two loops are
+% $n - m + \lfloor\frac{m}{2}\rfloor + 1$,
 and the precise \emph{reachability-bound} for location $5$ inside the $L_4$ is $m$.
-{Notice here the \emph{reachability-bounds} for the locations inside the loop $L_4$ is 
-the same as its innermost loop iteration bound.
+% Notice here the \emph{reachability-bounds} for the locations inside the loop $L_4$ is 
+% the same as its innermost loop iteration bound.
 % , as well as our \emph{path reachability-bound}.
-However, for the locations between $L_1$ and $L_4$,
-the \emph{reachability-bounds} are the multiplication of the inner and outer loop iteration bounds.}
+% However, for the locations between $L_1$ and $L_4$,
+% the \emph{reachability-bounds} are the multiplication of the inner and outer loop iteration bounds.}
 
 Our algorithm computes the reachability-bound for this example through the following steps.
 
