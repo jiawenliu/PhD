@@ -17,8 +17,14 @@ have become equally important.
 To provide people with high-quality mobile and computer programs, the \emph{quantitative-reachability} properties of programs are important to study. 
 This thesis studies two \emph{quantitative-reachability} properties, specifically the \emph{adaptivity} and the \emph{number of times
 that each program location is visited during the program execution}.
-These two properties influence people's experience when using the mobile and computer programs in terms of the \emph{convenience},
-\emph{enjoyment}, \emph{efficiency}, and \emph{privacy}.
+% These two properties influence people's experience when using the mobile and computer programs in terms of the \emph{convenience},
+% \emph{enjoyment}, \emph{efficiency}, and \emph{privacy}.
+These two properties influence the \emph{convenience},
+\emph{enjoyment}, \emph{efficiency}, and \emph{privacy}
+% people's experience 
+when people are using the mobile and computer programs.
+%  in terms of the \emph{convenience},
+% \emph{enjoyment}, \emph{efficiency}, and \emph{privacy}.
 
 % A few decades ago, people employed computer programs solely for research and business purposes with the simple expectation of executing correctly without bugs. 
 % That is, with respect to programs, execution correctness is the most critical behavior.
@@ -101,13 +107,13 @@ the dependency chain and brings to high generalization error.
 In light of existing machine learning studies, some researchers found that 
 determining the appropriate statistical technique based on the length of this dependency chain, namely the \emph{adaptivity} level can help in controlling 
 the generalization error.
-In this sense, we are interested in studying this intuitive notion, the \emph{adaptivity} level
+In this sense, we are interested in studying this intuitive notion -- the \emph{adaptivity} level
 by using the principles of programming languages in \redd{PART \romannum{1}}
 % We study this intuitive \emph{adaptivity} level help 
 % Then we can help 
 to help to reduce the generalization error of the data anlaysis programs.
 % \\
-Specifically, we consider the data analyses are implemented in a \emph{while}-like language and formalize this intuitive notion -- the \emph{adaptivity} level as a program \emph{quantitative-reachability} property.
+Specifically, we consider that the data analyses are implemented in a \emph{while}-like language and formalize this intuitive notion -- the \emph{adaptivity} level as a program \emph{quantitative-reachability} property.
 %  of the programs that implement certain data analyses.
 % % We notice one of these non-functional properties that is critical in controlling the generalization error can be expressed from two perspectives, the \emph{quantitative} and \emph{reachability}.
 % % One of the most critical \emph{quantitative-reachability} properties is the \emph{adaptivity} rounds.
@@ -120,7 +126,9 @@ Specifically, we consider the data analyses are implemented in a \emph{while}-li
 % % This property captures the generalization error in terms of whether the queries are dependent on each other (the \emph{reachability}) and how many times they are dependent (the \emph{quantitative}).
 % % Under the light of existing machine learning studies, we want to use this \emph{quantitative-reachability} property to help reduce the generalization errors in data analysis results.
 This \emph{adaptivity} property captures the generalization error in terms of whether the query asked by a program are dependent on each other (the \emph{reachability} sub-property of \emph{adaptivity}) and how many times they are dependent (the \emph{quantitative} sub-property of \emph{adaptivity}).
-By analyzing the \emph{adaptivity} and help data analyst to reduce the generalization error of the programs that implement certain data analyses, we can
+By analyzing the \emph{adaptivity} and help data analyst to reduce the generalization error,
+%  of the programs that implement certain data analyses, 
+we can
 improve the user's experience with respect to \emph{convenience} and \emph{enjoyment}.
 % provide people with more \emph{convenience} and the \emph{enjoyment} when using these programs.
 
@@ -129,17 +137,16 @@ improve the user's experience with respect to \emph{convenience} and \emph{enjoy
 % is not only
 % determined by the enjoyment or convenience of using some mobile device applications,
 When using mobile applications or computer programs, people do not only care about how enjoyable or convenient the experiences are,
-but also about
-the performance and
+but also about performance and
 privacy.
 For example, 
 % suppose we are playing an online game on our smartphones; what do we care about? 
 in games such as racing, 
-we care about the performance of the game.
+people care about the performance of the game.
 %  -- in the other word, if it runs fast, if it crashes due to being out of memory, and so on.
 In 
 strategy games, people also care about whether their strategies are leaked to
-the other parties, i.e., the privacy of the game.
+the other parties -- the privacy of the game.
 We observe that both performance and privacy
 are influenced by
 % whether some lines of code are executed and how times they
