@@ -1,8 +1,7 @@
 
 
 We use a trace based operational semantics tracking the history of programs execution.
-This operational semantics is defined based on the event and trace with an efficient 
-environment operator as follows.
+This operational semantics is defined based on the event and trace with an environment operator as follows.
 
 
 \paragraph{Event}
@@ -135,14 +134,15 @@ The concatenation preserves the order of every element in the two traces.
 
 %  
 \paragraph{Environment}
-The environment is simply an efficient operator, $\env$ where $\env(\trace) x$ fetches the latest value assigned to $x$ in the trace $\trace$.
-  Since the trace records all the program's evaluations for assignments, 
-  the value assigned to variables can be recovered from trace directly.
-  In this sense, it is more efficiently by reading value from trace directly rather than using a separate memory recording the variable values.
+The environment is simply an operator, $\env$ where $\env(\trace) x$ fetches the latest value assigned to $x$ in the trace $\trace$.
+Since the trace records all the program's evaluations for assignments, 
+the value assigned to variables can be recovered from trace directly.
+  % In this sense, it is more efficiently by reading value from trace directly rather than using a separate memory recording the variable values.
   \begin{defn}[Environment $\env : {\tdom}  \to \mathcal{V} \to \mathcal{VAL} \cup \{\bot\}$]
     \label{def:adapt_env}
 Given a trace $\trace \in \tdom$ and a variable $x$,
-the environment operator $\env(\trace) l $ fetches the latest value assigned to $x$ on the trace $\trace$ as below.
+the environment operator $\env(\trace) l $ fetches the latest value assigned to $x$ on the trace $\trace$,
+and $\bot$ if the trace is an infinite trace as below.
 \[
 \begin{array}{lll}
 \env(\trace  \traceadd (x, l, v, \bullet)) x \triangleq v
@@ -186,106 +186,11 @@ The rule \rname{assn} evaluates a standard assignment $\assign{x}{\expr}$, the e
 {Different from standard rule, the result $v$ of evaluating $\expr$ is used to construct a new event $\event = (x, l, v,\bullet)$
 and attach it to the previous trace. }
 We have relations $\config{\trace, \expr} \earrow v $  and $\config{\trace, \bexpr} \barrow v $  to evaluate expressions and boolean expressions, respectively in Figure~\ref{fig:expr_eval}.
-% \begin{mathpar} 
+In these evaluation rules, $v_1 \oplus_a v_2$ denotes the corresponding mathematic computation of two values and the same for $\elog v$ and $\esign v$.
 
-The rules for if and while both have two versions, 
-when the boolean expressions in the guards are evaluated to true and false, respectively. 
-In these rules, the evaluation of the guard generates a testing event and the trace is updated as well by appending this event.
-
-The only rule that is non-standard is the $\rname{query}$ rule. When evaluating a query, the query expression $\qexpr$ is first simplified to its normal form $\alpha$ using an evaluation relation 
-$\config{\trace, \qexpr} \qarrow \qval$. 
-Then normal form $\qval$ characterize the linear query that is run against the database. 
-The query result $v$ is the expected value of the function $\lambda \chi.\qval$ applied to each row of the dataset. 
-We summarize this process with the notation $\query(\qval) = v$ which we use in the rule $\rname{query}$. 
-Once the answer of the query is computed, the rules record all the needed information in the trace. 
- 
-The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval$ is defined by the following rules which reduce a query expression to its normal form.
-{\small
-\begin{mathpar}
-\inferrule{ 
-  \config{\trace, \aexpr} \aarrow n
-}{
- \config{\trace,  \aexpr} 
- \qarrow n
-}
-\and
-\inferrule{ 
-  \config{\trace, \qexpr_1} \qarrow \qval_1
-  \and
-  \config{\trace, \qexpr_2} \qarrow \qval_2
-}{
- \config{\trace,  \qexpr_1 \oplus_a \qexpr_2} 
- \qarrow \qval_1 \oplus_a \qval_2
-}
-\and
-\inferrule{ 
-  \config{\trace, \aexpr} \aarrow n
-}{
- \config{\trace, \chi[\aexpr]} \qarrow \chi[n]
-}
-\and
-\inferrule{ 
-  \empty
-}{
- \config{\trace,  \qval} 
- \qarrow \qval
-}
- \end{mathpar}
- }
-
- As usual, we will use $\to^*$ for the reflexive and transitive closure of $\to$. 
- If $\config{c, \trace_0} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace_0 \tracecat \trace}$,
- then the program's execution terminates and produces a finite execution trace $\trace \in \ftdom$. 
-If a program $c$ has some non-terminating behavior, we define its execution as follows.
-\\
-\begin{defn}[Non-terminating and Infinite Trace]
-  \label{def:adaptfun-non-terminating}
-  Given a program $c$ and an initial trace $\trace \in \ftdom_0(c)$,
-  when $c$ executes with $\trace$,  we define the execution of $c$ under $\trace$ is non-terminating and produces an infinite trace $\trace' \in \ftdom \cup \{\infty\}$, as 
-  $\config{c, \trace_0} \uparrow^{\infty} \trace' \in \lim(\uparrow)$
-  where the limit is defined as follows.
-  \[
-    \begin{array}{l}
-      \lim(\uparrow) 
-      \triangleq 
-    \\ \quad
-    \Big\{
-      (\config{c, \trace}, \trace') ~\vert~ 
-      c\in \cdom, \trace \in \ftdom_0(c),
-      \trace' \in \ftdom \cup \{\infty\} 
-      \land \exists \trace_0 \in \ftdom, c_0 \in \cdom \sthat 
-      \config{c, \trace} \to \config{c_0, \trace_0}
-      \\ \qquad \qquad \qquad 
-      \land \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \ftdom, \trace'' \in \ftdom \cup \{\infty\}, c_i, c_{i + 1} \in \cdom \sthat 
-      \\ \qquad \qquad \qquad 
-      \config{c_i, \trace_i} \to \config{c_{i + 1}, \trace_{i + 1}} 
-      \land  \trace' = \trace_{i + 1} \tracecat \trace''
-    \Big\}
-    \end{array}
-  \]
-\end{defn}
-% We want to emphasize that in the rest of {\redd{PART \romannum{1}} 
-We consider as well-formed only the program that has only terminating executions and produces finite traces. 
-%  denote by $\trace \in \ftdom$.
-\begin{defn}[Well-formed Program]
-  \label{def:adaptfun-wfprog}  
-  A program $c$ is a well-formed program if and only if
-   its execution terminates
-  under arbitrary initial trace. We use $\cdom$ to denote the set of all well-formed program.
-  \[
-    \forall c \sthat c \in \cdom \iff 
-    \forall \trace_0 \in \ftdom_0(c) \sthat \exists \trace \in \ftdom
-    \sthat \config{c, \trace_0} \xrightarrow{}^* \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace}
-  \]
-\end{defn}
-%  and use $\ftdom$ and $\inftdom$ to distinguish the universe of finite trace and infinite trace.
-For the program that has non-terminating behaviors, it does not produce an output or data analysis result.
-In this sense, it does not have an intuitive adaptivity, and we analyze the adaptivity only for the well-formed program.
-In the rest of {\redd{PART \romannum{1}}, we implicitly refer to ``a well-formed program'' when we use the words ``a program''. We will extend to non-terminating programs in {\redd{PART \romannum{2}}.
-
- \begin{figure}
+\begin{figure}
   \begin{mathpar}
-  \boxed{ \config{\trace,\aexpr} \aarrow v \, : \, \mbox{Trace  $\times$ Arithmetic Expr $\Rightarrow$ Arithmetic Value} }
+  \boxed{ \config{\trace,\aexpr} \aarrow v \, : \, \mbox{Trace  $\times$ Extended Arithmetic Expression $\aarrow$ Value} }
   \\
   % \\
   \inferrule{ 
@@ -331,7 +236,7 @@ In the rest of {\redd{PART \romannum{1}}, we implicitly refer to ``a well-formed
    \aarrow v
   }
   \\
-  \boxed{ \config{\trace, \bexpr} \barrow v \, : \, \mbox{Trace $\times$ Boolean Expr $\Rightarrow$ Boolean Value} }
+  \boxed{ \config{\trace, \bexpr} \barrow v \, : \, \mbox{Trace $\times$ Boolean Expression $\barrow$ Boolean Value} }
   \\
   % \\
   \inferrule{ 
@@ -379,7 +284,7 @@ In the rest of {\redd{PART \romannum{1}}, we implicitly refer to ``a well-formed
    \barrow v
   }
   \\
-  \boxed{ \config{\trace, \expr} \earrow v \, : \, \mbox{Trace $\times$ Expression $\Rightarrow$ Value} }
+  \boxed{ \config{\trace, \expr} \earrow v \, : \, \mbox{Trace $\times$ Expression $\earrow$ Value} }
   \\
   \inferrule{ 
     \config{\trace, \aexpr} \aarrow v
@@ -415,6 +320,104 @@ In the rest of {\redd{PART \romannum{1}}, we implicitly refer to ``a well-formed
    \label{fig:expr_eval}
   \end{figure}
 
+
+The rules for if and while both have two versions, 
+when the boolean expressions in the guards are evaluated to true and false, respectively. 
+In these rules, the evaluation of the guard generates a testing event and the trace is updated as well by appending this event.
+
+The only rule that is non-standard is the $\rname{query}$ rule. When evaluating a query, the query expression $\qexpr$ is first simplified to its normal form $\alpha$ using an evaluation relation 
+$\config{\trace, \qexpr} \qarrow \qval$. 
+Then normal form $\qval$ characterize the linear query that is run against the database. 
+The query result $v$ is the expected value of the function $\lambda \chi.\qval$ applied to each row of the dataset. 
+We summarize this process with the notation $\query(\qval) = v$ which we use in the rule $\rname{query}$. 
+$\query(\qval)$ returns the $\infty$ if the query request is invalid, such as accessing a column that is outside the column range of the hidden database.
+Once the answer of the query is computed, the rules record all the needed information in the trace. 
+ 
+The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval$ is defined by the following rules which reduce a query expression to its normal form.
+{\small
+\begin{mathpar}
+\inferrule{ 
+  \config{\trace, \aexpr} \aarrow n
+}{
+ \config{\trace,  \aexpr} 
+ \qarrow n
+}
+\and
+\inferrule{ 
+  \config{\trace, \qexpr_1} \qarrow \qval_1
+  \and
+  \config{\trace, \qexpr_2} \qarrow \qval_2
+}{
+ \config{\trace,  \qexpr_1 \oplus_a \qexpr_2} 
+ \qarrow \qval_1 \oplus_a \qval_2
+}
+\and
+\inferrule{ 
+  \config{\trace, \aexpr} \aarrow n
+}{
+ \config{\trace, \chi[\aexpr]} \qarrow \chi[n]
+}
+\and
+\inferrule{ 
+  \empty
+}{
+ \config{\trace,  \qval} 
+ \qarrow \qval
+}
+ \end{mathpar}
+ }
+
+ As usual, we will use $\to^*$ for the reflexive and transitive closure of $\to$. 
+ If $\config{c, \trace_0} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace_0 \tracecat \trace}$,
+ then the program's execution terminates and produces a finite execution trace $\trace \in \ftdom$. 
+If a program $c$ has some non-terminating behavior, we define its execution as follows.
+\\
+\begin{defn}[Non-terminating and Infinite Trace]
+  \label{def:adaptfun-non-terminating}
+  Given a program $c$ and an initial trace $\trace \in \ftdom_0(c)$,
+  when $c$ executes with $\trace$,  we define the execution of $c$ under $\trace$ is non-terminating and produces an infinite trace $\trace' \in \inftdom$, as 
+  $\config{c, \trace_0} \uparrow^{\infty} \trace' \in \lim(\uparrow)$
+  where the limit is defined as follows.
+  \[
+    \begin{array}{l}
+      \lim(\uparrow) 
+      \triangleq 
+    \\ \quad
+    \Big\{
+      (\config{c, \trace}, \trace') ~\vert~ 
+      c\in \cdom, \trace \in \ftdom_0(c),
+      \trace' \in \ftdom \cup \{\infty\} 
+      \land \exists \trace_0 \in \ftdom, c_0 \in \cdom \sthat 
+      \config{c, \trace} \to \config{c_0, \trace_0}
+      \\ \qquad \qquad \qquad 
+      \land \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \ftdom, \trace'' \in \ftdom \cup \{\infty\}, c_i, c_{i + 1} \in \cdom \sthat 
+      \\ \qquad \qquad \qquad 
+      \config{c_i, \trace_i} \to \config{c_{i + 1}, \trace_{i + 1}} 
+      \land  \trace' = \trace_{i + 1} \tracecat \trace''
+    \Big\}
+    \end{array}
+  \]
+\end{defn}
+% We want to emphasize that in the rest of {\redd{PART \romannum{1}} 
+We consider as well-formed only the program that has only terminating executions and produces finite traces. 
+%  denote by $\trace \in \ftdom$.
+\begin{defn}[Well-formed Program]
+  \label{def:adaptfun-wfprog}  
+  A program $c$ is a well-formed program if and only if
+   its execution terminates
+  under arbitrary initial trace. We use $\cdom$ to denote the set of all well-formed program.
+  \[
+    \forall c \sthat c \in \cdom \iff 
+    \forall \trace_0 \in \ftdom_0(c) \sthat \exists \trace \in \ftdom
+    \sthat \config{c, \trace_0} \xrightarrow{}^* \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace}
+  \]
+\end{defn}
+%  and use $\ftdom$ and $\inftdom$ to distinguish the universe of finite trace and infinite trace.
+For the program that has non-terminating behaviors, it does not produce an output or data analysis result.
+In this sense, it does not have an intuitive adaptivity, and we analyze the adaptivity only for the well-formed program.
+In the rest of {\redd{PART \romannum{1}}, we implicitly refer to ``a well-formed program'' when we use the words ``a program''. We will extend to non-terminating programs in {\redd{PART \romannum{2}}.
+
+ 
 
 %
 %

@@ -217,21 +217,12 @@ more accurately than using either single one of them.
 \emph{quantitative} sub-property, specifically the visiting times of each variable during the program execution.
 %  through estimating the \emph{reachability-bound}.
 % It estimates the evaluation times w.r.t. each data. This estimation captures the \emph{quantitative} information for adaptivity,
-This algorithm reuses the program complexity analysis techniques
-%  in
-for estimating the worst-case program execution complexity.
-%  analysis area.
-Since we want this quantity to associate to program variables,
-% to capture the dependency depth of the queries,
-we instead estimate execution complexity for every program variable.
-% command including the query request their 
-% \emph{reachability-bound}s rather than for control locations.
+This algorithm reuses some worst-case program complexity analysis techniques
+and adopts it for the visiting times of every program variable.
 In this sense, it can be used to analyze the \emph{adaptivity} of a program more accurate
 than
 % This is more compatible with our adaptivity analysis than
-trivial computing the worst-case program execution complexity.
-% \emph{reachability-bound} for a given control location.
-% is not able to be captured by any existing static program analysis framework.
+trivially computing the worst-case program execution complexity.
 
 \item 
 % Then, we construct the \emph{estimated dependence graph} in order to approximate

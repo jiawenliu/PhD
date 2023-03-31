@@ -3,12 +3,14 @@ We are interested in defining a notion of dependencies between program variables
 % \begin{enumerate}
 For example, in the program 
 \[c_1 =[\assign{x}{\query(\chi[2])}]^1 ;[\assign{y}{\query(\chi[3] + x)}]^2\]
-the query $\query(\chi[3] + x)$  depends on the query $\query(\chi[2]))$ through a \emph{value dependency} via  $x^1$.
+the query $\query(\chi[3] + x)$  depends on the query $\query(\chi[2]))$ through a \emph{value dependency} via  $x^1$. Though $x$ is not used for accessing the data column, we still claim there is a value dependency between
+these two queries.
 \\
 Conversely, in the program
 \[c_2 = [\assign{x}{\query(\chi[1])}]^1 ; \eif( [x > 2]^2 , [\assign{y}{\query(\chi[2])}]^3, [\eskip]^4 )\] 
 the query $\query(\chi[2])$ 
 depends on the query $\query(\chi[1])$ via the \emph{control dependency} of the guard of the if command involving the labeled variable $x^1$.
+We do not have this dependency in our running example, while we have few examples in Section~\ref{sec:adapt-example} have this \emph{control dependency} between queries.
 
 To define dependency between program variables I will consider two events that are generated from the same command, hence they have the same variable name or boolean expression and label, but have either different value or different query expression, captured by the following definition. 
 
@@ -113,8 +115,10 @@ occurrence of a label in a trace as below.
 Then I define the \emph{event may-dependency} between events based on the \emph{event differ in value} as below.
 \begin{defn}[Event May-dependency]
 \label{def:event_dep}
-An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment event $\event_1 \in \eventset^{\asn}$ in a program ${c}$  with a hidden database $D$ and a witness trace $\trace \in \ftdom$,
-$\eventdep(\event_1, \event_2, [\event_1] \tracecat \trace \tracecat [\event_2], c, D)$ if and only if
+An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment event $\event_1 \in \eventset^{\asn}$ in a program ${c}$  
+% with a hidden database $D$ and 
+with a witness trace $\trace \in \ftdom$,
+$\eventdep(\event_1, \event_2, [\event_1] \tracecat \trace \tracecat [\event_2], c)$ if and only if
 \begin{subequations}
 \begin{align}
   &  

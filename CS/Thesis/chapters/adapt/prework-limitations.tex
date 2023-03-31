@@ -1,10 +1,10 @@
 To recapitulate, the \emph{adaptivity} is only analyzed from the \emph{quantitative} perspective in previous works.
 However, as we discussed before in the introduction, we consider it as a \emph{quantitative-reachability} property
 that has two perspectives sub-properties, the  \emph{quantitative} and \emph{reachability}.
-In the other word, previous works only analyzed it as a sub-property and losses the information from the other perspective.
+In the other word, previous works only analyzed it as a sub-property and lost the information from the other perspective.
 
 \emph{Expressiveness.}
-    This language model doesn't support programs with non-deterministic while loop.
+    This language model doesn't support programs with while loop whose number of iterations not known before loop is running.
     It only allows the while loops in the program to iterate a fixed number of times.
     This is because the expression in the loop guard has to be a constant number
     or an arithmetic expression
@@ -15,15 +15,17 @@ In the other word, previous works only analyzed it as a sub-property and losses 
 \emph{Accuracy.}
  The adaptivity definition and the estimated adaptivity are both inaccurate.
     \begin{itemize}
-        \item There are two reasons for the inaccuracy of adaptivity definition.
-    The first reason comes from the trace in the operational semantics.
-    A trace only tracks the query requests, so it loses the execution history of the variables
-    that use the query results but not assigned by query requests.
-    These variables
-    are critical in analyzing the \emph{adaptivity}.
-    % \\
-    The second cause is the dependency graph definition.
-    Because the dependency graph relies on a specific memory, while-map, and a specific execution trace,
+        \item 
+        For the \emph{adaptivity} definition,
+    %     There are two reasons for the inaccuracy of adaptivity definition.
+    % The first reason comes from the trace in the operational semantics.
+    % A trace only tracks the query requests, so it loses the execution history of the variables
+    % that use the query results but not assigned by query requests.
+    % These variables
+    % are critical in analyzing the \emph{adaptivity}.
+    % % \\
+    % The second cause is the dependency graph definition.
+    because the dependency graph relies on a specific memory, while-map, and a specific execution trace,
     the \emph{adaptivity} then is also defined w.r.t. one specific
     execution.
     In this sense, this adaptivity definition isn't the \emph{adaptivity} of the adaptive data analysis

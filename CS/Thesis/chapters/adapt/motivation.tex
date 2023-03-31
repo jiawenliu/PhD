@@ -93,7 +93,7 @@ of the corresponding algorithms that these programs implement.
 This makes the analysis of the \emph{adaptivity} as a program property difficult.
 This motivates us to design a simple and scalable language  that can be used to implement these data analysis algorithms and analyze the \emph{adaptivity}.
 % \paragraph{Limitations of Previous Works}
-Previous works from~\cite{weihao22} develops language formalizing the adaptive data analysis.
+Previous works from the thesis by~\cite{weihao22} develops language formalizing the adaptive data analysis.
 However, these language designs are largely limited in their expressiveness.
 Most of the general data analyses are not supported by the previous language design.
 In Section~\ref{sec:prework-language}, we introduce in detail the previous language design and limitations.
@@ -120,7 +120,7 @@ This is the reason we claim that the \emph{adaptivity} of a program is a specifi
 
 Existing formalization methodologies cannot
 capture the two sub-properties of the \emph{adaptivity}, as in Section~\ref{sec:intro-methodology-adapt-formalization}.
-Techniques in previous works~\cite{weihao22} on formalizing this quantity
+Techniques in previous works by~\cite{weihao22} on formalizing this quantity
 are limited in expressiveness and accuracy significantly.
 The \emph{adaptivity} quantities in many general data analysis programs are unable to be defined in the previous \emph{adaptivity} definition.
 For the program which is able to be expressed,
@@ -152,7 +152,7 @@ Hence, the analysis needs to consider some quantitative information about the pr
 % We also discussed in Section~\ref{sec:intro-methodology-adapt-formalization}, 
 Most existing techniques fail
 in analyzing the \emph{adaptivity} in the sense of considering its two sub-properties.
-The previous works from~\cite{weihao22}
+The previous works from the thesis by~\cite{weihao22}
 develop a program analysis algorithm for estimating the adaptivity.
 However, this algorithm is low efficiency and in-precise. It is not automatic either. 
 This analysis algorithm and limitations are introduced with more details in Section~\ref{sec:prework-formalization}.
@@ -169,171 +169,3 @@ We evaluate {\THESYSTEM} on a number of examples showing that it is able to effi
 All the proofs and extended definitions are in the Appendix.
 %%%%% To reason about%
 % \\
-%
-% \subsection{Technical Motivations}
-% \label{sec:adapt-intro-overview}
-
-% \subsubsection{Language Design}
-% % \paragraph{Research Goal - Adaptive Data Analysis Formalization}
-% Targeting on the first challenge
-% for analyzing the adaptive data analysis, 
-% the research goal is to develop
-% an expressive language supporting general adaptive data analysis formally.
-% As we discussed in Section~\ref{sec:intro-methodology-adapt-language}, existing language mainly focuses on efficiency and scalable of the programs but not the generalization error of the corresponding algorithms that these programs implemented.
-% This makes the analysis of the \emph{adaptivity} as a program property difficult.
-% This motivates us to design a simple and scalable language  that can be used to implement these data analysis algorithms and analyze the \emph{adaptivity}.
-
-% % \paragraph{Limitations of Previous Works}
-% Previous works from~\cite{weihao22} develops language formalizing the adaptive data analysis.
-% However, these language designs are limited in their expressiveness largely.
-% Most of the general data analyses are not supported by the previous language design.
-% In Section~\ref{sec:prework-language}, I introduce in detail the previous language design and limitations.
-% %
-
-% \subsubsection{Adaptivity Formalization}
-% \label{sec:intro-exe}
-
-% % \paragraph{Technical Research Goal -- Adaptivity Formalization}
-% Targeting the second challenge
-% for analyzing the adaptivity, 
-% the research goal is to develop an analysis method which can
-% {formalize} the intuitive \emph{adaptivity} rounds for a given data analysis program as a \emph{quantitative-reachability} property.
-% To formalize this \emph{adaptivity} property, we follow
-% the intuition behind it, which is the dependency between the query requests 
-% executed in the program, and their dependency depth.
-% So, we need to formally define
-% from the \emph{reachability} perspective whether there is dependency between query requests during the program
-% execution,
-% and from the \emph{quantitative} perspective the depth of this dependency.
-% As we discussed in Section~\ref{sec:intro-methodology}, our methodology defines the \emph{reachability} as
-% data dependency relation, and defines the \emph{quantitative} as the reachability-bound, and then builds a graph combining them and defines the
-% \emph{adaptivity} through the longest \emph{finite walk} over this graph.
-% Techniques in defining each sub-property all have their limitations, 
-% we summarize them into three sub-motivations w.r.t. the techniques as follows.
-% \begin{enumerate}
-% \item[sub-1.]
-% From the \emph{reachability} perspective, existing methods on the semantics concept of the data / value dependency relation don't
-% consider both control influence and value influence, such as~\cite{Cousot19a, DenningD77, AbadiBHR99, Mantel2004, CheneyAA11}.
-% However, both of these
-% two influences are considered as \emph{may-dependent} in the intuitive query dependency 
-% in adaptive data analysis programs.
-% \item[sub-2.] From the \emph{quantitative} perspective, the state-of-art data dependency relation formalization, there isn't any technique taking into account
-% the dependency depth, specifically the quantitative information of the data dependency property. For example the works in~\cite{GoguenM84, AssafNSTT17, BartheDR11}.
-% However, this dependency depth is the key quantity in formalizing the intuitive \emph{adaptivity}.
-% \item[sub-3.] The intuitive \emph{adaptivity} doesn't accumulate linearly through the dependency relation and 
-% dependency depth. There is only very limited works related to this non-linear quantity property analysis.
-% The non-monotonic resource cost analysis in~\cite{AlbertFR15} focus on analyzing the peak resource consumption of the heap structure, which is still different from the accumulation of the \emph{adaptivity}.
-% This requires us to design new formal model in order to define this property precisely.
-% % here isn't any research combining the two pieces of information. No need to mention the adaptivity analysis.
-% \end{enumerate}
-
-% % \paragraph{Technique Limitations in Previous Works.} 
-% Techniques in previous works~\cite{weihao22} on formalizing this quantity
-% are limited in expressiveness and accuracy significantly.
-% The \emph{adaptivity} quantities in many general data analysis programs are unable to be defined in the previous \emph{adaptivity} definition.
-% For the program which is able to be expressed,
-% they cannot give the most precise adaptivity definitions matching the intuitive \emph{adaptivity}.
-% These previous works and limitations on formalizing the adaptivity are introduced in more detail in Section~\ref{sec:prework-formalization}.
- 
-% \subsubsection{Static Program Analysis}
-% \label{sec:adapt-intro-static}
-
-% % \paragraph{Technical Research Goal - Adaptivity Estimation}
-% Targeting on the third challenge,
-% though we have the intuitive \emph{adaptivity} formally and precisely defined through the semantics-based program analysis,
-% it is still not useful enough for programmers.
-% Programmers need to execute the program multiple times and tune the parameter in order to have the most precise \emph{adaptivity} and control the generalization error.
-% When the query requests, the multiple executions consume a large amount of computation and communication resources.
-% This requires us to develop an efficient static analysis method, 
-% which can provide the programmers with the \emph{adaptivity} rounds before executing the program.
-% To this end, the major research goal is to develop analysis method which can
-% provide the programmers with the \emph{adaptivity} quantity
-% soundly, accurately and
-% efficiently
-% through static program analysis.
-
-% As we discussed in Section~\ref{sec:intro-methodology}, our new methodology would like to estimate \emph{adaptivity}
-% from \emph{reachability} and \emph{quantitative} perspectives, and compute the
-% \emph{adaptivity} based on the graph theory as well.
-% Techniques in estimating each of them all have their limitations.
-% We summarize them as three sub-technical motivations as follows.
-% % Each of them aims to resolve a fact introduced in the \textbf{Adaptivity Estimation} challenge in Section~\ref{sec:adapt-motivation}.
-
-% \begin{enumerate}
-% \item[sub-1.] From the \emph{reachability} perspective, either static dependency analysis techniques or the control flow analysis consider only
-% the value influence or control influence respectively.
-% However, both of the two influence are considered as query dependency.
-% We want to design a new data-flow analysis algorithm which can estimate whether a query may depend on the other queries
-% It also needs to be able to capture the query dependency soundly
-% consider both the control and data influence.
-
-% \item[sub-2.] From the \emph{quantitative} perspective, existing static analysis techniques in the complexity or resource cost estimation areas are not focusing on the queries or data in the program. 
-% The technical research goal is to estimate the \emph{reachability-bound} w.r.t. the queries or data in the program and
-% integrate it together with the \emph{reachability} sub-property on a dependency graph.
-% %  techniques.
-% \item[sub-3.] To estimate the \emph{adaptivity} in the end for programs, we want to reuse some path search algorithm
-% in graph theory to estimate the longest \emph{finite walk}.
-% However, since computing the longest weighted path is NP-complete, they are either non-terminating or low efficiency in computing the longest \emph{finite walk}.
-% This motivates us to design new algorithm to compute the longest \emph{finite walk} over the dependency graph.
-
-% \end{enumerate}
-
-% \paragraph{Limitations of Existing Works}
-% \begin{itemize}
-%  \item \textbf{Limitations in Static Program Analysis Area}
-%  \\
-%  There are many static program analysis techniques, which are widely used in dependency analysis. 
-%  However, it is not straightforward when applied to adaptivity analysis.
-%  \begin{enumerate}
-%  \item To the best of my knowledge,
-%  existing static dependency analysis techniques do not consider both control influence and value influence.
-%  But in order to analyze and estimate the \emph{adaptivity} statically, as discussed above, we need to consider both of them.
-%  \item The existing static analysis techniques in the complexity or resource cost estimation areas,
-%  cannot give accurate reachability times on programs 
-%  at every execution location.
-%  \item Moreover, existing static analysis techniques and their research focus consider
-%  either only the dependency analysis
-%  or only the program quantitative property (such as complexity or resource cost),
-%  but not both of them.
-%  \end{enumerate}
-
-% \paragraph{Technique Limitations in Previous Works}
-% The previous works from~\cite{weihao22}
-% develop program analysis algorithm for estimating the adaptivity.
-% However, this algorithm is low efficiency, and in-precise. It is not automatic either. 
-% This analysis algorithm and limitations are introduced with more details in Section~\ref{sec:prework-formalization}.
-% \end{itemize}
-
-% \paragraph{Methodology}
-% To address these considerations and be able to estimate a sound upper bound on the adaptivity of a program, 
-% I develop a static program adaptivity analysis framework, named {\THESYSTEM} in Chapter~\ref{sec:adapt-static}.
-% This analysis combines data flow and control flow analysis with reachability bound analysis.
-% % ~\cite{GulwaniZ10}. 
-% This new program analysis gives tighter bounds on the adaptivity of a program than the ones one would achieve 
-% by directly using the data and control flow analyses or the ones that one would achieve 
-% by directly using reachability bound analysis techniques alone. 
-% It is developed in 3 aspects similar to the semantics-based adaptivity analysis 
-% while through static program analysis techniques. 
-% A sound estimated result is given in each part, which is summarized as follows.
-% \begin{enumerate}
-% \item The {\THESYSTEM} estimates the \emph{variable may-dependency} relation, $\vardep(x^i, y^j, c)$ through the static data flow analysis technique in Section~\ref{sec:alg_edgegen}, and computes the $\flowsto()$ relation correspondingly.
-% This analysis corresponds to the first step in semantics-based adaptivity analysis. 
-% The estimated result produced from 
-% this step is proved as a sound upper bound for the \emph{dependency relation} defined in the adaptivity formalization model from Section~\ref{sec:dynamic-datadep}.
-% \item 
-% % Still , 
-% Corresponding to the second step in semantics-based adaptivity analysis, the \emph{dependency quantity} 
-% is estimated by {\THESYSTEM} through the static program reachability bound analysis techniques, in Section~\ref{sec:alg_weightgen}.
-% The estimated result produced from 
-% this step is proved as a sound upper bound for the \emph{dependency quantity} defined in the adaptivity formalization model.
-% \item 
-% The static program adaptivity analysis in this step
-% % , specifically estimating 
-% According to the third step of semantics-based adaptivity analysis, 
-% {\THESYSTEM} in this step also constructs a program-based dependence graph for approximating the semantics-based dependency graph.
-% It generates the \emph{estimated dependency graph}, $\progG(c)$ for the program $c$ with four components $\progE(c)$,
-% vertex set $\progV(c)$, weights $\progW(c)$ and an annotation set $\progF(c)$ repsectively.
-% Then, based on this graph, {\THESYSTEM} 
-% computes the adaptivity upper bound soundly 
-% and accurately through a newly designed algorithm.
-% \end{enumerate}

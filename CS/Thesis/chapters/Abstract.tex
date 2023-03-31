@@ -8,22 +8,24 @@
     When studying the resource usage of a program,
     certain program analysis mainly focuses on analyzing whether a piece of code consumes a certain resource and how much resource is used by this piece of code.
     Yet another kind of program analysis is studying the program privacy behavior by analyzing
-    % In terms of privacy, we analyze 
+    % In terms of privacy, I analyze 
     whether a specific private data is dependent on other data and how many times they are dependent during multiple executions.
     % We notice that when analyzing the aforementioned behaviors of a computer program, there are two dominant perspectives
     % shared by them -- ``How Much'' and ``Whether''.
     % We refer to the two perspectives as 
     % two sub-properties of the program namely \emph{quantitative} property and \emph{reachability} property.
-    % For the class of behaviors that share these two sub-properties, we refer to them as \emph{quantitative-reachability} hyper-properties.
+    % For the class of behaviors that share these two sub-properties, I refer to them as \emph{quantitative-reachability} hyper-properties.
     We notice that when studying the aforementioned behaviors, there are two dominant program properties
-    that we are analyzing -- ``How Much'' and ``Whether'',
+    that I am analyzing -- ``How Much'' and ``Whether'',
     % We refer to the two perspectives as 
     % two sub-properties of the program,
-    namely \emph{quantitative} property and \emph{reachability} property.
+    namely \emph{quantitative} properties and \emph{reachability} properties.
     % When looking into this kind of behaviors, 
-    In other words, when looking into this kind of behaviors, we are indeed analyzing the hyper-properties of a program that contains \emph{quantitative} and \emph{reachability} as two sub-properties.
-    % For the class of behaviors that share these two sub-properties, we refer to them as \emph{quantitative-reachability} hyper-properties.
-    We refer to this hyper-property as the \emph{quantitative-reachability}.
+    In other words, when looking into this kind of behaviors, I am indeed analyzing 
+    a program property that contains \emph{quantitative} and \emph{reachability} as two sub-properties.
+    % For the class of behaviors that share these two sub-properties, I refer to them as \emph{quantitative-reachability} hyper-properties.
+    This property is indeed a hyper-property that contains \emph{quantitative} and \emph{reachability} as two sub-properties, and
+    I refer to this kind of hyper-property as the \emph{quantitative-reachability}.
     Most existing program analysis methods can analyze only one sub-property of a program's
     \emph{quantitative-reachability} hyper-property.
     % from one perspective. 
@@ -44,8 +46,8 @@
     
     
     
-    % The first noteworthy property we look into is the \emph{adaptivity} rounds in the adaptive data analysis algorithm. 
-    The first noteworthy \emph{quantitative-reachability} property we look into is 
+    % The first noteworthy property I look into is the \emph{adaptivity} rounds in the adaptive data analysis algorithm. 
+    The first noteworthy \emph{quantitative-reachability} property I look into is 
     the \emph{adaptivity}  
     in the programs that implement certain adaptive data analyses. 
     %
@@ -57,10 +59,10 @@
     % determining the appropriate statistical technique based on the value of \emph{adaptivity}  can help in controlling 
     % the generalization error well.
     % Nevertheless, adaptivity is not always clear to data analysts when they need it.
-    % To solve this dilemma, we present a program analysis framework that analyzes this intuitive concept in
+    % To solve this dilemma, I present a program analysis framework that analyzes this intuitive concept in
     % the principle of programming language.
     % We first formalize the \emph{adaptivity} through a semantics-based definition.
-    % Then we present a \emph{quantitative-reachability} analysis algorithm
+    % Then I present a \emph{quantitative-reachability} analysis algorithm
     % which estimates a sound upper bound on the adaptivity of the program that implements an adaptive data analysis. 
     %
     Data analyses are usually designed to identify some properties of the population from which the data are drawn, generalizing beyond the specific data sample. For this reason, data analyses are often designed in a way that guarantees that they produce a low generalization error.
@@ -69,35 +71,35 @@
     However, when queries are arbitrarily composed, the different errors can propagate through the chain of different queries and result in high generalization error. 
     To address this issue, data analysts are designing several techniques that not only guarantee bounds on the generalization errors of single queries, but that also guarantee bounds on the generalization error of the composed analyses. 
     The choice of which of these techniques to use, often depends on the chain of queries that an adaptive data analysis can generate, intuitively the \emph{adaptivity} level in an adaptive data analysis.
-    To help analysts with identifying which technique to use to control their generalization error, we consider adaptive data analyses implemented as while-like programs and we design a
+    To help analysts with identifying which technique to use to control their generalization error, I consider adaptive data analyses implemented as while-like programs and I design a
     program analysis framework.
     %  to analyze this \emph{adaptivity}.
-    In this framework, we first formalize the intuitive notion of \emph{adaptivity} as a \emph{quantitative-reachability} property,
+    In this framework, I first formalize the intuitive notion of \emph{adaptivity} as a \emph{quantitative-reachability} property,
     which
     %  . Because the \emph{adaptivity} level 
      is a key measure of an adaptive data analysis to choose the appropriate technique.
     % through a semantics-based definition.
-    Then we design a program analysis algorithm
+    Then I design a program analysis algorithm
     % that integrates the \emph{quantitative-reachability} and \emph{quantitative} analysis techniques,
     that estimates a sound upper bound on the adaptivity of the program that implements an adaptive data analysis. 
-    We also implement our program analysis and show that it can help to analyze the adaptivity of several concrete data analyses with different adaptivity structures.
+    We also implement my program analysis and show that it can help to analyze the adaptivity of several concrete data analyses with different adaptivity structures.
 
-    As a continuation of the previous work, to get a more precise bound on a program's \emph{adaptivity} level, we look at another \emph{quantitative-reachability} hyper-property -- \emph{the number of times a given  location inside a procedure is visited during the program execution}.
+    As a continuation of the previous work, to get a more precise bound on a program's \emph{adaptivity} level, I look at another \emph{quantitative-reachability} hyper-property -- \emph{the number of times a given  location inside a procedure is visited during the program execution}.
     The upper bound on this hyper-property is referred to as the \emph{reachability-bound}.
     It can help to improve the program analysis results when studying other different program features.
     % beyond itself.
     For example, the \emph{reachability-bound} on each program location can be used by some resource cost analysis techniques to compute a precise bound on a program's worst-case resource consumption.
-    When we analyze the adaptivity in an adaptive data analysis program as discussed above, the accuracy of our program analysis result can also be improved through a tight \emph{reachability-bound} on every program location.
+    When I analyze the adaptivity in an adaptive data analysis program as discussed above, the accuracy of my program analysis result can also be improved through a tight \emph{reachability-bound} on every program location.
     % , the information leakage, etc. 
     Some existing program complexity analysis methods can be repurposed to analyze and estimate the \emph{reachability-bound}.
     However, these methods focus only on the overall quantity and ignore the path sensitivity in the program.
     For this reason, the \emph{reachability-bound}s of the locations in different sub-procedures are usually over-approximated. 
-    As far as we know, there is no general analysis algorithm that computes the reachability-bound for every program location directly and path-sensitively. 
-    To this end, we present a path-sensitive reachability-bound algorithm, which exploit the path sensitivity to compute a precise reachability-bound for every program location.
-    % In comparison with previous works, our algorithm is the first one to exploit the path sensitivity to compute a precise reachability-bound for every program location.
-    % By doing this, we bring together two techniques from resource analysis: 1. amortized bound analysis through program abstraction and ranking function estimation, and 2. summarization-based multiple loop paths refinement.
-    % Building on this combination of techniques, we focus on two new quantities, \emph{path reachability-bound} and \emph{loop reachability-bound}, which allow us to leverage the precision and efficiency of the two techniques mentioned above, and compute precise reachability-bounds for each program point in a path-sensitive way.
-    We implemented our algorithm in a prototype, and we report on an experimental comparison with state-of-art tools over four different sets of benchmarks.
+    As far as I know, there is no general analysis algorithm that computes the reachability-bound for every program location directly and path-sensitively. 
+    To this end, I present a path-sensitive reachability-bound algorithm, which exploit the path sensitivity to compute a precise reachability-bound for every program location.
+    % In comparison with previous works, my algorithm is the first one to exploit the path sensitivity to compute a precise reachability-bound for every program location.
+    % By doing this, I bring together two techniques from resource analysis: 1. amortized bound analysis through program abstraction and ranking function estimation, and 2. summarization-based multiple loop paths refinement.
+    % Building on this combination of techniques, I focus on two new quantities, \emph{path reachability-bound} and \emph{loop reachability-bound}, which allow us to leverage the precision and efficiency of the two techniques mentioned above, and compute precise reachability-bounds for each program point in a path-sensitive way.
+    We implemented my algorithm in a prototype, and I report on an experimental comparison with state-of-art tools over fmy different sets of benchmarks.
     \end{abstractpage}
     
     
