@@ -111,14 +111,17 @@ occurrence of a label in a trace as below.
       \]
 \end{defn}
 
+\begin{defn}[Boolean Event Negation]
+  \label{def:adapt_boolevent_neg}
+\end{defn}
 
 Then I define the \emph{event may-dependency} between events based on the \emph{event differ in value} as below.
 \begin{defn}[Event May-dependency]
 \label{def:event_dep}
 An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment event $\event_1 \in \eventset^{\asn}$ in a program ${c}$  
-% with a hidden database $D$ and 
+with a hidden database $D$ and 
 with a witness trace $\trace \in \ftdom$,
-$\eventdep(\event_1, \event_2, [\event_1] \tracecat \trace \tracecat [\event_2], c)$ if and only if
+$\eventdep(\event_1, \event_2, [\event_1] \tracecat \trace \tracecat [\event_2], c, D)$ if and only if
 \begin{subequations}
 \begin{align}
   &  
@@ -201,7 +204,24 @@ to guarantee that the influence goes through a control flow guard in the first s
 This is correct because the control dependency can only be passed through the guard of if or while command,
 and this guard must be evaluated into two different values ($\event_b$ and $\neg \event_b$) in the two executions.
 
+\textbf{Example.}
+case 
+\[
+  \clabel{\assign{x}{0}}^0;\clabel{\assign{y}{x}}^1
+  \]
+case 
+\[
+  \clabel{\assign{x}{1}}^0;\clabel{\assign{y}{\query(x) \times 0}}^1
+\]
+case 
+\[
+  \clabel{\assign{x}{\query(\chi[1] \emax 1 )}}^0;\clabel{\assign{y}{\query(x) \times 0}}^1
+\]
+
+      
 We can now extend the dependency relation to variables by considering all the assignment events generated during the program’s execution. 
+
+
 \begin{defn}[Variable May-dependency]
   \label{def:var_dep}
 A variable ${x}_2^{l_2} \in \lvar(c)$  \emph{may-dependend} on the 
@@ -217,7 +237,7 @@ $
 \land
 \pi_{1}{(\event_2)}^{\pi_{2}{(\event_2)}} = {x}_2^{l_2}% \\ \quad 
 \land 
-\eventdep(\event_1, \event_2, \trace, c) 
+\eventdep(\event_1, \event_2, \trace, c, D) 
   \end{array}
 }%
 $
