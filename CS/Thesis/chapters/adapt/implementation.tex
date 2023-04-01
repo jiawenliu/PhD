@@ -17,11 +17,6 @@ We evaluated this implementation on $23$ example programs with the evaluation re
 In this table,
 the first column is the name of each program.
 For each program $c$, the second column is its intuitive adaptivity rounds,
-% the third column is the adaptivity $A(c)(\trace_0)$ w.r.t the input initial trace $\trace_0 \in \mathcal{T}_0(c)$ as definition~\ref{def:trace_adapt}.
-% In all these examples, the input variable $k$ specifies the loop iteration numbers.
-% Since $A(c)(\trace_0)$ by definition~\ref{def:trace_adapt} will count the execution times of
-% query request command in the loop, which is indeed same as  the loop iteration numbers,
-% we use $\env(\trace_0) k$ in the third column represent this number, which computes the $k$'s initial value from input initial trace $\trace_0$.
 the third column is the output of the $\THESYSTEM$ implementation, which consists of two expressions.
 The first one is the upper bound for adaptivity and the second one is the 
 upper bound for the total number of query requests in the program. And the last column is the performance evaluation w.r.t. the program size.
@@ -33,15 +28,25 @@ and the adaptivity computation algorithm, $\pathsearch(c)$.
 
 The first six programs are adapted from real world data analysis algorithms.
 The first two programs $\kw{twoRounds(k)}$, $ \kw{multiRounds(k)}$ are the same as Figure~\ref{fig:overview-example}(a) and Figure~\ref{fig:multipleRounds}(a).
-$\THESYSTEM$ computes tight adaptivity bound for the first 3.
-For the forth program $\kw{multiRoundsO(k)}$, $\THESYSTEM$ outputs an over-approximated upper bound $1 + 2*k$ for the $A(c)$, which is consistent with our expectation as discussed in Example~\ref{ex:multiRoundsO}. 
+$\THESYSTEM$ computes tight adaptivity bound for the first three examples.
+For the forth program $\kw{multiRoundsO(k)}$, $\THESYSTEM$ outputs an over-approximated upper bound $1 + 2*k$ 
+% for the $A(c)$, which is consistent with our expectation 
+as discussed in Example~\ref{ex:multiRoundsO}. 
 The fifth program is the evaluation results for the example in Example~\ref{ex:multiRoundsS}, where $\THESYSTEM$ outputs the tight bound for $A(c)$ but $A(c)$ is a loose definition of the program's actual adaptivity rounds.
 %
 
-The next eleven programs from Table~\ref{tb:adapt-imp} column 7 to 18 are handcrafted programs based on the code pieces extracted from C library. They all have small size but complex structures in order to test the programs under different situations including
+The next eleven programs from Table~\ref{tb:adapt-imp} row 7 to 18 are handcrafted programs based on the code pieces extracted from C library. They all have small size but complex structures in order to test the programs under different situations including
 data, control dependency,
 the multiple paths nested loop with related counters, etc.
-The algorithm computes the tight bound for examples from line:6, $\kw{ifCD()}$ to line:{$14$}, $\kw{loop2MPRV(k)}$
+The names of these programs obey the convention that,
+$\kw{if}$ means there is if control in the program;
+$\kw{loop}$ means there is while loop and $\kw{loop2}$ represents two levels nested loop in the program;
+$\kw{C}$ denotes Control;
+$\kw{D}$ for Dependency; $\kw{V}$ for Variable;
+$\kw{M}$ for Multiple; $\kw{P}$ for Path and $\kw{R}$ for Related.
+
+
+The algorithm computes the tight bound for examples from line six, $\kw{ifCD()}$ to line fourteen, $\kw{loop2MPRV(k)}$
 and over-approximate the \emph{adaptivity} for the $15^{th}$ and $16^{th}$ examples in the table due to path-insensitivity.
 % For the $17^{th}$ one, implementation I gives tight bound while II gives loose bound, so we keep both implementations.
 

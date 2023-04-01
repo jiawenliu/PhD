@@ -10,9 +10,15 @@ is a sound approximation of the edges in the semantics based dependency graph.
 This algorithm is summarized into three steps as follows,
 \begin{enumerate}
   \item 
-  We first perform the \textbf{reaching definition} analysis and compute a set of labeled variables, $\live(l, c)$ for every label $l$ in $c$
-  over its abstract control flow graph, $\absG(c)$.
-  The computation performs the standard reaching definition analysis and working-list algorithm over the abstract control flow graph, $\absG(c)$. 
+  We first perform the \textbf{reaching definition} analysis and compute a set of labeled variables that is reachable for every label $l$ in $c$, $\live(l, c)$.
+  For example, in the following program
+  \[
+    c = \clabel{\assign{x}{\query(\chi[1])}}^0 ;\clabel{\assign{x}{\query(\chi[0])}}^1 ;
+    \clabel{\assign{y}{\query(\chi[x])}}^2,
+    \]
+  only $x^1$ is reachable when executing $\clabel{\assign{y}{\query(\chi[x])}}^2$.
+  So we want to have $\live(2, c) = \{1\}$.
+The computation performs the standard reaching definition analysis and working-list algorithm over the abstract control flow graph, $\absG(c)$. 
   % as $\live(l, c)$ for every label $l$ in a program $c$. 
   $\live(l, c)$ contains all the labeled variables which are reachable at program point $l$. 
   For each label $l$, the analysis generates two initial sets of labeled variables, $in$ and $out$, 
@@ -160,10 +166,19 @@ The combinations of the result of \emph{reaching definition}, $\live(l, c)$
 with the \emph{abstract control flow graph}, $\absG(c)$ with control flow analysis into the feasible 
 data-flow generation improves the data-dependency relation approximation accuracy. 
 
-For example, a program $ [x = 0]^{1}; [x=2]^{2};  [y = x+1]^{3}$. 
+\textbf{Example I.}
+In an example program $\clabel{\assign{x}{0}}^{0}; \clabel{\assign{x}{2}}^{1}; \clabel{\assign{y}{x + 1}}^{2}$. 
 The standard data flow analysis 
-tells us that both the labeled variable $x^{1}$ and $x${2} may flow to $y^{3}$, which will result in an unnecessary edge ($x^{1}, y^{3}$). The result of reaching definition 
-can help us eliminate this kind of edge by telling us, at line $3$, only variable $x^{2}$ is reachable. 
+tells us that both the labeled variable $x^{0}$ and $x^1$ may flow to $y^{2}$, which will result in an unnecessary edge ($x^{0}, y^{2}$). The result of reaching definition 
+can help us eliminate this kind of edge by telling us, at line $2$, only variable $x^{1}$ is reachable. 
+
+\textbf{Example II.}
+This analysis focus on guaranteeing the soundness,
+there is an over-approximation in the operation $\kw{FV}(\expr)$ by looking into only the syntactic dependency.
+For example, in the program 
+$\clabel{\assign{x}{\query(\chi[0])}}^{0}; \clabel{\assign{y}{x - x}}^{1}$,
+$y^1$ does not depend on $x^0$ by Definition~\ref{def:var_dep}.
+However, the Definition~\ref{def:feasible_flowsto} still produces the $\flowsto(x^0, y^1, x)$, which over-approximates the variable may-dependency relation.
 
 \paragraph{Edge Estimation}
 The \textbf{Edge Estimation}

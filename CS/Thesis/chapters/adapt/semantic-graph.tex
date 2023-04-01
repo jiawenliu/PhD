@@ -90,18 +90,20 @@ In other words, it tracks for each vertex $x^l$ its visiting times
 The visiting times are computed by the counter operator $\vcounter(\trace', l)$
 by counting the occurrence of the label $l$ in $\trace'$.
 
-As an instance, in the semantics-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight of the vertex $x^3$ is 
+\textbf{Example.} 
+As an instance, in Figure~\ref{fig:overview-example}(b), the weight of the labeled variable $x^3$ is 
 $\lambda \trace_0 \sthat \env(\trace_0) k$, i.e.
 a function of type $\ftdom_0(\kw{twoRound(k)}) \to \mathbb{N}$.
 $\env(\trace_0) k$ fetch the initial value assigned to variable $k$ from the initial trace $\trace_0$.
-Specifically, 
+This function means when 
 % given input $\trace_0$, 
-we execute the $\kw{twoRound(k)}$ program under input $\trace_0$ as $\config{\kw{twoRound(k)}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $.
-Then $w_k(\trace_0)$ outputs the occurrence times of the label $3$ in $\trace'$, which is always
+we execute the $\kw{twoRound(k)}$ program under input $\trace_0$, 
+$\config{\kw{twoRound(k)}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $,
+we have an execution trace $\trace'$.
+Then $w_k(\trace_0)$ outputs the occurrences of the label $3$ in $\trace'$, which is always
 the value of $k$ in the initial trace, i.e., $\env(\trace_0) k$.
 So we have its weight function $\lambda \trace_0 \sthat \env(\trace_0) k$ always equal to the 
-occurrence times of the label $3$ in the execution trace of $\kw{twoRound(k)}$.
-
+occurrences of the label $3$ in the execution trace of $\kw{twoRound(k)}$.
 
 
 \paragraph{Semantics-based Dependency Graph.}

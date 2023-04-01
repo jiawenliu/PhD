@@ -3,7 +3,7 @@ We can now define the adaptivity of a program formally. This notion is formulate
 
 \begin{defn}[Walk]
 \label{def:finitewalk}
-Given a well-formed program $c$ with its semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ of a program $c$, a \emph{walk} $k:\ftdom_0(c)\to \mathcal{P}(\traceV)$ on $\traceG({c})$ is a function that maps an initial trace $\trace_0$ to a sequence of vertices $(v_1, \ldots, v_{n})$
+Given a well-formed program $c$ with its semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ of a program $c$, a \emph{walk} $k$ is a function that maps an initial trace $\trace_0$ to a sequence of vertices $(v_1, \ldots, v_{n})$
 for which there is a sequence of edges $(e_1 \ldots e_{n - 1})$  satisfying
 \begin{itemize}
 \item $e_i = (v_{i},v_{i + 1}) \in \traceE$ for every $1 \leq i < n$,
@@ -37,9 +37,10 @@ for any initial trace $\trace_0 \in \ftdom_0(c)$ as follows,
   \qlen(k) = \lambda \trace_0 \sthat |\big( v \mid v \in (v_1, \ldots, v_{n}) \land (v, 1) \in \traceF(c) 
 %   \land
 %   k \in \walks(\traceG(c)) 
-  \land k(\trace_0) = (v_1, \ldots, v_{n}) \big)|.
+  \land k(\trace_0) = (v_1, \ldots, v_{n}) \big)|,
 $
 \end{center}
+where the notation $| (\ldots) |$ gives the number of vertices in a sequence.
 \end{defn}
 Then we define for a well-formed program its adaptivity as a function as below.
 \begin{defn}
