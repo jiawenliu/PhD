@@ -1,54 +1,51 @@
-Previous works from {the thesis by~\cite{weihao22}} formalized the adaptive data analysis into a while-like language named loop language with  limited expressiveness.
+Previous works from {the thesis by~\cite{weihao22}} formalized the adaptive data analysis into a while-like language named loop language with limited expressiveness.
 \subsection{Language Syntax}
 Figure~\ref{fig:prework_syntax} is a selection of the syntax from their loop language.
 {\small
 \begin{figure}
 \[
 \begin{array}{llll}
-    % \mbox{Values } & v & ::= & n \sep \etrue \sep \efalse \sep \chi \sep [] ~|~ [v, \dots, v] ~|~ \chi[v] \\
+ % \mbox{Values } & v & ::= & n \sep \etrue \sep \efalse \sep \chi \sep [] ~|~ [v, \dots, v] ~|~ \chi[v] \\
  \mbox{Arithmetic Operators} & \oplus_a & ::= & + ~|~ - ~|~ \times 
 %
-~|~ \div \\  
-  \mbox{Boolean Operators} & \oplus_b & ::= & \lor ~|~ \land ~|~ \neg\\
-  %
-   \mbox{Relational Operators} & \sim & ::= & < ~|~ \leq ~|~ == \\  
-%  \mbox{Label} & l & := & \mathbb{N} \\ 
-%  \mbox{Loop Maps} & w & \in & \mbox{Label} \times \mathbb{N} \\
+~|~ \div \\ 
+ \mbox{Boolean Operators} & \oplus_b & ::= & \lor ~|~ \land ~|~ \neg\\
+ %
+ \mbox{Relational Operators} & \sim & ::= & < ~|~ \leq ~|~ == \\ 
 \mbox{Arithmetic Expressions} & \aexpr & ::= & 
-	%
-	n ~|~ x ~|~ \aexpr \oplus_a \aexpr  \\
-% 	\sep \pi (l , \aexpr, \aexpr) \\
-    %
+ %
+ n ~|~ x ~|~ \aexpr \oplus_a \aexpr \\
+% \sep \pi (l , \aexpr, \aexpr) \\
+ %
 \mbox{Boolean Expressions} & \bexpr & ::= & 
-	%
-	\etrue ~|~ \efalse  ~|~ \neg \bexpr
-	 ~|~ \bexpr \oplus_b \bexpr
-	%
-	~|~ \aexpr \sim \aexpr \\
-\mbox{Expressions} & \expr & ::= & \aexpr ~|~ \bexpr ~|~ [] ~|~ [\expr, \dots, \expr] \\	
+ %
+ \etrue ~|~ \efalse ~|~ \neg \bexpr
+ ~|~ \bexpr \oplus_b \bexpr
+ %
+ ~|~ \aexpr \sim \aexpr \\
+\mbox{Expressions} & \expr & ::= & \aexpr ~|~ \bexpr ~|~ [] ~|~ [\expr, \dots, \expr] \\ 
 \mbox{Values} & v & ::= & n ~|~ \etrue ~|~ \efalse ~|~ [] ~|~ [v, \dots, v] \\
 \mbox{Query expressions} & \expr_q & ::= & \aexpr ~|~ \chi ~|~ \chi[\aexpr] ~|~ \expr_q \oplus_a \expr_q \\
-\mbox{Query Values} & v_q & ::= & n ~|~ \chi ~|~ \chi[n] ~|~ v_q \oplus_a  v_q \\
+\mbox{Query Values} & v_q & ::= & n ~|~ \chi ~|~ \chi[n] ~|~ v_q \oplus_a v_q \\
 % \mbox{Labelled commands} & c & ::= & 
-% [\assign x \expr]^{l} ~|~  [\assign x q(e_q)]^{l}
-%  ~|~  \eloop ~ [\aexpr]^{l} ~ \edo ~ c  ~|~ c;c \\
-%  & & & ~|~ \eif([\bexpr]^l, c, c) 	 ~|~ [\eskip]^{l} \\
-\mbox{Commands} & c & ::= &  \eskip  ~|~  \assign x \expr ~|~  \assign{x}{ q(\expr_q)}
+% [\assign x \expr]^{l} ~|~ [\assign x q(e_q)]^{l}
+% ~|~ \eloop ~ [\aexpr]^{l} ~ \edo ~ c ~|~ c;c \\
+% & & & ~|~ \eif([\bexpr]^l, c, c) ~|~ [\eskip]^{l} \\
+\mbox{Commands} & c & ::= & \eskip ~|~ \assign x \expr ~|~ \assign{x}{ q(\expr_q)}
 %
-~|~ \eloop ~ \aexpr  ~ \edo ~ c  \\ &&& ~|~ c;c  ~|~ \eif(\bexpr, c, c)
+~|~ \eloop ~ \aexpr ~ \edo ~ c \\ &&& ~|~ c;c ~|~ \eif(\bexpr, c, c)
 \end{array}
 \]
  \caption{Syntax of loop language.}
-    \label{fig:prework_syntax}
+ \label{fig:prework_syntax}
 \end{figure}
 }
-The expressions can be arithmetic expressions, boolean expressions or query expression.
-The arithmetic expressions boolean expressions are standard.
-They extend the expression with the query expression in order to support the query requests in the data analysis.
+The expressions can be arithmetic, boolean expressions, or query expression.
+The arithmetic and boolean expressions are standard.
+Query expressions support the query requests in the data analysis.
 The special variable $\chi$ represents a row of the database,
 and access to values at a certain column in $\chi$, as $\chi[\aexpr]$.
 However, the while loop iteration times cannot depend on the program state.
-% But it neither  support while loop with non-deterministic iterations, nor any user input.
 %
 \subsection{Trace-Based Operational Semantics}
 The previous operational semantics is defined based on labeled command and trace with some special operators.
@@ -58,228 +55,221 @@ Below is a summary of their designs.
 Each command is labeled with
 % with a label $l$,
 a natural number $l$ standing for the line of code where the command appears.
-For the if statement, the label is associated to the conditional predicate $\bexpr$
-and for the loop statement, it is associated to the loop counter $\aexpr$.
+For the if statement, the label is associated with the conditional predicate $\bexpr$
+and for the loop statement, it is associated with the loop counter $\aexpr$.
 % They associate the label $l$ to the conditional predicate $\bexpr$ in the if statement,
 % and to the loop counter $\aexpr$ in the loop statement.
 \[
 \begin{array}{llll}
-     \mbox{Labeled commands} & c & ::= &   [\assign x \expr]^{l} ~|~  [\assign x q(e_q)]^{l}
- ~|~  \eloop ~ [\aexpr]^{l} ~ \edo ~ c  ~|~ c;c \\
- & & & ~|~ \eif([\bexpr]^l, c, c) 	 ~|~ [\eskip]^{l} \\
+ \mbox{Labeled commands} & c & ::= & [\assign x \expr]^{l} ~|~ [\assign x q(e_q)]^{l}
+ ~|~ \eloop ~ [\aexpr]^{l} ~ \edo ~ c ~|~ c;c \\
+ & & & ~|~ \eif([\bexpr]^l, c, c) ~|~ [\eskip]^{l} \\
 \end{array}
 \]
 % Each command is now labeled 
 \paragraph*{Loop Map}
 The loop map is a map from the label $l$ to the iteration number $n$.
-%   Because statements in the loop share the same line number,  varied iterations , the label $l$ is not enough to distinguish statements.
-  A mapping $[k \to n]$ gives accurate information on which loop a statement is in by its key $k$ (label at loop counter),
-  and which iteration $n$ the statement belongs to.
-  % For example, the loop map $w=[3:1, 4:2]$ indicates that the statement is currently in a nested loop, the outer loop starting from label $3$ and in its first iteration, the statement is now in the inner loop starting from label $4$ and in the second iteration. We use $\emptyset$ to represent an empty map, indicating the statement is not in any loop.
+ A mapping $[k \to n]$ gives accurate information on which loop a statement is in by its key $k$ (label at loop counter),
+ and which iteration $n$ the statement belongs to.
+ % For example, the loop map $w=[3:1, 4:2]$ indicates that the statement is currently in a nested loop, the outer loop starting from label $3$ and in its first iteration, the statement is now in the inner loop starting from label $4$ and in the second iteration. We use $\emptyset$ to represent an empty map, indicating the statement is not in any loop.
 \[
 \begin{array}{llll}
  \mbox{Loop Map} & w & \in & \mbox{Label} \to \mathbb{N} \\
-\mbox{Annotated Query} & \mathcal{AQ}  & ::= & \{ q(v_q)^{(l,w)}  \} \\
+\mbox{Annotated Query} & \mathcal{AQ} & ::= & \{ q(v_q)^{(l,w)} \} \\
 \end{array}
 \begin{array}{llll}
-    \mbox{Memory} & m & ::= & [] ~|~ m[x \to v] \\
+ \mbox{Memory} & m & ::= & [] ~|~ m[x \to v] \\
 \mbox{Trace} & t & ::= & [] ~|~ q(v_q)^{(l, w) } :: t \\
 \end{array}
 \]
-%  Then, they have the Loop map, which is a map from the label $l$ to the iteration number $n$.
-% %   Because statements in the loop share the same line number,  varied iterations , the label $l$ is not enough to distinguish statements.
-%   A mapping $[k \to n]$ gives accurate information on which loop a statement is in by its key $k$ (label at loop counter),
-%   and which iteration $n$ the statement belongs to.
-%   % For example, the loop map $w=[3:1, 4:2]$ indicates that the statement is currently in a nested loop, the outer loop starting from label $3$ and in its first iteration, the statement is now in the inner loop starting from label $4$ and in the second iteration. We use $\emptyset$ to represent an empty map, indicating the statement is not in any loop.
-
  \paragraph*{Annotated Query} 
- To analyze the relation between queries, the previous work
+ To analyze the dependency relations between queries, the previous work
  designs a data structure, the \emph{annotated query}. 
-%  This is a key extension for analyzing the \emph{adaptivity}
+% This is a key extension for analyzing the \emph{adaptivity}
 Through this annotation, queries can be uniquely annotated 
 % as $\mathcal{AQ}$,
-  % and the annotation 
-  by $(l,w)$, which considers the location of the query
-  through the line number $l$ and
-  the iteration index where this query is located
-  if the query appears in a loop statement, specified by $w$.
-  %% trace
+ % and the annotation 
+ by $(l,w)$, which considers the location of the query
+ through the line number $l$ and
+ the iteration index where this query is located
+ if the query appears in a loop statement, specified by $w$.
+ %% trace
 \paragraph{Trace} 
 A trace $t$ is a list of annotated queries accumulated along with the execution of the program. 
-%   A trace can be regarded as the program history, where this history 
-  It consists of the queries asked by the analyst during the execution of the program,
-%   We 
+% A trace can be regarded as the program history, where this history 
+ It consists of the queries asked by the analyst during the execution of the program,
+% We 
 collected through
-  a trace-based small-step operational semantics based on transitions of the form $ \config{m,c, t, w} \to \config{m', \eskip, t', w'} $.
-  % \paragraph{Memory}
-  % The memory in their language is standard, which is a map from variables to values.
-  \paragraph*{Operational Semantics Rules}
+ a trace-based small-step operational semantics based on transitions of the form $ \config{m,c, t, w} \to \config{m', \eskip, t', w'} $.
+ % \paragraph{Memory}
+ % The memory in their language is standard, which is a map from variables to values.
+ \paragraph*{Operational Semantics Rules}
 Figure~\ref{fig:evaluation} is a selection of rules of the trace-based operational semantics from {the thesis by~\cite{weihao22}}.
 We present only the rules related to query requests and the while loop evaluations.
-%  are selected here.
+% are selected here.
 The rule $\textbf{l-query-e}$ evaluates the argument $\expr_q$ of a query request $q(\expr_q)$ using the query evaluation $\qarrow$.
 When the query expression is in the normal form, this query will be answered.
 The rule $\textbf{l-query-v}$ modifies the starting memory $m$ to $m[v_q/x]$ using the answer $v$ of the query $q(v_q)$ from the mechanism, with the trace expanded by appending the query $q(v_q)$ with the current annotation $(l,w)$.
 The rule for assignment is standard and the trace remains unchanged.
-The sequence rule keeps tracking the modification of the trace, and the evaluation rule for if conditional goes into one branch based on the result of the conditional predicate $\bexpr$. 
-The rule \textbf{l-loop-a} first evaluates the loop counter $\aexpr$, when the loop counter is a number, then the evaluation will start to execute the loop body.
-The rules for loop modify the loop map $w$. In the rule $\textbf{l-loop}$, the loop map $w$ is updated by $w + l$ because the execution goes into another iteration when the condition $v_N >0$ is satisfied.
+The sequence rule keeps tracking the modification of the trace, and the evaluation rule for the if command goes into one branch based on the result of the conditional predicate $\bexpr$. 
+The rule \textbf{l-loop-a} first evaluates the loop counter $\aexpr$, when a loop counter is a constant, then the evaluation will start to execute the loop body.
+The rules for loop modify the loop map $w$. In the rule, $\textbf{l-loop}$, the loop map $w$ is updated by $w + l$ because the execution goes into another iteration when the condition $v_N >0$ is satisfied.
 % When $v_N$ reaches $0$, the loop exits and the loop map $w$ eliminates the label $l$ of this loop statement by $w \setminus l$ in the rule $\textbf{l-loop-exit}$. 
 % 
 \begin{figure}
 {\footnotesize
-  \begin{mathpar}
-  % \boxed{ \config{m, c, t,w} \xrightarrow{} \config{m', c',  t', w'} \; }
-  % \\
-  % \inferrule
-  % {
-  %  \config{m, \expr } \xrightarrow{}  \config{m, \expr' }
-  % }
-  % {
-  % \config{m, [\assign x \expr]^{l},  t,w} \xrightarrow{} \config{m, [\assign x \expr']^{l}, t,w}
-  % }
-  % ~\textbf{l-assn1}
-  % \and
-  % %
-  % \inferrule
-  % {
-  % }
-  % {
-  % \config{m, [\assign x v]^{l},  t,w} \xrightarrow{} \config{m[v/x], [\eskip]^{l}, t,w}
-  % }
-  % ~\textbf{l-assn2}
-  % %
-  % \and
-  {\inferrule
-  {
-    \config{m, \aexpr} \aarrow \config{m, \aexpr'}
-  }
-  {
-  \config{m, \eloop ~ [\aexpr]^{l}  ~ \edo ~ c ,  t, w }
-  \xrightarrow{} \config{m, \eloop ~ [\aexpr']^{l} ~ \edo ~ c ,  t, (w + l) }
-  }
-  ~\textbf{l-loop-a}
-  }
-  %
-  \and
-  %
-  {\inferrule
-  {
-    \valr_N > 0
-  }
-  {
-  \config{m, \eloop ~ [\valr_N]^{l}  ~ \edo ~ c ,  t, w }
-  \xrightarrow{} \config{m, c ;  \eloop ~ [(\valr_N-1)]^{l} ~ \edo ~ c ,  t, (w + l) }
-  }
-  ~\textbf{l-loop}
-  }
-  %
-  % \and
-  % %
-  % {
-  % \inferrule
-  % {
-  %   \valr_N = 0
-  % }
-  % {
-  % \config{m,  \eloop ~ [\valr_N]^{l} ~ \edo ~ c  ,  t, w }
-  % \xrightarrow{} \config{m, [\eskip]^{l} ,  t, (w \setminus l) }
-  % }
-  % ~\textbf{l-loop-exit}
-  % }
-  %
-  \and
-  % {  Memory \times Com  \times Trace \times WhileMap \Rightarrow^{} Memory \times Com  \times Trace \times WhileMap}
-  \inferrule
-  {
-  \config{m,\expr_q} \qarrow \config{m,\expr_q'}
-  }
-  {
-  \config{m, [\assign{x}{q(\expr_q)}]^l, t, w} \xrightarrow{}  \config{m, [\assign{x}{q(\expr_q')}]^l, t, w}
-  }
-  ~\textbf{l-query-e}
-  \and
-  \inferrule
-  {
-  q(v_q) = v
-  }
-  {
-  \config{m, [\assign{x}{q(v_q)}]^l, t, w} \xrightarrow{} \config{m[ v/ x], \eskip,  t \mathrel{++} [q(v_q)^{(l,w )}],w }
-  }
-  ~\textbf{l-query-v}
-  %
-  \and
-  %
-  %
-  % \inferrule
-  % {
-  % \config{m, c_1,  t,w} \xrightarrow{} \config{m', c_1',  t',w'}
-  % }
-  % {
-  % \config{m, c_1; c_2,  t,w} \xrightarrow{} \config{m', c_1'; c_2, t',w'}
-  % }
-  % ~\textbf{l-seq1}
-  % %
-  % \and
-  % %
-  % \inferrule
-  % {
-  % }
-  % {
-  % \config{m, [\eskip]^{l} ; c_2,  t,w} \xrightarrow{} \config{m, c_2,  t,w}
-  % }
-  % ~\textbf{l-seq2}
-  % %
-  % %
-  % \and
-  % %
-  % \inferrule
-  % {
-  % \config{ m, \bexpr} \barrow \bexpr'
-  % }
-  % {
-  % \config{m, \eif([\bexpr]^{l}, c_1, c_2),  t,w} 
-  % \xrightarrow{} \config{m,  \eif([\bexpr']^{l}, c_1, c_2),  t,w}
-  % }
-  % ~\textbf{l-if}
-  % %
-  % \and
-  %
-  % \inferrule
-  % {
-  % }
-  % {
-  % \config{m, \eif([\etrue]^{l}, c_1, c_2),t,w} 
-  % \xrightarrow{} \config{m, c_1,  t,w}
-  % }
-  % ~\textbf{l-if-t}
-  % \and
-  % %
-  % \inferrule
-  % {
-  % }
-  % {
-  % \config{m,  \eif([\efalse]^{l}, c_1, c_2),  t,w} 
-  % \xrightarrow{} \config{m, c_2,  t,w}
-  % }
-  % ~\textbf{l-if-f}
-  %
-  % %
-  %
-  \end{mathpar}
-  }
-        \caption{Trace-based operational semantics of loop language.}
-        \label{fig:evaluation}
-    \end{figure}
+ \begin{mathpar}
+ % \boxed{ \config{m, c, t,w} \xrightarrow{} \config{m', c', t', w'} \; }
+ % \\
+ % \inferrule
+ % {
+ % \config{m, \expr } \xrightarrow{} \config{m, \expr' }
+ % }
+ % {
+ % \config{m, [\assign x \expr]^{l}, t,w} \xrightarrow{} \config{m, [\assign x \expr']^{l}, t,w}
+ % }
+ % ~\textbf{l-assn1}
+ % \and
+ % %
+ % \inferrule
+ % {
+ % }
+ % {
+ % \config{m, [\assign x v]^{l}, t,w} \xrightarrow{} \config{m[v/x], [\eskip]^{l}, t,w}
+ % }
+ % ~\textbf{l-assn2}
+ % %
+ % \and
+ {\inferrule
+ {
+ \config{m, \aexpr} \aarrow \config{m, \aexpr'}
+ }
+ {
+ \config{m, \eloop ~ [\aexpr]^{l} ~ \edo ~ c , t, w }
+ \xrightarrow{} \config{m, \eloop ~ [\aexpr']^{l} ~ \edo ~ c , t, (w + l) }
+ }
+ ~\textbf{l-loop-a}
+ }
+ %
+ \and
+ %
+ {\inferrule
+ {
+ \valr_N > 0
+ }
+ {
+ \config{m, \eloop ~ [\valr_N]^{l} ~ \edo ~ c , t, w }
+ \xrightarrow{} \config{m, c ; \eloop ~ [(\valr_N-1)]^{l} ~ \edo ~ c , t, (w + l) }
+ }
+ ~\textbf{l-loop}
+ }
+ %
+ % \and
+ % %
+ % {
+ % \inferrule
+ % {
+ % \valr_N = 0
+ % }
+ % {
+ % \config{m, \eloop ~ [\valr_N]^{l} ~ \edo ~ c , t, w }
+ % \xrightarrow{} \config{m, [\eskip]^{l} , t, (w \setminus l) }
+ % }
+ % ~\textbf{l-loop-exit}
+ % }
+ %
+ \and
+ % { Memory \times Com \times Trace \times WhileMap \Rightarrow^{} Memory \times Com \times Trace \times WhileMap}
+ \inferrule
+ {
+ \config{m,\expr_q} \qarrow \config{m,\expr_q'}
+ }
+ {
+ \config{m, [\assign{x}{q(\expr_q)}]^l, t, w} \xrightarrow{} \config{m, [\assign{x}{q(\expr_q')}]^l, t, w}
+ }
+ ~\textbf{l-query-e}
+ \and
+ \inferrule
+ {
+ q(v_q) = v
+ }
+ {
+ \config{m, [\assign{x}{q(v_q)}]^l, t, w} \xrightarrow{} \config{m[ v/ x], \eskip, t \mathrel{++} [q(v_q)^{(l,w )}],w }
+ }
+ ~\textbf{l-query-v}
+ %
+ \and
+ %
+ %
+ % \inferrule
+ % {
+ % \config{m, c_1, t,w} \xrightarrow{} \config{m', c_1', t',w'}
+ % }
+ % {
+ % \config{m, c_1; c_2, t,w} \xrightarrow{} \config{m', c_1'; c_2, t',w'}
+ % }
+ % ~\textbf{l-seq1}
+ % %
+ % \and
+ % %
+ % \inferrule
+ % {
+ % }
+ % {
+ % \config{m, [\eskip]^{l} ; c_2, t,w} \xrightarrow{} \config{m, c_2, t,w}
+ % }
+ % ~\textbf{l-seq2}
+ % %
+ % %
+ % \and
+ % %
+ % \inferrule
+ % {
+ % \config{ m, \bexpr} \barrow \bexpr'
+ % }
+ % {
+ % \config{m, \eif([\bexpr]^{l}, c_1, c_2), t,w} 
+ % \xrightarrow{} \config{m, \eif([\bexpr']^{l}, c_1, c_2), t,w}
+ % }
+ % ~\textbf{l-if}
+ % %
+ % \and
+ %
+ % \inferrule
+ % {
+ % }
+ % {
+ % \config{m, \eif([\etrue]^{l}, c_1, c_2),t,w} 
+ % \xrightarrow{} \config{m, c_1, t,w}
+ % }
+ % ~\textbf{l-if-t}
+ % \and
+ % %
+ % \inferrule
+ % {
+ % }
+ % {
+ % \config{m, \eif([\efalse]^{l}, c_1, c_2), t,w} 
+ % \xrightarrow{} \config{m, c_2, t,w}
+ % }
+ % ~\textbf{l-if-f}
+ %
+ % %
+ %
+ \end{mathpar}
+ }
+ \caption{Trace-based operational semantics of loop language.}
+ \label{fig:evaluation}
+ \end{figure}
 
-    
+ 
 \subsection{Limitations}
 This language model is limited in its expressiveness.
 % the following aspects:
  
 % \emph{Expressiveness.}
-The loop command in this language model can only iterate constant of times,
-specifically the guard in the loop command can only be a constant or an arithmetic expression which must be evaluated to a natural number.
+The loop command in this language model can only iterate a constant of times,
+specifically, the guard in the loop command can only be a constant or an arithmetic expression that must be evaluated to a natural number.
 Below we analyze the reasons.
 In the rule \rname{l-loop}, a natural number $v_N$ is required on the premise of tracking the iteration times.
 This requires that the loop iteration number has to be a natural number or evaluated to a natural number in advance to execute the loop.
@@ -300,18 +290,16 @@ the trace tracks the annotated query, which requires an integer annotation expli
  This program represents a class of data analysis programs with non-constant loop iterations
  which is very common in data analysis. However, it isn't supported by their design.
 
-%  \emph{Accuracy.}
-%  This operational semantics design causes in-precision in formalizing the \emph{adaptivity}.
-%  Because 
+% \emph{Accuracy.}
+% This operational semantics design causes in-precision in formalizing the \emph{adaptivity}.
+% Because 
 % the trace only tracks the query requests, which lost the data dependency
 % passed through
 % the variables
-%  which are assigned by query result but not a query request.
-%   However, these variables
-%  are critical in analyzing the \emph{adaptivity}.
- 
-%  \emph{Efficiency.}
-%  There are four components in their configuration in order to evaluate the program. 
-%  The update operations for this quadruple configuration are low-efficient, especially the update operation of the while map.
+% which are assigned by query result but not a query request.
+% However, these variables
+% are critical in analyzing the \emph{adaptivity}.
+
 
  
+

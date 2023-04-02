@@ -1,32 +1,32 @@
 The syntax is shown as follows,
 \[
 \begin{array}{llll}
-\mbox{Operators} 
+\mbox{Mathematic Operator} 
 & \oplus_a & ::= & + ~|~ - ~|~ \times 
 %
 ~|~ \div 
 ~|~ \emax 
-~|~ \emin \\  
-\mbox{Boolean Operators} 
+~|~ \emin \\ 
+\mbox{Boolean Operator} 
 & \oplus_b & ::= & \lor ~|~ \land
 \\
 %
-\mbox{Relational Operators} 
+\mbox{Relational Operator} 
 & \sim & ::= & < ~|~ \leq ~|~ == 
-\\  
+\\ 
 %
 \mbox{Extended Arithmetic} 
 & \aexpr & ::= & 
 n \in \mathbb{N}\cup\{\infty\} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr 
 \\ 
-\mbox{Expressions}
+\mbox{Expression}
 & & &
-~|~ \elog \aexpr  ~|~ \esign \aexpr
+~|~ \elog \aexpr ~|~ \esign \aexpr
 \\
 %
 \mbox{Boolean Expression} & \bexpr & ::= & 
 %
-\etrue ~|~ \efalse  ~|~ \neg \bexpr
+\etrue ~|~ \efalse ~|~ \neg \bexpr
  ~|~ \bexpr \oplus_b \bexpr
 %
 ~|~ \aexpr \sim \aexpr 
@@ -34,10 +34,10 @@ n \in \mathbb{N}\cup\{\infty\} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 %
 \mbox{Expression} & \expr & ::= & v ~|~ \aexpr ~|~ \bexpr 
 ~|~ [\expr, \dots, \expr]
-\\  
+\\ 
 %
 \mbox{Value} 
-& v & ::= & { n ~|~ \etrue ~|~ \efalse ~|~ [] ~|~ [v, \dots, v]}  
+& v & ::= & { n ~|~ \etrue ~|~ \efalse ~|~ [] ~|~ [v, \dots, v]} 
 \\
 %
 \mbox{Query Expression} 
@@ -46,7 +46,7 @@ n \in \mathbb{N}\cup\{\infty\} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \\
 %
 \mbox{Query Value} & \qval & ::= 
-& {n ~|~ \chi[n] ~|~ \qval \oplus_a  \qval}
+& {n ~|~ \chi[n] ~|~ \qval \oplus_a \qval}
 \\
 % \mbox{Query Answer} & r & ::= r \in \mathbb{R}
 % \\
@@ -56,29 +56,29 @@ n \in \mathbb{N}\cup\{\infty\} ~|~ {x} ~|~ \aexpr \oplus_a \aexpr
 \\ 
 %
 \mbox{Labeled Command} 
-& {c} & ::= &   \clabel{\assign{x}{\expr}}^{l} ~|~  \clabel{\assign{x}{\query(\qexpr)}}^{l}
+& {c} & ::= & \clabel{\assign{x}{\expr}}^{l} ~|~ \clabel{\assign{x}{\query(\qexpr)}}^{l}
 ~|~ {\ewhile \clabel{\bexpr}^{l} \edo ({c}) }
 \\
 &&&
-~|~ {c};{c}  
+~|~ {c};{c} 
 ~|~ \eif(\clabel{\bexpr}{}^l , {c}, {c}) 
 ~|~ \clabel{\eskip}^l\\ 
 \mbox{Event} 
 & \event & ::= & 
-    ({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval)  ~~~~~~~~~~~ \mbox{Assignment Event} \\
-&&& ~|~(\bexpr, l, v, \bullet)   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \mbox{Testing Event}
+ ({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval) ~~~~~~~~~~~ \mbox{Assignment Event} \\
+&&& ~|~(\bexpr, l, v, \bullet) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \mbox{Testing Event}
 \\
 \end{array}
 \]
 We denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$, and we use the following notations to represent the sets of corresponding terms:
 \[
 \begin{array}{lll}
-\vardom & : & \mbox{Set of Variables}  
+\vardom & : & \mbox{Set of Variables} 
 \\ 
-\ldom  & : & \mbox{Set of Labels}  
+\ldom & : & \mbox{Set of Labels} 
 \\
 %%
-\mathcal{LV}  & : & \mbox{Set of Labeled Variables}  
+\mathcal{LV} & : & \mbox{Set of Labeled Variables} 
 \\
 %%
 %
@@ -91,28 +91,28 @@ We denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$, and
 \cdom & : & \mbox{Set of Well-formed Commands} 
 \\ 
 %
-\eventset  & : & \mbox{Set of Events}  
+\eventset & : & \mbox{Set of Events} 
 \\
 %
-\eventset^{\asn}  & : & \mbox{Set of Assignment Events}  
+\eventset^{\asn} & : & \mbox{Set of Assignment Events} 
 \\
 %
-\eventset^{\test}  & : & \mbox{Set of Testing Events}  
+\eventset^{\test} & : & \mbox{Set of Testing Events} 
 \\
 %
-\dbdom  & : & \mbox{{Set of Databases}} 
+\dbdom & : & \mbox{{Set of Databases}} 
 \\
 %
 {\ftdom} & : & \mbox{{Set of All Finite Execution Traces}}
 \\
-{\inftdom} & : & \mbox{{Set of Infinite  Execution Traces}}
+{\inftdom} & : & \mbox{{Set of Infinite Execution Traces}}
 \\
-{\tdom} & : & \mbox{{Set of All Finite Or Infinite  Execution Traces}}
+{\tdom} & : & \mbox{{Set of All Finite Or Infinite Execution Traces}}
 \\ 
 %
 \qdom & : & \mbox{{Domain of Query Answers}}
 \\
-\inpvar(c) & : & \mbox{Set of Program $c$'s Input Variables}  
+\inpvar(c) & : & \mbox{Set of Program $c$'s Input Variables} 
 \\
 \ftdom_0(c) & : & \mbox{Set of Program $c$'s Well-formed Initial Traces.}
 \\ & & \mbox{Each well formed initial trace $\trace_0 \in \ftdom_0(c)$ is finite}
@@ -120,54 +120,52 @@ We denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$, and
 \end{array}
 \]
 %
-Expressions include
-standard arithmetic $\aexpr$ with value $n \in \mathbb{N}\cup \{\infty\}$,
-standard boolean expression $\bexpr$, and the extended query expression $\qexpr$.
-% $\{\infty\}$ symbol is saved for .
-A query expression $\qexpr$ can be either a simple arithmetic expression $a$, an expression of the form $\chi[\aexpr]$ where $\chi$ represents a row of the database  and  $\aexpr$ represents an index used to identify a specific column of the row $\chi$, a combination of two query expressions, $\qexpr \oplus_{a} \qexpr$, or a normal form $\qval$.
-In the normal form the index for accessing the column of $\chi$ must be a natural number, i.e., $\chi[n]$.
-For example, the query expression $\chi[3] + 5$  denotes the computation that
+Expressions include extended arithmetic expression $\aexpr$ with value $n \in \mathbb{N}\cup \{\infty\}$ and $\emax$, $\emin$, $\elog$ and $\esign$ operations;
+standard boolean expression $\bexpr$; and the extended query expression $\qexpr$.
+A query expression $\qexpr$ can be either a simple arithmetic expression $a$, an expression of the form $\chi[\aexpr]$ where $\chi$ represents a row of the database and $\aexpr$ represents an index used to identify a specific column of the row $\chi$, a combination of two query expressions, $\qexpr \oplus_{a} \qexpr$, or a normal form $\qval$.
+In the normal form, the index for accessing the column of $\chi$ must be a natural number, i.e., $\chi[n]$.
+For example, the query expression $\chi[3] + 5$ denotes the computation that
 obtains
 the value in the $3^{rd}$ column of $\chi$ in the row $\chi$ and then add $5$ to it.
 A query answer can be $\infty$ if the query request is invalid.
 
 \paragraph{Basic Expression}
-The expressions are either the standard one or the extended one.
-A standard expression is
+The basic expression is
+% are either the standard one or the extended one.
+% A standard expression is
 % can be 
-either a standard arithmetic expression or a boolean expression, or a list of expressions.
+either an extended arithmetic expression, a boolean expression, or a list of expressions.
 
-An extended arithmetic expression can be a constant $n$ denoting natural number or the $\infty$ symbol, a variable $x$ from some countable set $\vardom$, binary operation $\oplus_a$ such as addition, product, subtraction, etc, over arithmetic expressions, and also $\emax$, $\emin$, $\elog$ and $\esign$ operation. 
+An extended arithmetic expression can be a constant $n$ denoting natural number or the $\infty$ symbol, a variable $x$ from some countable set $\vardom$, binary operation $\oplus_a$ such as addition, product, subtraction, etc, over arithmetic expressions, and also $\emax$, $\emin$, $\elog$, and $\esign$ operations. 
 %
 
-A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq,=,<,$ etc.
-Additionally, I also introduce list in expression.
+A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives including logical negation, logical and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq,=,<,$, etc.
 
 \paragraph{Query Expression}
 % The key extension is
-% %  language supports 
+% % language supports 
 % the primitive for queries, where a specific query is specified by a query expression $\qexpr$. 
 Our language extends the standard while language with primitives for queries, 
-where a specific query is specified by a query expression $\qexpr$. 
+where a query request is specified by a query expression $\qexpr$. 
 A query expression contains the necessary information for a query request, for example, 
 $\chi[\aexpr]$ represents the values at a certain index $\aexpr$ in a row $\chi$ of the database. 
-Query expressions combine access to the database with other expressions through operators, 
-for example, $\chi[3] + 5$ represents a query which asks the value from the column 3 of each database raw $\chi$, adds 5 to each of these values, 
+Query expressions combine access to the database with other expressions through operators.
+For example, $\chi[3] + 5$ represents a query request that asks the value from the $3^{rd}$ column of each database raw $\chi$, adds 5 to each of these values, 
 and then computes the average of these values.
 % A query expression contains the necessary information for a query request, 
 % for example, $\chi[\qexpr]$ represents the values at a certain index $\qexpr$ in a row $\chi$ of the database. 
 
-When a query expression is encapsulated by the symbol $\query$, it represents a linear query request.
-A linear query compute the average value of certain query expression over each row of the hidden database.
-Through mechanisms that intermediate between programmers and database, the answer of a linear query is computed and return.
-For example, if the mechanism computes the empirical answer of the query request
-$ \query(\chi[\aexpr])$, then it returns the average value at index $\aexpr$ over each row of the database as follows,
+We only consider the linear query request in our program.
+A linear query computes the average value of a certain query expression over each row of the hidden database.
+Through mechanisms that intermediate between programmers and the database, the answer to a linear query is computed and returned.
+For example, if the mechanism computes the empirical answer to the query request
+$ \query(\chi[\aexpr])$, then it returns the average value at index $\aexpr$ over each row of the hidden database as follows,
  \[
-  \query(\chi[\qexpr]) = \frac{1}{n}\sum\limits_{i = 1}^{n}\chi_i[\qexpr]
-  \]
-In another example, the query expression $\chi[3]$  denotes the computation that
+ \query(\chi[\qexpr]) = \frac{1}{n}\sum\limits_{i = 1}^{n}\chi_i[\qexpr]
+ \]
+In another example, the query expression $\chi[3]$ denotes the computation that
 obtains
-the average value in the $3$rd column of $\chi$.
+the average value in the $3^{rd}$ column of the hidden database.
 
 Query expressions also combine access to the database with other expressions, 
 for example, 
@@ -176,37 +174,31 @@ adds $5$ to each of these values, and then computes the average of these values 
 database $\chi$'s number of rows.
 %
 \[
-  \query(\chi[3] + 5) = \frac{1}{n}\sum\limits_{i = 1}^{n}\chi_i[3] + 5
-  \]
+ \query(\chi[3] + 5) = \frac{1}{n}\sum\limits_{i = 1}^{n}\chi_i[3] + 5
+ \]
 % %
 \paragraph{Labeled Command}
 Commands are the typical ones from while languages with an additional command $\assign{x}{\query(\qexpr)}$ 
 for query requests which can be used to interrogate the database and compute the linear query corresponding to $\qexpr$.
-% In this the command, the query expression $\qexpr$ is sent to the database server as a request.
-% Then the server will compute the average value of $\qexpr$ over each row of the hidden database $\chi$ and return us the result.
-% For instance, when we execute the command $\assign{x}{\query(\chi[3] + 5)}$,
-% the server will receive query request in form of $\chi[3] + 5$,
-% then compute the average value of $\chi[3] + 5$ over each raw of $\chi$, and return the result to us. 
-% The server is used as external API for computing the results over the hidden database $\chi$.
 Each command is annotated with a label $l$, which is a natural number to record
 the location of each command, so that we can uniquely identify them.
 The label has to be added for every command from the first line to the last line starting from $0$ by a programmer.
-We use the label $\lin$ as the labels of the variables in an initial trace if a program has input variables,
+We use the label $\lin$ for the input variables in an initial trace
 and the label $\lex$ for annotating the exit of a program when we perform the program analysis later.
 
 \paragraph{Free Variables and Input Variables}
-  We denote by $\kw{FV}$ the operator $\kw{FV}: \expr \to \mathcal{P}(\mathcal{V})$, which computes the set of free variables in an expression. To be precise,
-  $\kw{FV}(\aexpr)$, $\kw{FV}(\bexpr)$ and $\kw{FV}(\qexpr)$ represent the set of free variables in arithmetic
-  expression $\aexpr$, boolean expression $\bexpr$ and query expression $\qexpr$ respectively.
-  All the free variables
-  showing up in $c$ such that they are never defined before using, are actually the input variables of this program.
-  We denote by $\inpvardom$ the universe of all input variables and $\kw{V_{\lin}}(c)$ the set of input variables in a given program $c$.
-  We compute the input variable by taking the union of the free variables in every expression
-  and subtract the set of variables that are assigned in commands.
+ We denote by $\kw{FV}$ the operator $\kw{FV}: \expr \to \mathcal{P}(\mathcal{V})$, which computes the set of free variables in an expression. To be precise,
+ $\kw{FV}(\aexpr)$, $\kw{FV}(\bexpr)$ and $\kw{FV}(\qexpr)$ represent the set of free variables in arithmetic
+ expression $\aexpr$, boolean expression $\bexpr$ and query expression $\qexpr$ respectively.
+ All the free variables
+ showing up in $c$ such that they are never defined before use, are actually the input variables of this program.
+ We denote by $\inpvardom$ the universe of all input variables and $\kw{V_{\lin}}(c)$ the set of input variables in a given program $c$.
+ We compute the input variable by taking the union of the free variables in every expression
+ and subtract the set of variables that are assigned in commands.
  
 \paragraph{Labeled Variables}
 The labeled variables and assigned variables are set of variables annotated by a label. 
-We use  
+We use 
 $\mathcal{LV}$ represents the universe of all the labeled variables and 
 $\lvar(c) \subseteq \mathcal{LV}$,
 represents the set of labeled variables in program $c$,
@@ -215,45 +207,45 @@ Labeled variable set, $\lvar(c)$ of a program $c$ is the set of all the labeled 
 and query command computed as follows.
 %
 \begin{defn}[labelled variable set of a program $c$, $\lvar(c)$]
-  \label{def:lvar}
+ \label{def:lvar}
 For a program $c$, its \emph{labeled variable set}, $\lvar(c)$ is computed as below.
-  {
-  \[
-    \lvar(c) \triangleq
-    \left\{
-    \begin{array}{ll}
-        \{{x}^l\}           
-        & {c} = [{\assign x e}]^{l} 
-        \\
-        \{{x}^l\}            
-        & {c} = \clabel{\assign x \query(\qexpr)}^{l} 
-        \\
-        \lvar(c_1) \cup \lvar(c_2) 
-        & {c} = {c_1};{c_2}
-        \\
-        \lvar(c_1) \cup \lvar(c_2)
-        & {c} =\eif(\clabel{\bexpr}^{l}, c_1, c_2) 
-        \\
-        \lvar(c_w)
-        & {c}   = \ewhile \clabel{\bexpr}^{l} \edo (c_w)
-    \end{array}
-  \right.
-  \]
-  }
-  \end{defn}
+ {
+ \[
+ \lvar(c) \triangleq
+ \left\{
+ \begin{array}{ll}
+ \{{x}^l\} 
+ & {c} = [{\assign x e}]^{l} 
+ \\
+ \{{x}^l\} 
+ & {c} = \clabel{\assign x \query(\qexpr)}^{l} 
+ \\
+ \lvar(c_1) \cup \lvar(c_2) 
+ & {c} = {c_1};{c_2}
+ \\
+ \lvar(c_1) \cup \lvar(c_2)
+ & {c} =\eif(\clabel{\bexpr}^{l}, c_1, c_2) 
+ \\
+ \lvar(c_w)
+ & {c} = \ewhile \clabel{\bexpr}^{l} \edo (c_w)
+ \end{array}
+ \right.
+ \]
+ }
+ \end{defn}
 %
 
 %
 %
 Every labeled variable in a program is unique, formally as follows with proof in Appendix~\ref{apdx:lvar_unique}.
 \begin{lem}[Uniqueness of the Labeled Variables]
-  \label{lem:lvar_unique}
-  Given any program $c \in \cdom$ with its label variable set $\lvar(c)$,
-  every two labeled variables in this set are different.
-  \[
-    \forall c \in \cdom, x^i, y^j \in \lvar(c) \sthat i \neq j.
-    \]
+ \label{lem:lvar_unique}
+ Given any program $c \in \cdom$ with its label variable set $\lvar(c)$,
+ every two labeled variables in this set are different.
+ \[
+ \forall c \in \cdom, x^i, y^j \in \lvar(c) \sthat i \neq j.
+ \]
 \end{lem}
-We guarantee that, even there are two labeled variables in $\lvar(c)$ have the same variable name,
-such that $x^i$ and $x^j$, we still have $x^i \neq x^j$ through $i \neq j$.
+We guarantee that even if there are two labeled variables in $\lvar(c)$ have the same variable name,
+such as $x^i$ and $x^j$, we still have $x^i \neq x^j$ through $i \neq j$.
 

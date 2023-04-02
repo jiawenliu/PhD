@@ -1,6 +1,6 @@
 
 
-We use a trace based operational semantics tracking the history of programs execution.
+We use trace-based operational semantics to track the history of program execution.
 This operational semantics is defined based on the event and trace with an environment operator as follows.
 
 
@@ -12,21 +12,21 @@ and we use $\eventset^{\asn}$ and $\eventset^{\test}$ to denote the set of all a
 $ \begin{array}{lllll}
 \mbox{Event} 
 & \event & ::= & 
-({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval)  & \mbox{Assignment Event} \\
-&&& ~|~(\bexpr, l, v, \bullet)  & \mbox{Testing Event}
+({x}, l, v, \bullet) ~|~ ({x}, l, v, \qval) & \mbox{Assignment Event} \\
+&&& ~|~(\bexpr, l, v, \bullet) & \mbox{Testing Event}
 \\
 \end{array}$
 \end{center}
-An assignment event tracks the execution of an assignment  or a query request and consists of the assigned variable, the label of the command that generates it, the value assigned to the variable, and the normal form of the query expression, $\qval$ if this command is a query request, otherwise a default value $\bullet$.
+An assignment event tracks the execution of an assignment or a query request and consists of the assigned variable, the label of the command that generates it, the value assigned to the variable, and the normal form of the query expression, $\qval$ if this command is a query request, otherwise a default value $\bullet$.
 
-A testing event tracks the execution of if and while commands and consists of the guard of the command, the label of the command, the result of evaluating the guard, while the last element is $\bullet$.
+A testing event tracks the execution of if and while commands and consists of the guard of the command, the label of the command, and the result of evaluating the guard, while the last element is $\bullet$.
 
 The event projection operators $\pi_i$ projects the $i^{th}$ element from an event:
 $ \pi_i : 
-\eventset \to \mathcal{V}\cup \mbox{Boolean Expression}  \cup \mathcal{L} \cup \mathcal{VAL} \cup \mathcal{QVAL} \cup\{\bullet\} $.
+\eventset \to \mathcal{V}\cup \mbox{Boolean Expression} \cup \mathcal{L} \cup \mathcal{VAL} \cup \mathcal{QVAL} \cup\{\bullet\} $.
 Its computation is as follows,
 \\
-$\pi_1(x, l, v, \bullet) = x $ \qquad  $\pi_1({x}, l, v, \qval) = x$ \qquad $ \pi_1(\bexpr, l, v, \bullet) = \bexpr$
+$\pi_1(x, l, v, \bullet) = x $ \qquad $\pi_1({x}, l, v, \qval) = x$ \qquad $ \pi_1(\bexpr, l, v, \bullet) = \bexpr$
 \\
 $\pi_2(\_, l, \_, \_ ) = l$
 \qquad
@@ -36,69 +36,68 @@ $\pi_4(\_, \_, \_, \qval) = \qval$ \qquad $\pi_4(\_, \_, \_, \bullet) = \bullet$
 
 \paragraph{Trace.}
 % Based on the event recording all the program's evaluations for expressions, 
-%  the trace designed in the new trace-based operational semantics
-%  now tracks all these events.
+% the trace designed in the new trace-based operational semantics
+% now tracks all these events.
  A \emph{trace}
  $\trace$ is a list of \emph{events} generated when executing specific commands. 
  \[
-  \begin{array}{llll}
-  \mbox{Trace} & \trace
-  & ::= & [] ~|~ \trace :: \event
-  \end{array}
-  \]
- We denote by $\ftdom$ the set of all finite traces, by $\inftdom $ the set of all infinite traces and $\tdom = \ftdom \cup \inftdom$. 
- We use list notation for traces, where $[]$ is the empty trace, the operator $\traceadd$ combines an event and a trace in a new event. 
-%  and the operator $\tracecat$ concatenates two traces as below.
+ \begin{array}{llll}
+ \mbox{Trace} & \trace
+ & ::= & [] ~|~ \trace :: \event
+ \end{array}
+ \]
+ We denote by $\ftdom$ the set of all finite traces, by $\inftdom $ the set of all infinite traces, and $\tdom = \ftdom \cup \inftdom$. 
+ We use list notation for traces, where $[]$ is the empty trace, and the operator $\traceadd$ combines an event and a trace in a new event. 
+% and the operator $\tracecat$ concatenates two traces as below.
 
-The \emph{trace concatenation}  operator, $\tracecat: \ftdom \to \ftdom \to \ftdom$ concatenates two traces
+The \emph{trace concatenation} operator, $\tracecat: \ftdom \to \ftdom \to \ftdom$ concatenates two traces
 similar to the standard list concatenation operation as follows.
 The concatenation preserves the order of every element in the two traces.
 % \begin{defn}[Trace Concatenation: $\tracecat: \ftdom \to \ftdom \to \ftdom$]
-%   \label{def:trace_cat}
-%   Given two traces $\trace_1, \trace_2 \in \ftdom$, the trace concatenation operator 
-%   $\tracecat$ is defined as:
-%   \[
-%     \trace_1 \tracecat \trace_2 \triangleq
-%     \left\{
-%     \begin{array}{ll} 
-%        \trace_1 & \trace_2 = [] \\
-%        (\trace_1  \tracecat \trace_2')  :: \event & \trace_2 = \trace_2' :: \event
-%     \end{array}
-%     \right.
-%   \]
-%   \end{defn}
+% \label{def:trace_cat}
+% Given two traces $\trace_1, \trace_2 \in \ftdom$, the trace concatenation operator 
+% $\tracecat$ is defined as:
+% \[
+% \trace_1 \tracecat \trace_2 \triangleq
+% \left\{
+% \begin{array}{ll} 
+% \trace_1 & \trace_2 = [] \\
+% (\trace_1 \tracecat \trace_2') :: \event & \trace_2 = \trace_2' :: \event
+% \end{array}
+% \right.
+% \]
+% \end{defn}
 
-  \begin{defn}[Trace Concatenation, $\tracecat: \tdom \to \tdom\to \tdom $]
-    \label{def:trace_cat}
-  Given two traces $\trace_1 \in \tdom, \trace_2 \in \tdom$, the trace concatenation operator 
-  $\tracecat$ is defined as:
-  \[
-  \trace_1 \tracecat \trace_2 \triangleq
-  \left\{
-  \begin{array}{ll} 
-    \trace_1 & \trace_2 = [] \lor \trace_1 \in \inftdom \\
-    \trace_2 & \trace_1 = [] \lor \trace_2 \in \inftdom \\
-    ((\trace_1   \tracecat \trace_2'):: \event) & \trace_1 \in \ftdom  \land \trace_2 \in \ftdom  \land \trace_2 = \trace_2' :: \event
-    % \trace_2 &  \trace_2 \in \inftdom \\
-  \end{array}
-  \right.
-  \]
-  \end{defn}
+ \begin{defn}[Trace Concatenation, $\tracecat: \tdom \to \tdom\to \tdom $]
+ \label{def:trace_cat}
+ Given two traces $\trace_1 \in \tdom, \trace_2 \in \tdom$, the trace concatenation operator 
+ $\tracecat$ is defined as:
+ \[
+ \trace_1 \tracecat \trace_2 \triangleq
+ \left\{
+ \begin{array}{ll} 
+ \trace_1 & \trace_2 = [] \lor \trace_1 \in \inftdom \\
+ \trace_2 & \trace_1 = [] \lor \trace_2 \in \inftdom \\
+ (\trace_1 \tracecat \trace_2'):: \event & \trace_1 \in \ftdom \land \trace_2 \in \ftdom \land \trace_2 = \trace_2' :: \event
+ % \trace_2 & \trace_2 \in \inftdom \\
+ \end{array}
+ \right.
+ \]
+ \end{defn}
 
-%  
+% 
 \paragraph{Environment}
 The environment is simply an operator, $\env$ where $\env(\trace) x$ fetches the latest value assigned to $x$ in the trace $\trace$.
 Since the trace records all the program's evaluations for assignments, 
-the value assigned to variables can be recovered from trace directly.
-  % In this sense, it is more efficiently by reading value from trace directly rather than using a separate memory recording the variable values.
-  \begin{defn}[Environment $\env : {\tdom}  \to \mathcal{V} \to \mathcal{VAL} \cup \{\bot\}$]
-    \label{def:adapt_env}
+the value assigned to variables can be recovered from the trace directly.
+ \begin{defn}[Environment $\env : {\tdom} \to \mathcal{V} \to \mathcal{VAL} \cup \{\bot\}$]
+ \label{def:adapt_env}
 Given a trace $\trace \in \tdom$ and a variable $x$,
 the environment operator $\env(\trace) l $ fetches the latest value assigned to $x$ on the trace $\trace$,
 and $\bot$ if the trace is an infinite trace as below.
 \[
 \begin{array}{lll}
-\env(\trace  \traceadd (x, l, v, \bullet)) x \triangleq v
+\env(\trace \traceadd (x, l, v, \bullet)) x \triangleq v
 &
 \env(\trace \traceadd (y, l, v, \bullet)) x \triangleq \env(\trace) x, y \neq x
 &
@@ -115,163 +114,163 @@ and $\bot$ if the trace is an infinite trace as below.
 \]
 \end{defn}
 We also define with respect to specific command $c$ its well-formed initial trace, in which
-every the input variables of $c$ is assigned with an initial value.
+every input variable of $c$ is assigned with an initial value.
 \begin{defn}[Well-formed Initial Trace]
-  \label{def:adaptfun-initial_trace}
-  Given a program $c$, $\trace$ is a well-formed initial trace of $c$ if and only if all the input variables of $c$ has an initial value in this trace.
-  \[
-    \forall c \in \cdom, \trace \in \ftdom \sthat \trace \in \ftdom_0(c) \iff 
-    \forall x \in \inpvar(c) \sthat \env(\trace_0) x \neq \bot
-    \]
-    We use $\ftdom_0(c)$ to denote the set of all well-formed initial traces for program $c$.
-  \end{defn}
-  For instance, the initial trace of $\kw{twoRounds(k)}$ example contains the initial value of the input variable $k$.
+ \label{def:adaptfun-initial_trace}
+ Given a program $c$, $\trace$ is a well-formed initial trace of $c$ if and only if all the input variables of $c$ have an initial value in this trace.
+ \[
+ \forall c \in \cdom, \trace \in \ftdom \sthat \trace \in \ftdom_0(c) \iff 
+ \forall x \in \inpvar(c) \sthat \env(\trace_0) x \neq \bot
+ \]
+ We use $\ftdom_0(c)$ to denote the set of all well-formed initial traces for program $c$.
+ \end{defn}
+ For instance, the initial trace of $\kw{twoRounds(k)}$ example contains the initial value of the input variable $k$.
 
  \paragraph{Operational Semantics Rules}
- The trace based operational semantics is described in terms of a small step evaluation relation
- $\config{c, \trace} \to \config{c', \trace'}$  describing how a configuration program-trace evaluates to another
+ The trace-based operational semantics is described in terms of a small-step evaluation relation
+ $\config{c, \trace} \to \config{c', \trace'}$ describing how a configuration program-trace evaluates to another
  configuration program-state. 
  The rules for the operational semantics are described in Figure~\ref{fig:os}.
- The rules for assignment and query generate assignment events, while the rules for while and if generate testing events. 
+ The rules for assignment and query generate assignment events, and the rules for the while and if commands generate testing events. 
  The rules for the standard while language constructs correspond to the usual rules extended to deal with traces. 
 
 The rule \rname{assn} evaluates a standard assignment $\assign{x}{\expr}$, the expression $\expr$ is first evaluated by our expression evaluation $\config{\trace, \expr} \earrow v $, presented below.
 {Different from standard rule, the result $v$ of evaluating $\expr$ is used to construct a new event $\event = (x, l, v,\bullet)$
 and attach it to the previous trace. }
-We have relations $\config{\trace, \expr} \earrow v $  and $\config{\trace, \bexpr} \barrow v $  to evaluate expressions and boolean expressions, respectively in Figure~\ref{fig:expr_eval}.
+We have relations $\config{\trace, \expr} \earrow v $ and $\config{\trace, \bexpr} \barrow v $ to evaluate expressions and boolean expressions, respectively in Figure~\ref{fig:expr_eval}.
 In these evaluation rules, $v_1 \oplus_a v_2$ denotes the corresponding mathematic computation of two values and the same for $\elog v$ and $\esign v$.
 
 \begin{figure}
-  \begin{mathpar}
-  \boxed{ \config{\trace,\aexpr} \aarrow v \, : \, \mbox{Trace  $\times$ Extended Arithmetic Expression $\aarrow$ Value} }
-  \\
-  % \\
-  \inferrule{ 
-    \empty
-  }{
-   \config{\trace,  n} 
-   \aarrow n
-  }
-  \and
-  \inferrule{ 
-    \env(\trace) x = v
-  }{
-   \config{\trace,  x} 
-   \aarrow v
-  }
-  \and
-  \inferrule{ 
-    \config{\trace, \aexpr_1} \aarrow v_1
-    \and 
-    \config{\trace, \aexpr_2} \aarrow v_2
-    \and 
-     v_1 \oplus_a v_2 = v
-  }{
-   \config{\trace,  \aexpr_1 \oplus_a \aexpr_2} 
-   \aarrow v
-  }
-  \and
-  \inferrule{ 
-    \config{\trace, \aexpr} \aarrow v'
-    \and 
-    \elog v' = v
-  }{
-   \config{\trace,  \elog \aexpr} 
-   \aarrow v
-  }
-  \and
-  \inferrule{ 
-    \config{\trace, \aexpr} \aarrow v'
-    \and 
-    \esign v' = v
-  }{
-   \config{\trace,  \esign \aexpr} 
-   \aarrow v
-  }
-  \\
-  \boxed{ \config{\trace, \bexpr} \barrow v \, : \, \mbox{Trace $\times$ Boolean Expression $\barrow$ Boolean Value} }
-  \\
-  % \\
-  \inferrule{ 
-    \empty
-  }{
-   \config{\trace,  \efalse} 
-   \barrow \efalse
-  }
-  \and 
-  \inferrule{ 
-    \empty
-  }{
-   \config{\trace,  \etrue} 
-   \barrow \etrue
-  }
-  \and 
-  \inferrule{ 
-    \config{\trace, \bexpr} \barrow v'
-    \and 
-    \neg v' = v
-  }{
-   \config{\trace,  \neg \bexpr} 
-   \barrow v
-  }
-  \and 
-  \inferrule{ 
-    \config{\trace, \bexpr_1} \barrow v_1
-    \and 
-    \config{\trace, \bexpr_2} \barrow v_2
-    \and 
-     v_1 \oplus_b v_2 = v
-  }{
-   \config{\trace,  \bexpr_1 \oplus_b \bexpr_2} 
-   \barrow v
-  }
-  \and 
-  \inferrule{ 
-    \config{\trace, \aexpr_1} \aarrow v_1
-    \and 
-    \config{\trace, \aexpr_2} \aarrow v_2
-    \and 
-     v_1 \sim v_2 = v
-  }{
-   \config{\trace,  \aexpr_1 \sim \aexpr_2} 
-   \barrow v
-  }
-  \\
-  \boxed{ \config{\trace, \expr} \earrow v \, : \, \mbox{Trace $\times$ Expression $\earrow$ Value} }
-  \\
-  \inferrule{ 
-    \config{\trace, \aexpr} \aarrow v
-  }{
-   \config{\trace,  \aexpr} 
-   \earrow v
-  }
-  \and
-  \inferrule{ 
-    \config{\trace, \bexpr} \barrow v
-  }{
-   \config{\trace,  \bexpr} 
-   \earrow v
-  }
-  \and
-  \inferrule{ 
-    \config{\trace, \expr_1} \earrow v_1
-    \cdots
-    \config{\trace, \expr_n} \earrow v_n
-  }{
-   \config{\trace,  [\expr_1, \cdots, \expr_n]} 
-   \earrow [v_1, \cdots, v_n]
-  }
-  \and
-  \inferrule{ 
-    \empty
-  }{
-   \config{\trace,  v} 
-   \earrow v
-  }
-   \end{mathpar}
-   \caption{Arithmetic and boolean expression evaluation rules}
-   \label{fig:expr_eval}
-  \end{figure}
+ \begin{mathpar}
+ \boxed{ \config{\trace,\aexpr} \aarrow v \, : \, \mbox{Trace $\times$ Extended Arithmetic Expression $\aarrow$ Value} }
+ \\
+ % \\
+ \inferrule{ 
+ \empty
+ }{
+ \config{\trace, n} 
+ \aarrow n
+ }
+ \and
+ \inferrule{ 
+ \env(\trace) x = v
+ }{
+ \config{\trace, x} 
+ \aarrow v
+ }
+ \and
+ \inferrule{ 
+ \config{\trace, \aexpr_1} \aarrow v_1
+ \and 
+ \config{\trace, \aexpr_2} \aarrow v_2
+ \and 
+ v_1 \oplus_a v_2 = v
+ }{
+ \config{\trace, \aexpr_1 \oplus_a \aexpr_2} 
+ \aarrow v
+ }
+ \and
+ \inferrule{ 
+ \config{\trace, \aexpr} \aarrow v'
+ \and 
+ \elog v' = v
+ }{
+ \config{\trace, \elog \aexpr} 
+ \aarrow v
+ }
+ \and
+ \inferrule{ 
+ \config{\trace, \aexpr} \aarrow v'
+ \and 
+ \esign v' = v
+ }{
+ \config{\trace, \esign \aexpr} 
+ \aarrow v
+ }
+ \\
+ \boxed{ \config{\trace, \bexpr} \barrow v \, : \, \mbox{Trace $\times$ Boolean Expression $\barrow$ Boolean Value} }
+ \\
+ % \\
+ \inferrule{ 
+ \empty
+ }{
+ \config{\trace, \efalse} 
+ \barrow \efalse
+ }
+ \and 
+ \inferrule{ 
+ \empty
+ }{
+ \config{\trace, \etrue} 
+ \barrow \etrue
+ }
+ \and 
+ \inferrule{ 
+ \config{\trace, \bexpr} \barrow v'
+ \and 
+ \neg v' = v
+ }{
+ \config{\trace, \neg \bexpr} 
+ \barrow v
+ }
+ \and 
+ \inferrule{ 
+ \config{\trace, \bexpr_1} \barrow v_1
+ \and 
+ \config{\trace, \bexpr_2} \barrow v_2
+ \and 
+ v_1 \oplus_b v_2 = v
+ }{
+ \config{\trace, \bexpr_1 \oplus_b \bexpr_2} 
+ \barrow v
+ }
+ \and 
+ \inferrule{ 
+ \config{\trace, \aexpr_1} \aarrow v_1
+ \and 
+ \config{\trace, \aexpr_2} \aarrow v_2
+ \and 
+ v_1 \sim v_2 = v
+ }{
+ \config{\trace, \aexpr_1 \sim \aexpr_2} 
+ \barrow v
+ }
+ \\
+ \boxed{ \config{\trace, \expr} \earrow v \, : \, \mbox{Trace $\times$ Expression $\earrow$ Value} }
+ \\
+ \inferrule{ 
+ \config{\trace, \aexpr} \aarrow v
+ }{
+ \config{\trace, \aexpr} 
+ \earrow v
+ }
+ \and
+ \inferrule{ 
+ \config{\trace, \bexpr} \barrow v
+ }{
+ \config{\trace, \bexpr} 
+ \earrow v
+ }
+ \and
+ \inferrule{ 
+ \config{\trace, \expr_1} \earrow v_1
+ \cdots
+ \config{\trace, \expr_n} \earrow v_n
+ }{
+ \config{\trace, [\expr_1, \cdots, \expr_n]} 
+ \earrow [v_1, \cdots, v_n]
+ }
+ \and
+ \inferrule{ 
+ \empty
+ }{
+ \config{\trace, v} 
+ \earrow v
+ }
+ \end{mathpar}
+ \caption{Arithmetic and boolean expression evaluation rules}
+ \label{fig:expr_eval}
+ \end{figure}
 
 
 The rules for if and while both have two versions, 
@@ -280,49 +279,55 @@ In these rules, the evaluation of the guard generates a testing event and the tr
 
 The only rule that is non-standard is the $\rname{query}$ rule. When evaluating a query, the query expression $\qexpr$ is first simplified to its normal form $\qval$ using an evaluation relation 
 $\config{\trace, \qexpr} \qarrow \qval$. 
-The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval$ is defined by the following rules.
-I want to highlight here, these  evaluation rules do not compute the query answer but only reduce a query expression to its normal form.
-The normal form $\qval$ characterizes the linear query that is run against a hidden database through an intermediate mechanism.
+This query expression evaluation relation $\config{\trace, \qexpr} \qarrow \qval$ is defined by the following rules.
+I want to highlight here, these evaluation rules do not compute the query answer but only reduce a query expression to its normal form.
+The normal form $\qval$ characterizes the linear query that is run against a hidden database through an unknown intermediate mechanism.
 For example, a query expression $\chi[x] - \chi[x]$ with a trace $\trace = [(x, 0, 1, \bullet)]$
-is evaluated into the query value of normal form $\chi[1] - \chi[1]$.
+is evaluated into the query value $\chi[1] - \chi[1]$, which is not the answer of this query.
 {\small
 \begin{mathpar}
 \inferrule{ 
-  \config{\trace, \aexpr} \aarrow n
+ \config{\trace, \aexpr} \aarrow n
 }{
- \config{\trace,  \aexpr} 
+ \config{\trace, \aexpr} 
  \qarrow n
 }
 \and
 \inferrule{ 
-  \config{\trace, \qexpr_1} \qarrow \qval_1
-  \and
-  \config{\trace, \qexpr_2} \qarrow \qval_2
+ \config{\trace, \qexpr_1} \qarrow \qval_1
+ \and
+ \config{\trace, \qexpr_2} \qarrow \qval_2
 }{
- \config{\trace,  \qexpr_1 \oplus_a \qexpr_2} 
+ \config{\trace, \qexpr_1 \oplus_a \qexpr_2} 
  \qarrow \qval_1 \oplus_a \qval_2
 }
 \and
 \inferrule{ 
-  \config{\trace, \aexpr} \aarrow n
+ \config{\trace, \aexpr} \aarrow n
 }{
  \config{\trace, \chi[\aexpr]} \qarrow \chi[n]
 }
 \and
 \inferrule{ 
-  \empty
+ \empty
 }{
- \config{\trace,  \qval} 
+ \config{\trace, \qval} 
  \qarrow \qval
 }
  \end{mathpar}
  }
 
-The query result $v$ is the expected value of the function $\lambda \chi.\qval$ applied to each row of the dataset. 
+The query answer $v$ is the expected value of the function $\lambda \chi.\qval$ applied to each row of the dataset. 
 We summarize this process with the notation $\query(\qval) = v$ which we use in the rule $\rname{query}$. 
+$\query(\qval) $ can return different answers depending on the hidden database and the mechanism.
 $\query(\qval)$ returns the $\infty$ if the query request is invalid, such as accessing a column that is outside the column range of the hidden database.
-Once the answer of the query is computed, the rules record all the needed information in the trace. 
- 
+Once the answer to the query is computed, rule $\rname{query}$ generates an event
+$(x, l, v, \qval)$ recording
+both the query answer $v$ and the query value $\qval$.
+When evaluating the same query request command under the same trace, it is possible to generate
+events with different query answers. However, the query value $\qval$ in these events is always the same
+given the query expression evaluation rules.
+% all the needed information in the trace. 
 
  As usual, we will use $\to^*$ for the reflexive and transitive closure of $\to$. 
  If $\config{c, \trace_0} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace_0 \tracecat \trace}$,
@@ -330,200 +335,200 @@ Once the answer of the query is computed, the rules record all the needed inform
 If a program $c$ has some non-terminating behavior, we define its execution as follows.
 \\
 \begin{defn}[Non-terminating and Infinite Trace]
-  \label{def:adaptfun-non-terminating}
-  Given a program $c$ and an initial trace $\trace \in \ftdom_0(c)$,
-  when $c$ executes with $\trace$,  we define the execution of $c$ under $\trace$ is non-terminating and produces an infinite trace $\trace' \in \inftdom$, as 
-  $\config{c, \trace_0} \uparrow^{\infty} \trace' \in \lim(\uparrow)$
-  where the limit is defined as follows.
-  \[
-    \begin{array}{l}
-      \lim(\uparrow) 
-      \triangleq 
-    \\ \quad
-    \Big\{
-      (\config{c, \trace}, \trace') ~\vert~ 
-      c\in \cdom, \trace \in \ftdom_0(c),
-      \trace' \in \ftdom \cup \{\infty\} 
-      \land \exists \trace_0 \in \ftdom, c_0 \in \cdom \sthat 
-      \config{c, \trace} \to \config{c_0, \trace_0}
-      \\ \qquad \qquad \qquad 
-      \land \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \ftdom, \trace'' \in \ftdom \cup \{\infty\}, c_i, c_{i + 1} \in \cdom \sthat 
-      \\ \qquad \qquad \qquad 
-      \config{c_i, \trace_i} \to \config{c_{i + 1}, \trace_{i + 1}} 
-      \land  \trace' = \trace_{i + 1} \tracecat \trace''
-    \Big\}
-    \end{array}
-  \]
+ \label{def:adaptfun-non-terminating}
+ Given a program $c$ and an initial trace $\trace \in \ftdom_0(c)$,
+ when $c$ executes with $\trace$, we define the execution of $c$ under $\trace$ is non-terminating and produces an infinite trace $\trace' \in \inftdom$, as 
+ $\config{c, \trace_0} \uparrow^{\infty} \trace' \in \lim(\uparrow)$
+ where the limit is defined as follows.
+ \[
+ \begin{array}{l}
+ \lim(\uparrow) 
+ \triangleq 
+ \\ \quad
+ \Big\{
+ (\config{c, \trace}, \trace') ~\vert~ 
+ c\in \cdom, \trace \in \ftdom_0(c),
+ \trace' \in \inftdom
+ \land \exists \trace_0 \in \ftdom, c_0 \in \cdom \sthat 
+ \config{c, \trace} \to \config{c_0, \trace_0}
+ \\ \qquad \qquad \qquad 
+ \land \forall i \in \mathbb{N}, \exists \trace_i, \trace_{i + 1} \in \ftdom, \trace'' \in \inftdom, c_i, c_{i + 1} \in \cdom \sthat 
+ \\ \qquad \qquad \qquad 
+ \config{c_i, \trace_i} \to \config{c_{i + 1}, \trace_{i + 1}} 
+ \land \trace' = \trace_{i + 1} \tracecat \trace''
+ \Big\}
+ \end{array}
+ \]
 \end{defn}
 % We want to emphasize that in the rest of {\redd{PART \romannum{1}} 
 We consider as well-formed only the program that has only terminating executions and produces finite traces. 
-%  denote by $\trace \in \ftdom$.
+% denote by $\trace \in \ftdom$.
 \begin{defn}[Well-formed Program]
-  \label{def:adaptfun-wfprog}  
-  A program $c$ is a well-formed program if and only if
-   its execution terminates
-  under arbitrary initial trace and hidden database. We use $\cdom$ to denote the set of all well-formed program.
-  \[
-    \forall c \sthat c \in \cdom \iff 
-    \forall \trace_0 \in \ftdom_0(c) \sthat \exists \trace \in \ftdom
-    \sthat \config{c, \trace_0} \xrightarrow{}^* \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace}
-  \]
+ \label{def:adaptfun-wfprog} 
+ A program $c$ is a well-formed program if and only if
+ its execution terminates
+ under an arbitrary initial trace and hidden database. We use $\cdom$ to denote the set of all well-formed programs.
+ \[
+ \forall c \sthat c \in \cdom \iff 
+ \forall \trace_0 \in \ftdom_0(c) \sthat \exists l' \in \ldom, \trace \in \ftdom
+ \sthat \config{c, \trace_0} \xrightarrow{}^* \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace}
+ \]
 \end{defn}
-%  and use $\ftdom$ and $\inftdom$ to distinguish the universe of finite trace and infinite trace.
+% and use $\ftdom$ and $\inftdom$ to distinguish the universe of finite trace and infinite trace.
+Well-formedness is an undecidable property because the program halting is undecidable.
 For the program that has non-terminating behaviors, it does not produce an output or data analysis result.
 In this sense, it does not have an intuitive adaptivity, and we analyze the adaptivity only for the well-formed program.
 In the rest of {\redd{PART \romannum{1}}, we implicitly refer to ``a well-formed program'' when we use the words ``a program''. We will extend to non-terminating programs in {\redd{PART \romannum{2}}.
-
  
 
 %
 %
 \begin{figure}
-  {
-  \begin{mathpar}
-  \boxed{
-  \mbox{Command $\times$ Trace}
-  \xrightarrow{}
-  \mbox{Command $\times$ Trace}
-  }
-  \and
-  \config{c, \trace} \xrightarrow{} \config{c', \trace'}
-  \\
-  \inferrule
-  {
-    \config{\aexpr, \trace} \aarrow v
-    \and
-  \event = ({x}, l, v, \bullet)
-  }
-  {
-  \config{[\assign{{x}}{\aexpr}]^{l},  \trace } 
-  \xrightarrow{} 
-  \config{\clabel{\eskip}^l, \trace \traceadd \event}
-  }
-  ~\rname{assn}
-  %
-  \qquad
-  %
-  {
-  \inferrule
-  {
-    \config{\trace, \qexpr} \qarrow \qval
-   \and 
-  \query(\qval) = v
-  \and 
-  \event = ({x}, l, v, \qval)
-  }
-  {
-  \config{{\clabel{\assign{x}{\query(\qexpr)}}^l, \trace}}
-  \xrightarrow{} 
-  \config{{\clabel{\eskip}^l,  \trace \traceadd \event} }
-  }
-  ~\rname{query}
-  }
-  %
-  \and
-  %
-  \inferrule
-  {
-    \config{\trace, b} \barrow \etrue
-   \and 
-   \event = (b, l, \etrue, \bullet)
-  }
-  {
-  \config{{\ewhile [b]^{l} \edo (c), \trace}}
-  \xrightarrow{} 
-  \config{{
-  c; \ewhile [b]^{l} \edo (c),
-  \trace \traceadd \event}}
-  }
-  ~\rname{while-t}
-  %
-  %
+ {
+ \begin{mathpar}
+ \boxed{
+ \mbox{Command $\times$ Trace}
+ \xrightarrow{}
+ \mbox{Command $\times$ Trace}
+ }
  \and
-  %
-  \inferrule
-  {
-    \config{\trace, b} \barrow \efalse
-   \and 
-   \event = (b, l, \efalse, \bullet)
-  }
-  {
-  \config{{\ewhile [b]^{l} \edo (c), \trace}}
-  \xrightarrow{} 
-  \config{{
-    \clabel{\eskip}^l,
-  \trace \traceadd \event}}
-  }
-  ~\rname{while-f}
-  %
-  %
-  \and
-  %
-  %
-  \inferrule
-  {
-  \config{{c_1, \trace}}
-  \xrightarrow{}
-  \config{{c_1',  \trace'}}
-  }
-  {
-  \config{{c_1; c_2, \trace}} 
-  \xrightarrow{} 
-  \config{{c_1'; c_2, \trace'}}
-  }
-  ~\rname{seq1}
-  %
+ \config{c, \trace} \xrightarrow{} \config{c', \trace'}
+ \\
+ \inferrule
+ {
+ \config{\aexpr, \trace} \aarrow v
+ \and
+ \event = ({x}, l, v, \bullet)
+ }
+ {
+ \config{[\assign{{x}}{\aexpr}]^{l}, \trace } 
+ \xrightarrow{} 
+ \config{\clabel{\eskip}^l, \trace \traceadd \event}
+ }
+ ~\rname{assn}
+ %
  \qquad
-  %
-  \inferrule
-  {
-    \config{{c_2, \trace}}
-    \xrightarrow{}
-    \config{{c_2',  \trace'}}
-  }
-  {
-  \config{{\clabel{\eskip}^l; c_2, \trace}} \xrightarrow{} \config{{ c_2', \trace'}}
-  }
-  ~\rname{seq2}
-  %
-  \and
-  %
-  %
-  \inferrule
-  {
-    \config{\trace, b} \barrow \etrue
-   \and 
-   \event = (b, l, \etrue, \bullet)
-  }
-  {
-   \config{{
-  \eif([b]^{l}, c_1, c_2), 
-  \trace}}
-  \xrightarrow{} 
-  \config{{c_1, \trace \traceadd \event}}
-  }
-  ~\rname{if-t}
-  %
-  \qquad
-  %
-  \inferrule
-  {
-    \config{\trace, b} \barrow \efalse
-   \and 
-   \event = (b, l, \efalse, \bullet)
-  }
-  {
-  \config{{\eif([b]^{l}, c_1, c_2), \trace}}
-  \xrightarrow{} 
-  \config{{c_2, \trace \traceadd \event}}
-  }
-  ~\rname{if-f}
-  % %
-  \end{mathpar}
-  }
-      \caption{Trace-based operational semantics rules for {\tt QWhile} language.}
-      \label{fig:os}
-  \end{figure}
+ %
+ {
+ \inferrule
+ {
+ \config{\trace, \qexpr} \qarrow \qval
+ \and 
+ \query(\qval) = v
+ \and 
+ \event = ({x}, l, v, \qval)
+ }
+ {
+ \config{{\clabel{\assign{x}{\query(\qexpr)}}^l, \trace}}
+ \xrightarrow{} 
+ \config{{\clabel{\eskip}^l, \trace \traceadd \event} }
+ }
+ ~\rname{query}
+ }
+ %
+ \and
+ %
+ \inferrule
+ {
+ \config{\trace, b} \barrow \etrue
+ \and 
+ \event = (b, l, \etrue, \bullet)
+ }
+ {
+ \config{{\ewhile [b]^{l} \edo (c), \trace}}
+ \xrightarrow{} 
+ \config{{
+ c; \ewhile [b]^{l} \edo (c),
+ \trace \traceadd \event}}
+ }
+ ~\rname{while-t}
+ %
+ %
+ \and
+ %
+ \inferrule
+ {
+ \config{\trace, b} \barrow \efalse
+ \and 
+ \event = (b, l, \efalse, \bullet)
+ }
+ {
+ \config{{\ewhile [b]^{l} \edo (c), \trace}}
+ \xrightarrow{} 
+ \config{{
+ \clabel{\eskip}^l,
+ \trace \traceadd \event}}
+ }
+ ~\rname{while-f}
+ %
+ %
+ \and
+ %
+ %
+ \inferrule
+ {
+ \config{{c_1, \trace}}
+ \xrightarrow{}
+ \config{{c_1', \trace'}}
+ }
+ {
+ \config{{c_1; c_2, \trace}} 
+ \xrightarrow{} 
+ \config{{c_1'; c_2, \trace'}}
+ }
+ ~\rname{seq1}
+ %
+ \qquad
+ %
+ \inferrule
+ {
+ \config{{c_2, \trace}}
+ \xrightarrow{}
+ \config{{c_2', \trace'}}
+ }
+ {
+ \config{{\clabel{\eskip}^l; c_2, \trace}} \xrightarrow{} \config{{ c_2', \trace'}}
+ }
+ ~\rname{seq2}
+ %
+ \and
+ %
+ %
+ \inferrule
+ {
+ \config{\trace, b} \barrow \etrue
+ \and 
+ \event = (b, l, \etrue, \bullet)
+ }
+ {
+ \config{{
+ \eif([b]^{l}, c_1, c_2), 
+ \trace}}
+ \xrightarrow{} 
+ \config{{c_1, \trace \traceadd \event}}
+ }
+ ~\rname{if-t}
+ %
+ \qquad
+ %
+ \inferrule
+ {
+ \config{\trace, b} \barrow \efalse
+ \and 
+ \event = (b, l, \efalse, \bullet)
+ }
+ {
+ \config{{\eif([b]^{l}, c_1, c_2), \trace}}
+ \xrightarrow{} 
+ \config{{c_2, \trace \traceadd \event}}
+ }
+ ~\rname{if-f}
+ % %
+ \end{mathpar}
+ }
+ \caption{Trace-based operational semantics rules for {\tt QWhile} language.}
+ \label{fig:os}
+ \end{figure}
 
 
 If we observe the operational semantics rules, we can find that no rule will shrink the trace. 
@@ -537,27 +542,26 @@ if there exists $\trace \in \tdom$ and $c' \in \cdom $ such that $\config{c, \tr
 then there exists a trace $\trace' \in \tdom$ such that $\trace_0 \tracecat \trace' = \trace$ formally as follows.
 %
 \[
-  \begin{array}{l}
-  \forall \trace_0 \in \ftdom_0(c), \trace \in \tdom, c, c' \in \cdom \sthat
-  % \Big( 
-    \config{c, \trace_0} \rightarrow \config{c', \trace} 
-  % \lor  \config{c, \trace_0} \uparrow^{\infty} \trace \Big)
-  \\ \quad
-  \implies \exists \trace' \in \tdom \sthat \trace_0 \tracecat \trace' = \trace 
-  \end{array}
+ \begin{array}{l}
+ \forall \trace_0 \in \ftdom_0(c), \trace \in \tdom, c, c' \in \cdom \sthat
+ % \Big( 
+ \config{c, \trace_0} \rightarrow \config{c', \trace} 
+ % \lor \config{c, \trace_0} \uparrow^{\infty} \trace \Big)
+ \\ \quad
+ \implies \exists \trace' \in \tdom \sthat \trace_0 \tracecat \trace' = \trace 
+ \end{array}
 \]
 \end{lem}
 
 \paragraph{Equivalence of the event and expression}
 
 In order to distinguish if a query's choice is affected by previous values, 
-we need to be able to identify whether two queries are the equivalent or not, so that when we change the result of one query, 
+we need to be able to identify whether two queries are equivalent or not, so that when we change the result of one query, 
 whether another query is affected. 
-To define equivalence of queries,
-quiet different from the equality between the evaluation results as the regular assignment results, 
-we are neither observing the syntactic equivalence between the two query expressions,
-nor two results return from the database. 
-Instead, we define the equivalence of query expression by quantifying over all values returned from database on a certain form of query value, formally as follows.
+Since the answer to a query request can be different because of the hidden database and unknown mechanisms,
+we cannot define their equivalence based on comparing the query answer.
+In this sense, we 
+define the equivalence of query expression by quantifying over all possible values returned from the database on a certain form of query value, formally as follows.
 
 \begin{defn}[Equivalence of Query Expression]
 %
@@ -565,77 +569,78 @@ Instead, we define the equivalence of query expression by quantifying over all v
 Two query expressions $\qexpr_1$, $\qexpr_2$ are equivalent, denoted as $\qexpr_1 =_{q} \qexpr_2$, if and only if
 \[
  \begin{array}{l} 
-   \forall \trace \in \ftdom \sthat \exists \qval_1, \qval_2 
-  %  \in \mathcal{QVAL}
-   \sthat
-    (\config{\trace,  \qexpr_1} \qarrow \qval_1 \land \config{\trace,  \qexpr_2 } \qarrow \qval_2) 
-    \\
-    \quad \land (\forall D \in \dbdom, r \in D \sthat 
-    \exists v 
-    % \in \mathcal{VAL} 
-    \sthat 
-          \config{\trace, \qval_1[r/\chi]} \aarrow v \land \config{\trace,  \qval_2[r/\chi] } \aarrow v),  
-  \end{array}
-  \]
+ \forall \trace \in \ftdom \sthat \exists \qval_1, \qval_2 
+ % \in \mathcal{QVAL}
+ \sthat
+ (\config{\trace, \qexpr_1} \qarrow \qval_1 \land \config{\trace, \qexpr_2 } \qarrow \qval_2) 
+ \\
+ \quad \land (\forall D \in \dbdom, r \in D \sthat 
+ \exists v 
+ % \in \mathcal{VAL} 
+ \sthat 
+ \config{\trace, \qval_1[r/\chi]} \aarrow v \land \config{\trace, \qval_2[r/\chi] } \aarrow v), 
+ \end{array}
+ \]
 where $r \in D$ is a record (row) in the database $D$. 
-As usual, we denote by $\qexpr_1 \neq_{q} \qexpr_2$  the negation of the equivalence.
+As usual, we denote by $\qexpr_1 \neq_{q} \qexpr_2$ the negation of the equivalence.
 \end{defn}
 %
+Then, we define the equivalence of two events generated from a query request by comparing the query value rather than the query answers.
 \begin{defn}[Event Equivalence]
-  \label{def:event_eq}
-  Two events $\event_1, \event_2 \in \eventset$ are equivalent, 
-  denoted as $\event_1 = \event_2$ 
-  if and only if:
-  \begin{equation}
-    \label{eq:event_eq}
-    \begin{array}{l}
-  \pi_1(\event_1) = \pi_1(\event_2) 
-  \land  
-  \pi_2(\event_1) = \pi_2(\event_2) 
+ \label{def:event_eq}
+ Two events $\event_1, \event_2 \in \eventset$ are equivalent, 
+ denoted as $\event_1 = \event_2$ 
+ if and only if:
+ \begin{equation}
+ \label{eq:event_eq}
+ \begin{array}{l}
+ \pi_1(\event_1) = \pi_1(\event_2) 
+ \land 
+ \pi_2(\event_1) = \pi_2(\event_2) 
 \\
-  \land 
-  \Big( 
-    \big(\pi_{4}(\event_1) = \pi_{4}(\event_2) = \bullet   \land
-  \pi_{3}(\event_1) = \pi_{3}(\event_2) \big)
-  \\ \qquad 
-  \lor \big(
-    \pi_{4}(\event_1) \neq \bullet \land \pi_{4}(\event_2) \neq \bullet
-    \land
-    \pi_{4}(\event_1) =_q \pi_{4}(\event_2)\big)
-  \Big)
-    \end{array}
-  \end{equation}
-  %
-  As usual, we denote by $\event_1 \neq \event_2$  the negation of the equivalence.
+ \land 
+ \Big( 
+ \big(\pi_{4}(\event_1) = \pi_{4}(\event_2) = \bullet \land
+ \pi_{3}(\event_1) = \pi_{3}(\event_2) \big)
+ \\ \qquad 
+ \lor \big(
+ \pi_{4}(\event_1) \neq \bullet \land \pi_{4}(\event_2) \neq \bullet
+ \land
+ \pi_{4}(\event_1) =_q \pi_{4}(\event_2)\big)
+ \Big)
+ \end{array}
+ \end{equation}
+ %
+ As usual, we denote by $\event_1 \neq \event_2$ the negation of the equivalence.
 \end{defn}
-For the events that are generated from query request command, as in Equation~\ref{eq:event_eq}(c),
+For the events that are generated from the query request command, as in Equation~\ref{eq:event_eq}(c),
 their equivalence is determined by the $4^{th}$ element, which is the query value.
 Since the equivalence over two query events is defined over the query value equivalence, 
 % when there is an event belonging to a trace, 
 % if this event is a query assignment event, 
-it is possible that two events has different values of query answer in the third position, but they
+it is possible that two events have different values of query answer in the third position, but they
 are equivalent by Definition~\ref{def:query_equal}.
-For example, the events $(x, 0, 1, \chi[1])$ and $(x, 0, 2, \chi[1])$ are equivalent by this definition even though they have different query answer assigned to variable $x$.
+For example, the events $(x, 0, 1, \chi[1])$ and $(x, 0, 2, \chi[1])$ are equivalent by this definition even though they have different query answers assigned to variable $x$.
 
 So we have the following Corollaries~\ref{coro:query_equal} with proof in Appendix~\ref{apdx:query_equal}.
 \begin{coro}
-  \label{coro:query_equal}
-  For any event $\event \in \eventset$  that is generated from a query request, 
-  there exist another event $\event' \in \eventset$ 
-  % and traces $\trace_1, \trace_2 \in \ftdom$
-  such that 
-  $\event$ and $\event'$ are equivalent but different in their query results.
-  \[
-    \forall \event \in \eventset \sthat 
-    \pi_4(\event) \neq \bullet
-  % \event \in \trace 
-  \implies \exists 
-  \event' \in \eventset \sthat 
-  \event = \event' \land  \pi_3(\event) \neq \pi_3(\event')
-  \]
-  \end{coro}
+ \label{coro:query_equal}
+ For any event $\event \in \eventset$ that is generated from a query request, 
+ there exist another event $\event' \in \eventset$ 
+ % and traces $\trace_1, \trace_2 \in \ftdom$
+ such that 
+ $\event$ and $\event'$ are equivalent but different in their query results.
+ \[
+ \forall \event \in \eventset \sthat 
+ \pi_4(\event) \neq \bullet
+ % \event \in \trace 
+ \implies \exists 
+ \event' \in \eventset \sthat 
+ \event = \event' \land \pi_3(\event) \neq \pi_3(\event')
+ \]
+ \end{coro}
 
-  
+ 
 
 
 Then using the equivalence between events, we
@@ -644,42 +649,42 @@ define the \emph{Belongs To},
  and its opposite $\not\in$ as follows.
 It expresses whether an event belongs to a trace.
 % \begin{defn}[An Event Belongs to A Trace]
-%   \label{def:event_belong}
-%     An event $\event \in \eventset$ belongs to a trace $\trace$, i.e., $\event \in \trace$ are defined as follows:
-%   %
-%   \begin{equation}
-%     \event \in \trace  
-%     \triangleq \left\{
-%     \begin{array}{ll} 
-%       \etrue                  & \trace =  \trace' :: \event'
-%        \land \event = \event'
-%                                 \\
-%       \event \in \trace' & \trace =  \trace' :: \event'
-%       \land \event \neq \event' \\ 
-%       \efalse                 & \trace = []
-%     \end{array}
-%     \right.
-%   \end{equation}
-%   As usual, we denote by $\event \notin \trace$ that the event $\event$ doesn't belong to the trace $\trace$.
-%   \end{defn}
-  \begin{defn}(An Event Belongs to A Trace)
-  \label{def:event_belong}
+% \label{def:event_belong}
+% An event $\event \in \eventset$ belongs to a trace $\trace$, i.e., $\event \in \trace$ are defined as follows:
+% %
+% \begin{equation}
+% \event \in \trace 
+% \triangleq \left\{
+% \begin{array}{ll} 
+% \etrue & \trace = \trace' :: \event'
+% \land \event = \event'
+% \\
+% \event \in \trace' & \trace = \trace' :: \event'
+% \land \event \neq \event' \\ 
+% \efalse & \trace = []
+% \end{array}
+% \right.
+% \end{equation}
+% As usual, we denote by $\event \notin \trace$ that the event $\event$ doesn't belong to the trace $\trace$.
+% \end{defn}
+ \begin{defn}(An Event Belongs to A Trace)
+ \label{def:event_belong}
 An event $\event \in \eventset$ belongs to a trace $\trace \in \tdom$, i.e., $\event \in \trace$ are defined as follows:
-  %
-  \begin{equation*}
-    \event \in \trace  
-    \triangleq \left\{
-    \begin{array}{ll} 
-      \etrue                  & \trace =  [\event] \tracecat \trace'
-       \land \event = \event' \\
-      \event \in \trace' & \trace =  [\event'] \tracecat \trace'
-        \land \event \neq \event' \\ 
-      \efalse                 & \trace = [] \lor \trace \in \inftdom
-    \end{array}
-    \right.
-  \end{equation*}
-  As usual, we denote by $\event \notin \trace$ that the event $\event$ doesn't belong to the trace $\trace$.
-  \end{defn}
+ %
+ \begin{equation*}
+ \event \in \trace 
+ \triangleq \left\{
+ \begin{array}{ll} 
+ \etrue & \trace = [\event] \tracecat \trace'
+ \land \event = \event' \\
+ \event \in \trace' & \trace = [\event'] \tracecat \trace'
+ \land \event \neq \event' \\ 
+ \efalse & \trace = [] \lor \trace \in \inftdom
+ \end{array}
+ \right.
+ \end{equation*}
+ As usual, we denote by $\event \notin \trace$ that the event $\event$ doesn't belong to the trace $\trace$.
+ \end{defn}
 Since the equivalence over two events is defined over the query value equivalence, 
 when there is an event belonging to a trace, 
 it is possible that 
@@ -688,20 +693,20 @@ but they are equivalent by Definition~\ref{def:query_equal}.
 So we have the following Corollaries~\ref{coro:aqintrace} with proof in Appendix~\ref{apdx:aqintrace}.
 \begin{coro}
 \label{coro:aqintrace}
-For any event $\event \in \eventset$  that is generated from a query request and a trace $\trace \in \ftdom$ contains this event
+For any event $\event \in \eventset$ that is generated from a query request and a trace $\trace \in \ftdom$ contains this event
 such that $\trace$ can be expressed
 in the form of $\trace_1 \tracecat [\event] \tracecat \trace_2 = \trace $ for some traces $\trace_1, \trace_2 \in \ftdom$,
-then there exist another event $\event' \in \eventset$ such that  $ \pi_3(\event) \neq \pi_3(\event') $
+then there exist another event $\event' \in \eventset$ such that $ \pi_3(\event) \neq \pi_3(\event') $
 and the same $\trace$ has a different form
 $\trace_1 \tracecat [\event'] \tracecat \trace_2 $.
 \[
-  \begin{array}{l}
-  \forall \event \in \eventset, \trace, \trace_1, \trace_2 \in \ftdom \sthat 
-  \pi_4(\event) \neq \bullet \land \trace_1 \tracecat [\event] \tracecat \trace_2 = \trace
-  \\ \qquad 
-  \implies \exists 
-  \event' \in \eventset \sthat 
-  \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace  \land \pi_3(\event) \neq \pi_3(\event') 
-  \end{array}
+ \begin{array}{l}
+ \forall \event \in \eventset, \trace, \trace_1, \trace_2 \in \ftdom \sthat 
+ \pi_4(\event) \neq \bullet \land \trace_1 \tracecat [\event] \tracecat \trace_2 = \trace
+ \\ \qquad 
+ \implies \exists 
+ \event' \in \eventset \sthat 
+ \trace_1 \tracecat [\event'] \tracecat \trace_2 = \trace \land \pi_3(\event) \neq \pi_3(\event') 
+ \end{array}
 \]
 \end{coro}

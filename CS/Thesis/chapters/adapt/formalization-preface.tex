@@ -1,33 +1,28 @@
 
 In this section, we present the formalization of adaptivity for a given program through three steps.
-% As we discussed in Overview, we first define a dependency relation between program variables,
-% we then define a semantics-based dependency graph, and finally look at longest walks in this graph. 
-%
-% It is more advanced than previous works
-% in both the accuracy and efficiency aspects.
-% This new adaptivity formal model defines the intuitive \emph{adaptivity} through three steps.
-The three steps corresponds to the three procedures of the flow-chart in the ``Adaptivity Formalization'' block at the middle of Figure~\ref{fig:adaptfun-structure}. We
+The three steps correspond to the three procedures of the flow-chart in the ``Adaptivity Formalization'' block at the middle of Figure~\ref{fig:adaptfun-structure}. We
 summarize them as follows.
  \begin{enumerate}
  \item The first step in 
- Section~\ref{sec:dynamic-datadep}  defines the reachability sub-property of 
+ Section~\ref{sec:dynamic-datadep} defines the reachability sub-property of 
  the \emph{adaptivity} as a
  variable \emph{may-dependency} relation based on the trace semantics.
-%   in Section~\ref{sec:language-os}.
-%  This is the reachability perspective of this property.
+% in Section~\ref{sec:language-os}.
+% This is the reachability perspective of this property.
  %
  \item In Section~\ref{sec:dynamic-graph}, 
- we define the quantitative sub-property for a program's \emph{adaptivity} as weight of each labeled variable.
+ we define the quantitative sub-property for a program's \emph{adaptivity} as the weight of each labeled variable.
  Then we construct a weighted dependency graph namely
 the \emph{semantics-based dependency graph} of a program $c$, which carries both 
 sub-properties. 
 
 \item 
 % The last step is the intuitive \emph{adaptivity} quantity formalization presented in Section~\ref{sec:dynamic-adapt}.
- Based on to the \emph{semantics-based dependency graph},
+ Based on the \emph{semantics-based dependency graph},
  we define the formal \emph{adaptivity} in definition~\ref{def:trace_adapt} as a quantitative reachability hyper-property in Section~\ref{sec:dynamic-adapt}.
 \end{enumerate}
 % , this is the second major part of this adaptivity analysis framework
 % built on the language design. 
  Through an example in Section~\ref{sec:dynamic-examples}, I show that the formalized
 adaptivity matches the program's intuitive \emph{adaptivity} more precisely and efficiently than previous works.
+

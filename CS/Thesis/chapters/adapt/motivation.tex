@@ -83,7 +83,7 @@ and the mechanism that uses the reusable holdout technique, etc.
 These mechanisms intermediate between the program and data, and answer these queries.
 In this approach, a program models an \emph{analyst} asking a sequence of queries to the mechanism. 
 The mechanism runs the queries on the data applying one of the methods discussed above and returns the result to the program. The program can then use this result to decide which query to run next. 
-Overall, we are interested in controlling the generalization of the query results returned by the mechanism, by means of the adaptivity. 
+Overall, I am interested in controlling the generalization of the query results returned by the mechanism, by means of the adaptivity. 
 
 However, as discussed in Section~\ref{sec:intro-methodology-adapt-language}, the existing language mainly focuses on efficiency and scalability of the programs.
 They are not able to model the query and mechanisms in the way that allow
@@ -93,10 +93,12 @@ of the corresponding algorithms that these programs implement.
 This makes the analysis of the \emph{adaptivity} as a program property difficult.
 This motivates us to design a simple and scalable language  that can be used to implement these data analysis algorithms and analyze the \emph{adaptivity}.
 % \paragraph{Limitations of Previous Works}
-Previous works from the thesis by~\cite{weihao22} develops language formalizing the adaptive data analysis.
-However, these language designs are largely limited in their expressiveness.
-Most of the general data analyses are not supported by the previous language design.
-In Section~\ref{sec:prework-language}, we introduce in detail the previous language design and limitations.
+Previous works from the thesis by~\cite{weihao22} develops a simple imperative language model.
+% formalizing the adaptive data analysis.
+However, this language model is not expressive enough to
+support most general data analyses.
+%  are not supported by the previous language design.
+I also discuss in detail this language design and limitations in Section~\ref{sec:prework-language}.
 
 Motivated by this, we present a new while-like language 
 named {\tt QWhile} language with extensions on query requests in Section~\ref{sec:adapt-language}.
@@ -108,7 +110,7 @@ The second challenge is \emph{how to define the adaptivity of a given program}.
 Intuitively, a query $Q$ may depend on another query $P$, if there are different values that $P$ can return,
 then the execution of $Q$ is affected.
 %  which affect in different ways the execution of $Q$. 
-For example, as shown in~\cite{DworkFHPRR15}, and as we did in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
+For example, as shown in~\cite{DworkFHPRR15}, and as in our example in Figure~\ref{fig:generalization_errors}(a), one can design a machine learning algorithm for constructing a classifier that first computes each feature's correlations with the label via a sequence of queries, and then constructs the classifier based on the correlation values. 
 If one feature's correlation changes, the classifier depending on features is also affected. 
 This notion of dependency builds on the execution trace as a \emph{causal history}. 
 In particular, I am interested in the history or provenance of a query up until this is executed, 
@@ -146,7 +148,7 @@ based on some form of dependency analysis for \emph{adaptivity} estimation.
 Hence, the analysis needs to consider some form of data flow analysis. 
 2) the decision on whether to run a query or not may depend on some other value. Hence, 
 the analysis  needs to consider some form of control flow analysis.
-3) we are not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
+3) I am not only interested in whether there is a dependency or not, but in the length of the chain of dependencies. 
 Hence, the analysis needs to consider some quantitative information about the program dependencies. 
 
 % We also discussed in Section~\ref{sec:intro-methodology-adapt-formalization}, 

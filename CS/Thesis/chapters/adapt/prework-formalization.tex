@@ -1,30 +1,30 @@
-The previous works on formalizing the adaptivity is through a query-based dependency graph.
+The previous works formalized the adaptivity through a query-based dependency graph.
 Below is a summary of their query-based dependency graph construction and adaptivity formal definition, followed
 by the weaknesses of this formalization method.
 \subsection{Query-Based Dependency Graph}
 They build their dependency graph over annotated queries, in order to construct the edge between queries for this graph, they first
 define a query \emph{May-dependency} relation. Below is a summary of this definition from
-from works by~\cite{weihao22}.
+works by~\cite{weihao22}.
 The notations $\in_q$ and $\not\in_q$ a query belongs to the trace or not respectively, with the full details in works by~\cite{weihao22}.
 \begin{defn}[Query may dependency]
 One query $q({v_q}_1)$ may depend on another query $q({v_q}_2)$ in a program $c$, with a starting loop maps $w$, a starting memory $m$, hidden database $D$, denoted as \\
 $\mathsf{DEP}(q({v_q}_1)^{(l_1, w_1)}, q({v_q}_2)^{(l_2, w_2)}, c,w, m, D)$ is defined below. 
 \[
-  {\footnotesize
+ {\footnotesize
 \begin{array}{l}
-\forall  t. \exists m_1,m_3,t_1,t_3,c_2.\\
-  \left (\begin{array}{l}   
-\config{m, c,  t,w} \rightarrow^{*} \config{m_1, [\assign{x}{q({v_q}_1)}]^{l_1} ; c_2,
-  t_1,w_1} \rightarrow \\ \config{m_1[q({v_q}_1)(D)/x], c_2,
-  t_1++[q({v_q}_1)^{(l_1, w_1)}], w_1} \rightarrow^{*} \config{m_3, \eskip,
-  t_3,w_3} \\  
-  \land \\
-\Big( q({v_q}_1)^{(l_1,w_1)} \in_{q} (t_3-t) \land q({v_q}_2)^{(l_2,w_2)} \in_{q} (t_3-t_1) \\ \implies  \exists v \in \codom(q({v_q}_1)), m_3', t_3', w_3'.  \\
+\forall t. \exists m_1,m_3,t_1,t_3,c_2.\\
+ \left (\begin{array}{l} 
+\config{m, c, t,w} \rightarrow^{*} \config{m_1, [\assign{x}{q({v_q}_1)}]^{l_1} ; c_2,
+ t_1,w_1} \rightarrow \\ \config{m_1[q({v_q}_1)(D)/x], c_2,
+ t_1++[q({v_q}_1)^{(l_1, w_1)}], w_1} \rightarrow^{*} \config{m_3, \eskip,
+ t_3,w_3} \\ 
+ \land \\
+\Big( q({v_q}_1)^{(l_1,w_1)} \in_{q} (t_3-t) \land q({v_q}_2)^{(l_2,w_2)} \in_{q} (t_3-t_1) \\ \implies \exists v \in \codom(q({v_q}_1)), m_3', t_3', w_3'. \\
  \config{m_1[v/x], {c_2}, t_1++[q({v_q}_1)^{(l_1,w_1)}], w_1} \rightarrow^{*} \config{m_3', \eskip, t_3', w_3'} \\ \land (q({v_q}_2)^{(l_2,w_2)}) \not \in_{q} (t_3'-t_1)
 \Big)\\
 \land \\
-\Big(q({v_q}_1)^{(l_1,w_1)} \in_{q} (t_3-t) \land q({v_q}_2)^{(l_2,w_2)} \not\in_{q} (t_3-t_1) \\ \implies  \exists v \in \codom(q({v_q}_1)),  m_3', t_3', w_3'. \\
- \config{m_1[v/x], {c_2}, t_1++[q({v_q}_1)^{(l_1,w_1)}], w_1} \rightarrow^{*} \config{m_3', \eskip, t_3', w_3'} \\ \land (q({v_q}_2)^{(l_2,w_2)})  \in_{q} (t_3'-t_1)
+\Big(q({v_q}_1)^{(l_1,w_1)} \in_{q} (t_3-t) \land q({v_q}_2)^{(l_2,w_2)} \not\in_{q} (t_3-t_1) \\ \implies \exists v \in \codom(q({v_q}_1)), m_3', t_3', w_3'. \\
+ \config{m_1[v/x], {c_2}, t_1++[q({v_q}_1)^{(l_1,w_1)}], w_1} \rightarrow^{*} \config{m_3', \eskip, t_3', w_3'} \\ \land (q({v_q}_2)^{(l_2,w_2)}) \in_{q} (t_3'-t_1)
 \Big)
 \end{array} \right )
 \end{array}
@@ -33,14 +33,14 @@ $\mathsf{DEP}(q({v_q}_1)^{(l_1, w_1)}, q({v_q}_2)^{(l_2, w_2)}, c,w, m, D)$ is d
 \end{defn}
 %
 Based on the \emph{may-dependency} between the two queries above,
-below is their formal definition of query-based dependency graph. 
-For every execution of a program $c$ staring with a certain memory and while map
-%  configurations, 
-they construct a corresponding dependency graph.  
+below is their formal definition of the query-based dependency graph. 
+For every execution of a program $c$ starting with a certain memory and while map
+% configurations, 
+they construct a corresponding dependency graph. 
 % graph definition
 \begin{defn}[Query-based Dependency Graph]
 Given a program $c$, a database $D$, a starting memory $m$, an initial loop map $w$, the query-based dependency graph $G(c,D,m,w) = (V, E)$ is defined as: \\
-$V =\{q({v_q})^{l,w} \in \mathcal{AQ} \mid \forall t. \exists m',  w', t'.  \config{m ,c, t, w}  \to^{*}  \config{m' , \eskip, t', w' }  \land q({v_q})^{l,w} \in {(t'-t)}  \}$.
+$V =\{q({v_q})^{l,w} \in \mathcal{AQ} \mid \forall t. \exists m', w', t'. \config{m ,c, t, w} \to^{*} \config{m' , \eskip, t', w' } \land q({v_q})^{l,w} \in {(t'-t)} \}$.
 \\
 $E = \left\{(q({v_q})^{(l,w)},q({v_q}')^{(l',w')}) \in \mathcal{AQ} \times \mathcal{AQ} 
 ~ \left \vert ~ \mathsf{DEP}(q({v_q}')^{(l',w')},q({v_q})^{(l,w)}, c,w,m,D)
@@ -54,13 +54,13 @@ edge $(q({v_q})^{(l,w)}, q({v_q}')^{(l'.w')})$, from $q({v_q})^{(l,w)} $ to $q({
 The query-based dependency graph only considers the newly generated annotated queries during the execution of the program $c$,
 so they see the nodes coming from the trace $t'-t$.
 The previous trace before the execution of $c$ is excluded when constructing the graph.
-% To summarize, for every execution of a program $c$ staring with different configurations, 
+% To summarize, for every execution of a program $c$ starting with different configurations, 
 % they can construct a corresponding dependency graph. 
 
 \subsection{Adaptivity Formalization}
 Below is the definition of adaptivity from works by~\cite{weihao22}, by means of the query-based dependency graph. 
 \begin{defn}[Adaptivity in {loop} language]
-Given a program $c$, and a memory $m$, a database $D$, a starting loop map $w$, the adaptivity of the dependency graph $G(c, D,m,w) = (V, E)$ is the length of the longest path in this graph. We denote the path from $q({v_q})^{(l,w)}$ to $q({v_q}')^{(l',w')}$ as $p(q({v_q})^{(l,w)}, q({v_q}')^{(l',w')} )$. The adaptivity denoted as $A(c, D, m, w)$.
+Given a program $c$, and a memory $m$, a database $D$, a starting loop map $w$, the adaptivity of the dependency graph $G(c, D,m,w) = (V, E)$ is the length of the longest path in this graph. We denote the path from $q({v_q})^{(l,w)}$ to $q({v_q}')^{(l',w')}$ as $p(q({v_q})^{(l,w)}, q({v_q}')^{(l',w')} )$. The adaptivity is denoted as $A(c, D, m, w)$.
 %
 $$A(c, D, m, w) = \max\limits_{q({v_q})^{(l,w)},q({v_q}')^{(l',w')} \in V } |p(q({v_q})^{(l,w)}, q({v_q}')^{(l',w')} )| $$
 \end{defn}
@@ -88,19 +88,19 @@ this adaptivity definition is weak in the following aspects.
  \assign{z}{q(x+y+z)};
  \}\}
  \] 
- the number of iterations cannot be evaluated to a nature number in advance of entering this loop for the same reason. 
+ the number of iterations cannot be evaluated to a natural number in advance of entering this loop for the same reason. 
  The iteration number is only
  able to be decided during executing this while loop body.
  \\
  Limited by this, they cannot give the adaptivity for this program even though the adaptivity in this program is 4, which is straightforward to observe.
 
  \emph{Accuracy.}
- The in-accuracy of this \emph{adaptivity} definition is caused by both their language design and their graph construction.
-%  \\
-%  As analyzed in Section~\ref{sec:prework-language}, the information in non-query requesting variables are lost.
-%  The dependency that passes through these variables is lost, and the adaptivity is lost as well.
-%  \\
-%  The other reason for this in-accuracy comes from their graph definition.
+ The inaccuracy of this \emph{adaptivity} definition is caused by both their language design and their graph construction.
+% \\
+% As analyzed in Section~\ref{sec:prework-language}, the information in non-query requesting variables are lost.
+% The dependency that passes through these variables is lost, and the adaptivity is lost as well.
+% \\
+% The other reason for this inaccuracy comes from their graph definition.
  This dependency graph definition relies on a specific memory, while-map, and a specific execution trace.
  It limits the adaptivity defined for the adaptive data analysis program to be w.r.t. one specific
  execution.
@@ -115,4 +115,4 @@ this adaptivity definition is weak in the following aspects.
  which requires the trace to track the loop iteration number in the annotated query.
  The other comes from their dependency graph generation, which requires every query request evaluated during the program execution
  as the graph nodes.
- Both of the two processes generate unnecessary and duplicate nodes during the while iterations.
+ Both two processes generate unnecessary and duplicate nodes during the loop iterations.
