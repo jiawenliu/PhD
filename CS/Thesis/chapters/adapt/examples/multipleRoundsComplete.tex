@@ -1,9 +1,9 @@
 
-    \begin{example}[The Multiple Rounds Analyst Strategy]
+\begin{example}[The Multiple Rounds Analyst Strategy]
     %
-    Below is the \emph{multiple rounds analyst strategy} for random data algorithm. This is instantiated from the
+    Below is the \emph{multiple rounds analyst strategy}. This is instantiated from the
     \emph{Monitor}, the Algorithm 2 in \cite{RogersRSSTW20}.
-    We instantiate this algorithm to trace the possible population shows in a database.
+    We instantiate this algorithm to trace the possible population shown in a database.
     We monitor the score of each person in the database. 
     \begin{algorithm}
     \footnotesize
@@ -13,7 +13,7 @@
     \REQUIRE Mechanism $\mathcal{M}$ with a hidden state $X\in [N]^{n}$ sampled u.a.r., control set size $c$
     \STATE Define control dataset $C = \{0,1, \cdots, c - 1\}$
     \STATE Initialize $Nscore(i) = 0$ for $i \in [N]$, $I = \emptyset$ and $Cscore(C(i)) = 0$ for $i \in [c]$
-    \STATE  {\bf for}\ $j\in [k]$\ {\bf do} 
+    \STATE {\bf for}\ $j\in [k]$\ {\bf do} 
     \STATE \qquad {\bf let} $p=\uniform(0,1)$ 
     \STATE \qquad {\bf define} $q (x) = \bernoulli ( p )$ .
     \STATE \qquad {\bf define} $qc (x) = \bernoulli ( p )$ .
@@ -31,59 +31,59 @@
     We also have the complete implementation of this strategy in {\tt QWhile} below.
     {\small
     \begin{figure}
-        % \begin{subfigure}{1.0\textwidth}
-        % \begin{centering}
-        $
+    % \begin{subfigure}{1.0\textwidth}
+    % \begin{centering}
+    $
     \begin{array}{l}
-        \kw{mRCom(k, c, N)} \triangleq
-        \\
-        \clabel{\assign{j}{N}}^0 ; 
-         \clabel{\assign{cs}{0}}^1; 
-         \clabel{\assign{ns}{0}}^2;
-         \clabel{\assign{I}{0}}^3; 
-         \clabel{\assign{w}{k}}^{4} ;\\
-         \ewhile ~ \clabel{j > 0}^{5} ~ \edo ~ \\
-         \Big(
-         \clabel{\assign{j}{j-1}}^{6} ;
-         \clabel{\assign{cs}{0 + cs}}^7; 
-         \clabel{\assign{ns}{0 + ns}}^8
-         \Big); \\
+    \kw{mRCom(k, c, N)} \triangleq
+    \\
+    \clabel{\assign{j}{N}}^0 ; 
+    \clabel{\assign{cs}{0}}^1; 
+    \clabel{\assign{ns}{0}}^2;
+    \clabel{\assign{I}{0}}^3; 
+    \clabel{\assign{w}{k}}^{4} ;\\
+    \ewhile ~ \clabel{j > 0}^{5} ~ \edo ~ \\
+    \Big(
+    \clabel{\assign{j}{j-1}}^{6} ;
+    \clabel{\assign{cs}{0 + cs}}^7; 
+    \clabel{\assign{ns}{0 + ns}}^8
+    \Big); \\
     
-         \ewhile ~ \clabel{w > 0}^{9} ~ \edo ~ \\
-        \Big(
-        \clabel{\assign{w}{w-1}}^{10} ;
-        \left[p \leftarrow c \right]^{11}; 
-        \left[q \leftarrow c \right]^{12}; 
-        \left[ a \leftarrow \query (\chi[I]) \right]^{13};\\
-        \clabel{\assign{i}{N}}^{14} ; 
-        \ewhile ~ \clabel{i > 0}^{15} ~ \edo ~ \\
-        \Big(
-        \clabel{\assign{i}{i-1}}^{16} ;
-        \clabel{\assign{cs(i)}{cs(i) + (a - p) * (q - p)}}^{17}; \\
-        \eif (\clabel{ I < i}^{18}, \clabel{\assign{ns(i)}{{ns(i) + (a - p) * (q - p)}}}^{19},
-        \clabel{\assign{ns}{ns(i)}}^{20}    )
-        \Big); \\
-        \clabel{\assign{i2}{N}}^{21} ; \\
-        \ewhile ~ \clabel{i2 > 0}^{22} ~ \edo ~ \\
-        \Big(
-        \clabel{\assign{i2}{i2-1}}^{23} ;
-        \eif (\clabel{ns(i2) > \kw{max}(cs)}^{24}, 
-        \clabel{\assign{I}{i + I}}^{25},
-        \clabel{\assign{I}{I}}^{26})
-        \Big)
-        \Big) 
+    \ewhile ~ \clabel{w > 0}^{9} ~ \edo ~ \\
+    \Big(
+    \clabel{\assign{w}{w-1}}^{10} ;
+    \left[p \leftarrow c \right]^{11}; 
+    \left[q \leftarrow c \right]^{12}; 
+    \left[ a \leftarrow \query (\chi[I]) \right]^{13};\\
+    \clabel{\assign{i}{N}}^{14} ; 
+    \ewhile ~ \clabel{i > 0}^{15} ~ \edo ~ \\
+    \Big(
+    \clabel{\assign{i}{i-1}}^{16} ;
+    \clabel{\assign{cs(i)}{cs(i) + (a - p) * (q - p)}}^{17}; \\
+    \eif (\clabel{ I < i}^{18}, \clabel{\assign{ns(i)}{{ns(i) + (a - p) * (q - p)}}}^{19},
+    \clabel{\assign{ns}{ns(i)}}^{20} )
+    \Big); \\
+    \clabel{\assign{i2}{N}}^{21} ; \\
+    \ewhile ~ \clabel{i2 > 0}^{22} ~ \edo ~ \\
+    \Big(
+    \clabel{\assign{i2}{i2-1}}^{23} ;
+    \eif (\clabel{ns(i2) > \kw{max}(cs)}^{24}, 
+    \clabel{\assign{I}{i + I}}^{25},
+    \clabel{\assign{I}{I}}^{26})
+    \Big)
+    \Big) 
     \end{array}
-       $
-    %    \caption{}
-    %     \end{centering}
-    %     \end{subfigure}
-    %     \vspace{-0.3cm}
-        \caption{The labeled program implementing the \emph{multiple rounds analyst strategy}.}
-        % \vspace{-0.5cm}
-        \label{fig:multiround_complete}
-        \end{figure}
+    $
+    % \caption{}
+    % \end{centering}
+    % \end{subfigure}
+    % \vspace{-0.3cm}
+    \caption{The labeled program implementing the \emph{multiple rounds analyst strategy}.}
+    % \vspace{-0.5cm}
+    \label{fig:multiround_complete}
+    \end{figure}
     }
     The evaluation result is in the $18^{th}$ line in Table~\ref{tb:adapt-imp}, which shows that our {\THESYSTEM} works well for this complete implementation.
-
+   
     %
     \end{example}

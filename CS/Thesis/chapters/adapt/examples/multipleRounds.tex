@@ -1,85 +1,85 @@
 \begin{example}[Multiple Rounds Algorithm]
-\label{ex:multipleRounds}
-%
-Our first example, $\kw{multipleRounds}$ in Figure~\ref{fig:multipleRounds}(a), is an advanced adaptive data analysis algorithm .
-This is a simplified version of the \emph{Monitor Augment} from \cite{RogersRSSTW20} with complete program in Appendix.
-It takes the user input $k$ which decides the 
-number of iterations.
-It starts from an initialized empty tracking list $I$,
-goes $k$ rounds and at every round, tracking list $I$ is updated by a query result of $\query(\chi[I])$.
-After $r$ rounds, the algorithm returns the columns of the hidden database $D$ not specified in the tracking list $I$.
-The functions $\kw{updnscore}(p,a)$,
-$\kw{updcscore}(p,a)$, $\kw{update}(I,ns,cs)$ simplify the computations of updating $ns$, $cs$ and $I$.%
-
-% \jl{
-    Different from $\kw{twoRounds(k)}$ in Figure~\ref{fig:twoRounds-adaptfun},
-the query request, $\clabel{\assign{a}{\query(I)}}^6$ in each loop iteration is not independent. 
-$\query(I)$ in each iteration depends on the tracking list $I$ from all the previous iterations, 
-and $I$ is updated by all the query results in the previous iterations as well. 
-In this sense, all these $k$ queries are adaptively chosen according to our discussion in overview.
-% }
-% \jl{
-The program-based dependency graph is presented in Figure~\ref{fig:multipleRounds}(b). 
-We omitted its execution-based dependency graph $\traceG(\kw{multipleRounds(k)})$ because they have the same graph topology and only differ in weights.
-For each vertex $v$ in $\progG(\kw{multipleRounds(k)})$ in Figure~\ref{fig:multipleRounds}(b),
-we use $w_{v}$ to denote its weight function in $\traceG(\kw{multipleRounds(k)})$.
-% }
-
-% \jl{
-As the adaptivity definition in our formal adaptivity model in Definition~\ref{def:trace_adapt},
-there is a finite walk along the dashed arrows,
-$a^{6} \to I^9 \to ns^{7} \to  \cdots \to ns^7$ , 
-where the vertices $a^{6}$, $I^9$ and $ns^{7}$ are visited $w_{a^{6}}(\trace_0)$,
-$w_{I^9}(\trace_0)$ and $w_{ns^{7}}(\trace_0)$
-times respectively with input $\trace_0$.
-The vertex $a^{6}$ has query annotation $1$, and it is visited $w_{a^{6}}(\trace_0)$ times.
-In this sense, the adaptivity of this program is
-$w_{a^{6}}(\trace_0)$ given input $\trace_0$, i.e., $A(\kw{multipleRounds(k)})(\trace_0) = w_{a^{6}}(\trace_0)$.
-Since $w_{a^{6}}(\trace_0)$
-counts the execution times of command $\clabel{\assign{a}{\query(I)}}^6;$,
-this count is at most the loop iteration numbers, i.e., $k$'s initial value, $\env(\trace_0) k$ from the initial trace $\trace_0$.
-% }
-{
-Next, we show that {$\THESYSTEM$} provides a tight upper bound for this example by $\pathsearch(\kw{multipleRounds(k)})$.
-It first finds a path on $\progG(\kw{multipleRounds(k)})$
-$a^{6}: {}^k_1 \to I^9:{}^k_0 \to ns^7:{}^k_0$ with three weighted vertices. 
-Then $\pathsearch$ approximates this path to a walk $a^{6}: {}^k_1 \to I^9:{}^k_0 \to ns^7:{}^k_0 \to a^{6}: {}^k_1 \cdots$.
-In this walk, $a^6, I^9, ns^{7}$ are all visited $k$ times respectively. 
-So $\progA(\kw{multipleRounds(k)}) = k$.
-We know for any initial trace $\trace_0$, $\config{\trace_0, k} \earrow \env(\trace_0)$
-So we guarantee $A(\kw{multipleRounds(k)})(\trace_0) \leq \env(\trace_0)$ for any $\trace_0$
-and $k$ is a sound bound.
-}
-\end{example}
-%
-\begin{figure}
-\centering
-\begin{subfigure}{0.9\textwidth}
-{
-    $
-\begin{array}{l}
-\kw{multipleRounds(k)} \triangleq\\
-    \clabel{\assign{j}{k}}^0;
-    \clabel{\assign{I}{[]}}^1;
-    \clabel{\assign{ns}{0}}^2; 
-    \clabel{\assign{cs}{0}}^3; \\
-    \ewhile ~ \clabel{j > 0}^{4} ~ \edo ~ \\
-    \Big(
-    \clabel{\assign{j}{j-1}}^{5} ;
-    \clabel{\assign{a}{\query(I)}}^6; 
-    \clabel{\assign{ns}{\kw{updnscore}(ns, a)}}^7; \\
-    \clabel{\assign{cs}{\kw{updcscore}(cs, a)}}^8; 
-    \clabel{\assign{I}{\kw{updI}(I, ns, cs)}}^9
-    \Big) 
-\end{array}
-    $
+    \label{ex:multipleRounds}
+    %
+    Our first example, $\kw{multipleRounds}$ in Figure~\ref{fig:multipleRounds}(a), is an advanced adaptive data analysis algorithm.
+    This is a simplified version of the \emph{Monitor Augment} from \cite{RogersRSSTW20} with the complete program in the Appendix.
+    It takes the user input $k$ which decides the 
+    the number of iterations.
+    It starts from an initialized empty tracking list $I$,
+    goes $k$ rounds, and at every round, tracking list $I$ is updated by a query result of $\query(\chi[I])$.
+    After $r$ rounds, the algorithm returns the columns of the hidden database $D$ not specified in the tracking list $I$.
+    The functions $\kw{updnscore}(p,a)$,
+    $\kw{updcscore}(p,a)$, $\kw{update}(I,ns,cs)$ simplify the computations of updating $ns$, $cs$ and $I$.%
+    
+    % \jl{
+     Different from $\kw{twoRounds(k)}$ in Figure~\ref{fig:twoRounds-adaptfun},
+    the query request, $\clabel{\assign{a}{\query(I)}}^6$ in each loop iteration is not independent. 
+    $\query(I)$ in each iteration depends on the tracking list $I$ from all the previous iterations, 
+    and $I$ is updated by all the query results in the previous iterations as well. 
+    In this sense, all these $k$ queries are adaptively chosen according to our discussion in the overview.
+    % }
+    % \jl{
+    The program-based dependency graph is presented in Figure~\ref{fig:multipleRounds}(b). 
+    We omitted its execution-based dependency graph $\traceG(\kw{multipleRounds(k)})$ because they have the same graph topology and only differ in weight.
+    For each vertex $v$ in $\progG(\kw{multipleRounds(k)})$ in Figure~\ref{fig:multipleRounds}(b),
+    we use $w_{v}$ to denote its weight function in $\traceG(\kw{multipleRounds(k)})$.
+    % }
+    
+    % \jl{
+    As the adaptivity definition in our formal adaptivity model in Definition~\ref{def:trace_adapt},
+    there is a finite walk along the dashed arrows,
+    $a^{6} \to I^9 \to ns^{7} \to \cdots \to ns^7$ , 
+    where the vertices $a^{6}$, $I^9$ and $ns^{7}$ are visited $w_{a^{6}}(\trace_0)$,
+    $w_{I^9}(\trace_0)$ and $w_{ns^{7}}(\trace_0)$
+    times respectively with input $\trace_0$.
+    The vertex $a^{6}$ has query annotation $1$, and it is visited $w_{a^{6}}(\trace_0)$ times.
+    In this sense, the adaptivity of this program is
+    $w_{a^{6}}(\trace_0)$ given input $\trace_0$, i.e., $A(\kw{multipleRounds(k)})(\trace_0) = w_{a^{6}}(\trace_0)$.
+    Since $w_{a^{6}}(\trace_0)$
+    counts the execution times of command $\clabel{\assign{a}{\query(I)}}^6;$,
+    this count is at most the loop iteration numbers, i.e., $k$'s initial value, $\env(\trace_0) k$ from the initial trace $\trace_0$.
+    % }
+    {
+    Next, we show that {$\THESYSTEM$} provides a tight upper bound for this example by $\pathsearch(\kw{multipleRounds(k)})$.
+    It first finds a path on $\progG(\kw{multipleRounds(k)})$
+    $a^{6}: {}^k_1 \to I^9:{}^k_0 \to ns^7:{}^k_0$ with three weighted vertices. 
+    Then $\pathsearch$ approximates this path to a walk $a^{6}: {}^k_1 \to I^9:{}^k_0 \to ns^7:{}^k_0 \to a^{6}: {}^k_1 \cdots$.
+    In this walk, $a^6, I^9, ns^{7}$ are all visited $k$ times respectively. 
+    So $\progA(\kw{multipleRounds(k)}) = k$.
+    We know for any initial trace $\trace_0$, $\config{\trace_0, k} \earrow \env(\trace_0)$
+    So we guarantee $A(\kw{multipleRounds(k)})(\trace_0) \leq \env(\trace_0)$ for any $\trace_0$
+    and $k$ is a sound bound.
     }
-    \caption{}
-\end{subfigure}
-        \begin{subfigure}{0.9\textwidth}
-        \begin{centering}
-        \begin{tikzpicture}[scale=\textwidth/20cm,samples=300]
-    % Variables Initialization
+    \end{example}
+    %
+    \begin{figure}
+    \centering
+    \begin{subfigure}{0.9\textwidth}
+    {
+     $
+    \begin{array}{l}
+    \kw{multipleRounds(k)} \triangleq\\
+     \clabel{\assign{j}{k}}^0;
+     \clabel{\assign{I}{[]}}^1;
+     \clabel{\assign{ns}{0}}^2; 
+     \clabel{\assign{cs}{0}}^3; \\
+     \ewhile ~ \clabel{j > 0}^{4} ~ \edo ~ \\
+     \Big(
+     \clabel{\assign{j}{j-1}}^{5} ;
+     \clabel{\assign{a}{\query(I)}}^6; 
+     \clabel{\assign{ns}{\kw{updnscore}(ns, a)}}^7; \\
+     \clabel{\assign{cs}{\kw{updcscore}(cs, a)}}^8; 
+     \clabel{\assign{I}{\kw{updI}(I, ns, cs)}}^9
+     \Big) 
+    \end{array}
+     $
+     }
+     \caption{}
+    \end{subfigure}
+     \begin{subfigure}{0.9\textwidth}
+     \begin{centering}
+     \begin{tikzpicture}[scale=\textwidth/20cm,samples=300]
+     % Variables Initialization
      \draw[] (-7, 1) circle (0pt) node{{ $I^1: {}^1_{0}$}};
      \draw[] (-7, 7) circle (0pt) node{{$ns^2: {}^{1}_{0}$}};
      \draw[] (-7, 4) circle (0pt) node{{ $cs^3: {}^{1}_{0}$}};
@@ -93,59 +93,59 @@ and $k$ is a sound bound.
      \draw[] (7, 6) circle (0pt) node {{ $j^5: {}^{k}_{0}$}};
      %
      % Value Dependency Edges:
-     \draw[  -latex,] (0, 1.5)  -- (0, 3.5) ;
-     \draw[ thick, -latex, densely dotted,] (0, 7.5)  -- (0, 9.5) ;
-     \draw[  -Straight Barb] (1.4, 4) arc (120:-200:1);
-     \draw[  -Straight Barb] (8.5, 6.5) arc (150:-150:1);
-     \draw[  -Straight Barb] (1, 7.5) arc (220:-100:1);
-     \draw[  -latex] (7, 6.5)  -- (7, 8.5) ;
+     \draw[ -latex,] (0, 1.5) -- (0, 3.5) ;
+     \draw[ thick, -latex, densely dotted,] (0, 7.5) -- (0, 9.5) ;
+     \draw[ -Straight Barb] (1.4, 4) arc (120:-200:1);
+     \draw[ -Straight Barb] (8.5, 6.5) arc (150:-150:1);
+     \draw[ -Straight Barb] (1, 7.5) arc (220:-100:1);
+     \draw[ -latex] (7, 6.5) -- (7, 8.5) ;
      % Value Dependency Edges on Initial Values:
-     \draw[  -latex,] (-1.5, 1)  -- (-5.5, 1) ;
-     \draw[  -latex,] (-1.5, 4)  -- (-5.5, 4) ;
-     \draw[  -latex,] (-1.5, 7)  -- (-5.5, 7) ;
+     \draw[ -latex,] (-1.5, 1) -- (-5.5, 1) ;
+     \draw[ -latex,] (-1.5, 4) -- (-5.5, 4) ;
+     \draw[ -latex,] (-1.5, 7) -- (-5.5, 7) ;
      %
-     \draw[ thick, -latex, densely dotted,] (-1, 9.5)  to  [out=-130,in=130]  (-1, 1.5);
-     \draw[ thick, -latex, densely dotted,] (-0.8, 1.7)  to  [out=-230,in=230]  (-0.5, 6.5);
+     \draw[ thick, -latex, densely dotted,] (-1, 9.5) to [out=-130,in=130] (-1, 1.5);
+     \draw[ thick, -latex, densely dotted,] (-0.8, 1.7) to [out=-230,in=230] (-0.5, 6.5);
      % Value Dependency from cs8 -> a6
-     \draw[  -latex, ] (-0.8, 4.0)  to  [out=-230,in=230]  (-0.5, 9.5);
+     \draw[ -latex, ] (-0.8, 4.0) to [out=-230,in=230] (-0.5, 9.5);
      % Value Dependency from a6 -> I1
-     \draw[  -latex,] (-1.2, 9.7)  -- (-5.5, 1);
-     \draw[  -Straight Barb] (1.7, 1.5) arc (120:-200:1);
+     \draw[ -latex,] (-1.2, 9.7) -- (-5.5, 1);
+     \draw[ -Straight Barb] (1.7, 1.5) arc (120:-200:1);
      % Control Dependency
-     \draw[  -latex] (1.5, 7)  -- (5.8, 6) ;
-     \draw[  -latex] (1.5, 4)  -- (5.8, 6) ;
-     \draw[  -latex] (1.5, 1)  -- (5.8, 6) ;
-     \draw[  -latex] (1.5, 10)  -- (5.8, 6) ;
+     \draw[ -latex] (1.5, 7) -- (5.8, 6) ;
+     \draw[ -latex] (1.5, 4) -- (5.8, 6) ;
+     \draw[ -latex] (1.5, 1) -- (5.8, 6) ;
+     \draw[ -latex] (1.5, 10) -- (5.8, 6) ;
      % Edges Produced by Transitivity by Control Dependency
-     \draw[  -latex] (1.5, 7)  -- (5.8, 9) ;
-     \draw[  -latex] (1.5, 4)  -- (5.8, 9) ;
-     \draw[  -latex] (1.5, 1)  -- (5.8, 9) ;
-     \draw[  -latex] (1.5, 10)  -- (5.8, 9) ;
-     % Edges Produced by Transitivity from vertext a6 Dependency
-     \draw[  -latex,] (-1.2, 9.7)  -- (-5.5, 4);
-     \draw[  -latex,] (-1.2, 9.7)  -- (-5.5, 7);
-     \draw[ -latex] (-1, 9.5)  to  [out=-130,in=130]  (-1, 7.5);
-     \draw[ -latex] (0.5, 9.5)  to  [out=-50,in=50]  (0.5, 4);
-     \draw[  -Straight Barb] (0.5, 10.5) arc (150:-150:1);
-     % Edges Produced by Transitivity from vertext cs8 Dependency
-     \draw[  -latex,] (-1.2, 4)  -- (-5.5, 1);
-     \draw[  -latex,] (-1.2, 4)  -- (-5.5, 7);
-     \draw[  -latex,] (0, 4.5)  -- (0, 6.5) ;
-     % Edges Produced by Transitivity from vertext I9 Dependency
-     \draw[  -latex,] (-1.2, 1)  -- (-5.5, 4);
-     \draw[  -latex,] (-1.2, 1)  -- (-5.5, 7);
-     \draw[  -latex,] (0.5, 1.0)  to  [out=50,in=-50]  (0.5, 9.5);
-     % Edges Produced by Transitivity from vertext ns7 Dependency
-     \draw[  -latex,] (-1.2, 7)  -- (-5.5, 1);
-     \draw[  -latex,] (-1.2, 7)  -- (-5.5, 4);
-     \draw[ -latex] (0.5, 6.5)  to  [out=-50,in=50]  (0.5, 1.5);
-     \draw[ -latex] (0.5, 6.5)  to  [out=-50,in=50]  (0.5, 4.5);
-    \end{tikzpicture}
+     \draw[ -latex] (1.5, 7) -- (5.8, 9) ;
+     \draw[ -latex] (1.5, 4) -- (5.8, 9) ;
+     \draw[ -latex] (1.5, 1) -- (5.8, 9) ;
+     \draw[ -latex] (1.5, 10) -- (5.8, 9) ;
+     % Edges Produced by Transitivity from vertex a6 Dependency
+     \draw[ -latex,] (-1.2, 9.7) -- (-5.5, 4);
+     \draw[ -latex,] (-1.2, 9.7) -- (-5.5, 7);
+     \draw[ -latex] (-1, 9.5) to [out=-130,in=130] (-1, 7.5);
+     \draw[ -latex] (0.5, 9.5) to [out=-50,in=50] (0.5, 4);
+     \draw[ -Straight Barb] (0.5, 10.5) arc (150:-150:1);
+     % Edges Produced by Transitivity from vertex cs8 Dependency
+     \draw[ -latex,] (-1.2, 4) -- (-5.5, 1);
+     \draw[ -latex,] (-1.2, 4) -- (-5.5, 7);
+     \draw[ -latex,] (0, 4.5) -- (0, 6.5) ;
+     % Edges Produced by Transitivity from vertex I9 Dependency
+     \draw[ -latex,] (-1.2, 1) -- (-5.5, 4);
+     \draw[ -latex,] (-1.2, 1) -- (-5.5, 7);
+     \draw[ -latex,] (0.5, 1.0) to [out=50,in=-50] (0.5, 9.5);
+     % Edges Produced by Transitivity from vertex ns7 Dependency
+     \draw[ -latex,] (-1.2, 7) -- (-5.5, 1);
+     \draw[ -latex,] (-1.2, 7) -- (-5.5, 4);
+     \draw[ -latex] (0.5, 6.5) to [out=-50,in=50] (0.5, 1.5);
+     \draw[ -latex] (0.5, 6.5) to [out=-50,in=50] (0.5, 4.5);
+     \end{tikzpicture}
      \caption{}
-        \end{centering}
-        \end{subfigure}
-    \caption{(a) The simplified multiple rounds example.
+     \end{centering}
+     \end{subfigure}
+     \caption{(a) The simplified multiple rounds example.
      (b) The estimated dependency graph by {\THESYSTEM}}
-    \label{fig:multipleRounds}
-\end{figure}
-%
+     \label{fig:multipleRounds}
+    \end{figure}
+    %
