@@ -1,17 +1,16 @@
 Given a program $c$, the set of vertices $\progV(c)$ and query annotations $\progF(c)$ of the \emph{estimated dependency graph} can be computed by simply
-scanning the program $c$. These set can be computed precisely and correspond to
+scanning the program $c$. These sets can be computed precisely and correspond to
 the same sets in the semantics-based dependency graph.
 This means that $\progG(c)$ has the same underlying vertex structure as 
 the semantics-based graph $\traceG(c)$. 
 \paragraph{Vertex Estimation}
 The first component of the \emph{estimated dependency graph} is the vertex set, which is identical to the 
 \emph{semantics-based dependency graph}.
-% of every vertex in the static analysis dependency graph are actually identical as the  Semantics-based Dependency Graph, 
-Every vertex is an assigned variable in the program, which comes from an assignment command or query request command with a unique label. 
+Every vertex is an assigned variable in the program, which comes from an assignment command or query request with a unique label. 
 These vertices are collected by statically scanning the program, like what we do for vertices of the \emph{semantics-based dependency graph}, as follows.
 %
 \[
-    \progV(c) \triangleq \lvar(c)
+ \progV(c) \triangleq \lvar(c)
 \]
 
 \paragraph{Query Annotation Estimation}
@@ -22,17 +21,17 @@ a set of pairs $\progF(c) \in \mathcal{P}(\lvar(c) \times \{0, 1\} )$
 mapping each $x^l \in \progV(c)$ to either $0$ or $1$. 
 $1$ denotes $x^{l}$ is a member of $ \qvar(c)$, which is the set of program's variables assigned with query requests, 
 and $0$ means $x^{l}$ not in this set. 
-It is defined formally below identical to the $\traceF(c)$.
+It is defined formally below as identical to the $\traceF(c)$.
 %
 \[
-  \progF(c) =
-  \left\{(x^l, n)  
-\in  \lvar(c) \times \{0, 1\} 
+ \progF(c) =
+ \left\{(x^l, n) 
+\in \lvar(c) \times \{0, 1\} 
 ~ \middle\vert ~
 \begin{array}{l}
-  x^l \in \lvar(c) 
-  \\ 
-  \land n = 1 \Leftrightarrow x^l \in \qvar(c) \land n = 0 \Leftrightarrow  x^l \notin \qvar(c)
+ x^l \in \lvar(c) 
+ \\ 
+ \land n = 1 \Leftrightarrow x^l \in \qvar(c) \land n = 0 \Leftrightarrow x^l \notin \qvar(c)
 \end{array}
 \right\}.
 \]

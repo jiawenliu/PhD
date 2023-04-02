@@ -3,31 +3,31 @@ Based on
 the estimated dependency graph of a program $c$,
 %
 we compute a sound upper bound on $c$'s adaptivity in this section.
-%  in Definition~\ref{def:prog_adapt}
+% in Definition~\ref{def:prog_adapt}
 % and Algorithm~\ref{alg:adapt}.
 %
 
-Different from the weight on the semantics-based dependency graph, the weight on the estimated graph are symbolic expression. This symbolic expression cannot be used directly to construct a finite walk
+Different from the weight on the semantics-based dependency graph, the weight on the estimated graph is a symbolic expression. This symbolic expression cannot be used directly to construct a finite walk
 by definition~\ref{def:finitewalk}. In this sense,
 % to estimate the finite walk
-we first introduction the path on the estimated dependency graph as follows to estimate a finite walk.
+we first introduce the path on the estimated dependency graph as follows to estimate a finite walk.
 \begin{defn}[Path]
-  \label{def:prog_finitewalk}
-  Given a program $c$ with its estimated dependency graph 
-  $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
-  a \emph{path} $p$ in $\traceG({c})$ is
-  a sequence of edges $(e_1 \ldots e_{n - 1})$ 
-  for which there is a sequence of vertices 
-  $(v_1, \ldots, v_{n})$ 
-  % and weight sequence
-  % $(w_1, \ldots, w_n)$ 
-  such that:
-  \begin{itemize}
-      \item $e_i = (v_{i},v_{i + 1}) \in \progE(c)$ for every $1 \leq i < n$,
-      % \item and $(v_{i}, w_i) \in \progW(c)$ for every $1 \leq i < n$,
-      \item and $v_i \neq v_j$ for evey $i, j = 1, \ldots, n$ and $i \neq j$.
-  \end{itemize}
-  %
+ \label{def:prog_finitewalk}
+ Given a program $c$ with its estimated dependency graph 
+ $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
+ a \emph{path} $p$ in $\traceG({c})$ is
+ a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+ for which there is a sequence of vertices 
+ $(v_1, \ldots, v_{n})$ 
+ % and weight sequence
+ % $(w_1, \ldots, w_n)$ 
+ such that:
+ \begin{itemize}
+ \item $e_i = (v_{i},v_{i + 1}) \in \progE(c)$ for every $1 \leq i < n$,
+ % \item and $(v_{i}, w_i) \in \progW(c)$ for every $1 \leq i < n$,
+ \item and $v_i \neq v_j$ for evey $i, j = 1, \ldots, n$ and $i \neq j$.
+ \end{itemize}
+ %
  \end{defn}
 
 % Different from the finite walk on $\traceG(c)$, the $\kappa \in \walks(\progG(c))$ doesn't rely on the initial trace.
@@ -37,60 +37,60 @@ we first introduction the path on the estimated dependency graph as follows to e
 % %
 % They are formally defined as follows.
 % \begin{defn}[Finite Walk on estimated dependency graph ($\kappa$)].
-%   \label{def:prog_finitewalk}
-%   \\
-%   Given a program $c$'s estimated dependency graph 
-%   $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
-%   a \emph{finite walk} $k$ in $\traceG({c})$ is
-%   a sequence of edges $(e_1 \ldots e_{n - 1})$ 
-%   for which there is a sequence of vertices 
-%   $(v_1, \ldots, v_{n})$ such that:
-%   \begin{itemize}
-%       \item $e_i = (v_{i},v_{i + 1}) \in \progE(c)$ for every $1 \leq i < n$.
-%       \item every vertex $v_i \in \progV(c)$,
-%       and $(v_i, w_i) \in \progW(c)$, 
-%        $v_i$ appears in $(v_1, \ldots, v_{n})$ at most 
-%     %   \wq{$\traceW({c})(\trace)$} 
-%     $w_i$
-%       times.  
-%   \end{itemize}
-%   %
-%   The length of $k$ is the number of vertices in its vertex sequence, i.e., $\len(k) = a$.
-%  \end{defn}
+% \label{def:prog_finitewalk}
+% \\
+% Given a program $c$'s estimated dependency graph 
+% $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
+% a \emph{finite walk} $k$ in $\traceG({c})$ is
+% a sequence of edges $(e_1 \ldots e_{n - 1})$ 
+% for which there is a sequence of vertices 
+% $(v_1, \ldots, v_{n})$ such that:
+% \begin{itemize}
+% \item $e_i = (v_{i},v_{i + 1}) \in \progE(c)$ for every $1 \leq i < n$.
+% \item every vertex $v_i \in \progV(c)$,
+% and $(v_i, w_i) \in \progW(c)$, 
+% $v_i$ appears in $(v_1, \ldots, v_{n})$ at most 
+% % \wq{$\traceW({c})(\trace)$} 
+% $w_i$
+% times. 
+% \end{itemize}
+% %
+% The length of $k$ is the number of vertices in its vertex sequence, i.e., $\len(k) = a$.
+% \end{defn}
 % We abuse the notation $\walks(\progG(c))$ represents the walks over the estimated dependency graph for $c$.
-% Different from the walks on a program $c$'s semantics based graph,
-%  $k \in \walks(\traceG(c))$, 
+% Different from the walks on a program $c$'s semantics-based graph,
+% $k \in \walks(\traceG(c))$, 
 % $k \in \walks(\progG(c))$ doesn't rely on initial trace.
 % The occurrence times of every $v_i $ in $k$'s vertex sequence is bound by 
 % an arithmetic expression $w_i$ where $(v_i, w_i) \in \progV(c)$, is $v_i$'s estimated weight. 
 % Notice here, for a walk in $\progG(c)$, the occurrence times of every vertex in vertices sequence, 
-%  and its 
+% and its 
 We use $\paths(\progG(c))$ to denote the set of all paths on
 % the estimated dependency graph for $c$
  $\progG({c})$.
-%  The length of a finite walk $k \in \walks(\progG(c))$ is an arithmetic expression
-%  as well, i.e., $\len(k) \in \inpexprdom$
+% The length of a finite walk $k \in \walks(\progG(c))$ is an arithmetic expression
+% as well, i.e., $\len(k) \in \inpexprdom$
 Following Definition~\ref{def:qlen}, 
 we compute
 the \emph{query length} of a path, $p \in \paths(\progG(c))$ on the estimated graph as an arithmetic expression formally as follows.
 \begin{defn}[Query Length Estimation]
-  \label{def:qlen-static}
-  Given 
-  a program $c$ and its estimated dependency graph 
-  $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
-  let $p \in \paths(\progG(c))$ be a \emph{path} with edge sequence $(e_1 \ldots e_{n - 1})$ 
-  a sequence of vertices 
-  $(v_1, \ldots, v_{n})$,
-  the estimated query length of $p$, $\hat{\qlen}(p)$ is computed as
-  \[
-   \sum\left\{ v \times \hat{w}
-   \mid v \in (v_1, \ldots, v_{n}) \land (v, 1) \in \progF(c)
-   \land 
-   (v, \hat{w}) \in \progW(c) 
-   \right\}
-  \]
-  \end{defn}
-  We estimate the adaptivity upper bound, $\progA(c)$ for a program $c$ as the maximum query length over all paths in its \emph{estimated dependency graph}, $\progG({c})$. 
+ \label{def:qlen-static}
+ Given 
+ a program $c$ and its estimated dependency graph 
+ $\progG({c}) = (\progV(c), \progE(c), \progW(c), \progF(c))$, 
+ let $p \in \paths(\progG(c))$ be a \emph{path} with edge sequence $(e_1 \ldots e_{n - 1})$ 
+ a sequence of vertices 
+ $(v_1, \ldots, v_{n})$,
+ the estimated query length of $p$, $\hat{\qlen}(p)$ is computed as
+ \[
+ \sum\left\{ v \times \hat{w}
+ \mid v \in (v_1, \ldots, v_{n}) \land (v, 1) \in \progF(c)
+ \land 
+ (v, \hat{w}) \in \progW(c) 
+ \right\}
+ \]
+ \end{defn}
+ We estimate the adaptivity upper bound, $\progA(c)$ for a program $c$ as the maximum query length over all paths in its \emph{estimated dependency graph}, $\progG({c})$. 
 \begin{defn}
 [{Adaptivity Computation}]
 \label{def:prog_adapt}
@@ -104,15 +104,15 @@ $\progG({c})$ we compute its adaptivity $\progA({c}) \in \inpexprdom$ as
 }
 \end{defn}
 Similarly, the adaptivity bound $\progA(c)$ will also be a symbolic arithmetic expression over the input variables. 
-With this symbolic expression we prove that Definition~\ref{def:prog_adapt} computes
+With this symbolic expression, we prove that Definition~\ref{def:prog_adapt} computes
 a sound upper bound sound for the \emph{adaptivity} w.r.t the Definition~\ref{def:trace_adapt}.
 \begin{thm}[Soundness of {\THESYSTEM}]
-  \label{thm:adaptfun_sound}
-  For every well-formed program $c$, 
-  its estimated adaptivity $\progA({c})$ is a sound upper bound of its adaptivity.
-   \[
-   \forall \trace_0 \in \ftdom_{0}(c), v \in \mathbb{N} \cup \{\infty\} \sthat
-    \config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq v
+ \label{thm:adaptfun_sound}
+ For every well-formed program $c$, 
+ its estimated adaptivity $\progA({c})$ is a sound upper bound of its adaptivity.
+ \[
+ \forall \trace_0 \in \ftdom_{0}(c), v \in \mathbb{N} \cup \{\infty\} \sthat
+ \config{\progA(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq v
 \] 
 \end{thm}
 The proof is in Appendix~\ref{apdx:adapt_soundness}.
@@ -120,93 +120,90 @@ The proof is in Appendix~\ref{apdx:adapt_soundness}.
 
 Symbolic expressions as used in the weight are great to express symbolic bounds, but make the computation of 
 the longest path non-terminating. 
-In this sense, the computation by Definition~\ref{def:prog_adapt} have to
-over-approximate the adaptivity in a large scale in order to address the non-terminating problem.
+In this sense, the computation by Definition~\ref{def:prog_adapt} has to
+over-approximate the adaptivity on a large scale in order to address the non-terminating problem.
 % given the weight as symbolic.
 To compute $\progA(c)$ accurately and soundly, we develop an adaptivity approximation algorithm named $\pathsearch$.
-It combines the depth first search and breath first search strategies and computes a sound upper bound on $\progA(c)$.
-$\pathsearch$ also involves another algorithm $\pathsearch_{\kw{SCC}}$ in \ref{alg:adaptscc} recursively, which finds the longest walk for a strong connected component (SCC) (SCC is the maximal strongly connected subgraph) of $\progG(c)$.
+It combines the depth-first search and breath-first search strategies and computes a sound upper bound on $\progA(c)$.
+$\pathsearch$ also involves another algorithm $\pathsearch_{\kw{SCC}}$ in \ref{alg:adaptscc} recursively, which finds the longest walk for a strongly connected component (SCC) (SCC is the maximal strongly connected subgraph) of $\progG(c)$.
 Theorem~\ref{thm:adaptalg_soundness} below formally describes the soundness of this algorithm with proof in Appendix~\ref{apdx:adaptalg_soundness}.
 \begin{thm}[Soundness of $\pathsearch$]
-    \label{thm:adaptalg_soundness}
-    For every well-formed program $c$ with its \emph{estimated dependency graph} $\progG$,
-    \[ 
-      \forall \trace_0 \in \ftdom_{0}(c), v \in (\mathbb{N}\cup \{\infty\}) \sthat
-    \config{\pathsearch(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq v.
-    \]
+ \label{thm:adaptalg_soundness}
+ For every well-formed program $c$ with its \emph{estimated dependency graph} $\progG$,
+ \[ 
+ \forall \trace_0 \in \ftdom_{0}(c), v \in (\mathbb{N}\cup \{\infty\}) \sthat
+ \config{\pathsearch(c), \trace_0} \earrow v \implies A(c)(\trace_0) \leq v.
+ \]
 \end{thm}
 
 By Definition~\ref{def:prog_adapt}, the key point is to find the walks in the estimated dependency graph. 
 We first discuss two challenges when we try to find the walks,
-and then show that how we solve them using our algorithms.
+and then show how we solve them using our algorithms.
 
 \textbf{Non-Termination Challenge:}
 % Moreover, b
-One naive walk finding method is to simply traverse on this graph and decrease the weight of every node by one after every visiting. However, this simple 
-traversing strategy leads to non-termination dilemma for most programs which we are interested in. 
+One naive walk-finding method is to simply traverse this graph and decrease the weight of every node by one after every visit. However, this simple 
+traversing strategy leads to a non-termination dilemma for most programs in which we are interested. 
 Because the weight of each vertex in a program's estimated dependency graph,
 which is an arithmetic expression containing input variables. 
-In this sense, the simple traversing could never terminate when domain of the input variables isn't finite.
-However, it is very common that the domain of program's input variables is infinite such as natural number $\mathbb{N}$, real number $\mathbb{R}$, or etc. As the simple while loop example program in Figure~\ref{fig:kadaptwhile_alg} with k adaptivity rounds, the input variable $k$ has domain $\mathbb{N}$.
-If we traverse on the estimated dependency graph, and decrease the weight of $x^3$ (the weight $k$ is symbolic) by one after every visit,
+In this sense, the simple traversing could never terminate when the domain of the input variables isn't finite.
+However, it is very common that the domain of the program's input variables is infinite such as natural number $\mathbb{N}$, real number $\mathbb{R}$, etc. As the simple while loop example program in Figure~\ref{fig:kadaptwhile_alg} with k adaptivity rounds, the input variable $k$ has domain $\mathbb{N}$.
+If we traverse the estimated dependency graph and decrease the weight of $x^3$ (the weight $k$ is symbolic) by one after every visit,
 we will never terminate because we only know $k \in \mathbb{N}$.
 
 \input{chapters/adapt/examples/kRoundsWhileSim_alg}
 
-To solve this non-termination challenge, we switch to another walk finding approach:
-finding the longest path in the estimated dependency graph via depth first search and then use this path as the longest walk.
+To solve this non-termination challenge, we switch to another walk-finding approach:
+finding the longest path in the estimated dependency graph via depth-first search and then using this path as the longest walk.
 We show this naive longest walk searching algorithm in Algorithm~\ref{alg:overadp_alg}.
-Through a simple depth first search algorithm, we find the longest weighted path as the dotted arrow in Figure~\ref{fig:kadaptwhile_alg}(c),
+Through a simple depth-first search algorithm, we find the longest weighted path as the dotted arrow in Figure~\ref{fig:kadaptwhile_alg}(c),
 $x^3: {}^k_1 \to x^1: {}^1_1 $.
-Then, by summing up the weights on this path where the vertices have query annotations $1$, depth first search algorithm gives the adaptivity bound $k$.
+Then, by summing up the weights on this path where the vertices have query annotations $1$, the depth-first search algorithm gives the adaptivity bound $k$.
 This is a tight bound for this simple k adaptivity rounds example program.
 \begin{algorithm}
-  \caption{
-  {Naive Adaptivity Computation {$\kw{\pathsearch_{naive}(c, \progG(c))}$}}
-  \label{alg:overadp_alg}
-  }
-  \begin{algorithmic}[1]
-  \REQUIRE A program $c$,
-  \\
-  its estimated dependency graph: $\progG(c) = (\vertxs, \edges, \weights, \qflag)$
-  \STATE {\bf init} 
-  \\ $\kw{visited} = [0]*|\vertxs|$ \#\{a list of length $|\vertxs|$, initialize with $0$ for every vertex.\}
-  \\ $\kw{result} = 0$
-  \STATE  {\bf def} {$\kw{dfs(G, s, visited, cur)}$}:
-  \STATE \qquad $\kw{longstw = cur}$
-  \STATE \qquad {\bf for} every vertex $v$ 
-  connected by a directed edge from $s$:
-  \STATE \qquad \qquad {\bf if} $\kw{visited}[v] = \efalse$:
-  % \STATE \qquad \qquad \qquad \highlight{$\kw{r[v] + = \weights(v)\times \qflag(v) $}; 
-  \STATE \qquad \qquad \qquad  $\kw{visited}[v] = \etrue$; %\#\{mark $v$ as visited\}
-  \STATE \qquad \qquad \qquad $\kw{longstw} = \max\{\kw{longstw}, \kw{dfs(v, visited, cur + \weights(v)\times \qflag(v))} \}$
-  \STATE \qquad {\bf return}  $\kw{longstw}$
-  \STATE  {\bf for} every vertex $v$ in $\vertxs_i$:
-  \STATE  \qquad initialize the $\kw{visited}$ list
-  \STATE  \qquad $\kw{result = \max(result, dfs(v, \kw{visited}, \weights(v)\times \qflag(v)))}$; 
-  \RETURN  $\kw{result}$
-  \end{algorithmic}
-  \end{algorithm}
+ \caption{
+ {Naive Adaptivity Computation {$\kw{\pathsearch_{naive}(c, \progG(c))}$}}
+ \label{alg:overadp_alg}
+ }
+ \begin{algorithmic}[1]
+ \REQUIRE A program $c$,
+ \\
+ its estimated dependency graph: $\progG(c) = (\vertxs, \edges, \weights, \qflag)$
+ \STATE {\bf init} 
+ \\ $\kw{visited} = [0]*|\vertxs|$ \#\{a list of length $|\vertxs|$, initialize with $0$ for every vertex.\}
+ \\ $\kw{result} = 0$
+ \STATE {\bf def} {$\kw{dfs(G, s, visited, cur)}$}:
+ \STATE \qquad $\kw{longstw = cur}$
+ \STATE \qquad {\bf for} every vertex $v$ 
+ connected by a directed edge from $s$:
+ \STATE \qquad \qquad {\bf if} $\kw{visited}[v] = \efalse$:
+ % \STATE \qquad \qquad \qquad \highlight{$\kw{r[v] + = \weights(v)\times \qflag(v) $}; 
+ \STATE \qquad \qquad \qquad $\kw{visited}[v] = \etrue$; %\#\{mark $v$ as visited\}
+ \STATE \qquad \qquad \qquad $\kw{longstw} = \max\{\kw{longstw}, \kw{dfs(v, visited, cur + \weights(v)\times \qflag(v))} \}$
+ \STATE \qquad {\bf return} $\kw{longstw}$
+ \STATE {\bf for} every vertex $v$ in $\vertxs_i$:
+ \STATE \qquad initialize the $\kw{visited}$ list
+ \STATE \qquad $\kw{result = \max(result, dfs(v, \kw{visited}, \weights(v)\times \qflag(v)))}$; 
+ \RETURN $\kw{result}$
+ \end{algorithmic}
+ \end{algorithm}
 
 \textbf{Approximation Challenge:}
-However, this naive approximation via depth first searching over-approximates the adaptivity rounds largely in many cases.
+However, this naive approximation via depth-first searching over-approximates the adaptivity rounds largely in many cases.
 It computes $\infty$ adaptivity upper bound for our $\kw{twoRounds}$ example program in Figure~\ref{fig:overview-example}, which has only $2$ adaptivity rounds.
-More specifically, the depth first searching finds the longest weighted path,
+More specifically, the depth-first searching finds the longest weighted path,
 $x^3 : {}^{k}_{1} \to a^5 : {}^{k}_{0} \to l^6 : {}^{1}_{0}$.
 Then, it computes the weighted length, $1 + k$.
-If we use this path to approximate the longest finite walk, and weight of each vertex as
-%  their visiting times, 
+If we use this path to approximate the longest finite walk, and the weight of each vertex as
+% their visiting times, 
 its visiting time, then we have a walk, $x^3 \to \cdots \to x^3 \to a^5 \to \cdots \to a^5 \to l^6$.
 However, this isn't a qualified walk by our Definition~\ref{def:finitewalk}.
 % then it isn't a qualified walk. 
 % In the approximated walk, we have the vertices as $x^3 \to \cdots \to x^3 \to a^5 \to \cdots \to a^5 \to l^6$.
-Because $l^6$ has weight $1$, it can only be visited as most once. In this sense,
+Because $l^6$ has weight $1$, it can only be visited at most once. In this sense,
 % and this lead to 
 % resulting in the restriction on 
 % the maximum visiting time of 
-% ,
-% such that $x^3$ 
-$x^3$ is only able to be visited at most once as well, because the only way to re-visit $x^3$ is through $l^6 \to a^5 \to x^3$.
 %
 Contradictory, $x^3$ is visited $k$ times in this approximated walk.
 As a result,
@@ -214,16 +211,14 @@ As a result,
 the weighted length of this path is $1 + k$, which
 % which is 
 over approximates 
-% its 
-this two rounds example program's adaptivity rounds, which is supposed to be $2$. 
+the two-round example program's adaptivity rounds, which is expected to be $2$. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION OF THE COMBINED ADAPTIVITY COMPUTATION ALGORITHM: %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \textbf{Adaptivity Computation Algorithm}
 To this end, we combine the 
-% DFS and BFS algorithm 
-depth first search and breath first search strategies in our longest walk estimation algorithm.
+depth-first search and breath-first search strategies in our longest walk estimation algorithm.
 %
 Our algorithm reduces the task of computing the longest walk into the computation of local adaptivity and the composition of
 local adaptivity into global adaptivity.
@@ -238,80 +233,77 @@ $\pathsearch(c, \progG(c))$ algorithm in Algorithm~\ref{alg:adapt} arranges the 
 Then $\pathsearch$ shrinks the estimated dependency graph into a directed acyclic graph (DAG) by reducing each SCC into a vertex with the weight equal to its adaptivity local bound.
 In this way, it simply computes the length of the longest path over this DAG.
 
-We discuss in detail as below this adaptivity computation algorithm.
+We discuss in detail this adaptivity computation algorithm.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION OF ADAPTIVITY COMPUTATION ALGORITHM 1: %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph*{The Adaptivity Computation Algorithm ($\pathsearch(c, \progG(c))$)}
 \begin{algorithm}
-  \caption{
-  {Adaptivity Computation Algorithm ({$\kw{\pathsearch(c, \progG(c))}$})}
-  }
-  \label{alg:adapt}
-  \begin{algorithmic}[1]
-  \REQUIRE A program $c$ and
-  its estimated dependency graph: $\progG(c) = (\vertxs, \edges, \weights, \qflag)$
-  \STATE {\bf init} 
-    % \\
-    \\
-    $q$: empty queue.
-    % \\
-    \\
-    $\kw{adapt}$ : the adaptivity of this graph initialize with $0$.
-    \\
-    \STATE Find all strongly connected components in $G$: $\kw{\sccgraph_1}, \cdots, \kw{\sccgraph_n}, 0 \leq n \leq |\vertxs|$, 
-    \STATE {\bf for} every component $\kw{\sccgraph_i}$ compute its local adaptivity:
-    \STATE \quad $\kw{adapt_{scc}[\sccgraph_i] = \pathsearch_{scc}(c, \sccgraph_i)}$;
-    \STATE {\bf for} every $\kw{\sccgraph_i}$:
-    \STATE \qquad $\kw{q.append(\sccgraph_i)}$;
-    \STATE \qquad $\kw{adapt_{tmp}} = 0$;
-    \STATE \qquad {\bf while} $q$ isn't empty:
-    \STATE \qquad \qquad $\kw{s = q.pop()}$;  \#\{take the top component from head of queue\}
-    \STATE \qquad \qquad  $\kw{adapt_{tmp}}_0= \kw{adapt_{tmp}}$; \#\{record the adaptivity of last level\}
-    \STATE \qquad \qquad  $\kw{\sccgraph_{max}}$;  \#\{record the SCC with longest walk in this level\}
-    % initialize cycle-adapt = 0.
-    \STATE \qquad \qquad {\bf for} every component $\kw{s'\neq s}$ and connected by $\kw{s}$:
-    \STATE \qquad \qquad \qquad {\bf if} $(\kw{adapt_{tmp}} < \kw{adapt_{tmp}}_0 + \kw{adapt_{scc}[s']})$:
-    \STATE \qquad \qquad \qquad \qquad $\kw{adapt_{tmp}} = \kw{adapt_{tmp}}_0 + \kw{adapt_{scc}[s']}$; 
-    \STATE \qquad \qquad \qquad \qquad $\kw{\sccgraph_{max} = s'} $; 
-    \#\{record the SCC with the longest walk\} 
-    \STATE \qquad \qquad \qquad {\bf if} $(\kw{\sccgraph_{max}\neq s'})$:
-    \STATE \qquad \qquad \qquad \qquad $\kw{q.append(\sccgraph_{max})}$;
-    \STATE \qquad $\kw{adapt} = \max(\kw{adapt}, \kw{adapt_{tmp}})$;    
-    \RETURN $\kw{adapt}$.
-    \end{algorithmic}
-    \end{algorithm}
-    %
-    % it 
-    At Line:3, this algorithm first finds all the SCCs of $\progG(c)$, $\kw{\sccgraph_1}, \cdots, \kw{\sccgraph_n}$
-    where $0 \leq n \leq |\vertxs|$ by the standard Kosaraju’s algorithm, where each
-    % Every SCC is a sub-graph of $\progG(c)$, where 
-    $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$.
-    % where $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$.
-    Then, 
-    it computes the adaptivity local bound on every $\kw{\sccgraph_i}$
-    % , which is a subgraph of the $\progG(c)$, 
-    in line:4-5 by $\kw{\pathsearch_{SCC}(c, \sccgraph_i)}$.
-    We guarantee the soundness of the adaptivity local bound on an SCC by Lemma~\ref{lem:sound_adaptalg_scc} with formal proof in Appendix~\ref{apdx:adaptalg_soundness}.
-    The $\progG(c)$ is then shrunk into a directed acyclic graph where 
-    % vertices are all the SCCs and edges are between every SCCs with their adaptivities as weights.
-    $\kw{\sccgraph_1}, \cdots, \kw{\sccgraph_n}$ are all the vertices and the adaptivity local bounds are their weights.
-    % , and directed edges are .
-    There is an edge $s_i \to s_j$ in this shrank graph, as long as we can find an edge $v_i \to v_j \in \progE(c)$ such that $v_1 \in \vertxs_i$, $v_j \in \vertxs_j$ and $i \neq j$.
-    % \\ 
-    Then, we use the standard breath first search strategy to find the longest weighted path
-    %  w.r.t. all the SCCs and their adaptivities.
-    on this DAG and return this length as the adaptivity upper bound.
-    \\
-    We guarantee that 
-    % this longest weighted path is a sound computation of the adaptivity on this,
-    the length of this longest weighted path is a sound computation of the adaptivity for program $c$
-    % as well as 
-    and this longest weighted path is a sound computation of the finite walk having the longest query length 
-    on $c$'s estimated dependency graph in Theorem~\ref{thm:adaptalg_soundness}
-    in Appendix
-    ~\ref{apdx:adaptalg_soundness}.
-    %
+ \caption{
+ {Adaptivity Computation Algorithm ({$\kw{\pathsearch(c, \progG(c))}$})}
+ }
+ \label{alg:adapt}
+ \begin{algorithmic}[1]
+ \REQUIRE A program $c$ and
+ its estimated dependency graph: $\progG(c) = (\vertxs, \edges, \weights, \qflag)$
+ \STATE {\bf init} 
+ % \\
+ \\
+ $q$: empty queue.
+ % \\
+ \\
+ $\kw{adapt}$ : the adaptivity of this graph initialize with $0$.
+ \\
+ \STATE Find all strongly connected components in $G$: $\kw{\sccgraph_1}, \cdots, \kw{\sccgraph_n}, 0 \leq n \leq |\vertxs|$, 
+ \STATE {\bf for} every component $\kw{\sccgraph_i}$ compute its local adaptivity:
+ \STATE \quad $\kw{adapt_{scc}[\sccgraph_i] = \pathsearch_{scc}(c, \sccgraph_i)}$;
+ \STATE {\bf for} every $\kw{\sccgraph_i}$:
+ \STATE \qquad $\kw{q.append(\sccgraph_i)}$;
+ \STATE \qquad $\kw{adapt_{tmp}} = 0$;
+ \STATE \qquad {\bf while} $q$ isn't empty:
+ \STATE \qquad \qquad $\kw{s = q.pop()}$; \#\{take the top component from head of queue\}
+ \STATE \qquad \qquad $\kw{adapt_{tmp}}_0= \kw{adapt_{tmp}}$; \#\{record the adaptivity of last level\}
+ \STATE \qquad \qquad $\kw{\sccgraph_{max}}$; \#\{record the SCC with longest walk in this level\}
+ % initialize cycle-adapt = 0.
+ \STATE \qquad \qquad {\bf for} every component $\kw{s'\neq s}$ and connected by $\kw{s}$:
+ \STATE \qquad \qquad \qquad {\bf if} $(\kw{adapt_{tmp}} < \kw{adapt_{tmp}}_0 + \kw{adapt_{scc}[s']})$:
+ \STATE \qquad \qquad \qquad \qquad $\kw{adapt_{tmp}} = \kw{adapt_{tmp}}_0 + \kw{adapt_{scc}[s']}$; 
+ \STATE \qquad \qquad \qquad \qquad $\kw{\sccgraph_{max} = s'} $; 
+ \#\{record the SCC with the longest walk\} 
+ \STATE \qquad \qquad \qquad {\bf if} $(\kw{\sccgraph_{max}\neq s'})$:
+ \STATE \qquad \qquad \qquad \qquad $\kw{q.append(\sccgraph_{max})}$;
+ \STATE \qquad $\kw{adapt} = \max(\kw{adapt}, \kw{adapt_{tmp}})$; 
+ \RETURN $\kw{adapt}$.
+ \end{algorithmic}
+ \end{algorithm}
+ %
+ % it 
+ At Line:3, this algorithm first finds all the SCCs of $\progG(c)$, $\kw{\sccgraph_1}, \cdots, \kw{\sccgraph_n}$
+ where $0 \leq n \leq |\vertxs|$ by the standard Kosaraju’s algorithm, where each
+ % Every SCC is a sub-graph of $\progG(c)$, where 
+ $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$.
+ % where $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$.
+ Then, 
+ it computes the adaptivity local bound on every $\kw{\sccgraph_i}$
+ % , which is a subgraph of the $\progG(c)$, 
+ in line:4-5 by $\kw{\pathsearch_{SCC}(c, \sccgraph_i)}$.
+ We guarantee the soundness of the adaptivity local bound on an SCC by Lemma~\ref{lem:sound_adaptalg_scc} with formal proof in Appendix~\ref{apdx:adaptalg_soundness}.
+ The $\progG(c)$ is then shrunk into a directed acyclic graph where 
+ % vertices are all the SCCs and edges are between every SCCs with their adaptivities as weights.
+ $\kw{\sccgraph_1}, \cdots, \kw{\sccgraph_n}$ are all the vertices and the adaptivity local bounds are their weights.
+ There is an edge $s_i \to s_j$ in this shrank graph, as long as we can find an edge $v_i \to v_j \in \progE(c)$ such that $v_1 \in \vertxs_i$, $v_j \in \vertxs_j$ and $i \neq j$.
+ % \\ 
+ Then, we use the standard breath-first search strategy to find the longest-weighted path
+ on this DAG and return this length as the adaptivity upper bound.
+ \\
+ We guarantee that 
+ the length of this longest weighted path is a sound computation of the adaptivity for program $c$
+ % as well as 
+ and this longest weighted path is a sound computation of the finite walk having the longest query length 
+ on $c$'s estimated dependency graph in Theorem~\ref{thm:adaptalg_soundness}
+ in Appendix
+ ~\ref{apdx:adaptalg_soundness}.
+ %
 If a program
 $c$'s estimated dependency graph $\progG(c)$ is a DAG, then we prove that the adaptivity upper bound by Algorithm~\ref{alg:adapt} is tight formally in Theorem~\ref{thm:adaptalg_pcomplete} in Appendix~\ref{apdx:adaptalg_completeness}.
 
@@ -320,72 +312,72 @@ $c$'s estimated dependency graph $\progG(c)$ is a DAG, then we prove that the ad
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph*{Adaptivity Computation for An Strongly Connected Component of $\progG(c)$.}
 \begin{algorithm}
-  \caption{
-  {Adaptivity Computation on An SCC ({$\kw{\pathsearch_{scc}(c, \sccgraph_i)}$})}
-  \label{alg:adaptscc}
-  }
-  \begin{algorithmic}[1]
-    \REQUIRE 
-    The program $c$, 
-    \\ \qquad
-    An strongly connected component of $\progG(c)$: 
-    $ \kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$
-  % {\bf {$\kw{\pathsearch_{scc}(c, \sccgraph_i)}$}:}  
-  \STATE {\bf init} 
-  \\
-  $\kw{r_{scc}}$: $\scexpr(c)$, initialized $0$, the Adaptivity of this SCC
-  \STATE \qquad {\bf init} 
-  \\ \qquad $\kw{visited} = [0]*|\vertxs_i|$ \#\{a list of length $|\vertxs|$, initialize with $0$ for every vertex.\}
-  \\ \qquad  $\kw{r} = [\qflag(v)]* |\vertxs_i|$ : $\scexpr(c)$ List, 
-  \\ \qquad  \#\{length $|\vertxs_i|$, initialize with $\qflag(v)$ for every vertex, recording the adaptivity reaching each vertex.\}
-  \\ \qquad  $\kw{flowcapacity} = [\infty]* |\vertxs_i|$: $\scexpr(c)$ List, 
-  % INT List of length $|\vertxs|$, initialize MAXINT. 
-  \\ \qquad  \#\{length $|\vertxs_i|$, initialize with $\infty$ for every vertex,
-  % \#\{For every vertex, 
-  recording the minimum weight when the walk reaching 
-  that vertex, inside a cycle\}
-  \\ \qquad  $\kw{querynum} = [\qflag(v)]* |\vertxs_i|$: $\mathbb{N}$ List,
-  %  of length $|\vertxs|$, initialize with $\qflag(v)$ for every vertex. 
-  \\ \qquad  \#\{length $|\vertxs_i|$, initialize with $\qflag(v)$ for every vertex, 
-  % \#\{For every vertex, 
-  recording the query numbers when the path reaching 
-  that vertex, inside a cycle\}
-  \STATE {\bf if} $|\vertxs_i| = 1$ and $|\edges_i| = 0$:
-  \STATE \qquad {\bf return}  $\qflag(v)$
-  \STATE  {\bf def} {$\kw{dfs(G,s,visited)}$}:
-  \STATE \qquad {\bf for} every vertex $v$ 
-  connected by a directed edge from $s$:
-  \STATE \qquad \qquad {\bf if} $\kw{visited}[v] = \efalse$:
-  \STATE \qquad \qquad \qquad \highlight{$\kw{flowcapacity[v] = \min(\weights_i(v), {flowcapacity}[s])}$};
-  \STATE \qquad \qquad \qquad \highlight{$\kw{querynum[v] = querynum[s] + \qflag_i(v)}$};
-  \STATE \qquad \qquad \qquad \highlight{$\kw{r[v] =  \max(r[v], flowcapacity[v] \times querynum[v]}) $}; 
-  \STATE \qquad \qquad \qquad  $\kw{visited}[v] = 1$; %\#\{mark $v$ as visited\}
-  \STATE \qquad \qquad \qquad $\kw{dfs(G, v, visited)}$;
-  \STATE \qquad \qquad {\bf else}: \#\{There is a cycle finished\}
-  % \STATE \qquad \qquad \qquad \#\{update the length of the longest path reaching this vertex\}
-  \STATE \qquad \qquad \qquad $\kw{r[v] =  \max(r[v], r[s]}$ 
-  \\ \qquad \qquad \qquad \qquad \qquad
-  $\kw{+ \min(\weights_i(v), {flowcapacity}[s])}$ 
-  $ \kw{* (querynum[s] + \qflag_i(v)))}$; 
-  \\
-  \#\{update the length of the longest walk reaching this vertex on this cycle\}
-  \STATE \qquad {\bf return}  $\kw{r[c]}$
-  \STATE  {\bf for} every vertex $v$ in $\vertxs_i$:
-  \STATE  \qquad initialize the $\kw{visited, r, flowcapacity, querynum}$ with the same value at line:2.
-  \STATE  \qquad $\kw{r_{scc} = \max(r_{scc}, dfs(\sccgraph_i, v, \kw{visited} ))}$; 
-  \RETURN  $\kw{r_{scc}}$
-  \end{algorithmic}
-  \end{algorithm}
+ \caption{
+ {Adaptivity Computation on An SCC ({$\kw{\pathsearch_{scc}(c, \sccgraph_i)}$})}
+ \label{alg:adaptscc}
+ }
+ \begin{algorithmic}[1]
+ \REQUIRE 
+ The program $c$, 
+ \\ \qquad
+ An strongly connected component of $\progG(c)$: 
+ $ \kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$
+ % {\bf {$\kw{\pathsearch_{scc}(c, \sccgraph_i)}$}:} 
+ \STATE {\bf init} 
+ \\
+ $\kw{r_{scc}}$: $\scexpr(c)$, initialized $0$, the Adaptivity of this SCC
+ \STATE \qquad {\bf init} 
+ \\ \qquad $\kw{visited} = [0]*|\vertxs_i|$ \#\{a list of length $|\vertxs|$, initialize with $0$ for every vertex.\}
+ \\ \qquad $\kw{r} = [\qflag(v)]* |\vertxs_i|$ : $\scexpr(c)$ List, 
+ \\ \qquad \#\{length $|\vertxs_i|$, initialize with $\qflag(v)$ for every vertex, recording the adaptivity reaching each vertex.\}
+ \\ \qquad $\kw{flowcapacity} = [\infty]* |\vertxs_i|$: $\scexpr(c)$ List, 
+ % INT List of length $|\vertxs|$, initialize MAXINT. 
+ \\ \qquad \#\{length $|\vertxs_i|$, initialize with $\infty$ for every vertex,
+ % \#\{For every vertex, 
+ recording the minimum weight when the walk reaching 
+ that vertex, inside a cycle\}
+ \\ \qquad $\kw{querynum} = [\qflag(v)]* |\vertxs_i|$: $\mathbb{N}$ List,
+ % of length $|\vertxs|$, initialize with $\qflag(v)$ for every vertex. 
+ \\ \qquad \#\{length $|\vertxs_i|$, initialize with $\qflag(v)$ for every vertex, 
+ % \#\{For every vertex, 
+ recording the query numbers when the path reaching 
+ that vertex, inside a cycle\}
+ \STATE {\bf if} $|\vertxs_i| = 1$ and $|\edges_i| = 0$:
+ \STATE \qquad {\bf return} $\qflag(v)$
+ \STATE {\bf def} {$\kw{dfs(G,s,visited)}$}:
+ \STATE \qquad {\bf for} every vertex $v$ 
+ connected by a directed edge from $s$:
+ \STATE \qquad \qquad {\bf if} $\kw{visited}[v] = \efalse$:
+ \STATE \qquad \qquad \qquad \highlight{$\kw{flowcapacity[v] = \min(\weights_i(v), {flowcapacity}[s])}$};
+ \STATE \qquad \qquad \qquad \highlight{$\kw{querynum[v] = querynum[s] + \qflag_i(v)}$};
+ \STATE \qquad \qquad \qquad \highlight{$\kw{r[v] = \max(r[v], flowcapacity[v] \times querynum[v]}) $}; 
+ \STATE \qquad \qquad \qquad $\kw{visited}[v] = 1$; %\#\{mark $v$ as visited\}
+ \STATE \qquad \qquad \qquad $\kw{dfs(G, v, visited)}$;
+ \STATE \qquad \qquad {\bf else}: \#\{There is a cycle finished\}
+ % \STATE \qquad \qquad \qquad \#\{update the length of the longest path reaching this vertex\}
+ \STATE \qquad \qquad \qquad $\kw{r[v] = \max(r[v], r[s]}$ 
+ \\ \qquad \qquad \qquad \qquad \qquad
+ $\kw{+ \min(\weights_i(v), {flowcapacity}[s])}$ 
+ $ \kw{* (querynum[s] + \qflag_i(v)))}$; 
+ \\
+ \#\{update the length of the longest walk reaching this vertex on this cycle\}
+ \STATE \qquad {\bf return} $\kw{r[c]}$
+ \STATE {\bf for} every vertex $v$ in $\vertxs_i$:
+ \STATE \qquad initialize the $\kw{visited, r, flowcapacity, querynum}$ with the same value at line:2.
+ \STATE \qquad $\kw{r_{scc} = \max(r_{scc}, dfs(\sccgraph_i, v, \kw{visited} ))}$; 
+ \RETURN $\kw{r_{scc}}$
+ \end{algorithmic}
+ \end{algorithm}
 
-  This algorithm takes the program, and a strongly connected component, 
-  $\kw{\sccgraph_i}$ of a program's estimated dependency graph $\progG(c)$ as input
+ This algorithm takes the program and a strongly connected component, 
+ $\kw{\sccgraph_i}$ of a program's estimated dependency graph $\progG(c)$ as input
 % to be precise, the input graph is SCC, and 
 and outputs the adaptivity local bound of $\kw{\sccgraph_i}$. 
 For a strongly connected component that contains only one vertex without any edge, it returns the query annotation of this vertex as adaptivity.
 For a strongly connected component containing at least one edge, 
-there are three steps in this algorithm: 1. It first collects all the finite paths in the input graph 2. Then it calculates the adaptivity of every path by a novel adaptivity computation method. 3. The maximal adaptivity among over all paths is the adaptivity of this component in the end. Because the input graph is SCC, when the algorithm starts to traverse from a vertex, it finally goes back to the same vertex.
+there are three steps in this algorithm: 1. It first collects all the finite paths in the input graph 2. Then it calculates the adaptivity of every path by a novel adaptivity computation method. 3. The maximal adaptivity among all paths is the adaptivity of this component in the end. Because the input graph is SCC, when the algorithm starts to traverse from a vertex, it finally goes back to the same vertex.
 In this sense, the paths collected in step 1 are all simple cycles with the same starting and ending vertex. 
-The most interesting part is step 2. It recursively computes the adaptivity upper bound on the fly of paths collecting through a depth first search procedure $\kw{dfs}$ from line: 5-15.
+The most interesting part is step 2. It recursively computes the adaptivity upper bound on the fly of paths collecting through a depth-first search procedure $\kw{dfs}$ from the line: 5-15.
 It designs a novel adaptivity computation method, which guarantees the visiting times of each vertex by its weight and addresses the \textbf{Approximation Challenge}.
 The guarantee is achieved by two special parameters $\kw{flowcapacity}$ and $\kw{querynum}$ and the updating operations in line:7 and line:10.
 % 
@@ -417,17 +409,17 @@ It guarantees
 the visiting times of each vertex on the path reaching a vertex $v$ is no more than 
 the maximum visiting times it can be on a qualified walk by $\kw{flowcapacity[v]}$,
 and 
-in the same time  compute the query length instead of weighted length through 
+at the same time compute the query length instead of the weighted length through 
 $\kw{ querynum[v]}$.
 \end{itemize}
-%  its minimum visiting time, 
+% its minimum visiting time, 
 In this way, we resolve the \textbf{Approximation Challenge} without losing the soundness, formally in Appendix~\ref{apdx:adaptalg_soundness}.
 This step also guarantees the termination through a boolean list, $\kw{visited}$ in line:7 and line:13.
-  
+ 
 
 \textbf{Algorithm Detail Steps}
 The detail steps of $\kw{dfs}$
-from line: 2-15 in Algorithm~\ref{alg:adaptscc}
+from the line: 2-15 in Algorithm~\ref{alg:adaptscc}
 % on how to 
 % use these two special parameters to resolve \textbf{Approximation Challenge}
 is described as follows.
@@ -441,11 +433,9 @@ Line:2 initialize parameters:
 
 2. $\kw{querynum}$ is a list of integer with length $|\vertxs_i(c)|$ and the initial value $\qflag_i(v)$ for every element. 
 For every vertex, 
-% recording the query numbers when the path reaching.
-% in order to 
 it records the total query numbers when the path traverses to this vertex.
 
-3. The $\kw{visited}$ is initialized by $0$ for every element and has length $|\progV(c)_i|$ as well. It is used to guarantee the termination during recursion.
+3. The $\kw{visited}$ is initialized by $0$ for every element and has length $|\progV(c)_i|$ as well. It is used to guarantee termination during recursion.
 
 4. $\kw{r}$ is a list of $\scexpr(c)$ initialized with query annotation for each vertex. For each vertex, it maintains the longest query length when the recursion reaches it.
 
@@ -457,14 +447,14 @@ number of query vertices
 $\kw{querynum}$ so far when the traversing reaches $v$.
 Line:10
 updates the longest query length $\kw{r}$
-alone the path when the traverse arrives vertex $v$ by the operation 
+alone the path when the traverse arrives at vertex $v$ by the operation 
 $\kw{flowcapacity[v] \times querynum[v]}$.
 This computation guarantees: 
 1. The visiting times of each vertex on the walk reaching $v$ is no more than 
 the maximum visiting it can be on this walk;
 2. Only the vertices have annotation $1$ are counted in adaptivity.
-In this way, we accurately approximate a walk using this path and computes the query length of this walk safely.
-This addresses the \textbf{Approximation Challenge} and in the same time without losing the soundness.
+In this way, we accurately approximate a walk using this path and compute the query length of this walk safely.
+This addresses the \textbf{Approximation Challenge} and at the same time without losing the soundness.
 
 At line: 14, if this vertex $v$ is visited, 
 i.e., the traverse of this path goes back to its starting point,
@@ -473,27 +463,27 @@ we only update the longest query length $\kw{r}[v]$ for $v$ in the same way as L
 However, we do not update
 % Non-updating the 
 $\kw{querynum}$ and $\kw{flowcapacity}$ in this case.
-This improves the accuracy and still guarantees the soundness, formally by Lemma~\ref{thm:adaptalg_soundness}. We also discuss how these computations guarantee the soundness and improves the accuracy in the following example.
+This improves the accuracy and still guarantees the soundness, formally by Lemma~\ref{thm:adaptalg_soundness}. We also discuss how these computations guarantee soundness and improve accuracy in the following example.
 
 \textbf{Example}
 The example program in Figure~\ref{fig:alg_adaptsearch_nestedwhile} illustrates how these special
-operations computes accurate and sound adaptivity for the program.
+operations compute accurate and sound adaptivity for the program.
 $\pathsearch$ first find the SCC contains vertices $y^6$ and $x^9$, $\kw{SCC} = (\vertxs, \edges)$ where $\vertxs = \{y^6, x^9\}$ and
 $\edges = \{(y^6, y^6), (x^9, x^9), (x^9, y^6), (y^6, x^9)\}$.
 Then $\kw{\pathsearch_{SCC}(SCC, nestedW)}$ takes this SCC as input.
-When start from vertex $y^6$, it first finds the path $y^6 \to y^6$. By updating parameters through Line:10 and 14, it computes the longest query length for this path as 
+When starting from vertex $y^6$, it first finds the path $y^6 \to y^6$. By updating parameters through Line:10 and 14, it computes the longest query length for this path as 
 $k$.
 As highlighted in Line:14, we do not update
 $\kw{querynum}$ and $\kw{flowcapacity}$ when we identify the simple cycle $y^6 \to y^6$.
-This improves the accuracy and still guarantees the soundness.
+This improves the accuracy and still guarantees soundness.
 Because in the following recursions, we continuously search for walks heading out from $y^6$, 
-the $\kw{flowcapacity}$ of this simple cycle does not restrict the walks going out of this vertex that do not interleave with the cycle $y^6 \to y^6$.
+the $\kw{flowcapacity}$ of this simple cycle does not restrict the walks going out of this vertex that does not interleave with the cycle $y^6 \to y^6$.
 However, if we keep updating the minimum weight, then we
-%  are restricting 
+% are restricting 
 restrict the visiting times of vertices on a walk by
 using the minimum weight of vertices that do not on this walk.
-%  , it is unsound anymore.
-This leads to the unsoundness in computing adpativity.
+% , it is unsound anymore.
+This leads to the unsoundness in computing adaptivity.
 Concretely, if we update the $\kw{flowcapacity}[y^6]$ as $k$ after visiting $y^6$ the second time 
 on this walk,
 % the walk $y^6 \to y^6$,
@@ -501,7 +491,7 @@ and continuously visit $x^9$,
 then the $\kw{flowcapacity[k]}$ is 
 updated as $\min(k, k^2)$.
 So
-%  which 
+% which 
 % restricting 
 the visiting times of $x^9$ is restricted by $k$ on the walk $y^6 \to y^6 \to x^9$.
 This restriction excludes the finite walk $y^6 \to y^6 \to x^9 \to x^9$ where $y^6$ and $x^9$ visited by $k^2$ times
@@ -511,12 +501,12 @@ a qualified walk, and exactly the longest walk we aim to find. So, by Non-updati
 visiting $y$ again, we guarantee that the visiting times of vertices on every searched walk will not be restricted by weights not on this walk,
 i.e., the soundness.
 Line: 15 returns the adaptivity heading out from its input vertex.
-Line:16-18 applies $\kw{dfs}$ on every vertex of this SCC and 
+Line 16-18 applies $\kw{dfs}$ on every vertex of this SCC and 
 computes the adaptivity of this SCC by taking the maximum 
 % adaptivity reaching every vertex on this SCC.
 value.%
 The soundness is formally guaranteed in Lemma~\ref{lem:sound_adaptalg_scc} in Appendix~\ref{apdx:adaptalg_soundness}.
 \input{chapters/adapt/examples/nestedWhile_alg}
-    %
+ %
 
-          %
+ %
