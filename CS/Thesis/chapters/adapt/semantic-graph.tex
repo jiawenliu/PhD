@@ -1,47 +1,35 @@
-We can now define the \emph{semantics-based dependency graph} for a well-formed program $c$. We want this graph to carry both quantitative sub-property and the  reachability sub-property (via \emph{variable may-dependency}) information. 
-
-% There are some notations we want to remind.
-% The labeled variables of $c$,
-% $\lvar(c) \subseteq \mathcal{LV}$ contains all the variables in $c$'s assignment commands, with the command labels as superscripts. 
-% The set of query-associated variables (in query request assignments),
-% $\qvar(c) \subseteq \lvar(c)$ contains all labeled variables in $c$'s query requests. Both of them are defined in Section~\ref{sec:language-syntax} in Definition~\ref{def:lvar} and~\ref{def:qvar}.
-% The set of initial traces of $c$,
-% $\ftdom_0(c) \subseteq \ftdom$
-% contains all the initial trace of $c$.
-% Each initial trace,  $\trace_0 \in \ftdom_0(c)$ contains the initial values of all input variables of $c$. 
-% For instance, the initial trace of $\kw{twoRounds(k)}$ example contains the initial value of the input variable $k$.
+We can now define the \emph{semantics-based dependency graph} for a well-formed program $c$. We want this graph to carry both the quantitative sub-property and the reachability sub-property (via \emph{variable may-dependency}). 
 
 \paragraph{Query Variables.}
 In order to track the adaptivity with respect to the query,
 we also define the set of query variables for a program $c$, $\qvar(c)$ as below.
-It is the set of query-associated variables (in query request assignments) contains all labeled variables in $c$'s query requests, and $\qvar(c) \subseteq \lvar(c)$.
-% it is the set of variables set to the result of a query in the program
+It is the set of query-associated variables (in query request assignments) that contains all labeled variables in $c$'s query requests, and $\qvar(c) \subseteq \lvar(c)$.
 % as below.
-%  formally in Definition~\ref{def:qvar}.
+% formally in Definition~\ref{def:qvar}.
 \begin{defn}[Query Variables a program $c$, $\qvar(c)$] 
-  \label{def:qvar}
+ \label{def:qvar}
 Given a program $c$, its query variables 
 $\qvar(c)$ is the set of variables set to the result of a query in the program.
 It is defined as follows:
 {
 \[
-  \qvar(c) \triangleq
-  \left\{
-  \begin{array}{ll}
-      \{\}                  
-      & {c} = \clabel{\assign x \expr}^{l} 
-      \\
-      \{{x}^l\}                  
-      & {c} = \clabel{\assign x \query(\qexpr)}^{l} 
-      \\
-      \qvar(c_1) \cup \qvar(c_2)  
-      & {c} = {c_1};{c_2}
-      \\
-      \qvar(c_1) \cup \qvar(c_2) 
-      & {c} =\eif(\clabel{\bexpr}^{l}, c_1, c_2) 
-      \\
-      \qvar(c_w)
-      & {c}   = \ewhile \clabel{\bexpr}^{l} \edo (c_w)
+ \qvar(c) \triangleq
+ \left\{
+ \begin{array}{ll}
+ \{\} 
+ & {c} = \clabel{\assign x \expr}^{l} 
+ \\
+ \{{x}^l\} 
+ & {c} = \clabel{\assign x \query(\qexpr)}^{l} 
+ \\
+ \qvar(c_1) \cup \qvar(c_2) 
+ & {c} = {c_1};{c_2}
+ \\
+ \qvar(c_1) \cup \qvar(c_2) 
+ & {c} =\eif(\clabel{\bexpr}^{l}, c_1, c_2) 
+ \\
+ \qvar(c_w)
+ & {c} = \ewhile \clabel{\bexpr}^{l} \edo (c_w)
 \end{array}
 \right.
 \]
@@ -55,28 +43,31 @@ It is defined as follows:
 Since we want to define the \emph{adaptivity} as a \emph{quantitative-reachability} hyper-property through constructing the semantics-based dependency graph,
 % To define the semantics-based dependency graph, 
 the \emph{variable may-dependency} relation and the query variables are not enough.
-We also want to have this graph carrying the \emph{quantitative} sub-property.
-In this sense, we define the \emph{quantitative} sub-property of \emph{adaptivity} as the 
-weight of each vertex  on this graph, i.e., every labeled variable in a program.
+We also want to have the \emph{quantitative} sub-property encoded on this graph.
+In this sense, we define 
+% the \emph{quantitative} sub-property of \emph{adaptivity} as 
+the weight of
+% weight of each vertex on this graph, i.e., 
+every labeled variable in a program as follows.
 
-\begin{defn}[Weight of Labeled Variables]
-  \label{def:lvar_weight}
-$f({c}, x^l): \ftdom_0(c) \to (\mathbb{N})$ is a \emph{weight function} of labeled
+\begin{defn}[Weight of Labeled Variable]
+ \label{def:lvar_weight} For ta labeled variable $x^l$ in a program $c$,
+$f({c}, x^l): \ftdom_0(c) \to (\mathbb{N})$ is a \emph{weight function} of this labeled
 variable $x^l$ if and only if,
 \[
-  \begin{array}{l}
-    \forall \trace_0 \in \ftdom_0(c), \trace' \in \ftdom, l' \sthat 
-  \\ \qquad 
-  \config{{c}, \trace_0} \to^{*} 
-  \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace'} 
-  \land w(\trace_0) = \vcounter(\trace', l) \}.  
-    \end{array}
-    \]
+ \begin{array}{l}
+ \forall \trace_0 \in \ftdom_0(c), \trace' \in \ftdom, l' \sthat 
+ \\ \qquad 
+ \config{{c}, \trace_0} \to^{*} 
+ \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace'} 
+ \land w(\trace_0) = \vcounter(\trace', l) \}. 
+ \end{array}
+ \]
 \end{defn}
 % A weight function $w \in \traceW(c)$ is a function that 
 Specifically, for every initial trace $\trace_0 \in \ftdom_0(c)$,
 the weight for a labeled variable $x^l$ under this initial trace, $w(\trace_0)$
-gives the number of times that the assignment command with the label $l$ is evaluated.
+gives the number of times that the command with the label $l$ is evaluated.
 % the corresponding vertex $x^l$ is visited. 
 % For each vertex $x^l$, 
 In other words, it tracks for each vertex $x^l$ its visiting times 
@@ -111,55 +102,55 @@ Then, we use the \emph{variable may-dependency} relation, the query variables an
 of each labeled variable to 
 define the semantics-based dependency graph for a well-formed program,
 and we define as below the
-weight of each vertex on this graph  as the \emph{quantitative} sub-property.
-%  of \emph{adaptivity} as the 
+weight of each vertex on this graph as the \emph{quantitative} sub-property.
+% of \emph{adaptivity} as the 
 \begin{defn}[Semantics-based Dependency Graph]
 \label{def:trace_graph}
 For a well-formed program ${c} \in \cdom$,
-its \emph{semantics-based dependency graph} has for components as follows,
+its \emph{semantics-based dependency graph} has four components as follows,
 \[
-  \traceG({c}) \triangleq (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c})).
+ \traceG({c}) \triangleq (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c})).
 \]
-Each of the four components is defined as follows,
+Each component is defined as below,
 {\small
 \[
 \begin{array}{lll}
-  \text{Vertices} &
-  \traceV({c}) & := \left\{ 
-  x^l
-  ~ \middle\vert ~ x^l \in \lvar(c)
-  \right\}
-  \\
-  \text{Edges} &
-  \traceE({c}) & := 
-  \left\{ 
-  (x^i, y^j) 
-  ~ \middle\vert ~
-  x^i, y^j \in \lvar(c) \land \vardep(x^i, y^j, c) 
-  \right\}
-  \\
-  \text{Weights} &
-  \traceW({c}) & := 
-  \{ 
-  (x^l, w) 
-  ~ \vert ~ 
-  w : \ftdom_0(c) \to \mathbb{N}
-  \land
-  x^l \in \lvar(c) \land
-  \\ & & \qquad 
-  \forall \trace_0 \in \ftdom_0(c), \trace' \in \ftdom, l' \sthat 
-  \\ & & \qquad 
-  \config{{c}, \trace_0} \to^{*} 
-  \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace'} 
-  \land w(\trace_0) = \vcounter(\trace', l) \}  
-  \\
-  \text{Query} &
-  \traceF({c}) & := 
-  \big\{(x^l, n)  
-  ~ \vert ~  x^l \in \lvar(c) 
-  \\ \text{Annotations} & & \qquad
-  \land n = 1 \Leftrightarrow x^l \in \qvar(c) \land n = 0 \Leftrightarrow  x^l \notin \qvar(c)
-  \big\},
+ \text{Vertices} &
+ \traceV({c}) & := \left\{ 
+ x^l
+ ~ \middle\vert ~ x^l \in \lvar(c)
+ \right\}
+ \\
+ \text{Edges} &
+ \traceE({c}) & := 
+ \left\{ 
+ (x^i, y^j) 
+ ~ \middle\vert ~
+ x^i, y^j \in \lvar(c) \land \vardep(x^i, y^j, c) 
+ \right\}
+ \\
+ \text{Weights} &
+ \traceW({c}) & := 
+ \{ 
+ (x^l, w) 
+ ~ \vert ~ 
+ w : \ftdom_0(c) \to \mathbb{N}
+ \land
+ x^l \in \lvar(c) \land
+ \\ & & \qquad 
+ \forall \trace_0 \in \ftdom_0(c), \trace' \in \ftdom, l' \sthat 
+ \\ & & \qquad 
+ \config{{c}, \trace_0} \to^{*} 
+ \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace'} 
+ \land w(\trace_0) = \vcounter(\trace', l) \} 
+ \\
+ \text{Query} &
+ \traceF({c}) & := 
+ \big\{(x^l, n) 
+ ~ \vert ~ x^l \in \lvar(c) 
+ \\ \text{Annotations} & & \qquad
+ \land n = 1 \Leftrightarrow x^l \in \qvar(c) \land n = 0 \Leftrightarrow x^l \notin \qvar(c)
+ \big\},
 \end{array},
 \]
 }
@@ -171,64 +162,19 @@ is \emph{well-formed} if and only if $ \{x^l \ |\ (x^l,w)\in \traceW({c})\} = \t
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% The Explanation of Dependency Graph %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Below we discuss in detail the four components.
 \begin{enumerate}
-    \item The vertices $\traceV({c})$ of a program $c$ are all its labeled variables, $\lvar(c)$ which are statically collected.
-    \item $\traceF(c)$ contains the \emph{query annotation} for 
-    every vertex $x^l \in \traceV(c)$. It indicates whether $x^l$ comes from a query request (1) or not (0) by checking if the labeled variable $x^l$ of the vertex is in $\qvar(c)$.
-    \item Edges in $\traceE(c)$ are all directed.
-    They are built from the  \emph{variable may-dependency} relation, i.e. $\vardep(x^i, y^j, c)$ in Definition~\ref{def:var_dep} between two labeled variables.
-    There is an edge from $y^j$ to $x^i$ if and only if they are in the \emph{variable may-dependency} relation, $\vardep(x^i, y^j, c)$. 
-    This is the key definition in order to formalize the intuitive \emph{adaptivity}. We use this to ingredient the \emph{reachability} sub-property of \emph{adaptivity} into this graph.
-    \item 
+ \item The vertices $\traceV({c})$ of a program $c$ are all its labeled variables, $\lvar(c)$ which are statically collected.
+ \item $\traceF(c)$ contains the \emph{query annotation} for 
+ every vertex $x^l \in \traceV(c)$. It indicates whether $x^l$ comes from a query request (1) or not (0) by checking if the labeled variable $x^l$ of the vertex is in $\qvar(c)$.
+ \item Edges in $\traceE(c)$ are all directed.
+ They are built from the \emph{variable may-dependency} relation, i.e. $\vardep(x^i, y^j, c)$ in Definition~\ref{def:var_dep} between two labeled variables.
+ There is an edge from $y^j$ to $x^i$ if and only if they are in the \emph{variable may-dependency} relation, $\vardep(x^i, y^j, c)$. 
+ This is the key definition in order to formalize the intuitive \emph{adaptivity}. We use this to ingredient the \emph{reachability} sub-property of \emph{adaptivity} into this graph.
+ \item 
 The weight function in $\traceW(c)$ for each vertex (also a labeled variable), $w : \ftdom_0(c) \to \mathbb{N}$
 maps from an initial trace $\trace_0 \in \ftdom_0(c)$ to a natural number as defined in Definition~\ref{def:lvar_weight}.
-% \begin{defn}[Weight of Labeled Variables]
-%   \label{def:lvar_weight}
-% $f({c}, x^l): \ftdom_0(c) \to (\mathbb{N})$ is a \emph{weight function} of labeled
-% variable $x^l$ if and only if,
-% \[
-%   \begin{array}{l}
-%     \forall \trace_0 \in \ftdom_0(c), \trace' \in \ftdom, l' \sthat 
-%   \\ \qquad 
-%   \config{{c}, \trace_0} \to^{*} 
-%   \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace'} 
-%   \land w(\trace_0) = \vcounter(\trace', l) \}.  
-%     \end{array}
-%     \]
-% \end{defn}
-% % A weight function $w \in \traceW(c)$ is a function that 
-% Specifically, for every initial trace $\trace_0 \in \ftdom_0(c)$,
-% the weight for a labeled variable $x^l$ under this initial trace, $w(\trace_0)$
-% gives the number of times that the assignment command with the label $l$ is evaluated.
-% % the corresponding vertex $x^l$ is visited. 
-% % For each vertex $x^l$, 
-% In other words, it tracks for each vertex $x^l$ its visiting times 
-% % (i.e., the evaluation times of the command with the label $l$)
-%  when the program $c$ is executing under the initial trace $\trace_0$.
-%  The weight functions are total and with range $\mathbb{N}$. 
-%  As discussed above in Definition~\ref{def:adaptfun-wfprog}, since a well-formed program $c$ is always terminating, we have
-%  for any initial trace $\trace_0 \in \ftdom_0(c)$ a terminating execution 
-%  $\config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $
-%  which produce a finite execution trace $\trace \in \ftdom$.
-% The visiting times are computed by the counter operator $\vcounter(\trace', l)$
-% by counting the occurrence of the label $l$ in $\trace'$.
-% As an instance, in the semantics-based dependency graph of $\kw{twoRounds}$ in Figure~\ref{fig:overview-example}(b), the weight of the vertex $x^3$ is 
-% $\lambda \trace_0 \sthat \env(\trace_0) k$, i.e.
-% a function of type $\ftdom_0(\kw{twoRound(k)}) \to \mathbb{N}$.
-% $\env(\trace_0) k$ fetch the initial value assigned to variable $k$ from the initial trace $\trace_0$.
-% Specifically, 
-% % given input $\trace_0$, 
-% we execute the $\kw{twoRound(k)}$ program under input $\trace_0$ as $\config{\kw{twoRound(k)}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $.
-% Then $w_k(\trace_0)$ outputs the occurrence times of the label $3$ in $\trace'$, which is always
-% the value of $k$ in the initial trace, i.e., $\env(\trace_0) k$.
-% So we have its weight function $\lambda \trace_0 \sthat \env(\trace_0) k$ always equal to the 
-% occurrence times of the label $3$ in the execution trace of $\kw{twoRound(k)}$.
-% Notice that weight functions are total and with range $\mathbb{N}$. 
-% This means that if a program $c$ has some non-terminating behavior, the set $\traceW(c)$ will be empty.
-% As discussed above in Definition~\ref{def:adaptfun-wfprog},
-% a well-formed program $c$ always terminates when executing under any initial trace $\trace_0 \in \ftdom_0(c)$.
-% % only graphs which have a weight for every vertex with the terminating programs. 
-% So the set $\traceW(c)$ will not be empty.
+
 \end{enumerate}
-The main novelty of  the semantics-based dependency graph is the combination of the quantitative and dependency information. 
+The main novelty of the semantics-based dependency graph is the combination of the quantitative and reachability sub-properties. 
 It can tell both the dependency between queries via the directed edge, and the times they depend on each other via the weight.
-In this sense, this graph captures both quantitative perspective (via weight) and the reachability perspective (via dependency) information for adaptivity. Then we can utilize them, together with the query annotation to precisely define the \emph{adaptivity} concept.
+Then we can utilize them, together with the query annotation to precisely define the \emph{adaptivity} for a program.
+
