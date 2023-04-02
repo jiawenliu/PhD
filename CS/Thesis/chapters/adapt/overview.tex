@@ -41,7 +41,7 @@ The query outside the loop corresponds to the second phase and computes an appro
 
 This example is intuitively 2-rounds adaptive since we have two clearly distinguished phases, and the queries that we ask in the first phase do not depend on each other (the query $\chi[j] \cdot \chi[k]$ at line $3$ only relies on the counter $j$ and input $k$), while the last query 
 (at line 6) depends on the results of all the previous queries. 
-However, capturing this concept formally is surprisingly difficult. The difficulty comes from the fact that a query can depend on the result of another query in multiple ways, by means of data dependency or control flow dependency.
+However, capturing this concept formally is surprisingly difficult. The difficulty comes from the fact that a query can depend on the result of another query in multiple ways, by means of data dependency or control dependency.
 
 \subsection{Adaptivity Definition}
 \label{sec:adaptivity-informal}

@@ -171,9 +171,9 @@ the average value in the $3$rd column of $\chi$.
 
 Query expressions also combine access to the database with other expressions, 
 for example, 
-$\chi[3] + 5$ represents a query that asks the value from column 3 of each database raw $\chi$, 
-adds 5 to each of these values, and then computes the average of these values as follows, where $n$ is 
-database $\chi$'s number of raw.
+$\chi[3] + 5$ represents a query that asks the value from the $3^{rd}$ column of each database raw $\chi$, 
+adds $5$ to each of these values, and then computes the average of these values as follows, where $n$ is 
+database $\chi$'s number of rows.
 %
 \[
   \query(\chi[3] + 5) = \frac{1}{n}\sum\limits_{i = 1}^{n}\chi_i[3] + 5
@@ -190,7 +190,7 @@ for query requests which can be used to interrogate the database and compute the
 % The server is used as external API for computing the results over the hidden database $\chi$.
 Each command is annotated with a label $l$, which is a natural number to record
 the location of each command, so that we can uniquely identify them.
-The label has to be added by programmer start from $0$
+The label has to be added for every command from the first line to the last line starting from $0$ by a programmer.
 We use the label $\lin$ as the labels of the variables in an initial trace if a program has input variables,
 and the label $\lex$ for annotating the exit of a program when we perform the program analysis later.
 
@@ -201,8 +201,8 @@ and the label $\lex$ for annotating the exit of a program when we perform the pr
   All the free variables
   showing up in $c$ such that they are never defined before using, are actually the input variables of this program.
   We denote by $\inpvardom$ the universe of all input variables and $\kw{V_{\lin}}(c)$ the set of input variables in a given program $c$.
-  We compute the input variable by taking sup of the free variables in every expression
-  and subtract the variables that are assigned.
+  We compute the input variable by taking the union of the free variables in every expression
+  and subtract the set of variables that are assigned in commands.
  
 \paragraph{Labeled Variables}
 The labeled variables and assigned variables are set of variables annotated by a label. 

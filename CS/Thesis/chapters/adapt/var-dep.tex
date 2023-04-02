@@ -3,14 +3,14 @@ I am interested in defining a notion of dependencies between program variables s
 % \begin{enumerate}
 For example, in the program 
 \[c_1 =[\assign{x}{\query(\chi[2])}]^1 ;[\assign{y}{\query(\chi[3] + x)}]^2\]
-the query $\query(\chi[3] + x)$  depends on the query $\query(\chi[2]))$ through a \emph{value dependency} via  $x^1$. Though $x$ is not used for accessing the data column, we still claim there is a value dependency between
+the query $\query(\chi[3] + x)$  depends on the query $\query(\chi[2]))$ through a \emph{value dependency} via  $x^1$. Though $x$ is not used as the index of $\chi$ for accessing certain column, we still claim there is a value dependency between
 these two queries.
 \\
 Conversely, in the program
 \[c_2 = [\assign{x}{\query(\chi[1])}]^1 ; \eif( [x > 2]^2 , [\assign{y}{\query(\chi[2])}]^3, [\eskip]^4 )\] 
 the query $\query(\chi[2])$ 
 depends on the query $\query(\chi[1])$ via the \emph{control dependency} of the guard of the if command involving the labeled variable $x^1$.
-I do not have this dependency in our running example, while we have few examples in Section~\ref{sec:adapt-example} have this \emph{control dependency} between queries.
+Our running example does not have if control in while body, while we have few examples in Section~\ref{sec:adapt-example} showing the \emph{control dependency} between queries.
 
 To define dependency between program variables I will consider two events that are generated from the same command, hence they have the same variable name or boolean expression and label, but have either different value or different query expression, captured by the following definition. 
 
@@ -137,9 +137,9 @@ Then I define the \emph{event may-dependency} between events based on the \emph{
 \begin{defn}[Event May-dependency]
 \label{def:event_dep}
 An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment event $\event_1 \in \eventset^{\asn}$ in a program ${c}$  
-% with a hidden database $D$ and 
+with a hidden database $D$ and 
 with a witness trace $\trace \in \ftdom$,
-$\eventdep(\event_1, \event_2, [\event_1] \tracecat \trace \tracecat [\event_2], c)$ if and only if
+$\eventdep(\event_1, \event_2, [\event_1] \tracecat \trace \tracecat [\event_2], c, D)$ if and only if
 \begin{subequations}
 \begin{align}
   &  
@@ -225,6 +225,9 @@ and this guard must be evaluated into two different values ($\event_b$ and $\neg
 I show in the following three examples to illustrate the event may-dependency relation. 
 
 \textbf{Example I.} In the first example, we have two assignment commands, but the second one is a query request.
+\[
+  \clabel{\assign{x}{1}}^0;\clabel{\assign{y}{\query(\chi[x]) \times \chi[0]}}^1.
+\]
 I want to highlight in this example, the dependency relation is defined by analyzing whether the choice of the query request is affected but not the answer of the query request.
 With an arbitrary initial trace, execution of this program generates two events $\event_1 = (x, 0, 1, \bullet)$ and $\event_2 = (y, 1, v, \chi[1] \times \chi[0])$
 and the witness execution trace $[(x, 0, 1, \bullet), (y, 1, v, \chi[1] \times \chi[0])]$,
@@ -234,12 +237,12 @@ Then we have another execution trace
 $[(x, 0, 0, \bullet), (y, 1, v', \chi[0] \times \chi[0])]$.
 Since $\event_2' = (y, 1, v', \chi[0] \times \chi[0])$ and  $\chi[0] \times \chi[0] \neq_q \chi[1] \times \chi[0]$
 by Definition~\ref{def:query_equal}.
-Then there is an event may-dependency relation, $\eventdep(\event_1, \event_2, [(x, 0, 1, \bullet), (y, 1, 0, \chi[1] \times \chi[0])], c)$.
-\[
-  \clabel{\assign{x}{1}}^0;\clabel{\assign{y}{\query(\chi[x]) \times \chi[0]}}^1
-\]
+Then there is an event may-dependency relation, $\eventdep(\event_1, \event_2, [(x, 0, 1, \bullet), (y, 1, 0, \chi[1] \times \chi[0])], c, D)$.
 
 \textbf{Example II.} In the following example similar to the previous one, the second query request command is $\clabel{\assign{y}{\query(\chi[x]) \times 0}}^1$.
+\[
+  \clabel{\assign{x}{1}}^0;\clabel{\assign{y}{\query(\chi[x]) \times 0}}^1
+\]
 Now with a similar witness execution trace $[(x, 0, 1, \bullet), (y, 1, v, \chi[1] \times 0)]$ and  two events $\event_1 = (x, 0, 1, \bullet)$ and $\event_2 = (y, 1, v, \chi[1] \times 0)$
 where $v = \query(\chi[1] \times 0)$ is the query answer computed by unknown mechanism using hidden database,
 we cannot find any $\event_1'$ that affect the choice of $\event_2$.
@@ -247,12 +250,13 @@ Because for any value $v$ where $\event_1' = (x, 0, v, \bullet)$,
 we always have the execution trace $[(x, 0, v, \bullet), (y, 1, v', \chi[v] \times 0)]$ and
 have $\chi[v] \times 0 =_q \chi[1] \times 0$ by Definition~\ref{def:query_equal}.
 So $\event_1$ and $\event_2$ are not in this event may-dependency relation in this definition.
-\[
-  \clabel{\assign{x}{1}}^0;\clabel{\assign{y}{\query(\chi[x]) \times 0}}^1
-\]
 
-\textbf{Example III.} In the last example with if command, 
-since the mechanism is unknown, the answer of the first query request command  $\clabel{\assign{x}{\query(\chi[1] \emax 1 )}}^0$, could be different.
+\textbf{Example III.} The last example has if command.
+\[
+  \clabel{\assign{x}{\query(\chi[1] \emax 1 )}}^0;
+  \eif (\clabel{0 < x}^1, \clabel{\assign{y}{\query(\chi[2])}}^2, \clabel{\eskip}^3)
+\]
+Since the mechanism is unknown, the answer of the first query request command  $\clabel{\assign{x}{\query(\chi[1] \emax 1 )}}^0$, could be different.
 Also, the answer of the first query in $x$ is used in the guard of if command, and 
 $x$ smaller than $0$ or not decide whether the second query request command $\clabel{\assign{y}{\query(x) \times 0}}^2$ is executed.
 In this sense, intuitively the choice of the second query 
@@ -266,10 +270,6 @@ Then by modifying $\event_1 $ into $(x, 0, 0, \chi[1] \emax 1)$,
 there is another execution trace $[(x, 0, v, \chi[1] \emax 1), (0 > x, 1, \efalse, \bullet), \eskip]$.
 Since $\event_2 $ disappeared in the second execution trace,
 our event may-dependency definition captures this dependency relation.
-\[
-  \clabel{\assign{x}{\query(\chi[1] \emax 1 )}}^0;
-  \eif (\clabel{0 < x}^1, \clabel{\assign{y}{\query(\chi[2])}}^2, \clabel{\eskip}^3)
-\]
 
       
 I can now extend the dependency relation to variables by considering all the assignment events generated during the program’s execution. 
@@ -302,7 +302,10 @@ Notice that in the definition above I can also have that the two variables are t
 this allows us to capture self-dependencies.
 
 \textbf{Example I.}
-Here is an example to better understand this definition.
+Below is an example to better understand this definition.
+\[
+  \clabel{\assign{x}{0}}^0;\clabel{\assign{y}{x}}^1.
+\]
 In this example we have two assignment commands without query request as follows. 
 Intuitively, result of the first command is always $0$ and same for the second command,
 and the second command depends on the constant $0$ rather than variable $x$.
@@ -318,6 +321,3 @@ $[(x, 0, 1, \bullet), (y, 1, 1, \bullet)]$.
 Now we have $\event_2' = (y, 1, 1, \bullet)$ and $\diff(\event_2, \event_2')$ by Definition~\ref{def:diff}.
 Then there is an event may-dependency relation 
 between $\event_1$ and $\event_2$ by Definition~\ref{def:event_dep}.
-\[
-  \clabel{\assign{x}{0}}^0;\clabel{\assign{y}{x}}^1.
-\]

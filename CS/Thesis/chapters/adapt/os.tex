@@ -77,60 +77,13 @@ The concatenation preserves the order of every element in the two traces.
   \left\{
   \begin{array}{ll} 
     \trace_1 & \trace_2 = [] \lor \trace_1 \in \inftdom \\
-    ((\trace_1 :: \event)  \tracecat \trace_2') & \trace_1 \in \ftdom \land \trace_2 = [\event] \tracecat \trace_2'
+    \trace_2 & \trace_1 = [] \lor \trace_2 \in \inftdom \\
+    ((\trace_1   \tracecat \trace_2'):: \event) & \trace_1 \in \ftdom  \land \trace_2 \in \ftdom  \land \trace_2 = \trace_2' :: \event
     % \trace_2 &  \trace_2 \in \inftdom \\
   \end{array}
   \right.
   \]
   \end{defn}
-
-% We define \emph{counter} $\vcounter : \ftdom \to \mathbb{N} \to \mathbb{N}$ to count the 
-% occurrence of a label in a trace,
-% % whose behavior is defined 
-% formally as follows in Definition~\ref{def:trace_cnt}.
-%   \begin{defn}[Counter $\vcounter : \inftdom \to \mathbb{N} \to \mathbb{N}$]
-%     \label{def:trace_cnt}
-%     Given a trace $\trace \in \ftdom$ and a label $l$, the occurrence of $l$ in $\trace$ is computed by
-%     $\vcounter(\trace, l)$ as follows.
-%     \[
-%       \begin{array}{ll}
-%       \vcounter(\trace :: (\_, l, \_, \_), l ) \triangleq \vcounter(\trace, l) + 1
-%       &
-%       \vcounter(\trace  ::(b, l, v, \bullet), l) \triangleq \vcounter(\trace, l) + 1
-%       \\
-%       \vcounter(\trace  :: (x, l, v, \qval), l) \triangleq \vcounter(\trace, l) + 1
-%       &
-%       % \vcounter(\trace :: (\_, l', \_, \_), l ) \triangleq \vcounter(\trace, l), l' \neq l 
-%       % &
-%       \vcounter(\trace  :: (x, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
-%       \\
-%       \vcounter(\trace  :: (b, l', v, \bullet), l) \triangleq \vcounter(\trace, l), l' \neq l
-%       &
-%       \vcounter(\trace  :: (x, l', v, \qval), l) \triangleq \vcounter(\trace, l), l' \neq l
-%       \\
-%       \vcounter({[]}, l) \triangleq 0
-%       \end{array}
-%       \]
-% \end{defn}
-
-
-%
-
-
-  %
-% A \emph{trace} can be regarded as the program history, 
-% which records all the evaluations for assignment commands and guards in $\eif$ and $\ewhile$ command.
-% This includes queries asked by the analyst during the execution of the program as well. 
-% I collect the trace with a trace-based operational semantics based on transitions 
-% of the form $ \config{c, \trace} \to \config{c', \trace'} $. 
-% It states that a configuration $\config{c, \trace}$,
-% which consists of a command $c$ to be evaluated and a starting trace $\trace$, 
-% evaluates to another configuration with the trace updated along with the evaluation of the command $c$ to the normal form of the command $\eskip$.
-% %
-% If a program $c$ is non-terminating, it produces an infinite trace from $\inftdom $. 
-% % In the rest of \redd{PART \romannum{1}}, we rule out this situation and consider as well-formed only the finite trace and the terminating programs.
-
-% Some useful operators are defined below w.r.t. the finite traces.
 
 %  
 \paragraph{Environment}
@@ -325,15 +278,13 @@ The rules for if and while both have two versions,
 when the boolean expressions in the guards are evaluated to true and false, respectively. 
 In these rules, the evaluation of the guard generates a testing event and the trace is updated as well by appending this event.
 
-The only rule that is non-standard is the $\rname{query}$ rule. When evaluating a query, the query expression $\qexpr$ is first simplified to its normal form $\alpha$ using an evaluation relation 
+The only rule that is non-standard is the $\rname{query}$ rule. When evaluating a query, the query expression $\qexpr$ is first simplified to its normal form $\qval$ using an evaluation relation 
 $\config{\trace, \qexpr} \qarrow \qval$. 
-Then normal form $\qval$ characterize the linear query that is run against the database. 
-The query result $v$ is the expected value of the function $\lambda \chi.\qval$ applied to each row of the dataset. 
-We summarize this process with the notation $\query(\qval) = v$ which we use in the rule $\rname{query}$. 
-$\query(\qval)$ returns the $\infty$ if the query request is invalid, such as accessing a column that is outside the column range of the hidden database.
-Once the answer of the query is computed, the rules record all the needed information in the trace. 
- 
-The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval$ is defined by the following rules which reduce a query expression to its normal form.
+The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval$ is defined by the following rules.
+I want to highlight here, these  evaluation rules do not compute the query answer but only reduce a query expression to its normal form.
+The normal form $\qval$ characterizes the linear query that is run against a hidden database through an intermediate mechanism.
+For example, a query expression $\chi[x] - \chi[x]$ with a trace $\trace = [(x, 0, 1, \bullet)]$
+is evaluated into the query value of normal form $\chi[1] - \chi[1]$.
 {\small
 \begin{mathpar}
 \inferrule{ 
@@ -366,6 +317,12 @@ The query expression evaluation relation  $\config{\trace, \qexpr} \qarrow \qval
 }
  \end{mathpar}
  }
+
+The query result $v$ is the expected value of the function $\lambda \chi.\qval$ applied to each row of the dataset. 
+We summarize this process with the notation $\query(\qval) = v$ which we use in the rule $\rname{query}$. 
+$\query(\qval)$ returns the $\infty$ if the query request is invalid, such as accessing a column that is outside the column range of the hidden database.
+Once the answer of the query is computed, the rules record all the needed information in the trace. 
+ 
 
  As usual, we will use $\to^*$ for the reflexive and transitive closure of $\to$. 
  If $\config{c, \trace_0} \rightarrow^{*} \config{\clabel{\eskip}^l, \trace_0 \tracecat \trace}$,
@@ -405,7 +362,7 @@ We consider as well-formed only the program that has only terminating executions
   \label{def:adaptfun-wfprog}  
   A program $c$ is a well-formed program if and only if
    its execution terminates
-  under arbitrary initial trace. We use $\cdom$ to denote the set of all well-formed program.
+  under arbitrary initial trace and hidden database. We use $\cdom$ to denote the set of all well-formed program.
   \[
     \forall c \sthat c \in \cdom \iff 
     \forall \trace_0 \in \ftdom_0(c) \sthat \exists \trace \in \ftdom
@@ -651,12 +608,15 @@ As usual, we denote by $\qexpr_1 \neq_{q} \qexpr_2$  the negation of the equival
   %
   As usual, we denote by $\event_1 \neq \event_2$  the negation of the equivalence.
 \end{defn}
-
-Since the equivalence over two events is defined over the query value equivalence, 
+For the events that are generated from query request command, as in Equation~\ref{eq:event_eq}(c),
+their equivalence is determined by the $4^{th}$ element, which is the query value.
+Since the equivalence over two query events is defined over the query value equivalence, 
 % when there is an event belonging to a trace, 
 % if this event is a query assignment event, 
-it is possible that two events has different values of query result in the third position, but they
+it is possible that two events has different values of query answer in the third position, but they
 are equivalent by Definition~\ref{def:query_equal}.
+For example, the events $(x, 0, 1, \chi[1])$ and $(x, 0, 2, \chi[1])$ are equivalent by this definition even though they have different query answer assigned to variable $x$.
+
 So we have the following Corollaries~\ref{coro:query_equal} with proof in Appendix~\ref{apdx:query_equal}.
 \begin{coro}
   \label{coro:query_equal}
@@ -671,7 +631,7 @@ So we have the following Corollaries~\ref{coro:query_equal} with proof in Append
   % \event \in \trace 
   \implies \exists 
   \event' \in \eventset \sthat 
-  \event =_{q}\event' \land  \pi_3(\event) \neq \pi_3(\event')
+  \event = \event' \land  \pi_3(\event) \neq \pi_3(\event')
   \]
   \end{coro}
 
