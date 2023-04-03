@@ -8,7 +8,7 @@ a Static Single Assignment (SSA) version of loop language, and then estimates th
 \subsection{SSA-Language}
 In order to distinguish different query requests in the case where they are assigned to
 % the issue of re-assignment of query requesting results to 
-the same variable, they re-write the program from the loop language into SSA form.
+the same variable, they re-write the program into the SSA form.
 % The SSA labeled command $\ssa{c}$ inherits from the {loop} language, except that the expressions and variables in these commands 
 A selection of the (SSA) version of loop language syntax is shown below.
 % now in its SSA version as shown below. 
@@ -20,16 +20,21 @@ A selection of the (SSA) version of loop language syntax is shown below.
  \eloop ~ [{\ssa{\aexpr}}]^{l}, {n}, [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ~ \edo ~ {\ssa{c}} ~|~ \\ &&& \ssa{c};\ssa{c} ~|~ \eif([\ssa{\bexpr}]^{l}, ([\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] , [\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}],[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] ) , \ssa{c}, \ssa{c}) 
 \end{array}
 \]
-In this SSA version, if the command contains the extra part $([\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ,
+In the SSA form, the if command contains an extra part,
+ $([\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}] ,
 [\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}],[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] )$,
-which helps to track the dependency of newly assigned variables in both branches($[\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$),
-then branch $[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}]$, and else branch $[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] $. 
+to track the dependency of newly assigned variables in both branches
+% ($[\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$),
+$[\bar{\ssa{y}}, \bar{\ssa{y_1}}, \bar{\ssa{y_2}}]$ and  $[\bar{\ssa{z}}, \bar{\ssa{z_1}}, \bar{\ssa{z_2}}] $. 
 % The $\bar{\ssa{x}}$ is a list of SSA variables,
 % in which every element $\ssa{x}$ may depend on the corresponding element(at same location),
 % $\ssa{x_1}$ from $\bar{\ssa{x_1}}$ collected in the then branch or the corresponding element $\ssa{x_2}$ from $\bar{\ssa{x_2}}$ collected in the else branch.
-And the loop command also has similar part $ [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$ focusing on the loop body.
+The SSA form of the loop command also has an extra part $ [\bar{\ssa{x}}, \bar{\ssa{x_1}}, \bar{\ssa{x_2}}]$ 
+to track the variables in the loop body.
 
-Then they transform the operational semantics rules with all the operations defined under the loop language introduced in Section~\ref{sec:prework-language}.
+The operational semantics rules
+% with all the operations defined under the loop language introduced 
+in Section~\ref{sec:prework-language} are all translated into the corresponding SSA form as well.
 Based on the transformed language, they also redefine the formal adaptivity for the transformed program equivalent to the
 loop language-based definition. The complete definition is in the thesis by~\cite{weihao22}.
 %
