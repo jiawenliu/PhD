@@ -1,25 +1,25 @@
 The operator $\progl: \cdom \to \mathcal{P}(\ldom)$,
 computes the set of all labels
 in a labeled command $c$ defined as follows, we call it program points.
-Every the program point is unique.
+Every program point is unique.
 \begin{defn}[Program Points ($\progl : \cdom \to \mathcal{P}(\ldom)$]
 \label{def:progl}
 {\small
 \[
-  \progl(c) \triangleq
-  \left\{
-  \begin{array}{ll}
-      \{l\}                  
-      & {c} = \clabel{\assign x \expr}^{l} 
-      \\
-      \progl({c_1}) \cup \progl({{c_2}}) 
-      & {c} = {c_1};{c_2}
-      \\
-      \progl(c_1) \cup \progl({{c_2}}) \cup \{l\} 
-      & {c} =\eif(\clabel{\bexpr}^{l}, c_1, c_2) 
-      \\
-      \progl(c_w) \cup \{l\} 
-      & {c}   = \ewhile \clabel{\bexpr}^{l} \edo (c_w)
+ \progl(c) \triangleq
+ \left\{
+ \begin{array}{ll}
+ \{l\} 
+ & {c} = \clabel{\assign x \expr}^{l} 
+ \\
+ \progl({c_1}) \cup \progl({{c_2}}) 
+ & {c} = {c_1};{c_2}
+ \\
+ \progl(c_1) \cup \progl({{c_2}}) \cup \{l\} 
+ & {c} =\eif(\clabel{\bexpr}^{l}, c_1, c_2) 
+ \\
+ \progl(c_w) \cup \{l\} 
+ & {c} = \ewhile \clabel{\bexpr}^{l} \edo (c_w)
 \end{array}
 \right.
 \]
@@ -30,35 +30,35 @@ Every program point corresponds to a labeled command in a program (either a guar
 The Lemma below formally describes the uniqueness property of the program points
 with proof in Appendix~\ref{apdx:lem_language}.
 \begin{lem}[Uniqueness of The Program Point]
-  \label{lem:label_unique}
-  For every program $c \in \cdom$ and every two labels such that
-  $i, j \in \progl(c)$, then $i \neq j$.
-  \[
-    \forall c \in \cdom, i, j \in \ldom \sthat i, j \in \progl(c)\implies i \neq j.
-  \]
+ \label{lem:label_unique}
+ For every program $c \in \cdom$ and every two labels such that
+ $i, j \in \progl(c)$, then $i \neq j$.
+ \[
+ \forall c \in \cdom, i, j \in \ldom \sthat i, j \in \progl(c)\implies i \neq j.
+ \]
 \end{lem}
 %
 \begin{defn}(An Event Belongs to A Trace)
-  An event $\event \in \eventset$ belongs to a trace $\trace \in \tdom$, i.e., $\event \in \trace$ are defined as follows:
+ An event $\event \in \eventset$ belongs to a trace $\trace \in \tdom$, i.e., $\event \in \trace$ are defined as follows:
 %
 \begin{equation*}
-  \event \in \trace  
-  \triangleq \left\{
-  \begin{array}{ll} 
-    \etrue                  & \trace =  [\event] \tracecat \trace'
-     \land \event = \event' \\
-    \event \in \trace' & \trace =  [\event'] \tracecat \trace'
-      \land \event \neq \event' \\ 
-    \efalse                 & \trace = [] \lor \trace \in \inftdom
-  \end{array}
-  \right.
+ \event \in \trace 
+ \triangleq \left\{
+ \begin{array}{ll} 
+ \etrue & \trace = [\event] \tracecat \trace'
+ \land \event = \event' \\
+ \event \in \trace' & \trace = [\event'] \tracecat \trace'
+ \land \event \neq \event' \\ 
+ \efalse & \trace = [] \lor \trace \in \inftdom
+ \end{array}
+ \right.
 \end{equation*}
 As usual, we denote by $\event \notin \trace$ that the event $\event$ doesn't belong to the trace $\trace$.
 \end{defn}
 %
 In the rest of the paper, we denote by $\bot$ a value s.t. $\bot < n $ for all $n \in \mathbb{N}$.
 \begin{defn}[Counter Notation for Program Point]
-  \label{def:counter}
+ \label{def:counter}
 The counting operator $\counter : \tdom \to \ldom \to (\mathbb{N} \cup \{\bot\})$
 counts the appearance of a label in a trace.
 % \[
@@ -67,9 +67,9 @@ counts the appearance of a label in a trace.
 % &
 % \counter([(b, l, v)] \tracecat \trace', l) \triangleq \counter(\trace', l) + 1 & \text{if}~ l = l
 % \\
-% \counter([(x, l', v)] \tracecat \trace', l) \triangleq \counter(\trace', l)   & \text{if}~ l' \neq l
+% \counter([(x, l', v)] \tracecat \trace', l) \triangleq \counter(\trace', l) & \text{if}~ l' \neq l
 % &
-% \counter([(b, l', v)] \tracecat \trace', l) \triangleq \counter(\trace', l)   & \text{if}~ l' \neq l
+% \counter([(b, l', v)] \tracecat \trace', l) \triangleq \counter(\trace', l) & \text{if}~ l' \neq l
 % \\
 % \counter({[]}, l) \triangleq 0 & 
 % &
@@ -78,30 +78,30 @@ counts the appearance of a label in a trace.
 % \]
 \[
 \begin{array}{ll}
-  \counter({[]}, l) \triangleq 0 
-  \\
-  \counter([(\_, l, \_)] \tracecat \trace', l ) \triangleq \counter(\trace', l) + 1 & \text{if}~ l = l
-  \\
-  \counter([(\_, l', \_)] \tracecat \trace', l) \triangleq \counter(\trace', l)   & \text{if}~ l' \neq l
-  \\
-  \counter(\trace, l) \triangleq \bot & \text{if }~ \trace \in \inftdom
+ \counter({[]}, l) \triangleq 0 
+ \\
+ \counter([(\_, l, \_)] \tracecat \trace', l ) \triangleq \counter(\trace', l) + 1 & \text{if}~ l = l
+ \\
+ \counter([(\_, l', \_)] \tracecat \trace', l) \triangleq \counter(\trace', l) & \text{if}~ l' \neq l
+ \\
+ \counter(\trace, l) \triangleq \bot & \text{if }~ \trace \in \inftdom
 \end{array}
 \]{When the input trace is infinite, $\counter(\trace, l)$ returns $\bot$ for any program label $l$.}
 \end{defn}
 \begin{defn}[Counter Notation for List of Program Point]
-  \label{def:lcounter}
-  The counting operator $\lcounter : \tdom \to \mathcal{P}(\ldom) \to (\mathbb{N} \cup \{\bot\})$
-  counts the appearance of a list of labels $[l_1, \ldots, l_n]$ as follows.
+ \label{def:lcounter}
+ The counting operator $\lcounter : \tdom \to \mathcal{P}(\ldom) \to (\mathbb{N} \cup \{\bot\})$
+ counts the appearance of a list of labels $[l_1, \ldots, l_n]$ as follows.
 \[
-  \begin{array}{ll}
-  \lcounter(\trace'' \tracecat \trace', [l_1, \ldots, l_n] ) 
-  \triangleq \lcounter(\trace', [l_1, \ldots, l_n]) + 1  & \text{if}~ \pi_2(\trace''[i]) = l_i, \forall i = 1, \ldots, n
-  \\ 
-  \lcounter([(\_, l, \_)] \tracecat \trace', [l_1, \ldots, l_n] ) 
-  \triangleq \lcounter(\trace', [l_1, \ldots, l_n]) & \text{if}~ l \neq l_1
-  \\ 
-  \lcounter(\trace, [l_1, \ldots, l_n] ) 
-  \triangleq \bot & \text{if }~ \trace \in \inftdom
+ \begin{array}{ll}
+ \lcounter(\trace'' \tracecat \trace', [l_1, \ldots, l_n] ) 
+ \triangleq \lcounter(\trace', [l_1, \ldots, l_n]) + 1 & \text{if}~ \pi_2(\trace''[i]) = l_i, \forall i = 1, \ldots, n
+ \\ 
+ \lcounter([(\_, l, \_)] \tracecat \trace', [l_1, \ldots, l_n] ) 
+ \triangleq \lcounter(\trace', [l_1, \ldots, l_n]) & \text{if}~ l \neq l_1
+ \\ 
+ \lcounter(\trace, [l_1, \ldots, l_n] ) 
+ \triangleq \bot & \text{if }~ \trace \in \inftdom
 \end{array}
 \]
 {When the input trace is infinite, $\lcounter(\trace, L)$ returns $\bot$ for any list of labels as well.}
@@ -116,40 +116,41 @@ defined as follows,
 \]
 %
 \begin{defn}[Reachability-bound]
-  \label{def:rb}
-  For a program ${c}$ and a location $l \in \progl(c)$ in this program,
+ \label{def:rb}
+ For a program ${c}$ and a location $l \in \progl(c)$ in this program,
 a function $f(c, l) : \ftdom_0(c) \to (\mathbb{N} \cup \{\infty\})$ is a \emph{Reachability-Bound} for $l$ if and only if
 \[
-  \begin{array}{l}
-    \forall \trace_0 \in \ftdom_0(c), c' \in \cdom, l, l' \in \progl(c), \trace \in \tdom \sthat 
-    \\ \qquad
-    \Big(
-      \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace} 
-      \lor 
-      \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
-    \Big)
-    \implies f({c}, l)(\trace_0) \geq \counter(\trace, l) 
-    \end{array}
-    \]
+ \begin{array}{l}
+ \forall \trace_0 \in \ftdom_0(c), c' \in \cdom, l, l' \in \progl(c), \trace \in \tdom \sthat 
+ \\ \qquad
+ \Big(
+ \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace} 
+ \lor 
+ \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
+ \Big)
+ \implies f({c}, l)(\trace_0) \geq \counter(\trace, l) 
+ \end{array}
+ \]
 \end{defn}
 Given a program point $l$ in $c$, our algorithm (defined below) computes a Reachability-Bound for it.
 It is easy to compute a trivial \emph{Reachability-Bound} $f(c, l): \ftdom_0(c) \to \infty$, but it is not interesting to us.
 Ideally, we aim to compute a precise reachability-bound as below.
 
 \begin{defn}[Precise Reachability-Bound]
-  \label{def:exe_rb}
-  For a program ${c}$ and a location $l \in \progl(c)$ in this program,
-$\exeRB({c}, l): \ftdom_0(c) \to (\mathbb{N} \cup \{\infty\})$ is a \emph{Precise Reachability-Bound}  if and only if,
+ \label{def:exe_rb}
+ For a program ${c}$ and a location $l \in \progl(c)$ in this program,
+$\exeRB({c}, l): \ftdom_0(c) \to (\mathbb{N} \cup \{\infty\})$ is a \emph{Precise Reachability-Bound} if and only if,
 \[
-  \begin{array}{l}
-    \forall \trace_0 \in \ftdom_0(c), c' \in \cdom, l, l' \in \progl(c), \trace \in \tdom \sthat 
-    \\ \qquad
-    \Big(
-      \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace} 
-      \lor 
-      \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
-    \Big)
-    \implies f({c}, l)(\trace_0) = \counter(\trace, l) 
-    \end{array}
-    \]
+ \begin{array}{l}
+ \forall \trace_0 \in \ftdom_0(c), c' \in \cdom, l, l' \in \progl(c), \trace \in \tdom \sthat 
+ \\ \qquad
+ \Big(
+ \config{{c}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace} 
+ \lor 
+ \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
+ \Big)
+ \implies f({c}, l)(\trace_0) = \counter(\trace, l) 
+ \end{array}
+ \]
 \end{defn}
+

@@ -1,7 +1,7 @@
 This path-sensitive reachability-bound algorithm
 is performed on basis of an \emph{Abstract Transition Graph} for the program $c$.
 This step shows how to generate the abstract transition graph $\absG(c)$ of a
-program $c$ through constructing its vertices and edges.
+program $c$ by constructing its vertices and edges.
 
 \subsection{Vertices Construction}
 \label{sec:abs_prog-vertex}
@@ -9,8 +9,8 @@ Every
 vertex corresponds to a program execution point, 
 and the vertices set is all the $c$'s program execution points with an extra exit point ${\lex}$, 
 \[ 
-  \absV(c) = \progl(c)\cup\{{\lex}\}
-  \]
+ \absV(c) = \progl(c)\cup\{{\lex}\}
+ \]
 
 \subsection{Edges Construction}
 \label{sec:abs_prog-edge}
@@ -34,19 +34,19 @@ and then generate the set of edges for the program, $\absflow(c)$ in which each 
 % is transformed into a constraint.
 % \\
 % This 
-A constraint describes the abstract execution of the assignment command with label $l$,
+A constraint describes the abstract execution of the assignment command with the label $l$,
 or abstract evaluation of the boolean expression in the guard with label $l$.
 
 Again we first introduce some components of the constraint. Most of them are the same as the definitions in Section~\ref{sec:alg_abscfg-edge}. We present them in detail in our simplified program model.
 
 \begin{defn}[Symbolic Constant, Symbolic Expression]
-  \label{def:symbolic_expr}
+ \label{def:symbolic_expr}
 The universe of the \emph{symbolic constant} is denoted by $\scvardom \subseteq \mathbb{N} \cup \vardom \cup \{\infty \}$, in which a symbolic constant can be a natural number, $\infty$, or a program's input variable.
  The \emph{symbolic expression} of a program $\scexpr(c) \subseteq \mathcal{A}$ is the set of all the arithmetic expressions over $\mathbb{N} \cup \inpvar(c) \cup \{\infty \}$ for the program $c$.
 \end{defn}
 
 \begin{defn}[Difference Constraints]
- The difference constraints $DC(\vardom  \cup \scvardom)$ is the set of all the inequality of
+ The difference constraints $DC(\vardom \cup \scvardom)$ is the set of all the inequality of
 form $x' \leq y + v$ or $x' \leq v$ where $x, y \in \vardom $ and $v \in \scvardom$.
 An inequality $x' \leq y + v$ describes that the value of $x$ in the current state is
 at most the value of $y$ in the previous state plus the symbolic constant $v$, and $x' \leq v$ describes that the value of $x$ in the current state is
@@ -54,8 +54,8 @@ at most $v$.
 \end{defn}
 
 \begin{defn}[Constraints]
-A constraints $dc \in \dcdom^{\top} = DC(\vardom  \cup \scvardom) \cup \booldom\cup \{\top\}$  can be either a
-difference constraint $d \in DC(\vardom  \cup \scvardom)$, a boolean expression $\bexpr \in \booldom$
+A constraints $dc \in \dcdom^{\top} = DC(\vardom \cup \scvardom) \cup \booldom\cup \{\top\}$ can be either a
+difference constraint $d \in DC(\vardom \cup \scvardom)$, a boolean expression $\bexpr \in \booldom$
 or $\top$ denotes always true.
 \end{defn}
 
@@ -72,13 +72,13 @@ and $l \xrightarrow{x' \leq v} l'$ respectively denotes
 $x$ has at most
 % and the right-hand side describes 
 the value of the symbolic constant $v$.
-%  before the execution.
+% before the execution.
 For example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b), constraint $i' \leq i - 1$ on the edge $7 \xrightarrow{i' \leq i - 1} 1$
 describes the execution of
  the command at line $7$, 
 $\clabel{\assign{i}{i - 1}}^{7}$. 
 
-% For every expression in each of the label command, it is computed in three steps via program abstraction method adopted from the Section~6 in~\cite{SinnZV17}. 
+% For every expression in each of the label commands, it is computed in three steps via the program abstraction method adopted from Section~6 in~\cite{SinnZV17}. 
 
 The boolean constraint, $\bexpr$ on an edge $l \xrightarrow{b} l'$ describes
 that after evaluating the guard with label $l$,
@@ -87,57 +87,57 @@ In Figure~\ref{fig:relatedNestedWhileOdd-overview}, $i \leq 0 $ on the edge $1 \
 represents the negation of the testing guard $\clabel{i > 0}^1$
 in the $\ewhile$ command, and $i \leq 0$ must hold in order to perform this transition from program point $1$ to
 the program exit. 
-We also have $\top$, which is preserved for $\eskip$ command or the commands that don't interfere any guard variable.
+We also have $\top$, which is preserved for $\eskip$ command or the commands that don't interfere with any guard variable.
 
 % \highlight{Computation Steps:}
 
 
 \begin{defn}[Constraint Computation]
-  \label{def:constraint_compute}
-  For a program $c$, a boolean expression $\bexpr$ in the guard of a $\eif$ or $\ewhile$ command
-  or an expression $\expr$ and a variable $x$
-  in an assignment command $\assign{x}{\expr}$,
-  the constraint $\absexpr(\bexpr, \_, c )$ or $\absexpr(x - v, x, c)$ is computed as follows.
-  \begin{enumerate}
-  \item Compute the symbolic constant set of program $c$, $\scvar(c)$ of program $c$ as follows.
-  \[
-    \scvar(c) = \mathbb{N} \cup \inpvar(c) \cup \{\infty \} \subseteq \scvardom
-  \]
-  \item Initialize 
-  $\grdvar(c) = \{\}$ as the set of the variable used in the expression of every while or if guard in the program $c$.
-  \item Then we compute  $\absexpr(\bexpr, \_, c )$ or $\absexpr(x - v, x, c)$.
-  \[
-    \begin{array}{ll} 
-      \absexpr(x - v, x, c)  = x' \leq x - v  & x \in \grdvar(c)\land v \in \scvar(c) \\
-      \absexpr(y + v, x, c)  = x' \leq y + v  & x, y \in \grdvar(c)\land v \in \scvar(c)\\
-      \absexpr(v, x, c)  = x' \leq v  & x \in \grdvar(c)\land v \in \scvar(c) \\
-      \absexpr(y + v, x, c)  = x' \leq y + v,       & x \in \grdvar(c)\land v \in \scvar(c)\\
-      \qquad \grdvar(c) = \grdvar(c) \cup \{y\} & \qquad \land y \notin \grdvar(c) \\
-      \absexpr(\bexpr, \_, c) = \bexpr, \grdvar(c) = \grdvar(c) \cup \kw{FV}(\bexpr) & \bexpr \in \scvar(c) \\
-      \absexpr(\expr, x, c) = \top &  {o.w.} \\
-    \end{array}
-    \]
-  \end{enumerate}
-   $\absexpr(\expr, x, c)$ and $\grdvar(c)$ are iteratively updating until stabilized over every guard and assignment command in $c$. In the following part of the paper, we use $\absexpr(\expr, x, c)$
-   to denote the stabilized computation result.
-  \end{defn}
+ \label{def:constraint_compute}
+ For a program $c$, a boolean expression $\bexpr$ in the guard of a $\eif$ or $\ewhile$ command
+ or an expression $\expr$ and a variable $x$
+ in an assignment command $\assign{x}{\expr}$,
+ the constraint $\absexpr(\bexpr, \_, c )$ or $\absexpr(x - v, x, c)$ is computed as follows.
+ \begin{enumerate}
+ \item Compute the symbolic constant set of program $c$, $\scvar(c)$ of program $c$ as follows.
+ \[
+ \scvar(c) = \mathbb{N} \cup \inpvar(c) \cup \{\infty \} \subseteq \scvardom
+ \]
+ \item Initialize 
+ $\grdvar(c) = \{\}$ as the set of the variable used in the expression of every while or if guard in the program $c$.
+ \item Then we compute $\absexpr(\bexpr, \_, c )$ or $\absexpr(x - v, x, c)$.
+ \[
+ \begin{array}{ll} 
+ \absexpr(x - v, x, c) = x' \leq x - v & x \in \grdvar(c)\land v \in \scvar(c) \\
+ \absexpr(y + v, x, c) = x' \leq y + v & x, y \in \grdvar(c)\land v \in \scvar(c)\\
+ \absexpr(v, x, c) = x' \leq v & x \in \grdvar(c)\land v \in \scvar(c) \\
+ \absexpr(y + v, x, c) = x' \leq y + v, & x \in \grdvar(c)\land v \in \scvar(c)\\
+ \qquad \grdvar(c) = \grdvar(c) \cup \{y\} & \qquad \land y \notin \grdvar(c) \\
+ \absexpr(\bexpr, \_, c) = \bexpr, \grdvar(c) = \grdvar(c) \cup \kw{FV}(\bexpr) & \bexpr \in \scvar(c) \\
+ \absexpr(\expr, x, c) = \top & {o.w.} \\
+ \end{array}
+ \]
+ \end{enumerate}
+ $\absexpr(\expr, x, c)$ and $\grdvar(c)$ are iteratively updating until stabilized over every guard and assignment command in $c$. In the following part of the paper, we use $\absexpr(\expr, x, c)$
+ to denote the stabilized computation result.
+ \end{defn}
 %
-In the case 4, if a variable $x$, belonging to the set 
-  $\grdvar(c)$ is updated by a variable $y$, which isn't in this set, 
-  we add $y$ into the set $\grdvar(c)$ and repeat 
-  above procedure  until $\grdvar(c)$ and $\absexpr(\expr, x, c)$ is stabilized. 
-  \\
+In case 4, if a variable $x$, belonging to the set 
+ $\grdvar(c)$ is updated by a variable $y$, which isn't in this set, 
+ we add $y$ into the set $\grdvar(c)$ and repeat 
+ above procedure until $\grdvar(c)$ and $\absexpr(\expr, x, c)$ is stabilized. 
+ \\
 Specifically 
 we handle a 
 normalized expression, $x > 0$
 in guards of if and while loop headers, and 
-the guard variable $x$ only increase, decrease or reset by 
-simple arithmetic expression (mainly multiplication, division, minus and plus (able to extend to max and min)). 
+the guard variable $x$ only increases, decreases or is reset by 
+simple arithmetic expression (mainly multiplication, division, minus, and plus (able to extend to max and min)). 
 The guard variable $x$ is generalized into the \emph{norm} when the guard 
 in if or while has the form $\expr > 0$ with an expression $\expr$, and $\grdvar$ is the set of norms.
 Then in the last clause in Definition~\ref{def:constraint_compute}, i.e., $\absexpr(\expr, x, c)$,
 we will check if $\expr$ is a norm or contains norms, and extend the $\grdvar(c)= \grdvar(c)\cup \{\expr\}$ if neither.
-The constraint computation over the \emph{norm} follows the computation steps 1, 2 and 3 in Section 6.1 in paper~\cite{SinnZV17}. 
+The constraint computation over the \emph{norm} follows the computation steps 1, 2, and 3 in Section 6.1 in paper~\cite{SinnZV17}. 
 %
 \paragraph{Abstract Initial and Continuation Execution State Computation}
 This step computes two sets for each command. 
@@ -146,23 +146,23 @@ program points before executing this command, which is computed by the standard 
 The continuation execution state is a set
 that contains the constraint of this command and the program points after the execution of this command.
 This set is enriched 
-from the standard control flow analysis.
+by the standard control flow analysis.
 
 %
 \begin{itemize}
-  \item The \emph{initial execution state}, $\absinit(c) \in \ldom$
-  for a command $c$.
-  $\absinit(c)$ is a unique program label corresponds to the command before executing this command. 
+ \item The \emph{initial execution state}, $\absinit(c) \in \ldom$
+ for a command $c$.
+ $\absinit(c)$ is a unique program label that corresponds to the command before executing this command. 
 \\
 Given a program $c$, its abstract initial execution state, $\absinit(c)$ is computed as follows,
 %
 \[
-  \begin{array}{ll}
-    \absinit(\clabel{\assign{x}{\expr}}{}^l)  & = l  \\
-    \absinit(\clabel{\eskip}^{l})  & = l \\
-    \absinit(\eif (\clabel{\bexpr}^l, c_t, c_f))  & = l \\
-    \absinit(\ewhile \clabel{\bexpr}^l \edo (c_w))  & = l \\
-    \absinit(c_1 ; c_2)  & = \absinit(c_1) \\
+ \begin{array}{ll}
+ \absinit(\clabel{\assign{x}{\expr}}{}^l) & = l \\
+ \absinit(\clabel{\eskip}^{l}) & = l \\
+ \absinit(\eif (\clabel{\bexpr}^l, c_t, c_f)) & = l \\
+ \absinit(\ewhile \clabel{\bexpr}^l \edo (c_w)) & = l \\
+ \absinit(c_1 ; c_2) & = \absinit(c_1) \\
  \end{array}
  \]
 %
@@ -177,13 +177,13 @@ and the constraint $dc$ in this pair is computed by $\absexpr$ for the expressio
 \\
 Given a program $c$, its continuation execution state, $\absfinal(c)$ is computed as follows,
  \[
-  \begin{array}{ll}
-    \absfinal(\clabel{\assign{x}{\expr}}{}^l)  & = \{(l, \absexpr(\expr, x, c))\}  \\
-     \absfinal(\clabel{\eskip}^{l})  
-     & = \{(l, \top)\} \\
-     \absfinal(\eif (\clabel{\bexpr}^l, c_t, c_f))  & = \absfinal(c_t) \cup \absfinal(c_f) \\
-     \absfinal(\ewhile \clabel{\bexpr}^l \edo (c_w))  & = \{(l, \absexpr(\bexpr, \top, c_w))\} \\
-     \absfinal(c_1 ; c_2)  & =  \absfinal(c_2) \\
+ \begin{array}{ll}
+ \absfinal(\clabel{\assign{x}{\expr}}{}^l) & = \{(l, \absexpr(\expr, x, c))\} \\
+ \absfinal(\clabel{\eskip}^{l}) 
+ & = \{(l, \top)\} \\
+ \absfinal(\eif (\clabel{\bexpr}^l, c_t, c_f)) & = \absfinal(c_t) \cup \absfinal(c_f) \\
+ \absfinal(\ewhile \clabel{\bexpr}^l \edo (c_w)) & = \{(l, \absexpr(\bexpr, \top, c_w))\} \\
+ \absfinal(c_1 ; c_2) & = \absfinal(c_2) \\
  \end{array}
  \]
  %
@@ -191,25 +191,25 @@ Given a program $c$, its continuation execution state, $\absfinal(c)$ is compute
  \paragraph{Abstract Event Computation} Each abstract event is an edge between two vertices in the abstract transition graph.
  It is generated by computing the initial and continuation execution state interactively and recursively for a program $c$.
  
-%  \highlight{Notations and Formal Definitions:}
-%  \begin{itemize}
-%   \item \emph{Abstract Event}: 
-%   $\absevent \in $
-%   $\ldom \times \dcdom^{\top} \times \ldom$
-%   \item \emph{Abstract Trace}, $\absflow(c)$ of a program $c$: $\absflow(c) \in \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$
-%  \end{itemize}
+% \highlight{Notations and Formal Definitions:}
+% \begin{itemize}
+% \item \emph{Abstract Event}: 
+% $\absevent \in $
+% $\ldom \times \dcdom^{\top} \times \ldom$
+% \item \emph{Abstract Trace}, $\absflow(c)$ of a program $c$: $\absflow(c) \in \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$
+% \end{itemize}
  \begin{defn}[Abstract Event]
-   \label{def:abs_event}
-   Abstract Event: 
-   $\absevent \in $
-   $\ldom \times \dcdom^{\top} \times \ldom$
-   is a 
-   triple where the first and third components are labels,
-   second component is a constraint from $\dcdom^{\top}$.
-   \end{defn}
-   In an abstract event $(l, dc, l')$ of a program $c$, 
-   the first label $l \in \ldom$ corresponds to the \emph{initial execution point} $\absinit(c)$ of $c$, and 
-   the second label $l' \in \ldom$ with the constraint $dc \in \dcdom^{\top}$ correspond to an abstract continuation execution state of $c$.
+ \label{def:abs_event}
+ Abstract Event: 
+ $\absevent \in $
+ $\ldom \times \dcdom^{\top} \times \ldom$
+ is a 
+ triple where the first and third components are labels,
+ second component is a constraint from $\dcdom^{\top}$.
+ \end{defn}
+ In an abstract event $(l, dc, l')$ of a program $c$, 
+ the first label $l \in \ldom$ corresponds to the \emph{initial execution point} $\absinit(c)$ of $c$, and 
+ the second label $l' \in \ldom$ with the constraint $dc \in \dcdom^{\top}$ correspond to an abstract continuation execution state of $c$.
 We abuse the notation $\mathcal{P}(\absevent)$ for the power set of all abstract events.
 
 The set of the abstract events $\absflow(c)$ for a program $c$
@@ -217,7 +217,7 @@ is computed as follows in Definition~\ref{def:absevent_compute}.
  %
  \begin{defn}[Abstract Execution Trace Computation]
  \label{def:psRB-absevent_compute}
- The \emph{abstract trace}, $\absflow(c) \in \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$ of a program $c$  is computed as follows.
+ The \emph{abstract trace}, $\absflow(c) \in \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$ of a program $c$ is computed as follows.
 
  We first append a $\eskip$ command with 
 the label $\lex$, i.e., $\clabel{\eskip}^{{\lex}}$ at the end of the program $c$, and construct 
@@ -226,49 +226,49 @@ Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
  %
  {
  \[
-   \begin{array}{ll}
-      \absflow'(\clabel{\assign{x}{\expr}}{}^l)  & = \emptyset  \\
-      \absflow'([\eskip]^{l})  & = \emptyset \\
-      \absflow'(\eif (\clabel{\bexpr}^l, c_t, c_f))  & =  \absflow'(c_t) \cup \absflow'(c_f)
-        \\ & \quad 
-        \cup \left \{(l, \absexpr(\bexpr, \top, c),  \absinit(c_t) ) \right \} ,  
-        \\ & \quad 
-        \cup \left \{ (l, \absexpr(\neg\bexpr, \top, c), \absinit(c_f)) \right \} \\
-       \absflow'(\ewhile \clabel{\bexpr}^l \edo (c_w))  & =  \absflow'(c_w) \cup \{(l, \absexpr(\bexpr, \top, c), \absinit(c_w)) \} 
-       \\ & \quad 
-       \cup \{(l', dc, l)| (l', dc) \in \absfinal(c_w) \} \\
-       \absflow'(c_1 ; c_2)  & = \absflow'(c_1) \cup  \absflow'(c_2) 
-       \\ & \quad 
-       \cup \{ (l, dc, \absinit(c_2)) | (l, dc) \in \absfinal(c_1) \} \\
-   \end{array}
-   \]
-   }
-  \end{defn}
-  Notice $\absflow'([x := \expr]^{l})$ and $\absflow'([\eskip]^{l})$ are both empty set. 
-   For every event $\event$ with label $l$ in an execution trace $\trace$ of program $c$, 
-   there is an abstract event in program's abstract execution trace of form $(l, \_, \_)$.  
-   We also show the soundness of the \emph{abstract event computation} as Theorem~\ref{lem:abscfg_sound} below with proof in Appendix~\ref{apdx:abs_sound}.
+ \begin{array}{ll}
+ \absflow'(\clabel{\assign{x}{\expr}}{}^l) & = \emptyset \\
+ \absflow'([\eskip]^{l}) & = \emptyset \\
+ \absflow'(\eif (\clabel{\bexpr}^l, c_t, c_f)) & = \absflow'(c_t) \cup \absflow'(c_f)
+ \\ & \quad 
+ \cup \left \{(l, \absexpr(\bexpr, \top, c), \absinit(c_t) ) \right \} , 
+ \\ & \quad 
+ \cup \left \{ (l, \absexpr(\neg\bexpr, \top, c), \absinit(c_f)) \right \} \\
+ \absflow'(\ewhile \clabel{\bexpr}^l \edo (c_w)) & = \absflow'(c_w) \cup \{(l, \absexpr(\bexpr, \top, c), \absinit(c_w)) \} 
+ \\ & \quad 
+ \cup \{(l', dc, l)| (l', dc) \in \absfinal(c_w) \} \\
+ \absflow'(c_1 ; c_2) & = \absflow'(c_1) \cup \absflow'(c_2) 
+ \\ & \quad 
+ \cup \{ (l, dc, \absinit(c_2)) | (l, dc) \in \absfinal(c_1) \} \\
+ \end{array}
+ \]
+ }
+ \end{defn}
+ Notice $\absflow'([x := \expr]^{l})$ and $\absflow'([\eskip]^{l})$ are both empty set. 
+ For every event $\event$ with label $l$ in an execution trace $\trace$ of program $c$, 
+ there is an abstract event in the program's abstract execution trace of the form $(l, \_, \_)$. 
+ We also show the soundness of the \emph{abstract event computation} as Theorem~\ref{lem:abscfg_sound} below with proof in Appendix~\ref{apdx:abs_sound}.
 \begin{lem}[Soundness of the Abstract Execution Trace]
 \label{lem:psRB-abscfg_sound}
 For any program $c$ with 
-  % its abstract control flow graph $\absG(c) = (\absV(c), \absE(c))$,
-  an arbitrary initial trace $\vtrace_0 \in \ftdom_0(c)$ and
-  a finite execution trace $\trace \in \ftdom$ that is generated 
-  when $c$ is executing under $\vtrace_0$,
-  then for every event $\event \in \trace$ such that $\event = (\_, l, \_)$ for some label $l$ in program $c$,
-  % an initial trace  $\vtrace_0 \in \ftdom_0(c)$,
-  there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ and $\absevent = (l, \_, \_)$.
+ % its abstract control flow graph $\absG(c) = (\absV(c), \absE(c))$,
+ an arbitrary initial trace $\vtrace_0 \in \ftdom_0(c)$ and
+ a finite execution trace $\trace \in \ftdom$ that is generated 
+ when $c$ is executing under $\vtrace_0$,
+ then for every event $\event \in \trace$ such that $\event = (\_, l, \_)$ for some label $l$ in program $c$,
+ % an initial trace $\vtrace_0 \in \ftdom_0(c)$,
+ there is an abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ and $\absevent = (l, \_, \_)$.
 %
 \[
 \begin{array}{l}
-  \forall c, c' \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom ,  \event = (\_, l, \_) \in \eventset, l \in \progl(c) \sthat
-  \\ \qquad 
-  \big(
-    \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} 
-  \big)
-  \land \event \in \trace 
-  \implies \exists 
-  \absevent \in \absflow(c) \land \absevent = (l, \_, \_)
+ \forall c, c' \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom , \event = (\_, l, \_) \in \eventset, l \in \progl(c) \sthat
+ \\ \qquad 
+ \big(
+ \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} 
+ \big)
+ \land \event \in \trace 
+ \implies \exists 
+ \absevent \in \absflow(c) \land \absevent = (l, \_, \_)
 \end{array}
 \]
 \end{lem}
@@ -286,26 +286,26 @@ for every assignment event $\event \in \eventset^{\asn}$ in the
 execution trace having the label $l$, i.e., $\event = (\_, l, \_)$ and $\event \in \trace$.
 %
 \[
-  \begin{array}{l}
-  \forall c \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom ,  \event = (\_, l, \_) \in \eventset^{\asn} \sthat
-  \big(
-    \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} 
-  % \lor 
-  % \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
-  \big)
-  \land \event \in \trace 
-  \\
-  \qquad \implies \exists ! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
-  \absevent \in \absflow(c)
-  \end{array}
+ \begin{array}{l}
+ \forall c \in \cdom, \trace_0 \in \ftdom_0(c), \trace \in \ftdom , \event = (\_, l, \_) \in \eventset^{\asn} \sthat
+ \big(
+ \config{{c}, \trace_0} \to^{*} \config{c', \trace_0 \tracecat \trace} 
+ % \lor 
+ % \config{{c}, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
+ \big)
+ \land \event \in \trace 
+ \\
+ \qquad \implies \exists ! \absevent = (l, \_, \_) \in (\ldom\times \dcdom^{\top} \times \ldom) \sthat 
+ \absevent \in \absflow(c)
+ \end{array}
 \]
 \end{lem}
 %
 \paragraph{Edge Construction}
 The edge for $c$'s abstract transition graph is constructed simply by computing the program's abstract events set, $\absflow(c)$ as follows,
-  \[
-    \absE(c) = \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}
-  \]
+ \[
+ \absE(c) = \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}
+ \]
 For each edge $(l, dc, l') \in \absE(c)$, $dc$ describes either an abstract execution of the assignment command with label $l$,
 or the evaluation of the guard with label $l$.
 %
@@ -319,13 +319,13 @@ With the vertices $\absV(c)$ and edges $\absE(c)$ ready, we construct the abstra
 Definition~\ref{def:abs_cfg}.
 %
 \begin{defn}[Abstract Transition Graph]
-  \label{def:psRB-abs_cfg}
-  The \emph{abstract transition graph} of a program $c$ is $\absG(c) \triangleq (\absV(c), \absE(c))$, where
-  $\absV(c) \triangleq \progl(c)\cup\{\lex\}$
-  and  each edge $(l, dc, l') \in \absE(c)$ is an abstract transition
-  $\absE(c) \triangleq \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}$.
-  % and
-  % .
+ \label{def:psRB-abs_cfg}
+ The \emph{abstract transition graph} of a program $c$ is $\absG(c) \triangleq (\absV(c), \absE(c))$, where
+ $\absV(c) \triangleq \progl(c)\cup\{\lex\}$
+ and each edge $(l, dc, l') \in \absE(c)$ is an abstract transition
+ $\absE(c) \triangleq \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}$.
+ % and
+ % .
 % between two program points $l, l'$ if and only if
 % the command with label $l'$ can execute right after the execution of the command with label $l$.
 % % if and only if there is a control flow between two program points.
@@ -333,18 +333,18 @@ Definition~\ref{def:abs_cfg}.
 \end{defn}
 
 \begin{defn}[Path]
-  \label{def:abs_cfgpath} 
-  A path on $\absG(c)$ is a sequence, $ l_0 \xrightarrow{dc_0} l_1 \xrightarrow{dc_1} \ldots $ with
-  \begin{itemize}
-  \item the vertices sequence $(l_0, \ldots)$, where $l_i \in \absV(c)$ for every $i = 0, 1, \ldots$ and
-  %
-  \item the edge sequence $(e_0, \ldots)$, where $e_i = (l_{i}, dc_i, l_{i + 1}) \in \absE(c)$ for every $i = 0, 1, \ldots$.
-  \end{itemize}
-  A path is cyclic, if it has the same start- and end-point. A path is simple, if it does not visit a location twice except for start- and end-location. We use $\paths(\absG(c))$ to denote the set of all the paths on $\absG(c)$,
-  and $\pathl(p)$ to represent the list of program points corresponding to the vertices sequence of this path $p \in \paths(\absG(c))$,
-  where $\pathl : \paths(\absG(c)) \to \mathcal{P}{(\ldom)}$.
-  \end{defn}
-  For example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b), $1 \to 2 \to 3 \to 4 \to 5 \to 4$ is a \emph{path}, but it is not simple (the program points $4$ is visited twice). The path $4 \to 5 \to 4$ is both cyclic and simple.
+ \label{def:abs_cfgpath} 
+ A path on $\absG(c)$ is a sequence, $ l_0 \xrightarrow{dc_0} l_1 \xrightarrow{dc_1} \ldots $ with
+ \begin{itemize}
+ \item the vertices sequence $(l_0, \ldots)$, where $l_i \in \absV(c)$ for every $i = 0, 1, \ldots$ and
+ %
+ \item the edge sequence $(e_0, \ldots)$, where $e_i = (l_{i}, dc_i, l_{i + 1}) \in \absE(c)$ for every $i = 0, 1, \ldots$.
+ \end{itemize}
+ A path is cyclic, if it has the same start- and end-point. A path is simple, if it does not visit a location twice except for start- and end-location. We use $\paths(\absG(c))$ to denote the set of all the paths on $\absG(c)$,
+ and $\pathl(p)$ to represent the list of program points corresponding to the vertices sequence of this path $p \in \paths(\absG(c))$,
+ where $\pathl : \paths(\absG(c)) \to \mathcal{P}{(\ldom)}$.
+ \end{defn}
+ For example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b), $1 \to 2 \to 3 \to 4 \to 5 \to 4$ is a \emph{path}, but it is not simple (the program points $4$ is visited twice). The path $4 \to 5 \to 4$ is both cyclic and simple.
 % \\
 % \subsection{Abstract Transition Graph Illustration through the Running Example}
 % \label{sec:abs_prog_example}
@@ -359,7 +359,7 @@ command $\ewhile \clabel{i > 0}^1 \edo \{\ldots\}$ will be executed next.
 The annotation $i' \leq n$ is a difference constraint 
 computed by $\absexpr$ over
 the expression $n$ in the assignment command $\assign{i}{n}$.
-It represents that the value of $i$ is less than or equal to value of $n$ after the
+It represents that the value of $i$ is less than or equal to the value of $n$ after the
 execution of $\clabel{\assign{i}{n}}^0$ and before evaluating the guard $\clabel{i > 0}^1$.
 Another example constraint $i' \leq i - 1$ on the edge $7 \xrightarrow{i' \leq i - 1} 1$
 describes the execution of
@@ -370,5 +370,5 @@ and the right-hand side $i$ stores the value before the assignment.
 The boolean constraint $i \leq 0 $ on the edge $1 \xrightarrow{i \leq 0} \lex$, 
 represents the negation of the testing guard $\clabel{i > 0}^1$
 in the $\ewhile$ command.
-$1 \xrightarrow{i \leq 0} \lex$ denotes that $i \leq 0$ must hold in order to perform this transition from program point $1$ to
+$1 \xrightarrow{i \leq 0} \lex$ denotes that $i \leq 0$ must hold to perform this transition from program point $1$ to
 the program exit. 
