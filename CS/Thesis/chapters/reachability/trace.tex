@@ -30,7 +30,8 @@ $\tracecat$ is defined as:
 \left\{
 \begin{array}{ll} 
   \trace_1 & \trace_2 = [] \lor \trace_1 \in \inftdom \\
-  ((\trace_1 :: \event)  \tracecat \trace_2') & \trace_1 \in \ftdom \land \trace_2 = [\event] \tracecat \trace_2'
+  \trace_2 & \trace_1 = [] \lor \trace_2 \in \inftdom \\
+  (\trace_1   \tracecat \trace_2'):: \event & \trace_1 \in \ftdom \land \trace_2 = \trace_2' :: \event
   % \trace_2 &  \trace_2 \in \inftdom \\
 \end{array}
 \right.

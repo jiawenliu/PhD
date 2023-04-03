@@ -5,12 +5,11 @@
 \mbox{Arithmetic Operators} 
 & \oplus_a & ::= & + ~|~ - ~|~ \times 
 %
-~|~ \div ~|~ \max ~|~ \min
+~|~ \div
 \\  
 \mbox{Arithmetic Expression} 
 & \aexpr & ::= & 
-n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr  
- ~|~ \elog \aexpr  ~|~ \esign \aexpr
+n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr  ~|~ \emax (a, a) ~|~ \emin(a, a)
 \\
 \mbox{Boolean Expression} & \bexpr & ::= & 
 %
@@ -100,7 +99,9 @@ Likewise, we denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathb
 \paragraph{Expression}
 Expressions include
 standard arithmetic expression, $\aexpr \in \mathcal{A}$ (with the value $n \in \mathbb{N} \cup \{ \infty\}$ and the variable $x$ from a finite universe $\vardom$) and boolean expression, $\bexpr \in \booldom$, where we denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$.
-An arithmetic expression can be a constant $n$ denoting integer, a variable $x$ from some countable set $\vardom$, binary operation $\oplus_a$ such as addition, product, subtraction, etc., over arithmetic expressions, with also $\elog$ and $\esign$. 
+An arithmetic expression can be a constant $n$ denoting integer, a variable $x$ from some countable set $\vardom$, arithmetic binary operation $\oplus_a$ including addition, product, subtraction, division, over arithmetic expressions, or
+$\emax$, $\emin$ of two arithmetic expressions.
+
 %
 A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and or denoted by $\oplus_b$, and basic comparison $\sim$ between arithmetic expressions, e.g., $\leq, =, <$, etc.
 Additionally, we also have list in expression.
@@ -201,20 +202,19 @@ We also define for $\infty$ the following mathematic computation with arbitrary 
   &
  \aconfig{\aexpr \div \infty} (\trace) = 0
  \\
- \aconfig{\min(\aexpr, \infty)} (\trace) = \aexpr
+ \aconfig{\emin(\aexpr, \infty)} (\trace) = \aexpr
  &
- \aconfig{\max(\aexpr, \infty)} (\trace) = \infty
- &
- \aconfig{\elog(\infty)} (\trace) = \infty
- &
- \aconfig{\esign(\infty)} (\trace) = 1
+ \aconfig{\emax(\aexpr, \infty)} (\trace) = \infty
+%  &
+%  \aconfig{\elog(\infty)} (\trace) = \infty
+%  &
+%  \aconfig{\esign(\infty)} (\trace) = 1
   \end{array}
  \]
 % and
-% $\aconfig{\aexpr + \bot} (\trace) = \bot$, $\aconfig{\max(\aexpr, \bot)} (\trace) = \aexpr$, etc. respectively 
 \begin{figure}
 \begin{mathpar}
-  \boxed{ \aconfig{} \, : \, \mbox{Arithmetic Expression $\to$ Trace $\to$ Arithmetic Value}}
+  \boxed{ \aconfig{} \, : \, \mbox{Arithmetic Expression $\to$ Trace $\to$ Value}}
   \\
   \inferrule{ 
     \empty
@@ -242,21 +242,47 @@ We also define for $\infty$ the following mathematic computation with arbitrary 
   }
   \and
   \inferrule{ 
-    \aconfig{\aexpr}(\trace) = v'
+    \aconfig{\aexpr_1}(\trace) = v_1
     \and 
-    \elog v' = v
+    \aconfig{\aexpr_2}(\trace) = v_2
+    \and 
+     v_1 < v_2
   }{
-   \aconfig{\elog \aexpr}(\trace) 
-   = v
+   \aconfig{ \emax(\aexpr_1, \aexpr_2) } (\trace)
+   = v_2
   }
   \and
   \inferrule{ 
-    \aconfig{\aexpr}(\trace) = v'
+    \aconfig{\aexpr_1}(\trace) = v_1
     \and 
-    \esign v' = v
+    \aconfig{\aexpr_2}(\trace) = v_2
+    \and 
+     v_1 \geq v_2
   }{
-   \aconfig{\esign \aexpr} (\trace)
-   = v
+   \aconfig{ \emax(\aexpr_1, \aexpr_2) } (\trace)
+   = v_1
+  }
+  \and
+  \inferrule{ 
+    \aconfig{\aexpr_1}(\trace) = v_1
+    \and 
+    \aconfig{\aexpr_2}(\trace) = v_2
+    \and 
+     v_1 < v_2
+  }{
+   \aconfig{ \emin(\aexpr_1, \aexpr_2) } (\trace)
+   = v_1
+  }
+  \and
+  \inferrule{ 
+    \aconfig{\aexpr_1}(\trace) = v_1
+    \and 
+    \aconfig{\aexpr_2}(\trace) = v_2
+    \and 
+     v_1 \geq v_2
+  }{
+   \aconfig{ \emin(\aexpr_1, \aexpr_2) } (\trace)
+   = v_2
   }
    \end{mathpar}
    \caption{Evaluation rules of arithmetic expression}

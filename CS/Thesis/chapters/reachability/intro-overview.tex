@@ -5,14 +5,14 @@ It has both challenges in the two previous examples.
 The first challenge comes with the if command in the outer loop.
 The bounds for different locations in the same loop $L_1$ are different.
 Given $n \geq m \geq 0$,
-the overall loop iteration times of this outer loop is expected to be $\lfloor\frac{m}{2}\rfloor$.
-However, the expected \emph{reachability-bound}s for locations  $3, 6, 7$ and $8$ in  $L_1$ are all $\lfloor\frac{m}{4}\rfloor$,
-%  for $8$ is $\lfloor\frac{m}{4}\rfloor + 1$,
+the overall loop iteration times of this outer loop are expected to be $\lfloor\frac{m}{2}\rfloor$.
+However, the expected \emph{reachability-bound}s for locations $3, 6, 7$ and $8$ in $L_1$ are all $\lfloor\frac{m}{4}\rfloor$,
+% for $8$ is $\lfloor\frac{m}{4}\rfloor + 1$,
 for location $2$ is $\lfloor\frac{m}{2}\rfloor$ and $\lfloor\frac{m}{2}\rfloor + 1$ for location $1$.
 These \emph{reachability-bound}s for different locations in a loop are different from the bound on loop iterations.
 \highlight{Though within the same loop $L_1$, the bounds for different locations are different.}
 Amortized analysis tools such as Loopus~\cite{SinnZV17}, KoAT~\cite{BrockschmidtEFFG14,FalkeKS12,FalkeKS11}, C4B~\cite{CarbonneauxHS15}, etc. ignore path sensitivity and approximate the bound $n$ as the bound for loop $L_1$. 
-While some path-refinement-based methods such as \cite{GulwaniZ10,GulwaniJK09}, CoFloCo~\cite{Montoya17,Flores-Montoya16,Flores-MontoyaH14} and etc. give the same bound for all the locations within the loop $L_1$. 
+While some path-refinement-based methods such as \cite{GulwaniZ10,GulwaniJK09}, CoFloCo~\cite{Montoya17,Flores-Montoya16,Flores-MontoyaH14} etc. give the same bound for all the locations within the loop $L_1$. 
 Although we can reuse their results i.e., loop bounds as the \emph{reachability-bound} for location $1$ and $2$,
 it is still unclear for locations $3, 6, 7$, and $8$.
 %
@@ -22,7 +22,7 @@ It bounds the times that each path is evaluated in a path-refined program.
 
 
 The second challenge occurs in the nested loop.
-In line 6, $i$ is reset by $k + m$ and $k$ is reset by $i - m$ at line 3. So the
+In line 6, $i$ is reset by $k + m$, and $k$ is reset by $i - m$ at line 3. So the
 loop $L_4$ is only executed in the first iteration of while loop $L_1$.
 We say the nested loop, $L_4$ is only ``reached'' in $1$ iteration of the outer loop,
 % \\
