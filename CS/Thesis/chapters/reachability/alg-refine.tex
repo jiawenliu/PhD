@@ -1,34 +1,34 @@
 There are three steps as follows.
 \begin{enumerate}
-  \item \textbf{Collecting} all \emph{simple transition paths}.
-  Every \emph{simple transition paths}, $\tpath \in \paths(\absG(c))$ 
-  contains only the edges of atomic assignment or guard transitions without interleaving other paths.
-  Each of them corresponds to a path in the flatten program in Definition~4.1 in \cite{GulwaniJK09}.
-  \item \textbf{Rewriting} the program $c$ by rearranging all \emph{simple transition paths} as the syntax in \cite{GulwaniJK09} and preserves the same semantics.
-  \item \textbf{Refining} the program and computing the 
-  refined program, $\rprog$ by Algorithm~1 in paper~\cite{GulwaniJK09}.
-  This step invokes the algorithm REFINE from paper~\cite{GulwaniJK09} and compute the 
-  refined program $\rprog$ for a program $c$ given the rewritten program as input.
+ \item \textbf{Collecting} all \emph{simple transition paths}.
+ Every \emph{simple transition paths}, $\tpath \in \paths(\absG(c))$ 
+ contains only the edges of atomic assignment or guard transitions without interleaving other paths.
+ Each of them corresponds to a path in the flatten program in Definition~4.1 in \cite{GulwaniJK09}.
+ \item \textbf{Rewriting} the program $c$ by rearranging all \emph{simple transition paths} as the syntax in \cite{GulwaniJK09} and preserves the same semantics.
+ \item \textbf{Refining} the program and computing the 
+ refined program, $\rprog$ by Algorithm~1 in paper~\cite{GulwaniJK09}.
+ This step invokes the algorithm REFINE from paper~\cite{GulwaniJK09} and computes the 
+ refined program $\rprog$ for a program $c$ given the rewritten program as input.
 \end{enumerate}
 
 \subsection{The Simple Transition Path}
 We first collect the loop headers $\loopl(c) \subseteq \progl(c)$ from a program $c$, which is the set of all program points corresponding to the loop headers in program $c$.
 \begin{defn}[Loop Headers ($\loopl : \cdom \to \mathcal{P}(\ldom)$)]
-  \label{def:loopl}
-  \[
-  \loopl(c) \triangleq 
-  \left\{
-    \begin{array}{ll}
-      \{\}  & {c} = \clabel{\assign x e}^{l} \\
-      \loopl({c_1}) \cup \loopl({{c_2}})  & {c} = {c_1};{c_2} \\
-      \loopl(c_t) \cup \loopl({{c_f}})   & {c} =\eif(\clabel{\bexpr}^{l}, c_t, c_f) \\
-  \loopl(c_w) \cup \{l\}, &  {c}   = \ewhile \clabel{\bexpr}^{l} \edo (c_w)
-  \end{array}
+ \label{def:loopl}
+ \[
+ \loopl(c) \triangleq 
+ \left\{
+ \begin{array}{ll}
+ \{\} & {c} = \clabel{\assign x e}^{l} \\
+ \loopl({c_1}) \cup \loopl({{c_2}}) & {c} = {c_1};{c_2} \\
+ \loopl(c_t) \cup \loopl({{c_f}}) & {c} =\eif(\clabel{\bexpr}^{l}, c_t, c_f) \\
+ \loopl(c_w) \cup \{l\}, & {c} = \ewhile \clabel{\bexpr}^{l} \edo (c_w)
+ \end{array}
 \right.
 \]
-  \end{defn}
+ \end{defn}
 % \begin{defn}[Loop Path]
-%   \label{def:looppath}
+% \label{def:looppath}
 % A simple transition path
 % $\tpath \in \paths(\absG(c))$ for the program $c$, is a path on its abstract transition graph $\absG(c) = (\absV(c), \absE(c))$ with 
 % \begin{itemize}
@@ -39,16 +39,16 @@ We first collect the loop headers $\loopl(c) \subseteq \progl(c)$ from a program
 % %
 % satisfying:
 % \begin{itemize}
-%   \item $l_i \neq l_j$ for every $i = 0, \ldots, n$ and $j = 0, \ldots, {n - 1}$,
-%   \item $l_0$ is either the program point of a loop header or the program entrance ($l_0 = 0$),
-%   i.e., $l_0 \in \loopl(c) \cup \{ 0 \}$
-%   \item and $l_n$ is either the program point of a loop header or the program exit ($l_n = \lex$),
-%   i.e., $l_0 \in \loopl(c) \cup \{ \lex \}$.
+% \item $l_i \neq l_j$ for every $i = 0, \ldots, n$ and $j = 0, \ldots, {n - 1}$,
+% \item $l_0$ is either the program point of a looping header or the program entrance ($l_0 = 0$),
+% i.e., $l_0 \in \loopl(c) \cup \{ 0 \}$
+% \item and $l_n$ is either the program point of a looping header or the program exit ($l_n = \lex$),
+% i.e., $l_0 \in \loopl(c) \cup \{ \lex \}$.
 % \end{itemize}
 % \end{defn}
 
-\begin{defn}[Simple Tansition Path]
-  \label{def:tpath}
+\begin{defn}[Simple Transition Path]
+ \label{def:tpath}
 A \emph{simple transition path}
 $\tpath \in \paths(\absG(c))$ for the program $c$, is either a simple cyclic path, which has the same start- and end-point
 or a simple path has either different while loop headers, the program entrance or exit as its start- and end-point
@@ -61,12 +61,12 @@ the edge sequence $(e_1, \ldots, e_n)$, where $e_i = (l_{i - 1}, dc_i, l_{i}) \i
 %
 is a \emph{simple transition path} if and only if it satisfies,
 \begin{itemize}
-  \item $l_i \neq l_j$ for every $i = 0, \ldots, n$ and $j = 1, \ldots, {n - 1}$,
-  \item $l_0$ is either the program point of a loop header or the program entrance ($l_0 = 0$),
-  i.e., $l_0 \in \loopl(c) \cup \{ 0 \}$
-  \item and $l_n$ is either the program point of a loop header or the program exit ($l_n = \lex$),
-  i.e., $l_0 \in \loopl(c) \cup \{ \lex \}$,
-  \item and $l_i \notin \loopl(c) \cup \{ 0, \lex \}$ for every $i = 1, \ldots, n-1$.
+ \item $l_i \neq l_j$ for every $i = 0, \ldots, n$ and $j = 1, \ldots, {n - 1}$,
+ \item $l_0$ is either the program point of a loop header or the program entrance ($l_0 = 0$),
+ i.e., $l_0 \in \loopl(c) \cup \{ 0 \}$
+ \item and $l_n$ is either the program point of a loop header or the program exit ($l_n = \lex$),
+ i.e., $l_0 \in \loopl(c) \cup \{ \lex \}$,
+ \item and $l_i \notin \loopl(c) \cup \{ 0, \lex \}$ for every $i = 1, \ldots, n-1$.
 \end{itemize}
 \end{defn}
 
@@ -80,40 +80,40 @@ In Figure~\ref{fig:threeWhile-overview}(b), $1 \to 2 \to 3 \to 4 \to 5 \to 6$ is
 
 \subsection{The Program Rewriting}
 \begin{algorithm}
-  \caption{Program Rewriting $\kw{Rewrite}$}
-  \label{alg:alg-refine_rewrite}
-  \begin{algorithmic}[1]
-    \REQUIRE program $c$
-    \STATE collects all $c$'s \emph{simple transition path}s from $\absG(c)$, $\tpath_1, \ldots, \tpath_n \in \paths(\absG(c))$.
-    \STATE \textbf{init}: candidate set $W = \{c_1, \ldots, c_n\}$, where $c_i = \tpath_i$ and $i = 1, \ldots, n$
-    \STATE \textbf{while} $W.size()> 1$:
-    \STATE \quad create $c' = \rpchoose{c_1, \ldots, c_m}$ 
-    s.t. $c_i \in W \land c_i[0] = c_j[0] \land c_i[-1] = c_j[-1], i, j = 1, \ldots, m$.
-    \\ \quad $W.add(c')$ \qquad $W.remove(c_1, \ldots, c_m)$
-    \STATE
-    \quad create $c' = \rprepeat(c)$ s.t. $c_i \in W \land c[0] = c[-1] \land c[0] \in \loopl(c)$
-    \\ \quad $W.add(c')$, \qquad $W.remove(c)$
-    \STATE \quad create $c' = c_1; c_2$ s.t. $c_1, c_2 \in W \land c_1[-1] = c_2[0]$
-    \\
-    \quad $W.add(c')$ \qquad $W.remove(c_1, c_2)$
-    \STATE \textbf{Endwhile}
-    \\ $c^T = W[0]$
-    \RETURN $c^T$.
+ \caption{Program Rewriting $\kw{Rewrite}$}
+ \label{alg:alg-refine_rewrite}
+ \begin{algorithmic}[1]
+ \REQUIRE program $c$
+ \STATE collects all $c$'s \emph{simple transition path}s from $\absG(c)$, $\tpath_1, \ldots, \tpath_n \in \paths(\absG(c))$.
+ \STATE \textbf{init}: candidate set $W = \{c_1, \ldots, c_n\}$, where $c_i = \tpath_i$ and $i = 1, \ldots, n$
+ \STATE \textbf{while} $W.size()> 1$:
+ \STATE \quad create $c' = \rpchoose{c_1, \ldots, c_m}$ 
+ s.t. $c_i \in W \land c_i[0] = c_j[0] \land c_i[-1] = c_j[-1], i, j = 1, \ldots, m$.
+ \\ \quad $W.add(c')$ \qquad $W.remove(c_1, \ldots, c_m)$
+ \STATE
+ \quad create $c' = \rprepeat(c)$ s.t. $c_i \in W \land c[0] = c[-1] \land c[0] \in \loopl(c)$
+ \\ \quad $W.add(c')$, \qquad $W.remove(c)$
+ \STATE \quad create $c' = c_1; c_2$ s.t. $c_1, c_2 \in W \land c_1[-1] = c_2[0]$
+ \\
+ \quad $W.add(c')$ \qquad $W.remove(c_1, c_2)$
+ \STATE \textbf{Endwhile}
+ \\ $c^T = W[0]$
+ \RETURN $c^T$.
 \end{algorithmic}
 \end{algorithm}
 %
-Algorithm~\ref{alg:alg-refine_rewrite} transformation the syntax of program following~\cite{GulwaniJK09} and preserving the semantics.
-We first use simple depth first search strategy collects all the \emph{simple transition path}s satisfying the Definition~\ref{def:tpath}. It guarantees that every $\tpath$ is equivalent to a path $\rho$ in Definition~4.1 of \cite{GulwaniJK09}.
+Algorithm~\ref{alg:alg-refine_rewrite} transforms the syntax of the program following~\cite{GulwaniJK09} and preserves the semantics.
+We first use a simple depth-first search strategy that collects all the \emph{simple transition path}s satisfying the Definition~\ref{def:tpath}. It guarantees that every $\tpath$ is equivalent to a path $\rho$ in Definition~4.1 of \cite{GulwaniJK09}.
 Then
-in Line-2, we initialize each candidate $c_i$ with a \emph{simple transition path} $\tpath_i$. New candidates generated in Line-4, 5 and 6 correspond to the if,
-while and sequence statement in paper~\cite{GulwaniJK09} respectively.
+in Line-2, we initialize each candidate $c_i$ with a \emph{simple transition path} $\tpath_i$. New candidates generated in Line-4, 5, and 6 correspond to the if,
+while, and sequence statements in paper~\cite{GulwaniJK09} respectively.
 \begin{itemize}
-  \item
-  Line-4: for all the candidates $c_1, \ldots, c_m$ having the same starting and ending vertices, rewrite them into if statement as~\cite{GulwaniJK09}.
-  \item
-  Line-5: for every candidate $c'$, if it starts and ends with the same vertex, rewrite it into while loop statement as~\cite{GulwaniJK09}.
-  \item
-  Line-6: for every two candidates $c_1, c_2$, if $c_1$ ends with the same vertex as $c_2$'s starting label, rewrite them into sequence statement as~\cite{GulwaniJK09}.
+ \item
+ Line-4: for all the candidates $c_1, \ldots, c_m$ having the same starting and ending vertices, rewrite them into if statement as~\cite{GulwaniJK09}.
+ \item
+ Line-5: for every candidate $c'$, if it starts and ends with the same vertex, rewrite it into a while loop statement as~\cite{GulwaniJK09}.
+ \item
+ Line-6: for every two candidates $c_1, c_2$, if $c_1$ ends with the same vertex as $c_2$'s starting label, rewrite them into sequence statement as~\cite{GulwaniJK09}.
 \end{itemize}
 % \todo{soundness of the program write}
 
@@ -122,7 +122,7 @@ We implement the algorithm REFINE from paper~\cite{GulwaniJK09} and compute the
 refined program $\rprog$ for a rewritten program $c$.
 
 \paragraph[example]{Walk through Example.}
-Look again the walk through example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b).
+Look again at the walk-through an example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b).
 We first collect all its simple transition paths from $\absG(\kw{relatedNestedWhileOdd}(n, m))$ as
 $\tpath_0 = (0 \to 1)$,
 $\tpath_1 = (1 \to 2 \to 3 \to 4)$,
@@ -133,34 +133,34 @@ $ \tpath_0 ; \rpchoose{ 1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2),
 1: \rprepeat(\tpath_4) }; \tpath_5$.
 Then we compute the refined program as,
 \[
-    \tpath_0 ; \rpchoose{ 
-      \begin{array}{l}
-        1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4), \\
-        1: \rprepeat(\tpath_4; \tpath_1; 4:\rprepeat(\tpath_3); \tpath_2) 
-      \end{array}
-      }; \tpath_5.
+ \tpath_0 ; \rpchoose{ 
+ \begin{array}{l}
+ 1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4), \\
+ 1: \rprepeat(\tpath_4; \tpath_1; 4:\rprepeat(\tpath_3); \tpath_2) 
+ \end{array}
+ }; \tpath_5.
 \]
 
 \begin{example}[Two Counter While]
-  \label{ex:twoCounterWhile}
-  We use another example from the .Net base-class library show the necessary of the \emph{path refinement}. It has a two paths loop
-  with different \emph{reachability-bound}s on the locations of different paths.
-    %
-  Given $n \geq m$,
-  the expected \emph{reachability-bound} for the locations $4$ and $5$ on the $\ethen$ branch is $m \times \lfloor\frac{n}{m}\rfloor$
-  while for locations on the other branch, $2$ and $3$ is $(m + 1) \times \lfloor\frac{n}{m}\rfloor + 1$. 
-  The best state-of-art bound analysis
-  gives the same \emph{reachability-bound}, $n + \lfloor\frac{n}{m}\rfloor$ for all the locations within the loop $L_2$.
-  %
-  \input{chapters/reachability/examples/whileTwoCounters-overview}
-  %
-  To know the bounds for locations on different branches of a loop, 
-  it is necessary to know the alternative iteration patterns of the two paths.
-  So over its abstract transition graph generated by Section~\ref{sec:psRB-progabs} as Figure~\ref{fig:whileTwoCounters-overview}(b), we collect all its simple transition path as in Figure~\ref{fig:whileTwoCounters-overview}(c).
-  Then we transform the loop by explicitly computing the interleaving between paths and
-  generates a refined program $\rprog$ as the bottom part of Figure~\ref{fig:whileTwoCounters-overview}.
-  From this refined program, we can explicitly tell two possible path interleaving patterns.
-  In the first one, $\tpath_2$ will be executed after all the iterations of $\tpath_1$ are done, and in the second one,
-  the entire loop is done after $\tpath_1$ finish the iteration.
-  Then the following computation based on this refined program can compute more accurate reachability-bounds.
-  \end{example}
+ \label{ex:twoCounterWhile}
+ We use another example from the .Net base-class library to show the necessity of the \emph{path refinement}. It has a two paths loop
+ with different \emph{reachability-bound}s on the locations of different paths.
+ %
+ Given $n \geq m$,
+ the expected \emph{reachability-bound} for the locations $4$ and $5$ on the $\ethen$ branch is $m \times \lfloor\frac{n}{m}\rfloor$
+ while for locations on the other branch, $2$ and $3$ is $(m + 1) \times \lfloor\frac{n}{m}\rfloor + 1$. 
+ The best state-of-art bound analysis
+ gives the same \emph{reachability-bound}, $n + \lfloor\frac{n}{m}\rfloor$ for all the locations within the loop $L_2$.
+ %
+ \input{chapters/reachability/examples/whileTwoCounters-overview}
+ %
+ To know the bounds for locations on different branches of a loop, 
+ it is necessary to know the alternative iteration patterns of the two paths.
+ So over its abstract transition graph generated by Section~\ref{sec:psRB-progabs} as Figure~\ref{fig:whileTwoCounters-overview}(b), we collect all its simple transition path as in Figure~\ref{fig:whileTwoCounters-overview}(c).
+ Then we transform the loop by explicitly computing the interleaving between paths and
+ generates a refined program $\rprog$ as the bottom part of Figure~\ref{fig:whileTwoCounters-overview}.
+ From this refined program, we can explicitly tell two possible path interleaving patterns.
+ In the first one, $\tpath_2$ will be executed after all the iterations of $\tpath_1$ are done, and in the second one,
+ the entire loop is done after $\tpath_1$ finishes the iteration.
+ Then the following computation based on this refined program can compute more accurate reachability-bounds.
+ \end{example}

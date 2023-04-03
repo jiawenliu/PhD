@@ -24,16 +24,6 @@ Specifically we compute the \emph{constraint}, the \emph{initial and continuatio
 and then generate the set of edges for the program, $\absflow(c)$ in which each edge is an
 \emph{abstract event}.
 \paragraph{Constraint Computation}
-% In this step, we first show how to compute the constraints for expressions in a program $c$,
-% by a program abstraction method adopted from the
-% algorithm in Section 6 in~\cite{SinnZV17}.
-% \\
-% Given a program $c$,
-% every arithmetic expression in an assignment command with label $l$,
-% or boolean expression in the guard of a $\eif$ or $\ewhile$ command with label $l$
-% is transformed into a constraint.
-% \\
-% This 
 A constraint describes the abstract execution of the assignment command with the label $l$,
 or abstract evaluation of the boolean expression in the guard with label $l$.
 
@@ -131,7 +121,7 @@ Specifically
 we handle a 
 normalized expression, $x > 0$
 in guards of if and while loop headers, and 
-the guard variable $x$ only increases, decreases or is reset by 
+the guard variable $x$ only increases, decreases, or is reset by 
 simple arithmetic expression (mainly multiplication, division, minus, and plus (able to extend to max and min)). 
 The guard variable $x$ is generalized into the \emph{norm} when the guard 
 in if or while has the form $\expr > 0$ with an expression $\expr$, and $\grdvar$ is the set of norms.
@@ -340,7 +330,7 @@ Definition~\ref{def:abs_cfg}.
  %
  \item the edge sequence $(e_0, \ldots)$, where $e_i = (l_{i}, dc_i, l_{i + 1}) \in \absE(c)$ for every $i = 0, 1, \ldots$.
  \end{itemize}
- A path is cyclic, if it has the same start- and end-point. A path is simple, if it does not visit a location twice except for start- and end-location. We use $\paths(\absG(c))$ to denote the set of all the paths on $\absG(c)$,
+ A path is cyclic, if it has the same start- and end-point. A path is simple, if it does not visit a location twice except for the start- and end-location. We use $\paths(\absG(c))$ to denote the set of all the paths on $\absG(c)$,
  and $\pathl(p)$ to represent the list of program points corresponding to the vertices sequence of this path $p \in \paths(\absG(c))$,
  where $\pathl : \paths(\absG(c)) \to \mathcal{P}{(\ldom)}$.
  \end{defn}

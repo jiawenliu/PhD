@@ -9,7 +9,7 @@ w.r.t. the ranking functions as follows.
  % \begin{itemize}%
  % \item 
  
-1. The loop initial state 
+1. The loop's initial state 
 $\lpinit(\rprog, \tpath, c) \in \scexpr(c)$ computes a symbolic expression, which is an upper bound for the initial value of $\tpath$'s ranking function before
 any visit of $\tpath$ and during the first execution of $\rprog$.
 \[
@@ -68,7 +68,7 @@ $
  \end{array}
  \]
  }
-%  \end{itemize}
+% \end{itemize}
 \end{defn}
 %
 Then we compute the
@@ -92,46 +92,46 @@ Definition~\ref{def:looprb} computes a sound \emph{loop reachability-bound} as i
 % We first compute $\lpinit(\rprog_1^1, \tpath_3, c) = n - m $ and $\lpnext(\rprog_1^1, \tpath_3, c) = n - m - 1$ and then derive $\lpchB(\rprog_1^1, \tpath_3, c) = 1$ as tight as expected.
 %
 
-% The algorithm based on the progress invariant in paper\cite{GulwaniJK09} computes similar quantity, but it estimates the iteration numbers of $l'$ in one iteration of $l$.
+% The algorithm based on the progress invariant in paper\cite{GulwaniJK09} computes a similar quantity, but it estimates the iteration numbers of $l'$ in one iteration of $l$.
 
 %
 \begin{lem}[Soundness of the Loop Reachability-Bound]
-  \label{lem:looprb-sound}
-  For any loop $l: \rprog$ and a simple transition path $\tpath$ in a refined program, if $l_t: \rprog_t$ is the closest loop enclosing the $\tpath$, then the entering times of $l_t: \rprog_t$ when executing the $l: \rprog$ under initial trace $\trace_0 \in \ftdom_0(c)$, is bounded by $\econfig{\lpchB(l: \rprog, \tpath, c)}(\trace_0)$.
-  \[
-    \begin{array}{l}
-    \forall c, c_l \in \cdom, \tpath \in \absG(c), \trace_0 \in \ftdom_0(c_l), \trace \in \tdom, l, l' \in \ldom, \rprog \sthat 
-    \rprog = REFINE(\algrewrite(c))
-    \\ \qquad
-    \land l_t: \rprog_t = \kw{enclosed}(\rprog, \tpath)
-    \land 
-    \rprog = \algrewrite(c_l)
-    \\ \qquad
-    \land
-    \Big(
-    \config{c_l, \trace_0} \to^* \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace}
-    \lor \config{c_l, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
-    \Big)
-    \\ \qquad
-    \implies
-    \econfig{\lpchB(l: \rprog, \tpath, c)}(\trace_0) 
-    \\ \qquad \geq 
-      \sum\Big\{
-      \lcounter(\trace, \tracel(\trace_{l \to l_t})) ~\vert~ \trace_{l \to l_t} \in 
-      \big\{\trace_{l \to l_t} 
-      ~\vert~ \trace_{l_s \to l_f}\in \ftdom 
-      \land \exists  \trace' \in \ftdom, \trace''\in \tdom
-      \sthat 
-      \\ \qquad \qquad \qquad
-      \trace = \trace_{l \to l_t} \tracecat \trace''
-      % \\ \qquad \qquad \qquad \qquad
-      \land \trace_{l \to l_t} = [(\_, l, \etrue)] \tracecat \trace' :: (\_, l_t, \etrue)
-      \\ \qquad \qquad \qquad
-      \land \counter(\trace', l) = \counter(\trace', l_t) = 0 
-      \big\}
-      \Big\}.
+ \label{lem:looprb-sound}
+ For any loop $l: \rprog$ and a simple transition path $\tpath$ in a refined program, if $l_t: \rprog_t$ is the closest loop enclosing the $\tpath$, then the entering times of $l_t: \rprog_t$ when executing the $l: \rprog$ under initial trace $\trace_0 \in \ftdom_0(c)$, is bounded by $\econfig{\lpchB(l: \rprog, \tpath, c)}(\trace_0)$.
+ \[
+ \begin{array}{l}
+ \forall c, c_l \in \cdom, \tpath \in \absG(c), \trace_0 \in \ftdom_0(c_l), \trace \in \tdom, l, l' \in \ldom, \rprog \sthat 
+ \rprog = REFINE(\algrewrite(c))
+ \\ \qquad
+ \land l_t: \rprog_t = \kw{enclosed}(\rprog, \tpath)
+ \land 
+ \rprog = \algrewrite(c_l)
+ \\ \qquad
+ \land
+ \Big(
+ \config{c_l, \trace_0} \to^* \config{\clabel{\eskip}^{l'}, \trace_0 \tracecat \trace}
+ \lor \config{c_l, \trace_0} \uparrow^{\infty} \trace_0 \tracecat \trace 
+ \Big)
+ \\ \qquad
+ \implies
+ \econfig{\lpchB(l: \rprog, \tpath, c)}(\trace_0) 
+ \\ \qquad \geq 
+ \sum\Big\{
+ \lcounter(\trace, \tracel(\trace_{l \to l_t})) ~\vert~ \trace_{l \to l_t} \in 
+ \big\{\trace_{l \to l_t} 
+ ~\vert~ \trace_{l_s \to l_f}\in \ftdom 
+ \land \exists \trace' \in \ftdom, \trace''\in \tdom
+ \sthat 
+ \\ \qquad \qquad \qquad
+ \trace = \trace_{l \to l_t} \tracecat \trace''
+ % \\ \qquad \qquad \qquad \qquad
+ \land \trace_{l \to l_t} = [(\_, l, \etrue)] \tracecat \trace' :: (\_, l_t, \etrue)
+ \\ \qquad \qquad \qquad
+ \land \counter(\trace', l) = \counter(\trace', l_t) = 0 
+ \big\}
+ \Big\}.
 \end{array}
-  \]
+ \]
 \end{lem}
 %
 The $\lpchB(l:\rprog, \tpath)$ 
@@ -166,7 +166,7 @@ To compute the precise bound, it is critical to know
 the numbers of iterations of the outer loops $L_3$ and $L_1$ such that,
 during these iterations, the loop $L_6$ is ``entered'', which is exactly our \emph{loop reachability-bound}.
 Figure~\ref{fig:threeWhile-overview}(a) shows its abstract transition graph,
-and we compute its refined program in the bottom. 
+and we compute its refined program at the bottom. 
 $\rprog_1$, $\rprog_3$ and $\rprog_6$ denote the body of the loop $L_1$, $L_3$ and $L_6$ respectively.
 We first compute the $\outinB(\rprog_6, \tpath_3, c) = N $ for $\tpath_3$ w.r.t. its innermost loop.
 Then for its two outer loops, $L_1$ and $L_3$,
