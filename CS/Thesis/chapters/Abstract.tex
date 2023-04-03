@@ -10,19 +10,16 @@
     Yet another kind of program analysis is studying the program privacy behavior by analyzing
     % In terms of privacy, I analyze 
     whether a specific private data is dependent on other data and how many times they are dependent during multiple executions.
-    % We notice that when analyzing the aforementioned behaviors of a computer program, there are two dominant perspectives
-    % shared by them -- ``How Much'' and ``Whether''.
-    % We refer to the two perspectives as 
-    % two sub-properties of the program namely \emph{quantitative} property and \emph{reachability} property.
-    % For the class of behaviors that share these two sub-properties, I refer to them as \emph{quantitative-reachability} hyper-properties.
     We notice that when studying the aforementioned behaviors, there are two dominant program properties
-    that I am analyzing -- ``How Much'' and ``Whether'',
+    that we are analyzing -- ``How Much'' and ``Whether'',
     % We refer to the two perspectives as 
     % two sub-properties of the program,
     namely \emph{quantitative} properties and \emph{reachability} properties.
     % When looking into this kind of behaviors, 
-    In other words, when looking into this kind of behaviors, I am indeed analyzing 
-    program properties that contain \emph{quantitative} and \emph{reachability} as two sub-properties.
+    In other words,
+    %  when looking into this kind of behaviors, 
+    we are analyzing the 
+    program properties that contain two sub-properties -- \emph{quantitative} and \emph{reachability}.
     A property is a hyper-property if it has two or more sub-properties.
     For the class of properties that has \emph{quantitative} and \emph{reachability} sub-properties, 
     I refer to them as \emph{quantitative-reachability} hyper-properties.
@@ -73,7 +70,7 @@
     However, when queries are arbitrarily composed, the different errors can propagate through the chain of different queries and result in high generalization error. 
     To address this issue, data analysts are designing several techniques that not only guarantee bounds on the generalization errors of single queries, but that also guarantee bounds on the generalization error of the composed analyses. 
     The choice of which of these techniques to use, often depends on the chain of queries that an adaptive data analysis can generate, intuitively the \emph{adaptivity} level in an adaptive data analysis.
-    To help analysts with identifying which technique to use to control their generalization error, I consider adaptive data analyses implemented as while-like programs and I design a
+    To help analysts with identifying which technique to use to control their generalization error, we consider adaptive data analyses implemented as while-like programs, and we design a
     program analysis framework.
     %  to analyze this \emph{adaptivity}.
     In this framework, I first formalize the intuitive notion of \emph{adaptivity} as a \emph{quantitative-reachability} property,
@@ -91,17 +88,17 @@
     It can help to improve the program analysis results when studying other different program features.
     % beyond itself.
     For example, the \emph{reachability-bound} on each program location can be used by some resource cost analysis techniques to compute a precise bound on a program's worst-case resource consumption.
-    When I analyze the adaptivity in an adaptive data analysis program as discussed above, the accuracy of my program analysis result can also be improved through a tight \emph{reachability-bound} on every program location.
+    When we analyze the adaptivity in an adaptive data analysis program as discussed above, the accuracy of my program analysis result can also be improved through a tight \emph{reachability-bound} on every program location.
     % , the information leakage, etc. 
     Some existing program complexity analysis methods can be repurposed to analyze and estimate the \emph{reachability-bound}.
     However, these methods focus only on the overall quantity and ignore the path sensitivity in the program.
     For this reason, the \emph{reachability-bound}s of the locations in different sub-procedures are usually over-approximated. 
-    As far as I know, there is no general analysis algorithm that computes the reachability-bound for every program location directly and path-sensitively. 
+    As far as we know, there is no general analysis algorithm that computes the reachability-bound for every program location directly and path-sensitively. 
     To this end, I present a path-sensitive reachability-bound algorithm, which exploit the path sensitivity to compute a precise reachability-bound for every program location.
     % In comparison with previous works, my algorithm is the first one to exploit the path sensitivity to compute a precise reachability-bound for every program location.
     % By doing this, I bring together two techniques from resource analysis: 1. amortized bound analysis through program abstraction and ranking function estimation, and 2. summarization-based multiple loop paths refinement.
     % Building on this combination of techniques, I focus on two new quantities, \emph{path reachability-bound} and \emph{loop reachability-bound}, which allow us to leverage the precision and efficiency of the two techniques mentioned above, and compute precise reachability-bounds for each program point in a path-sensitive way.
-    We implemented my algorithm in a prototype, and I report on an experimental comparison with state-of-art tools over four different sets of benchmarks.
+    We implement this path-sensitive reachability-bound algorithm in a prototype, and report on an experimental comparison with state-of-art tools over four different sets of benchmarks.
     \end{abstractpage}
     
     

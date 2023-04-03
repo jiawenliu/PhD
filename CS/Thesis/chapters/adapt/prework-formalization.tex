@@ -2,11 +2,13 @@ The previous works formalized the adaptivity through a query-based dependency gr
 Below is a summary of their query-based dependency graph construction and adaptivity formal definition, followed
 by the weaknesses of this formalization method.
 \subsection{Query-Based Dependency Graph}
-They build their dependency graph over annotated queries, in order to construct the edge between queries for this graph, they first
-define a query \emph{May-dependency} relation. Below is a summary of this definition from
+Dependency graph in previous work is over annotated queries.
+To construct the edges on this graph, they first
+define a query \emph{May-dependency} relation over all queries. Below is a summary of this definition from the
 works by~\cite{weihao22}.
-The notations $\in_q$ and $\not\in_q$ a query belongs to the trace or not respectively, with the full details in works by~\cite{weihao22}.
-\begin{defn}[Query may dependency]
+The notations $\in_q$ and $\not\in_q$ represent that a query belongs to the trace or not respectively.
+
+\begin{defn}[Query May-dependency]
 One query $q({v_q}_1)$ may depend on another query $q({v_q}_2)$ in a program $c$, with a starting loop maps $w$, a starting memory $m$, hidden database $D$, denoted as \\
 $\mathsf{DEP}(q({v_q}_1)^{(l_1, w_1)}, q({v_q}_2)^{(l_2, w_2)}, c,w, m, D)$ is defined below. 
 \[
@@ -36,7 +38,7 @@ Based on the \emph{may-dependency} between the two queries above,
 below is their formal definition of the query-based dependency graph. 
 For every execution of a program $c$ starting with a certain memory and while map
 % configurations, 
-they construct a corresponding dependency graph. 
+they construct a query-based dependency graph as below.
 % graph definition
 \begin{defn}[Query-based Dependency Graph]
 Given a program $c$, a database $D$, a starting memory $m$, an initial loop map $w$, the query-based dependency graph $G(c,D,m,w) = (V, E)$ is defined as: \\
@@ -66,16 +68,19 @@ $$A(c, D, m, w) = \max\limits_{q({v_q})^{(l,w)},q({v_q}')^{(l',w')} \in V } |p(q
 \end{defn}
 
 \subsection{Limitations}
-Limited by their language design and the dependency graph construction,
-this adaptivity definition is weak in the following aspects.
+Limited by the language design and the dependency graph construction,
+this adaptivity definition has the following weaknesses.
 
 \emph{Expressiveness.}
- The definition isn't general enough to give the formal adaptivity for the adaptive data analysis programs with non-constant
- while loops.
- However, programs containing while loops of non-deterministic iteration times are very common in the adaptive data analysis area.
- This is caused by the expressiveness limitation in their language design and operational semantics design as analyzed
- in Section~\ref{sec:prework-language}.
- \\
+Because the language model only support the program with while loop with constant number of iteration times.
+%  The definition isn't general enough to give the formal adaptivity for the adaptive data analysis programs with
+%  while loops.
+%  However, programs containing while loops of non-deterministic iteration times are very common in the adaptive data analysis area.
+%  This is caused by the expressiveness limitation in their language design and operational semantics design as analyzed
+%  in Section~\ref{sec:prework-language}.
+% This results in the expressiveness limitations in this adaptivity definition as well.
+In this sense, this definition does not general enough to capture the adaptivity of the program with loop whose iteration times dependent on the program state. 
+%  \\
  In the following example program similar to the one in Section~\ref{sec:prework-language} with two extra query request commands,
  \[
  {\assign{x}{0}};
@@ -91,8 +96,7 @@ this adaptivity definition is weak in the following aspects.
  the number of iterations cannot be evaluated to a natural number in advance of entering this loop for the same reason. 
  The iteration number is only
  able to be decided during executing this while loop body.
- \\
- Limited by this, they cannot give the adaptivity for this program even though the adaptivity in this program is 4, which is straightforward to observe.
+ While this adaptivity definition cannot capture this program though the adaptivity in this program is 4, which is straightforward to observe.
 
  \emph{Accuracy.}
  The inaccuracy of this \emph{adaptivity} definition is caused by both their language design and their graph construction.
