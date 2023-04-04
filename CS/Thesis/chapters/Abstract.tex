@@ -18,17 +18,17 @@
     I refer to them as \emph{quantitative-reachability} hyper-properties.
     Most existing program analysis methods can analyze only one sub-property of a program's
     \emph{quantitative-reachability} hyper-property.
-    These methods are not enough to capture all the different perspectives of it.
+    % These methods are not enough to capture all the different perspectives of it.
     For example, the reachability analysis methods only tell us whether some code pieces are executed, whether the confidential data is leaked, whether certain data relies on another data, etc., which are only the \emph{reachability} sub-properties.
     These analysis methods do not address how many times or how long these properties hold with respect to some particular code or data. 
-    Quantitative analysis methods, such as program complexity analysis, resource cost analysis, execution time estimation, etc. only tell us the upper bound on the overall quantity, i.e., the \emph{quantitative} sub-property.
+    Quantitative analysis methods, such as program complexity analysis, resource cost analysis, execution time estimation, etc., only tell us the upper bound on the overall quantity, i.e., the \emph{quantitative} sub-property.
     However, these quantities are not associated with 
     a specific piece of code, program location, private data, etc., which are related to the \emph{reachability} sub-properties.
-    This thesis presents new program analysis algorithms for analyzing two representative \emph{quantitative-reachability} properties.
-    The new analysis methods mitigate the limitations in both reachability analysis methods and 
+    This thesis presents new program analysis methodology for analyzing two representative \emph{quantitative-reachability} properties.
+    The new methodology mitigates the limitations in both reachability analysis methods and 
     quantitative analysis methods and
     help to control the program's execution behaviors in higher granularity. 
-    We also show the effectiveness of the new analysis algorithms through prototype implementations and experimental evaluations.
+    The effectiveness of the new analysis method is validated through prototype implementations and experimental evaluations.
     
     The first noteworthy \emph{quantitative-reachability} property I look into is 
     the \emph{adaptivity}  
@@ -41,9 +41,9 @@
     The choice of which of these techniques to use, often depends on the chain of queries that an adaptive data analysis can generate, intuitively the \emph{adaptivity} level in an adaptive data analysis.
     To help analysts with identifying which technique to use to control their generalization error, we consider adaptive data analyses implemented as while-like programs, and we design a
     program analysis framework.
-    In this framework, I first formalize the intuitive notion of \emph{adaptivity} as a \emph{quantitative-reachability} property,
+    In this framework, we first formalize the intuitive notion of \emph{adaptivity} as a \emph{quantitative-reachability} property,
     which is a key measure of an adaptive data analysis to choose the appropriate technique.
-    Then I design a program analysis algorithm
+    Then we design a program analysis algorithm
     that estimates a sound upper bound on the adaptivity of the program that implements an adaptive data analysis. 
     We also implement my program analysis and show that it can help to analyze the adaptivity of several concrete data analyses with different adaptivity structures.
 
