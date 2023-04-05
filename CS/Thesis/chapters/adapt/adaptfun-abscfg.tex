@@ -85,7 +85,9 @@ is transformed into a constraint as follows.
 The difference constraints $DC(\mathcal{V} \cup \constdom)$ is the set of all the inequality of
 form $x' \leq y + v$ or $x' \leq v$ where $x \in \mathcal{V} $, 
 $y \in \mathcal{V}$ and $v \in \scvardom$.
-The \emph{Symbolic Constant} can be a natural number, $\infty$, or a program's input variable, We use $\scvardom \subseteq \mathbb{N} \cup \vardom \cup \{ \infty \}$ to denote the universe of all \emph{Symbolic Constant},
+The \emph{Symbolic Constant} can be a natural number, $\infty$, the input variable of a program, $\inpvardom$ or
+$Q_m$ representing the maximum value returned as the query answer. 
+We use $\scvardom \subseteq \mathbb{N} \cup \vardom \cup \{ \infty, Q_m \}$ to denote the universe of all \emph{Symbolic Constant},
 which is the set of all natural numbers with $\infty$ and programs' input variables.
 \end{defn}
 An inequality $x' \leq y + v$ describes that the value of $x$ in the current state is
@@ -95,7 +97,7 @@ at most the value $v$.
 
 \begin{defn}[Symbolic Expression]
  \label{def:adaptfun-symbolic_expr}
- The \emph{symbolic expression} of a program $\scexpr(c) \subseteq \mathcal{A}$ is the set of all the arithmetic expressions over $\mathbb{N} \cup \inpvar(c) \cup \{\infty \}$ for the program $c$.
+ The \emph{symbolic expression} of a program $\scexpr(c) \subseteq \mathcal{A}$ is the set of all the arithmetic expressions over $\mathbb{N} \cup \inpvar(c) \cup \{\infty, Q_m \}$ for the program $c$.
 \end{defn}
 
 \begin{defn}[Constraint]
@@ -113,7 +115,9 @@ the value of variable $y$ plus $v$ before the execution,
 and $l \xrightarrow{x' \leq v} l'$ respectively denotes value of variable $x$
 after executing the command at $l$ is at most
 the value of the symbolic constant $v$ before the execution.
+We have $l \xrightarrow{x' \leq Q_m} l'$ in the case that command $l$ is a query request and assigned the query answer to variable $x$.
 For every expression in each of the label commands, it is computed in three steps via the program abstraction method adopted from Section~6 in paper by~\cite{SinnZV17}. 
+
 %
 
 The Boolean Expressions $b$ from the set $\booldom$.
@@ -162,18 +166,17 @@ In the fourth case, if a variable $x$, belonging to the set
 $\grdvar$ is updated by a variable $y$, which isn't in this set, 
 we add $y$ into the set $\grdvar$ and repeat 
 above procedure until $\grdvar$ and $\absexpr(\expr, x)$ is stabilized. 
-\\
-Specifically 
-% understanding the intuition, 
-we handle a 
-% simplified 
-normalized expression, $x > 0$
+Specifically,
+we handle a normalized expression, $x > 0$
 in guards of while loop headers, and 
 the counter variable $x$ only increases, decreases, or is reset by 
 simple arithmetic expression (mainly multiplication, division, minus, and plus (able to extend to max and min)). 
 The counter variable $x$ is generalized into the norm when the boolean expression $x > 0$
 in $\ewhile$ doesn't have the form $x > 0$.
 The way of normalizing the guards and computing the norms is adopted from the computation step 1 in Section 6.1 in paper \cite{SinnZV17}. 
+
+In the $5^{th}$ case where the expression comes from a query request, we abstract this query expression into $x \leq Q_m$.
+By doing this, we ignore the answer of this query in the static analysis just to capture the possible dependency relation pass through query requests.
 % \\
 \begin{defn}[Universe of The Symbolic Expression ($\scexprdom$)]
  \label{def:symbolic_expr_domain}
