@@ -217,33 +217,33 @@ causes false positives
 when there is no influence through control dependency. 
 For example in the following program
 \[
-    \clabel{\assign{i}{3}}^{0}; \clabel{\assign{x}{\query(\chi[0])}}^1 \ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4})
+ \clabel{\assign{i}{3}}^{0}; \clabel{\assign{x}{\query(\chi[0])}}^1 \ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4})
 \]
 we execute only two iterations of the while loop as follows,
 \[
-    \begin{array}{l}
-    \config{
-    \clabel{\assign{i}{3}}^{0}; \clabel{\assign{x}{\query(\chi[0])}}^1; \ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_0} \\
-    \rightarrow^{*} \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v, \chi[0])]} \\
-    \rightarrow^{*}
-    \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), 
-    \\ \qquad \quad \trace_1 \tracecat [(x, 1, v, \chi[0]), (i \geq 0, 2, \etrue, \bullet), (y, 3, v_0, \chi[0]), (i, 4, 1, \bullet), (i \geq 0, 2, \etrue, \bullet)]
-    \\ \qquad \quad  \tracecat [ (y, 3, v_1, \chi[1]) ]}.
-    \end{array}    
+ \begin{array}{l}
+ \config{
+ \clabel{\assign{i}{3}}^{0}; \clabel{\assign{x}{\query(\chi[0])}}^1; \ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_0} \\
+ \rightarrow^{*} \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v, \chi[0])]} \\
+ \rightarrow^{*}
+ \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), 
+ \\ \qquad \quad \trace_1 \tracecat [(x, 1, v, \chi[0]), (i \geq 0, 2, \etrue, \bullet), (y, 3, v_0, \chi[0]), (i, 4, 1, \bullet), (i \geq 0, 2, \etrue, \bullet)]
+ \\ \qquad \quad \tracecat [ (y, 3, v_1, \chi[1]) ]}.
+ \end{array} 
 \]
 To find the dependency relation between $(x, 1, v, \chi[0])$ and $(y, 3, v_1, \chi[1])$, we modify the first event and then execute only the first iteration of the while loop as follows,
 \[
-    \begin{array}{l}
-       \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v', \chi[0])]} \\
-        \rightarrow^{*}
-        \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}),
-        \\ \qquad \quad   \trace_1 \tracecat [(x, 1, v', \chi[0]), (i \geq 0, 2, \etrue, \bullet), (y, 3, v_1, \chi[0])] 
-        \\ \qquad \quad  \tracecat[]}.
-    \end{array} 
-    \]
-Without looking into a testing event, we can always say $(x, 1, v, \chi[0]) \not\in []$ and they have event may-dependency relation.
-However, there does not exist any dependency relation between these two events.
-I use the presence of a test event whose value is affected by the change in $\event_1$
+ \begin{array}{l}
+ \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v', \chi[0])]} \\
+ \rightarrow^{*}
+ \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}),
+ \\ \qquad \quad \trace_1 \tracecat [(x, 1, v', \chi[0]), (i \geq 0, 2, \etrue, \bullet), (y, 3, v_1, \chi[0])] 
+ \\ \qquad \quad \tracecat[]}.
+ \end{array} 
+ \]
+Without looking into a testing event, we can always say $(y, 3, v_1, \chi[1]) \not\in []$ and they have event may-dependency relation.
+However, there does not exist any dependency relation between $(x, 1, v, \chi[0])$ and $(y, 3, v_1, \chi[1])$.
+For this reason, we use the presence of a test event whose value is affected by the change in $\event_1$
 to guarantee that the influence goes through a control flow guard in the first step.
 This is correct because the control dependency can only be passed through the guard of if or while command,
 and this guard must be evaluated into two different values ($\event_b$ and $\neg \event_b$) in the two executions.
@@ -336,7 +336,7 @@ Below is an example to better understand this definition.
  \clabel{\assign{x}{0}}^0;\clabel{\assign{y}{x}}^1.
 \]
 In this example, we have two assignment commands without query requests as follows. 
-Intuitively, a result of the first command is always $0$, and same for the second command,
+Intuitively, a result of the first command is always $0$, and the same for the second command,
 and the second command depends on the constant $0$ rather than variable $x$.
 However, I aim to capture the dependency 
 relation passing through variables, so there is still a variable may-dependency relation between the two labeled
