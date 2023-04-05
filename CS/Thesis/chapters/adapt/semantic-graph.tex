@@ -81,6 +81,9 @@ In other words, it tracks for each vertex $x^l$ its visiting times
 The visiting times are computed by the counter operator $\vcounter(\trace', l)$
 by counting the occurrence of the label $l$ in $\trace'$.
 
+If the program is not a well-formed program by Definition~\ref{def:adaptfun-wfprog}, the program does not terminate.
+As a result, every labeled variable of this program does not have a weight function.
+
 \textbf{Example.} 
 As an instance, in Figure~\ref{fig:overview-example}(b), the weight of the labeled variable $x^3$ is 
 $\lambda \trace_0 \sthat \env(\trace_0) k$, i.e.
@@ -157,12 +160,15 @@ Each component is defined as below,
 A semantics-based dependency graph $\traceG({c})= (\traceV({c}), \traceE({c}), \traceW({c}), \traceF({c}))$ 
 is \emph{well-formed} if and only if $ \{x^l \ |\ (x^l,w)\in \traceW({c})\} = \traceV({c}) $.
 \end{defn}
-
+The only situation where $ \{x^l \ |\ (x^l,w)\in \traceW({c})\} \neq \traceV({c}) $ is that the program
+has non-terminating execution.
+In this situation, by Definition~\ref{def:lvar_weight}  we know every labeled variable of this program does not have a weight function.
+As a result, the weight set is empty.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% The Explanation of Dependency Graph %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Below we discuss in detail the four components.
+Below we discuss in detail the four components of the semantics-based dependency graph for a program $c$.
 \begin{enumerate}
- \item The vertices $\traceV({c})$ of a program $c$ are all its labeled variables, $\lvar(c)$ which are statically collected.
+ \item The vertices set, $\traceV({c})$ contains all its labeled variables, $\lvar(c)$ which are statically collected.
  \item $\traceF(c)$ contains the \emph{query annotation} for 
  every vertex $x^l \in \traceV(c)$. It indicates whether $x^l$ comes from a query request (1) or not (0) by checking if the labeled variable $x^l$ of the vertex is in $\qvar(c)$.
  \item Edges in $\traceE(c)$ are all directed.

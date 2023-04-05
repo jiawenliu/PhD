@@ -9,29 +9,43 @@
     
     The program $\kw{multiRoundsS(k)}$ in Figure~\ref{fig:multiRoundsS}(a) demonstrates this over-approximation.
     It is a variant of the multiple rounds strategy with input $k$.
-    In each iteration, the query $\query(\chi[y] + p)$ in command $7$ is based on previous query results stored in $p$ and $y$.
+    In each iteration, the query request $\clabel{\assign{p}{\query(\chi[y]+p)} }^{7}$ is based on value stored in $p$ and $y$ from previous iteration.
     Differ from Example~\ref{ex:multipleRounds},
-    only the query answer from the one iteration, the $(k - 2)^{th}$ one is used in query request
-    $\clabel{\assign{p}{\query(\chi[y]+p)} }^{7}$.
-    Because the execution will reset
-    $p$'s value by the constant $0$ in all the other iterations
-    at line $10$ after this query request.
-    In this way, all the query answers stored in $p$ are erased and aren't used
-    in the query request at the next iteration, except the one at the $(k - 2)$th iteration.
-    In this sense, the intuitive \emph{adaptivity} rounds for this example is $2$. 
+    only the query answer from the $(k - 2)^{th}$ iteration is used in the query request, $\clabel{\assign{p}{\query(\chi[y]+p)} }^{7}$ of the next $(k - 1)^{th}$ iteration.
+    % $\clabel{\assign{p}{\query(\chi[y]+p)} }^{7}$.
+    In all the other iterations, $j \neq (k - 2)$, the if-control goes to the first branch
+    % Because the execution will reset
+    $p$'s value is reset by the constant $0$ in command $ \clabel{\assign{p}{0}}^{9}$.
+    % in all the other iterations
+    % at line $10$ after this query request.
+    In this way, all the query answers stored in $p$ are erased and are not used
+    in the query request at the next iteration, except the one at the $(k - 2)^{th}$ iteration.
+    Intuitively, when $k \geq 2$, only the $\clabel{\assign{p}{\query(\chi[y]+p)} }^{7}$ in the $(k - 1)^{th}$ iteration
+    depends on the query in $(k - 2)^{th}$ iteration and the \emph{adaptivity} round is $2$.
+    When $k = 0$, the program does not go into the loop and there is no dependency between any query request.
+    When $k = 1$, the program goes to the first branch in the first if-control with guard $\clabel{ k = 1}^{3}$.
+    In this case, the second query request $ \clabel{ \assign{y}{\query(z)}}^{4}$ depends on the first one,
+    $\clabel{\assign{z}{\query(0)} }^{1}$ and then the next query in the loop, $\clabel{\assign{p}{\query(\chi[y]+p)} }^{7}$ depends on the second one. Intuitively, the adaptivity is $3$.
+    % In this sense, the intuitive \emph{adaptivity} rounds for this example is $2$. 
     However, our adaptivity definition fails to realize that there is only a dependency relation 
-    between $p^7$ and $p^7$ in one single iteration, 
-    but not in all the others. 
+    between $p^7$ to itself at the $(k - 2)^{th}$ iteration.
+    % but not in all the others. 
     As shown in the semantics-based dependency graph in Figure~\ref{fig:multiRoundsS}(b), 
-    there is an edge from $p^7$ to itself representing the existence of \emph{Variable May-Dependency} from $p^7$ on itself,
-    and the visiting times of labeled variable $p^7$ is 
-    $\lambda \trace_0 \sthat k$. 
-    The function $\lambda \trace_0 \sthat \env(\trace_0) k$ counts the execution times of command $\clabel{\assign{p}{\query(\chi[y]+p)} }^{7}$ during execution, which is expected to be equal to the loop iteration numbers, i.e., an initial value of input $k$ from the initial trace $\trace_0$.
+    there is a cycle on $p^7$ representing the existence of the \emph{Variable May-Dependency} from $p^7$ on itself.
+    % and the visiting times of labeled variable $p^7$ is 
+    % $\lambda \trace_0 \sthat k$. 
+    Weight of this vertex is $\lambda \trace_0 \sthat \env(\trace_0) k$,
+    % The function $\lambda \trace_0 \sthat \env(\trace_0) k$ 
+    which returns the evaluation times of the command $\clabel{\assign{p}{\query(\chi[y]+p)} }^{7}$ during the program execution under the initial trace $\trace_0$.
+    % , which is expected to be equal to the loop iteration numbers, i.e., an initial value of input $k$ from the initial trace $\trace_0$.
+    Since the command $\clabel{\assign{p}{\query(\chi[y]+p)} }^{7}$  will always be evaluated the same time as the loop iteration numbers, i.e. $k$,
+    the weight function returns $\env(\trace_0) k$.
+    However, $\env(\trace_0) k$ is the total number that this command is evaluated, rather than the number of the evaluations in which this command depends on other query requests.
     As a result, the walk with the longest query length 
     is
     $p^7 \to \cdots \to p^7 \to y^4 \to z^1 $ with the vertex $p^7$ visited $\env(\trace_0) k$ times, as the dotted arrows. 
     The adaptivity based on this walk
-    is $\lambda \trace_0 \sthat \env(\trace_0) k + 2$, instead of $2$. 
+    is $\lambda \trace_0 \sthat \env(\trace_0) k + 2$, instead of $\max\{0, 2, 3\}$. 
     Though the $\THESYSTEM$ is able to give us $2 + k$, as an accurate bound w.r.t this definition.
     {
     \begin{figure}
@@ -51,11 +65,13 @@
     \clabel{\eskip}^5);\\
     \ewhile ~ \clabel{j \neq k}^{6} ~ \edo ~ \Big(
     \\
-    \qquad \clabel{\assign{p}{\query(\chi[y]+p)} }^{7} ; 
-    \clabel{\assign{j}{j + 1}}^{8} ; \\
-    \qquad \eif(\clabel{ j \neq k - 2}^{9}, 
-    \clabel{ \assign{p}{0}}^{10} ,
-    \clabel{\eskip}^{10}) \Big) \\ 
+    \qquad \clabel{\assign{p}{\query(\chi[y]+p)} }^{7} ; \\
+    \qquad 
+    \eif(\clabel{ j \neq k - 2}^{8}, 
+    \clabel{ \assign{p}{0}}^{9} ,
+    \clabel{\eskip}^{10})  \\ 
+    \qquad \clabel{\assign{j}{j + 1}}^{11} ; 
+    \Big)
     \end{array}
     $ 
     }
