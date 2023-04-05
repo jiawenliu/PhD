@@ -244,9 +244,8 @@ To find the dependency relation between $(x, 1, v, \chi[0])$ and $(y, 3, v_1, \c
 Without looking into a testing event, we can always say $(y, 3, v_1, \chi[1]) \not\in []$ and they have event may-dependency relation.
 However, there does not exist any dependency relation between $(x, 1, v, \chi[0])$ and $(y, 3, v_1, \chi[1])$.
 For this reason, we use the presence of a test event whose value is affected by the change in $\event_1$
-to guarantee that the influence goes through a control flow guard in the first step.
-This is correct because the control dependency can only be passed through the guard of if or while command,
-and this guard must be evaluated into two different values ($\event_b$ and $\neg \event_b$) in the two executions.
+to guarantee that the influence goes through a control flow in the first step.
+Because the control dependency can only be passed through the guard of if or while command, this guard must be evaluated into two different values ($\event_b$ and $\neg \event_b$) in the two executions.
 
 I show the following three examples to illustrate the event may-dependency relation. 
 
