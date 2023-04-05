@@ -217,27 +217,28 @@ causes false positives
 when there is no influence through control dependency. 
 For example in the following program
 \[
-    \clabel{\assign{i}{3}}^{0}; \assign{x}{\query(\chi[0])}^1 \ewhile \clabel{i \geq 0}^{2} \edo ( \assign{y}{\query(\chi[i])}^3; \clabel{\assign{i}{ i - 1}}^{4})
+    \clabel{\assign{i}{3}}^{0}; \clabel{\assign{x}{\query(\chi[0])}}^1 \ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4})
 \]
 we execute only two iterations of the while loop in this program as follows,
 \[
     \begin{array}{l}
-    \config{\clabel{\assign{i}{3}}^{0}; \assign{x}{\query(\chi[0])}^1 \ewhile \clabel{i \geq 0}^{2} \edo ( \assign{y}{\query(\chi[i])}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_0} \\
-    \rightarrow^{*} \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \assign{y}{\query(\chi[i])}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v, \chi[0])]} \\
+    \config{
+    \clabel{\assign{i}{3}}^{0}; \clabel{\assign{x}{\query(\chi[0])}}^1; \ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_0} \\
+    \rightarrow^{*} \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v, \chi[0])]} \\
     \rightarrow^{*}
-    \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \assign{y}{\query(\chi[i])}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v, \chi[0]), (i \geq 0, 2, \etrue, \bullet), (y, 3, v_0, \chi[0]), (i, 4, 1, \bullet), (i \geq 0, 2, \etrue, \bullet)]
-    \tracecat [ (y, 3, v_1, \chi[1]) ].
+    \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v, \chi[0]), (i \geq 0, 2, \etrue, \bullet), (y, 3, v_0, \chi[0]), (i, 4, 1, \bullet), (i \geq 0, 2, \etrue, \bullet)]
+    \tracecat [ (y, 3, v_1, \chi[1]) ]}.
     \end{array}    
 \]
 To find the dependency relation between $(x, 1, v, \chi[0])$ and $(y, 3, v_1, \chi[1])$, we modify the first event and then execute only the first iteration of the while loop as follows,
 \[
     \begin{array}{l}
-        \rightarrow^{*} \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \assign{y}{\query(\chi[i])}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v', \chi[0])]} \\
+       \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v', \chi[0])]} \\
         \rightarrow^{*}
-        \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \assign{y}{\query(\chi[i])}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v', \chi[0]), (i \geq 0, 2, \etrue, \bullet), (y, 3, v_1, \chi[0])] \tracecat[].
+        \config{\ewhile \clabel{i \geq 0}^{2} \edo ( \clabel{\assign{y}{\query(\chi[i])}}^3; \clabel{\assign{i}{ i - 1}}^{4}), \trace_1 \tracecat [(x, 1, v', \chi[0]), (i \geq 0, 2, \etrue, \bullet), (y, 3, v_1, \chi[0])] \tracecat[]}.
     \end{array} 
     \]
-Without looking into a testing event, we can always say $(x, 1, v, \chi[0]) \notin []$ and they have event may-dependency relation.
+Without looking into a testing event, we can always say $(x, 1, v, \chi[0]) \not\in []$ and they have event may-dependency relation.
 However, there does not exist any dependency relation between these two events.
 I use the presence of a test event whose value is affected by the change in $\event_1$
 to guarantee that the influence goes through a control flow guard in the first step.
