@@ -27,25 +27,6 @@ We first collect the loop headers $\loopl(c) \subseteq \progl(c)$ from a program
 \right.
 \]
  \end{defn}
-% \begin{defn}[Loop Path]
-% \label{def:looppath}
-% A simple transition path
-% $\tpath \in \paths(\absG(c))$ for the program $c$, is a path on its abstract transition graph $\absG(c) = (\absV(c), \absE(c))$ with 
-% \begin{itemize}
-% \item a vertices sequence $(l_0, \ldots, l_n)$, where $l_i \in \absV(c)$ for every $i = 0, \ldots, n$ and
-% %
-% \item an edge sequence $(e_1, \ldots, e_n)$, where $e_i = (l_{i - 1}, dc_i, l_{i}) \in \absE(c)$ for every $i = 1, \ldots, n$,
-% \end{itemize}
-% %
-% satisfying:
-% \begin{itemize}
-% \item $l_i \neq l_j$ for every $i = 0, \ldots, n$ and $j = 0, \ldots, {n - 1}$,
-% \item $l_0$ is either the program point of a looping header or the program entrance ($l_0 = 0$),
-% i.e., $l_0 \in \loopl(c) \cup \{ 0 \}$
-% \item and $l_n$ is either the program point of a looping header or the program exit ($l_n = \lex$),
-% i.e., $l_0 \in \loopl(c) \cup \{ \lex \}$.
-% \end{itemize}
-% \end{defn}
 
 \begin{defn}[Simple Transition Path]
  \label{def:tpath}
