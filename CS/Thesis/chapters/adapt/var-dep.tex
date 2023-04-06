@@ -12,7 +12,7 @@ the query $\query(\chi[2])$
 depends on the query $\query(\chi[1])$ via the \emph{control dependency} of the guard of the if command involving the labeled variable $x^1$.
 Our running example does not have if control in the while body, while we have examples in Section~\ref{sec:adapt-example} showing the \emph{control dependency} between queries.
 
-To define the dependency relation between program variables I will consider two events that are generated from the same command, hence they have the same variable name / boolean expression and label but have either different values or different query expressions, captured by the following definition. 
+To define the dependency relation between program variables we will consider two events that are generated from the same command, hence they have the same variable name / boolean expression and label but have either different values or different query expressions, captured by the following definition. 
 
 \begin{defn}[Events Different in the Value]
 \label{def:diff}
@@ -70,13 +70,13 @@ We are comparing their query value in the $4^{th}$ element via $\pi_{4}(\event_1
 Through this way, when looking into the dependency relation between queries, We are able to check whether the choice of a query in a query request is affected by others.
 
 \textbf{Example.}
-I want to highlight that if two events are both generated from query requests, We are not comparing their query answer in the third location, but the query value in the fourth location.
+I want to highlight that if two events are both generated from query requests, we are not comparing their query answer in the third position of the event, but the query value in the fourth position.
 For example, two events $\event_1 = (x, 1, 0, \chi[0]+1)$ and $\event_2 = (x, 1, 0, \chi[1] + 1)$ are different by our different even though $\pi_3(\event_1) = \pi_3(\event_2)$.
-I compare only the forth element where $ \chi[0]+1 \neq_q \chi[1] + 1$.
-This is the reason in the Equation~\ref{eq:diff}(b), I first check 
+We compare only the forth element where $ \chi[0]+1 \neq_q \chi[1] + 1$ by Definition~\ref{def:query_equal}.
+The Equation~\ref{eq:diff}(b) capture this by first checking
 $\pi_4(\event_1) \neq \bullet \land \pi_4(\event_1) \neq \bullet$ to guarantee
 both events are from query request.
-Then I check again the forth element $\pi_4(\event_1) \neq_1 \pi_4(\event_2) \neq \bullet$ to guarantee
+Then we check again the forth element $\pi_4(\event_1) \neq_1 \pi_4(\event_2) \neq \bullet$ to guarantee
 that the two events sent different query requests.
 
 I introduce the operator $\tlabel : \ftdom \to \mathcal{P}{(\ldom)}$ gives the set of labels in every event belonging to 
