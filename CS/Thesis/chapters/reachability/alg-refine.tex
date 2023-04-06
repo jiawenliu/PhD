@@ -1,10 +1,10 @@
 There are three steps as follows.
 \begin{enumerate}
- \item \textbf{Collecting} all \emph{simple transition paths}.
- Every \emph{simple transition paths}, $\tpath \in \paths(\absG(c))$ 
+ \item \textbf{Collecting} all \emph{simple transition path}s.
+ Every \emph{simple transition path} is loop free and interleaving free. It
  contains only the edges of atomic assignment or guard transitions without interleaving other paths.
  Each of them corresponds to a path in the flatten program in Definition~4.1 in \cite{GulwaniJK09}.
- \item \textbf{Rewriting} the program $c$ by rearranging all \emph{simple transition paths} as the syntax in \cite{GulwaniJK09} and preserves the same semantics.
+ \item \textbf{Rewriting} the program $c$ by rearranging all \emph{simple transition paths} as the syntax in~\cite{GulwaniJK09} and preserving the semantics.
  \item \textbf{Refining} the program and computing the 
  refined program, $\rprog$ by Algorithm~1 in paper~\cite{GulwaniJK09}.
  This step invokes the algorithm REFINE from paper~\cite{GulwaniJK09} and computes the 

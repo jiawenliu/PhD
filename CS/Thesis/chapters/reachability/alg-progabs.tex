@@ -129,22 +129,22 @@ Then in the last clause in Definition~\ref{def:constraint_compute}, i.e., $\abse
 we will check if $\expr$ is a norm or contains norms, and extend the $\grdvar(c)= \grdvar(c)\cup \{\expr\}$ if neither.
 The constraint computation over the \emph{norm} follows the computation steps 1, 2, and 3 in Section 6.1 in paper~\cite{SinnZV17}. 
 %
-\paragraph{Abstract Initial and Continuation Execution State Computation}
+\paragraph{Initial and Continuation State Computation}
 This step computes two sets for each command. 
-The initial execution state is a set that contains the
+The initial state is a set that contains the
 program points before executing this command, which is computed by the standard initial state generation method from control flow analysis.
-The continuation execution state is a set
+The continuation state is a set
 that contains the constraint of this command and the program points after the execution of this command.
 This set is enriched 
 by the standard control flow analysis.
 
 %
 \begin{itemize}
- \item The \emph{initial execution state}, $\absinit(c) \in \ldom$
+ \item The \emph{initial state}, $\absinit(c) \in \ldom$
  for a command $c$.
  $\absinit(c)$ is a unique program label that corresponds to the command before executing this command. 
 \\
-Given a program $c$, its abstract initial execution state, $\absinit(c)$ is computed as follows,
+Given a program $c$, its abstract initial state, $\absinit(c)$ is computed as follows,
 %
 \[
  \begin{array}{ll}
@@ -157,7 +157,7 @@ Given a program $c$, its abstract initial execution state, $\absinit(c)$ is comp
  \]
 %
 %
-\item The \emph{continuation execution state}, $\absfinal(c)$ of program $c$, 
+\item The \emph{continuation state}, $\absfinal(c)$ of program $c$, 
 $\absfinal(c) \in \mathcal{P}(\ldom \times \dcdom^{\top})$
 is a set of pairs, $(l, dc)$ with a
 program point (i.e., a label), $l$ as the first component and a constraint, 
@@ -165,7 +165,7 @@ $dc$ as the second component.
 The program point $l$ corresponds to the labeled command after the execution of $c$,
 and the constraint $dc$ in this pair is computed by $\absexpr$ for the expression in $c$.
 \\
-Given a program $c$, its continuation execution state, $\absfinal(c)$ is computed as follows,
+Given a program $c$, its continuation state, $\absfinal(c)$ is computed as follows,
  \[
  \begin{array}{ll}
  \absfinal(\clabel{\assign{x}{\expr}}{}^l) & = \{(l, \absexpr(\expr, x, c))\} \\
@@ -198,9 +198,9 @@ Given a program $c$, its continuation execution state, $\absfinal(c)$ is compute
  second component is a constraint from $\dcdom^{\top}$.
  \end{defn}
  In an abstract event $(l, dc, l')$ of a program $c$, 
- the first label $l \in \ldom$ corresponds to the \emph{initial execution point} $\absinit(c)$ of $c$, and 
- the second label $l' \in \ldom$ with the constraint $dc \in \dcdom^{\top}$ correspond to an abstract continuation execution state of $c$.
-We abuse the notation $\mathcal{P}(\absevent)$ for the power set of all abstract events.
+ the first label $l \in \ldom$ is the \emph{initial state} $\absinit(c)$ of $c$, and 
+ the second label $l' \in \ldom$ with the constraint $dc \in \dcdom^{\top}$ correspond to a \emph{continuation state} of $c$.
+% We use the notation $\mathcal{P}(\absevent)$ to denote the power sets of all abstract events.
 
 The set of the abstract events $\absflow(c)$ for a program $c$
 is computed as follows in Definition~\ref{def:absevent_compute}.
@@ -218,7 +218,7 @@ Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
  \[
  \begin{array}{ll}
  \absflow'(\clabel{\assign{x}{\expr}}{}^l) & = \emptyset \\
- \absflow'([\eskip]^{l}) & = \emptyset \\
+ \absflow'(\clabel{\eskip}^{l}) & = \emptyset \\
  \absflow'(\eif (\clabel{\bexpr}^l, c_t, c_f)) & = \absflow'(c_t) \cup \absflow'(c_f)
  \\ & \quad 
  \cup \left \{(l, \absexpr(\bexpr, \top, c), \absinit(c_t) ) \right \} , 
@@ -234,7 +234,7 @@ Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
  \]
  }
  \end{defn}
- Notice $\absflow'([x := \expr]^{l})$ and $\absflow'([\eskip]^{l})$ are both empty set. 
+ Notice $\absflow'(\clabel{\assign{x}{\expr}}^{l})$ and $\absflow'(\clabel{\eskip}^{l})$ are both empty set. 
  For every event $\event$ with label $l$ in an execution trace $\trace$ of program $c$, 
  there is an abstract event in the program's abstract execution trace of the form $(l, \_, \_)$. 
  We also show the soundness of the \emph{abstract event computation} as Theorem~\ref{lem:abscfg_sound} below with proof in Appendix~\ref{apdx:abs_sound}.
@@ -302,7 +302,8 @@ or the evaluation of the guard with label $l$.
 
 Again in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b),
 the edge $(0 \xrightarrow{i' \leq n} 1)$ on the top tells us the command 
-$\clabel{\assign{i}{n}}^0$ is executed with a continuation point $1$, and the while loop with header at location $1$ , $\ewhile \clabel{i > 0}^1 \edo \{\ldots\}$ will be executed right after.
+$\clabel{\assign{i}{n}}^0$ is executed with an abstract transition, $i' \leq n$ and a continuation point $1$. 
+According to the continuation point $1$, the while loop with header at location $1$, $\ewhile \clabel{i > 0}^1 \edo \{\ldots\}$ will be executed right after.
 
 \subsection{Abstract Transition Graph Construction} 
 With the vertices $\absV(c)$ and edges $\absE(c)$ ready, we construct the abstract transition graph, formally in
@@ -331,8 +332,8 @@ Definition~\ref{def:abs_cfg}.
  \item the edge sequence $(e_0, \ldots)$, where $e_i = (l_{i}, dc_i, l_{i + 1}) \in \absE(c)$ for every $i = 0, 1, \ldots$.
  \end{itemize}
  A path is cyclic, if it has the same start- and end-point. A path is simple, if it does not visit a location twice except for the start- and end-location. We use $\paths(\absG(c))$ to denote the set of all the paths on $\absG(c)$,
- and $\pathl(p)$ to represent the list of program points corresponding to the vertices sequence of this path $p \in \paths(\absG(c))$,
- where $\pathl : \paths(\absG(c)) \to \mathcal{P}{(\ldom)}$.
+ and $\pathl(p)$ to represent the list of program points corresponding to the vertices sequence of a path $p \in \paths(\absG(c))$.
+%  where $\pathl : \paths(\absG(c)) \to \mathcal{P}{(\ldom)}$.
  \end{defn}
  For example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b), $1 \to 2 \to 3 \to 4 \to 5 \to 4$ is a \emph{path}, but it is not simple (the program points $4$ is visited twice). The path $4 \to 5 \to 4$ is both cyclic and simple.
 % \\
