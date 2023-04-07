@@ -105,18 +105,18 @@ is the variable that decreases on this edge, computed as follows,
 \[ 
 \begin{array}{ll}
  \locbound(\absevent, c) \triangleq 1 
- & \absevent \notin SCC(\absG(c))
+ & \absevent \notin \kw{SCC}(\absG(c))
  \\
  \locbound(\absevent, c) \triangleq x
- & \absevent \in SCC(\absG(c)) \land \absevent \in \dec(x) \land \absevent = (\_, \_ , x' \leq x - v) \\
+ & \absevent \in \kw{SCC}(\absG(c)) \land \absevent \in \dec(x) \land \absevent = (\_, \_ , x' \leq x - v) \\
  \locbound(\absevent, c) \triangleq x
- & \absevent \in SCC(\absG(c)) \land 
+ & \absevent \in \kw{SCC}(\absG(c)) \land 
  \absevent \notin \bigcup\limits_{x \in \mathcal{V}} \dec(x)
- \land \absevent \notin SCC(\absG(c) \setminus \dec(x)). \\
+ \land \absevent \notin \kw{SCC}(\absG(c) \setminus \dec(x)). \\
  \locbound(\absevent, c) \triangleq \infty & o.w.
 \end{array}
 \]
-$SCC(\absG(c))$ is the set of all the strongly connected components of $\absG(c)$.
+$\kw{SCC}(\absG(c))$ is the set of all the strongly connected components of $\absG(c)$.
 \end{defn}
 We look at the strongly connected components of $\absG(c)$. 
 If the edge does not belong to any strongly connected components, then the local bound is $1$, representing the fact that the edge is not in a loop and so it gets executed at most once.

@@ -95,7 +95,7 @@ We also have $\top$, which is preserved for $\eskip$ command or the commands tha
  \]
  \item Initialize 
  $\grdvar(c) = \{\}$ as the set of the variable used in the expression of every while or if guard in the program $c$.
- \item Then we compute $\absexpr(\bexpr, \_, c )$ or $\absexpr(x - v, x, c)$.
+ \item Then we compute $\absexpr(\bexpr, \_, c )$ and $\absexpr(x - v, x, c)$.
  \[
  \begin{array}{ll} 
  \absexpr(x - v, x, c) = x' \leq x - v & x \in \grdvar(c)\land v \in \scvar(c) \\

@@ -25,13 +25,13 @@ It also requires computing the \emph{path reachability-bound} and the \emph{loop
 Section~\ref{sec:psRB-psrb} introduces this algorithm and the following sections describe the computations. 
 % \begin{enumerate}
  \item We first compute the \emph{path reachability-bound} locally, $\outinB(\rprog, \tpath)$ for every \emph{simple transition path} $\tpath$ in Section~\ref{sec:psRB-pathlocalrb}. 
- This is the local bound on the numbers that  $\tpath$ is evaluated when executing the closet program $\rprog$ in which $\tpath$ is nested.
+ This is the local bound on the numbers that  $\tpath$ is evaluated when executing the closet loop  $\rprog$ in which $\tpath$ is nested.
  This local bound considers only the execution of the innermost loop where $\tpath$ is located.
 %   closest enclosing loop, i.e., $\kw{enclosed}(\tpath)$.
  \item Then in Section~\ref{sec:psRB-looprb}, we compute the \emph{loop reachability-bound}, $\lpchB(l: \rprog, \tpath)$ for every \emph{simple transition path} $\tpath$
  w.r.t its outer loop $l: \rprog$. 
  This is the bound on the iteration numbers of the outer loop $l$,
- such that during these iterations, the nested loop $l' = \kw{enclosed(\tpath)}$ is executed, i.e., reached.
+ such that during these iterations, the inner loop where $\tpath$ is located is reached.
  \item Then using the local \emph{path reachability-bound} and the  \emph{loop reachability-bound},
  we compute the \emph{path reachability-bound} globally.
  The \emph{path reachability-bound}, $\inoutB(\rprog, \tpath)$ is a global upper bound on the execution times of a \emph{simple transition path} $\tpath$ computed in Section~\ref{sec:psRB-pathrb}.
