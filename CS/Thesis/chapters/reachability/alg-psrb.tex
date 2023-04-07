@@ -11,6 +11,7 @@ As pre-procedures, we first introduce the \emph{loop bound} for every loop $\rpr
  % $BD(\rprog_l, c) \in \scexpr(c)$ 
  for a subprogram, $\rprog_l$ in $\rprog$ is an upper bound on the times that $\rprog_l$ is executed from its entry to the exit point with arbitrary initial trace.
 \end{defn}
+We presented two algorithms in Section~\ref{sec:psRB-pathlocalrb} that both compute a sound loop bound for every loop program $\rprog_l$ in $\rprog$.
 % 
 \begin{defn}[Local Path Reachability-bound]
  % \label{def:pathlocalrb}
@@ -25,6 +26,9 @@ Intuitively, it bounds the execution times of $\tpath$ when only its innermost l
 For example in the first interleaving pattern $\rprog_1^1$ in Figure~\ref{fig:relatedNestedWhileOdd-overview}, 
 $4:\rprepeat(\tpath_3)$ is the innermost loop program of $\tpath_3$.
 So we first will compute $m - n$ as its local \emph{path reachability-bound}.
+
+In Section~\ref{sec:psRB-pathlocalrb}, we give the computation algorithm that computes a sound \emph{path local reachability-bound} for a simple transition path w.r.t. the innermost loop where the simple transition path is located.
+
 
 If there isn't a nested loop in a program, we will jump to the Definition~\ref{def:pathrb}.
 Otherwise, we need to compute \emph{loop reachability-bound}
@@ -46,6 +50,9 @@ during these iterations, the innermost loop $\kw{enclosed(\tpath)}$ is entered.
 In Figure~\ref{fig:relatedNestedWhileOdd-overview}, $\tpath_3$ has an outer loop $\rprog_1^1$. Since $L_4$ will be ``entered'' only in the first iteration of $\rprog_1^1$,
 we aim to compute $1$ as the \emph{loop reachability-bound} for $\tpath_3$ w.r.t. $\rprog_1^1$.
 
+Our algorithm in Section~\ref{sec:psRB-looprb} computes a sound \emph{loop reachability-bound} for every
+simple transition path with respect to each level of its outer loop.
+
 Now we want to bound for each $\tpath$ the times it is executed globally.
 \begin{defn}[Path Reachability-bound]
 % \label{def:pathrb}
@@ -62,7 +69,7 @@ $\tpath_3$ is nested in two loops, but the inner loop $L_4$ is only entered in t
 % by multiplying its local $\inoutB(\rprepeat(\tpath_3), \tpath_3, c)$ with the loop reachability-bound.
 % path is $\tpath_3 = \frac{m}{4} \times 1 = \frac{m}{4} $.
 
-Section~\ref{sec:psRB-pathrb} computes a sound \emph{path reachability-bound}, $\inoutB(\rprog, \tpath, c)$ for each $\tpath$ in $\rprog$.
+Section~\ref{sec:psRB-pathrb} gives the algorithm that computes a sound \emph{path reachability-bound}, $\inoutB(\rprog, \tpath, c)$ for each $\tpath$ in $\rprog$.
 Then we use it to compute for each program point, $l \in \lvar(c)$ in a program $c$,
 % in a program $c$,
 its \emph{reachability-bound}, $\psRB(l, c)$ by summing up all the path reachability-bounds over all $\tpath$ that contains $l$.

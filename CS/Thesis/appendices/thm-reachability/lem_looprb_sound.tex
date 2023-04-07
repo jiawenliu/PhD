@@ -101,7 +101,7 @@ The soundness is guaranteed by the three states,
   \item \emph{Loop Initial State} Soundness.
   By Definition~\ref{def:alg-loopabsstate}, we have $\lpinit(\rprog, \tpath, c) = $ 
   
-  $\arg\max_{l_1}$
+  $\max_{l_1}$
   \[
     \left\{
          \varinvar(y, c) + v ~\middle\vert~ 
@@ -129,7 +129,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
   In this sense, we have 
   \\
   $
-  \arg\max_{l_1}\left\{
+  \max_{l_1}\left\{
     \varinvar(y, c) + v ~\middle\vert~ 
     \begin{array}{l} 
       (l_1, x' \leq y + v, l_2) \in \reset(x, c) 
@@ -139,7 +139,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
   \right\}$
   is a sound initial value estimation of the value of $x$ before first execution of $l_t: \rprog_t$, i.e.,
   \[
-    \econfig{\arg\max_{l_1}\left\{
+    \econfig{\max_{l_1}\left\{
       \varinvar(y, c) + v ~\middle\vert~ 
       \begin{array}{l} 
         (l_1, x' \leq y + v, l_2) \in \reset(x, c) 
@@ -165,7 +165,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
       v ~\middle\vert~ \absevent = (l', x' \leq x + v, \_) \land  l' \in \rprog 
       \land l' \notin \tpath \right\}
       \\ \qquad 
-      + \arg\max\limits_{l_2 }
+      + \max\limits_{l_2 }
          \left\{ \varinvar(y, c) + v ~\middle\vert~ 
          (l_1, x' \leq y + v, l_2) \in \reset(x, c) \land l_1 \in \rprog \land l_1 \notin \tpath\right\}
      \\ \qquad 
@@ -198,7 +198,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
       v ~\middle\vert~ \absevent = (l', x' \leq x + v, \_) \land  l' \in \rprog 
       \land l' \notin \tpath \right\}
       \\ \qquad 
-      + \arg\max\limits_{l_2 }
+      + \max\limits_{l_2 }
           \left\{ 
             \varinvar(y, c) + v ~\middle\vert~ 
           (l_1, x' \leq y + v, l_2) \in \reset(x, c) \land l_1 \in \rprog \land l_1 \notin \tpath
@@ -222,7 +222,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
       v ~\middle\vert~ \absevent = (l', x' \leq x + v, \_) \land  l' \in \rprog 
       \land l' \notin \tpath \right\}
       \\ \qquad 
-      + \arg\max\limits_{l_2 }
+      + \max\limits_{l_2 }
           \left\{ \varinvar(y, c) + v ~\middle\vert~ 
           (l_1, x' \leq y + v, l_2) \in \reset(x, c) \land l_1 \in \rprog \land l_1 \notin \tpath\right\}
       \\ \qquad 
@@ -246,7 +246,7 @@ Let $\trace' \in \tdom$ be the execution trace before first execution of $l_t: \
             v ~\middle\vert~ \absevent = (l', x' \leq x + v, \_) \land  l' \in \rprog 
             \land l' \notin \tpath \right\}
             \\ 
-            + \arg\max\limits_{l_2 }
+            + \max\limits_{l_2 }
                 \left\{ \varinvar(y, c) + v ~\middle\vert~ 
                 (l_1, x' \leq y + v, l_2) \in \reset(x, c) \land l_1 \in \rprog \land l_1 \notin \tpath\right\}
             \\ 
