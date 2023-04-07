@@ -445,7 +445,7 @@ For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of thi
  \[
   \bigcup_{x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\} }
   \left \{ 
-  x = \arg\max_{l_1}\left\{
+  x = \max_{l_1}\left\{
     \varinvar(y, c) + v ~\middle\vert~ 
     \begin{array}{l} 
       (l_1, x' \leq y + v, l_2) \in \reset(x, c) 
@@ -469,7 +469,7 @@ For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of thi
 %
  In this sense, we have 
  $
- \arg\max_{l_1}\left\{
+ \max_{l_1}\left\{
   \varinvar(y, c) + v ~\middle\vert~ 
   \begin{array}{l} 
     (l_1, x' \leq y + v, l_2) \in \reset(x, c) \\
@@ -479,7 +479,7 @@ For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of thi
  $
  is a sound initial value estimation of the value of $x$ before first execution of $\rprog$, i.e.,
  \[
-   \econfig{\arg\max_{l_1}\left\{
+   \econfig{\max_{l_1}\left\{
     \varinvar(y, c) + v ~\middle\vert~ 
     \begin{array}{l} 
       (l_1, x' \leq y + v, l_2) \in \reset(x, c) \\
@@ -503,7 +503,7 @@ For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of thi
   \sum\limits_{\absevent \in \inc(x, c) }
    \left\{ v ~\middle\vert~ \absevent = (l, x' \leq x + v, \_) \land l \in \tpath\right\}
    \\ \qquad 
-   + \arg\max\limits_{l' }
+   + \max\limits_{l' }
       \left\{ \varinvar(y, c) + v ~\middle\vert~ (l, x' \leq y + v, l') \in \reset(x, c) \land l \in \tpath\right\}
       \\ \qquad 
      - \sum\limits_{ \absevent \in \dec(x, c) }\left\{ 
@@ -533,7 +533,7 @@ For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of thi
     \sum\limits_{\absevent \in \inc(x, c) }
      \left\{ v ~\middle\vert~ \absevent = (l, x' \leq x + v, \_) \land l \in \tpath\right\}
      \\ \qquad 
-     + \arg\max\limits_{l' }
+     + \max\limits_{l' }
         \left\{ \varinvar(y, c) + v ~\middle\vert~ (l, x' \leq y + v, l') \in \reset(x, c) \land l \in \tpath\right\}
         \\ \qquad 
        - \sum\limits_{ \absevent \in \dec(x, c) }\left\{ 
@@ -554,7 +554,7 @@ For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of thi
         \sum\limits_{\absevent \in \inc(x, c) }
          \left\{ v ~\middle\vert~ \absevent = (l, x' \leq x + v, \_) \land l \in \tpath\right\}
          \\ \qquad 
-         + \arg\max\limits_{l' }
+         + \max\limits_{l' }
             \left\{ \varinvar(y, c) + v ~\middle\vert~ (l, x' \leq y + v, l') \in \reset(x, c) \land l \in \tpath\right\}
             \\ \qquad 
            - \sum\limits_{ \absevent \in \dec(x, c) } \left\{ 

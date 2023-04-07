@@ -3,14 +3,20 @@
 There are three methods for computing the loop bound, $BD(\rprepeat(\rprog'), c)$ for every sub program, specifically loop program $\rprepeat(\rprog')$ in a program $c$'s refined program $\rprog$:
 \begin{enumerate}
   \item Estimated by $BD(\rprepeat(\rprog'), c) = BOUND(\rprepeat(\rprog'))$ from paper~\cite{GulwaniJK09}, which is precise for simple loop without nested loops but not for nested loops. We are not giving the computation detail in this paper, which can be found in paper~\cite{GulwaniJK09}.
-  \item Estimated by Equation~\ref{eq:absBD} in Section~\ref{sec:psRB-rank} path-insensitively based on the estimated ranking function from Section~\ref{sec:psRB-rank}. This bound is precise when there is only one path in this loop but not for loops with multiple paths.
-  \item   We provide an alternative computation method using the variable invariant estimation idea from~\cite{SinnZV17} in Definition~\ref{def:loopbound} and the progress invariant idea from~\cite{GulwaniJK09}.
-  We compute the rank functions' abstract states, $\rfinit(\rprog, c)$, $\rffinal(\rprog, c)$, $\rfnext(\rprog, c)$ and $\varGD(\rprog, c)$ as in Definition~\ref{def:alg-absstate}.
-  Then we compute $BD(\rprepeat(\rprog'), c)$ by Definition~\ref{def:loopbound} using SMT solver.
+  \item 
+  The second method is a \emph{ranking function-based}  method, which is
+  % by Equation~\ref{eq:absBD} in Section~\ref{sec:psRB-rank} path-insensitively 
+  based on the estimated ranking function from Section~\ref{sec:psRB-rank} and estimate the
+  loop bound in a path-insensitive manner.
+  This bound is precise when there is only one path in this loop but not for loops with multiple paths.
+  \item We provide a new loop bound computation method using the upper bound invariant estimation idea from~\cite{SinnZV17} in Definition~\ref{def:loopbound} and the progress invariant idea from~\cite{GulwaniJK09}.
+  We compute three abstract states for each ranking function, $\rfinit(\rprog, c)$, $\rffinal(\rprog, c)$, $\rfnext(\rprog, c)$ and $\varGD(\rprog, c)$ as in Definition~\ref{def:alg-absstate}.
+  Then we solve $BD(\rprepeat(\rprog'), c)$ by Definition~\ref{def:loopbound} using SMT solver.
 \end{enumerate}
 %
-\subsubsection{Ranking Function Based Loop Bound Computation}
+\subsubsection{Ranking Function-based Loop Bound Computation}
 \label{sec:loopbound-rankbased}
+We show in this section the \emph{ranking function-based} loop bound computation method.
 Based on the estimated ranking function from Section~\ref{sec:psRB-rank}, the $BD(\rprog, c)$ for the refined program $\rprog$ can be estimated by $\absclr(\absevent, c)$ by taking the
 minimum value over all $\absevent \in \rprog$.
 We use $\absevent \in \rprog$ to denote $\absevent$ is an edge on path $\rprog$.
@@ -23,9 +29,9 @@ This bound is accurate on the iteration numbers of a single loop, but neither ti
 %
 It is loose for multipath or nested loops because of the path-insensitivity in the ranking function invariant estimation in Definition~\ref{def:ranking_bound}. 
 
-\paragraph{Walk through Example.}
+\paragraph{Running Example.}
 % \todo{The walk through example}
-For example in Example~\ref{ex:relatedNestedWhileOdd-overview},
+For the running example in Example~\ref{ex:relatedNestedWhileOdd-overview},
 % by using this ranking function-based approach, we 
 % this equation only computes for each subprogram,
 % $BD(\tpath_0) = 1$, $BD(\tpath_5) = 1$, $BD(\rprepeat(\tpath_3)) = n - m$, 
@@ -34,7 +40,7 @@ it computes $BD(\rprog_1^1) = n$ and $BD(\rprog_1^2) = n $ for the two interleav
 But both of their iteration bounds are expected to be $\lfloor\frac{m}{4}\rfloor$.
 The inaccuracy is resulted by the nature of the path-insensitivity in the ranking function invariant estimation in Definition~\ref{def:ranking_bound}. 
 
-\subsubsection{Loop Bound Computation} 
+\subsubsection{Proposed Loop Bound Computation} 
 Our approach uses the ranking function invariant to compute a more precise progress invariant inspired from~\cite{GulwaniJK09}.
 We first compute three abstract states for each ranking function in different subprograms of a refined program as below.
 % Then we these precise abstract states, and estimate the loop bound path sensitively.
@@ -59,7 +65,7 @@ We first compute three abstract states for each ranking function in different su
  \[
  \bigcup_{x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\} }
  \left \{ 
- x = \arg\max_{l_1}\left\{
+ x = \max_{l_1}\left\{
  \varinvar(y, c) + v ~\middle\vert~ 
  \begin{array}{l} 
  (l_1, x' \leq y + v, l_2) \in \reset(x, c) 
@@ -106,7 +112,7 @@ We first compute three abstract states for each ranking function in different su
  \sum\limits_{\absevent \in \inc(x, c) }
  \left\{ v ~\middle\vert~ \absevent = (l, x' \leq x + v, \_) \land l \in \tpath\right\}
  \\ \qquad 
- + \arg\max\limits_{l' }
+ + \max\limits_{l' }
  \left\{ \varinvar(y, c) + v ~\middle\vert~ (l, x' \leq y + v, l') \in \reset(x, c) \land l \in \tpath\right\}
  \\ \qquad 
  - \sum\limits_{ \absevent \in \dec(x, c) }\left\{ 
@@ -119,12 +125,12 @@ We first compute three abstract states for each ranking function in different su
  }
 % \end{itemize}
 \end{defn}
-Now we compute $BD(\rprog, c)$ recursively by interactively computing another quantity, the \emph{Variable Gradient Decent} as follows.
+Now we compute $BD(\rprog, c)$ through a mutual recursion procedure involving the computation of another quantity, the \emph{Variable Gradient Decent} as follows.
 \begin{defn}[Loop Bound Computation]
 \label{def:loopbound}
-Given a program $c$ with its refined program $\rprog$ and a subprogram $\rprog' = \rprepeat(\rprog_l) \in \rprog$, we compute a \emph{loop bound}, $BD(\rprepeat(\rprog_l), c)$ by interactively computing
-the \emph{Variable Gradient Decent}-- 
- $\varGD(\rprog', c)$-- an invariant of the minimum amount decreased in one execution of $\rprog_l$ for the ranking functions in $\rprog$, as follows, 
+Given a program $c$ with its refined program $\rprog$ and a subprogram $\rprog' = \rprepeat(\rprog_l) \in \rprog$, we compute a \emph{loop bound}, $BD(\rprepeat(\rprog_l), c)$
+through a mutual recursion between  $BD(\rprepeat(\rprog_l), c)$ and $\varGD(\rprog', c)$.
+$\varGD(\rprog', c)$ is the \emph{Variable Gradient Decent}--an invariant of the minimum amount decreased in one execution of $\rprog_l$ for the ranking functions in $\rprog$.
 %  $ BD(\rprepeat(\rprog_l), c) \triangleq$
 % and recursively computes the loop bound, $BD(\rprog, c)$ in the meantime.
 
@@ -153,8 +159,8 @@ $BD(\rprepeat(\rprog_l), c)\triangleq$
  \end{array} 
  \right.
 \]
-where the \emph{Variable Gradient Decent},
-$\varGD(\rprog, c)$ for the ranks in a program $\rprog$ is computed as follows.
+where the \emph{variable gradient decent},
+$\varGD(\rprog, c)$ for the ranking functions of $\rprog$ is computed as follows,
 
 $ \varGD(\rprog, c) \triangleq$
 \[
@@ -209,21 +215,14 @@ $ \varGD(\rprog, c) \triangleq$
 Using our new approach, we compute a more precise loop bound $BD(\rprog)$ for each subprogram of our walk through example. In Example~\ref{ex:relatedNestedWhileOdd-overview}, we first compute $\rfinit = \{k = n - m\}$, $\rffinal = \{k = 0\}$ and $\rfnext = 1$ for subprogram $\rprepeat(\tpath_3)$ and get $BD(\rprepeat(\tpath_3)) = n - m$ tighter than $n$ by Eq.~\ref{eq:absBD}.
 For the first iteration pattern $\rprog_1^1$ in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b), we compute 
 $\rfinit = \{k = n - m, i = m - 1\}$, $\rffinal = \{k = 0, i = 0\}$, $\varGD(\rprog_1^1) = 4$, and get $BD(\rprog_1^1) = \lfloor \frac{m}{4} \rfloor $ as expected.
-% In comparison to the purely ranking function-based approach in Equation~\ref{eq:absBD}, Definition~\ref{def:loopbound}
-% also computes more accurate bound. For example, it computes $BD(\rprog_1^1) = \frac{m}{4}$ for $\rprog_1^1$ in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b), 
-% Specifically for $\rprog_1^1$ and $\rprog_1^2$, we compute $BD(\rprog_1^1) = \frac{m}{4}$ and $BD(\rprog_1^2) = \frac{m}{4}$ as expected,
-% and compute the same bounds for the other sub-programs.
-% $BD(\tpath_0) = 1$, $BD(\tpath_5) = 1$, $BD(\rprepeat(\tpath_3)) = n - m$, $BD(\rprog_1^1) = n$, and $BD(\rprog_1^2) = n $.
-% The bounds for $\rprog_1^1$ and $\rprog_1^2$ are both $n$ while expected to be $\frac{m}{4}$.
-% They are loose because of the nature of the path-insensitivity in the ranking function invariant computation in Definition~\ref{def:ranking_bound}. 
 
-% Then, we compute $\kw{enclosed}(\rprog, \tpath)$, which is \textbf{the innermost loop} inside $\rprog$ where $\tpath$ is located. Then by 
-Using the $BD$ computed by our new approach, we compute the \emph{path local reachability-bound} for
-each $\tpath$ w.r.t. its \textbf{the innermost loop}, $\kw{enclosed}(\rprog, \tpath)$ where $\tpath$ is located as below.
+
 
 For the first iteration pattern $\rprog_1^1$ in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b), we also compute 
 $\rfinit = \{k = n - m, i = m\}$, $\rffinal = \{k = 0, i = 0\}$ and $\varGD(\rprog_1^1) = 4$. So we compute $BD(\rprog_1^1) = \lfloor \frac{m}{4} \rfloor $ as expected.
 
+Using the $BD$ computed by our new approach, we compute the \emph{path reachability-bound} locally for
+each $\tpath$ w.r.t. its \textbf{the innermost loop}, $\kw{enclosed}(\rprog, \tpath)$ where $\tpath$ is located.
 
 \subsection{Path Local Reachability-bound Computation}
 We first compute $\kw{enclosed}(\rprog, \tpath)$, which is \textbf{the innermost loop} inside $\rprog$ where $\tpath$ is located. Then by using the loop bound computed by our new approach, we compute the \emph{path local reachability-bound} of

@@ -38,7 +38,7 @@ for each $\tpath$ w.r.t. every level of its outer nested loop.
 For the program with nested loops, given its refined program $\rprog$, a simple transition path $\tpath$, and an outer loop
 program $\rprog_l$ where $\tpath$ is nested in,
 $f(\rprog_l, \tpath, c)$ is a \emph{loop reachability-bound} for $\tpath$ w.r.t. $\rprog_l$ if and only if
-for every $\trace \in \ftdom_0(c)$, $f(\rprog_l, \tpath, c)(\trace)$ greater or equal to the
+for every $\trace \in \ftdom_0(c)$, $f(\rprog_l, \tpath, c)(\trace)$ greater than or equal to the
 iteration numbers of $\rprog_l$,
 such that,
 during these iterations, the innermost loop $\kw{enclosed(\tpath)}$ is entered.
@@ -71,7 +71,6 @@ its \emph{reachability-bound}, $\psRB(l, c)$ by summing up all the path reachabi
 \label{def:point_psrb}
 Given a program $c$ with its {abstract transition graph}, $\absG(c)$ and refined program $\rprog$,
 the \emph{reachability-bound} of each program point $l \in \lvar(c)$, $\psRB(l, c)$ is computed as follows,
-% sums up all the path reachability-bounds, $\inoutB(\rprog, \tpath, c)$ over all simple transition paths $\tpath$ that contains the program point $l$.
 \[ 
  \psRB(l, c) = 
  \sum
@@ -79,10 +78,9 @@ the \emph{reachability-bound} of each program point $l \in \lvar(c)$, $\psRB(l, 
  l \in \pathl(\tpath) \right\}
  % \footnotemark
 \]
-$\tpath \in \rprog$ denotes $\tpath$ is a simple transition path in $\absG(c)$.
-% \footnotetext{$l \in \tpath$ and $\tpath \in \rprog$ denote $l$ is a vertex on $\tpath$, and $\tpath$ is a path on $\rprog$ respectively.}
+$\tpath \in \rprog$ denotes $\tpath$ is a simple transition path from $\paths(\absG(c))$.
 \end{defn}
-% $\econfig{\psRB(l, c)}$ is a \emph{reachability-bound} for every program point $l$ in a program $c$.
+
 \begin{thm}[Soundness]
 \label{thm:pathsensitive_rb_soundness}
 For every program ${c}$ and every label $l$ in this program,
