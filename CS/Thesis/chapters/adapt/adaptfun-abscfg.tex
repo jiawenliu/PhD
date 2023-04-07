@@ -364,7 +364,7 @@ there is a unique abstract event in the program's abstract events set $\absevent
 This lemma is proved in Appendix~\ref{apdx:abscfg_uniquex}.
 
  \paragraph{Edge Construction}
-The edge for $c$'s abstract transition graph is constructed simply by computing the program's abstract events set, $\absflow(c)$ as follows,
+For a program $c$, the edges on its abstract transition graph are constructed by computing the set of all its abstract events, $\absflow(c)$ as follows,
  \[
  \absE(c) = \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}
  \]
@@ -382,7 +382,7 @@ $\absE(c) = \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}$,
 $\absV(c) = \lvar(c)\cup\{\lex\}$
 \end{defn}
 
-Below I use two examples to illustrate the abstraction transition graph.
+The three examples as below are presented  to illustrate the construction of the abstraction transition graphs.
 \paragraph{Example I.}
 %
 \input{chapters/adapt/examples/abscfg_tworound}
