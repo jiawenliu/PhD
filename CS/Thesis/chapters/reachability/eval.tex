@@ -50,9 +50,11 @@ None of other tools compute bounds for these programs.
     {\scriptsize
     \begin{tabular}{ | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | c | c | c | c | c | c | c | c | c | c | c | c | c |}
     \hline
+    \hline
     {Bench-} & {theory} & ($\# p$) & ($\# l$) & \multicolumn{6}{c|}{reachability-bound ($\pointnum$)} & \multicolumn{5}{c|}{worst bound ($\# p$)} \\
     \cline{5-15}
     -marks & worst &  &  & $1$ & $n$ & $n^2$ & $n^3$ & $n^4$ & $\infty$ & {\tiny \PSRB} & {\tiny Loopus} & {\tiny Cofloco} & {\tiny SPEED} & {\tiny \cite{BenchmarkTianhan}}  \\
+    \hline
     \hline
     & $O(1)$   &  4 & 82 & 32 & 0 & 0 & 0 & 0 & 0 & 1 & 2 & 3 & 2 & 1  \\
     \cline{2-2}
@@ -96,6 +98,7 @@ None of other tools compute bounds for these programs.
     \cline{2-2}
     & $O(n^2)$ & 2 & 12 & 4 & 8 & 4 & 0 & 0 & 0 & 2 & 2 & 2 & 2 & 2   \\
     \hline
+    \hline
     \end{tabular}
     }
     \end{table}
@@ -114,10 +117,12 @@ For comparison, we show the worst-case bound times $\sum\pointnum$ in the $2^{nd
     \centering
     {\scriptsize
     \begin{tabular}{| >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | c | c | c | c | c | c |}
-    \hline
+        \hline
+        \hline
     {Bench-} & {theory} & ($\# p$) & ($\# l$) & \multicolumn{2}{c|}{overall complexity bound}\\
     \cline{5-6}
     -marks & worst &  &   & {\PSRB} & worst \\
+    \hline
     \hline
     & $O(1)$   &  4 & 82  & 32 & 64 \\
     \cline{2-2}
@@ -160,6 +165,7 @@ For comparison, we show the worst-case bound times $\sum\pointnum$ in the $2^{nd
     & $O(n)$ & 35 & 188 & $68+120n$ & $188n$\\
     \cline{2-2}
     & $O(n^2)$ & 2 & 12  & $4+8n+4n^2$ & $16n^2$ \\
+    \hline
     \hline
     \end{tabular}
     }
@@ -238,16 +244,21 @@ Since our prototype consists of the implementations in OCaml and Python, the int
 {\scriptsize
 \begin{tabular}{ | c | c | c | c | c | c | c | c | c | c | c |}
 \hline
+\hline
 \multirow{2}{*}{Benchmarks} & \multirow{2}{*}{\# P}  & {M.P.L} & Nested  & {Bounded} & L.O.C & {Success} & \multirow{2}{*}{Failed} & Time  & Total
 \\
+\hline
+\hline
 &  & \# & Loop \# & \# & & Rate &  & Outs &   Runtime \\
-\hline {Representatives} & {110}  & 53  & 52  & 107 & 954 & 85.5\% & 4 & 12 & 7min42sec \\
+\hline 
+{Representatives} & {110}  & 53  & 52  & 107 & 954 & 85.5\% & 4 & 12 & 7min42sec \\
 \hline
 Challenges & 23  & 20 & 20 & {20} & 454 & {78.2\%}  & 1 & 4 & {12min39sec} \\
 \hline
 {Icra} & 118 & 111 & 21 & 98 & 1434  & 90.7\% & 1 & 10 & {4min48sec} \\
 \hline
 Tianhan & 37 & 2 & 3 & 37 & 204 & 100.0\% & 0 & 0 & 1min03sec \\
+\hline
 \hline
 \end{tabular}    
 }
