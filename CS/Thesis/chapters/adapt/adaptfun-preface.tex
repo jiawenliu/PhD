@@ -17,16 +17,16 @@ similar to the semantics-based adaptivity formalization procedure.
 \begin{itemize}
  \item The first phase estimates the \emph{semantics-based} dependency graph in two steps.
  \begin{enumerate}
- \item In Section~\ref{sec:alg_edgegen}, I first analyze the \emph{reachability} sub-property
+ \item In Section~\ref{sec:alg_edgegen}, we first analyze the \emph{reachability} sub-property
  % --
  % The data \emph{dependency relation} 
- through a combined data and control flow analysis technique, and estimate the
+ through the data and control flow analysis, and reaching definition techniques, and estimate the
  \emph{variable may-dependency} relation.
- \item In Section~\ref{sec:alg_weightgen}, I analyze the \emph{quantitative} sub-property
+ \item In Section~\ref{sec:alg_weightgen}, we analyze the \emph{quantitative} sub-property
  % -- the \emph{dependency depth} 
  through
  a program complexity analysis technique to estimate the weight of each vertex on the \emph{semantics-based dependency graph}.
- \item Then in Section~\ref{sec:alg_graphgen}, I construct the \emph{estimated dependency graph} encoding two estimated results above, together with the statically collected vertices and query annotations.
+ \item Then in Section~\ref{sec:alg_graphgen}, we construct the \emph{estimated dependency graph} encoding two estimated results above, together with the statically collected vertices and query annotations.
  \end{enumerate}
  \item The second phase in Section~\ref{sec:alg_adaptcompute} computes program's adaptivity.
  Specifically, through a newly designed algorithm based on graph theory,

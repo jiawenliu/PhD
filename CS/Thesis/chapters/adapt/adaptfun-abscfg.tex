@@ -101,7 +101,7 @@ at most the value $v$.
 \end{defn}
 
 \begin{defn}[Constraint]
- The constraint set, $\dcdom^{\top}$ is composed of the \emph{Difference Constraints} $DC(\mathcal{V} \cup \constdom)$, the \emph{Boolean Expressions} $\booldom$ and $\top$.
+ The constraint set, $\dcdom^{\top}$ is composed of the \emph{Difference Constraints} $DC(\mathcal{V} \cup \constdom)$, the \emph{Boolean Expressions}, $\booldom$ and $\top$.
  \end{defn}
  
 
@@ -115,8 +115,7 @@ the value of variable $y$ plus $v$ before the execution,
 and $l \xrightarrow{x' \leq v} l'$ respectively denotes value of variable $x$
 after executing the command at $l$ is at most
 the value of the symbolic constant $v$ before the execution.
-We have $l \xrightarrow{x' \leq Q_m} l'$ in the case that command $l$ is a query request and assigned the query answer to variable $x$.
-For every expression in each of the label commands, it is computed in three steps via the program abstraction method adopted from Section~6 in paper by~\cite{SinnZV17}. 
+We have $l \xrightarrow{x' \leq Q_m} l'$ in the case that command $l$ is a query request and the query answer is assigned to variable $x$.
 
 %
 
@@ -130,7 +129,7 @@ The top constraint, $\top$ denotes true. It is preserved for $\eskip$ command or
 interfere with any counter variable.
 
 
-Below we compute the constraints.
+For every expression in each of the label commands, we abstract it into a constraint in three steps via the program abstraction method as below.
 It is a context-free computation skeleton overall the variable and value domain. In a specific computation with a given program $c$, these domains will associate with the program $c$.
 
 \begin{defn}[Constraint Computation]

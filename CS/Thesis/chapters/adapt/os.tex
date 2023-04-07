@@ -23,7 +23,7 @@ A testing event tracks the execution of if and while commands and consists of th
 
 The event projection operators $\pi_i$ projects the $i^{th}$ element from an event:
 $ \pi_i : 
-\eventset \to \mathcal{V}\cup \mbox{Boolean Expression} \cup \mathcal{L} \cup \mathcal{VAL} \cup \mathcal{QVAL} \cup\{\bullet\} $.
+\eventset \to \mathcal{V} \cup \booldom \cup \mathcal{L} \cup \mathcal{VAL} \cup \mathcal{QVAL} \cup\{\bullet\} $.
 Its computation is as follows,
 \\
 $\pi_1(x, l, v, \bullet) = x $ \qquad $\pi_1({x}, l, v, \qval) = x$ \qquad $ \pi_1(\bexpr, l, v, \bullet) = \bexpr$
@@ -87,7 +87,7 @@ The concatenation preserves the order of every element in the two traces.
 
 % 
 \paragraph{Environment}
-The environment is simply an operator, $\env$ where $\env(\trace) x$ fetches the latest value assigned to $x$ in the trace $\trace$.
+ $\env$ is the environment operator such that $\env(\trace) x$ fetches the latest value assigned to $x$ in the trace $\trace$.
 Since the trace records all the program's evaluations for assignments, 
 the value assigned to variables can be recovered from the trace directly.
  \begin{defn}[Environment $\env : {\tdom} \to \mathcal{V} \to \mathcal{VAL} \cup \{\bot\}$]
@@ -129,16 +129,16 @@ every input variable of $c$ is assigned with an initial value.
  \paragraph{Operational Semantics Rules}
  The trace-based operational semantics is described in terms of a small-step evaluation relation
  $\config{c, \trace} \to \config{c', \trace'}$ describing how a configuration program-trace evaluates to another
- configuration program-state. 
+ configuration program-trace. 
  The rules for the operational semantics are described in Figure~\ref{fig:os}.
  The rules for assignment and query generate assignment events, and the rules for the while and if commands generate testing events. 
  The rules for the standard while language constructs correspond to the usual rules extended to deal with traces. 
 
-The rule \rname{assn} evaluates a standard assignment $\assign{x}{\expr}$, the expression $\expr$ is first evaluated by our expression evaluation $\config{\trace, \expr} \earrow v $, presented below.
-{Different from standard rule, the result $v$ of evaluating $\expr$ is used to construct a new event $\event = (x, l, v,\bullet)$
-and attach it to the previous trace. }
-We have relations $\config{\trace, \expr} \earrow v $ and $\config{\trace, \bexpr} \barrow v $ to evaluate expressions and boolean expressions, respectively in Figure~\ref{fig:expr_eval}.
-In these evaluation rules, $v_1 \oplus_a v_2$ denotes the corresponding mathematic computation of two values and the same for $\elog v$ and $\esign v$.
+The rule \rname{assn} evaluates a standard assignment $\assign{x}{\expr}$, the expression $\expr$ is first evaluated by the expression evaluation rule $\config{\trace, \expr} \earrow v $, presented below.
+The expression evaluation result $v$ is used to construct a new event $\event = (x, l, v,\bullet)$, which is attached to the previous trace.
+We have relations $\config{\trace, \aexpr} \aarrow v $ and $\config{\trace, \bexpr} \barrow v $ to evaluate arithmetic expressions and boolean expressions, respectively in Figure~\ref{fig:expr_eval}.
+The $\config{\trace, \expr} \earrow v $ is combination of arithmetic and boolean evaluation, and the evaluation of list.
+In these evaluation rules, $v_1 \oplus_a v_2$ denotes the corresponding semantic mathematic computation of two values and the same for $\elog v$ and $\esign v$.
 
 \begin{figure}
  \begin{mathpar}
@@ -273,8 +273,8 @@ In these evaluation rules, $v_1 \oplus_a v_2$ denotes the corresponding mathemat
  \end{figure}
 
 
-The rules for if and while both have two versions, 
-when the boolean expressions in the guards are evaluated to true and false, respectively. 
+The rules for if and while both have two cases 
+in which the boolean expressions in the guards are evaluated to true and false, respectively. 
 In these rules, the evaluation of the guard generates a testing event and the trace is updated as well by appending this event.
 
 The only rule that is non-standard is the $\rname{query}$ rule. When evaluating a query, the query expression $\qexpr$ is first simplified to its normal form $\qval$ using an evaluation relation 
@@ -284,6 +284,7 @@ I want to highlight here, these evaluation rules do not compute the query answer
 The normal form $\qval$ characterizes the linear query that is run against a hidden database through an unknown intermediate mechanism.
 For example, a query expression $\chi[x] - \chi[x]$ with a trace $\trace = [(x, 0, 1, \bullet)]$
 is evaluated into the query value $\chi[1] - \chi[1]$, which is not the answer of this query.
+It is a linear query waited to be computed by an unknown intermediate mechanism on a hidden database.
 {\small
 \begin{mathpar}
 \inferrule{ 
@@ -365,7 +366,7 @@ We consider as well-formed only the program that has only terminating executions
 % denote by $\trace \in \ftdom$.
 \begin{defn}[Well-formed Program]
  \label{def:adaptfun-wfprog} 
- A program $c$ is a well-formed program if and only if
+ A program $c$ is a well-formed program, $c \in \cdom$ if and only if
  its execution terminates
  under an arbitrary initial trace and hidden database. We use $\cdom$ to denote the set of all well-formed programs.
  \[
@@ -556,12 +557,13 @@ then there exists a trace $\trace' \in \tdom$ such that $\trace_0 \tracecat \tra
 \paragraph{Equivalence of the event and expression}
 
 In order to distinguish if a query's choice is affected by previous values, 
-we need to be able to identify whether two queries are equivalent or not, so that when we change the result of one query, 
+we need to be able to identify whether two queries are equivalent or not. So that we can identify, when we change the result of one query, 
 whether another query is affected. 
 Since the answer to a query request can be different because of the hidden database and unknown mechanisms,
-we cannot define their equivalence based on comparing the query answer.
+we cannot tell their equivalence based on comparing the query answer.
 In this sense, we 
-define the equivalence of query expression by quantifying over all possible values returned from the database on a certain form of query value, formally as follows.
+define the equivalence of query expressions by comparing their query value(i.e., the normal form query request) and quantifying over all possible values of the hidden the database.
+% on a certain form of query value, formally as follows.
 
 \begin{defn}[Equivalence of Query Expression]
 %
