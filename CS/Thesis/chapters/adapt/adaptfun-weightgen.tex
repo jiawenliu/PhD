@@ -3,15 +3,18 @@ As the $\traceW(c)$ defined in Definition~\ref{def:trace_graph}, the weight of e
 the execution times of the command with label $l$. 
 In this sense, to estimate weight of $x^l$, this step first computes an upper bound, the \emph{reachability-bound}~\cite{GulwaniZ10} for every $l \in \absV(c)$
 on the execution times of the command with the label $l$. 
-Then, the \emph{reachability-bound} is used to estimate the maximal visiting times of the labeled variable $x^l \in \lvar(c)$
-and 
+Then, the \emph{reachability-bound} is used 
+% to estimate the maximal visiting times of the labeled variable $x^l \in \lvar(c)$
+% and 
 % as well as 
-the weight of the vertex $x^l \in \progV(c)$.
+as the estimated weight of the vertex $x^l \in \progV(c)$.
 The two computation steps are summarized as follows,
 \begin{enumerate}
  \item \textbf{Reachability Bound Analysis}
- This analysis estimate for each program point $l \in \absV(c)$ a symbolic upper bounds on the execution times of the command with label $l$. 
- These symbolic upper bounds are expressions with the input variables as free variables, hence they correspond to the weight functions in the semantics-based dependency graphs. 
+ This analysis estimate for each program point $l \in \absV(c)$ a symbolic upper bounds on the execution times of the command with label $l$ during the program execution.
+ These symbolic upper bounds are symbolic expressions, $\scexpr(c)$ containing the input variables,
+%   with the input variables as free variables, 
+hence they can soundly approximate the weight functions in the semantics-based dependency graphs. 
  Our reachability-bound algorithm adapts to our setting ideas from previous work~\cite{ZulegerGSV11,SinnZV14,SinnZV17}.
  Specifically, it provides an upper bound on the number of times every command can be executed.
  \item \textbf{Weight Estimation}
@@ -324,9 +327,9 @@ v \in \mathbb{N}, l', (x^l, w) \in \traceW(c) \sthat
 Notice that in this theorem, the evaluation $\config{\vtrace_0, w} \earrow v$ is needed in order to obtain a concrete value $v$ from the symbolic weight $w$ by specifying a value for the input variables through $\vtrace_0$.
 
 
-\paragraph*{Example}
+\paragraph{Example I.}
 Going back to the
-quantitative dependency graph for the two-round example in
+estimated dependency graph for the two-round example in
 Figure~\ref{fig:kadaptwhile_alg}(c), which we aim to estimate.
 %
 Every vertex from $\progV(c)$ in this graph corresponds to a labeled variable, for example, $a^5$,
@@ -337,4 +340,17 @@ that the reachability bound for the label $5$,
 is also the maximum visiting times bound of the labeled variable $a^5$.
 So, we estimate the visiting time for labeled variable $a^5$ in the estimated dependency graph in Figrue~\ref{fig:abscfg_tworound}(c) as $k$ as well.
 %
-The same way for the rest weights' computation.
+In the same way, we compute the weights of the other vertices on this graph.
+
+\paragraph{Example II.}
+In the $\kw{ifQuery}$ program in Figure~\ref{fig:abscfg_ifQuery}(a), there is not a loop.
+Every vertex is visited at most once, and we estimate its weight as in the
+superscript of each vertex in Figure~\ref{fig:abscfg_ifQuery}(c).
+
+\paragraph{Example III.}
+In the $\kw{loopQuery}$ program in Figure~\ref{fig:abscfg_loopQuery}(a), 
+the while loop will iterate the number of $Q_m$ times, where $Q_m$ is a symbol representing the maximal value of a query answer.
+In this sense, we estimate the weight for vertices in the loop body as $Q_m$ in the
+superscript of each vertex in Figure~\ref{fig:abscfg_ifQuery}(c).
+This $Q_m$ is indeed similar to the $\infty$ since we do not have a finite bound on the possible answer returned from the query requests.
+We construct this weight in order to have a sound approximation on the semantics-based dependency graph.

@@ -196,10 +196,10 @@ $x^3 : {}^{k}_{1} \to a^5 : {}^{k}_{0} \to l^6 : {}^{1}_{0}$.
 Then, it computes the weighted length, $1 + k$.
 If we use this path to approximate the longest finite walk, and the weight of each vertex as
 % their visiting times, 
-its visiting time, then we have a walk, $x^3 \to \cdots \to x^3 \to a^5 \to \cdots \to a^5 \to l^6$.
+its visiting time, then we have a walk, $x^3 \to \ldots \to x^3 \to a^5 \to \ldots \to a^5 \to l^6$.
 However, this isn't a qualified walk by our Definition~\ref{def:finitewalk}.
 % then it isn't a qualified walk. 
-% In the approximated walk, we have the vertices as $x^3 \to \cdots \to x^3 \to a^5 \to \cdots \to a^5 \to l^6$.
+% In the approximated walk, we have the vertices as $x^3 \to \ldots \to x^3 \to a^5 \to \ldots \to a^5 \to l^6$.
 Because $l^6$ has weight $1$, it can only be visited at most once. In this sense,
 % and this lead to 
 % resulting in the restriction on 
@@ -229,7 +229,7 @@ We exploit the structure of the estimated dependency graph $\progG(c)$ for a pro
 2). Then, for each SCC, we compute an adaptivity bound
 3). In the last, we compose these local bounds to an overall adaptivity bound.
 %
-$\pathsearch(c, \progG(c))$ algorithm in Algorithm~\ref{alg:adapt} arranges the estimated dependency graph $\progG(c)$ into SCCs ($\kw{\sccgraph_1}, \cdots, \kw{\sccgraph_n}$) and obtains the adaptivity local bound of each SCC from $\kw{\pathsearch_{SCC}(c, \sccgraph_i)}$ algorithm in Algorithm~\ref{alg:adaptscc}.
+$\pathsearch(c, \progG(c))$ algorithm in Algorithm~\ref{alg:adapt} arranges the estimated dependency graph $\progG(c)$ into SCCs ($\kw{\sccgraph_1}, \ldots, \kw{\sccgraph_n}$) and obtains the adaptivity local bound of each SCC from $\kw{\pathsearch_{SCC}(c, \sccgraph_i)}$ algorithm in Algorithm~\ref{alg:adaptscc}.
 Then $\pathsearch$ shrinks the estimated dependency graph into a directed acyclic graph (DAG) by reducing each SCC into a vertex with the weight equal to its adaptivity local bound.
 In this way, it simply computes the length of the longest path over this DAG.
 
@@ -254,7 +254,7 @@ We discuss in detail this adaptivity computation algorithm.
  \\
  $\kw{adapt}$ : the adaptivity of this graph initialize with $0$.
  \\
- \STATE Find all strongly connected components in $G$: $\kw{\sccgraph_1}, \cdots, \kw{\sccgraph_n}, 0 \leq n \leq |\vertxs|$, 
+ \STATE Find all strongly connected components in $G$: $\kw{\sccgraph_1}, \ldots, \kw{\sccgraph_n}, 0 \leq n \leq |\vertxs|$, 
  \STATE {\bf for} every component $\kw{\sccgraph_i}$ compute its local adaptivity:
  \STATE \quad $\kw{adapt_{scc}[\sccgraph_i] = \pathsearch_{scc}(c, \sccgraph_i)}$;
  \STATE {\bf for} every $\kw{\sccgraph_i}$:
@@ -278,19 +278,19 @@ We discuss in detail this adaptivity computation algorithm.
  \end{algorithm}
  %
  % it 
- At Line:3, this algorithm first finds all the SCCs of $\progG(c)$, $\kw{\sccgraph_1}, \cdots, \kw{\sccgraph_n}$
+ At Line:3, this algorithm first finds all the SCCs of $\progG(c)$, $\kw{\sccgraph_1}, \ldots, \kw{\sccgraph_n}$
  where $0 \leq n \leq |\vertxs|$ by the standard Kosaraju’s algorithm, where each
  % Every SCC is a sub-graph of $\progG(c)$, where 
  $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$.
  % where $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$.
  Then, 
- it computes the adaptivity local bound on every $\kw{\sccgraph_i}$
+ it computes the local adaptivity upper bound for every $\kw{\sccgraph_i}$
  % , which is a subgraph of the $\progG(c)$, 
  in line:4-5 by $\kw{\pathsearch_{SCC}(c, \sccgraph_i)}$.
- We guarantee the soundness of the adaptivity local bound on an SCC by Lemma~\ref{lem:sound_adaptalg_scc} with formal proof in Appendix~\ref{apdx:adaptalg_soundness}.
- The $\progG(c)$ is then shrunk into a directed acyclic graph where 
+ We guarantee that $\kw{\pathsearch_{SCC}(c, \sccgraph_i)}$ computes a sound upper bound on the adaptivity of an SCC by Lemma~\ref{lem:sound_adaptalg_scc} with formal proof in Appendix~\ref{apdx:adaptalg_soundness}.
+ The $\progG(c)$ is then shrunk into a directed acyclic graph (DAG) where 
  % vertices are all the SCCs and edges are between every SCCs with their adaptivities as weights.
- $\kw{\sccgraph_1}, \cdots, \kw{\sccgraph_n}$ are all the vertices and the adaptivity local bounds are their weights.
+ $\kw{\sccgraph_1}, \ldots, \kw{\sccgraph_n}$ are all the vertices and the adaptivity local bounds are their weights.
  There is an edge $s_i \to s_j$ in this shrank graph, as long as we can find an edge $v_i \to v_j \in \progE(c)$ such that $v_1 \in \vertxs_i$, $v_j \in \vertxs_j$ and $i \neq j$.
  % \\ 
  Then, we use the standard breath-first search strategy to find the longest-weighted path
@@ -300,12 +300,12 @@ We discuss in detail this adaptivity computation algorithm.
  the length of this longest weighted path is a sound computation of the adaptivity for program $c$
  % as well as 
  and this longest weighted path is a sound computation of the finite walk having the longest query length 
- on $c$'s estimated dependency graph in Theorem~\ref{thm:adaptalg_soundness}
+ on $c$'s estimated dependency graph by Theorem~\ref{thm:adaptalg_soundness}
  in Appendix
  ~\ref{apdx:adaptalg_soundness}.
  %
 If a program
-$c$'s estimated dependency graph $\progG(c)$ is a DAG, then we prove that the adaptivity upper bound by Algorithm~\ref{alg:adapt} is tight formally in Theorem~\ref{thm:adaptalg_pcomplete} in Appendix~\ref{apdx:adaptalg_completeness}.
+$c$'s estimated dependency graph $\progG(c)$ is a DAG, then we prove that the adaptivity upper bound by Algorithm~\ref{alg:adapt} is tight by Theorem~\ref{thm:adaptalg_pcomplete} in Appendix~\ref{apdx:adaptalg_completeness}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION OF ADAPTIVITY COMPUTATION ALGORITHM 1: %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

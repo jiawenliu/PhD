@@ -231,13 +231,13 @@ Another edge $x^3 \to j^5$ in the same graph represents the control flow from $j
 
 \paragraph{Example II.}
 In the example program in Figure~\ref{fig:abscfg_ifQuery}(a), there is only a variable may-dependency relation from $y^2$ to $x^0$, which is pass through control flow.
-The $4^{th}$ case of the analysis algorithm in Definition~\ref{def:feasible_flowsto} construct this edge as in Figure~\ref{fig:abscfg_ifQuery}(c).  
+The $4^{th}$ case of the analysis algorithm in Definition~\ref{def:feasible_flowsto} constructs this edge as in Figure~\ref{fig:abscfg_ifQuery}(c).  
 
 \paragraph{Example III.}
 In the third example program from Section~\ref{sec:alg_abscfg} in Figure~\ref{fig:abscfg_loopQuery}(a),
-there are both dependency relations through control flow and value dependency.
-For the dependency relations through control flow between $x^0$ and the variables inside the loop body,
-The $5^{th}$ case in Definition~\ref{def:feasible_flowsto} construct these edges
-including the edges $y^3 \to x^0$ and $a^5 \to x^0$ as in Figure~\ref{fig:abscfg_loopQuery}(c).  
+there are data dependency relations through both control flow and value dependency.
+For the dependency relations through control flow between $x^0$ and the variables inside the loop body.
+The $5^{th}$ case in Definition~\ref{def:feasible_flowsto} constructs these edges
+including $y^3 \to x^0$ and $a^5 \to x^0$ in Figure~\ref{fig:abscfg_loopQuery}(c).  
 The edges $l^6 \to y^3$, $l^6 \to x^0$ and $l^6 \to x^4$ are constructed by the
-transitive closure of the \emph{feasible flows to} relation.
+transitive closure of the \emph{feasible data-flow} relation.
