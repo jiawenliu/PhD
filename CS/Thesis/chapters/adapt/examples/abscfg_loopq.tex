@@ -1,0 +1,103 @@
+In the following example, the answer of a query request is used in the guard of the loop.
+Similar to the $\kw{twoRounds}$ example, query request in each loop iteration are independent to each other and the
+last query request after the loop, $\clabel{\assign{l}{\query(\chi[k]*a)} }^{6}$ depend on all the queries in loop iterations.
+The only difference is that, the queries in loop iterations are all depend on the first query, $ \clabel{ \assign{x}{\query(\chi[0] \cdot \chi[k])}}^{0}$ through control flow.
+In this sense, adaptivity is $3$, which is correctly captured by Definition~\ref{def:trace_adapt} as well.
+Its abstract transition graph is generated as in Figure~\ref{fig:abscfg_loopQuery}(b) according to Definition~\ref{def:abs_cfg}.
+The result of the first query request, 
+$\clabel{ \assign{x}{\query(\chi[0] \cdot \chi[k])}}^{0}$ is used in the maximum iteration number of the loop.
+% , the graph
+% capture this relation through two branches
+% $1 \xrightarrow{x>2} 2$ and $1 \xrightarrow{x \leq 2} 3$.
+According to the Definition~\ref{def:var_dep}, the query request, $\clabel{\assign{y}{\query(\chi[j] \cdot \chi[k])} }^{3}$ 
+depend on the first query through the control flow.
+On the edge, $0 \xrightarrow{x' \leq Q_m} 1$ describe the value of $x$ after command $0$ is no more than $Q_m$, where $Q_m$ is
+a symbol describing the maximum value of query answer.
+Weight of every vertex in Figure~\ref{fig:abscfg_loopQuery}(b) is $Q_m$, which is the estimated upper bound on the iteration number of the loop by Section~\ref{sec:alg_weightgen}.
+% Constraints on the two edges are summarized from the guard $\clabel{x > 2}^2$ through Definition~\ref{def:constraint_compute}.
+Based on this graph, the reset of the analysis algorithm is able to analyze the dependency relation passing through control flow.
+\begin{figure} 
+  \centering
+  \begin{subfigure}{1.0\textwidth}
+    \begin{centering}
+    $
+        \begin{array}{l}
+        \kw{loopQuery(k)} \triangleq \\
+               \clabel{ \assign{x}{\query(\chi[0] \cdot \chi[k])}}^{0} ;
+                \clabel{\assign{a}{0} }^{1} ;\\
+                \ewhile ~ \clabel{x > 0}^{2} ~ \edo ~ 
+                \Big(
+                 \clabel{\assign{y}{\query(\chi[j] \cdot \chi[k])} }^{3}  ; 
+                 \clabel{\assign{x}{x-1}}^{4} ;
+                \clabel{\assign{a}{y + a}}^{5}       \Big);\\
+                \clabel{\assign{l}{\query(\chi[k]*a)} }^{6}
+            \end{array}
+    $
+    \caption{}
+    \end{centering}
+    \end{subfigure}
+  \begin{subfigure}{.42\textwidth}
+      \begin{centering}
+    \begin{tikzpicture}[scale=\textwidth/20cm,samples=200]
+    \draw[] (-10, 10) circle (0pt) node{{ $0$}};
+    \draw[] (0, 10) circle (0pt) node{{ $1$}};
+    \draw[] (0, 7) circle (0pt) node{{$2$}};
+    \draw[] (0, 4) circle (0pt) node{{ $3$}};
+    \draw[] (0, 1) circle (0pt) node{{ $4$}};
+    \draw[] (-10, 1) circle (0pt) node{{ $5$}};
+    % Counter Variables
+    \draw[] (6, 7) circle (0pt) node {{$6$}};
+    \draw[] (6, 4) circle (0pt) node {{ $\lex$}};
+    %
+    % Control Flow Edges:
+    \draw[  -latex] (-8, 10)  -- node [above] {$x' \leq Q_m$}(-1.5, 10);
+    \draw[ -latex] (0, 9.5)  -- node [left] {$j' \leq k$} (0, 7.5) ;
+    \draw[ -latex] (0, 6.5)  -- node [right] {$x > 0 $}  (0, 4.5);
+    \draw[ -latex] (0, 3.5)  -- node [right] {$\top $} (0, 1.5) ;
+    \draw[ -latex] (-1.5, 1)  -- node [above] {$x' \leq j - 1$} (-8, 1) ;
+    \draw[ -latex] (-8, 1.5)  -- node [left] {$\top$} (-1.5, 7)  ;
+    \draw[ -latex] (1.5, 7)  -- node [above] {$x \leq 0 $}  (4.5, 7);
+    \draw[ -latex] (6, 6.5)  -- node [right] {$\top$} (6, 4.5) ;
+    \end{tikzpicture}
+    \caption{}
+      \end{centering}
+      \end{subfigure}
+      \begin{subfigure}{.55\textwidth}
+        \qquad
+        \begin{centering}
+        \begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
+        \draw[] (0, 10) circle (0pt) node
+        {{ $a^1: {}^{1}_{0}$}};
+        \draw[] (0, 7) circle (0pt) node  {{$y^3: {}^{Q_m}_{1}$}};
+        \draw[] (0, 4) circle (0pt) node {{ $a^5: {}^{Q_m}_{0}$}};
+        \draw[] (0, 1) circle (0pt) node {{ $l^6: {}^{1}_{1}$}};
+        % Counter Variables
+        \draw[] (8, 9) circle (0pt) node {{$x^0: {}^{1}_{1}$}};
+        \draw[] (8, 6) circle (0pt) node {{ $x^4: {}^{Q_m}_{0}$}};
+        %
+        % Value Dependency Edges:
+        \draw[ ultra thick, -latex, densely dotted,] (0, 1.5)  -- (0, 3.5) ;
+        \draw[ ultra thick, -latex, densely dotted,] (0, 4.5)  -- (0, 6.5) ;
+        \draw[ -latex] (0, 4.5)  to  [out=-230,in=230]  (0, 9.5) ;
+        \draw[ -Straight Barb] (1.5, 3.8) arc (120:-200:1);
+        \draw[ -Straight Barb] (9, 6.5) arc (150:-150:1);
+        \draw[ -latex] (8, 6.5)  -- (8, 8.5) ;
+        \draw[ -latex] (0, 1.5)  to  [out=-230,in=230]  (0, 9.5) ;
+        % Control Dependency
+        \draw[ ultra thick, -latex, densely dotted,] (2, 7)  -- (6, 9) ;
+        \draw[ -latex] (2, 7)  -- (5.5, 6) ;
+        \draw[ -latex] (2, 4.5)  -- (6, 9) ;
+        \draw[ -latex] (2, 4.5)  -- (5.5, 6) ;
+        % Edges Produced By Transitivity
+        \draw[ -latex] (2, 1)  -- (6, 9) ;
+        \draw[ -latex] (2, 1)  -- (5.5, 6) ;
+        \draw[ -latex] (0, 1.5)  to  [out=50,in=-50]  (0, 6.5) ;
+        \end{tikzpicture}
+        \caption{}
+        \end{centering}
+        \end{subfigure}
+    \caption{(a) The $\kw{loopQuery(k)}$ program.
+    (b) The abstract transition graph for $\kw{loopQuery(k)}$.  
+    (c) The abstract estimated dependency graph for $\kw{loopQuery(k)}$.}
+    \label{fig:abscfg_loopQuery}
+  \end{figure}
