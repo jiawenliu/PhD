@@ -22,14 +22,14 @@ complexity analysis we aim to answer the following two questions: is our prototy
 %  based on the precise reachability-bound?
 
 \emph{Effectiveness}
-\newcommand{\pointnum}{\kw{\# l}}
+% \newcommand{\pointnum}{\kw{\# l}}
 We summarize the results of the effectiveness evaluation in Table~\ref{tb:effectiveness-eval}.
-On each row, a theoretical worst-case complexity is listed in the $2^{nd}$ column and the number of programs ($\# p$) with this particular complexity is given in the $3^{rd}$ column.
+On each row, a theoretical worst-case complexity is listed in the $2^{nd}$ column and the number of programs (P. \#) with this particular complexity is given in the $3^{rd}$ column.
 % The  and $3^{rd}$ columns are the theoretical worst-case complexity and the number of programs that have this complexity.
-In the ``worst bound ($\# p$)'' column, each row provides the number of programs that the corresponding tool identify of the  corresponding ``theory worst'' complexity. For example, the number $1$ in the column of our tool for the row $O(1)$ says that our tool infer the right complexity for only one of the programs, for the other three programs it infers a higher complexity.
+In the ``worst bound (P. \#)'' column, each row provides the number of programs that the corresponding tool identify of the  corresponding ``theory worst'' complexity. For example, the number $1$ in the column of our tool for the row $O(1)$ says that our tool infer the right complexity for only one of the programs, for the other three programs it infers a higher complexity.
 To show \textit{effectiveness}, 
-we present in the ``{reachability-bound ($\pointnum$)}'' column our results w.r.t. the program locations. 
-Each sub-column is the number of locations ($\pointnum$) with certain reachability-bound.
+we present in the ``{reachability-bound (L. \#)}'' column our results w.r.t. the program locations. 
+Each sub-column is the number of locations (L. \#) with certain reachability-bound.
 % Though having the same worst-case complexity, the results show that different points have significantly different reachability-bounds.
 These locations in the same row are from the programs of the same worst-case complexity.
 The results show that although these locations are from the programs of the same worst-case complexity, they have significantly different reachability-bounds. This is because of the existence of multipaths loops, where locations on different paths have different reachability-bound.
@@ -51,7 +51,7 @@ None of other tools compute bounds for these programs.
     \begin{tabular}{ | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | c | c | c | c | c | c | c | c | c | c | c | c | c |}
     \hline
     \hline
-    {Bench-} & {theory} & \multirow{2}{*}{P. \# } & \multirow{2}{*}{L. \#} & \multicolumn{6}{c|}{reachability-bound ($\pointnum$)} & \multicolumn{5}{c|}{worst bound ($\# p$)} \\
+    {Bench-} & {theory} & \multirow{2}{*}{P. \# } & \multirow{2}{*}{L. \#} & \multicolumn{6}{c|}{reachability-bound (L. \#)} & \multicolumn{5}{c|}{worst bound (P. \#)} \\
     \cline{5-15}
     -marks & worst &  &  & $1$ & $n$ & $n^2$ & $n^3$ & $n^4$ & $\infty$ & {\tiny \PSRB} & {\tiny Loopus} & {\tiny Cofloco} & {\tiny SPEED} & {\tiny \cite{BenchmarkTianhan}}  \\
     \hline
@@ -104,12 +104,11 @@ None of other tools compute bounds for these programs.
     \end{table}
 
 \emph{Accuracy}
-% We show in the sub-columns of the ``worst bound ($\# p$)'' column the number of programs that are computed to have certain ``theory worst'' complexity by other tools for comparison. 
 Based on the worst-case bound and reachability-bound, we present the accuracy evaluation result in
 Table~\ref{tb:accuracy-eval}.
 In the last column we show the ``overall complexity bound'' estimation.
-In the $1^{st}$ sub-column, formula in each row is the sum of different reachability-bounds times the $\pointnum$ that has certain reachability-bound.
-For comparison, we show the worst-case bound times $\sum\pointnum$ in the $2^{nd}$ sub-column by other tools. Given the precise reachability-bounds on every program locations, we can compute tighter overall complexity bound than the best worst-case analysis tools.
+In the $1^{st}$ sub-column, formula in each row is the sum of different reachability-bounds times the L. \# that has certain reachability-bound.
+For comparison, we show the worst-case bound times $\sum(L. \#)$ in the $2^{nd}$ sub-column by other tools. Given the precise reachability-bounds on every program locations, we can compute tighter overall complexity bound than the best worst-case analysis tools.
 
 \begin{table}[ht]
     \caption{The Accuracy Evaluation Table of {\PSRB}}
@@ -179,7 +178,7 @@ For comparison, we show the worst-case bound times $\sum\pointnum$ in the $2^{nd
 %  {\scriptsize
 %  \begin{tabular}{ >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | >{\scriptsize}c | c | c | c | c | c | c | c | c | c | c | c | c |}
 %         &  &  &  & \multicolumn{5}{c|}{reachability-bound} & \multicolumn{5}{c|}{worst bound } &  \multicolumn{2}{c|}{} \\
-% {Bench-} & {theory} & ($\# p$) & ($\# l$) & \multicolumn{5}{c|}{ ($\pointnum$)} & \multicolumn{5}{c|}{($\# p$)} & \multicolumn{2}{c|}{overall complexity bound}\\
+% {Bench-} & {theory} & ($\# p$) & ($\# l$) & \multicolumn{5}{c|}{ (L. \#)} & \multicolumn{5}{c|}{($\# p$)} & \multicolumn{2}{c|}{overall complexity bound}\\
 %  \cline{5-16}
 %  -marks & worst &  &  & $1$ & $n$ & $n^2$ & $n^3$ & $\infty$ & {\tiny \PSRB} & {\tiny Loopus} & {\tiny Cofloco} & {\tiny SPEED} & {\tiny \cite{BenchmarkTianhan}} & {\PSRB} & worst \\
 %  \hline
