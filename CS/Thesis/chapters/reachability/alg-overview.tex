@@ -31,13 +31,21 @@ The soundness and proof of each algorithm are given in the Appendices and the in
 In Figure~\ref{fig:relatedNestedWhileOdd-overview}, for $\tpath_3$ in the first interleaving pattern, $\rprog_1^1 = 1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4)$, 
 we first compute a local \emph{path reachability-bound}, $\outinB(4:\rprepeat(\tpath_3), \tpath_3, c) = n - m$
 w.r.t. its innermost loop $L_4$ by Section~\ref{sec:psRB-pathlocalrb}.
-Since $\tpath_3$ is nested in two loops, we need to compute the \emph{loop reachability-bound} for it
-w.r.t. its outer loop $L_1$. The algorithm in Section~\ref{sec:psRB-looprb} computes a tight bound $\lpchB(\rprog_1^1, \tpath_3, c) = 1$. We also compute In the second interleaving pattern $\rprog_1^2$ the same number and
+
+Since $\tpath_3$ is nested in two level loops, we need to compute its \emph{loop reachability-bound}
+w.r.t. the outer loop $L_1$. 
+For the outer loop $L_1$, the inner loop $L_4$ is reached only in the first iteration of the outer loop.
+By computing the initial state, next state of visiting $L_4$
+during the execution of loop $L_1$, the algorithm in Section~\ref{sec:psRB-looprb} computes a tight \emph{loop reachability-bound}, $\lpchB(\rprog_1^1, \tpath_3, c) = 1$. 
+We also compute in the second interleaving pattern $\rprog_1^2$ the same number and
 then
 % $\outinB(4:\rprepeat(\tpath_3), \tpath, c) = n - m - 3$ and the same $\lpchB(\rprog_1^2, \tpath_3, c)$.
 % So 
-Section~\ref{sec:psRB-pathrb} computes $\inoutB(\rprog, \tpath_3, c) = \max\{ 1 \times (n - m), 1 \times (n - m - 3) \} = n - m$ globally for $\tpath_3$.
+Section~\ref{sec:psRB-pathrb} computes the  \emph{path reachability-bound} 
+globally for $\tpath_3$ by taking the maximal value over all interleaving patterns,
+$\inoutB(\rprog, \tpath_3, c) = \max\{ 1 \times (n - m), 1 \times (n - m - 3) \} = n - m$.
 %
+
 Now for every program point $l$, we sum up the $\inoutB(\rprog, \tpath)$ over all $\tpath$ that contains $l$ and get $\psRB(l, c)$.
 Since point $5$ only shows up on $\tpath_3$, we compute \highlight{$\psRB(5, c) = n - m$}.
 The points $0$ and $\lex$ are not in any loop, so we have $\psRB(0, c) = \psRB(\lex, c) = 1$.

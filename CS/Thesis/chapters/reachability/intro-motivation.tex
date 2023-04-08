@@ -14,15 +14,15 @@ is a skeleton code from the .Net base-class library.
 
 
 In this example, given $n \geq m$,
-the precise \emph{reachability-bound}s for locations $4$ and $5$ are both $m \times \lfloor\frac{n}{m}\rfloor$,
+the expected \emph{reachability-bound}s for locations $4$ and $5$ are both $m \times \lfloor\frac{n}{m}\rfloor$,
 for location $2$ and $3$ are $(m + 1) \times \lfloor\frac{n}{m}\rfloor + 1$, 
 and $1$ for locations $0, 1$ and $\lex$. 
 \highlight{Notice here, though within the same loop $L_2$, the bounds for locations $4$ and $5$ on the first branch, and $6$ on the second branch are different.}
 State-of-art \emph{reachability-bound} analysis~\cite{GulwaniZ10}
 gives the same \emph{reachability-bound}, $n + \lfloor\frac{n}{m}\rfloor$ for all the locations within the loop $L_2$, which is tight w.r.t. $L_2$'s iteration times but not for different locations inside $L_2$ without considering multiple paths.
-Among works on program complexity, cost, and loop bound analysis, \cite{GulwaniJK09} computes a tight bound on the loop iteration times but not precise \emph{reachability-bound}s on different locations.
-Though we can use this loop iteration bound as the \emph{reachability-bound}s for location $1$ and $2$,
-the bounds of locations $4, 5$ and $6$ are still unclear.
+Among works on program complexity, cost, and loop bound analysis, the algorithm in~\cite{GulwaniJK09} computes a tight bound on the loop iteration times but not precise \emph{reachability-bound}s on different locations.
+Though we can use this loop iteration bound as the \emph{reachability-bound}s for locations $1$ and $2$,
+the bounds for locations $4, 5$ and $6$ are still unclear.
 
 
 \paragraph{Path Reachability-bound}
@@ -31,17 +31,25 @@ To compute the bounds for locations on different paths of a loop, we compute a n
 This quantity bounds the evaluation times of each \emph{simple transition path} during the program execution, where a \emph{simple transition path} is loop-free and interleaving-free.
 
 For this example, we first
-generate the abstract transition graph for the program using the difference constraints as in Figure~\ref{fig:whileTwoCounters-overview}(b).
-Then we refine the loop in this program by checking the interleaving of different paths and
+generate the abstract transition graph for the program as in Figure~\ref{fig:whileTwoCounters-overview}(b), using the difference constraint-based program abstraction method.
+Then we refine the loop in this program by checking the 
+execution orders of each simple transition path and
 generates a refined program $\rprog$ as below,
 % 
 \[ \tpath_0 ; 
- \rpchoose{2: \rprepeat_2(\rprepeat_1(\tpath_1); \tpath_2), 
- 2: \rprepeat_1(\tpath_1)}; \tpath_3.
+ \rpchoose{
+    \rprepeat(\rprepeat(\tpath_1); \tpath_2), 
+   \rprepeat(\tpath_1)}; \tpath_3.
 \]
 In this refined program,
-each $\tpath_i$ is a \emph{simple transition path} we computed in a pre-procedure, which is loop-free and not interleaved with the other $\tpath_j, j \neq i$ as in Figure~\ref{fig:whileTwoCounters-overview}(c).
-The interleaving patterns of these \emph{simple transition path}s are explicated in the refined program.
+each $\tpath_i$ is a \emph{simple transition path} we computed in a pre-procedure, which is loop-free and not interleaving with the other paths, $\tpath_j, j \neq i$ as in Figure~\ref{fig:whileTwoCounters-overview}(c).
+$\rprepeat(\tpath_1)$ represents that execution of this program contains iteration on the path $\tpath_1$.
+$\rprepeat(\tpath_1); \tpath_2$ denotes that after the iterations of $\tpath_1$ is done,
+$\tpath_2$ will execute right after.
+$\rpchoose{
+    \rprepeat(\rprepeat(\tpath_1); \tpath_2), 
+   \rprepeat(\tpath_1)}$ means that there are two possible execution orders for the original loop $L_2$.
+The execution orders of these \emph{simple transition path}s are explicated in the refined program.
 % Every path will not interleave with the others. 
 Then we compute the \emph{path reachability-bound} for every $\tpath_i$,
 $\inoutB(\rprog, \tpath_i)$ during the execution of $\rprog$ through the ranking function estimation in Section~\ref{sec:psRB-rank} and the algorithm in Section~\ref{sec:psRB-pathlocalrb} to compute the result as
@@ -95,12 +103,12 @@ which is non-trivial to compute even though knowing the loop bound,
 especially for the locations similar to $7$ in $\kw{threeNestedWhile}$.
 
 In order to precisely compute how many times the location $7$ is reached, 
-the local \emph{path reachability-bound} we discussed in the first example is not enough.
+the local \emph{path reachability-bound} we discussed in the first example is not precise enough.
 We need to know
-the numbers of iterations of the outside loop $L_3$ and $L_1$ such that,
-during these iterations, the loop $L_6$ is ``reached''. 
-We call this the \emph{loop reachability} of the location within loop $L_6$ w.r.t the loops $L_3$ and $L_1$.
-Then by multiplying the loop iteration bound of the $L_6$ with its \emph{loop reachability} times w.r.t the $L_3$ and $L_1$, we can compute the precise
+the numbers of iterations of the outer loop $L_3$ and $L_1$ such that,
+during these iterations, the inner loop $L_6$ is ``reached''. 
+We call the upper bound on this number, the \emph{loop reachability-bound} of the location within loop $L_6$ w.r.t the outer loops $L_3$ and $L_1$.
+Then by multiplying the loop iteration bound of the $L_6$ with its \emph{loop reachability-bound} w.r.t the $L_3$ and $L_1$, we can compute the precise
 \emph{reachability-bounds} for location $7$.
 
 The method in \cite{GulwaniJK09} based on the \emph{progress invariant} computes a similar quantity, but it only computes
@@ -121,13 +129,13 @@ In this sense, we introduce the \emph{loop reachability-bound}
 % , $\lpchB(\rprog, \tpath)$.
 % is our second key idea combining two lines of works.
 % It has high accuracy and efficiency by using the estimated ranking function based on the \emph{amortized complexity analysis} methodology over the refined loop paths.
-For each \emph{simple transition path} $\tpath$ w.r.t each of its outer loop$\tpath$
+For each \emph{simple transition path}  w.r.t each of its outer loop,
 % in which $\tpath$ is nested,
-\emph{loop reachability-bound} for $\tpath$ and $\tpath$
+\emph{loop reachability-bound}
 is a bound on the iterations of
-this outer loop
+the outer loop
 % $L:\rprog$ w.r.t. the innermost loop where $\tpath$ is enclosed,
-such that during these iterations of the outer loop, the inner loop is ``reached''. 
+such that during these outer loop iterations, the inner loop is ``reached''. 
 This is distinguished from the traditional methods, which only estimate the bound on the inner loop's iteration number
 in one iteration of the outside loop.
 

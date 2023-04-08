@@ -110,6 +110,7 @@ while, and sequence statements in paper~\cite{GulwaniJK09} respectively.
 We use the algorithm REFINE from paper~\cite{GulwaniJK09} 
 to compute the execution orders of
 the simple transition paths that come from the same loop.
+
 For example, two simple transition paths $\tpath_1 = (1 \to 2 \to 3 \to 4)$ and 
 $\tpath_4 = (1 \to 2 \to 8 \to 1)$ in the same loop Figure~\ref{fig:relatedNestedWhileOdd-overview}(b) have two possible execution orders:
 either $\tpath_1$ executes immediately after the execution of $\tpath_4$, or vice verse.
@@ -183,7 +184,24 @@ It has a two paths loop
 
  We first compute that $\tpath_1$ can iterate on itself, so there is one possible execution sub-order,
  $\rprepeat(\tpath_1)$.
- From this refined program, we can explicitly tell two possible path interleaving patterns.
- In the first one, $\tpath_2$ will be executed after all the iterations of $\tpath_1$ are done, and in the second one,
- the entire loop is done after $\tpath_1$ finishes the iteration.
- Then the following computation based on this refined program can compute more accurate reachability-bounds.
+ We recursively compute that after $\tpath_1$ done with the iteration on itself,
+ either the iteration of the original loop is finished
+ or $\tpath_2$ can execute right after.
+For the first case, we compute a complete execution order $\rprepeat(\tpath_1)$.
+In the second case, we again have a possible execution sub-order, $\rprepeat(\tpath_1); \tpath_2$.
+After execution of $\tpath_2$, we compute that $\tpath_1$ iterates on itself again
+and goes back to the same execution sub-order. 
+The refinement algorithm finds this repetition and generate a complete execution order
+$\rprepeat(\rprepeat(\tpath_1); \tpath_2)$.
+Then the algorithm finish the refinement process since there is no more sub-orders. 
+%  In the first one, $\tpath_2$ will be executed after all the iterations of $\tpath_1$ are done, and in the second one,
+%  the entire loop is done after $\tpath_1$ finishes the iteration.
+The refined program then is constructed below as in Figure~\ref{fig:whileTwoCounters-overview}(d).
+\[
+    \tpath_0 ; 
+    \rpchoose{2: \rprepeat(\rprepeat(\tpath_1); \tpath_2), 
+    2: \rprepeat(\tpath_1)}; \tpath_3.
+\]
+
+From this refined program, we can explicitly tell two possible path interleaving patterns.
+With the explicit interleaving patterns, the following computation based on this refined program can compute more accurate reachability-bounds.
