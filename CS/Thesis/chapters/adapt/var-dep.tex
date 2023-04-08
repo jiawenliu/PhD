@@ -53,21 +53,21 @@ Intuitively, the \emph{event differ in value} is a partial negation of the \emph
 Equation~\ref{eq:diff}(a) is the same as the first line in Equation~\ref{eq:event_eq}.
 In Equation~\ref{eq:diff}(b), when the event corresponded to a query request, we require the query value in the fourth element to be different regarding the \emph{query equivalence} definition, which is opposite to the last line in Equation~\ref{eq:event_eq}.
 
-Specifically, we first look at the Equation~\ref{eq:diff}(a)
-in Definition~\ref{def:diff},
-$\pi_1(\event_1) = \pi_1(\event_2) 
+Specifically, we first look at the first two elements of two events,
+as in Equation~\ref{eq:diff}(a).
+The conjunction $\pi_1(\event_1) = \pi_1(\event_2) 
  \land 
  \pi_2(\event_1) = \pi_2(\event_2)$ 
 requires that $\event_1$ and $\event_2$ have the same variable name and label. 
 This guarantees that $\event_1$ and $\event_2$ are generated from the same labeled command.
 In Equation~\ref{eq:diff}(b),
 two kinds of comparisons between the third and fourth elements are for the non-query assignment and query request separately.
-For events generated from the non-query assignments (via checking
-$\pi_{4}(\event_1) =_q \pi_{4}(\event_2) = \bullet$), we only compare their assigned values through $\pi_3(\event_1) \neq \pi_3(\event_2)$.
-But for these from query requests (via checking
-$\pi_{4}(\event_1) \neq \bullet \land \pi_{4}(\event_2) \neq \bullet$),
-We are comparing their query value in the $4^{th}$ element via $\pi_{4}(\event_1) \neq_q \pi_{4}(\event_2)$ rather than the answer computed from the unknown database and unknown mechanism in the $3^{rd}$ element.
-Through this way, when looking into the dependency relation between queries, We are able to check whether the choice of a query in a query request is affected by others.
+For events generated from the non-query assignments 
+($\pi_{4}(\event_1) =_q \pi_{4}(\event_2) = \bullet$), we only compare their assigned values through $\pi_3(\event_1) \neq \pi_3(\event_2)$.
+However, for the events from query requests 
+($\pi_{4}(\event_1) \neq \bullet \land \pi_{4}(\event_2) \neq \bullet$),
+we are comparing their query value in the $4^{th}$ location via $\pi_{4}(\event_1) \neq_q \pi_{4}(\event_2)$ rather than the answer computed from the unknown database and unknown mechanism in the $3^{rd}$ element.
+Through this way, when looking into the dependency relation between queries, we are able to check whether the ``choice'' of a query request is affected by others.
 
 \textbf{Example.}
 I want to highlight that if two events are both generated from query requests, we are not comparing their query answer in the third position of the event, but the query value in the fourth position.
@@ -79,17 +79,21 @@ both events are from query request.
 Then we check again the forth element $\pi_4(\event_1) \neq_1 \pi_4(\event_2) \neq \bullet$ to guarantee
 that the two events sent different query requests.
 
-I introduce the operator $\tlabel : \ftdom \to \mathcal{P}{(\ldom)}$ gives the set of labels in every event belonging to 
+The operator $\tlabel : \tdom \to (\mathcal{P}{(\ldom)} \cup \{ \infty \})$ gives the set of labels in every event belonging to 
 a trace, whose behavior is defined as follows,
 \[
-% \begin{array}{llll}
-\tlabel{(\trace :: (\_, l, \_, \_)) } \triangleq \{l\} \cup \tlabel{(\trace )}
-\qquad~
-\tlabel({[ ]}) \triangleq \{\}
-% \end{array}
+\begin{array}{ll}
+    \tlabel{(\trace :: (\_, l, \_, \_)) } \triangleq \{l\} \cup \tlabel{(\trace )} & \text{if}~ \trace \in \ftdom
+    \\
+    \tlabel{(\trace)} \triangleq \infty & \text{if}~ \trace \in \inftdom
+    \\
+    \tlabel({[ ]}) \triangleq \{\}
+\end{array}
 \]
 
-Then I want to define the dependency relation between events in order to define the \emph{variable may-dependency} relation.
+We return $\infty$ if the input trace is an infinite trace.
+
+Then we need to define the dependency relation between events in order to define the \emph{variable may-dependency} relation.
 To define the \emph{event may-dependency}, we first introduce the counter notation,
 $\vcounter : \tdom \to \mathbb{N} \to \mathbb{N}$ to count the 
 occurrence of a label in a trace as below.
@@ -120,6 +124,7 @@ occurrence of a label in a trace as below.
  \end{array}
  \]
 \end{defn}
+Again, we still return $\infty$ if the input trace is an infinite trace.
 
 \begin{defn}[Boolean Event Negation]
  \label{def:adapt_boolevent_neg}
@@ -131,7 +136,7 @@ occurrence of a label in a trace as below.
  \neg\event = (\bexpr, l, \neg v, \bullet)\]
 \end{defn}
 
-Then I define the \emph{event may-dependency} between events based on the \emph{event differ in value} as below.
+We can now define when an event \emph{may depend} on another one.
 \begin{defn}[Event May-dependency]
 \label{def:event_dep}
 An event $\event_2$ is in the \emph{event may-dependency} relation with an assignment event $\event_1 \in \eventset^{\asn}$ in a program ${c}$ 
@@ -188,9 +193,10 @@ $\eventdep(\event_1, \event_2, [\event_1] \tracecat \trace \tracecat [\event_2],
 \end{subequations}
 % where $\tlabel(\trace) \subseteq \ldom$ is the set of the labels in all the events from trace $\trace$ and $\event_2 \in \trace_3$ or $\event_2 \notin \trace_3$ denotes that $\event_2$ belongs to $\trace_3$ or not.
 \end{defn}
-The first line in Equation~\ref{eq:eventdep}(a) requires that $\event_1$ comes from an assignment command and then modifies its assigned value via $\diff(\event_1, \event_1')$.
+The first line in Equation~\ref{eq:eventdep}(a) requires that $\event_1$ comes from an assignment command.
+Then, $\diff(\event_1, \event_1')$ guarantees that value assigned to the same variable is different in $\event_1'$.
 
-Then, the following two parts in Equation~\ref{eq:eventdep}(b) and (c) capture the value dependency and control dependency respectively. 
+The following two parts in Equation~\ref{eq:eventdep}(b) and (c) capture the value dependency and control dependency respectively. 
 As in the literature on non-interference, and following~\cite{Cousot19a}, we formulate these dependencies as relational properties, i.e. in terms of two different traces of execution. 
 I force these two traces to differ by using the event $\event_1$ in one and $\event_1'$ in the other. 
 Both Equation~\ref{eq:eventdep}(b) and (c) execute the program two times w.r.t. the different values in $\event_1$ (as line:1 in Equation~\ref{eq:eventdep}(b) and line:2 in Equation~\ref{eq:eventdep}(c))
@@ -300,7 +306,7 @@ Since $\event_2 $ disappeared in the second execution trace,
 our event may-dependency definition captures this dependency relation.
 
  
-I can now extend the dependency relation to variables by considering all the assignment events generated during the program's execution. 
+We can now extend the dependency relation to variables by considering all the assignment events generated during the program's execution. 
 
 \begin{defn}[Variable May-dependency]
  \label{def:var_dep}

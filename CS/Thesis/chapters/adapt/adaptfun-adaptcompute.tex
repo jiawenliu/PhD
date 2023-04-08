@@ -81,13 +81,14 @@ the \emph{query length} of a path, $p \in \paths(\progG(c))$ on the estimated gr
  let $p \in \paths(\progG(c))$ be a \emph{path} with edge sequence $(e_1 \ldots e_{n - 1})$ 
  a sequence of vertices 
  $(v_1, \ldots, v_{n})$,
- the estimated query length of $p$, $\hat{\qlen}(p)$ is computed as
+ the estimated query length of $p$, $\hat{\qlen}(p)$ is computed as follows.
  \[
- \sum\left\{ v \times \hat{w}
- \mid v \in (v_1, \ldots, v_{n}) \land (v, 1) \in \progF(c)
- \land 
- (v, \hat{w}) \in \progW(c) 
- \right\}
+    % \hat{\qlen}(p) =
+    \sum\left\{ v \times \hat{w}
+    \mid v \in (v_1, \ldots, v_{n}) \land (v, 1) \in \progF(c)
+    \land 
+    (v, \hat{w}) \in \progW(c) 
+    \right\}
  \]
  \end{defn}
  We estimate the adaptivity upper bound, $\progA(c)$ for a program $c$ as the maximum query length over all paths in its \emph{estimated dependency graph}, $\progG({c})$. 

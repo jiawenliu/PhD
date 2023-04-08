@@ -116,9 +116,9 @@ is the variable that decreases on this edge, computed as follows,
  \locbound(\absevent, c) \triangleq \infty & o.w.
 \end{array}
 \]
-$\kw{SCC}(\absG(c))$ is the set of all the strongly connected components of $\absG(c)$.
+$\kw{SCC}(\absG(c))$ is the set of all the non-trivial strongly connected components of $\absG(c)$.
 \end{defn}
-We look at the strongly connected components of $\absG(c)$. 
+We look at the non-trivial strongly connected components of $\absG(c)$, which contains at least one edge.
 If the edge does not belong to any strongly connected components, then the local bound is $1$, representing the fact that the edge is not in a loop and so it gets executed at most once.
 If the edge belongs to a strongly connected component and one of the variables $x$ in $dc$ decreases, then the local bound is $x$.
 Otherwise, if the edge belongs to a strongly connected component and there is a variable $y$ that decreases in the difference constraint of some other edge, and if by removing this other edge, the original edge does not belong anymore to the strongly connected components of $\absG(c)$, then the local bound is $y$.
@@ -141,8 +141,9 @@ If instead, the local bound of the edge is a variable $y$ which is not an input 
 In order to do this, this steps will compute two quantities: first, it will recursively sum the reachability-bounds of all the edges whose difference constraint may increment the variable $y$, plus the corresponding increment;
 second, it will recursively sum the reachability-bounds of all the edges whose difference constraint may reset the variable $y$ to a (symbolic) expression that doesn't depend on it, multiplied by the maximal value of this symbolic expression. The sum of these two quantities provides the symbolic expression that is an upper bound on the number of times the edge can be reached.
 
-To compute these two quantities we use two mutually recursive procedures in a path-insensitive manner as follows.
-\begin{defn}[Local Bound Computation]
+To compute these two quantities we use two mutually recursive procedures in a path-insensitive manner
+in Definition~\ref{def:ranking_bound} and Definition~\ref{def:edge_pathinsensitivebound}.
+\begin{defn}[Upper Bound Invaraint of Local Bound]
  \label{def:ranking_bound}
 For a program $c$ and an edge $\absevent \in \absE(c)$,
 the \emph{local bound}, $\varinvar(\locbound(\absevent, c), c)$ for the local bound $\locbound(\absevent, c)$
@@ -161,13 +162,13 @@ $\incrs(x, c) \triangleq \sum\limits_{\absevent \in \inc(x)}\{\absclr(\absevent,
 \absevent = (l, x' \leq x + v, l')\}$
 \end{defn}
 
-Definition~\ref{def:ranking_bound} estimates the upper bound, $\varinvar(x, c) \in \mathcal{A}_{\lin}$
-on the maximum value for each local bound $x \in \mathcal{V} \cup \constdom$.
-For a program $c$, the \emph{local bound} of a
-$\varinvar(\locbound(\absevent, c)) \in \mathcal{A}_{\lin}$ is 
-the bound on the maximum value of the local bound 
-assigned to the edge $\absevent \in \absE(c)$.
-This computation involves computing the \emph{transition bound} $\absclr(\absevent, c)$ of an edge $\absevent$ as below.
+Definition~\ref{def:ranking_bound} estimates the upper bound invariant, $\varinvar(x, c) \in \mathcal{A}_{\lin}$
+on the maximum value of each local bound $x \in \mathcal{V} \cup \constdom$.
+% For a program $c$, the \emph{local bound} of a
+% $\varinvar(\locbound(\absevent, c)) \in \mathcal{A}_{\lin}$ is 
+% the bound on the maximum value of the local bound 
+% assigned to the edge $\absevent \in \absE(c)$.
+This computation involves mutual recursion of computing the \emph{transition bound} $\absclr(\absevent, c)$ of an edge $\absevent$ as below.
 % , formally in Definition~\ref{def:ranking_bound} and~\ref{def:edge_pathinsensitivebound}.
 
 \begin{defn}[Transition Bound\footnotemark]
@@ -190,28 +191,32 @@ computed as follows,
 \end{array}
  \]
 \end{defn}
-\footnotetext{We only present the computation based on the variable reset set ($\reset$) instead of the reset chain ($\resetchain$)
-for easier understanding of the concept.
-In the implementation, we use the one based on $\resetchain$ in Definition 21 from \cite{SinnZV17} achieving more accurate results.}
-Then we construct the set of reachability bound $w$ for every program point $l$, as $\absW(c)$.
+% \footnotetext{We only present the computation based on the variable reset set ($\reset$) instead of the reset chain ($\resetchain$)
+% for easier understanding of the concept.
+% In the implementation, we use the one based on $\resetchain$ in Definition 21 from \cite{SinnZV17} achieving more accurate results.}
+% Then we construct the set of reachability bound $w$ for every program point $l$, as $\absW(c)$.
 % For each pair $(l, \hat{w}) \in \absW(c)$, 
 % $\hat{w} = \sum\left\{ \absclr(\absevent, c) \middle\vert \absevent = (l, \_, \_) \right\}$.
 
-\emph{Soundness Informal}
+% \emph{Soundness Informal}
+Definition~\ref{def:edge_pathinsensitivebound} computes $\infty$ for the program that
+have non-terminating behavior.
+However, by the well-formedness of the program in Definition~\ref{def:adaptfun-wfprog}, 
+we consider in \redd{PART \romannum{1}} only the programs that are terminating with any initial trace.
 For a program $c$ and an edge $\absevent \in \absE(c)$,
 $\absclr(\absevent)$ is a sound upper bound
 on the execution times of this transition by~\cite{SinnZV17}.
-The soundness theorem is attached in Theorem~\ref{thm:transition_bound_sound} in Appendix~\ref{apdx:reachability_soundness}.
+The soundness is formally stated in Theorem~\ref{thm:transition_bound_sound}, and the proof is in Appendix~\ref{apdx:reachability_soundness}.
 %
 \begin{thm}[Soundness of the Transition Bound]
  \label{thm:transition_bound_sound}
 For a program ${c}$ with its abstract transition graph $\absG(c)$, if $l$ is the label of an assignment 
-command and the edge $\absevent = (l, \_, \_) \in \absG(c)$ has the same label,
+command and $\absevent = (l, \_, \_) \in \absG(c)$ has the same label,
 % label $l \in \lvar(c)$,
-then its $\absclr(\absevent, c)$ 
+then $\absclr(\absevent, c)$ 
  is a sound upper bound on 
 % execution-based reachability bound $w^t$ 
-the execution times of this assignment command with label $l$ when $c$ is executing under any
+the numbers that the assignment command with label $l$ is evaluated during the execution of $c$ with any
 initial trace $\trace_0 \in \ftdom_0(c)$.
  \[
  \begin{array}{l}
@@ -233,6 +238,7 @@ initial trace $\trace_0 \in \ftdom_0(c)$.
 \end{thm}
 %
 \end{enumerate}
+
 
 \paragraph{Example}
 We perform the symbolic reachability bound analysis on the abstract control flow graph in Figure~\ref{fig:abscfg_tworound}(b) and compute the result in Figure~\ref{fig:abscfg_tworound}(c).
@@ -277,19 +283,19 @@ x^l \in \progV(c)
 \]
 \end{defn}
 %
-Notice that $\hat{w} \in \scexprdom$ is a symbolic arithmetic expression over symbols in $\constdom$. In particular, it may contain the input variables and so it may effectively be used as a function of the input - and capture loop bounds in terms of these inputs.
+Notice that $\hat{w} \in \scexprdom$ is an expression over symbols in $\constdom$. In particular, it may contain the input variables and so it may effectively be used as a function of the input - and capture loop bounds in terms of these inputs.
  
-We guarantee that this 
-symbolic expression for $x^l \in \progV(c)$ is a sound upper bound of 
-the weight for the same vertex $x^l$ in Program's semantics-based dependency graph as follows.
+We guarantee that $\hat{w}$ for $x^l \in \progV(c)$ is a sound upper bound of 
+the weight for the same vertex $x^l$ in the program's semantics-based dependency graph
+in Theorem~\ref{thm:addweight_soundness}.
 The proof is in Appendix~\ref{apdx:weight_soundness}, which is based on the Lemma~\ref{lem:weights_map}
 in Appendix~\ref{apdx:adapt_soundness}, and Theorem~\ref{thm:transition_bound_sound}.
 
-\begin{thm}[Soundness of the Reachability Bounds Estimation]
+\begin{thm}[Soundness of the Weight Estimation]
  \label{thm:addweight_soundness}
 Let ${c}$ be a program and $\progW(c)$ be its estimated weight set.
-Then, for every $(x^l, \hat{w}) \in \progW(c)$ and $(x^l, w) \in \traceW(c) $,
-we have for every possible 
+Then, for every  $(x^l, w) \in \traceW(c) $,
+we have an estimated weight $(x^l, \hat{w}) \in \progW(c)$ and for every possible 
 $\vtrace_0 \in \ftdom_0(c),
 v \in \mathbb{N}$,
 if $\config{\vtrace_0, \hat{w}} \earrow v$,

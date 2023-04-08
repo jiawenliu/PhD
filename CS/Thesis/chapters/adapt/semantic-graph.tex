@@ -94,10 +94,12 @@ This function means when
 we execute the $\kw{twoRound(k)}$ program under input $\trace_0$, 
 $\config{\kw{twoRound(k)}, \trace_0} \to^{*} \config{\clabel{\eskip}^{l'}, \trace_0\tracecat\trace'} $,
 we have an execution trace $\trace'$.
-Then $w_k(\trace_0)$ outputs the occurrences of the label $3$ in $\trace'$, which is always
-the value of $k$ in the initial trace, i.e., $\env(\trace_0) k$.
-So we have its weight function $\lambda \trace_0 \sthat \env(\trace_0) k$ always equal to the 
-occurrences of the label $3$ in the execution trace of $\kw{twoRound(k)}$.
+Then $w_k(\trace_0)$ outputs the occurrences of the label $3$ in $\trace'$, which is 
+the same as the iteration numbers of the loop,
+% always
+i.e., the value of $k$ in the initial trace, $\env(\trace_0) k$.
+% So we have its weight function $\lambda \trace_0 \sthat \env(\trace_0) k$ always equal to the 
+% occurrences of the label $3$ in the execution trace of $\kw{twoRound(k)}$.
 
 
 \paragraph{Semantics-based Dependency Graph.}

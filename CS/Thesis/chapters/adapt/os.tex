@@ -17,7 +17,8 @@ $ \begin{array}{lllll}
 \\
 \end{array}$
 \end{center}
-An assignment event tracks the execution of an assignment or a query request and consists of the assigned variable, the label of the command that generates it, the value assigned to the variable, and the normal form of the query expression, $\qval$ if this command is a query request, otherwise a default value $\bullet$.
+An assignment event tracks the execution of an assignment or a query request and consists of the variable name, the label of the command that generates it, the value assigned to the variable.
+The fourth element is the normal form of the query request, $\qval$ if this command is a query request, otherwise a default value $\bullet$.
 
 A testing event tracks the execution of if and while commands and consists of the guard of the command, the label of the command, and the result of evaluating the guard, while the last element is $\bullet$.
 
@@ -533,7 +534,7 @@ In the rest of {\redd{PART \romannum{1}}, we implicitly refer to ``a well-formed
 
 If we observe the operational semantics rules, we can find that no rule will shrink the trace. 
 So we have the Lemma~\ref{lem:tracenondec} with proof in Appendix~\ref{apdx:tracenondec}, 
-specifically the trace has the property that its length never decreases during the program execution.
+which states that the trace has the property that its length never decreases during the program execution.
 \begin{lem}
 [Trace Non-Decreasing]
 \label{lem:tracenondec}
@@ -561,7 +562,9 @@ whether another query is affected.
 Since the answer to a query request can be different because of the hidden database and unknown mechanisms,
 we cannot tell their equivalence based on comparing the query answer.
 In this sense, we 
-define the equivalence of query expressions by comparing their query value(i.e., the normal form query request) and quantifying over all possible values of the hidden the database.
+define the equivalence of queries by comparing the query expressions, $\qexpr$
+%  values, which are the normal form of the query request, 
+and quantifying over all possible values of the hidden the database.
 % on a certain form of query value, formally as follows.
 
 \begin{defn}[Equivalence of Query Expression]
@@ -586,7 +589,10 @@ where $r \in D$ is a record (row) in the database $D$.
 As usual, we denote by $\qexpr_1 \neq_{q} \qexpr_2$ the negation of the equivalence.
 \end{defn}
 %
-Then, we define the equivalence of two events generated from a query request by comparing the query value rather than the query answers.
+Then, when defining the equivalence of two events generated from a query request,
+instead of checking the query answers in the third location,
+we check the fourth element, which is the query value.
+%  which is the normal form of the query expression.
 \begin{defn}[Event Equivalence]
  \label{def:event_eq}
  Two events $\event_1, \event_2 \in \eventset$ are equivalent, 
@@ -624,6 +630,8 @@ are equivalent by Definition~\ref{def:query_equal}.
 For example, the events $(x, 0, 1, \chi[1])$ and $(x, 0, 2, \chi[1])$ are equivalent by this definition even though they have different query answers assigned to variable $x$.
 
 So we have the following Corollaries~\ref{coro:query_equal} with proof in Appendix~\ref{apdx:query_equal}.
+This corollary says that two events that have different values 
+in the third location can still be equivalent if both of them are generated from query request.
 \begin{coro}
  \label{coro:query_equal}
  For any event $\event \in \eventset$ that is generated from a query request, 
