@@ -94,7 +94,10 @@ counts the appearance of a label in a trace.
  counts the appearance of a list of labels $[l_1, \ldots, l_n]$ as follows.
 \[
  \begin{array}{ll}
- \lcounter(\trace'' \tracecat \trace', [l_1, \ldots, l_n] ) 
+\lcounter([], [l_1, \ldots, l_n] ) 
+\triangleq 0 & 
+\\ 
+\lcounter(\trace'' \tracecat \trace', [l_1, \ldots, l_n] ) 
  \triangleq \lcounter(\trace', [l_1, \ldots, l_n]) + 1 & \text{if}~ \pi_2(\trace''[i]) = l_i, \forall i = 1, \ldots, n
  \\ 
  \lcounter([(\_, l, \_)] \tracecat \trace', [l_1, \ldots, l_n] ) 
