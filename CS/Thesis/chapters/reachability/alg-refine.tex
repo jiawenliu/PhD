@@ -60,6 +60,14 @@ Also, $1 \to 2 \to 3 \to 4 \to 6 \to 7 \to 1$ is not a \emph{simple transition p
 In Figure~\ref{fig:threeWhile-overview}(b), $1 \to 2 \to 3 \to 4 \to 5 \to 6$ is not a \emph{simple transition path} on $\absG(\kw{threeNestedWhile}(n, m, N))$ because it visits a loop header $3$ inside the path.
 
 \subsection{The Program Rewriting}
+\paragraph{Syntax.}
+
+\[
+    \rprog := \tpath ~|~ \rprepeat(\rprog) ~|~ \rprog;\rprog ~|~ \rpchoose{\rprog, \ldots} 
+\]
+
+\paragraph{Algorithm.}
+
 \begin{algorithm}
  \caption{Program Rewriting $\kw{Rewrite}$}
  \label{alg:alg-refine_rewrite}
@@ -99,20 +107,54 @@ while, and sequence statements in paper~\cite{GulwaniJK09} respectively.
 % \todo{soundness of the program write}
 
 \subsection{The Program Refinement}
-We implement the algorithm REFINE from paper~\cite{GulwaniJK09} and compute the 
-refined program $\rprog$ for a rewritten program $c$.
+We use the algorithm REFINE from paper~\cite{GulwaniJK09} 
+to compute the execution orders of
+the simple transition paths that come from the same loop.
+For example, two simple transition paths $\tpath_1 = (1 \to 2 \to 3 \to 4)$ and 
+$\tpath_4 = (1 \to 2 \to 8 \to 1)$ in the same loop Figure~\ref{fig:relatedNestedWhileOdd-overview}(b) have two possible execution orders:
+either $\tpath_1$ executes immediately after the execution of $\tpath_4$, or vice verse.
+% and compute the 
 
-\paragraph[example]{Walk through Example.}
-Look again at the walk-through an example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b).
+Then we construct the refined program by explicating the execution orders of simple transition paths.
+% refined program $\rprog$ for a rewritten program $c$.
+Simple transition paths can iterate on themselves, so an execution order could
+contain iterations of simple transition paths, and sequence of iterations.
+
+For example, the simple transition path $\tpath_3 = (4 \to 5 \to 4)$
+the loop $L_4$ in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b) has only one possible execution order,
+which is the iteration on itself, $\rprepeat(\tpath_3)$.
+Each loop in a refined program contains several execution orders over its original simple transition paths.
+For example, the loop $L_1$ in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b)
+has two execution orders. In the first one,
+$\rprepeat(\tpath_4; \tpath_1; 4:\rprepeat(\tpath_3); \tpath_2)$ 
+$\tpath_1$ will execute right after the execution of $\tpath_4$.
+Then following the execution of $\tpath_1$, loop $L_4$ finishes full iterations and followed by the execution of $\tpath_2$.
+In the second execution order,
+$\rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4)$,
+$\tpath_4$ is executed after the execution of $\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2$.
+Iteration of one execution order is equivalent to one possible full iterations of the original loop program.
+So the reconstructed loop for $L_1$ is 
+\[
+\rpchoose{ 
+ \begin{array}{l}
+ 1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2; \tpath_4), \\
+ 1: \rprepeat(\tpath_4; \tpath_1; 4:\rprepeat(\tpath_3); \tpath_2) 
+ \end{array}
+ }.
+\]
+
+\paragraph{Running Example.}
+For the walk-through an example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b),
 We first collect all its simple transition paths from $\absG(\kw{relatedNestedWhileOdd}(n, m))$ as
 $\tpath_0 = (0 \to 1)$,
 $\tpath_1 = (1 \to 2 \to 3 \to 4)$,
 $\tpath_2 = (4 \to 6 \to 7 \to 1)$,
 $\tpath_3 = (4 \to 5 \to 4)$, $\tpath_4 = (1 \to 2 \to 8 \to 1)$, and $\tpath_5 = (1 \to \lex)$.
-Using these simple transition paths, we rewrite this program by Algorithm~\ref{alg:alg-refine_rewrite} and get the rewritten program corresponding to the syntax in~\cite{GulwaniJK09} as
+Using these simple transition paths, we first rewrite this program by Algorithm~\ref{alg:alg-refine_rewrite} and get the rewritten program
+%  corresponding to the syntax in~\cite{GulwaniJK09} as
 $ \tpath_0 ; \rpchoose{ 1: \rprepeat(\tpath_1; 4:\rprepeat(\tpath_3); \tpath_2), 
 1: \rprepeat(\tpath_4) }; \tpath_5$.
-Then we compute the refined program as,
+Then we construct the refined program as,
 \[
  \tpath_0 ; \rpchoose{ 
  \begin{array}{l}
@@ -122,26 +164,26 @@ Then we compute the refined program as,
  }; \tpath_5.
 \]
 
-\begin{example}[Two Counter While]
- \label{ex:twoCounterWhile}
- We use another example from the .Net base-class library to show the necessity of the \emph{path refinement}. It has a two paths loop
+\paragraph{Example II.}
+ We present again the example from Figure~\ref{fig:whileTwoCounters-overview}(a) which
+%   another example from the .Net base-class library 
+to show the necessity of the \emph{path refinement}. 
+%   It 
+It has a two paths loop
  with different \emph{reachability-bound}s on the locations of different paths.
  %
- Given $n \geq m$,
- the expected \emph{reachability-bound} for the locations $4$ and $5$ on the $\ethen$ branch is $m \times \lfloor\frac{n}{m}\rfloor$
- while for locations on the other branch, $2$ and $3$ is $(m + 1) \times \lfloor\frac{n}{m}\rfloor + 1$. 
- The best state-of-art bound analysis
- gives the same \emph{reachability-bound}, $n + \lfloor\frac{n}{m}\rfloor$ for all the locations within the loop $L_2$.
  %
  \input{chapters/reachability/examples/whileTwoCounters-overview}
  %
- To know the bounds for locations on different branches of a loop, 
- it is necessary to know the alternative iteration patterns of the two paths.
- So over its abstract transition graph generated by Section~\ref{sec:psRB-progabs} as Figure~\ref{fig:whileTwoCounters-overview}(b), we collect all its simple transition path as in Figure~\ref{fig:whileTwoCounters-overview}(c).
+%  To know the bounds for locations on different branches of a loop, 
+%  it is necessary to know the alternating patterns of the two paths.
+ Over its abstract transition graph generated by Section~\ref{sec:psRB-progabs} as Figure~\ref{fig:whileTwoCounters-overview}(b), we collect all its simple transition path as in Figure~\ref{fig:whileTwoCounters-overview}(c).
  Then we transform the loop by explicitly computing the interleaving between paths and
  generates a refined program $\rprog$ as the bottom part of Figure~\ref{fig:whileTwoCounters-overview}.
+
+ We first compute that $\tpath_1$ can iterate on itself, so there is one possible execution sub-order,
+ $\rprepeat(\tpath_1)$.
  From this refined program, we can explicitly tell two possible path interleaving patterns.
  In the first one, $\tpath_2$ will be executed after all the iterations of $\tpath_1$ are done, and in the second one,
  the entire loop is done after $\tpath_1$ finishes the iteration.
  Then the following computation based on this refined program can compute more accurate reachability-bounds.
- \end{example}
