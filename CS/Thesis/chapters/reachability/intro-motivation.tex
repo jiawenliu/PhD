@@ -126,9 +126,6 @@ separately as well.
 
 \paragraph{Loop reachability-bound.}
 In this sense, we introduce the \emph{loop reachability-bound}
-% , $\lpchB(\rprog, \tpath)$.
-% is our second key idea combining two lines of works.
-% It has high accuracy and efficiency by using the estimated ranking function based on the \emph{amortized complexity analysis} methodology over the refined loop paths.
 For each \emph{simple transition path}  w.r.t each of its outer loop,
 % in which $\tpath$ is nested,
 \emph{loop reachability-bound}
@@ -160,8 +157,5 @@ Both are tight because loop $L_6$ will only be entered once among all iterations
 % In the same way, we also compute $\lpchB(3: \rprog_3, \tpath_3) = 1$ precisely.
 Then for each $\tpath_i$, the multiplication of its local \emph{path reachability-bound} with all its \emph{loop reachability-bound}s is the accurate \emph{path reachability-bound} globally.
 By summing up the reachability-bound of the path where each location shows up,
-% as its \emph{reachability-bound} as before.
-% and multiply this result by all its \emph{loop reachability-bound}s.
-% In this way, 
 we compute $N$ as the \emph{reachability-bound} of location $7$, which is tight.
 \input{chapters/reachability/examples/threeNestedWhile-overview}
