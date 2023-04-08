@@ -23,7 +23,7 @@ A testing event tracks the execution of if and while commands and consists of th
 
 The event projection operators $\pi_i$ projects the $i^{th}$ element from an event:
 $ \pi_i : 
-\eventset \to \mathcal{V} \cup \booldom \cup \mathcal{L} \cup \mathcal{VAL} \cup \mathcal{QVAL} \cup\{\bullet\} $.
+\eventset \to \vardom \cup \booldom \cup \ldom \cup \valuedom \cup \qdom \cup\{\bullet\} $.
 Its computation is as follows,
 \\
 $\pi_1(x, l, v, \bullet) = x $ \qquad $\pi_1({x}, l, v, \qval) = x$ \qquad $ \pi_1(\bexpr, l, v, \bullet) = \bexpr$
@@ -90,7 +90,7 @@ The concatenation preserves the order of every element in the two traces.
  $\env$ is the environment operator such that $\env(\trace) x$ fetches the latest value assigned to $x$ in the trace $\trace$.
 Since the trace records all the program's evaluations for assignments, 
 the value assigned to variables can be recovered from the trace directly.
- \begin{defn}[Environment $\env : {\tdom} \to \mathcal{V} \to \mathcal{VAL} \cup \{\bot\}$]
+ \begin{defn}[Environment $\env : {\tdom} \to \vardom \to \valuedom \cup \{\bot\}$]
  \label{def:adapt_env}
 Given a trace $\trace \in \tdom$ and a variable $x$,
 the environment operator $\env(\trace) l $ fetches the latest value assigned to $x$ on the trace $\trace$,
@@ -531,7 +531,6 @@ In the rest of {\redd{PART \romannum{1}}, we implicitly refer to ``a well-formed
  \label{fig:os}
  \end{figure}
 
-
 If we observe the operational semantics rules, we can find that no rule will shrink the trace. 
 So we have the Lemma~\ref{lem:tracenondec} with proof in Appendix~\ref{apdx:tracenondec}, 
 specifically the trace has the property that its length never decreases during the program execution.
@@ -572,13 +571,13 @@ Two query expressions $\qexpr_1$, $\qexpr_2$ are equivalent, denoted as $\qexpr_
 \[
  \begin{array}{l} 
  \forall \trace \in \ftdom \sthat \exists \qval_1, \qval_2 
- % \in \mathcal{QVAL}
+ % \in \qdom
  \sthat
  (\config{\trace, \qexpr_1} \qarrow \qval_1 \land \config{\trace, \qexpr_2 } \qarrow \qval_2) 
  \\
  \quad \land (\forall D \in \dbdom, r \in D \sthat 
  \exists v 
- % \in \mathcal{VAL} 
+ % \in \valuedom 
  \sthat 
  \config{\trace, \qval_1[r/\chi]} \aarrow v \land \config{\trace, \qval_2[r/\chi] } \aarrow v), 
  \end{array}

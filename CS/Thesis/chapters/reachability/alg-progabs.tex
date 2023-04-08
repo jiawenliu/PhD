@@ -264,16 +264,16 @@ For any program $c$ with
 \end{lem}
 If $l$ is the label of an assignment command in a program $c$,
 then there is a unique abstract event in the program's abstract events set
-$\absevent \in \absflow(c)$ of form $(l, \_, \_)$. This uniqueness property is formally below as Lemma~\ref{lem:abscfg_unique} below
-and proved in Appendix~\ref{apdx:abs_sound}.
+$\absevent \in \absflow(c)$ of form $(l, \_, \_)$. 
+The following Lemma~\ref{lem:abscfg_unique} states this uniqueness property and the proof is in Appendix~\ref{apdx:abs_sound}.
 \begin{lem}[Uniqueness of the Abstract Events]
 \label{lem:abscfg_unique}
 For every program $c$ and
 a finite execution trace $\trace \in \ftdom$ which is generated w.r.t.
 an initial trace $\trace_0 \in \ftdom_0(c)$,
 there is a unique abstract event $\absevent = (l, \_, \_) \in \absflow(c)$ 
-for every assignment event $\event \in \eventset^{\asn}$ in the
-execution trace having the label $l$, i.e., $\event = (\_, l, \_)$ and $\event \in \trace$.
+for every assignment event $\event \in \eventset^{\asn}$ that has the same label $l$ in the
+execution trace, specifically, $\event = (\_, l, \_) \in \eventset^{\asn}$ and $\event \in \trace$.
 %
 \[
  \begin{array}{l}

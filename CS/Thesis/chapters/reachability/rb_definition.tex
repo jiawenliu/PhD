@@ -121,7 +121,7 @@ defined as follows,
 \begin{defn}[Reachability-bound]
  \label{def:rb}
  For a program ${c}$ and a location $l \in \progl(c)$ in this program,
-a function $f(c, l) : \ftdom_0(c) \to (\mathbb{N} \cup \{\infty\})$ is a \emph{Reachability-Bound} for $l$ if and only if
+a function $f(c, l) : \ftdom_0(c) \to (\mathbb{N} \cup \{\infty\})$ is a \emph{Reachability-bound} for $l$ if and only if
 \[
  \begin{array}{l}
  \forall \trace_0 \in \ftdom_0(c), c' \in \cdom, l, l' \in \progl(c), \trace \in \tdom \sthat 
@@ -135,14 +135,14 @@ a function $f(c, l) : \ftdom_0(c) \to (\mathbb{N} \cup \{\infty\})$ is a \emph{R
  \end{array}
  \]
 \end{defn}
-Given a program point $l$ in $c$, our algorithm (defined below) computes a Reachability-Bound for it.
-It is easy to compute a trivial \emph{Reachability-Bound} $f(c, l): \ftdom_0(c) \to \infty$, but it is not interesting to us.
+Given a program point $l$ in $c$, our algorithm (introduced in the following sections) computes a reachability-bound for $l$ in $c$.
+It is easy to compute a trivial \emph{Reachability-bound} $f(c, l): \ftdom_0(c) \to \infty$, but it is not interesting to us.
 Ideally, we aim to compute a precise reachability-bound as below.
 
-\begin{defn}[Precise Reachability-Bound]
+\begin{defn}[Precise Reachability-bound]
  \label{def:exe_rb}
  For a program ${c}$ and a location $l \in \progl(c)$ in this program,
-$\exeRB({c}, l): \ftdom_0(c) \to (\mathbb{N} \cup \{\infty\})$ is a \emph{Precise Reachability-Bound} if and only if,
+$\exeRB({c}, l): \ftdom_0(c) \to (\mathbb{N} \cup \{\infty\})$ is a \emph{Precise Reachability-bound} if and only if,
 \[
  \begin{array}{l}
  \forall \trace_0 \in \ftdom_0(c), c' \in \cdom, l, l' \in \progl(c), \trace \in \tdom \sthat 
