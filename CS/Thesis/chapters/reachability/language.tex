@@ -98,12 +98,17 @@ Likewise, we denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathb
 %
 \paragraph{Expression}
 Expressions include
-standard arithmetic expression, $\aexpr \in \mathcal{A}$ (with the value $n \in \mathbb{N} \cup \{ \infty\}$ and the variable $x$ from a finite universe $\vardom$) and boolean expression, $\bexpr \in \booldom$, where we denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$.
+standard arithmetic expression, $\aexpr \in \mathcal{A}$ (with the value $n \in \mathbb{N} \cup \{ \infty\}$ and the variable $x$ from a finite universe $\vardom$) and boolean expression, $\bexpr \in \booldom$.
+We denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$.
+
 An arithmetic expression can be a constant $n$ denoting integer, a variable $x$ from some countable set $\vardom$, arithmetic binary operation $\oplus_a$ including addition, product, subtraction, division, over arithmetic expressions, or
 $\emax$, $\emin$ of two arithmetic expressions.
 
 %
-A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives such as logical negation, logical and or denoted by $\oplus_b$, and basic comparison $\sim$ between arithmetic expressions, e.g., $\leq, =, <$, etc.
+A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives including logical negation,  $\neg \bexpr$, logical and, $\bexpr \land \bexpr$ and logic or
+$\bexpr \lor \bexpr$ and basic comparison between arithmetic expressions, 
+including $\aexpr \leq \aexpr$, $\aexpr < \aexpr$ and
+$\aexpr = \aexpr$.
 Additionally, we also have list in expression.
 
 \paragraph{Labeled Command}
@@ -124,15 +129,15 @@ We denote by $\cdom$ the universe of all labeled commands and $\ldom$ for all la
   We denote by $\kw{FV}$ the operator $\kw{FV}: \expr \to \mathcal{P}(\mathcal{V})$, which computes the set of free variables in an expression. For example,
   $\kw{FV}(\aexpr)$ and $\kw{FV}(\bexpr)$ represent the set of free variables in arithmetic
   expression $\aexpr$ and boolean expression $\bexpr$ respectively.
-  All the free variables
-  showing up in $c$ such that they are never defined before using, are actually the input variables of this program.
-  We denote by $\mathcal{V}_{\lin}$ the universe of all input variables and $\kw{V_{\lin}}(c)$ the set of input variables in a given program $c$.
+  The union of all the free variables
+  showing up in $c$ that are never defined before using, are actually the input variables of this program.
+  We use the same notation as \redd{PART \romannum{1}}, where $\mathcal{V}_{\lin}$ denotes the universe of all input variables and $\kw{V_{\lin}}(c)$ the set of input variables in a given program $c$.
 
 \section{{Trace-based Operational Semantics}}
 \label{sec:psRB-language-semantics}
 \paragraph{Event}
 An event is a triple.
-Its first element is the variable name $x$,
+Its first element is the variable name $x$
 or a boolean expression (from the guard of if or while command), 
 following by 
  the label, $l$ associated to this command and the value assigned to the variable.
@@ -186,7 +191,7 @@ Similar to \redd{PART \romannum{1}}, we don't use separate data structure as the
 %
 % In the rest part of the paper, we implicitly consider $\trace$ as a well-formed initial trace of $c$ 
 % when $\trace \in \ftdom_0(c)$, and
-Again, $\ftdom_0(c)$ is used as the set of well-formed initial traces for program $c$.
+Again, $\ftdom_0(c)$ denotes the set of all well-formed initial traces for program $c$.
 %
 \paragraph{Expression Semantics}
 The evaluation notation for arithmetic expression is $\aconfig{} : \mathcal{A} \to \tdom \to \mathcal{V}$.
@@ -289,8 +294,10 @@ We also define for $\infty$ the following mathematic computation with arbitrary 
    \label{fig:aexpr-eval}
    \end{figure}
 
- The evaluation rules for boolean expression, $\bconfig{} : \booldom \to \tdom \to \mathcal{V}$ and
- standard expression, $\econfig{} : (\mathcal{A} \cup \booldom) \to \tdom \to \mathcal{V}$ are in Figure~\ref{fig:bexpr-eval} and Figure~\ref{fig:expr-eval} respectively.
+ The evaluation rules for boolean expression, $\bconfig{} : \booldom \to \tdom \to \mathcal{V}$ are in Figure~\ref{fig:bexpr-eval}.
+ Figure~\ref{fig:expr-eval} shows the
+ standard expression evaluation, $\econfig{} : (\mathcal{A} \cup \booldom) \to \tdom \to \mathcal{V}$, which includes the evaluation rules of both the boolean and arithmetic expressions.
+%  respectively.
  \begin{figure}
   \begin{mathpar}
   \boxed{ \bconfig{} \, : \, \mbox{ Boolean Expression $\times$ Trace $\rightarrow$ Boolean Value} }

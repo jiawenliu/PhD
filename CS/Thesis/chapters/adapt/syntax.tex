@@ -12,7 +12,7 @@ The syntax is shown as follows,
 \\
 %
 \mbox{Relational Operator} 
-& \sim & ::= & < ~|~ \leq ~|~ == 
+& \sim & ::= & < ~|~ \leq ~|~ =
 \\ 
 %
 \mbox{Extended Arithmetic} 
@@ -122,8 +122,8 @@ We denote by $\infty$ a value s.t. $n < \infty $ for all $n \in \mathbb{N}$, and
 \end{array}
 \]
 %
-Expressions include extended arithmetic expression $\aexpr$ with value $n \in \mathbb{N}\cup \{\infty\}$ and $\emax$, $\emin$, $\elog$ and $\esign$ operators;
-standard boolean expression $\bexpr$; and the extended query expression $\qexpr$.
+Expressions include extended arithmetic expression $\aexpr$ with value $n \in \mathbb{N}\cup \{\infty\}$;
+standard boolean expression $\bexpr$; and the query expression $\qexpr$.
 A query expression $\qexpr$ can be either a simple arithmetic expression $a$, an expression of the form $\chi[\aexpr]$ where $\chi$ represents a row of an unknown hidden database and $\aexpr$ represents an index used to access a specific column of the row $\chi$, a combination of two query expressions, $\qexpr \oplus_{a} \qexpr$, or query value, $\qval$ which is a normal form of the query expression.
 In the normal form, the index for accessing the column of $\chi$ is a natural number, i.e., $\chi[n]$.
 For example, $\chi[3] + 5$ is a query value, denotes the query request that
@@ -138,10 +138,10 @@ The basic expression is
 % can be 
 either an extended arithmetic expression, a boolean expression, or a list of expressions.
 
-An extended arithmetic expression can be a constant $n$ denoting natural number or the $\infty$ symbol, a variable $x$ from some countable set $\vardom$, binary operation $\oplus_a$ such as addition, product, subtraction, etc, over arithmetic expressions, and also $\emax$, $\emin$, $\elog$, and $\esign$ operations. 
+An extended arithmetic expression can be a constant $n$ denoting natural number or the $\infty$ symbol, a variable $x$ from some countable set $\vardom$, binary operation $\oplus_a$ including addition, product, subtraction, division over arithmetic expressions, and also $\emax$, $\emin$, $\elog$, and $\esign$ operations. 
 %
 
-A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives between boolean expressions including logical negation, logical and or denoted by $\oplus_b$, and basic comparison $sym$ between arithmetic expressions, e.g., $\leq,=,<,$, etc.
+A boolean expression can be either {\tt true} or {\tt false}, basic boolean connectives between boolean expressions including logical negation, logical and or denoted by $\oplus_b$, and basic comparison $\sim$ between arithmetic expressions including $\leq, <$ and $=$, etc.
 
 \paragraph{Query Expression}
 % The key extension is
@@ -193,7 +193,7 @@ and the label $\lex$ for annotating the exit of a program when we perform the pr
  $\kw{FV}(\aexpr)$, $\kw{FV}(\bexpr)$ and $\kw{FV}(\qexpr)$ represent the set of free variables in arithmetic
  expression $\aexpr$, boolean expression $\bexpr$ and query expression $\qexpr$ respectively.
  All the free variables
- showing up in $c$ such that they are never defined before use, are actually the input variables of this program.
+ showing up in $c$ such that they are never defined before using, are actually the input variables of this program.
  We denote by $\inpvardom$ the universe of all input variables and $\kw{V_{\lin}}(c)$ the set of input variables in a given program $c$.
  We compute the input variable by taking the union of the free variables in every expression
  and subtract the set of variables that are assigned in commands.
