@@ -55,6 +55,17 @@
 \end{centering}
 \end{subfigure}
 }
+{
+\begin{subfigure}{.8\textwidth}
+\begin{centering}
+$
+\tpath_0; 
+\rpchoose{ 2: \tpath_1, 2: \tpath_2 }; \tpath_3.
+$
+\caption{}
+\end{centering}
+\end{subfigure}
+}
 \begin{subfigure}{.8\textwidth}
   \begin{centering}
   $
@@ -65,21 +76,12 @@
   \caption{}
 \end{centering}
   \end{subfigure}
-{
-\begin{subfigure}{.8\textwidth}
-\begin{centering}
-$
-\tpath_0; 
-\rpchoose{ 1: \tpath_1, 1: \tpath_2 }; \tpath_3.
-$
-\end{centering}
-\end{subfigure}
-}
 \caption{
 (a) The two paths loop example.
 (b) The abstract transition graph for $\kw{twoPathsWhile}(n, m)$.
 (c) The simple transition paths.
-(d) The refined program.}
+(d) The rewrote program.
+(e) The refined program.}
     \label{fig:whileTwoCounters-overview}
 \end{figure}
 }

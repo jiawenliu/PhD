@@ -151,8 +151,8 @@ In the same way, ranking for edges on $\tpath_4$ is $i$ as well as $k$ for them 
  \end{array}
  \]
  %
- where $\incrs(x, c) \triangleq \sum\limits_{\absevent \in \inc(x, c)}\{\absclr(\absevent, c) \times v ~\mid~ \absevent = (l, x' \leq x + v, l')\}$
-$\absclr(\absevent, c) \in \scexpr(c)$ is an upper bound on the execution times of the transition $\absevent$, which is recursively computed in a path-insensitive manner as below,
+ where $\incrs(x, c) \triangleq \sum\limits_{\absevent \in \inc(x, c)}\{\absclr(\absevent, c) \times v ~\mid~ \absevent = (l, x' \leq x + v, l')\}$.
+$\absclr(\absevent, c) \in \scexpr(c)$ is an upper bound on the numbers that the transition $\absevent$ is evaluated, which is mutually recursively computed in a path-insensitive manner as below,
 \[ 
 \begin{array}{lll}
  \absclr(\absevent, c) 

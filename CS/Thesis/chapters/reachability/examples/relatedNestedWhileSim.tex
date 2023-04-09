@@ -2,6 +2,8 @@
   \label{ex:relatedNestedWhileSim}
 This is an example with two nested loops, and the counters of the two loops are
 modified by each other. It is the simplified version of Example~\ref{ex:threeNestedWhile}.
+The iterator of the outer loop is reset at the $5^{th}$ command, $\clabel{\assign{i}{k + N}}^{5}$.
+
 % nested loop with related iterator.
 %  Example
   %
@@ -20,9 +22,10 @@ modified by each other. It is the simplified version of Example~\ref{ex:threeNes
           \qquad \Big(
             \clabel{\assign{k}{i - N}}^{2};\\
             \qquad \ewhile ~ \clabel{k > 0}^{3} ~ \edo ~
-            \Big(
-              \clabel{\assign{k}{k - 1}}^{4}
-                \Big); \\
+                \Big(
+                \clabel{\assign{k}{k - 1}}^{4}
+                \Big); 
+                \\
                 \qquad \clabel{\assign{i}{k + N}}^{5};
                 \clabel{\assign{i}{i-1}}^{6}
             \Big)

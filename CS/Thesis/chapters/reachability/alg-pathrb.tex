@@ -19,15 +19,17 @@ for each of its \emph{simple transition path}s, $\tpath$ the \emph{path reachabi
     % & 
     \max\left\{ \inoutB(\rprog_1, \tpath, c), \ldots, \inoutB(\rprog_m, \tpath, c) \right\} 
     & \rprog = \rpchoose{\rprog_1, \ldots, \rprog_m } \\
-    \outinB(\rprog', \tpath, c), & l: \rprog_l \land l = \kw{closest}(\tpath) \\
+    \outinB(\rprog_l, \tpath, c), & \\
+    \qquad \qquad  \rprog = l: \rprog_l \land l: \rprog_l  = \kw{enclosed}(\tpath) \\
     \lpchB(\rprog_l, \tpath , c)
     \times \max\limits_{l:\rprog_l = \kw{enclosed}(l':\rprog')}
-   \{\inoutB(l':\rprog', \tpath)\} \footnotemark, & l: \rprog_l \land l \neq \kw{enclosed}(\tpath) \\
+   \{\inoutB(l':\rprog', \tpath, c)\}, & \\
+   \qquad \qquad \rprog = l: \rprog_l \land l: \rprog_l \neq \kw{enclosed}(\tpath) \\
   \end{array}
   \right.
   \]
   \end{defn}
-\footnotetext{There is only one non-zero $\inoutB(l':\rprog'', \tpath)$ where $\tpath \in \rprog''$, all the others $\inoutB(l':\rprog'', \tpath)$ where $\tpath \notin \rprog''$ equal to $0$}%
+% \footnotetext{There is only one non-zero $\inoutB(l':\rprog'', \tpath)$ where $\tpath \in \rprog''$, all the others $\inoutB(l':\rprog'', \tpath)$ where $\tpath \notin \rprog''$ equal to $0$}%
 
 We show the \emph{path reachability-bound} of the simple transition path $\tpath$ in a refined program $\rprog$ is a sound upper bound of its execution times when executing the program in Lemma~\ref{lem:pathrb-sound}, with the proof in \highlight{Appendix~\ref{apdx:pathrb-sound}}.
 \begin{lem}[Soundness of the Path Reachability-bound]
@@ -54,9 +56,9 @@ We show the \emph{path reachability-bound} of the simple transition path $\tpath
     \end{array}
   \]  
 \end{lem}
-\paragraph{Walk through Example.}
-In Example~\ref{ex:relatedNestedWhileOdd-overview}, we already computed $\lpchB(\rprog_1^1, \tpath_3, c) = 1$ and
-$\outinB(4: \rprepeat(\tpath_3), \tpath_3) = n - m$ for $\tpath_3$. Now we obtain $\inoutB(\rprog, \tpath) = 1 \times (n - m)$ as tight as expected.
+\paragraph{Example.}
+In Example~\ref{ex:relatedNestedWhileOdd-overview}, we computed $\lpchB(\rprog_1^1, \tpath_3, c) = 1$ and
+$\outinB(4: \rprepeat(\tpath_3), \tpath_3) = n - m$ for $\tpath_3$ in previous stages. Now we obtain $\inoutB(\rprog, \tpath) = 1 \times (n - m)$ as tight as expected.
 
 In comparison with the substituted computation in Section~\ref{def:pathlocalrb}, now we use the \emph{loop reachability-bound}
 and compute a more precise path \emph{global} reachability-bound for the path $\tpath_3$ as $\frac{m}{4} \times 1$.

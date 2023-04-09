@@ -1,7 +1,10 @@
 \begin{example}[Nested Loop with Related Iterators]
   \label{ex:threeNestedWhile}
   %
-  This is an example of the program that has three nested loops, and they contain related iterators.
+  This example program is the same as the motivating program in Figure~\ref{fig:threeWhile-overview}(a) that has three nested loops, and they contain related iterators.
+  The iterators of the inner loop is reset by the outer loop. 
+  At the meantime, the inner loop modifies the counters of the outer loop.
+  We illustrate step-by-step here how we compute the expected reachability-bound of each program point.
   %  Example
   %
   { \small
@@ -73,14 +76,14 @@
   \end{subfigure}
 \caption{
 (a) The example of nested loop with related iterators.
-  (b) The abstract execution control flow graph.}
+  (b) The abstract transition graph.}
     \label{fig:threeNestedWhile}
 \end{figure}
 }
 \end{example}
 
 \begin{enumerate}
-  \item  \textbf{The Abstract Control Flow Graph}: Figure~\ref{fig:threeNestedWhile}(b).
+  \item  \textbf{The Abstract Transition Graph}: Figure~\ref{fig:threeNestedWhile}(b).
 
   \item \textbf{Program Refinement}
   \\

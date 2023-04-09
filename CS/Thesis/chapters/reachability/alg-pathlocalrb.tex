@@ -4,12 +4,13 @@ There are three methods for computing the loop bound, $BD(\rprepeat(\rprog'), c)
 \begin{enumerate}
   \item Estimated by $BD(\rprepeat(\rprog'), c) = BOUND(\rprepeat(\rprog'))$ from paper~\cite{GulwaniJK09}, which is precise for simple loop without nested loops but not for nested loops. We are not giving the computation detail in this paper, which can be found in paper~\cite{GulwaniJK09}.
   \item 
-  The second method is a \emph{ranking function-based}  method, which is
+  The second method is a \emph{ranking function-based}  method in Section~\ref{sec:loopbound-rankbased}, which is
   % by Equation~\ref{eq:absBD} in Section~\ref{sec:psRB-rank} path-insensitively 
-  based on the estimated ranking function from Section~\ref{sec:psRB-rank} and estimate the
-  loop bound in a path-insensitive manner.
+  based on the estimated ranking function from previous stages.
+  %  from Section~\ref{sec:psRB-rank} and estimate the
+  % loop bound in a path-insensitive manner.
   This bound is precise when there is only one path in this loop but not for loops with multiple paths.
-  \item We provide a new loop bound computation method using the upper bound invariant estimation idea from~\cite{SinnZV17} in Definition~\ref{def:loopbound} and the progress invariant idea from~\cite{GulwaniJK09}.
+  \item We provide a new loop bound computation method in Section~\ref{sec:loopbound-absstate} using the upper bound invariant estimation idea from~\cite{SinnZV17} and the progress invariant idea from~\cite{GulwaniJK09}.
   We compute three abstract states for each ranking function, $\rfinit(\rprog, c)$, $\rffinal(\rprog, c)$, $\rfnext(\rprog, c)$ and $\varGD(\rprog, c)$ as in Definition~\ref{def:alg-absstate}.
   Then we solve $BD(\rprepeat(\rprog'), c)$ by Definition~\ref{def:loopbound} using SMT solver.
 \end{enumerate}
@@ -25,26 +26,27 @@ We use $\absevent \in \rprog$ to denote $\absevent$ is an edge on path $\rprog$.
   BD(\rprog, c) = \min\left\{ \absclr(\absevent, c) \middle\vert \absevent \in \rprog \right\}.
 \end{equation}
 %
-This bound is accurate on the iteration numbers of a single loop, but neither tight on the iterations of different paths inside the loop, nor the nested loop.
+% This bound is only accurate on the iteration numbers of a single loop path, but not on the iterations of multiple-path loop or the nested loop because of the nature of the path-insensitivity in the ranking function upper bound invariant estimation.
 %
-It is loose for multipath or nested loops because of the path-insensitivity in the ranking function invariant estimation in Definition~\ref{def:ranking_bound}. 
+% It is loose for multipath or nested loops because of the path-insensitivity in the ranking function invariant estimation in Definition~\ref{def:ranking_bound}. 
 
-\paragraph{Running Example.}
+\paragraph{Example.}
 % \todo{The walk through example}
-For the running example in Example~\ref{ex:relatedNestedWhileOdd-overview},
+For the running example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(a),
 % by using this ranking function-based approach, we 
 % this equation only computes for each subprogram,
 % $BD(\tpath_0) = 1$, $BD(\tpath_5) = 1$, $BD(\rprepeat(\tpath_3)) = n - m$, 
-it computes $BD(\rprog_1^1) = n$ and $BD(\rprog_1^2) = n $ for the two interleaving pattern of loop $L_1$.
+Equation~\ref{eq:absBD} computes $BD(\rprog_1^1) = n$ and $BD(\rprog_1^2) = n $ for the two interleaving patterns of loop $L_1$.
 % The bounds for $\rprog_1^1$ and $\rprog_1^2$ are both $n$ while 
 But both of their iteration bounds are expected to be $\lfloor\frac{m}{4}\rfloor$.
 The inaccuracy is resulted by the nature of the path-insensitivity in the ranking function invariant estimation in Definition~\ref{def:ranking_bound}. 
 
 \subsubsection{Proposed Loop Bound Computation} 
+\label{sec:loopbound-absstate}
 Our approach uses the ranking function invariant to compute a more precise progress invariant inspired from~\cite{GulwaniJK09}.
 We first compute three abstract states for each ranking function in different subprograms of a refined program as below.
 % Then we these precise abstract states, and estimate the loop bound path sensitively.
-\begin{defn}[Rank Abstract States Computation]
+\begin{defn}[Ranking Function Abstract States Computation]
  \label{def:alg-absstate}
  Given a program $c$ with its refined program $\rprog_c$ and a sub-program $\rprog$ in $\rprog_c$,
  we compute three abstract states, $\rfinit(\rprog, c)$, $\rffinal(\rprog, c)$ and $\rfnext(\rprog, c) \in \scexpr(c)$ w.r.t. the ranking functions in this sub program as follows.
@@ -210,9 +212,8 @@ $ \varGD(\rprog, c) \triangleq$
   $BD(\rprog, c)$ is a sound upper bound on the iterating times of this program.
 \end{lem}
 
-\paragraph{Walk through Example.}
-% \todo{The walk through example}
-Using our new approach, we compute a more precise loop bound $BD(\rprog)$ for each subprogram of our walk through example. In Example~\ref{ex:relatedNestedWhileOdd-overview}, we first compute $\rfinit = \{k = n - m\}$, $\rffinal = \{k = 0\}$ and $\rfnext = 1$ for subprogram $\rprepeat(\tpath_3)$ and get $BD(\rprepeat(\tpath_3)) = n - m$ tighter than $n$ by Eq.~\ref{eq:absBD}.
+\paragraph{Example.}
+Now with the new approach, we compute a more precise loop bound $BD(\rprog)$ for each subprogram in Figure~\ref{fig:relatedNestedWhileOdd-overview}(a). We first compute $\rfinit = \{k = n - m\}$, $\rffinal = \{k = 0\}$ and $\rfnext = 1$ for subprogram $\rprepeat(\tpath_3)$ and get $BD(\rprepeat(\tpath_3)) = n - m$ tighter than $n$ by Equation~\ref{eq:absBD}.
 For the first iteration pattern $\rprog_1^1$ in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b), we compute 
 $\rfinit = \{k = n - m, i = m - 1\}$, $\rffinal = \{k = 0, i = 0\}$, $\varGD(\rprog_1^1) = 4$, and get $BD(\rprog_1^1) = \lfloor \frac{m}{4} \rfloor $ as expected.
 
@@ -310,18 +311,28 @@ For the program in the first interleaving pattern $\rprog_1^1$ in Figure~\ref{fi
  = BD(\rprog_1^1, c) \times (1 + 0) = \lfloor \frac{m}{4} \rfloor $ and the same for $\tpath_2$ and $\tpath_4$.
 
  As discussed in Section~\ref{sec:psRB-psrb}, if there isn't a nested loop, we will skip the Section~\ref{sec:psRB-looprb} and use this local bound directly as the global \emph{path reachability-bound}, $\inoutB(\rprog, \tpath, c)$ as in Section~\ref{sec:psRB-pathrb}. 
- So we already had the $\psRB$ for every program point $l \in \lvar(c)$ by replacing the equation in Definition~\ref{def:point_psrb} with the following one,
- \begin{equation}
+ In this sense, we have a reachability bound computation subroutine as below for every program point $l \in \lvar(c)$ by replacing the equation in Definition~\ref{def:point_psrb} with the follows.
+
+ \begin{defn}[Reachability-bound Computation Sub-routine]
+  \label{def:psrb-sub}
+  Given a program $c$ with its {abstract transition graph}, $\absG(c)$ and refined program $\rprog$,
+  if the program does not have a nested loop, then
+  the \emph{reachability-bound} of each program point $l \in \lvar(c)$, $\psRB(l, c)$ is computed as follows,
+  \begin{equation}
  \label{eq:psrb-sub}
  \psRB(l, c) = 
  \sum
  \left\{ \outinB(\rprog, \tpath, c) ~\vert~ \tpath \in \rprog \land 
  l \in \tpath \right\}.
  \end{equation}
- However, if there are nested loops, 
- by replacing the restriction, $\rprog_l$ in Definition~\ref{def:pathlocalrb} with the global program $\rprog$, $\outinB(\rprog, \tpath, c)$ is actually a loose global \emph{path reachability-bound} for $\tpath$. Though we can still compute a loose $\psRB$ just using $\outinB(\rprog, \tpath, c)$, it is not tight enough. 
-It computes
-$\outinB(\rprog, \tpath_3, c) = \frac{m}{4} \times (n - m)$ in Figure~\ref{fig:relatedNestedWhileOdd-overview}.
-It is loose because Eq.~\ref{eq:psrb-sub} assumes the inner loop $L_4$ is reached in every iteration of the outer loop $L_1$. In this sense, $\psRB(4, c) = \frac{m}{4} \times (n - m)$ is loose as well.
+\end{defn}
+
+However, if there are nested loops, 
+by replacing the restriction, $\rprog_l$ in Definition~\ref{def:pathlocalrb} with the complete program $\rprog$, $\outinB(\rprog, \tpath, c)$ is not precise w.r.t. the reaching time of $\tpath$ during the execution of
+the complete program.
+Although we can still compute a loose reachability-bound, $\psRB$ just using $\outinB(\rprog, \tpath, c)$, it is not tight enough. 
+For the motivating example in Figure~\ref{fig:relatedNestedWhileOdd-overview} that contains three levels nested loop, Equation~\ref{eq:psrb-sub} computes
+$\outinB(\rprog, \tpath_3, c) = \frac{m}{4} \times (n - m)$.
+It is loose because Equation~\ref{eq:psrb-sub} assumes the inner loop $L_4$ is reached in every iteration of the outer loop $L_1$. In this sense, $\psRB(4, c) = \frac{m}{4} \times (n - m)$ is loose as well.
 While the inner loop $L_4$ is only reached in the first iteration of the outer loop,
 so we will compute a more accurate quantity, the \emph{loop reachability-bound} in the next section.
