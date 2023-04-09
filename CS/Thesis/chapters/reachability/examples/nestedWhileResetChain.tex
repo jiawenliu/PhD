@@ -2,8 +2,18 @@
   \label{ex:nestedWhileResetChain}
   %
   %
-This is an example program with two level nested loops. In these loops,
-the counter variables are reset by each other.
+This is an example program with two level nested loops. For the inner loop $L_6$, 
+% similar to
+% Example~\ref{ex:relatedNestedWhileSim},
+the loop iterator $k$ is reset by variable $r$ through variable reset chain.
+Variable $r$ is reset by the inner loop iterator $k$ after the loop in the command
+$\clabel{\assign{r}{k}}^{7}$ and $k$ is reset by $r$ before going to the loop in the command 
+$\clabel{\assign{k}{r}}^{4}$.
+The expected reachability-bound for
+program point $6$ in the inner loop is $2 \times n$.
+% For program points $2, 5$ and $6$ in the outer loop, their reachability-bounds are expected to be $N$.
+
+
   { \small
 \begin{figure}
 \centering

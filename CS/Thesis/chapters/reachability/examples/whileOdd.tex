@@ -3,6 +3,8 @@
   \label{ex:whileOdd}
 This example program has a loop and two paths in this loop.
 The two paths are iterating alternatively with each other.
+Expected reachability-bound for program points on two branches are both $\frac{m}{4}$.
+For the point that is in the loop but not in the branches are $\frac{m}{2}$.
   { \small
   \begin{figure}
   \centering
@@ -91,7 +93,8 @@ The two paths are iterating alternatively with each other.
       \quad
       $\outinB(1, \tpath_2) = \frac{n}{4}$
 
-  Loop Bounds:
+  Loop bounds for every sub program:
+
     % \[
     %   \begin{array}{lll}
         $BD(\tpath_0) = 1$
@@ -108,17 +111,20 @@ The two paths are iterating alternatively with each other.
       % \end{array}
       % \]
       %
-    \item \textbf{{Loop Reachability-bound}} for every simple transition path $\tpath$.
+    \item \textbf{{Loop Reachability-bound}}.
+    
+    There isn't a nested loop, so we do not need to compute loop reachability-bounds in this example.
+    %  for every simple transition path $\tpath$.
     
     % \[
     %   \begin{array}{lll}
-       $ \lpchB(1, \tpath_1) = \frac{n}{4}$
-        \qquad
-        $\lpchB(1, \tpath_2) = \frac{n}{4}$
-        \\
-        $\lpchB(\bot, \tpath_0) = 1$
-        \qquad
-        $\lpchB(\bot, \tpath_3) = 1$
+      %  $ \lpchB(1, \tpath_1) = \frac{n}{4}$
+      %   \qquad
+      %   $\lpchB(1, \tpath_2) = \frac{n}{4}$
+        % \\
+        % $\lpchB(\bot, \tpath_0) = 1$
+        % \qquad
+        % $\lpchB(\bot, \tpath_3) = 1$
       % \end{array}
       % \]
     \item \textbf{Path Global Reachability-bound} for every simple transition path $\tpath$

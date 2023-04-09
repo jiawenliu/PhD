@@ -2,7 +2,10 @@
   \label{ex:relatedNestedWhileSim}
 This is an example with two nested loops, and the counters of the two loops are
 modified by each other. It is the simplified version of Example~\ref{ex:threeNestedWhile}.
-The iterator of the outer loop is reset at the $5^{th}$ command, $\clabel{\assign{i}{k + N}}^{5}$.
+The iterator of the outer loop is reset at the $5^{th}$ command, $\clabel{\assign{i}{k + N}}^{5}$ by the inner loop iterator $k$ and $k$ is reset by $i$ at the second command, $\clabel{\assign{k}{i - N}}^{2}$.
+The expected reachability-bound for
+program point $4$ in the inner loop is $n - N$.
+For program points $2, 5$ and $6$ in the outer loop, their reachability-bounds are expected to be $N$.
 
 % nested loop with related iterator.
 %  Example

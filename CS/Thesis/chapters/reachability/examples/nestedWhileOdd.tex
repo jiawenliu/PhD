@@ -2,8 +2,10 @@
   [Example with Two Paths Iterating Alternatively and Nested Loop in One Path]
   \label{ex:nestedWhileOdd}
   This example program is similar to our running example in the Figure~\ref{fig:relatedNestedWhileOdd-overview}.
-  It has two level nested loops. The outer level loop has two paths and the nested loop is in one path.
-
+  It has two level nested loops, and the outer level loop has two paths and the nested loop is in one path.
+  Different from the running example, the iterator of the inner loop
+  does not interface with the outer loop iterator.
+  In this sense, the reachability-bound of the program point $6$ in the inner loop is $\frac{k^2}{4}$.
   { \small
   \begin{figure}
   \centering
