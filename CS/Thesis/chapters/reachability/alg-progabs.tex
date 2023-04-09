@@ -95,7 +95,7 @@ We also have $\top$, which is preserved for $\eskip$ command or the commands tha
  \]
  \item Initialize 
  $\grdvar(c) = \{\}$ as the set of the variable used in the expression of every while or if guard in the program $c$.
- \item Then we compute $\absexpr(\bexpr, \_, c )$ and $\absexpr(x - v, x, c)$.
+ \item Then we compute $\absexpr(\bexpr, \_, c )$ and $\absexpr(\expr, x, c)$.
  \[
  \begin{array}{ll} 
  \absexpr(x - v, x, c) = x' \leq x - v & x \in \grdvar(c)\land v \in \scvar(c) \\
@@ -119,12 +119,12 @@ In case 4, if a variable $x$, belonging to the set
  \\
 Specifically 
 we handle a 
-normalized expression, $x > 0$
+normalized boolean expression, $x > 0$
 in guards of if and while loop headers, and 
 the guard variable $x$ only increases, decreases, or is reset by 
-simple arithmetic expression (mainly multiplication, division, minus, and plus (able to extend to max and min)). 
+simple arithmetic expression (mainly multiplication, division, minus, and plus and the extended operations max and min). 
 The guard variable $x$ is generalized into the \emph{norm} when the guard 
-in if or while has the form $\expr > 0$ with an expression $\expr$, and $\grdvar$ is the set of norms.
+in if or while has the form $\expr > 0$, where $\expr$ is a norm and $\grdvar$ is generalized into the set of norms.
 Then in the last clause in Definition~\ref{def:constraint_compute}, i.e., $\absexpr(\expr, x, c)$,
 we will check if $\expr$ is a norm or contains norms, and extend the $\grdvar(c)= \grdvar(c)\cup \{\expr\}$ if neither.
 The constraint computation over the \emph{norm} follows the computation steps 1, 2, and 3 in Section 6.1 in paper~\cite{SinnZV17}. 

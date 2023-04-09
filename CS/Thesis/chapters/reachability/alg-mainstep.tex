@@ -19,10 +19,10 @@ and \textbf{local bound} is the name used in \cite{ZulegerGSV11, SinnZV17}.
 We refer to the two names as having the same meaning in this paper.} for every transition edge 
 and estimate the upper bound invariant w.r.t, the input variables on every ranking function's maximum value.
 
-\item The \emph{path-sensitive reachability-bound} algorithm computes the \emph{reachability-bound} for every program point.
-It relies on the \emph{Refined Program} and the upper bound invariant of the \emph{Ranking Function} computed previously.
-It also requires computing the \emph{path reachability-bound} and the \emph{loop reachability-bound}.
-Section~\ref{sec:psRB-psrb} introduces this algorithm and the following sections describe the computations. 
+\item The \emph{path-sensitive reachability-bound} algorithm computes the \emph{reachability-bound} for every program point based on the \emph{refined program} and the upper bound invariant of the \emph{ranking function} computed in previous stages.
+It also requires computing several quantities to obtain the final result.
+%  the \emph{path reachability-bound} and the \emph{loop reachability-bound}.
+Section~\ref{sec:psRB-psrb} defines the quantities that are needed to be computed in this algorithm and the following sections describe the computations of each quantity. 
 % \begin{enumerate}
  \item We first compute the \emph{path reachability-bound} locally, $\outinB(\rprog, \tpath)$ for every \emph{simple transition path} $\tpath$ in Section~\ref{sec:psRB-pathlocalrb}. 
  This is the local bound on the numbers that  $\tpath$ is evaluated when executing the closet loop  $\rprog$ in which $\tpath$ is nested.
