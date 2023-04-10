@@ -1,6 +1,8 @@
 With the global reachability-bound of every simple transition path, now we can sum up all the \emph{path reachability-bounds}, $\inoutB(\rprog, \tpath)$ over the $\tpath$ which contains the program point $l$, and compute the final result -- \emph{reachability-bound}, $\psRB(c, l)$ for every program point $l \in \lvar(c)$ as in Definition~\ref{def:point_psrb}.
-Below we present again the definition and the soundness theorem.
- \begin{defn}[Path-Sensitive Reachability-bound Computation]
+Below we present again the computation and the soundness theorem.
+The computation below is the same as Definition~\ref{def:point_psrb}
+and the soundness theorem is the same as Theorem~\ref{thm:pathsensitive_rb_soundness} as well.
+ \begin{definition}[Path-Sensitive Reachability-bound Computation]
   % \label{def:point_psrb}
   Given a program $c$ with its \emph{Abstract Transition Graph}, $\absG(c)$ and refined program $\rprog$,
   the \emph{reachability bound} of each program point $l \in \lvar(c)$, $\psRB(c, l)$ 
@@ -15,7 +17,7 @@ Below we present again the definition and the soundness theorem.
   \]
   $l \in \tpath$ denotes that the program point $l$ is a vertex on $\tpath$ 
   and $\tpath \in \rprog$ denotes $\tpath$ is a simple transition path of program $c$.
- \end{defn}
+ \end{definition}
 We prove that $\econfig{\psRB(c, l)}$ is a \emph{Reachability-bound} for every program point $l$ in a program $c$ with proof in \highlight{Appendix~\ref{apdx:psrb-sound}}.
 \begin{theorem}[Soundness of the Path-sensitive Reachability-bound Estimation]
   % \label{thm:pathsensitive_rb_soundness}
