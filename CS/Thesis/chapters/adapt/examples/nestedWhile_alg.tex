@@ -16,10 +16,10 @@
            \quad \clabel{\assign{j}{k}}^{5} ; \\
            \quad \clabel{\assign{y}{\query(\chi(\ln(x) + y))} }^{6}  ; \\
            \quad \ewhile ~ \clabel{j > 0}^{7} ~ \edo ~ 
-           \Big( \\
+           \big( \\
            \quad \quad \clabel{\assign{j}{j-1}}^{8}; \\
            \quad \quad \clabel{\assign{x}{\query(\chi(\ln(y))+\chi[x])} }^{9}
-            \Big) \Big)
+            \big) \Big)
       \end{array}
     %       
     $
@@ -28,10 +28,10 @@
     \end{subfigure}
     \begin{subfigure}{.55\textwidth}
       \begin{centering}
-      \begin{tikzpicture}[scale=\textwidth/15cm,samples=300]
+      \begin{tikzpicture}[scale=\textwidth/18cm,samples=300]
 % Variables Initialization
-\draw[] (-6, 1) circle (0pt) node{{ $a^0: {}^1_{0}$}};
-\draw[] (-6, 7) circle (0pt) node{{ $x^1: {}^{1}_{0}$}};
+\draw[] (-4, 1) circle (0pt) node{{ $a^0: {}^1_{0}$}};
+\draw[] (-4, 7) circle (0pt) node{{ $x^1: {}^{1}_{0}$}};
 % Variables Inside the Loop
    \draw[] (0, 6) circle (0pt) node{{ $y^6: {}^{k}_{0}$}};
    \draw[] (0, 2) circle (0pt) node{{ $x^9: {}^{k}_{0}$}};
@@ -63,7 +63,7 @@
       \end{centering}
       \end{subfigure}
     }
-     \caption{(a) The example with a nested while loop.
+     \caption{(a) A two-level nested loop example program.
       (b) The estimated dependency graph generated from $\THESYSTEM$.}
     \label{fig:alg_adaptsearch_nestedwhile}
     \end{figure}
