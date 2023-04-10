@@ -3,12 +3,15 @@ There are three steps as follows.
  \item \textbf{Collecting} all \emph{simple transition path}s.
  Every \emph{simple transition path} is loop free and interleaving free. It
  contains only the edges of atomic assignment or guard transitions without interleaving other paths.
- Each of them corresponds to a path in the flatten program in Definition~4.1 in \cite{GulwaniJK09}.
- \item \textbf{Rewriting} the program $c$ by rearranging all \emph{simple transition paths} as the syntax in~\cite{GulwaniJK09} and preserving the semantics.
- \item \textbf{Refining} the program and computing the 
- refined program, $\rprog$ by Algorithm~1 in paper~\cite{GulwaniJK09}.
- This step invokes the algorithm REFINE from paper~\cite{GulwaniJK09} and computes the 
- refined program $\rprog$ for a program $c$ given the rewritten program as input.
+%  Each of them corresponds to a path in the flatten program in Definition~4.1 in \cite{GulwaniJK09}.
+ \item \textbf{Rewriting} the program in the form of combinations of \emph{simple transition path}s.
+%  as the syntax in~\cite{GulwaniJK09} and preserving the semantics.
+ \item \textbf{Refining} the program 
+ by explicating the execution orders of the simple transition paths.
+%  and computing the 
+%  refined program, $\rprog$ by Algorithm~1 in paper~\cite{GulwaniJK09}.
+%  This step invokes the algorithm REFINE from paper~\cite{GulwaniJK09} and computes the 
+%  refined program $\rprog$ for a program $c$ given the rewritten program as input.
 \end{enumerate}
 
 \subsection{The Simple Transition Path}
@@ -110,24 +113,23 @@ loop $\rprepeat(c_i)$, or sequence statements $c_i; c_j$ respectively.
 %  in paper~\cite{GulwaniJK09} respectively.
 \begin{itemize}
 \item
-    line:5: for every candidate $c'$, if it starts and ends with the same vertex, 
+Line:5 for every candidate $c'$, if it starts and ends with the same vertex, 
     then it is a loop path, and we rewrite it into a loop statement
     $\rprepeat(c)$.
 \item
- line:4: for all the candidates $c_1, \ldots, c_m$ having the same starting and ending vertices, 
+Line:4 for all the candidates $c_1, \ldots, c_m$ having the same starting and ending vertices, 
  then they are multiple paths of a loop, and we rewrite them into 
  $\rpchoose{c_1, \ldots, c_m}$.
 %  if statement as~\cite{GulwaniJK09}.
  \item
- line:6: for every two candidates $c_1, c_2$, if $c_1$ ends with the same vertex as $c_2$'s starting label, rewrite them into sequence statement
+ Line:6 for every two candidates $c_1, c_2$, if $c_1$ ends with the same vertex as $c_2$'s starting label, rewrite them into sequence statement
  $c_1; c_2$.
-%   as~\cite{GulwaniJK09}.
 \end{itemize}
 % \todo{soundness of the program write}
 
 \subsection{The Program Refinement}
 To compute the refined program $\rprog$,
-we are inspired from the algorithm REFINE im paper~\cite{GulwaniJK09}. 
+we are inspired from the algorithm REFINE in paper~\cite{GulwaniJK09}. 
 
 
 We first compute the execution orders of
