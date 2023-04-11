@@ -34,9 +34,15 @@ We first collect the loop headers $\loopl(c) \subseteq \progl(c)$ from a program
 \begin{defn}[Simple Transition Path]
  \label{def:tpath}
 A \emph{simple transition path}
-$\tpath \in \paths(\absG(c))$ for the program $c$, is either a simple cyclic path, which has the same start- and end-point
-or a simple path has either different while loop headers, the program entrance or exit as its start- and end-point
-without visiting any loop header inside the path.
+$\tpath \in \paths(\absG(c))$ for the program $c$ is 
+simple, and 
+% either a simple cyclic path, which has the same 
+its start- and end-point
+% or a simple path has either different while 
+has to be either the
+loop headers, the program entrance or exit,
+%  as its start- and end-point
+and it cannot visit any loop header except the start- and end-point.
 \\
 Specifically, a path $l_0 \xrightarrow{dc_0} l_1 \xrightarrow{dc_1} \ldots l_n \in \paths(\absG(c))$ with the
 vertices sequence $(l_0, \ldots, l_n)$, where $l_i \in \absV(c)$ for every $i = 0, \ldots, n$ and
@@ -92,15 +98,19 @@ loop $\rprepeat(c_i)$, or sequence statements $c_i; c_j$ respectively.
  \label{alg:alg-refine_rewrite}
  \begin{algorithmic}[1]
  \REQUIRE program $c$
- \STATE collects all $c$'s \emph{simple transition path}s from $\absG(c)$, $\tpath_1, \ldots, \tpath_n \in \paths(\absG(c))$.
- \STATE \textbf{init}: candidate set $W = \{c_1, \ldots, c_n\}$, where $c_i = \tpath_i$ and $i = 1, \ldots, n$
+%  collects all $c$'s \emph{simple transition path}s from $\absG(c)$, $\tpath_1, \ldots, \tpath_n \in \paths(\absG(c))$.
+ \STATE \textbf{init}: 
+ Set of all \emph{simple transition path}s, 
+ $\mathcal{P} = \{ \tpath_1, \ldots, \tpath_n \}$.
+ \\
+ The candidate set $W = \{c_1, \ldots, c_n\}$, where $c_i = \tpath_i$ for $i = 1, \ldots, n$
  \STATE \textbf{while} $W.size()> 1$:
- \STATE \quad create $c' = \rpchoose{c_1, \ldots, c_m}$ 
- s.t. $c_i \in W \land c_i[0] = c_j[0] \land c_i[-1] = c_j[-1], i, j = 1, \ldots, m$.
- \\ \quad $W.add(c')$ \qquad $W.remove(c_1, \ldots, c_m)$
  \STATE
  \quad create $c' = \rprepeat(c)$ s.t. $c_i \in W \land c[0] = c[-1] \land c[0] \in \loopl(c)$
  \\ \quad $W.add(c[0]: c')$, \qquad $W.remove(c)$
+ \STATE \quad create $c' = \rpchoose{c_1, \ldots, c_m}$ 
+ s.t. $c_i, c_j \in W \land c_i[0] = c_j[0] = c_i[-1] = c_j[-1]$, $i, j = 1, \ldots, m$.
+ \\ \quad $W.add(c')$ \qquad $W.remove(c_1, \ldots, c_m)$
  \STATE \quad create $c' = c_1; c_2$ s.t. $c_1, c_2 \in W \land c_1[-1] = c_2[0]$
  \\
  \quad $W.add(c')$ \qquad $W.remove(c_1, c_2)$
@@ -113,16 +123,19 @@ loop $\rprepeat(c_i)$, or sequence statements $c_i; c_j$ respectively.
 %  in paper~\cite{GulwaniJK09} respectively.
 \begin{itemize}
 \item
-Line:5 for every candidate $c'$, if it starts and ends with the same vertex, 
-    then it is a loop path, and we rewrite it into a loop statement
-    $\rprepeat(c)$.
+Line:4 find the candidate $c'$ that has the same start- and end-point.
+Each candidate corresponds to a loop path, and we create for this candidate a loop statement
+$\rprepeat(c')$.
+
 \item
-Line:4 for all the candidates $c_1, \ldots, c_m$ having the same starting and ending vertices, 
- then they are multiple paths of a loop, and we rewrite them into 
- $\rpchoose{c_1, \ldots, c_m}$.
-%  if statement as~\cite{GulwaniJK09}.
- \item
- Line:6 for every two candidates $c_1, c_2$, if $c_1$ ends with the same vertex as $c_2$'s starting label, rewrite them into sequence statement
+ Line:5 
+ finds all the candidates $c_1, \ldots, c_m$ that start and end at the same point.
+ These candidates are multiple-paths of a same loop, 
+ we create for these candidates a multiple-path loop statement,  $\rpchoose{c_1, \ldots, c_m}$.
+\item
+Line:6 finds all pairs of candidates $c_1, c_2$ such that  $c_2$ starts with the point where $c_1$ ends.
+%  label, rewrite them 
+For each pair, we create a sequence statement
  $c_1; c_2$.
 \end{itemize}
 % \todo{soundness of the program write}
