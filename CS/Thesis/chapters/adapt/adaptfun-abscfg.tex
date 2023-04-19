@@ -189,56 +189,59 @@ input variables.
 % i.e., $\scexprdom \subseteq \inpexprdom$.
 
 \paragraph{Abstract Initial and Final State Computation}
-The initial state is the
-program points before executing this command, which is computed by the standard initial state generation method from control flow analysis.
-The final state is a set
-that contains the constraint of this command and the program points after the execution of this command.
-This set is enriched 
-% program's initial and final states 
-from the standard control flow analysis.
+% The initial state is the
+% program points before executing this command, which is computed by the standard initial state generation method from control flow analysis.
+% The final state is a set
+% that contains the constraint of this command and the program points after the execution of this command.
+% This set is enriched 
+% % program's initial and final states 
+% from the standard control flow analysis.
 
 \begin{itemize}
- \item The \emph{abstract initial state}, $\absinit(c) \in \mathcal{P}(\ldom)$
- for a command, $c$ is the initial program point corresponds to the unique program label of the first executed command in $c$,
- computed as follows,
-%
-\[
- \begin{array}{ll}
- \absinit(\clabel{\assign{x}{\expr}}{}^l) & = l \\
- \absinit(\clabel{\assign{x}{\query(\qexpr)}}{}^l) & = l \\
- \absinit(\clabel{\eskip}^{l}) & = l \\
- \absinit(\eif \clabel{\bexpr}^{l} \ethen c_1 \eelse c_2) & = l\\
- \absinit(\ewhile \clabel{\bexpr}^{l} \edo (c_w)) & = l \\
- \absinit(c_1 ; c_2) & = \absinit(c_1) \\
- \end{array}
- \]
-\item The \emph{abstract final state} of the program $c$, 
-$\absfinal(c) \in \mathcal{P}(\ldom \times \dcdom^{\top})$
-is a set of pairs, $(l, dc)$ with a
-program point (i.e., a label), $l$ as the first component and a constraint, 
-$dc$ as the second component.
-% Every pair in $\absfinal(c)$ 
-The program point $l$ corresponds to the labeled command after the execution of $c$,
-and the constraint $dc$ in this pair is computed by $\absexpr$ for the expression in $c$.
-% in the first step.
-\\
-Given a program $c$, its final state, $\absfinal(c)$ is computed as follows,
-% $\absfinal(c) \in\mathcal{P}(\ldom \times \dcdom^{\top})$,
-% computes the set of Abstract Final State for the command. 
- \[
- \begin{array}{ll}
- \absfinal(\clabel{\assign{x}{\expr}}{}^l) & = \{(l, \absexpr\eapp (\expr, x))\} \\
- \absfinal(\clabel{\assign{x}{\query(\qexpr)}}{}^l) & = \{
- (l, x' \leq 0 + Q_m )\} \\
- \absfinal(\clabel{\eskip}^{l}) 
- & = \{(l, \top)\} \\
- \absfinal(\eif \clabel{\bexpr}^{l} \ethen c_1 \eelse c_2) & = \absfinal(c_1) \cup \absfinal(c_2) \\
- \absfinal(\ewhile \clabel{\bexpr}^{l} \edo (c_w)) & = \{(l, \absexpr(\bexpr, \top))\} \\
- \absfinal(c_1 ; c_2) & = \absfinal(c_2) \\
- \end{array}
- \]
- %
-\end{itemize}
+    \item The \emph{initial state}, $\absinit(c) \in \mathcal{P}(\ldom)$
+    for a command $c$ is the label of the first command that will be executed in $c$,
+    computed as follows,
+   %
+   \[
+    \begin{array}{ll}
+    \absinit(\clabel{\assign{x}{\expr}}{}^l) & = l \\
+    \absinit(\clabel{\assign{x}{\query(\qexpr)}}{}^l) & = l \\
+    \absinit(\clabel{\eskip}^{l}) & = l \\
+    \absinit(\eif \clabel{\bexpr}^{l} \ethen c_1 \eelse c_2) & = l\\
+    \absinit(\ewhile \clabel{\bexpr}^{l} \edo (c_w)) & = l \\
+    \absinit(c_1 ; c_2) & = \absinit(c_1) \\
+    \end{array}
+    \]
+   \item The \emph{continuation state} of the program $c$, 
+   $\absfinal(c) \in \mathcal{P}(\ldom \times \dcdom^{\top})$
+   is a set of pairs, $(l, dc)$ with a
+   program point (i.e., a label), $l$ as the first component and a constraint, 
+   $dc$ as the second component.
+   % Every pair in $\absfinal(c)$ 
+   The program point $l$ is the label of the command that is evaluated at last during the execution of $c$,
+   and the constraint $dc$ in this pair is generated from this last command of label $l$.
+   %  by $\absexpr$ for the expression in $c$.
+   % in the first step.
+   
+   Given a program $c$, its continuation state, $\absfinal(c)$ is computed as follows,
+   % $\absfinal(c) \in\mathcal{P}(\ldom \times \dcdom^{\top})$,
+   % computes the set of Abstract continuation state for the command. 
+    \[
+    \begin{array}{ll}
+    \absfinal(\clabel{\assign{x}{\expr}}{}^l) & = \{(l, \absexpr\eapp (\expr, x))\} \\
+    \absfinal(\clabel{\assign{x}{\query(\qexpr)}}{}^l) & = \{
+    (l, x' \leq 0 + Q_m )\} \\
+    \absfinal(\clabel{\eskip}^{l}) 
+    & = \{(l, \top)\} \\
+    \absfinal(\eif \clabel{\bexpr}^{l} \ethen c_1 \eelse c_2) & = \absfinal(c_1) \cup \absfinal(c_2) \\
+    \absfinal(\ewhile \clabel{\bexpr}^{l} \edo (c_w)) & = \{(l, \absexpr(\bexpr, \top))\} \\
+    \absfinal(c_1 ; c_2) & = \absfinal(c_2) \\
+    \end{array}
+    \]
+    %
+   \end{itemize}
+
+   
  \paragraph{Abstract Event Computation} 
 % Each abstract event is an edge between two vertices in the abstract transition graph.
 % It is 
@@ -382,7 +385,7 @@ $\absE(c) = \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}$,
 $\absV(c) = \lvar(c)\cup\{\lex\}$
 \end{defn}
 
-The three examples as below are presented  to illustrate the construction of the abstraction transition graphs.
+The three examples as below are presented to illustrate the construction of the abstraction transition graphs.
 \paragraph{Example I.}
 %
 \input{chapters/adapt/examples/abscfg_tworound}

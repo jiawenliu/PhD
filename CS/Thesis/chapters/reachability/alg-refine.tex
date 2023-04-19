@@ -33,19 +33,20 @@ We first collect the loop headers $\loopl(c) \subseteq \progl(c)$ from a program
 
 \begin{defn}[Simple Transition Path]
  \label{def:tpath}
-A \emph{simple transition path}
-$\tpath \in \paths(\absG(c))$ for the program $c$ is 
-simple, and 
+Given an abstract transition graph $\absG(c)$ of a program $c$,
+a \emph{simple transition path} of this program
+is a
+simple path on $\absG(c)$ such that 
 % either a simple cyclic path, which has the same 
 its start- and end-point
 % or a simple path has either different while 
 has to be either the
-loop headers, the program entrance or exit,
+loop headers, or the program entrance, or exit,
 %  as its start- and end-point
 and it cannot visit any loop header except the start- and end-point.
-\\
-Specifically, a path $l_0 \xrightarrow{dc_0} l_1 \xrightarrow{dc_1} \ldots l_n \in \paths(\absG(c))$ with the
-vertices sequence $(l_0, \ldots, l_n)$, where $l_i \in \absV(c)$ for every $i = 0, \ldots, n$ and
+
+In other words, a path $l_0 \xrightarrow{dc_0} l_1 \xrightarrow{dc_1} \ldots l_n \in \paths(\absG(c))$ with the
+vertex sequence $(l_0, \ldots, l_n)$, where $l_i \in \absV(c)$ for every $i = 0, \ldots, n$ and
 %
 the edge sequence $(e_1, \ldots, e_n)$, where $e_i = (l_{i - 1}, dc_i, l_{i}) \in \absE(c)$ for every $i = 1, \ldots, n$,
 %
@@ -63,10 +64,11 @@ is a \emph{simple transition path} if and only if it satisfies,
 
 \paragraph{Example.}
 % \todo{The walk through example}
-For example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b), the $1 \to 2 \to 8 \to 1$ is a \emph{simple transition path}.
+For example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(b), path $1 \to 2 \to 8 \to 1$ is a \emph{simple transition path}.
 However, $1 \to 2 \to 3 \to 4 \to 5 \to 4 \to 6 \to 7 \to 1$ is not a \emph{simple transition path} because it is not simple.
-Also, $1 \to 2 \to 3 \to 4 \to 6 \to 7 \to 1$ is not a \emph{simple transition path} because it visits a loop header $4$ inside the path. $1 \to 2 \to 3$ isn't either because its end-point isn't a loop header.
-In Figure~\ref{fig:threeWhile-overview}(b), $1 \to 2 \to 3 \to 4 \to 5 \to 6$ is not a \emph{simple transition path} on $\absG(\kw{threeNestedWhile}(n, m, N))$ because it visits a loop header $3$ inside the path.
+Also, path $1 \to 2 \to 3 \to 4 \to 6 \to 7 \to 1$ is not a \emph{simple transition path} because it visits a loop header $4$ inside the path. 
+The path $1 \to 2 \to 3$ has end-point $3$, which isn't a loop header. In this sense, it is not a \emph{simple transition path} either.
+In Figure~\ref{fig:threeWhile-overview}(b), path $1 \to 2 \to 3 \to 4 \to 5 \to 6$ is not a \emph{simple transition path} on the graph $\absG(\kw{threeNestedWhile}(n, m, N))$ because it visits a loop header $3$ inside the path.
 
 \subsection{The Program Rewriting}
 \paragraph{Syntax.}
@@ -90,8 +92,7 @@ into the new syntax defined above.
 In this algorithm, we first use a simple depth-first search strategy to collect all the \emph{simple transition path}s satisfying the Definition~\ref{def:tpath}. 
 % It guarantees that every $\tpath$ is equivalent to a path $\rho$ in Definition~4.1 of \cite{GulwaniJK09}.
 In line:2, we initialize each candidate $c_i$ with a \emph{simple transition path} $\tpath_i$. 
-New candidates generated in line:4, 5, and 6 correspond to the multiple-paths statement $\rpchoose{\ldots}$,
-loop $\rprepeat(c_i)$, or sequence statements $c_i; c_j$ respectively.
+New candidates generated in line:4, 5, and 6 correspond to the loop statement $\rprepeat(c_i)$, multiple-paths statement $\rpchoose{\ldots}$ and sequence statements $c_i; c_j$ respectively.
 
 \begin{algorithm}
  \caption{Program Rewriting Algorithm. $\kw{Rewrite}(c)$}
@@ -142,10 +143,10 @@ For each pair, we create a sequence statement
 
 \subsection{The Program Refinement}
 To compute the refined program $\rprog$,
-we are inspired from the algorithm REFINE in paper~\cite{GulwaniJK09}. 
+we use the algorithm REFINE from paper~\cite{GulwaniJK09}. 
 
 
-We first compute the execution orders of
+This algorithm first compute the execution orders of
 the simple transition paths that come from the same loop.
 For example, two simple transition paths $\tpath_1 = (1 \to 2 \to 3 \to 4)$ and 
 $\tpath_4 = (1 \to 2 \to 8 \to 1)$ in the same loop Figure~\ref{fig:relatedNestedWhileOdd-overview}(b) have two possible execution orders:
