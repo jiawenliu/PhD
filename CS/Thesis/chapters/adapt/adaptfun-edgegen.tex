@@ -134,12 +134,12 @@ formally in Definition~\ref{def:feasible_flowsto},
  $\flowsto(x^i, y^j, c)$ is 
  \[
  \begin{array}{l}
- \flowsto(x^i, y^j, \clabel{\assign{y}{\expr}}{}^l) 
- \\ \qquad \triangleq (x^i, y^j) \in \{ (x^i, y^l) | x \in \kw{FV}(\expr) 
- \land x^i \in \live(l, \clabel{\assign{y}{\expr}}^l) \} \\
- \flowsto(x^i, y^j, \clabel{\assign{y}{\query(\qexpr)}}{}^l) 
- \\ \qquad \triangleq (x^i, y^j) \in \{ (x^i, y^l) | x \in \kw{FV}(\qexpr) 
- \land x^i \in \live(l,\clabel{\assign{y}{\query(\qexpr)}}^l) \} \\
+ \flowsto(x^i, y^j, \clabel{\assign{y}{\expr}}{}^j) 
+ \\ \qquad \triangleq (x^i, y^j) \in \{ (x^i, y^j) | x \in \kw{FV}(\expr) 
+ \land x^i \in \live(l, \clabel{\assign{y}{\expr}}^j) \} \\
+ \flowsto(x^i, y^j, \clabel{\assign{y}{\query(\qexpr)}}{}^j) 
+ \\ \qquad \triangleq (x^i, y^j) \in \{ (x^i, y^j) | x \in \kw{FV}(\qexpr) 
+ \land x^i \in \live(l,\clabel{\assign{y}{\query(\qexpr)}}^j) \} \\
  \flowsto(x^i, y^j, \clabel{\eskip}^{l}) 
  \triangleq \emptyset \\
  \flowsto(x^i, y^j, \eif (\clabel{\bexpr}^{l}, c_1, c_2)) 

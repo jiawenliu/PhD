@@ -96,7 +96,7 @@ Definition~\ref{def:looprb} computes a sound \emph{loop reachability-bound}, and
  \[
  \begin{array}{l}
  \forall c, c_l \in \cdom, \tpath \in \absG(c), \trace_0 \in \ftdom_0(c_l), \trace \in \tdom, l, l' \in \ldom, \rprog \sthat 
- \rprog = REFINE(\algrewrite(c))
+ \rprog = \kw{REFINE}(\algrewrite(c))
  \\ \qquad
  \land l_t: \rprog_t = \kw{enclosed}(\rprog, \tpath)
  \land 
@@ -182,5 +182,5 @@ Then for $\lpchB(\rprog_3, \tpath_3, c)$,
 we compute $\lpinit( \rprog_3, \tpath_3, c) = 0$,
 $\lpnext( \rprog_3, \tpath_3, c) = N + 1 $, and
 $\rffinal(\rprog_3, c) = \{ i = n, k = N \}$ and obtain
-$\lpchB(\rprog_3, \tpath_3, c) = \max\{ \frac{n - 0}{n - N - 1}, \frac{N - 0}{N + 1}\} = 1$ as well.
+$$\lpchB(\rprog_3, \tpath_3, c) = \max\{ \frac{n - 0}{n - N - 1}, \frac{N - 0}{N + 1}\} = 1$$.
 

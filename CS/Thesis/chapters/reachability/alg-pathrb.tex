@@ -17,8 +17,8 @@ for each of its \emph{simple transition path}s, $\tpath$ the \emph{path reachabi
     \highlight{0} & \rprog = \tpath' \neq \tpath\\
     \inoutB(\rprog_1, \tpath, c) + \inoutB(\rprog_2, \tpath, c) & \rprog = \rprog_1;\rprog_2 \\
     % & 
-    \max\left\{ \inoutB(\rprog_1, \tpath, c), \ldots, \inoutB(\rprog_m, \tpath, c) \right\} 
-    & \rprog = \rpchoose{\rprog_1, \ldots, \rprog_m } \\
+    \max\left\{ \inoutB(\rprog_1, \tpath, c), \ldots, \inoutB(\rprog_m, \tpath, c) \right\} & \\
+    \qquad \qquad  \rprog = \rpchoose{\rprog_1, \ldots, \rprog_m } \\
     \outinB(\rprog_l, \tpath, c), & \\
     \qquad \qquad  \rprog = l: \rprog_l \land l: \rprog_l  = \kw{enclosed}(\tpath) \\
     \lpchB(\rprog_l, \tpath , c)
@@ -58,7 +58,7 @@ We show the \emph{path reachability-bound} of the simple transition path $\tpath
 \end{lem}
 \paragraph{Example.}
 In Example~\ref{ex:relatedNestedWhileOdd-overview}, we computed $\lpchB(\rprog_1^1, \tpath_3, c) = 1$ and
-$\outinB(4: \rprepeat(\tpath_3), \tpath_3) = n - m$ for $\tpath_3$ in previous stages. Now we obtain $\inoutB(\rprog, \tpath) = 1 \times (n - m)$ as tight as expected.
+$$\outinB(4: \rprepeat(\tpath_3), \tpath_3) = n - m$$ for $\tpath_3$ in previous stages. Now we obtain $\inoutB(\rprog, \tpath) = 1 \times (n - m)$ as tight as expected.
 
 In comparison with the substituted computation in Section~\ref{def:pathlocalrb}, now we use the \emph{loop reachability-bound}
 and compute a more precise path \emph{global} reachability-bound for the path $\tpath_3$ as $\frac{m}{4} \times 1$.

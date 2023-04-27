@@ -9,8 +9,9 @@ showing the correspondence properties between the trace based semantics and the 
 	if $ \config{c, \trace} \rightarrow^* \config{c_1; c_2, \trace'}$ and 
 	$c_1 \in_c c_2$, 
 	then there must exist a $\ewhile$ command in $c_2$ and $c_1$ must shows up in the body of that $\ewhile$ command,
-	 i.e., $\exists l \in \mathbb{N}, b \in \mathcal{B}, c_w \in \cdom \sthat  
-	(\ewhile [b]^l \edo (c_w)) \in_c c_2 \land c_1 \in_c c_w$.
+	 i.e., 
+	 $$\exists l \in \mathbb{N}, b \in \mathcal{B}, c_w \in \cdom \sthat  
+	(\ewhile [b]^l \edo (c_w)) \in_c c_2 \land c_1 \in_c c_w.$$
 	%
 	\[
 	\begin{array}{l}
@@ -41,13 +42,12 @@ showing the correspondence properties between the trace based semantics and the 
 		Since there doesn't exist $c_1, c_2 \in \cdom$ satisfying $\eskip = c_1; c_2$, this theorem is vacuously true.
 		\caseL{$c = [\assign{x}{\query(\qexpr)}]^l$}
 		By the evaluation rule $\rname{query}$, we have
-		$
+		$$
 		{
 		\config{[\assign{{x}}{\query(\qexpr)}]^{l},  \trace } 
 		\xrightarrow{} 
 		\config{\clabel{\eskip}^{l'}, \trace \tracecat [({x}, l, \qval, v) ]}
-		}$.
-		\\
+		}.$$
 		Since there doesn't exist $c_1, c_2 \in \cdom$ satisfying $\eskip = c_1; c_2$, this theorem is vacuously true.
 		\caseL{$c = \eif([b]^{l}, c_1, c_2)$}
 		By the evaluation rule $\rname{query}$ and $\rname{if-f}$, and the label consistency, we know:

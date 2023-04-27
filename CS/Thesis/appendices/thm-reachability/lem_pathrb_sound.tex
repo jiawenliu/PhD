@@ -76,7 +76,8 @@ By Definition~\ref{def:pathrb}, we have
   \highlight{
     \lpchB(l':\rprog', \tpath )
   \times \max\limits_{l': \rprog' = \kw{enclosed}(l'':\rprog'')}
-  \{\inoutB(l'':\rprog'', \tpath)\} }, ~~ o.w. &
+  \{\inoutB(l'':\rprog'', \tpath)\} },&\\
+   ~~ o.w. &\\
   \end{array}
 \]
 %
@@ -208,7 +209,6 @@ By Definition~\ref{def:pathrb}, we have
   \inoutB(\rprepeat(\rprog'), \tpath) = \inoutB(\rprepeat(\rprog'), \rprog) \times \inoutB(\rprog', \tpath).
 \]
 We will never meet this case by the program rewriting in Algorithm~\ref{alg:alg-refine_rewrite}.
-\\
 Because $\rprepeat(\rprog')$ only shows up in a loop, we always match the case $l' : \rprepeat(\rprog')$ in the previous case before match this case.
 %
 \\

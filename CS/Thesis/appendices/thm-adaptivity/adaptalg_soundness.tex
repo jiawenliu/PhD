@@ -35,7 +35,8 @@
 % 4. Then we have
 % $\pathsearch(\progG(c)) \geq \progA(c)$.
 \begin{proof}
-  For an arbitrary well-formed program ${c}$, let $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$ 
+  For an arbitrary well-formed program ${c}$, let 
+  $$\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$$
   be its semantics-based dependency graph by Definition~\ref{def:trace_graph} and 
   \[
     \progG({c}) = (\progV, \progE, \progW, \progF)
@@ -306,30 +307,37 @@ of the longest walk on $\sccgraph$.
 
 The proof summary informally:
 \begin{enumerate}
-\item (1) for each node $x$ on SCC, by property of SCC, 
+\item for each node $x$ on SCC, by property of SCC, 
 for every walk on SCC $k_{x, x} = (x, s_1, \ldots, x)$,
 with set of unique vertex $\{v_1, \ldots, x\}$
 there are $\paths(p_{x,x})$ on $\sccgraph$.
-\item (2) For every path $p_{x,x}^{i} = (x, v_1, \ldots, x) \in \paths(p_{x,x})$,  
+\item For every path $p_{x,x}^{i} = (x, v_1, \ldots, x) \in \paths(p_{x,x})$,  
 $\kw{flowcapacity} (p_{x,x}^{i})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, x)$. 
 So we know $\visit(s) (s_1, \ldots, x) \leq \kw{flowcapacity}(p_{x,x}^{i})$.
 \item 
-(3) $\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i})$  $\geq\len(s | s \in ( s_1, \ldots, x) \land \qflag(s) = 1) =  \qlen(k)$,
+$\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i})$  $\geq\len(s | s \in ( s_1, \ldots, x) \land \qflag(s) = 1) =  \qlen(k)$,
 \item 
-(4) Then, the $\max\limits_{p_{x,x}^{i} \in \paths(p_{x,x})} \geq \max\{\qlen(k_{x, x}) | k_{x, x} \in \walks(k_{x, x})\}$
+Then, the $\max\limits_{p_{x,x}^{i} \in \paths(p_{x,x})} \geq \max\{\qlen(k_{x, x}) | k_{x, x} \in \walks(k_{x, x})\}$
 \item 
-(5) Then,  $\max\{\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i}) | x \in \sccgraph \land {p_{x,x}^{i} \in \paths(p_{x,x})} \} 
+Then, we know $\max\{\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i}) | x \in \sccgraph $
+and also $ {p_{x,x}^{i} \in \paths(p_{x,x})} \} 
 \geq \max\{\qlen(k_{x, x}^i) |x \in \sccgraph \land  k_{x, x}^i \in \walks(k_{x, x})\}$
 \item 
-(6) We also know by the property of SCC, $\forall x, y \in \sccgraph, $ let $k_{x, y}$ be arbitrary walk on $\sccgraph$,
+We also known by the property of SCC, $\forall x, y \in \sccgraph, $ let $k_{x, y}$ be arbitrary walk on $\sccgraph$,
  $\qlen(k_{x, y}) \leq \max\{\qlen(k_{x, x}^i) | k_{x, x}^i \in \walks(k_{x, x})\}$.
  \item 
-(7) Then,$ \max\{\qlen(k_{x, x}^i) |x \in \sccgraph \land  k_{x, x}^i \in \walks(k_{x, x})\} \geq  \max\{\qlen(k_{x, y}^i) |x, y \in \sccgraph \land  k_{x, y}^i \in \walks(k_{x, y})\}$
+Then,$ \max\{\qlen(k_{x, x}^i) |x \in \sccgraph \land  k_{x, x}^i \in \walks(k_{x, x})\} \geq  \max\{\qlen(k_{x, y}^i) |x, y \in \sccgraph \land  k_{x, y}^i \in \walks(k_{x, y})\}$
 i.e., 
 $ \max\{\qlen(k_{x, x}^i) |x \in \sccgraph \land  k_{x, x}^i \in \walks(k_{x, x})\} \geq  \max\{\qlen(k) | k\in \walks(\sccgraph)\} = \progA(\sccgraph)$.
 \item 
-(8) We also know 
-$\pathsearch_{scc}(\sccgraph) = \max\{\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i}) | x \in \sccgraph \land {p_{x,x}^{i} \in \paths(p_{x,x})} \} $ by the $\pathsearch_{scc}$ algorithm.
+We also know 
+$
+\begin{array}{l}
+  \pathsearch_{scc}(\sccgraph) = \max\{\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i}) 
+  \\
+  \qquad | x \in \sccgraph \land {p_{x,x}^{i} \in \paths(p_{x,x})} \} 
+\end{array}
+$ by the $\pathsearch_{scc}$ algorithm.
 
 Then we have
 $\pathsearch_{scc}(\sccgraph) \geq \progA(\sccgraph)$
@@ -366,16 +374,16 @@ This case is proved.
       |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq m
     \end{array}
 \]
-Let $M_{\pathsearch_{scc}(\sccgraph)(c), \trace_0}\in \mathbb{N} \cup \{\infty\} $ be the evaluation result of $\config{\pathsearch_{scc}(\sccgraph)(c), \trace_0}$, i.e.,
+Let $M_{(\sccgraph, \trace_0)}\in \mathbb{N} \cup \{\infty\} $ be the evaluation result of $\config{\pathsearch_{scc}(\sccgraph)(c), \trace_0}$, i.e.,
 \[
   \config{\pathsearch_{scc}(\sccgraph)(c), \trace_0} \earrow
-  M_{\pathsearch_{scc}(\sccgraph)(c), \trace_0}
+  M_{(\sccgraph, \trace_0)}
   \]
   Then, it is sufficient to show:
   \[
     \begin{array}{l}
       |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq 
-      M_{\pathsearch_{scc}(\sccgraph)(c), \trace_0}
+      M_{(\sccgraph, \trace_0)}
     \end{array}
 \]
 
@@ -383,7 +391,7 @@ Let $M_{\pathsearch_{scc}(\sccgraph)(c), \trace_0}\in \mathbb{N} \cup \{\infty\}
   we know $\pathsearch_{scc}(\sccgraph) = \kw{r_{scc}} = \max(\kw{r_{scc}, \kw{dfs(\sccgraph, x, visited)}})$,
   then it is sufficient to show:
   $$
-  |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq M_{(\kw{dfs(\sccgraph, x, visited)}, \trace_0)}.
+  |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq M_{(\kw{dfs(\sccgraph, x, visited)}, \trace_0)},
   $$
   where $M_{(\kw{dfs(\sccgraph, x, visited)}, \trace_0)}$ is the evaluation result of $\config{\kw{dfs(\sccgraph, x, visited)}, \trace_0}$ as well.
   %
@@ -392,7 +400,9 @@ Let $M_{\pathsearch_{scc}(\sccgraph)(c), \trace_0}\in \mathbb{N} \cup \{\infty\}
   result of $\expr$ under trace $\trace_0$.
 
   Let  $\{v_1, \ldots, x\}$ be the set of all the distinct vertices of $k_{x,y}$'s vertices sequence $(x, s_1, \ldots, y)$, and 
-  $(v_1, \ldots, x)$ be a subsequence containing all the vertices in $\{x, v_1, \ldots, y\}$.
+  $(v_1, \ldots, x)$ be a subsequence containing all vertices from set of the
+  vertices sequence of $k_{x,y}$,
+  $\{x, v_1, \ldots, y\}$.
   \\
   By the definition of walk,
  there  is a path $p_{x,y} $ from $x$ to $y$ with this vertices sequence: $(x, v_1, \ldots, y)$.
@@ -400,7 +410,7 @@ Let $M_{\pathsearch_{scc}(\sccgraph)(c), \trace_0}\in \mathbb{N} \cup \{\infty\}
   By line:13 of the $\kw{dfs(\sccgraph, x, visited)}$ in Algorithm~\ref{alg:adaptscc},
   \\
   we know $\kw{dfs(\sccgraph, x, visited)} = r[x]$ and
-  $r[x] = \max\{\kw{flowcapacity}(p) \times \kw{querynum}(p) | p \in \paths_{x,x}(\sccgraph)\}$,
+  $$r[x] = \max\{\kw{flowcapacity}(p) \times \kw{querynum}(p) | p \in \paths_{x,x}(\sccgraph)\},$$
   where $\paths_{x,x}(\sccgraph)$ is a subset of $\paths_{x,x}(\sccgraph)$, in which every path starts from $x$ and goes back to $x$.
   \\
   By the property of strong connected graph, we know in this case  $\paths_{x,x}(\sccgraph) \neq \emptyset$ and there are 2 cases, $x = y$ and $x \neq y$.
@@ -428,7 +438,8 @@ By line:8 and line:13 in Algorithm~\ref{alg:adaptscc}, we know $\kw{querynum}(p_
   we also have a path start from $y$ and go back to $x$.
   % \todo{pass through the same vertices sequence.}
   \\
-  Let $p_{y, x}$ be this path with vertices sequence $(y, v_1', \ldots, x)$, we have a path $p_{x,x}$, which is the path $p_{x, y}$ concatenated by path $p_{y, x}$ with vertices sequence $ (x, v_1, \ldots, y, v_1', \ldots, v_{m}', x)$, where $m \geq 0$.
+  Let $p_{y, x}$ be this path with vertices sequence $(y, v_1', \ldots, x)$, we have a path $p_{x,x}$, which is the path $p_{x, y}$ concatenated by path $p_{y, x}$ with vertices sequence 
+  $$ (x, v_1, \ldots, y, v_1', \ldots, v_{m}', x)$$, where $m \geq 0$.
   
   Then in this case, it is sufficient to show: 
   % $\len(s | s \in (x, s_1, \ldots, y, v_1', \ldots, x) \land \qflag(s) = 1) \leq r[x]$.
@@ -456,7 +467,8 @@ $\visit(s) (x, s_1, \ldots, y)  \leq \kw{flowcapacity}(p_{x, y})$
   \\
   $|(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))| \leq M_{(\kw{flowcapacity}(p_{x, y}) \times \kw{querynum}(p_{x, y}), \trace_0)} = M_{(r[y], \trace_0)}$
   \\
-  By line:13, we also know $r[x] = \max(r[x], r[v_{m}'] + \kw{flowcapacity}(p_{x, x}) \times \kw{querynum}(p_{x, x})$, and $r[y] \leq r[v_{m}']$
+  By line:13, we also know 
+  $$r[x] = \max(r[x], r[v_{m}'] + \kw{flowcapacity}(p_{x, x}) \times \kw{querynum}(p_{x, x})$$, and $r[y] \leq r[v_{m}']$
   then we know 
   $M_{(r[y], \trace_0)} \leq M_{(r[x], \trace_0)}$, i.e., 
 

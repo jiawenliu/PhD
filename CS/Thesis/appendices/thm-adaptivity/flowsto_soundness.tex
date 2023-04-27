@@ -4,7 +4,8 @@ Given a program ${c}$, for all  $ x^i, y^j \in \lvar(c)$, if $\vardep(x^i, y^j, 
 then
 %  either $\flowsto(x^i, y^j, c)$ 
 % or 
-there exist $z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c)$ with $n \geq 0$ such that   
+there exist $z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c)$ with $n \geq 0$ such that there is a
+transitive closure of feasible data flow relation from $x^i$ to $y^j$,  
 $\flowsto(x^i,  z_1^{r_1}, c) 
 \land \ldots \land \flowsto(z_n^{r_n}, y^j, c)$
 %

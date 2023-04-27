@@ -36,7 +36,8 @@ For the running example in Figure~\ref{fig:relatedNestedWhileOdd-overview}(a),
 % by using this ranking function-based approach, we 
 % this equation only computes for each subprogram,
 % $BD(\tpath_0) = 1$, $BD(\tpath_5) = 1$, $BD(\rprepeat(\tpath_3)) = n - m$, 
-Equation~\ref{eq:absBD} computes $BD(\rprog_1^1) = n$ and $BD(\rprog_1^2) = n $ for the two interleaving patterns of loop $L_1$.
+we compute $BD(\rprog_1^1) = n$ and $BD(\rprog_1^2) = n $ for the two interleaving patterns of loop $L_1$
+via Equation~\ref{eq:absBD}.
 % The bounds for $\rprog_1^1$ and $\rprog_1^2$ are both $n$ while 
 But both of their iteration bounds are expected to be $\lfloor\frac{m}{4}\rfloor$.
 The inaccuracy is resulted by the nature of the path-insensitivity in the ranking function invariant estimation in Definition~\ref{def:ranking_bound}. 
@@ -91,7 +92,7 @@ We first compute three abstract states for each ranking function in different su
  \bigcup\limits_{x \in \left\{ \rank(\absevent, c) | \tpath \in \rprog \land \absevent \in \tpath \right\} }
  \left \{ 
  x = \min\limits_{ \left\{ l_1 ~|~ l_1 \geq \absfinal(\rprog, c) \right\} }
- \max\left\{
+ \left\{
  v ~\middle\vert~ 
  \left( (x = v) \land \bigwedge\limits_{b \in \kw{B}(\rprog, c)} \neg b \right) \neq \efalse
  \right\}
@@ -130,7 +131,7 @@ We first compute three abstract states for each ranking function in different su
 Now we compute $BD(\rprog, c)$ through a mutual recursion procedure involving the computation of another quantity, the \emph{Variable Gradient Decent} as follows.
 \begin{defn}[Loop Bound Computation]
 \label{def:loopbound}
-Given a program $c$ with its refined program $\rprog$ and a subprogram $\rprog' = \rprepeat(\rprog_l) \in \rprog$, we compute a \emph{loop bound}, $BD(\rprepeat(\rprog_l), c)$
+Given a program $c$ with its refined program $\rprog$ and a subprogram $\rprog' = \rprepeat(\rprog_l) \in \rprog$, the \emph{loop bound}, $BD(\rprepeat(\rprog_l), c)$ is computed
 through a mutual recursion between  $BD(\rprepeat(\rprog_l), c)$ and $\varGD(\rprog', c)$.
 $\varGD(\rprog', c)$ is the \emph{Variable Gradient Decent}--an invariant of the minimum amount decreased in one execution of $\rprog_l$ for the ranking functions in $\rprog$.
 %  $ BD(\rprepeat(\rprog_l), c) \triangleq$
@@ -246,7 +247,8 @@ the $\tpath$ in its closest nested loop as follows in Definition~\ref{def:pathlo
       % \outinB(\rpchoose{\rprog_1, \ldots, \rprog_m }, \tpath) & \triangleq 
       % & 
       \max\left\{ \outinB(\rprog_1, \tpath, c), \ldots, \outinB(\rprog_m, \tpath, c) \right\} 
-      & \rprog = \rpchoose{\rprog_1, \ldots, \rprog_m } \\
+      & \\
+      \qquad \qquad \rprog = \rpchoose{\rprog_1, \ldots, \rprog_m } & \\
       % \outinB(\rprepeat(\rprog'), \tpath) & \triangleq 
       % & 
       BD(\rprepeat(\rprog'), c) \times \outinB(\rprog', \tpath, c) & \rprog = \rprepeat(\rprog').

@@ -40,8 +40,8 @@
 			\land Equation~\ref{eq:eventdep}(b) = \etrue
 			\\ \quad 
 			\implies 
-			\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-			\\ \quad \lor
+			\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c) \lor
+			\\ \quad 
 			\Big( 
 			\exists \event \in \trace' \sthat  
 			\event \in \eventset^{\asn} \land
@@ -155,7 +155,7 @@ To show
 \[
 	\begin{array}{l}
 		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-		\\ \quad \lor
+		\\ \lor
 		\Big( 
 		\exists \event \in \trace' \sthat  
 		\event \in \eventset^{\asn} \land
@@ -169,15 +169,14 @@ To show
 It is sufficient to show
 \[
 	\begin{array}{l}
-		\Big( 
 		\forall \event \in \trace' \sthat  
+		\\
 		\neg \event \in \eventset^{\asn} \lor
 			\neg \eventdep(\event_1, \event, \trace[\event_1:\event], c, D)
 			% \\ \qquad 
 			\lor 
 			\neg 
 				\flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
-		\Big) 
 		\\ \quad 
 		\implies 
 		\flowsto(\pi_1(\event_1)^{\pi_2(\event_1)}, \pi_1(\event_2)^{\pi_2(\event_2)}, c)
@@ -221,10 +220,12 @@ Then by Definition~\ref{def:adapt_env}, we know
 Then by the determinism of the execution, we know $\event_2 = \event_2'$.
 Then we have the following by Definition~\ref{def:event_eq}.
 \[
+	\begin{array}{l}
 	\Big( (\pi_4(\event_2) = \bullet \land \pi_4(\event_2') = \bullet) \land \pi_3(\event_2) = \pi_3(\event_2') \Big)
-	\lor
-		\Big((\pi_4(\event_2) \neq \bullet \land \pi_4(\event_2') \neq \bullet) \land \pi_4(\event_2) = \pi_4(\event_2') \Big)
-		\]
+	\\ \quad \lor
+	\Big( (\pi_4(\event_2) \neq \bullet \land \pi_4(\event_2') \neq \bullet) \land \pi_4(\event_2) = \pi_4(\event_2') \Big)
+	\end{array}
+	\]
 Then by Definition~\ref{def:diff}, we know
 \[
 	\neg \diff(\event_2, \event_2').
@@ -281,12 +282,15 @@ Then we also known for every $\event_z \in \kw{use}_{\trace_2}$,
 $\neg \eventdep(\event_1, \event_z, \trace[\event_1:\event_z], c, D)$
 as follows.
 \[
-	\forall z^l \in \lvar(c) \setminus 
+	\begin{array}{l}
+		\forall z^l \in \lvar(c) \setminus 
 	\big( 
 		( \lvar({\trace_2}) \setminus \lvar({\kw{use}_{\trace_2}})) \cup \{\pi_1(\event_1)^{\pi_2(\event_1)}\} \big)
-	\sthat 
+		\sthat 
+		\\ \quad 
 	\env(\trace_1 \tracecat [\event_1] \tracecat \trace_2) z = \env(\trace_1 \tracecat [\event_1'] \tracecat \trace_2') z
-	~ (1)
+\end{array}
+~ (1)
 \]
 and 
 \[
@@ -569,8 +573,13 @@ we have the following instance of the first execution in Eq.~\ref{eq:ctlflowsto_
   \vtrace_1 \tracecat [\event_1] \tracecat \trace} 
   \\
   \qquad 
-   \rightarrow^{\rname{if-b / while-b}} 
-  \config{(c_t;c_3' / c_f;c_3') /(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3'/\clabel{\eskip}^{l'}; c_3'), 
+   \rightarrow^{\rname{if-b }} 
+  \config{(c_t;c_3' / c_f;c_3') , 
+  \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
+  \\
+  \qquad 
+  /  \rightarrow^{\rname{while-b}} 
+  \config{(c_w; \ewhile [b]^{l_b} \edo (c_w);c_3'/\clabel{\eskip}^{l'}; c_3'), 
   \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
   \\
   \qquad  \rightarrow^{*} 
@@ -589,10 +598,11 @@ we have the following instance of the first execution in Eq.~\ref{eq:ctlflowsto_
 %  %
 , where $\trace_3 = \trace_{3a} \tracecat [\event_2] \tracecat \trace_{3b}$,
 % $x_1 = \pi_1(\event_1)$, $l_1 = {\pi_2(\event_1)}$, 
-$x_2 = \pi_1(\event_2)$, $l_2 = \pi_2(\event_2)$, 
-and $\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w)$ 
-is the conditional command of the assignment commands associated to the 
-$\event_b$ from Inversion Lemma~\ref{lem:inv_event} of testing event.
+$x_2 = \pi_1(\event_2)$, $l_2 = \pi_2(\event_2)$. 
+In this execution, the conditional command $\eif ([b]^{l_b}, c_t, c_f)$ or $\ewhile [b]^{l_b} \edo (c_w)$ 
+% is the conditional command of the assignment commands associated to the 
+is the inversion result from
+$\event_b$ according to Inversion Lemma~\ref{lem:inv_event} of this testing event.
 \\
 % \[\begin{array}{l}   
 % 	  \config{\eif ([b]^{l_b}, c_t, c_f) / \ewhile [b]^{l_b} \edo (c_w);{c}_3', 
@@ -622,8 +632,9 @@ $$
 \trace_1 \tracecat [\event_1] \tracecat \trace \tracecat [\event_b]} 
 $$
 %
-The same for case of $\eif ([b]^{l_b}, c_t, c_f)$ with $\pi_3(\event_b) = \efalse$,
-and case of $\ewhile [b]^{l_b} \edo (c_w)$ with $\pi_3(\event_b) = \etrue$ and $\pi_3(\event_b) = \efalse$.
+The same for case of $\eif ([b]^{l_b}, c_t, c_f)$ 
+and case of $\ewhile [b]^{l_b} \edo (c_w)$ with $\pi_3(\event_b) = \etrue$ and $\pi_3(\event_b) = \efalse$
+respectively.
 %
 \\
 By the command label consistency,

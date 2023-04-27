@@ -9,7 +9,7 @@ The na\"ive way to approximate the population mean is to use the \emph{empirical
 $\query(\sample_1,\dots,\sample_n) = \frac{1}{n} \sum_{i=1}^{n} \query(X_i)$.
 However, the mechanism $M$ can adopt some methods for improving the generalization error $| a- \query(\dist)|$.
 
-In this work we consider analysts that ask a sequence of $k$ queries $\query_1,\dots,\query_k$.  If the queries are all chosen in advance, independently of the answers of each other, then we say they are \emph{non-adaptive}.  If the choice of each query $\query_j$ depend on the prefix $\query_1,\answer_1,\dots,\query_{j-1},\answer_{j-1}$ then they are \emph{fully adaptive}.  An important intermediate notion is \emph{$\qrounds$-round adaptive}, where the sequence can be partitioned into $\qrounds$ batches of non-adaptive queries.  Note that non-adaptive queries are $1$-round and fully adaptive queries are $k$-round adaptive.
+In this work we consider analysts that ask a sequence of $k$ queries, specifically $\query_1,\dots,\query_k$.  If the queries are all chosen in advance, independently of the answers of each other, then we say they are \emph{non-adaptive}.  If the choice of each query $\query_j$ depend on the prefix $\query_1,\answer_1,\dots,\query_{j-1},\answer_{j-1}$ then they are \emph{fully adaptive}.  An important intermediate notion is \emph{$\qrounds$-round adaptive}, where the sequence can be partitioned into $\qrounds$ batches of non-adaptive queries.  Note that non-adaptive queries are $1$-round and fully adaptive queries are $k$-round adaptive.
 
 We now review what is known about the problem of answering $r$-round adaptive queries.  
 \begin{thm}[\cite{BassilyNSSSU16}] 
@@ -129,7 +129,7 @@ For the program which is able to be expressed,
 they cannot give the most precise adaptivity definitions matching the intuitive \emph{adaptivity}.
 These previous works and limitations on formalizing the adaptivity are introduced in more detail in Section~\ref{sec:prework-formalization}.
 
-In this sense, we formalize this intuitive \emph{adaptivity} notion as a \emph{quantitative-reachability} program property 
+We formalize this intuitive \emph{adaptivity} notion as a \emph{quantitative-reachability} program property 
 % I analyze the program's execution based on its 
 %  develop an semantics-based analysis 
 in Section~\ref{sec:adapt-exe}. 

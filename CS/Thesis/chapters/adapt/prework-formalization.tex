@@ -41,7 +41,7 @@ For every execution of a program $c$ starting with a certain memory and while ma
 they construct a query-based dependency graph as below.
 % graph definition
 \begin{defn}[Query-based Dependency Graph]
-Given a program $c$, a database $D$, a starting memory $m$, an initial loop map $w$, the query-based dependency graph $G(c,D,m,w) = (V, E)$ is defined as: \\
+Given a program $c$, a database $D$, a starting memory $m$, an initial loop map $w$, the query-based dependency graph $G(c,D,m,w)$ has two components, $(V, E)$ defined as: \\
 $V =\{q({v_q})^{l,w} \in \mathcal{AQ} \mid \forall t. \exists m', w', t'. \config{m ,c, t, w} \to^{*} \config{m' , \eskip, t', w' } \land q({v_q})^{l,w} \in {(t'-t)} \}$.
 \\
 $E = \left\{(q({v_q})^{(l,w)},q({v_q}')^{(l',w')}) \in \mathcal{AQ} \times \mathcal{AQ} 
@@ -83,15 +83,17 @@ In this sense, this definition does not general enough to capture the adaptivity
 %  \\
  In the following example program similar to the one in Section~\ref{sec:prework-language} with two extra query request commands,
  \[
+    \begin{array}{l}
  {\assign{x}{0}};
  \assign{y}{5};
- \assign{z}{q(x + y)};
+ \assign{z}{q(x + y)};\\
  \ewhile (x < y) \edo 
  \{
  \assign{x}{x + 1};
  \assign{y}{y - 1};
  \assign{z}{q(x+y+z)};
  \}\}
+    \end{array}
  \] 
  the number of iterations cannot be evaluated to a natural number in advance of entering this loop for the same reason. 
  The iteration number is only

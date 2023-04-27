@@ -88,11 +88,14 @@ we also have the instance of second execution in Eq.~\ref{eq:eventdep_def_base_v
 % Since each command in $c$ has a unique label, we have $\expr_2' = \expr_2$, $\qexpr_2 = \qexpr_2'$, and following execution instance:
 \begin{equation}
 \label{eq:valdep_inv2}
+\begin{array}{l}
   \config{c_1, \vtrace_1 \tracecat [\event_1']} 
   \rightarrow^{*} 
   \config{[\assign{{x}_2}{\expr_2 / \query(\qexpr_2)}]^{l_2} ; {c}_2, \vtrace_1 \tracecat [\event_1']\cdot \vtrace_2'} 
+  \\
   \rightarrow^\rname{assn/query} 
   \config{{c}_2,  \vtrace_1 \tracecat [\event_1']\cdot \vtrace_2' \tracecat [\event_2']} 
+\end{array}
 \end{equation}
 %
 From Eq.~\ref{eq:eventdep_def_base_val}, we also have
@@ -179,8 +182,8 @@ Then, we have the following possible execution instances
 \[
   \ldots,
 \] 
-where each execution instance iterates the conditional command 
-$(\ewhile [b_w]^l_w \edo (c_w))$ in $c_2$, $0, 1$ or more times.
+where each execution instance iterates the conditional command, 
+$$(\ewhile [b_w]^l_w \edo (c_w))$$ in $c_2$, $0, 1$ or more times.
 %
 \\
 %

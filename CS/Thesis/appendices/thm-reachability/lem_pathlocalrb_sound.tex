@@ -55,16 +55,17 @@ This case is proved.
 \caseL{$\rprog_l = \tpath' \land \tpath' \neq \tpath$}
 In this case, we have $\outinB(\tpath', \tpath) = \highlight{0} $ by Definition~\ref{def:pathlocalrb}.
 \\
-Since $\tpath' \neq \tpath$, we know $\tpath$ isn't executed when executing $c_l$, i.e., $\lcounter(\trace, \pathl(\tpath)) = 0$.
-\\
+Since $\tpath' \neq \tpath$, we know $\tpath$ isn't executed when executing $c_l$, i.e., 
+$$\lcounter(\trace, \pathl(\tpath)) = 0.$$
 Then we have
 \[
   \econfig{\outinB(\rprog_l, \tpath)}(\trace_0) = 0 = \lcounter(\trace, \pathl(\tpath)),
   \]
 and this case is proved.
 \caseL{$\rprog_l = \rprog_1;\rprog_2$}
-In this case, we have $\outinB(\rprog_1;\rprog_2, \tpath) = \outinB(\rprog_1, \tpath) + \outinB(\rprog_2, \tpath) $ by Definition~\ref{alg:alg-refine_rewrite}, and
-it is sufficient to show
+In this case, by Definition~\ref{alg:alg-refine_rewrite}, we have 
+$$\outinB(\rprog_1;\rprog_2, \tpath) = \outinB(\rprog_1, \tpath) + \outinB(\rprog_2, \tpath) $$ 
+It is sufficient to show
 \[
   \econfig{\outinB(\rprog_1, \tpath) + \outinB(\rprog_2, \tpath)}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)) 
 \]
@@ -146,7 +147,8 @@ it is sufficient to show
 \[
   \econfig{ BD(\rprepeat(\rprog'), c) \times \outinB(\rprog', \tpath)} (\trace_0) \geq \lcounter(\trace, \pathl(\tpath)) 
 \]
-Let $c' \in \cdom$ be the while language program corresponding to $\rprog'$ such that $\algrewrite(c') = \rprog'$.
+Let $c' \in \cdom$ be the while language program corresponding to $\rprog'$ such that 
+$$\algrewrite(c') = \rprog'.$$
 According to the Algorithm~\ref{alg:alg-refine_rewrite}, we have $c_l = \ewhile \clabel{\bexpr}^{l} \edo c'$.
 \\
 According to the operational semantics, let $\trace' \in \ftdom$ be the execution trace of executing $c'$ one time with a program $c'' \in \cdom$ such that 
@@ -160,7 +162,7 @@ According to the operational semantics, let $\trace' \in \ftdom$ be the executio
 \]
 By the trace non-decreasing property in Lemma~\ref{lem:tracenondec}, we know $\trace$ contains multiple execution traces of $c'$.
 \\
-By Lemma~\ref{lem:loopbound_sound}, we know $BD(\rprepeat(\rprog'), c)$ bounds the iterations of $\rprepeat(\rprog')$. Then we have
+By Lemma~\ref{lem:loopbound_sound}, we know $BD(\rprepeat(\rprog'), c)$ is an upper bound on the number of iterations of $\rprepeat(\rprog')$. Then we have
 \[
   \econfig{BD(\rprepeat(\rprog'), c)}(\trace_0) \times \lcounter(\trace', \pathl(\tpath))  
   \geq \lcounter(\trace, \pathl(\tpath)) 
@@ -187,8 +189,8 @@ Then we have this case proved by
   \[
     \outinB(l: \rprog_l, c) = \outinB(\rprog_l, c)
   \]
-  Let $c_l \in \cdom$ be the while language program corresponding to $\rprog_l$ such that $\algrewrite(c_l) = \rprog_l$.
-  \\
+  Let $c_l \in \cdom$ be the while language program corresponding to $\rprog_l$ such that 
+  $$\algrewrite(c_l) = \rprog_l.$$
   According to the Algorithm~\ref{alg:alg-refine_rewrite} and the program refinement algorithm REFINE, we know
   $c_l = c_l$.
   \\
@@ -222,8 +224,9 @@ Then this case is vacuously true.
 \caseL{$\rprog_l = \tpath' \land \tpath' \neq \tpath$}
 This case is vacuously true as well for the same reason as above.
 \caseL{$\rprog_l = \rprog_1;\rprog_2$}
-In this case, we have $\outinB(\rprog_1;\rprog_2, \tpath) = \outinB(\rprog_1, \tpath) + \outinB(\rprog_2, \tpath) $ by Definition~\ref{alg:alg-refine_rewrite}, and
-it is sufficient to show
+In this case, by Definition~\ref{alg:alg-refine_rewrite}, we have 
+$$\outinB(\rprog_1;\rprog_2, \tpath) = \outinB(\rprog_1, \tpath) + \outinB(\rprog_2, \tpath).$$
+It is sufficient to show
 \[
   \econfig{\outinB(\rprog_1, \tpath) + \outinB(\rprog_2, \tpath)}(\trace_0) \geq \lcounter(\trace, \pathl(\tpath)) 
 \]
@@ -318,8 +321,8 @@ it is sufficient to show
 \[
   \econfig{ BD(\rprepeat(\rprog'), c) \times \outinB(\rprog', \tpath)} (\trace_0) \geq \lcounter(\trace, \pathl(\tpath)) 
 \]
-Since execution of $\rprepeat(\rprog')$ non-terminates, and it is a loop program,
-by Lemma~\ref{lem:loopbound_sound} second sub0case in the non-terminating case, we know
+Given the execution of the loop $\rprepeat(\rprog')$ is non-terminating,
+by Lemma~\ref{lem:loopbound_sound} second subcase in the non-terminating case, we know
 \[
   BD(\rprepeat(\rprog'), c) = \infty.
 \]
@@ -339,8 +342,8 @@ Then we have this case proved by
   \[
     \outinB(l: \rprog_l, c) = \outinB(\rprog_l, c)
   \]
-  Let $c_l \in \cdom$ be the while language program corresponding to $\rprog_l$ such that $\algrewrite(c_l) = \rprog_l$.
-  \\
+  Let $c_l \in \cdom$ be the while language program corresponding to $\rprog_l$ such that 
+  $$\algrewrite(c_l) = \rprog_l.$$
   According to the Algorithm~\ref{alg:alg-refine_rewrite} and the program refinement algorithm REFINE, we know
   $c_l = c_l$.
   \\

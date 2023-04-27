@@ -368,7 +368,7 @@ takes a trace and a variable as input and returns the label of the latest assign
             \Big( 
               \flowsto(\pi_1(\event_x)^{\pi_2(\event_x)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
               \Big)
-        \\ \qquad \lor
+        \\ \lor
         \Big( 
           \exists \event \in \trace_{ih} \sthat  
         % \left( 		
@@ -388,15 +388,17 @@ takes a trace and a variable as input and returns the label of the latest assign
         
         \subcaseL{
           $
-          \exists \event \in \trace_{ih} \sthat  
+          \begin{array}{l}
+            \exists \event \in \trace_{ih} \sthat  
         % \left( 		
           \event \in \eventset^{\asn}
           \land
           \eventdep(\event_x, \event, \trace[\event_x:\event], c, D)
-          % \\ \quad  
+          \\ \quad  
           \land 
         \flowsto(\pi_1(\event)^{\pi_2(\event)}, \pi_1(\event_y)^{\pi_2(\event_y)}, c) 
-        $
+      \end{array}
+      $
         }
         In this case, let $\event_{ih}\in \trace_{ih} $ be the assignment event such that
         \[

@@ -147,12 +147,20 @@ It is a context-free computation skeleton overall the variable and value domain.
  \begin{array}{ll} 
  \absexpr(x - v, x) = x' \leq x - v & x \in \grdvar \land v \in \constdom \\
  \absexpr(y + v, x) = x' \leq y + v & x, y \in \grdvar \land v \in \constdom \\
- \absexpr(v, x) = x' \leq v & x \in \grdvar \land v \in (\grdvar \cup \constdom) \\
+ \absexpr(v, x) = x' \leq v 
+ & x \in \grdvar \\
+ & \land v \in (\grdvar \cup \constdom) \\
  \absexpr(y + v, x) = x' \leq y + v, 
- \grdvar = \grdvar \cup \{y\} & x \in \grdvar \land y \notin \grdvar \land v \in \constdom \\
- \absexpr(\qexpr, x) = x' \leq Q_m & x \in \grdvar \land \qexpr \text{ is a query expression} \\
+ \grdvar = \grdvar \cup \{y\} 
+ & x \in \grdvar \\
+ & \land y \notin \grdvar \land v \in \constdom \\
+ \absexpr(\qexpr, x) = x' \leq Q_m 
+ & x \in \grdvar \\
+ & \land \qexpr \text{ is a query expression} \\
  \absexpr(\bexpr, \_) = \bexpr, \grdvar = \grdvar \cup 
- \kw{FV}(\bexpr) & x \in \grdvar \land \bexpr \text{ is a boolean expression} \\
+ \kw{FV}(\bexpr) 
+ & x \in \grdvar \\
+ & \land \bexpr \text{ is a boolean expression} \\
  \absexpr(\expr, x) = \top & x \notin \grdvar \\
  \end{array}
  \]
@@ -303,7 +311,8 @@ Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
  \cup \left\{(l, \absexpr(\bexpr, \top), \absinit(c_t) ) \right\}
  \\ & \quad 
  \cup \left\{ (l, \absexpr(\neg\bexpr, \top), \absinit(c_f)) \right\} \\
- \absflow'(\ewhile \clabel{\bexpr}^{l} \edo (c_w)) & = \absflow'(c_w) \cup \{(l, \absexpr(\bexpr, \top), \absinit(c_w)) \} 
+ \absflow'(\ewhile \clabel{\bexpr}^{l} \edo (c_w)) & = \absflow'(c_w) 
+ \\ & \quad \cup \{(l, \absexpr(\bexpr, \top), \absinit(c_w)) \} 
  \\ & \quad 
  \cup \{(l', dc, l)| (l', dc) \in \absfinal(c_w) \} \\
  \absflow'(c_1 ; c_2) & = \absflow'(c_1) \cup \absflow'(c_2) 
