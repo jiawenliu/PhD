@@ -207,7 +207,7 @@ is computed as follows in Definition~\ref{def:absevent_compute}.
  %
  \begin{defn}[Abstract Execution Trace Computation]
  \label{def:psRB-absevent_compute}
- The \emph{abstract trace}, $\absflow(c) \in \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$ of a program $c$ is computed as follows.
+ We compute the \emph{abstract execution trace}, $\absflow(c) \in \mathcal{P}( \ldom \times \dcdom^{\top} \times \ldom )$ of a program $c$ is computed as follows.
 
  We first append a $\eskip$ command with 
 the label $\lex$, i.e., $\clabel{\eskip}^{{\lex}}$ at the end of the program $c$, and construct 
@@ -224,7 +224,9 @@ Then, we compute the $\absflow(c) = \absflow'(c')$ for $c'$ as follows,
  \cup \left \{(l, \absexpr(\bexpr, \top, c), \absinit(c_t) ) \right \} , 
  \\ & \quad 
  \cup \left \{ (l, \absexpr(\neg\bexpr, \top, c), \absinit(c_f)) \right \} \\
- \absflow'(\ewhile \clabel{\bexpr}^l \edo (c_w)) & = \absflow'(c_w) \cup \{(l, \absexpr(\bexpr, \top, c), \absinit(c_w)) \} 
+ \absflow'(\ewhile \clabel{\bexpr}^l \edo (c_w)) & = \absflow'(c_w) 
+ \\ & \quad 
+ \cup \{(l, \absexpr(\bexpr, \top, c), \absinit(c_w)) \} 
  \\ & \quad 
  \cup \{(l', dc, l)| (l', dc) \in \absfinal(c_w) \} \\
  \absflow'(c_1 ; c_2) & = \absflow'(c_1) \cup \absflow'(c_2) 
@@ -314,7 +316,7 @@ Definition~\ref{def:abs_cfg}.
  The \emph{abstract transition graph} of a program $c$ is $\absG(c) \triangleq (\absV(c), \absE(c))$, where
  $\absV(c) \triangleq \progl(c)\cup\{\lex\}$
  and each edge $(l, dc, l') \in \absE(c)$ is an abstract transition
- $\absE(c) \triangleq \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}$.
+ $$\absE(c) \triangleq \{(l_1, dc, l_2) | (l_1, dc, l_2) \in \absflow(c)\}$$.
  % and
  % .
 % between two program points $l, l'$ if and only if
@@ -346,7 +348,7 @@ Definition~\ref{def:abs_cfg}.
 In Figure~\ref{fig:relatedNestedWhileOdd-overview}(b),
 the edge $(0 \xrightarrow{i' \leq n} 1)$ on the top tells us the command 
 $\clabel{\assign{i}{n}}^0$ is executed with a continuation point $1$, and the
-command $\ewhile \clabel{i > 0}^1 \edo \{\ldots\}$ will be executed next.
+loop $\ewhile \clabel{i > 0}^1 \edo \{\ldots\}$ will be executed next.
 The annotation $i' \leq n$ is a difference constraint 
 computed by $\absexpr$ over
 the expression $n$ in the assignment command $\assign{i}{n}$.

@@ -112,13 +112,15 @@
   \[
     \counter(\trace, l) \leq \econfig{\absclr(\absevent, c)}(\trace_0)
   \]
-  By definition of $\absclr(\absevent)$:
+  By definition of $\absclr(\absevent)$, there are two cases,
   \[
  \begin{array}{ll}
-  \rank(\absevent) & \rank(\absevent) \in \constdom \\
-  \inc(\rank(\absevent)) + 
+  (1) \rank(\absevent) & \\
+  \qquad \rank(\absevent) \in \constdom \\
+  (2) \inc(\rank(\absevent)) + 
   \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\rank(\absevent))\} 
-  & \rank(\absevent) \notin \constdom
+  & \\
+  \qquad \rank(\absevent) \notin \constdom
 \end{array}
 \]
   \caseL{$\rank(\absevent) \in \constdom$}

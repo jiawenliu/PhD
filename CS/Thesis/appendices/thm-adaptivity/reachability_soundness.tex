@@ -436,13 +436,15 @@
   \absclr(\absevent)
   \]
   % By line:2 of Algorithm~\ref{alg:add_weights}, there are 2 cases:
-  By definition of $\absclr(\absevent)$:
+  By definition of $\absclr(\absevent)$, there are two cases,
   \[
  \begin{array}{ll}
-  \locbound(\absevent) & \locbound(\absevent) \in \constdom \\
+  \locbound(\absevent) & \\
+  \qquad \locbound(\absevent) \in \constdom \\
   Incr(\locbound(\absevent)) + 
   \sum\{\absclr(\absevent') \times \max(\varinvar(a) + c, 0) | (\absevent', a, c) \in \reset(\locbound(\absevent))\} 
-  & \locbound(\absevent) \notin \constdom
+  & \\
+  \qquad \locbound(\absevent) \notin \constdom
 \end{array}
 \]
   \caseL{$\locbound(\absevent) \in \constdom$}

@@ -164,12 +164,12 @@ $\absclr(\absevent, c) \in \scexpr(c)$ is an upper bound on the numbers that the
  & 
  \sum\limits_{ch \in \resetchain(x, c)}
  \min \left\{\absclr(\absevent', c) ~\mid~ \absevent' \in ch\right\} \times 
- \big(\varinvar(in(ch), c) 
+ \big(\varinvar(\kw{in}(ch), c) 
  + \sum\limits_{(\_, (\_, x' \leq y + v, \_), \_) \in ch} v \big) & \\
- & \quad \text{if} ~\rank(\absevent, c) = x \land x \notin \scvar(c) & ,
+ & \quad \text{if} ~\rank(\absevent, c) = x \land x \notin \scvar(c) & 
 \end{array}
  \]
- where $in(ch)$ is the first vertex of the reset chain $ch$.
+ where $\kw{in}(ch)$ is the first vertex of the reset chain $ch$.
 \end{defn}
  %
  For every edge, if the ranking function of this edge computed at the previous step is a symbol, specifically an input variable, then this is already the upper bound invariant. 

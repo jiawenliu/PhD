@@ -313,6 +313,7 @@ with set of unique vertex $\{v_1, \ldots, x\}$
 there are $\paths(p_{x,x})$ on $\sccgraph$.
 \item For every path $p_{x,x}^{i} = (x, v_1, \ldots, x) \in \paths(p_{x,x})$,  
 $\kw{flowcapacity} (p_{x,x}^{i})$ is the maximum visiting times for every $v \in (x, v_1, \ldots, x)$. 
+\\
 So we know $\visit(s) (s_1, \ldots, x) \leq \kw{flowcapacity}(p_{x,x}^{i})$.
 \item 
 $\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i})$  $\geq\len(s | s \in ( s_1, \ldots, x) \land \qflag(s) = 1) =  \qlen(k)$,
@@ -331,13 +332,14 @@ i.e.,
 $ \max\{\qlen(k_{x, x}^i) |x \in \sccgraph \land  k_{x, x}^i \in \walks(k_{x, x})\} \geq  \max\{\qlen(k) | k\in \walks(\sccgraph)\} = \progA(\sccgraph)$.
 \item 
 We also know 
-$
+$$
 \begin{array}{l}
-  \pathsearch_{scc}(\sccgraph) = \max\{\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i}) 
-  \\
-  \qquad | x \in \sccgraph \land {p_{x,x}^{i} \in \paths(p_{x,x})} \} 
+  \pathsearch_{scc}(\sccgraph) = \\
+  \qquad \max\{\kw{querynum}(p_{x,x}^{i})  * \kw{flowcapacity}(p_{x,x}^{i}) 
+ | x \in \sccgraph \land {p_{x,x}^{i} \in \paths(p_{x,x})} \} 
 \end{array}
-$ by the $\pathsearch_{scc}$ algorithm.
+$$ 
+by the $\pathsearch_{scc}$ algorithm.
 
 Then we have
 $\pathsearch_{scc}(\sccgraph) \geq \progA(\sccgraph)$
@@ -359,6 +361,7 @@ This case is proved.
 %
   Taking arbitrary walk $k_{x,y} \in \walks{(\sccgraph})$, and an arbitrary initial trace $\trace_0 \in \ftdom_0(c)$, such that $k_{x,y}(\trace_0)$ has the vertices sequence
   $k_{x,y}(\trace_0) = (x, s_1, \ldots, y)$.
+  \\
   By Definition~\ref{def:qlen}, we know
   \[
     \qlen(k_{x,y})(\trace_0) = |(s | s \in (x, s_1, \ldots, y) \land (s, 1)\in \traceF(c))|

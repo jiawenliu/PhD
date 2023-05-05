@@ -47,8 +47,8 @@ n ~|~ {x} ~|~ \aexpr \oplus_a \aexpr  ~|~ \emax (a, a) ~|~ \emin(a, a)
 \mbox{Event} 
 & \event & ::= & 
 ({x}, l, v) ~ \mbox{Assignment Event} 
-% \\
-% &&& 
+\\
+&&& 
 ~|~(\bexpr, l, v) ~ \mbox{Testing Event}
 \\
 \mbox{Trace} & \trace
@@ -365,15 +365,13 @@ We also define for $\infty$ the following mathematic computation with arbitrary 
   \inferrule{ 
     \bconfig{\bexpr}(\trace)  = v
   }{
-   \bconfig{\bexpr}(\trace)  
+   \econfig{\bexpr}(\trace)  
    = v
   }
   \and
   \inferrule{ 
     \econfig{\expr_1}(\trace)  = v_1
-    \and 
     \ldots
-    \and 
     \econfig{\expr_n}(\trace)  = v_n
   }{
    \econfig{ [\expr_1, \ldots, \expr_n]}(\trace) 

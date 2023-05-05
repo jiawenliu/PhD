@@ -1,4 +1,4 @@
-Below are the example programs in the evaluation table~\ref{tb:adapt-imp-detail}
+Below are the example programs in the evaluation table~\ref{tb:adapt-imp}
 from  line 6 to line 15.
 %
     \begin{example}[The Complete Gradient Decent Optimization Algorithm]
@@ -278,8 +278,8 @@ The longest dependency depth, i.e., the adaptivity is expectation to be $2 + k$.
     \begin{array}{l}
         \clabel{ \assign{i}{k} }^{0} ; 
         \clabel{\assign{x}{\query(\chi[0])}}^{1} ; \\
-            \ewhile ~ \clabel{i > 0}^{2} ~ \edo ~ 
-            \Big(
+            \ewhile ~ \clabel{i > 0}^{2} ~ \edo ~ \\
+            \qquad \Big(
              \clabel{\assign{i}{i-1}}^{3} ;
              \clabel{\assign{j}{k}}^{4} ;
              \clabel{\assign{y}{\query(\chi(\ln(x)))} }^{5}  ; \\
@@ -383,7 +383,8 @@ The longest dependency depth, i.e., the adaptivity is expectation to be $2 + k$.
     \Big(
      \clabel{\assign{i}{i-1}}^{4} ;
      \clabel{\assign{j}{k}}^{5} ;\\
-     \eif(\clabel{x > 0}^6, \clabel{\assign{y}{\query(\chi(\ln(x) + y))} }^{7},
+     \eif(\clabel{x > 0}^6, \\
+     \qquad \clabel{\assign{y}{\query(\chi(\ln(x) + y))} }^{7},
      \clabel{\assign{y}{\query(\chi(x))} }^{8} )
       ; \\
      \ewhile ~ \clabel{j > 0}^{9} ~ \edo ~ \\

@@ -119,7 +119,7 @@ a sound upper bound sound for the \emph{adaptivity} w.r.t the Definition~\ref{de
 The proof is in Appendix~\ref{apdx:adapt_soundness}.
 
 
-Symbolic expressions as used in the weight are great to express symbolic bounds, but make the computation of 
+Symbolic expressions as used in the weight are great to express symbolic upper bounds, but make the computation of 
 the longest path non-terminating. 
 In this sense, the computation by Definition~\ref{def:prog_adapt} has to
 over-approximate the adaptivity on a large scale in order to address the non-terminating problem.
@@ -286,7 +286,7 @@ We discuss in detail this adaptivity computation algorithm.
  $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$.
  % where $\kw{\sccgraph_i} = (\vertxs_i, \edges_i, \weights_i, \qflag_i)$.
  Then, 
- it computes the local adaptivity upper bound for every $\kw{\sccgraph_i}$
+ we compute a local bound for the adaptivity of every $\kw{\sccgraph_i}$
  % , which is a subgraph of the $\progG(c)$, 
  in line:4-5 by $\kw{\pathsearch_{SCC}(c, \sccgraph_i)}$.
  We guarantee that $\kw{\pathsearch_{SCC}(c, \sccgraph_i)}$ computes a sound upper bound on the adaptivity of an SCC by Lemma~\ref{lem:sound_adaptalg_scc} with formal proof in Appendix~\ref{apdx:adaptalg_soundness}.

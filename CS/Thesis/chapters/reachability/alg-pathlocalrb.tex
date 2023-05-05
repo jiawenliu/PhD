@@ -44,8 +44,10 @@ The inaccuracy is resulted by the nature of the path-insensitivity in the rankin
 
 \subsubsection{Proposed Loop Bound Computation} 
 \label{sec:loopbound-absstate}
-Our approach uses the ranking function invariant to compute a more precise progress invariant inspired from~\cite{GulwaniJK09}.
-We first compute three abstract states for each ranking function in different subprograms of a refined program as below.
+Our approach uses the ranking function invariant to compute 
+% a precise progress invariant inspired from~\cite{GulwaniJK09}.
+% We first compute 
+three abstract states for each ranking function in different subprograms of a refined program as below.
 % Then we these precise abstract states, and estimate the loop bound path sensitively.
 \begin{defn}[Ranking Function Abstract States Computation]
  \label{def:alg-absstate}
@@ -263,7 +265,7 @@ We show the \emph{path local reachability-bound} of the simple transition path $
 \begin{lem}[Soundness of the Path Local Reachability-bound]
   \label{lem:pathlocalrb-sound}
   For any program $c$ with its refined program $\rprog$ and a simple transition path $\tpath$ in $\rprog$,
-  if $l: \rprog_l = \kw{enclosed}(\rprog, \tpath)$ is the closest loop where $\tpath$ is nested in this program,
+  if the loop program $l: \rprog_l = \kw{enclosed}(\rprog, \tpath)$ is the closest loop where $\tpath$ is nested in this program,
   then the execution times of $\tpath$ when executing the $\rprog_l$ under initial trace $\trace_l \in \ftdom_0(c_l)$ is bounded by $\econfig{\outinB(\rprog_l, \tpath)}(\trace_0)$ with any initial trace $\trace_0 \in \ftdom_0(c)$.
   \[
     \begin{array}{l}

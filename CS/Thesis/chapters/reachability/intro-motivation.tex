@@ -63,7 +63,7 @@ and $\inoutB(\rprog, \tpath_0) = \inoutB(\rprog, \tpath_3) = 1$.
 % to compute the final \emph{reachability-bound} for each location.
 Since there isn't nested loop in this example, we simply sum up $\inoutB(\rprog, \tpath)$ over the $\tpath$ where a certain location shows up
 and as the \emph{reachability-bound} of this location.
-Then we get the precise \emph{reachability-bound} for every location in program $\kw{twoPathsWhile}$ as
+Then we get the precise \emph{reachability-bound} for every location in the example program, $\kw{twoPathsWhile}$ as
 $\psRB(0) = \psRB(1) = \psRB(\lex) = 1$,
 $\psRB(4) = \psRB(5) = \max\{m, m \times \lfloor\frac{n}{m}\rfloor\}$,
 $\psRB(3) = \psRB(2) = \max\{m, m \times \lfloor\frac{n}{m}\rfloor\} + \lfloor\frac{n}{m}\rfloor + 1 $,

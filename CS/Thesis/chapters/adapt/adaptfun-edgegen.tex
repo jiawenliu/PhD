@@ -80,9 +80,9 @@ The operator $\mathsf{blk}: \cdom \to blocks$ gives all the blocks in program $c
 \item The operator $in(l)$, $out(l)$: $ \ldom \to \mathcal{LV} \cup \{?\}$ for every block in program $c$ is defined as follows,
  \[
  \begin{array}{ll}
- % in(l) \\ \qquad \triangleq \{ (x, ?) | x^l \in \lvar(c) \land l = \absinit(c) \} 
+ % in(l) \\ \quad \triangleq \{ (x, ?) | x^l \in \lvar(c) \land l = \absinit(c) \} 
  in(l) \triangleq \{ x^{?} | x^l \in \lvar(c) \land l = \absinit(c) \} 
- \\ \qquad \qquad \cup \{ out(l')| | (l',\_, l) \in \absE(c) \land l \neq \absinit(c)\} \\
+ \\ \quad \quad \cup \{ out(l')| | (l',\_, l) \in \absE(c) \land l \neq \absinit(c)\} \\
  out(l) \triangleq gen(B^{l}) \cup \{ in(l) \setminus kill(B^l) \} 
  \end{array}
  \]
@@ -105,11 +105,11 @@ is computed by the standard work-list algorithm with detail as below.
  \\
  a work queue $W$, contains all the blocks in $c$
  \STATE {\bf while} $|W|$ != 0 \\
- \STATE \qquad pop $l$ in $W$ \\
- \STATE \qquad old = out[l] \\
- \STATE \qquad $in(l)$ = $out(l')$ where $(l',\_, l) \in \absE(c)$\\
- \STATE \qquad $out(l)$ = $\mathsf{gen}(b^l)$ $\cup$ ($in(l) - kill(b^l)$), where $b^l \in \mathsf{blk}(c)$ \\
- \STATE \qquad {\bf if} (old != out(l)) $W = W \cup \{l'| (l,l') \in (l',\_, l) \in \absE(c)\}$ 
+ \STATE \quad pop $l$ in $W$ \\
+ \STATE \quad old = out[l] \\
+ \STATE \quad $in(l)$ = $out(l')$ where $(l',\_, l) \in \absE(c)$\\
+ \STATE \quad $out(l)$ = $\mathsf{gen}(b^l)$ $\cup$ ($in(l) - kill(b^l)$), where $b^l \in \mathsf{blk}(c)$ \\
+ \STATE \quad {\bf if} (old != out(l)) $W = W \cup \{l'| (l,l') \in (l',\_, l) \in \absE(c)\}$ 
  \end{algorithmic}
  \end{algorithm}
 \end{enumerate}
@@ -135,21 +135,21 @@ formally in Definition~\ref{def:feasible_flowsto},
  \[
  \begin{array}{l}
  \flowsto(x^i, y^j, \clabel{\assign{y}{\expr}}{}^j) 
- \\ \qquad \triangleq (x^i, y^j) \in \{ (x^i, y^j) | x \in \kw{FV}(\expr) 
+ \\ \quad \triangleq (x^i, y^j) \in \{ (x^i, y^j) | x \in \kw{FV}(\expr) 
  \land x^i \in \live(l, \clabel{\assign{y}{\expr}}^j) \} \\
  \flowsto(x^i, y^j, \clabel{\assign{y}{\query(\qexpr)}}{}^j) 
- \\ \qquad \triangleq (x^i, y^j) \in \{ (x^i, y^j) | x \in \kw{FV}(\qexpr) 
+ \\ \quad \triangleq (x^i, y^j) \in \{ (x^i, y^j) | x \in \kw{FV}(\qexpr) 
  \land x^i \in \live(l,\clabel{\assign{y}{\query(\qexpr)}}^j) \} \\
  \flowsto(x^i, y^j, \clabel{\eskip}^{l}) 
  \triangleq \emptyset \\
  \flowsto(x^i, y^j, \eif (\clabel{\bexpr}^{l}, c_1, c_2)) 
- \\ \qquad \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) 
- \\ \qquad \quad \lor (x^i, y^j) \in \big\{(x^i,y^j) | x \in \kw{FV}(b) 
+ \\ \quad \triangleq \flowsto(x^i, y^j, c_1) \lor \flowsto(x^i, y^j, c_2) \lor
+ \\ \quad (x^i, y^j) \in \big\{(x^i,y^j) | x \in \kw{FV}(b)  \land
  x^i \in \live(l, \eif (\clabel{\bexpr}^{l}, c_1, c_2)) \land y^j \in \lvar(c_1)\cup \lvar(c_2) \big\}
  \\
  \flowsto(x^i, y^j, \ewhile \clabel{\bexpr}^{l} \edo (c_w)) 
- \\ \qquad \triangleq \flowsto(x^i, y^j, c_w) 
- \\ \qquad \quad \lor
+ \\ \quad \triangleq \flowsto(x^i, y^j, c_w) \lor
+ \\ \quad
  (x^i, y^j) \in \big\{(x^i,y^j) | x \in \kw{FV}(b) 
  \land x^i \in \live(l, \ewhile \clabel{\bexpr}^{l} \edo (c_w)) \land y^j \in \lvar(c_w) \big\} 
  \\
@@ -201,7 +201,7 @@ satisfying in the transitive closure of $\flowsto$ as follows,
  \land
  \exists n,
  z_1^{r_1}, \ldots, z_n^{r_n} \in \lvar(c) \sthat 
- \\ & \qquad \qquad
+ \\ & \quad \quad
  n \geq 0 \land \flowsto(x^i, z_1^{r_1}, c) 
  \land \cdots \land \flowsto(z_n^{r_n}, y^j, c) 
  \}
@@ -230,7 +230,7 @@ the edge $l^6 \to a^5$ is built by $\flowsto(l^6, a^5, c)$ relation because
 $a$ is used directly in the query expression $\chi[k]*a$
 in the command $\clabel{\assign{l}{\query(\chi[k]*a)}}^6$,
 i.e., $a \in \kw{FV}(\chi[k]*a)$.
-And we also have $a^5 \in \live(6, \kw{twoRounds(k)})$ from the reaching definition analysis.
+We also have $a^5 \in \live(6, \kw{twoRounds(k)})$ from the reaching definition analysis.
 Another edge $x^3 \to j^5$ in the same graph represents the control flow from $j^5$ to $x^3$, which is soundly caught by our $\flowsto$ relation.
 
 \paragraph{Example II.}

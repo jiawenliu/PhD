@@ -4,21 +4,22 @@
     Our $\THESYSTEM$ works well also over the linear regression algorithm with a gradient descent optimization method.
     \begin{figure}
     \centering
-    \begin{subfigure}{0.57\textwidth}
+    \begin{subfigure}{0.55\textwidth}
      \centering
-     {\small
+     {
      \[
      \begin{array}{l}
      \kw{lR(k, r)} \triangleq \\
      \clabel{ a \leftarrow 0}^{0} ; 
      \clabel{ c \leftarrow 0}^{1} ; 
      \clabel{\assign{j}{\kw{k}} }^{2} ; \\
-     \ewhile ~ \clabel{j > 0}^{3} ~ \edo ~ \\
+     \ewhile ~ \clabel{j > 0}^{3} ~ \edo ~ 
      \Big(
-     \clabel{\assign{da}{\query(-2 * (\chi[1] - (\chi[0]\times a + c)) \times (\chi[0]))} }^{4} ; \\
-     \clabel{\assign{dc}{\query(-2 * (\chi[1] - (\chi[0]\times a + c)))} }^{5} ; \\
-     \clabel{\assign{a}{a - \kw{r} * da} }^{6} ; 
-     \clabel{\assign{c}{c - \kw{r} * dc} }^{7} ; \\
+        \\
+     \clabel{\assign{da}{\query(-2 \cdot (\chi[1] - (\chi[0]\cdot a + c)) \cdot (\chi[0]))} }^{4} ; \\
+     \clabel{\assign{dc}{\query(-2 \cdot (\chi[1] - (\chi[0]\cdot a + c)))} }^{5} ; \\
+     \clabel{\assign{a}{a - \kw{r} \cdot da} }^{6} ; 
+     \clabel{\assign{c}{c - \kw{r} \cdot dc} }^{7} ; \\
      \clabel{\assign{j}{j-1}}^{8} 
      \Big);
      \end{array}
@@ -26,7 +27,7 @@
      }
      \caption{}
      \end{subfigure}
-     \begin{subfigure}{.4\textwidth}
+     \begin{subfigure}{.55\textwidth}
      \begin{centering}
      \begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
      % Variables Initialization
@@ -74,7 +75,7 @@
     This linear regression algorithm 
     % in order to
     aims to
-    find a linear relationship, $y = a \times x + c$ between a dependent variable $y$
+    find a linear relationship, $y = a \cdot x + c$ between a dependent variable $y$
     and an independent variable $x$, by approximating the 
     model parameter $a$ and $c$.
     In order to have a good approximation of the model parameter 
@@ -92,8 +93,8 @@
     In each iteration, it computes the differential value w.r.t. parameter
     $a$ and $c$,
     through two query requests, 
-    $\query(-2 * (\chi[1] - (\chi[0]\times a + c)) \times (\chi[0]))$ and 
-    $\query(-2 * (\chi[1] - (\chi[0]\times a + c)))$
+    $\query(-2 * (\chi[1] - (\chi[0]\cdot a + c)) \cdot (\chi[0]))$ and 
+    $\query(-2 * (\chi[1] - (\chi[0]\cdot a + c)))$
     in commands of label $4$ and $5$.
     Then, it uses these two differential values stored in variables $da$ and $dc$
     to update the model parameters $a$ and $c$.

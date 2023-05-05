@@ -1,7 +1,7 @@
 \section{Formalization Methods}
 \label{sec:relatedwork-adapt-semantics}
-Our adaptivity analysis framework constructs a semantics-based dependency graph based on the execution traces of a program. 
-I define semantic dependence on this graph by considering (intraprocedural) data and control 
+In our adaptivity analysis framework, we construct a semantics-based dependency graph based on the execution traces of a program. 
+We define semantic dependence on this graph by considering (intraprocedural) data and control 
 dependency, e.g.~\cite{bilardi1996framework, CytronFRWZ91, PollockS89, BurkeR90}. 
 One related work in~\cite{AustinS92} presents a methodology to construct a dynamic dependency graph (DDG) based on the dynamic execution of a program in an imperative language, where edges represent dependency between instructions. Data dependency, control dependency, storage dependency, and resource dependency between instructions are all considered. My semantics-based dependency graph only needs data dependency and control dependency between variable assignment results. 
 %
@@ -57,7 +57,7 @@ By limiting the influence that an individual can have on the result of a data an
 This connection is actually in two directions, as discussed for example by~\citet{YeomGFJ18}.
 
 Considering this connection between generalization and privacy, it is not surprising
-that some works on programming language techniques for privacy-preserving data analysis are related to our work. 
+that some works on programming language techniques for privacy preserving data analysis are related to our work. 
 Adaptive Fuzz by~\cite{Winograd-CortHR17} is a programming framework for differential privacy that is designed around the concept of adaptivity. 
 This framework is based on a typed functional language that distinguishes between several forms of adaptive and non-adaptive composition theorem with the goal of achieving better upper bounds on the privacy cost.
 Adaptive Fuzz uses a type system and some partial evaluation to guarantee that the programs respect differential privacy.

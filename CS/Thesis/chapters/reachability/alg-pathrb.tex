@@ -35,7 +35,7 @@ We show the \emph{path reachability-bound} of the simple transition path $\tpath
 \begin{lem}[Soundness of the Path Reachability-bound]
   \label{lem:pathrb-sound}
   For any program with its refined program $\rprog$ and a simple transition path $\tpath$ in this program,
-  the execution times of $\tpath$ when executing the $\rprog$ under initial trace $\trace_0 \in \ftdom_0(c)$ is bounded by $\econfig{\inoutB(\rprog, \tpath)}(\trace_0)$.
+  the number of times that $\tpath$ is evaluated when executing the $\rprog$ under initial trace $\trace_0 \in \ftdom_0(c)$ is bounded by $\econfig{\inoutB(\rprog, \tpath)}(\trace_0)$.
   \[
     \begin{array}{l}
     \forall c, c_r \in \cdom, \tpath \in \absG(c), \trace_0 \in \ftdom_0(c),  \trace_r \in \ftdom_0(c_r), \trace \in \tdom, l \in \ldom, \rprog \sthat 

@@ -24,8 +24,8 @@ It also requires computing several quantities to obtain the final result.
 %  the \emph{path reachability-bound} and the \emph{loop reachability-bound}.
 Section~\ref{sec:psRB-psrb} introduces these quantities that are needed to be computed in this algorithm and the following sections describe the computations of each quantity. 
 % \begin{enumerate}
- \item Section~\ref{sec:psRB-pathlocalrb} gives the computation of the first quantity -- the local \emph{path reachability-bound}, $\outinB(\rprog, \tpath)$ for every \emph{simple transition path} $\tpath$ in Section~\ref{sec:psRB-pathlocalrb}. 
- This is the local bound on the numbers that  $\tpath$ is evaluated when executing the closet loop  $\rprog$ in which $\tpath$ is nested.
+ \item Section~\ref{sec:psRB-pathlocalrb} gives the computation of the local \emph{path reachability-bound}  for every \emph{simple transition path} $\tpath$. 
+ This is a subroutine of the global \emph{path reachability-bound} computation, specifically a local upper bound on the numbers that  $\tpath$ is evaluated when executing the closet loop  $\rprog$ in which $\tpath$ is nested.
  This local bound considers only the execution of the innermost loop where $\tpath$ is located.
 %   closest enclosing loop, i.e., $\kw{enclosed}(\tpath)$.
  \item Then in Section~\ref{sec:psRB-looprb}, we compute the second quantity -- \emph{loop reachability-bound}, $\lpchB(l: \rprog, \tpath)$ for every \emph{simple transition path} $\tpath$

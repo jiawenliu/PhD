@@ -23,7 +23,7 @@ Given a program $c$
 % and 
 % 
 with the feasible data flow relation $\flowsto(x^i, y^j, c)$ for every $x^i, y^j \in \lvar(c)$, 
-and the $\absW(c)$ as the set of estimsted weight for every program label $l$,
+and the reachability-bound $\absclr(\absevent, c)$ for every edge $\absevent \in \absE(c)$ on the abstract transition graph,
 its estimated dependency graph
 is generated as follows.
 \[\progG(c) = (\progV(c), \progE(c), \progW(c), \progF(c))\]
@@ -58,7 +58,7 @@ n \geq 0 \land
 \mid
 x^l \in \progV(c) \land 
 \hat{w} = 
-\sum\left\{ \absclr(\absevent, c) \middle\vert \absevent \in \absflow(c) \land \absevent = (l, \_, \_) \right\}
+\sum\left\{ \absclr(\absevent, c) \middle\vert \absevent \in \absE(c) \land \absevent = (l, \_, \_) \right\}
 \right\}
 \\
 \progF & := & 

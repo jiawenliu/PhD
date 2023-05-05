@@ -1,13 +1,14 @@
 Similar to the \emph{loop bound} computation,
 we first compute two abstract states for each simple transition path w.r.t. every level of its outer loops,
-$\lpinit(\rprog, \tpath, c)$, and $\lpnext(\rprog, \tpath, c)$ based on the refined program below.
+the loop initial state $\lpinit(\rprog, \tpath, c)$, and the loop next state $\lpnext(\rprog, \tpath, c)$ based on the refined program below.
 \begin{defn}[Loop Abstract States]
 \label{def:alg-loopabsstate}
-For a program $c$ with its refined program $\rprog_c$, a $\tpath$ and a loop $\rprog$ in $\rprog_c$ where $\tpath$ is located, we compute 
-$\lpinit(\rprog, \tpath, c)$ and $\lpnext(\rprog, \tpath, c)$
+For a program $c$ with its refined program $\rprog_c$, a $\tpath$ and a loop $\rprog$ in $\rprog_c$ where $\tpath$ is located, we compute
+two loop abstract states
+% the \emph{loop initial state} $\lpinit(\rprog, \tpath, c)$, and the \emph{loop next state} $\lpnext(\rprog, \tpath, c)$
 w.r.t. the ranking functions as follows.
  
-1. The loop's initial state 
+1. The \emph{loop initial state} 
 $\lpinit(\rprog, \tpath, c) \in \scexpr(c)$ computes a symbolic expression, which is an upper bound for the initial value of $\tpath$'s ranking function before
 any visit of $\tpath$ and during the first execution of $\rprog$.
 \[
@@ -29,7 +30,7 @@ any visit of $\tpath$ and during the first execution of $\rprog$.
  \]
 % \item
 2.
-The loop next state 
+The \emph{loop next state}
 $\lpnext(\rprog, \tpath, c) \in \scexpr(c)$ 
 estimates the amount for $\tpath$'s ranking function
 that is modified before
@@ -96,7 +97,8 @@ Definition~\ref{def:looprb} computes a sound \emph{loop reachability-bound}, and
  \[
  \begin{array}{l}
  \forall c, c_l \in \cdom, \tpath \in \absG(c), \trace_0 \in \ftdom_0(c_l), \trace \in \tdom, l, l' \in \ldom, \rprog \sthat 
- \rprog = \kw{REFINE}(\algrewrite(c))
+ \\ \qquad
+ \rprog = {REFINE}(\algrewrite(c))
  \\ \qquad
  \land l_t: \rprog_t = \kw{enclosed}(\rprog, \tpath)
  \land 
@@ -131,7 +133,7 @@ Definition~\ref{def:looprb} computes a sound \emph{loop reachability-bound}, and
 %
 The $\lpchB(l:\rprog, \tpath)$ 
 can also be over-approximated by
-$I(l, l')$, specifically the function $\kw{BOUNDFINDERD}(INIT(c, i, \absinit(\tpath)), NEXT(c, i, \absinit(\tpath)), V_{\ln})$ in paper~\cite{GulwaniJK09}.
+$I(l, l')$, specifically the function $\kw{BOUNDFINDERD(INIT(c, i, \absinit(\tpath)), NEXT(c, i, \absinit(\tpath)), V_{\ln})}$ in paper~\cite{GulwaniJK09}.
 $I(l, l')$ over-approximates this value to a large extend 
 by estimating the bound on iteration numbers of $l'$ in one iteration of $l$.
 
@@ -176,7 +178,7 @@ $\lpnext( \rprog_1, \tpath_3, c) = N + 1 $, and
 $\rffinal(\rprog_1, c) = \{ i = n, k = N \}$ and obtain
 $\lpchB(\rprog_1, \tpath_3, c) = \max\{ \frac{n - 0}{n - N - 1}, \frac{N - 0}{N + 1}\} = 1$, as expected.
 
-Then for $\lpchB(\rprog_3, \tpath_3, c)$,
+For $\lpchB(\rprog_3, \tpath_3, c)$,
 % Then for its two outer loops, $L_1$ and $L_3$,
 % it is nested.
 we compute $\lpinit( \rprog_3, \tpath_3, c) = 0$,

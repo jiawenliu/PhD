@@ -333,9 +333,9 @@ and this case is proved
 	\begin{lem}[Edge Correspondence]
 	\label{lem:edge_map}
 	Given a program $c$ with its
-	estimated dependency graph $\progG({c}) = (\progV, \progE, \progW, \progF)$
+	semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$
 	and 
-	semantics-based dependency graph $\traceG({c}) = (\traceV, \traceE, \traceW, \traceF)$,
+	estimated dependency graph $\progG({c}) = (\progV, \progE, \progW, \progF)$	,
 	then for every $e = (v_1, v_2) \in \traceE$, there exists an edge 
 	$e' = (v_1', v_2') \in \progE$ with 
 	$v_1 = v_1' \land v_2 = v_2'$.

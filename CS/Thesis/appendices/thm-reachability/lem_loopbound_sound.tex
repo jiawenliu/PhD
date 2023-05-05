@@ -280,8 +280,10 @@ By induction hypothesis on $\trace_r$, $c_1$, $\trace_1$ and $c_2$, we also have
     \Big\}.
     \end{array}
 \]
-By Definition~\ref{def:abs_event}, we know
-$\absinit(\rprog) = \absinit(c_1)$, $\absfinal(\rprog) = \absfinal(\rprog_2)$ and $(\absinit(\rprog_2), \_) \in \absfinal(c_1)$. 
+We also know
+$\absinit(\rprog) = \absinit(c_1)$,
+$\absfinal(\rprog) = \absfinal(\rprog_2)$ and $(\absinit(\rprog_2), \_) \in \absfinal(c_1)$
+by Definition~\ref{def:abs_event}.
 \\
 By the label consistency, we know 
 \[
@@ -471,7 +473,7 @@ For each $\tpath \in \rprog$ and $x = \rank(\tpath)$ the ranking function of thi
 %
  In this sense, we have 
  $
- \max_{l_1}\left\{
+ \max\limits_{l_1}\left\{
   \varinvar(y, c) + v ~\middle\vert~ 
   \begin{array}{l} 
     (l_1, x' \leq y + v, l_2) \in \reset(x, c) \\
@@ -627,7 +629,8 @@ for each $\tpath' \in \rprog'$ with $x'$ as its ranking function,
 $\varGD(\rprog', c)$ contains the equations $x' = \expr'$, where $\expr' \in \scexpr(c)$ is a
 symbolic expression describing the value of $x'$ before the second execution of $\rprog'$.
 \\
-We also know $BD(\rprog', c)$ computes the maximum iteration times of $\rprog'$ from $\absinit(c_r')$ until the $l_f$ where $(l_f, \_) \in \absfinal(c_r')$ where $\rprog' = REFINE(c_r')$.
+We also know $BD(\rprog', c)$ computes the maximum iteration times of $\rprog'$ from $\absinit(c_r')$ until the $l_f$ where $(l_f, \_) \in \absfinal(c_r')$ where $\rprog'$ is the refined program of
+$(c_r')$.
 \\
 Then we know $BD(\rprog', c)  \times
 {\varGD(\rprog', c)}$
