@@ -1,0 +1,87 @@
+{ 
+\begin{figure}
+\centering
+%
+\begin{subfigure}{.35\textwidth}
+    $
+    \begin{array}{l}
+      \kw{twoPathsWhile}(n, m) \triangleq \\
+    \clabel{ \assign{i}{n} }^{0} ;
+    \clabel{ \assign{j}{0} }^{1} ; \\
+    L_2:    \ewhile ~ \clabel{i > 0}^{2} ~ \edo ~ \\
+        \qquad \big(
+          \eif(\clabel{j < m}^{3}, \\
+          \qquad \ethen  \clabel{\assign{j}{j + 1}}^{4}; \\
+          \qquad \qquad \clabel{\assign{i}{i - 1}}^{5},\\
+          \qquad \eelse \clabel{\assign{j}{0}}^{6});
+          \big)
+        \end{array}
+        $
+\caption{}
+\end{subfigure}
+\begin{subfigure}{.6\textwidth}
+\begin{centering}
+\begin{tikzpicture}[scale=\textwidth/15cm,samples=200]
+\draw[] (-8, 10) circle (0pt) node{{ $0$}};
+\draw[] (-4, 10) circle (0pt) node{{ $1$}};
+\draw[] (0, 10) circle (0pt) node{{ $2$}};
+\draw[] (0, 7) circle (0pt) node{{$3$}};
+\draw[] (-3, 4) circle (0pt) node{{ $4$}};
+\draw[] (-8, 4) circle (0pt) node{{ $5$}};
+\draw[] (4, 4) circle (0pt) node{{ $6$}};
+\draw[] (5, 10) circle (0pt) node {\textbf{$\lex$}};
+%
+\draw[ thick, -latex] (-7, 10)  -- node [above] {$i' \leq n$}(-4.5, 10);
+\draw[ thick, -latex] (-3, 10)  -- node [above] {$j' \leq 0$}(-0.5, 10);
+\draw[ thick, -latex] (0, 9.5)  -- node [left] {$i > 0$} (0, 7.5) ;
+\draw[ thick, -latex] (0.5, 7)  -- node [below] {$ j \geq m $}  (4, 4.5);
+\draw[ thick, -latex] (-7.5, 4.5)  to  [out=90,in=180]  node [left] {$i' \leq i - 1$ }(-0.5, 9.5);
+\draw[ thick, -latex] (4.5, 4)  to  [out=70,in=0]   node [right] {$j' \leq 0 $}(0.5, 9.5);
+\draw[ thick, -latex]  (-0.5, 7) -- node  {$j < m$}  (-3, 4.5) ;
+\draw[ thick, -latex]  (-3.5, 4) -- node [above] {$j' \leq j + 1$}  (-7, 4) ;
+\draw[ thick, -latex] (0.5, 10)  -- node [above] {$i \leq 0$}  (4.5, 10);
+\end{tikzpicture}
+    \caption{}
+\end{centering}
+\end{subfigure}
+{\small
+\begin{subfigure}{.8\textwidth}
+\begin{centering}
+    $\tpath_0 = 0 \to 1 \to 2$,
+    $\tpath_2 = 2 \to 3 \to 6 \to 2$, \\
+    $\tpath_1 = 2 \to 3 \to 4 \to 5 \to 2$,
+    $\tpath_3 = 2 \to \lex$\footnotemark
+    \caption{}
+\end{centering}
+\end{subfigure}
+}
+{
+\begin{subfigure}{.8\textwidth}
+\begin{centering}
+$
+\tpath_0; 
+\rpchoose{ 2: \tpath_1, 2: \tpath_2 }; \tpath_3.
+$
+\caption{}
+\end{centering}
+\end{subfigure}
+}
+\begin{subfigure}{.8\textwidth}
+  \begin{centering}
+  $
+  \tpath_0 ; 
+  \rpchoose{2: \rprepeat(\rprepeat(\tpath_1); \tpath_2), 
+  2: \rprepeat(\tpath_1)}; \tpath_3.
+  $
+  \caption{}
+\end{centering}
+  \end{subfigure}
+\caption{
+(a) The two paths loop example.
+(b) The abstract transition graph for $\kw{twoPathsWhile}(n, m)$.
+(c) The simple transition paths.
+(d) The rewrote program.
+(e) The refined program.}
+    \label{fig:whileTwoCounters-refine}
+\end{figure}
+}
